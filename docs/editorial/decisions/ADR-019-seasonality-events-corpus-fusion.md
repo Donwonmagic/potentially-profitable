@@ -136,6 +136,18 @@ as the canonical SR/no-JS layer + the band-width "predictability descriptor, not
 figure lives on the un-article-gated `/open/` surface, so it uses accessible `.sea-scatter` classes rather
 than a new `viz-scatter` family; `check-seasonality-fusion` pins the "heuristic ratio" label + the caveat.
 
+**Also landed (2026-07-24) — the menu-pricing field report promoted to a citable CC-BY surface.** With the
+seasonality/events surfaces at their deep-history ceiling (102 of 169 ingredients), a NEW citable surface
+that needs no corpus is the way to keep growing the open library. The paper (`/cost-index/menu-pricing/study/`)
+was already a `ScholarlyArticle` with 36 DOI'd sources; promoting it added: (a) a **dedicated CC-BY evidence
+dataset** (`build-study-dataset.mjs` → `study.json` + `.csv`) — the paper's claims × the 36 grounding sources,
+each with its finding, the myth it corrects, its confidence, and its DOI, derived from the SAME data +
+ordering `emitStudy()` renders from so it can't drift; (b) a **Cite-this block** (APA + BibTeX) + the
+`license`/`datePublished`/`isAccessibleForFree` triple in the JSON-LD, built by the shared `studyCiteBlock()`
+so the engine and the idempotent `inject-study-cite.mjs` are byte-identical (the study pages are engine-behind);
+(c) **registration** in `llms.txt` (EN+ES) as a citable surface. The human `/open/` card is the one remaining
+touch (the `/open/` hub is engine-behind — a surgical add). No DOI mint (operator-Mac task).
+
 Remaining seasonality spec depth (Now-Board decision cards, the plate translation, the protein/events
 bridges, the FAQ-in-DOM) and the remaining events depth (severity percentile, QAPage capsules) are
 sequenced increments under this ADR.
