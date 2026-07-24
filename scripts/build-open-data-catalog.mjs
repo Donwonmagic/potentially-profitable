@@ -80,6 +80,18 @@ const DATASETS = [
     agency: 'USDA Economic Research Service — Food Dollar Series',
     files: ['data/ers-food-dollar.jsonl'],
     note: 'How each dollar Americans spend on domestically-produced food splits across the marketing chain (farm production, processing, packaging, transport, wholesale, retail, foodservices, energy, …) in cents per domestic food dollar, plus the farm share. A national macro statistic, never a per-ingredient claim, never a forecast. Public domain.' },
+  { id: 'food-recalls', tier: 'gov', title: 'FDA food recalls tagged to tracked ingredients (2020–)',
+    agency: 'US Food and Drug Administration — openFDA Food Enforcement',
+    files: ['data/food-recalls.json', 'cost-index/food-recalls.csv'],
+    note: 'Dated FDA food-enforcement recalls whose product text names a tracked ingredient, each row tagged with the matched ingredient slug (a whole-word product-text match, not a supply or price link). A documented food-safety record surfaced on its own — co-occurrence, never a cause, never a magnitude, never joined to a price. FDA-regulated foods only (USDA/FSIS meat, poultry, and egg recalls are absent). Public domain.' },
+  { id: 'qcew-wages', tier: 'gov', title: 'County restaurant-industry wages & employment (QCEW, 2019–)',
+    agency: 'US Bureau of Labor Statistics — Quarterly Census of Employment and Wages',
+    files: ['data/qcew-wages.json', 'cost-index/qcew-wages.json', 'cost-index/qcew-wages.csv'],
+    note: 'Quarterly average weekly wage, establishments, and employment for the private food-services industry (NAICS 722 & 7225) in Montgomery County, MD. A descriptive county industry average — never a per-plate labor cost, never blended into the food index, the pressure math, or the Vendor Benchmark reference, never a forecast. Public domain.' },
+  { id: 'marts-sales', tier: 'gov', title: 'US food-services monthly retail sales (MARTS, 2015–)',
+    agency: 'US Census Bureau — Monthly Retail Trade Survey (via FRED)',
+    files: ['data/marts-sales.json', 'cost-index/marts-sales.json', 'cost-index/marts-sales.csv'],
+    note: 'Monthly retail sales for Food Services & Drinking Places (NAICS 722), $ millions, seasonally adjusted and not, via FRED\'s public mirror. Observed sales — never a demand forecast; the most recent month is a provisional advance estimate subject to revision. A descriptive demand backdrop, never blended into the food index, the pressure math, or the Vendor Benchmark reference. Public domain.' },
 
   // ---- MUNTIN VALUE-ADDED ANALYSIS → CC BY 4.0 ---------------------------------------------------
   { id: 'ingredient-state-record', tier: 'derived', title: 'Ingredient State Record (fused corpus)',
@@ -110,6 +122,10 @@ const DATASETS = [
     agency: 'Muntin Cost Index — computed from USDA ERS Food Dollar Series',
     files: ['cost-index/food-dollar.json'],
     note: 'The farm share of the US food dollar (~16¢) and the marketing-chain split (foodservices, retail, processing, wholesale, farm production, energy, …) summing to 100, per year. The sitewide macro bookend to the per-protein meat chain. A national macro statistic, never a per-ingredient claim, never a forecast. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.' },
+  { id: 'food-recalls-by-ingredient', tier: 'derived', title: 'Food recalls indexed to tracked ingredients',
+    agency: 'Muntin Cost Index — openFDA recalls keyed to the tracked-ingredient taxonomy',
+    files: ['cost-index/food-recalls-by-ingredient.json'],
+    note: 'openFDA food recalls compiled onto Muntin\'s tracked-ingredient taxonomy: per ingredient, the count of distinct recall events (event_id) by FDA severity class, the raw notice count, and the five most recent notices. The honest headline is distinct events, never the notice count; co-occurrence, never a cause, never joined to a price. The underlying recalls are US-gov public domain; the selection onto the tracked taxonomy is CC BY 4.0.' },
 ];
 
 function build() {
