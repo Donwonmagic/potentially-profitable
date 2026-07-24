@@ -20,14 +20,20 @@ const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = 'data/nass-aquaculture.json';
 const API = 'https://quickstats.nass.usda.gov/api/api_GET/';
 const SINCE = 2015;
-// (commodity, statistic) specs to try; NASS returns empty/error for combos with no series — those are skipped.
+// Confirmed live 2026-07-24: catfish/trout are class_desc under commodity_desc "FOOD FISH", with
+// annual SURVEY data (not just the 5-yearly CENSUS) at NATIONAL. Try these (class, statistic) pairs;
+// NASS 400s a combo with no rows, so empties are skipped.
+const COMMODITY = 'FOOD FISH';
+const SOURCE = 'SURVEY';
+const AGG = 'NATIONAL';
 const SPECS = [
-  { commodity: 'CATFISH', stat: 'SALES' },
-  { commodity: 'CATFISH', stat: 'INVENTORY' },
-  { commodity: 'CATFISH', stat: 'PRICE RECEIVED' },
-  { commodity: 'TROUT', stat: 'SALES' },
-  { commodity: 'TROUT', stat: 'PRODUCTION' },
-  { commodity: 'TROUT', stat: 'PRICE RECEIVED' },
+  { cls: 'CATFISH', stat: 'SALES' },
+  { cls: 'CATFISH', stat: 'PRICE RECEIVED' },
+  { cls: 'CATFISH', stat: 'INVENTORY' },
+  { cls: 'CATFISH, FOODSIZE', stat: 'SALES' },
+  { cls: 'TROUT', stat: 'SALES' },
+  { cls: 'TROUT', stat: 'PRICE RECEIVED' },
+  { cls: 'TROUT, FOODSIZE', stat: 'SALES' },
 ];
 
 // NASS Value is a display string: commas ("1,234,567"), or withheld/NA markers "(D)"/"(NA)"/"(Z)".
@@ -45,6 +51,7 @@ function normalize(rows) {
     if (value == null) continue; // drop withheld / non-numeric
     out.push({
       commodity: r.commodity_desc || null,
+      species: r.class_desc || null,
       statistic: r.statisticcat_desc || null,
       unit: r.unit_desc || null,
       year: Number(r.year) || null,
@@ -58,8 +65,8 @@ function normalize(rows) {
 function assemble(records, fetchedAt) {
   const byKey = {};
   for (const r of records) {
-    const k = `${r.commodity} · ${r.statistic}`;
-    (byKey[k] = byKey[k] || { commodity: r.commodity, statistic: r.statistic, unit: r.unit, series: [] }).series.push({ year: r.year, value: r.value });
+    const k = `${r.species} · ${r.statistic}`;
+    (byKey[k] = byKey[k] || { species: r.species, statistic: r.statistic, unit: r.unit, series: [] }).series.push({ year: r.year, value: r.value });
   }
   for (const k of Object.keys(byKey)) byKey[k].series.sort((a, b) => a.year - b.year);
   return {
@@ -74,9 +81,9 @@ function assemble(records, fetchedAt) {
 }
 
 const DEMO = [
-  { commodity_desc: 'CATFISH', statisticcat_desc: 'SALES', unit_desc: '$', year: '2023', Value: '424,000,000', short_desc: 'CATFISH - SALES, MEASURED IN $' },
-  { commodity_desc: 'CATFISH', statisticcat_desc: 'SALES', unit_desc: '$', year: '2022', Value: '(D)', short_desc: 'CATFISH - SALES, MEASURED IN $ (withheld)' },
-  { commodity_desc: 'TROUT', statisticcat_desc: 'PRICE RECEIVED', unit_desc: '$ / LB', year: '2023', Value: '2.15', short_desc: 'TROUT - PRICE RECEIVED, MEASURED IN $ / LB' },
+  { commodity_desc: 'FOOD FISH', class_desc: 'CATFISH', statisticcat_desc: 'SALES', unit_desc: '$', year: '2023', Value: '424,000,000', short_desc: 'FOOD FISH, CATFISH - SALES, MEASURED IN $' },
+  { commodity_desc: 'FOOD FISH', class_desc: 'CATFISH', statisticcat_desc: 'SALES', unit_desc: '$', year: '2022', Value: '(D)', short_desc: 'FOOD FISH, CATFISH - SALES (withheld)' },
+  { commodity_desc: 'FOOD FISH', class_desc: 'TROUT', statisticcat_desc: 'PRICE RECEIVED', unit_desc: '$ / LB', year: '2023', Value: '2.15', short_desc: 'FOOD FISH, TROUT - PRICE RECEIVED, MEASURED IN $ / LB' },
 ];
 
 function selfTest() {
@@ -101,16 +108,16 @@ async function live() {
   if (!key) { console.error('fetch-nass-aquaculture --live needs NASS_KEY (free: quickstats.nass.usda.gov/api).'); process.exit(1); }
   const all = [];
   for (const spec of SPECS) {
-    const qs = new URLSearchParams({ key, commodity_desc: spec.commodity, statisticcat_desc: spec.stat, agg_level_desc: 'NATIONAL', year__GE: String(SINCE), format: 'JSON' });
+    const qs = new URLSearchParams({ key, commodity_desc: COMMODITY, class_desc: spec.cls, statisticcat_desc: spec.stat, source_desc: SOURCE, agg_level_desc: AGG, year__GE: String(SINCE), format: 'JSON' });
     let res;
     for (let a = 0; a < 3; a++) { try { res = await fetch(`${API}?${qs}`); break; } catch (e) { if (a === 2) throw e; await new Promise((r) => setTimeout(r, 2000 * (a + 1))); } }
-    if (res.status === 400) { console.error(`  · ${spec.commodity}/${spec.stat}: no series (400) — skipped`); continue; } // NASS 400 = empty/invalid combo
-    if (!res.ok) { console.error(`  · ${spec.commodity}/${spec.stat}: HTTP ${res.status} — skipped`); continue; }
+    if (res.status === 400) { console.error(`  · ${spec.cls}/${spec.stat}: no series (400) — skipped`); continue; } // NASS 400 = empty/invalid combo
+    if (!res.ok) { console.error(`  · ${spec.cls}/${spec.stat}: HTTP ${res.status} — skipped`); continue; }
     const json = await res.json();
     const rows = (json && json.data) || [];
     const n = normalize(rows);
     all.push(...n);
-    console.error(`  · ${spec.commodity}/${spec.stat}: ${n.length} row(s)`);
+    console.error(`  · ${spec.cls}/${spec.stat}: ${n.length} row(s)`);
   }
   const out = assemble(all, new Date().toISOString());
   fs.writeFileSync(path.join(repo, OUT), JSON.stringify(out, null, 2) + '\n');
