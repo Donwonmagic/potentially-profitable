@@ -36,6 +36,7 @@
     var locale = input.locale === 'es' ? 'es' : 'en';
     var target = (typeof input.targetPct === 'number' && input.targetPct > 0 && input.targetPct < 1) ? input.targetPct : 0.30;
     var dishes = Array.isArray(input.dishes) ? input.dishes : [];
+    var uncosted = (typeof input.uncostedCount === 'number' && input.uncostedCount > 0) ? Math.floor(input.uncostedCount) : 0;
 
     var over = dishes
       .filter(function (d) { return d && d.dish && typeof d.foodCostPct === 'number' && isFinite(d.foodCostPct) && d.foodCostPct > target; })
@@ -43,6 +44,18 @@
       .sort(function (a, b) { return b.foodCostPct - a.foodCostPct; });
 
     if (!over.length) {
+      // Nothing over the line among costable dishes. If some are priced but have
+      // no costable line, say so — never a clean "nothing to do" that silently
+      // assumes uncosted dishes are on target.
+      if (uncosted > 0) {
+        return {
+          tier: 'none', show: true,
+          headline: tt(locale,
+            'Every costed dish is at or under your ' + pct(target) + ' goal — but ' + uncosted + (uncosted === 1 ? ' dish couldn\'t' : ' dishes couldn\'t') + ' be costed yet. Connect an invoice or add prices to see them.',
+            'Cada platillo costeado está en o bajo tu meta de ' + pct(target) + ' — pero ' + uncosted + (uncosted === 1 ? ' platillo no se pudo' : ' platillos no se pudieron') + ' costear aún. Conecta una factura o agrega precios para verlos.'),
+          over: [], targetPct: target, options: [], reason: 'some-uncosted'
+        };
+      }
       return {
         tier: 'none', show: false,
         headline: tt(locale, 'Every dish is at or under your ' + pct(target) + ' goal. Nothing to do.',
@@ -53,10 +66,28 @@
 
     var n = over.length;
     var listStr = over.map(function (d) { return d.dish + tt(locale, ' (now ' + pct(d.foodCostPct) + ')', ' (ahora ' + pct(d.foodCostPct) + ')'); }).join(', ');
-    var top = over[0].dish;
+    var topDish = over[0];
+    var top = topDish.dish;
+    // Verb + trailing clause track the WORST dish's severity — a dish far over the
+    // owner's line, or losing money on every plate (foodCostPct >= 1), is never a
+    // calm "slip" / "not an emergency". Mildly-over menus keep the reassuring copy.
+    var worst = topDish.foodCostPct;
+    var losing = worst >= 1;
+    var wellOver = worst >= target * 1.5;
+    var severe = losing || wellOver;
+    var enVerb = severe ? (n === 1 ? ' is over your ' : ' are over your ') : ' slipped past your ';
+    var esVerb = n === 1 ? ' pasó tu meta de ' : ' pasaron tu meta de ';
+    var enTail = losing
+      ? '. ' + top + ' is losing money on every plate — start there.'
+      : (wellOver ? '. ' + top + ' is well over your line — start there.'
+                  : '. None are emergencies — but ' + top + ' is the one to look at first.');
+    var esTail = losing
+      ? '. ' + top + ' pierde dinero en cada plato — empieza por ahí.'
+      : (wellOver ? '. ' + top + ' está muy por encima de tu línea — empieza por ahí.'
+                  : '. Ninguno es urgente — pero ' + top + ' es el primero que mirar.');
     var headline = tt(locale,
-      n + (n === 1 ? ' dish' : ' dishes') + ' slipped past your ' + pct(target) + ' food-cost goal: ' + listStr + '. None are emergencies — but ' + top + ' is the one to look at first.',
-      n + (n === 1 ? ' platillo' : ' platillos') + ' pasaron tu meta de ' + pct(target) + ' de costo: ' + listStr + '. Ninguno es urgente — pero ' + top + ' es el primero que mirar.');
+      n + (n === 1 ? ' dish' : ' dishes') + enVerb + pct(target) + ' food-cost goal: ' + listStr + enTail,
+      n + (n === 1 ? ' platillo' : ' platillos') + esVerb + pct(target) + ' de costo: ' + listStr + esTail);
 
     return {
       tier: 'crossed', show: true, headline: headline, over: over, targetPct: target,

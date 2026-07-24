@@ -55,3 +55,43 @@ test('HONESTY: a dish with no food-cost % is excluded, not assumed on target', (
   assert.equal(c.over.find((d) => d.dish === 'Special'), undefined);
   assert.equal(c.over.length, 3);
 });
+
+test('HONESTY: a dish far over the line is NOT a calm "slip" / non-emergency', () => {
+  const c = M.build({
+    dishes: [{ dish: 'Lobster roll', foodCostPct: 0.70 }, { dish: 'Salad', foodCostPct: 0.31 }],
+    targetPct: 0.30, locale: 'en',
+  });
+  assert.equal(c.over[0].dish, 'Lobster roll');
+  assert.doesNotMatch(c.headline, /None are emergencies/);
+  assert.doesNotMatch(c.headline, /slipped past/);
+  assert.match(c.headline, /2 dishes are over your 30% food-cost goal/);
+  assert.match(c.headline, /Lobster roll is well over your line — start there/);
+});
+
+test('HONESTY: a money-losing dish (food-cost >= 100%) is named as losing money', () => {
+  const c = M.build({ dishes: [{ dish: 'Braised short rib', foodCostPct: 1.25 }], targetPct: 0.30, locale: 'en' });
+  assert.doesNotMatch(c.headline, /None are emergencies/);
+  assert.match(c.headline, /1 dish is over your 30% food-cost goal/);
+  assert.match(c.headline, /Braised short rib is losing money on every plate — start there/);
+});
+
+test('keeps calm framing for a mildly-over menu (unchanged copy)', () => {
+  const c = M.build({ dishes: MENU, targetPct: 0.30, locale: 'en' });
+  assert.match(c.headline, /slipped past your 30% food-cost goal/);
+  assert.match(c.headline, /None are emergencies/);
+});
+
+test("ES verb agrees with n=1 ('pasó', not 'pasaron')", () => {
+  const c = M.build({ dishes: [{ dish: 'Cobb', foodCostPct: 0.40 }], targetPct: 0.30, locale: 'es' });
+  assert.match(c.headline, /1 platillo pasó tu meta de 30%/);
+  assert.doesNotMatch(c.headline, /pasaron/);
+});
+
+test("HONESTY: priced-but-uncostable dishes are surfaced, not a clean 'nothing to do'", () => {
+  const c = M.build({ dishes: [{ dish: 'Caesar', foodCostPct: 0.28 }], targetPct: 0.30, locale: 'en', uncostedCount: 1 });
+  assert.equal(c.tier, 'none');
+  assert.equal(c.show, true);
+  assert.equal(c.reason, 'some-uncosted');
+  assert.doesNotMatch(c.headline, /Nothing to do/);
+  assert.match(c.headline, /1 dish couldn't be costed yet/);
+});
