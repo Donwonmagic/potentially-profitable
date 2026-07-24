@@ -663,6 +663,10 @@ const CHECKS = [
   // never a share, rungs seal SOURCE→MARKET→YOUR PLATE, EN/ES T-key parity (ADR-018).
   ['Menu-pricing render self-test','check-menu-pricing-render.mjs','--self-test'],
   ['Menu-pricing render contract','check-menu-pricing-render.mjs'],
+  // Study field report (ADR-019 CC-BY surface): the engine (studyMlBlocks) must render the committed
+  // Methods/confidence/Limitations/Data-availability blocks — so a regen can't drop the shipped CC-BY body.
+  ['Study engine-parity self-test','check-study-engine-parity.mjs','--self-test'],
+  ['Study engine-parity','check-study-engine-parity.mjs'],
   // Supply-picture (ADR-018 surface 2): the committed per-ingredient pages must stay in sync with the
   // shared generator (scripts/lib/supply-picture.mjs) — re-run the injector to refresh if this fails.
   ['Supply-picture pages in sync','inject-supply-picture.mjs','--check'],

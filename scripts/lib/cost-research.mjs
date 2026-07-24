@@ -1428,6 +1428,25 @@ export function studyCiteBlock(locale, title, escHtml) {
   </section>`;
 }
 
+// The four matter-of-fact blocks that close the field report — Methods, How-sure (confidence),
+// Limitations (multi-paragraph), and Data availability (which carries in-page <a> anchors, so it
+// is stored as ready HTML in data/cost-research-study.json and rendered raw; every other field is
+// plain text escaped here). Exported and shared by emitStudy (page render) and
+// check-study-engine-parity.mjs (the render-parity gate) so the engine can never silently drop the
+// CC-BY-critical confidence + data-availability blocks the committed page ships. `es` is the
+// locale flag; `escHtml` is the host escaper.
+export function studyMlBlocks(study, es, escHtml) {
+  const lim = Array.isArray(study.limitations)
+    ? study.limitations
+    : (study.limitations ? [study.limitations] : []);
+  const blocks = [];
+  if (study.methods) blocks.push(`<div class="pb-ml"><h2 id="methods">${es ? 'Métodos' : 'Methods'}</h2><p>${escHtml(study.methods)}</p></div>`);
+  if (study.confidence) blocks.push(`<div class="pb-ml"><h2>${es ? 'Qué tan seguros estamos' : 'How sure we are'}</h2><p>${escHtml(study.confidence)}</p></div>`);
+  if (lim.length) blocks.push(`<div class="pb-ml"><h2>${es ? 'Limitaciones' : 'Limitations'}</h2>${lim.map((p) => `<p>${escHtml(p)}</p>`).join('')}</div>`);
+  if (study.dataAvailability) blocks.push(`<div class="pb-ml"><h2>${es ? 'Disponibilidad de datos' : 'Data availability'}</h2><p>${study.dataAvailability}</p></div>`);
+  return blocks.join('\n    ');
+}
+
 function emitStudy(locale, ctx) {
   const { pageHead, pageTail, escHtml, repoRoot } = ctx;
   const es = locale === 'es'; const lang = es ? 'es' : 'en'; const base = es ? '/es' : '';
@@ -1475,8 +1494,7 @@ function emitStudy(locale, ctx) {
   <div class="ci-body rs-body pb-study">
     <section class="pb-contribution"><h2>${es ? 'Nuestra contribución' : 'Our contribution'}</h2><p>${escHtml(study.contribution)}</p></section>
     ${secHtml}
-    ${study.methods ? `<div class="pb-ml"><h2>${es ? 'Métodos' : 'Methods'}</h2><p>${escHtml(study.methods)}</p></div>` : ''}
-    ${study.limitations ? `<div class="pb-ml"><h2>${es ? 'Limitaciones' : 'Limitations'}</h2><p>${escHtml(study.limitations)}</p></div>` : ''}
+    ${studyMlBlocks(study, es, escHtml)}
     ${study.takeaway ? `<p class="pb-takeaway">${escHtml(study.takeaway)}</p>` : ''}
     ${refsHtml}
     <!-- study-cite:start -->${studyCiteHtml}<!-- /study-cite:end -->
