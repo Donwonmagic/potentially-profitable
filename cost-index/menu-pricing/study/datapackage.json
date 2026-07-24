@@ -1,0 +1,255 @@
+{
+  "profile": "tabular-data-package",
+  "name": "muntin-menu-pricing-study",
+  "title": "Muntin Menu-Pricing Field Report — evidence table & per-ingredient instrument",
+  "description": "Two CC BY 4.0 tables behind the menu-pricing field report (/cost-index/menu-pricing/study/): study.csv is the evidence table (the paper's claims × the sources that ground them, each with Muntin's compiled finding/grounds/myth summary + DOI); menu-pricing.csv is the per-ingredient instrument (posture, band, trim tax, cheapest month, co-mover). Descriptive of a tracked record and the published literature — never a forecast, never a measured cause. The per-ingredient numbers are Muntin's own read of US-government public-domain wholesale references; the summaries are Muntin's compiled analysis.",
+  "homepage": "https://muntin.digital/cost-index/menu-pricing/study/",
+  "version": "2026.07.11",
+  "licenses": [
+    {
+      "name": "CC-BY-4.0",
+      "path": "https://creativecommons.org/licenses/by/4.0/",
+      "title": "Creative Commons Attribution 4.0 International"
+    }
+  ],
+  "keywords": [
+    "menu pricing",
+    "edible yield",
+    "trim tax",
+    "restaurant cost control",
+    "open data",
+    "CC-BY"
+  ],
+  "resources": [
+    {
+      "name": "study",
+      "path": "study.csv",
+      "profile": "tabular-data-resource",
+      "title": "Evidence table — claims × grounding sources",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "utf-8",
+      "bytes": 38267,
+      "hash": "sha256:ef25739d13f4f26190191ce641e8a0c1c96e068c3467d0b15b580f7c546c17b2",
+      "dialect": {
+        "csvddfVersion": 1.2,
+        "delimiter": ",",
+        "doubleQuote": true,
+        "lineTerminator": "\n",
+        "quoteChar": "\"",
+        "header": true
+      },
+      "schema": {
+        "fields": [
+          {
+            "name": "ref_n",
+            "type": "integer",
+            "title": "Citation number",
+            "description": "Citation number in first-appearance order in the paper.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "kind",
+            "type": "string",
+            "description": "Source kind (econ, food-science, industry…)."
+          },
+          {
+            "name": "layer",
+            "type": "string",
+            "description": "The analytical layer this source grounds."
+          },
+          {
+            "name": "authors",
+            "type": "string",
+            "description": "Source authors — public bibliographic fact."
+          },
+          {
+            "name": "year",
+            "type": "integer",
+            "description": "Publication year — public bibliographic fact."
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "description": "Source title — public bibliographic fact."
+          },
+          {
+            "name": "venue",
+            "type": "string",
+            "description": "Publication venue — public bibliographic fact."
+          },
+          {
+            "name": "doi",
+            "type": "string",
+            "description": "Resolvable DOI where present — public fact; blank for the lone book (OCLC/ISBN in study.json)."
+          },
+          {
+            "name": "finding",
+            "type": "string",
+            "description": "Muntin's compiled one-line summary of the source's finding — CC BY 4.0 analysis."
+          },
+          {
+            "name": "grounds_how",
+            "type": "string",
+            "description": "Muntin's note on how the source grounds the paper's claim — CC BY 4.0 analysis."
+          },
+          {
+            "name": "myth",
+            "type": "string",
+            "description": "The myth the source corrects, where applicable — Muntin's compiled reading, CC BY 4.0."
+          },
+          {
+            "name": "confidence",
+            "type": "string",
+            "description": "Muntin's stated confidence in the grounding — not a statistical confidence level."
+          },
+          {
+            "name": "cited_in_sections",
+            "type": "string",
+            "description": "Paper section headings that cite this source, pipe-joined ( | )."
+          }
+        ],
+        "primaryKey": "ref_n"
+      },
+      "licenses": [
+        {
+          "name": "CC-BY-4.0",
+          "path": "https://creativecommons.org/licenses/by/4.0/",
+          "title": "Creative Commons Attribution 4.0 International"
+        }
+      ],
+      "description": "Source facts (author/title/DOI) are public; the finding/grounds_how/myth summaries are Muntin's compiled analysis, released CC BY 4.0."
+    },
+    {
+      "name": "menu-pricing",
+      "path": "../../menu-pricing.csv",
+      "profile": "tabular-data-resource",
+      "title": "Per-ingredient pricing instrument",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "encoding": "utf-8",
+      "bytes": 6568,
+      "hash": "sha256:e34b21fe6ace50ae1e9d4b212ec0e9b1d5c0e1e17abe40ecf5dc82cfc485980c",
+      "dialect": {
+        "csvddfVersion": 1.2,
+        "delimiter": ",",
+        "doubleQuote": true,
+        "lineTerminator": "\n",
+        "quoteChar": "\"",
+        "header": true
+      },
+      "schema": {
+        "fields": [
+          {
+            "name": "slug",
+            "type": "string",
+            "description": "Ingredient slug — stable key.",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "description": "Display name."
+          },
+          {
+            "name": "category",
+            "type": "string",
+            "description": "Yield-reference category grouping."
+          },
+          {
+            "name": "posture",
+            "type": "string",
+            "description": "Pricing posture read against the ingredient's own baseline window.",
+            "constraints": {
+              "enum": [
+                "lock",
+                "cushion",
+                "float",
+                "withhold"
+              ]
+            }
+          },
+          {
+            "name": "band_pct",
+            "type": "number",
+            "unit": "%",
+            "description": "Half-width of the wholesale-reference band around the ingredient's own baseline — a market-direction spread, never a delivered $/lb."
+          },
+          {
+            "name": "withhold_reason",
+            "type": "string",
+            "description": "Why a withhold: no_series (no public wholesale series to read) or too_volatile (series too wide to anchor). Blank unless posture=withhold.",
+            "constraints": {
+              "enum": [
+                "no_series",
+                "too_volatile",
+                ""
+              ]
+            }
+          },
+          {
+            "name": "coverage_pct",
+            "type": "number",
+            "unit": "%",
+            "description": "Share of the baseline window with usable wholesale coverage."
+          },
+          {
+            "name": "edible_yield_pct",
+            "type": "number",
+            "unit": "%",
+            "description": "Edible yield from the 134-ingredient reference — a reference figure, not a measured yield."
+          },
+          {
+            "name": "trim_tax",
+            "type": "number",
+            "unit": "×",
+            "description": "Per-ingredient reciprocal of the edible-yield reference ratio (1 ÷ yield); a reference multiplier, not a delivered cost; computed per row, independent of the category trim multiplier."
+          },
+          {
+            "name": "cheapest_month",
+            "type": "integer",
+            "description": "Month index 1–12, seasonal low in the tracked record; blank where the dispersion noise gate did not clear.",
+            "constraints": {
+              "minimum": 1,
+              "maximum": 12
+            }
+          },
+          {
+            "name": "save_pct",
+            "type": "number",
+            "unit": "%",
+            "description": "Saving in the cheapest month vs the ingredient's own high; blank where no window cleared."
+          },
+          {
+            "name": "comover",
+            "type": "string",
+            "description": "A checked co-moving ingredient in the tracked record; blank where none — co-occurrence, never a measured cause."
+          },
+          {
+            "name": "comover_shared",
+            "type": "integer",
+            "description": "Number of shared large-move episodes with the co-mover."
+          },
+          {
+            "name": "comover_of",
+            "type": "integer",
+            "description": "Total large-move episodes considered for the co-mover test."
+          }
+        ],
+        "primaryKey": "slug"
+      },
+      "licenses": [
+        {
+          "name": "CC-BY-4.0",
+          "path": "https://creativecommons.org/licenses/by/4.0/",
+          "title": "Creative Commons Attribution 4.0 International"
+        }
+      ],
+      "description": "CC BY 4.0 joins computed over US-government public-domain source series (NASS/Census/EIA/PPI); the upstream series are public domain (CC0-equivalent), redistributed with retrieval dates. A wholesale reference, never a delivered price."
+    }
+  ]
+}

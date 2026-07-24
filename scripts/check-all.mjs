@@ -528,6 +528,10 @@ const CHECKS = [
   // (with DOIs), released CC-BY — the machine-readable half that makes the paper a citable surface.
   ['Study dataset self-test','build-study-dataset.mjs','--self-test'],
   ['Study dataset sync','build-study-dataset.mjs','--check'],
+  // Frictionless datapackage descriptor for study.csv + menu-pricing.csv — proves the descriptor's
+  // sha256/bytes + schema never drift from the two CC-BY CSVs (ADR-019 machine bundle).
+  ['Study datapackage self-test','check-study-datapackage.mjs','--self-test'],
+  ['Study datapackage sync','check-study-datapackage.mjs'],
   ['Lock-or-float open-data self-test','build-lockfloat-open-data.mjs','--self-test'],
   ['Lock-or-float open-data sync','build-lockfloat-open-data.mjs','--check'],
   ['Anomaly open-data self-test','build-anomaly-open-data.mjs','--self-test'],
