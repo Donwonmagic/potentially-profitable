@@ -2914,7 +2914,7 @@ main[data-active-topic="brand-design"]      .gloss-term:not([data-topics~="brand
   }
 }
 
-/* ===== [article] Article viz components (.viz-* family) (lines 7365-7916) ===== */
+/* ===== [article] Article viz components (.viz-* family) (lines 7365-7921) ===== */
 /* ============ ARTICLE VIZ COMPONENTS ============
    Namespaced .viz-* family for inline article graphics. Tokens-only
    (--cream, --ink, --teal, --rust, --stone, --status-*, --t-*),
@@ -3436,6 +3436,11 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
 .viz-split__key strong{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600}
 .viz-split__note{font-size:12.5px;line-height:1.5;color:var(--stone);margin:10px 0 0;font-style:italic}
 .viz-split__note strong,.viz-split__note b{color:var(--ink);font-style:normal;font-weight:600}
+/* .viz-splitrow — one labelled composition bar; stack several to compare
+   how a fixed total (e.g. 10 features) splits across rows (platforms). */
+.viz-splitrow{margin:0 0 12px}
+.viz-splitrow__label{font-size:12.5px;margin:0 0 5px;color:var(--ink);font-variant-numeric:tabular-nums}
+.viz-splitrow__label small{color:var(--stone);font-weight:400}
 
 /* .viz-gauge — one signed headline value placed on a zero-centred axis,
    so a −5.0% basket reads as a POSITION (left of baseline = easing)

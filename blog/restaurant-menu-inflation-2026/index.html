@@ -521,29 +521,24 @@ header.nav{min-height:64px}
 
 <p>The same forecast carries the counter-story, the one line on your invoice headed the other way. Egg prices are forecast to fall 29.8% in 2026 as the laying flock recovers from the avian-flu outbreak that pushed a dozen past six dollars last year. If your menu leans on eggs &mdash; brunch, baking, a heavy hand of aioli &mdash; the math is finally working in your favor while the beef plates work against you.</p>
 
-<figure class="viz-figure article-figure" data-audio-alt="The two poles of the USDA twenty twenty-six forecast drawn as proportions of each item's own price, from the May Food Price Outlook. On the left, beef and veal: a ring filled to twelve point one percent, the price the forecast adds to beef this year, the largest increase on the board. On the right, eggs: a ring filled to twenty-nine point eight percent, the share of last year's price the forecast hands back as the laying flock recovers, the only category falling and the single biggest move on the board. Between them sit the smaller movers named in the source drawer: fresh vegetables up seven point eight percent, sugar and sweets up six point three percent, coffee up five point eight percent, pork up one point five percent, poultry up half a percent.">
-  <div class="viz-rings">
-    <div class="viz-ring" data-band="bad" style="--score:12.1;">
-      <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-beef" focusable="false">
-        <title id="ring-beef">Beef and veal: forecast up 12.1% for 2026</title>
-        <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-        <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-        <text class="viz-ring__num" x="60" y="60" text-anchor="middle">+12.1%</text>
-      </svg>
-      <p class="viz-ring__label"><strong>Beef &amp; veal</strong>added to its price &mdash; the board&rsquo;s biggest rise</p>
-    </div>
-    <div class="viz-ring" data-band="good" style="--score:29.8;--delay:140ms;">
-      <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-eggs" focusable="false">
-        <title id="ring-eggs">Eggs: forecast down 29.8% for 2026</title>
-        <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-        <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-        <text class="viz-ring__num" x="60" y="60" text-anchor="middle">&minus;29.8%</text>
-      </svg>
-      <p class="viz-ring__label"><strong>Eggs</strong>handed back off its price &mdash; the board&rsquo;s biggest fall</p>
-    </div>
-  </div>
-  <figcaption>The board&rsquo;s two poles, each as a share of its own item&rsquo;s price: beef adds 12.1%, eggs give back 29.8%. The rust ring is the one that walks against your margin; the green ring is the relief. The mid-board movers &mdash; produce, sugar, coffee, pork, poultry &mdash; sit in the source drawer below. Your exposure depends on which of these your menu leans on.</figcaption>
-</figure>
+      <figure class="viz-figure article-figure" data-audio-alt="The two poles of the USDA 2026 retail-price forecast, drawn on a zero-centred axis from the May Food Price Outlook. To the right of the baseline, beef and veal: the forecast adds twelve point one percent to its price this year, the largest increase on the board, so its bar runs right in rust. To the left, eggs: the forecast hands back twenty-nine point eight percent of last year&#39;s price as the laying flock recovers, the only category falling and the single biggest move on the board, so its bar runs left in teal. Distance from the centre is the size of each move. The smaller movers named in the source drawer sit between them: fresh vegetables up seven point eight percent, sugar and sweets up six point three percent, coffee up five point eight percent, pork up one point five percent, poultry up half a percent.">
+        <div class="viz-diverge">
+          <p class="viz-diverge__title">The board&rsquo;s two poles &mdash; the forecast&rsquo;s biggest rise and biggest fall</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Beef &amp; veal <small>biggest rise</small></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-dir="pos" data-tone="rust" style="--w:0.406"></span></div>
+            <p class="viz-diverge__num">+12.1%</p>
+          </div>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Eggs <small>biggest fall</small></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-dir="neg" data-tone="teal" style="--w:1.000"></span></div>
+            <p class="viz-diverge__num">&minus;29.8%</p>
+          </div>
+          <div class="viz-diverge__axis"><span class="is-teal">&larr; gives price back</span><span>last year</span><span class="is-rust">adds to price &rarr;</span></div>
+          <p class="viz-diverge__note">Each bar is the forecast move as a share of that item&rsquo;s own price. The rust bar walks against your margin; the teal bar is relief. The mid-board movers sit in the source drawer below.</p>
+        </div>
+        <figcaption>The board&rsquo;s two poles, each as a share of its own item&rsquo;s price: beef adds 12.1%, eggs give back 29.8%. The rust bar is the one that walks against your margin; the teal bar is the relief. The mid-board movers &mdash; produce, sugar, coffee, pork, poultry &mdash; sit in the source drawer below. Your exposure depends on which of these your menu leans on.</figcaption>
+      </figure>
 
 <details class="cite">
   <summary>Source: USDA Economic Research Service, Food Price Outlook (May 2026)</summary>
