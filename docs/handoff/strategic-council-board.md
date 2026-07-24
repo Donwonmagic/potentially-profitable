@@ -51,6 +51,12 @@ guard — r2); a recipe archived AFTER mapping still drove a stale margin (fixed
 **Follow-ups (need a schema change / UX pass, not honesty-blocking):** a `currency` column on
 `recipe_cost_snapshots` for the pre-window-invoice case; a "cost this recipe" CTA + a re-map
 affordance for archived-recipe mappings.
+And **cost-history (E15) — ✅ CONVERGED r1→r2 (2026-07-24)** (parity; the calm transparency
+sparkline): "held steady" was computed from the NET (first vs last) with no intra-window check, so a
+dish that spiked and returned ($5→$9→$5.05, net +1%) was spoken as calm — the swing lived only in the
+`spark` array, which has no live consumer. Fixed with a peak↔trough volatility guard (`steady = flat
+&& (peak−trough)/first ≤ SWING_PCT`): genuinely-steady dishes keep the copy; a net-flat-but-swung dish
+discloses the range and offers a look. **Open knob:** `SWING_PCT = 10%` (like the margin-map threshold).
 
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
