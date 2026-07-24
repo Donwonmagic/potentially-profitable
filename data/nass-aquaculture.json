@@ -1,0 +1,515 @@
+{
+  "_doc": "USDA NASS farmed-seafood fundamentals (catfish + trout): production / sales / grower-price by year. A WORLD-SUPPLY / production FUNDAMENTAL for species that are overwhelmingly US aquaculture — never the measured tier, never the Vendor Benchmark reference, never a delivered/retail price, never a forecast (ADR-013 honest subset). Source: USDA NASS Quickstats, public domain. Built by scripts/fetch-nass-aquaculture.mjs --live on the operator Mac.",
+  "source": "USDA NASS Quickstats — https://quickstats.nass.usda.gov/",
+  "license": "public-domain-usgov",
+  "lane": "world-supply (production fundamental; never a price, never in the index/VB)",
+  "fetchedAt": "2026-07-24T14:11:17.882Z",
+  "series_count": 3,
+  "series": [
+    {
+      "species": "CATFISH",
+      "statistic": "SALES",
+      "unit": "$",
+      "series": [
+        {
+          "year": 2015,
+          "value": 363610000
+        },
+        {
+          "year": 2016,
+          "value": 385985000
+        },
+        {
+          "year": 2017,
+          "value": 379713000
+        },
+        {
+          "year": 2018,
+          "value": 360401000
+        },
+        {
+          "year": 2019,
+          "value": 379861000
+        },
+        {
+          "year": 2020,
+          "value": 376948000
+        },
+        {
+          "year": 2021,
+          "value": 427361000
+        },
+        {
+          "year": 2022,
+          "value": 447039000
+        },
+        {
+          "year": 2023,
+          "value": 453891000
+        },
+        {
+          "year": 2024,
+          "value": 389508000
+        },
+        {
+          "year": 2025,
+          "value": 393776000
+        }
+      ]
+    },
+    {
+      "species": "CATFISH, FOODSIZE",
+      "statistic": "SALES",
+      "unit": "$",
+      "series": [
+        {
+          "year": 2015,
+          "value": 346380000
+        },
+        {
+          "year": 2015,
+          "value": 195510000
+        },
+        {
+          "year": 2015,
+          "value": 317444000
+        },
+        {
+          "year": 2015,
+          "value": 1.6
+        },
+        {
+          "year": 2015,
+          "value": 0.9
+        },
+        {
+          "year": 2015,
+          "value": 1.8
+        },
+        {
+          "year": 2015,
+          "value": 1.1
+        },
+        {
+          "year": 2015,
+          "value": 95.7
+        },
+        {
+          "year": 2015,
+          "value": 0.5
+        },
+        {
+          "year": 2016,
+          "value": 363398000
+        },
+        {
+          "year": 2016,
+          "value": 190580000
+        },
+        {
+          "year": 2016,
+          "value": 320174000
+        },
+        {
+          "year": 2016,
+          "value": 1.7
+        },
+        {
+          "year": 2016,
+          "value": 0.7
+        },
+        {
+          "year": 2016,
+          "value": 2.5
+        },
+        {
+          "year": 2016,
+          "value": 2.2
+        },
+        {
+          "year": 2016,
+          "value": 94.2
+        },
+        {
+          "year": 2016,
+          "value": 0.3
+        },
+        {
+          "year": 2017,
+          "value": 355432000
+        },
+        {
+          "year": 2017,
+          "value": 199830000
+        },
+        {
+          "year": 2017,
+          "value": 330428000
+        },
+        {
+          "year": 2017,
+          "value": 1.7
+        },
+        {
+          "year": 2017,
+          "value": 0.6
+        },
+        {
+          "year": 2017,
+          "value": 1.6
+        },
+        {
+          "year": 2017,
+          "value": 1.2
+        },
+        {
+          "year": 2017,
+          "value": 96.4
+        },
+        {
+          "year": 2017,
+          "value": 0.3
+        },
+        {
+          "year": 2018,
+          "value": 335006000
+        },
+        {
+          "year": 2018,
+          "value": 208800000
+        },
+        {
+          "year": 2018,
+          "value": 343601000
+        },
+        {
+          "year": 2018,
+          "value": 1.6
+        },
+        {
+          "year": 2018,
+          "value": 1.2
+        },
+        {
+          "year": 2018,
+          "value": 2.4
+        },
+        {
+          "year": 2018,
+          "value": 1.5
+        },
+        {
+          "year": 2018,
+          "value": 94.3
+        },
+        {
+          "year": 2018,
+          "value": 0.6
+        },
+        {
+          "year": 2019,
+          "value": 362048000
+        },
+        {
+          "year": 2019,
+          "value": 196445000
+        },
+        {
+          "year": 2019,
+          "value": 347990000
+        },
+        {
+          "year": 2019,
+          "value": 1.8
+        },
+        {
+          "year": 2019,
+          "value": 0.9
+        },
+        {
+          "year": 2019,
+          "value": 2.6
+        },
+        {
+          "year": 2019,
+          "value": 1.2
+        },
+        {
+          "year": 2019,
+          "value": 94.6
+        },
+        {
+          "year": 2019,
+          "value": 0.7
+        },
+        {
+          "year": 2020,
+          "value": 352051000
+        },
+        {
+          "year": 2020,
+          "value": 204385000
+        },
+        {
+          "year": 2020,
+          "value": 324128000
+        },
+        {
+          "year": 2020,
+          "value": 1.6
+        },
+        {
+          "year": 2020,
+          "value": 0.8
+        },
+        {
+          "year": 2020,
+          "value": 2.2
+        },
+        {
+          "year": 2020,
+          "value": 1.9
+        },
+        {
+          "year": 2020,
+          "value": 94.4
+        },
+        {
+          "year": 2020,
+          "value": 0.7
+        },
+        {
+          "year": 2021,
+          "value": 402395000
+        },
+        {
+          "year": 2021,
+          "value": 191300000
+        },
+        {
+          "year": 2021,
+          "value": 325423000
+        },
+        {
+          "year": 2021,
+          "value": 1.7
+        },
+        {
+          "year": 2021,
+          "value": 1.2
+        },
+        {
+          "year": 2021,
+          "value": 2.5
+        },
+        {
+          "year": 2021,
+          "value": 3.5
+        },
+        {
+          "year": 2021,
+          "value": 92.1
+        },
+        {
+          "year": 2021,
+          "value": 0.6
+        },
+        {
+          "year": 2022,
+          "value": 421575000
+        },
+        {
+          "year": 2022,
+          "value": 205995000
+        },
+        {
+          "year": 2022,
+          "value": 328896000
+        },
+        {
+          "year": 2022,
+          "value": 1.6
+        },
+        {
+          "year": 2022,
+          "value": 1
+        },
+        {
+          "year": 2022,
+          "value": 2.6
+        },
+        {
+          "year": 2022,
+          "value": 2.3
+        },
+        {
+          "year": 2022,
+          "value": 93.7
+        },
+        {
+          "year": 2022,
+          "value": 0.4
+        },
+        {
+          "year": 2023,
+          "value": 421457000
+        },
+        {
+          "year": 2023,
+          "value": 210580000
+        },
+        {
+          "year": 2023,
+          "value": 341005000
+        },
+        {
+          "year": 2023,
+          "value": 1.6
+        },
+        {
+          "year": 2023,
+          "value": 1.3
+        },
+        {
+          "year": 2023,
+          "value": 2.3
+        },
+        {
+          "year": 2023,
+          "value": 1.1
+        },
+        {
+          "year": 2023,
+          "value": 94.9
+        },
+        {
+          "year": 2023,
+          "value": 0.4
+        },
+        {
+          "year": 2024,
+          "value": 366541000
+        },
+        {
+          "year": 2024,
+          "value": 221950000
+        },
+        {
+          "year": 2024,
+          "value": 332272000
+        },
+        {
+          "year": 2024,
+          "value": 1.5
+        },
+        {
+          "year": 2024,
+          "value": 1.8
+        },
+        {
+          "year": 2024,
+          "value": 2.8
+        },
+        {
+          "year": 2024,
+          "value": 1.3
+        },
+        {
+          "year": 2024,
+          "value": 93.7
+        },
+        {
+          "year": 2024,
+          "value": 0.4
+        },
+        {
+          "year": 2025,
+          "value": 366894000
+        },
+        {
+          "year": 2025,
+          "value": 219870000
+        },
+        {
+          "year": 2025,
+          "value": 330042000
+        },
+        {
+          "year": 2025,
+          "value": 1.5
+        },
+        {
+          "year": 2025,
+          "value": 1.9
+        },
+        {
+          "year": 2025,
+          "value": 2.6
+        },
+        {
+          "year": 2025,
+          "value": 2.1
+        },
+        {
+          "year": 2025,
+          "value": 92.7
+        },
+        {
+          "year": 2025,
+          "value": 0.7
+        }
+      ]
+    },
+    {
+      "species": "TROUT",
+      "statistic": "SALES",
+      "unit": "$",
+      "series": [
+        {
+          "year": 2015,
+          "value": 113099000
+        },
+        {
+          "year": 2016,
+          "value": 113904000
+        },
+        {
+          "year": 2017,
+          "value": 120302000
+        },
+        {
+          "year": 2018,
+          "value": 111879000
+        },
+        {
+          "year": 2019,
+          "value": 118528000
+        },
+        {
+          "year": 2020,
+          "value": 104284000
+        },
+        {
+          "year": 2021,
+          "value": 110997000
+        },
+        {
+          "year": 2022,
+          "value": 119093000
+        },
+        {
+          "year": 2023,
+          "value": 112736000
+        },
+        {
+          "year": 2024,
+          "value": 123921000
+        },
+        {
+          "year": 2025,
+          "value": 118193000
+        }
+      ]
+    }
+  ]
+}
