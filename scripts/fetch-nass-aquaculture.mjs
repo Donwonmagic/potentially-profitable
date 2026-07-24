@@ -26,14 +26,13 @@ const SINCE = 2015;
 const COMMODITY = 'FOOD FISH';
 const SOURCE = 'SURVEY';
 const AGG = 'NATIONAL';
+// Top-level species classes only (SALES in $). The FOODSIZE / PRICE-RECEIVED / INVENTORY breakdowns
+// return sub-class × unit fan-outs that don't reduce to one clean national series, so they're excluded.
 const SPECS = [
   { cls: 'CATFISH', stat: 'SALES' },
-  { cls: 'CATFISH', stat: 'PRICE RECEIVED' },
-  { cls: 'CATFISH', stat: 'INVENTORY' },
-  { cls: 'CATFISH, FOODSIZE', stat: 'SALES' },
   { cls: 'TROUT', stat: 'SALES' },
-  { cls: 'TROUT', stat: 'PRICE RECEIVED' },
-  { cls: 'TROUT, FOODSIZE', stat: 'SALES' },
+  { cls: 'SALMON', stat: 'SALES' },
+  { cls: 'TILAPIA', stat: 'SALES' },
 ];
 
 // NASS Value is a display string: commas ("1,234,567"), or withheld/NA markers "(D)"/"(NA)"/"(Z)".
@@ -65,18 +64,24 @@ function normalize(rows) {
 function assemble(records, fetchedAt) {
   const byKey = {};
   for (const r of records) {
-    const k = `${r.species} · ${r.statistic}`;
+    const k = `${r.species} · ${r.statistic} · ${r.unit}`; // include unit so $ sales never blends with $/lb price
     (byKey[k] = byKey[k] || { species: r.species, statistic: r.statistic, unit: r.unit, series: [] }).series.push({ year: r.year, value: r.value });
   }
-  for (const k of Object.keys(byKey)) byKey[k].series.sort((a, b) => a.year - b.year);
+  // a clean national series has one value per year; if a combo still fans out (>1.5×), flag it not-clean
+  for (const k of Object.keys(byKey)) {
+    const s = byKey[k].series.sort((a, b) => a.year - b.year);
+    const years = new Set(s.map((x) => x.year));
+    byKey[k].clean = s.length <= years.size * 1.5;
+  }
+  const clean = Object.values(byKey).filter((s) => s.clean).map(({ clean: _c, ...rest }) => rest);
   return {
     _doc: 'USDA NASS farmed-seafood fundamentals (catfish + trout): production / sales / grower-price by year. A WORLD-SUPPLY / production FUNDAMENTAL for species that are overwhelmingly US aquaculture — never the measured tier, never the Vendor Benchmark reference, never a delivered/retail price, never a forecast (ADR-013 honest subset). Source: USDA NASS Quickstats, public domain. Built by scripts/fetch-nass-aquaculture.mjs --live on the operator Mac.',
     source: 'USDA NASS Quickstats — https://quickstats.nass.usda.gov/',
     license: 'public-domain-usgov',
     lane: 'world-supply (production fundamental; never a price, never in the index/VB)',
     fetchedAt: fetchedAt || null,
-    series_count: Object.keys(byKey).length,
-    series: Object.values(byKey),
+    series_count: clean.length,
+    series: clean,
   };
 }
 
