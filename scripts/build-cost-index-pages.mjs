@@ -720,8 +720,29 @@ function compositeBand(locale) {
     ? { high: 'confianza alta', medium: 'confianza media', moderate: 'confianza media', low: 'confianza baja' }
     : { high: 'high confidence', medium: 'medium confidence', moderate: 'moderate confidence', low: 'low confidence' };
   const confChip = confMap[b.confidence] || (es ? 'confianza sin declarar' : 'confidence unstated');
-  const asOf = b.asOf || '—';
+  // Freshness: lead the headline with the NEWEST contributing read so a current
+  // basket isn't buried behind one lagging staple, and disclose the laggards
+  // honestly (never claim the whole basket is fresher than it truly is). The
+  // machine/citation value b.asOf — the oldest-contributor floor — is untouched.
+  const cDates = contribs
+    .map((c) => { const it = (CI.ingredients || {})[c.ingredient] || {}; const p = (it.points || [])[0] || {}; return p.asOf || it.asOf || null; })
+    .filter(Boolean).sort();
+  const newestAsOf = cDates.length ? cDates[cDates.length - 1] : (b.asOf || '—');
+  const oldestAsOf = cDates.length ? cDates[0] : (b.asOf || '—');
+  const LAG_DAYS = 21;
+  const nMs = Date.parse(newestAsOf);
+  const nLag = contribs.reduce((s, c) => {
+    const it = (CI.ingredients || {})[c.ingredient] || {}; const p = (it.points || [])[0] || {};
+    const a = p.asOf || it.asOf || null;
+    return (a && isFinite(nMs) && (nMs - Date.parse(a)) > LAG_DAYS * 864e5) ? s + 1 : s;
+  }, 0);
+  const asOf = newestAsOf;
   const asOfChip = es ? `al ${asOf}` : `as of ${asOf}`;
+  const holdNote = nLag
+    ? (es
+      ? ` <strong>${nLag}</strong> de ${n} insumos mantienen su último dato desde el ${oldestAsOf}.`
+      : ` <strong>${nLag}</strong> of ${n} staples are holding last-good since ${oldestAsOf}.`)
+    : '';
   const head = es ? 'Dónde está la canasta' : 'Where the basket sits';
   const say = es
     ? `la canasta ponderada de ${n} insumos de restaurante, frente a su ventana base`
@@ -736,8 +757,8 @@ function compositeBand(locale) {
       : ` The staples are nearly evenly split (agreement ${Math.round(agree * 100)}%), so read it as a soft signal, not a precise figure.`)
     : '';
   const spread = es
-    ? `<strong>${up}</strong> de ${n} por encima de su línea base · <strong>${down}</strong> por debajo · <strong>${flat}</strong> sin cambio. Es una lectura de estado, no un movimiento respecto a la semana pasada.${splitNote}`
-    : `<strong>${up}</strong> of ${n} reading above their baseline · <strong>${down}</strong> below · <strong>${flat}</strong> flat. A state-of-play reading, not a week-over-week move.${splitNote}`;
+    ? `<strong>${up}</strong> de ${n} por encima de su línea base · <strong>${down}</strong> por debajo · <strong>${flat}</strong> sin cambio. Es una lectura de estado, no un movimiento respecto a la semana pasada.${splitNote}${holdNote}`
+    : `<strong>${up}</strong> of ${n} reading above their baseline · <strong>${down}</strong> below · <strong>${flat}</strong> flat. A state-of-play reading, not a week-over-week move.${splitNote}${holdNote}`;
   const base = es ? '/es' : '';
   const srcSummary = es ? 'Cómo se construye esta cifra' : 'How this figure is built';
   const srcBody = es
@@ -745,15 +766,17 @@ function compositeBand(locale) {
     : `Weighted composite of ${n} tracked staples, each read against its own baseline window from public U.S. market data (USDA, BLS, FRED, EIA, NOAA). A reading against baseline — not a price, and not a change since last week. See all ${n} weights and how the composite is assembled in <a href="${base}/cost-index/basket/">The Muntin Restaurant Basket</a>, or <a href="${base}/cost-index/methodology/">how the index is built</a>.`;
   return `<section class="ci-composite" data-band="${band}" aria-label="${es ? 'Lectura de la canasta' : 'Basket reading'}">
     <p class="ci-composite__head">${head}</p>
-    <div class="ci-composite__read">
-      <span class="ci-composite__num">${pctStr}</span>
-      <span class="ci-composite__say">${say}</span>
+    <div class="ci-composite__well">
+      <div class="ci-composite__read">
+        <span class="ci-composite__num">${pctStr}</span>
+        <span class="ci-composite__say">${say}</span>
+      </div>
+      <p class="ci-composite__spread">${spread}</p>
     </div>
     <div class="ci-composite__meta">
       <span class="ci-composite__chip">${confChip}</span>
       <span class="ci-composite__chip ci-asof" data-asof="${asOf}">${asOfChip}</span>
     </div>
-    <p class="ci-composite__spread">${spread}</p>
     <details class="ci-composite__src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>
   </section>`;
 }
@@ -1201,7 +1224,7 @@ function marketReadBlock(slug, locale) {
   return `
   <aside class="ci-read" data-layer="measured" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
-    <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}${season}${idxChart}
+    <div class="ci-read__well"><p class="ci-read__line">${line}</p></div>${trendLine}${verdict}${spark}${season}${idxChart}
     <details class="ci-read__src"><summary>${es ? 'Fuentes' : 'Sources'} · ${(shortList.length || agencies.length)}</summary><div>${srcBody}</div></details>
     ${verified}
     <p class="ci-read__method"><a href="${es ? '/es' : ''}/cost-index/methodology/#track-record">${es ? 'Cómo verificamos este número' : 'How we verify this number'} <span aria-hidden="true">→</span></a></p>
@@ -1577,7 +1600,11 @@ main{padding-top:64px}
 .ci-body>p:not([class]),.ci-body>ol,.ci-body>ul{max-width:68ch}
 .ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
 .ci-body li{margin:0 0 8px}
-.ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-read{position:relative;margin:22px 0 8px;padding:18px 20px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums;box-shadow:var(--elev-feature)}
+.ci-read__well{margin:2px 0 0;padding:13px 15px;background:var(--surface-inset);border-radius:8px;box-shadow:inset 0 1px 1px rgba(20,22,26,.09),inset 0 0 0 1px var(--line)}
+.ci-read__well .ci-read__line{margin:0}
+:root[data-theme="dark"] .ci-read__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .ci-read__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}}
 .ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
 .ci-read__line{font-size:17px;font-weight:600;line-height:1.55;color:var(--ink);margin:0}
@@ -1641,9 +1668,12 @@ main{padding-top:64px}
 .ci-sibs-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
 .ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
-.ci-composite{margin:22px 0 6px;padding:20px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-composite{position:relative;margin:22px 0 6px;padding:18px 20px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums;box-shadow:var(--elev-feature)}
 .ci-composite[data-band="up"]{border-left-color:#A23B2D}
 .ci-composite[data-band="down"]{border-left-color:var(--teal)}
+.ci-composite__well{margin:2px 0 0;padding:15px 16px;background:var(--surface-inset);border-radius:8px;box-shadow:inset 0 1px 1px rgba(20,22,26,.09),inset 0 0 0 1px var(--line)}
+:root[data-theme="dark"] .ci-composite__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .ci-composite__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}}
 .ci-composite__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
 .ci-composite__read{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0}
 .ci-composite__num{font-family:var(--font-display);font-size:clamp(30px,6vw,44px);font-weight:500;line-height:1;color:var(--ink)}

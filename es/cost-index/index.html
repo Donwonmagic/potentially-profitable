@@ -134,9 +134,12 @@ main{padding-top:64px}
 .ci-sibs-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
 .ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
-.ci-composite{margin:22px 0 6px;padding:20px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-composite{position:relative;margin:22px 0 6px;padding:18px 20px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums;box-shadow:var(--elev-feature)}
 .ci-composite[data-band="up"]{border-left-color:#A23B2D}
 .ci-composite[data-band="down"]{border-left-color:var(--teal)}
+.ci-composite__well{margin:2px 0 0;padding:15px 16px;background:var(--surface-inset);border-radius:8px;box-shadow:inset 0 1px 1px rgba(20,22,26,.09),inset 0 0 0 1px var(--line)}
+:root[data-theme="dark"] .ci-composite__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .ci-composite__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}}
 .ci-composite__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
 .ci-composite__read{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0}
 .ci-composite__num{font-family:var(--font-display);font-size:clamp(30px,6vw,44px);font-weight:500;line-height:1;color:var(--ink)}
@@ -596,15 +599,17 @@ main{padding-top:64px}
     </div>
     <section class="ci-composite" data-band="down" aria-label="Lectura de la canasta">
     <p class="ci-composite__head">Dónde está la canasta</p>
-    <div class="ci-composite__read">
+    <div class="ci-composite__well">
+      <div class="ci-composite__read">
       <span class="ci-composite__num">−0.5%</span>
       <span class="ci-composite__say">la canasta ponderada de 16 insumos de restaurante, frente a su ventana base</span>
     </div>
+      <p class="ci-composite__spread"><strong>5</strong> de 16 por encima de su línea base · <strong>8</strong> por debajo · <strong>3</strong> sin cambio. Es una lectura de estado, no un movimiento respecto a la semana pasada. Las fuentes están casi divididas en partes iguales (acuerdo 51%), así que léelo como una señal suave, no una cifra precisa. <strong>3</strong> de 16 insumos mantienen su último dato desde el 2026-06-01.</p>
+    </div>
     <div class="ci-composite__meta">
       <span class="ci-composite__chip">confianza media</span>
-      <span class="ci-composite__chip ci-asof" data-asof="2026-06-01">al 2026-06-01</span>
+      <span class="ci-composite__chip ci-asof" data-asof="2026-07-21">al 2026-07-21</span>
     </div>
-    <p class="ci-composite__spread"><strong>5</strong> de 16 por encima de su línea base · <strong>8</strong> por debajo · <strong>3</strong> sin cambio. Es una lectura de estado, no un movimiento respecto a la semana pasada. Las fuentes están casi divididas en partes iguales (acuerdo 51%), así que léelo como una señal suave, no una cifra precisa.</p>
     <details class="ci-composite__src"><summary>Cómo se construye esta cifra</summary><div>Compuesto ponderado de 16 insumos seguidos, cada uno leído frente a su propia ventana base con datos públicos de mercado de EE. UU. (USDA, BLS, FRED, EIA, NOAA). Una lectura frente a la base — no un precio, ni un cambio desde la semana pasada. Ver los 16 pesos y cómo se arma el compuesto en <a href="/es/cost-index/basket/">La Cesta de Restaurante Muntin</a>, o <a href="/es/cost-index/methodology/">cómo se construye el índice</a>.</div></details>
   </section>
     <section class="ci-scorecard" aria-label="Boleta de calibración" style="margin:22px 0 8px;padding:20px 24px;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:12px;box-shadow:var(--elev-1)">

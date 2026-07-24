@@ -41,6 +41,75 @@ the merge is cleaner than main there. **Gate: 255/258** — the 3 remaining are 
 idem-drift (Critical-CSS fonts, Glossary article schema, Glossary verified stamp); **0 new failures**,
 and the merge *resolved* 18 of the 21 idem-drifts our pre-merge branch carried.
 
+**Depth & immersion dream (2026-07-23):** founder idea — "make the user feel *inside* the data;
+a little visual depth; on the cutting edge of tech = empowered = comes back." Founder also stated,
+for the record, **openness to a genuinely new look**, not only additive depth. Ran a 62-agent
+coordinated dreaming workflow (ground → 7 divergent lenses → 6 adversarial critics each → 3 competing
+syntheses → merge → completeness). **Plan of record: `docs/design/depth-immersion-dream-backlog.md`.**
+All 7 lenses converged independently on ONE metaphor — *a precision instrument on a worktop*; the merge
+resolved the flash-vs-restraint tension to **restraint-as-craft** ("depth must MEAN a data fact or it
+does not ship"; honesty carried by WORDS first, visual depth a gate-enforced redundant second channel;
+the number is sacred/static). The north star unifies the three Cost-Index dialects (`ci-*`/`evh-*`/`viz-*`)
+into one "Glass Well" instrument down the whole funnel, **first shipped standalone on `/about/`** at the
+sentence that pledges "the same numbers I check on my own floor." **Completeness critic returned
+`readyToBuild:false`** and caught the headline risk: a confidence-as-*solidity* ramp (low→high) would
+encode a certainty ordering the project's OWN `cost-confidence-calibration.json` contradicts (realized
+low-tier hit-rate is negative/non-monotonic) → an honesty feature that ships an honesty breach. Resolution
+baked into the doc: ship a **calibration-monotone 2-state** now, register chip labels in `sourced-claims.json`,
+gate label-present + low<high + per-tier AA/3:1 in both themes + EN↔ES parity. Open forks for the founder:
+confidence-tier fidelity, the return-cadence privacy stance (client-only visit memory vs. of-record purity),
+dusk-warmth on the /about/ instrument (needs an ADR amendment if yes), View-Transitions ROI, events-fusion
+distance.
+
+**Depth *feel* LOCKED (2026-07-23, founder-approved after 3 live prototypes):** depth = **layer
+separation + parallax by translation, NOT rotation** (the plane stays square; a rotate tilt was rejected
+as "screen motion, not depth"). Certified basket floats nearest; measured movers recede as separate,
+dimmer/blurrier strata behind it (distance = provenance). Gentle pointer parallax (front slides across the
+strata → you look *around* the read), ~3° resting recline, dark-mode-forward, and a first-class flat
+fallback (`Depth off` ≡ reduced-motion / low-end / no-JS → fully-composed flat read, number/label/"Not your
+prices" intact). Feel spec + reference prototype: `docs/design/depth-immersion-dream-backlog.md` §Locked +
+`docs/design/prototypes/depth-instrument.html`.
+
+**SHIPPED — the `/about/` depth read (2026-07-23):** `scripts/inject-about-cost-read.mjs` stamps a
+sentinel-bracketed instrument at the pledge ("the numbers I check on my shifts"), EN + ES, from the LIVE
+`data/cost-index.json` basket — the same read the hub now features (so they agree). The locked depth feel
+realized: the composite floats in front, its 3 biggest real movers (eggs +72% / romaine −67% seasonal /
+chicken −25%) recede as separate strata behind it; parallax by translation, no rotation; **flat-first**
+(reduced-motion / no-JS / low-end → a fully-composed flat stack, verified `is-3d:false`), 3D as
+progressive enhancement with the height locked to the flat height so **CLS = 0** (flat 526px == 3D 526px).
+Honesty holds: number static, "medium confidence" word leads, "Not your prices" + `as of 2026-07-21` +
+"3 of 16 holding last-good since 2026-06-01" all present. Audited on the headless render (0 h-overflow at
+1280/390, both themes) + full gate **253/258, zero new failures**. Wired into `cost-index-refresh.yml`
+(build + `--check`) so it refreshes daily with the data. Movers read against their own baseline; romaine
+tagged seasonal.
+
+**SHIPPED — hub composite depth (2026-07-23):** carried the Glass Well material onto the Cost Index hub's
+"Where the basket sits" composite band (`compositeBand()` in `build-cost-index-pages.mjs`). The reading now
+sits recessed in a lit Glass Well inside an elevated instrument frame (`--elev-feature`), with a dark-theme
+inset-shadow override — unifying the hub hero's material with `/about/`. Scoped, additive (wrapped the
+existing read+spread in `.ci-composite__well`, elevated `.ci-composite`); NO strata/parallax on the hub yet
+(restraint-forward first step; the table below carries the per-ingredient depth). Applied to the build
+script AND directly to the committed EN+ES hubs (deterministic string edit — no regen, so no nav-strip
+drift; exactly 3 files). Audited on the render: 0 h-overflow at 1280/390, both themes legible, well recessed
+in dark. **SHIPPED — ingredient-pages depth (2026-07-23):** carried the Glass Well material onto the ~94×2
+per-ingredient "Market read" blocks (`.ci-read`, `marketReadBlock()`). Each read is now an elevated
+instrument card (`--elev-feature`) with its key price sentence (`.ci-read__line`) recessed in a lit well
+(dark-shadow override); the sparkline/verdict/provenance stay outside the well (content-rich block kept
+clean). Applied to the build script AND directly to 192 committed pages (deterministic string+regex edit,
+idempotent, no regen → no nav drift). Rendered clean light+dark, 0 h-overflow at 1280/390. Gate 253/258,
+zero new failures. **The whole Cost Index funnel — /about/, hub composite, 94 ingredient reads — now speaks
+one instrument material.**
+
+**SHIPPED — the honesty gate (2026-07-23):** `scripts/check-cost-index-confidence.mjs` (wired into
+`check-all.mjs` + the refresh workflow's check block) locks the framing across all three instrument
+surfaces so a future generator/injector edit can't silently drop it: every `.ci-read` carries wholesale
+framing + a confidence label; the hub composite carries confidence + "against baseline" + "not a
+week-over-week" ; the `/about/` read carries the "Not your prices"/"no es tu precio" negation + wholesale
+reference + confidence — EN and ES. It guards presence only (never invents/grades confidence). Verified:
+passes on the tree (162 reads + hub + /about/), fails the negative test (broken negation caught), gate
+count 258→259. **NEXT (optional):** receding-strata+parallax on the hub composite (only if it should
+*move* like /about/); the pre-existing revisions-log roll (founder go needed — publishes a public record).
+
 **Plan of record:** `docs/design/elevation-dream-backlog.md` — the reconciled output of two
 adversarial "dreaming" workflows (top-down design-language + bottom-up per-surface), with the
 north star, principles, the phased build sequence, per-surface top tier, and the completeness-

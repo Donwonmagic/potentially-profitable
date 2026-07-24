@@ -821,6 +821,72 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <p class="final-sub">No pitch, no signup. Cost a plate, read the Cost Index, or browse the library &mdash; the same numbers I check on my own floor. Questions come straight to me; I read every one.</p>
     </div>
 
+<!-- about-cost-read:start -->
+<style>
+.about-read{--ar-well:var(--surface-inset,#EDEEF1);--ar-line:var(--line,#E3E5E9);max-width:520px;margin:34px auto 8px;font-family:var(--font-body)}
+.ar-cap{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin:0 0 12px;text-align:left}
+.ar-scene{position:relative}
+.ar-rig{position:relative;display:flex;flex-direction:column;gap:12px}
+.ar-read{position:relative;background:var(--white,#fff);border:1.5px solid var(--ink);border-radius:8px;padding:18px 18px 15px;box-shadow:var(--elev-feature,0 4px 8px rgba(20,22,26,.05),0 24px 48px -12px rgba(20,22,26,.12))}
+.ar-read__top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.ar-lab{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.11em;color:var(--stone)}
+.ar-state{margin-left:auto;font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--stone);border:1px solid var(--ar-line);border-radius:999px;padding:3px 9px}
+.ar-well{background:var(--ar-well);border-radius:6px;padding:14px 14px 12px;box-shadow:inset 0 1px 1px rgba(20,22,26,.09),inset 0 0 0 1px var(--ar-line)}
+.ar-num{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap}
+.ar-pct{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:clamp(34px,7vw,44px);font-weight:600;letter-spacing:-.02em;line-height:1;color:var(--ink)}
+.ar-vs{font-size:13px;color:var(--ink-soft)}
+.ar-spread{margin:11px 0 0;font-size:12.5px;line-height:1.5;color:var(--ink-soft)}
+.ar-hold{margin:6px 0 0;font-size:11.5px;line-height:1.45;color:var(--stone)}
+.ar-conf{margin:11px 0 0;font-size:11.5px;letter-spacing:.01em;color:var(--stone)}
+.ar-conf b{color:var(--ink-soft)}
+.ar-strata{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ar-mover{display:flex;align-items:baseline;justify-content:space-between;gap:12px;background:var(--white,#fff);border:1px solid var(--ar-line);border-radius:6px;padding:9px 13px;font-size:13px;box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 6px 14px -10px rgba(20,22,26,.4)}
+.ar-mover__nm{font-weight:600;color:var(--ink)}
+.ar-mover__d{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.ar-mover__d.is-up{color:var(--rust)}.ar-mover__d.is-down{color:var(--teal-dark,#1F3A93)}
+:root[data-theme="dark"] .ar-mover__d.is-down{color:var(--teal)}
+.ar-mover__w,.ar-seasonal{font-family:var(--font-body);font-weight:500;font-size:11px;color:var(--stone)}
+.ar-link{display:inline-block;margin:14px 2px 0;font-size:13px;font-weight:600;color:var(--teal);text-decoration:none}
+.ar-link:hover{text-decoration:underline}
+.ar-scene.is-3d{perspective:1600px;perspective-origin:50% 40%}
+.ar-scene.is-3d .ar-rig{position:relative;transform-style:preserve-3d;transform:rotateX(3deg);height:var(--ar-h,360px);--px:0px;--py:0px}
+.ar-scene.is-3d .ar-strata{position:absolute;inset:0;gap:0}
+.ar-scene.is-3d .ar-mover{position:absolute;left:50%;top:34%;width:320px;margin-left:-160px;-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);background:color-mix(in srgb,var(--white,#fff) 84%,transparent)}
+.ar-scene.is-3d .ar-mover[style*="--i:3"]{transform:translateZ(-42px) translateY(-32px) translate(calc(var(--px)*-.42),calc(var(--py)*-.42));opacity:.97}
+.ar-scene.is-3d .ar-mover[style*="--i:2"]{transform:translateZ(-128px) translateY(-64px) translate(calc(var(--px)*-.25),calc(var(--py)*-.25));opacity:.62;filter:blur(.7px)}
+.ar-scene.is-3d .ar-mover[style*="--i:1"]{transform:translateZ(-214px) translateY(-96px) translate(calc(var(--px)*-.13),calc(var(--py)*-.13));opacity:.36;filter:blur(1.4px)}
+.ar-scene.is-3d .ar-read{position:absolute;left:50%;top:34%;width:380px;margin-left:-190px;z-index:2;transform:translateZ(58px) translate(calc(var(--px)*-.82),calc(var(--py)*-.82))}
+@media (prefers-reduced-motion:reduce){.ar-scene.is-3d{perspective:none}.ar-scene.is-3d .ar-rig{transform:none;min-height:0}.ar-scene.is-3d .ar-strata,.ar-scene.is-3d .ar-mover,.ar-scene.is-3d .ar-read{position:static;transform:none;width:auto;margin:0;left:auto;top:auto;opacity:1;filter:none;-webkit-backdrop-filter:none;backdrop-filter:none}.ar-scene.is-3d .ar-strata{gap:8px}}
+</style>
+<figure class="about-read" aria-label="This week’s basket reading">
+  <figcaption class="ar-cap">The basket I’m watching this week — a reading against baseline, not a price.</figcaption>
+  <div class="ar-scene">
+    <div class="ar-rig">
+      <ul class="ar-strata">
+        <li class="ar-mover" style="--i:3"><span class="ar-mover__nm">Eggs</span><span class="ar-mover__d is-up">▲ +71.7% <span class="ar-mover__w">above baseline</span></span></li>
+        <li class="ar-mover" style="--i:2"><span class="ar-mover__nm">Romaine lettuce</span><span class="ar-mover__d is-down">▼ −67.4% <span class="ar-mover__w">below baseline</span> <span class="ar-seasonal">· seasonal</span></span></li>
+        <li class="ar-mover" style="--i:1"><span class="ar-mover__nm">Chicken breast (boneless)</span><span class="ar-mover__d is-down">▼ −25.3% <span class="ar-mover__w">below baseline</span></span></li>
+      </ul>
+      <div class="ar-read">
+        <div class="ar-read__top">
+          <span class="ar-lab">Muntin Restaurant Basket</span>
+          <span class="ar-state ci-asof" data-asof="2026-07-21">as of 2026-07-21</span>
+        </div>
+        <div class="ar-well">
+          <div class="ar-num"><span class="ar-pct">−0.5%</span><span class="ar-vs">against its baseline window</span></div>
+          <p class="ar-spread"><strong>5</strong> of 16 above their baseline · <strong>8</strong> below · <strong>3</strong> flat. Nearly evenly split — a soft signal, not a precise figure.</p>
+          <p class="ar-hold"><strong>3</strong> of 16 holding last-good since 2026-06-01.</p>
+        </div>
+        <p class="ar-conf">medium confidence · wholesale reference — <b>Not your prices</b></p>
+      </div>
+    </div>
+  </div>
+  <p class="ar-mover-cap ar-cap" style="margin:16px 0 10px">A few of the staples behind it, each read against its own baseline:</p>
+  <a class="ar-link" href="/cost-index/">See all 16 →</a>
+</figure>
+<script>(function(){var s=document.currentScript&&document.currentScript.previousElementSibling;var sc=document.querySelector(".about-read .ar-scene");if(!sc)return;if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;var rig=sc.querySelector(".ar-rig");rig.style.setProperty("--ar-h",rig.offsetHeight+"px");sc.classList.add("is-3d");var raf=0,px=0,py=0;sc.addEventListener("pointermove",function(e){var r=sc.getBoundingClientRect();px=((e.clientX-r.left)/r.width-.5)*20;py=((e.clientY-r.top)/r.height-.5)*14;if(!raf)raf=requestAnimationFrame(ap)});sc.addEventListener("pointerleave",function(){px=0;py=0;if(!raf)raf=requestAnimationFrame(ap)});function ap(){raf=0;rig.style.setProperty("--px",px.toFixed(2)+"px");rig.style.setProperty("--py",py.toFixed(2)+"px")}})();</script>
+<!-- about-cost-read:end -->
+
     <div class="hero-ctas reveal" style="justify-content:center;margin-top:32px;">
       <a class="btn btn-primary" href="/tools/">Browse the free tools
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
