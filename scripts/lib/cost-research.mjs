@@ -1407,6 +1407,27 @@ const STUDY_CSS = `
 .pb-ref__k{display:block;margin:2px 0 0;color:var(--ink-soft);font-size:12.5px}
 .pb-ref:target{background:var(--teal-wash);border-radius:8px;padding-top:4px;padding-bottom:4px}
 `;
+// The Cite-this + evidence-download block for the field report. Shared by emitStudy (page
+// generation) and inject-study-cite.mjs (refreshing the committed pages in-container), so the
+// two are byte-identical. `title` is the localized study title; `escHtml` is the host's escaper.
+export const STUDY_CITE_SENTINEL = { start: '<!-- study-cite:start -->', end: '<!-- /study-cite:end -->' };
+export function studyCiteBlock(locale, title, escHtml) {
+  const es = locale === 'es';
+  const canonUrl = es ? 'https://muntin.digital/es/cost-index/menu-pricing/study/' : 'https://muntin.digital/cost-index/menu-pricing/study/';
+  const citeYr = RESEARCH_PUBLISHED.slice(0, 4);
+  const apa = `The Muntin Desk. (${citeYr}). ${title}. Muntin Cost Index. ${canonUrl}`;
+  const bib = `@techreport{muntin_menu_pricing_${citeYr},\n  title       = {${title}},\n  author      = {{The Muntin Desk}},\n  institution = {Muntin Cost Index},\n  type        = {Field report},\n  year        = {${citeYr}},\n  url         = {${canonUrl}},\n  note        = {CC BY 4.0}\n}`;
+  const dl = (href, label, lic) => `<a href="${href}">${label}</a>${lic ? ` <span class="pb-cite__lab">${lic}</span>` : ''}`;
+  return `<section class="pb-cite" aria-labelledby="pb-studycite-h">
+    <h2 id="pb-studycite-h" class="rs-section-h">${es ? 'Cómo citar y descargar (CC BY 4.0)' : 'Cite this &amp; download (CC BY 4.0)'}</h2>
+    <p>${es ? 'Este informe de campo y su tabla de evidencia se publican bajo ' : 'This field report and its evidence table are released under '}<a href="${CCBY}" rel="license">CC BY 4.0</a>${es ? ' — reutilízalos con atribución a Muntin Cost Index.' : ' — reuse with attribution to Muntin Cost Index.'}</p>
+    <p class="pb-cite__cite"><span class="pb-cite__lab">APA</span>${escHtml(apa)}</p>
+    <p class="pb-cite__cite"><span class="pb-cite__lab">BibTeX</span>${escHtml(bib).replace(/\n/g, '<br>')}</p>
+    <p class="pb-cite__dl">${dl('/cost-index/menu-pricing/study/study.json', 'study.json', 'CC BY')} ${dl('/cost-index/menu-pricing/study/study.csv', 'study.csv', '')} ${dl('/cost-index/menu-pricing.json', 'menu-pricing.json', '')} ${dl('/cost-index/menu-pricing.csv', 'menu-pricing.csv', '')}</p>
+    <p class="pb-groundedin" style="margin-top:8px">${es ? '<b>study.json/.csv</b>: la tabla de evidencia — las afirmaciones del informe × las 36 fuentes que las respaldan (con DOI). <b>menu-pricing.json/.csv</b>: los datos por ingrediente detrás de las cifras.' : '<b>study.json/.csv</b>: the evidence table — the report’s claims × the 36 sources that ground them (with DOIs). <b>menu-pricing.json/.csv</b>: the per-ingredient data behind the numbers.'}</p>
+  </section>`;
+}
+
 function emitStudy(locale, ctx) {
   const { pageHead, pageTail, escHtml, repoRoot } = ctx;
   const es = locale === 'es'; const lang = es ? 'es' : 'en'; const base = es ? '/es' : '';
@@ -1437,7 +1458,11 @@ function emitStudy(locale, ctx) {
     return `<li class="pb-ref" id="ref-${i + 1}"><span class="pb-ref__n">${i + 1}</span>${escHtml(s.authors)} (${s.year}). ${escHtml(s.title)}. <em>${escHtml(s.venue)}</em>. ${idHtml}${k}</li>`;
   };
   const refsHtml = ordered.length ? `<section class="pb-refs" aria-labelledby="pb-refs-h"><h2 id="pb-refs-h">${es ? 'Referencias' : 'References'}</h2><ol class="pb-reflist">${ordered.map(refItem).join('')}</ol></section>` : '';
-  const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@type': 'ScholarlyArticle', '@id': (es ? canonEs : canonEn) + '#study', 'headline': h1, 'name': study.title, 'inLanguage': es ? 'es-US' : 'en-US', 'abstract': (study.abstract || []).join(' '), 'keywords': (study.keywords || []).join(', '), 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'isBasedOn': 'https://muntin.digital/open/', 'author': { '@type': 'Organization', 'name': 'The Muntin Desk' }, 'citation': ordered.map((s) => ({ '@type': 'CreativeWork', 'name': s.title, 'author': s.authors, 'datePublished': String(s.year), 'identifier': s.id })), 'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.pb-abstract'] } }).replace(/</g, '\\u003c');
+  const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@type': 'ScholarlyArticle', '@id': (es ? canonEs : canonEn) + '#study', 'headline': h1, 'name': study.title, 'inLanguage': es ? 'es-US' : 'en-US', 'abstract': (study.abstract || []).join(' '), 'keywords': (study.keywords || []).join(', '), 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'isBasedOn': 'https://muntin.digital/open/', 'author': { '@type': 'Organization', 'name': 'The Muntin Desk' }, 'datePublished': RESEARCH_PUBLISHED, 'license': CCBY, 'isAccessibleForFree': true, 'citation': ordered.map((s) => ({ '@type': 'CreativeWork', 'name': s.title, 'author': s.authors, 'datePublished': String(s.year), 'identifier': s.id })), 'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.pb-abstract'] } }).replace(/</g, '\\u003c');
+  // Cite-this + evidence-download block (ADR-019): promotes the field report from a publication
+  // into a citable CC-BY surface. Built by the shared studyCiteBlock so the engine and the
+  // idempotent injector (inject-study-cite.mjs) can never diverge. Reuses .pb-cite CSS in extraCss.
+  const studyCiteHtml = studyCiteBlock(locale, study.title, escHtml);
   const toolUrl = `${base}/cost-index/menu-pricing/`;
   const body = `
   <nav class="breadcrumb" aria-label="Breadcrumb"><a href="${base}/">${es ? 'Inicio' : 'Home'}</a> › <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> › <a href="${toolUrl}">${es ? 'Manual de precios' : 'Menu-pricing playbook'}</a> › ${es ? 'El informe' : 'The field report'}</nav>
@@ -1454,6 +1479,7 @@ function emitStudy(locale, ctx) {
     ${study.limitations ? `<div class="pb-ml"><h2>${es ? 'Limitaciones' : 'Limitations'}</h2><p>${escHtml(study.limitations)}</p></div>` : ''}
     ${study.takeaway ? `<p class="pb-takeaway">${escHtml(study.takeaway)}</p>` : ''}
     ${refsHtml}
+    <!-- study-cite:start -->${studyCiteHtml}<!-- /study-cite:end -->
     <p class="rs-src">${es ? 'Informe práctico que se apoya en trabajo revisado por pares; no es revisado por pares ni un experimento controlado. Descriptivo, nunca un pronóstico; coincidencia, nunca causa; referencia mayorista, nunca el precio de entrega. Cada cifra es propia o atribuida a su fuente citada.' : 'A practitioner field report that stands on peer-reviewed work; it is not peer-reviewed and not a controlled experiment. Descriptive, never a forecast; co-occurrence, never cause; a wholesale reference, never the delivered price. Every figure is our own or attributed to its cited source.'}</p>
     <div class="rs-cta"><a class="btn btn-primary" href="${toolUrl}">${es ? 'Abre el manual interactivo' : 'Open the interactive playbook'} <span aria-hidden="true">→</span></a></div>
   </div>

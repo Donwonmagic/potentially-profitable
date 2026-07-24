@@ -524,6 +524,10 @@ const CHECKS = [
   ['Events open-data sync','build-events-open-data.mjs','--check'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
   ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
+  // Study evidence dataset (ADR-019): the menu-pricing paper's claims × its 36 grounding sources
+  // (with DOIs), released CC-BY — the machine-readable half that makes the paper a citable surface.
+  ['Study dataset self-test','build-study-dataset.mjs','--self-test'],
+  ['Study dataset sync','build-study-dataset.mjs','--check'],
   ['Lock-or-float open-data self-test','build-lockfloat-open-data.mjs','--self-test'],
   ['Lock-or-float open-data sync','build-lockfloat-open-data.mjs','--check'],
   ['Anomaly open-data self-test','build-anomaly-open-data.mjs','--self-test'],
@@ -667,6 +671,9 @@ const CHECKS = [
   // to refresh if this fails. The lib self-test pins the honesty branch (no import-HHI on a domestic item).
   ['Event-exposure lib self-test','lib/event-exposure.mjs','--self-test'],
   ['Event-exposure pages in sync','inject-event-exposure.mjs','--check'],
+  // Study cite block + ScholarlyArticle license (ADR-019): the committed field-report pages must
+  // carry the CC-BY cite/download block; re-run inject-study-cite.mjs to refresh if this fails.
+  ['Study cite/license in sync','inject-study-cite.mjs','--check'],
   ['Energy backdrop (idem)','build-eia-energy-backdrop.mjs', '--check'],
   ['Energy backdrop honesty','check-eia-energy-backdrop.mjs'],
   ['Crop-condition backdrop (idem)','build-crop-condition-backdrop.mjs', '--check'],
