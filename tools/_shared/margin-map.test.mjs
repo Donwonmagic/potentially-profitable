@@ -95,3 +95,11 @@ test("HONESTY: priced-but-uncostable dishes are surfaced, not a clean 'nothing t
   assert.doesNotMatch(c.headline, /Nothing to do/);
   assert.match(c.headline, /1 dish couldn't be costed yet/);
 });
+
+test('HONESTY: an all-uncosted org does not vacuously claim every costed dish is on target', () => {
+  const c = M.build({ dishes: [], targetPct: 0.30, locale: 'en', uncostedCount: 3 });
+  assert.equal(c.reason, 'some-uncosted');
+  assert.equal(c.show, true);
+  assert.doesNotMatch(c.headline, /Every costed dish/);
+  assert.match(c.headline, /3 dishes couldn't be costed yet/);
+});

@@ -48,11 +48,19 @@
       // no costable line, say so — never a clean "nothing to do" that silently
       // assumes uncosted dishes are on target.
       if (uncosted > 0) {
+        // If NOTHING could be costed, don't lead with a vacuous "every costed dish
+        // is on target" (there are none) — say only that nothing has been costed.
+        var noneCosted = dishes.length === 0;
+        var uHeadline = noneCosted
+          ? tt(locale,
+              uncosted + (uncosted === 1 ? ' dish couldn\'t' : ' dishes couldn\'t') + ' be costed yet. Connect an invoice or add prices to see them.',
+              uncosted + (uncosted === 1 ? ' platillo no se pudo' : ' platillos no se pudieron') + ' costear aún. Conecta una factura o agrega precios para verlos.')
+          : tt(locale,
+              'Every costed dish is at or under your ' + pct(target) + ' goal — but ' + uncosted + (uncosted === 1 ? ' dish couldn\'t' : ' dishes couldn\'t') + ' be costed yet. Connect an invoice or add prices to see them.',
+              'Cada platillo costeado está en o bajo tu meta de ' + pct(target) + ' — pero ' + uncosted + (uncosted === 1 ? ' platillo no se pudo' : ' platillos no se pudieron') + ' costear aún. Conecta una factura o agrega precios para verlos.');
         return {
           tier: 'none', show: true,
-          headline: tt(locale,
-            'Every costed dish is at or under your ' + pct(target) + ' goal — but ' + uncosted + (uncosted === 1 ? ' dish couldn\'t' : ' dishes couldn\'t') + ' be costed yet. Connect an invoice or add prices to see them.',
-            'Cada platillo costeado está en o bajo tu meta de ' + pct(target) + ' — pero ' + uncosted + (uncosted === 1 ? ' platillo no se pudo' : ' platillos no se pudieron') + ' costear aún. Conecta una factura o agrega precios para verlos.'),
+          headline: uHeadline,
           over: [], targetPct: target, options: [], reason: 'some-uncosted'
         };
       }
