@@ -24,29 +24,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+// Shared forecast/causation vocabulary — the events gate + the open-lane gate enforce the SAME rules.
+import { FORECAST_RE, CAUSAL_RE, forecastHit, causalHit } from './lib/co-occurrence-patterns.mjs';
+
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 function rd(p) { try { return JSON.parse(fs.readFileSync(path.join(repo, p), 'utf8')); } catch { return null; } }
-
-// Prediction phrasing that must never appear in a documented-event account or the render.
-const FORECAST_RE = [
-  /\bforecast(s|ed|ing)?\b/i, /\bprojected\b/i, /\bexpected?\s+to\b/i,
-  /\bwe\s+(expect|predict|forecast)\b/i, /\bgoing\s+to\s+(rise|fall|climb|drop)\b/i,
-  /\bwill\s+(rise|fall|climb|drop|increase|decrease|likely|continue|keep)\b/i,
-  /\bnext\s+(year|month|season|quarter)\b/i, /\blikely\s+to\s+(rise|fall|climb|drop)\b/i,
-];
-function forecastHit(text) { const t = String(text || ''); for (const re of FORECAST_RE) { const m = t.match(re); if (m) return m[0]; } return null; }
-
-// Causation asserted between a documented event and a PRICE move — the one thing the
-// co-occurrence surface must never do. Scoped tight so ordinary event prose ("the virus
-// caused illness") doesn't trip it: only event→price causal links are flagged.
-const CAUSAL_RE = [
-  /\bcaused\s+(the\s+)?(price|prices|spike|jump|move|surge|increase)\b/i,
-  /\bbecause\s+(of\s+)?(the\s+)?(price|prices)\b/i,
-  /\bdrove\s+(the\s+)?prices?\b/i,
-  /\bprices?\s+(rose|jumped|spiked|climbed|fell)\s+because\b/i,
-  /\bthe\s+cause\s+of\s+(the\s+)?(price|move|spike)\b/i,
-];
-function causalHit(text) { const t = String(text || ''); for (const re of CAUSAL_RE) { const m = t.match(re); if (m) return m[0]; } return null; }
 
 // Validate one registry event's shape + provenance. Returns problem strings ([] = clean).
 function validateEvent(ev) {

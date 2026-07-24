@@ -545,6 +545,10 @@ const CHECKS = [
   ['Labor explorer page sync','build-open-labor-page.mjs','--check'],
   ['Demand explorer page self-test','build-open-demand-page.mjs','--self-test'],
   ['Demand explorer page sync','build-open-demand-page.mjs','--check'],
+  // registry-driven honesty gate for the corpus /open explorers (spec §1.6) — shares the
+  // forecast/causation vocabulary (scripts/lib/co-occurrence-patterns.mjs) with the events gate.
+  ['Open-lane honesty self-test','check-open-lane-honesty.mjs','--self-test'],
+  ['Open-lane honesty','check-open-lane-honesty.mjs'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
   ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
   // Study evidence dataset (ADR-019): the menu-pricing paper's claims × its 36 grounding sources
