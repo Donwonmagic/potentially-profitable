@@ -63,6 +63,7 @@ import { researchTargets } from './lib/cost-research.mjs';
 import { supplyPicture, SUPPLY_CSS } from './lib/supply-picture.mjs';
 import { mechanismFor, concentrationFor, MECHANISM_STRINGS, concentrationString, mechanismCaveat,
   swapVerdict, SWAP_STRINGS, swapCaveat, headlineRange, slugifyName } from './lib/seasonality-fusion.mjs';
+import { exposureSection as eventExposureSection, EXPOSURE_CSS as EVENT_EXPOSURE_CSS } from './lib/event-exposure.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
@@ -3131,6 +3132,7 @@ const EVENT_DETAIL_CSS = `<style>
   :root:not([data-theme="light"]) .evd-move__mag[data-dir="down"]{color:#6d8bf2}
 }
 ${CMV_BARS_RULES}
+${EVENT_EXPOSURE_CSS}
 </style>`;
 
 function emitEventPage(ev, locale) {
@@ -3262,6 +3264,7 @@ function emitEventPage(ev, locale) {
       <h2 id="evd-aff-h">${es ? 'Ingredientes afectados' : 'Affected ingredients'}</h2>
       <ul class="evd-affected">${affHtml}</ul>
     </section>
+    ${eventExposureSection(affected.map((s) => ({ slug: s, name: evSlugName(s, es) })), ISR_RECORD, locale)}
     <section class="evd-section" aria-labelledby="evd-mv-h">
       <h2 id="evd-mv-h">${es ? 'Los movimientos detectados que coincidieron' : 'The detected moves that overlapped'}</h2>
       <p class="evd-eyebrow-note">${es

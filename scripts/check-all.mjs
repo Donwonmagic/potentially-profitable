@@ -662,6 +662,11 @@ const CHECKS = [
   // Supply-picture (ADR-018 surface 2): the committed per-ingredient pages must stay in sync with the
   // shared generator (scripts/lib/supply-picture.mjs) — re-run the injector to refresh if this fails.
   ['Supply-picture pages in sync','inject-supply-picture.mjs','--check'],
+  // Event-exposure (ADR-019, events leg of the CHAIN): the committed per-event detail pages must stay in
+  // sync with the shared reliance-branched generator (scripts/lib/event-exposure.mjs). Re-run the injector
+  // to refresh if this fails. The lib self-test pins the honesty branch (no import-HHI on a domestic item).
+  ['Event-exposure lib self-test','lib/event-exposure.mjs','--self-test'],
+  ['Event-exposure pages in sync','inject-event-exposure.mjs','--check'],
   ['Energy backdrop (idem)','build-eia-energy-backdrop.mjs', '--check'],
   ['Energy backdrop honesty','check-eia-energy-backdrop.mjs'],
   ['Crop-condition backdrop (idem)','build-crop-condition-backdrop.mjs', '--check'],

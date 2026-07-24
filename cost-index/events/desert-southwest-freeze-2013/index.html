@@ -308,6 +308,13 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* event-exposure-css:start */
+.evd-exposure{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.evd-exposure li{padding:11px 14px;background:var(--white,#fff);border:1px solid var(--line,#e5e0d8);border-radius:10px;font-size:14.5px;line-height:1.55;color:var(--ink,#2a2a26)}
+.evd-exposure .evd-exp__name{font-weight:700}
+.evd-exposure .evd-exp__mode{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-left:8px;padding:2px 8px;border-radius:999px;border:1px solid var(--line,#e5e0d8);color:var(--ink-soft,#615c53)}
+.evd-exposure .evd-exp__cav{color:var(--ink-soft,#615c53)}
+/* event-exposure-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -595,6 +602,12 @@ main{padding-top:64px}
       <h2 id="evd-aff-h">Affected ingredients</h2>
       <ul class="evd-affected"><li><a href="/cost-index/iceberg-lettuce/">Iceberg lettuce</a></li><li><a href="/cost-index/romaine-lettuce/">Romaine lettuce</a></li><li><a href="/cost-index/green-leaf-lettuce/">Green leaf lettuce</a></li><li><a href="/cost-index/red-leaf-lettuce/">Red leaf lettuce</a></li></ul>
     </section>
+    <!-- event-exposure:start --><section class="evd-section evd-exp" aria-labelledby="evd-exp-h">
+      <h2 id="evd-exp-h">Why these ingredients were exposed</h2>
+      <p class="evd-eyebrow-note">Each affected ingredient's public supply structure — where it comes from and how much it leans on imports. Context that makes the co-occurrence with a documented event legible, never its cause.</p>
+      <ul class="evd-exposure"><li><span class="evd-exp__name">Iceberg lettuce</span><span class="evd-exp__mode">Domestically sourced</span> comes almost entirely from domestic production, with little import buffer (reliance ~12% by value). Its exposure runs through domestic production structure, not import origins — a domestic event overlaps its price window.</li><li><span class="evd-exp__name">Romaine lettuce</span><span class="evd-exp__mode">Domestically sourced</span> comes almost entirely from domestic production, with little import buffer (reliance ~12% by value). Its exposure runs through domestic production structure, not import origins — a domestic event overlaps its price window.</li><li><span class="evd-exp__name">Green leaf lettuce</span><span class="evd-exp__mode">Domestically sourced</span> comes almost entirely from domestic production, with little import buffer (reliance ~12% by value). Its exposure runs through domestic production structure, not import origins — a domestic event overlaps its price window.</li><li><span class="evd-exp__name">Red leaf lettuce</span><span class="evd-exp__mode">Domestically sourced</span> comes almost entirely from domestic production, with little import buffer (reliance ~12% by value). Its exposure runs through domestic production structure, not import origins — a domestic event overlaps its price window.</li></ul>
+      <p class="evd-caveat">Reliance is a share of import value, a rough exposure proxy, not a supply-security score. It explains why an ingredient sits in the path of a documented event — not that the event caused any price move. Co-occurrence in time, never a cause.</p>
+    </section><!-- /event-exposure:end -->
     <section class="evd-section" aria-labelledby="evd-mv-h">
       <h2 id="evd-mv-h">The detected moves that overlapped</h2>
       <p class="evd-eyebrow-note">Each figure is a wholesale reference against its own ±26-week normal — a market move, never a delivered price.</p>

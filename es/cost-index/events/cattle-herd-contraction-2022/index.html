@@ -308,6 +308,13 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* event-exposure-css:start */
+.evd-exposure{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.evd-exposure li{padding:11px 14px;background:var(--white,#fff);border:1px solid var(--line,#e5e0d8);border-radius:10px;font-size:14.5px;line-height:1.55;color:var(--ink,#2a2a26)}
+.evd-exposure .evd-exp__name{font-weight:700}
+.evd-exposure .evd-exp__mode{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-left:8px;padding:2px 8px;border-radius:999px;border:1px solid var(--line,#e5e0d8);color:var(--ink-soft,#615c53)}
+.evd-exposure .evd-exp__cav{color:var(--ink-soft,#615c53)}
+/* event-exposure-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -540,6 +547,12 @@ main{padding-top:64px}
       <h2 id="evd-aff-h">Ingredientes afectados</h2>
       <ul class="evd-affected"><li><a href="/es/cost-index/ribeye/">Ribeye</a></li><li><span>Striploin</span></li><li><a href="/es/cost-index/short-rib/">Costilla corta de res</a></li><li><a href="/es/cost-index/beef-tenderloin/">Lomo fino de res</a></li><li><a href="/es/cost-index/ground-beef/">Carne molida de res</a></li></ul>
     </section>
+    <!-- event-exposure:start --><section class="evd-section evd-exp" aria-labelledby="evd-exp-h">
+      <h2 id="evd-exp-h">Por qué estos ingredientes estaban expuestos</h2>
+      <p class="evd-eyebrow-note">La estructura de suministro pública de cada ingrediente afectado — de dónde llega y cuánto depende de importaciones. Contexto que hace legible la coincidencia en el tiempo con un evento documentado, nunca su causa.</p>
+      <ul class="evd-exposure"><li><span class="evd-exp__name">Ribeye (bife ancho)</span><span class="evd-exp__mode">De origen nacional</span> proviene casi por completo de la producción nacional, con poco colchón de importación (dependencia-por-valor ~5%). Su exposición corre por la estructura de producción nacional, no por los orígenes de importación — un evento nacional coincide con su ventana de precio.</li><li><span class="evd-exp__name">Striploin</span><span class="evd-exp__mode">De origen nacional</span> proviene casi por completo de la producción nacional, con poco colchón de importación (dependencia-por-valor ~5%). Su exposición corre por la estructura de producción nacional, no por los orígenes de importación — un evento nacional coincide con su ventana de precio.</li><li><span class="evd-exp__name">Costilla corta de res</span><span class="evd-exp__mode">De origen nacional</span> proviene casi por completo de la producción nacional, con poco colchón de importación. Su exposición corre por la estructura de producción nacional, no por los orígenes de importación — un evento nacional coincide con su ventana de precio.</li><li><span class="evd-exp__name">Lomo fino de res</span><span class="evd-exp__mode">De origen nacional</span> proviene casi por completo de la producción nacional, con poco colchón de importación (dependencia-por-valor ~5%). Su exposición corre por la estructura de producción nacional, no por los orígenes de importación — un evento nacional coincide con su ventana de precio.</li><li><span class="evd-exp__name">Carne molida de res</span><span class="evd-exp__mode">De origen nacional</span> proviene casi por completo de la producción nacional, con poco colchón de importación (dependencia-por-valor ~5%). Su exposición corre por la estructura de producción nacional, no por los orígenes de importación — un evento nacional coincide con su ventana de precio.</li></ul>
+      <p class="evd-caveat">La dependencia es una cuota del valor de importación, un proxy aproximado de exposición, no una puntuación de seguridad de suministro. Explica por qué un ingrediente está en la trayectoria de un evento documentado — no que el evento causara ningún movimiento de precio. Coincidencia en el tiempo, nunca una causa.</p>
+    </section><!-- /event-exposure:end -->
     <section class="evd-section" aria-labelledby="evd-mv-h">
       <h2 id="evd-mv-h">Los movimientos detectados que coincidieron</h2>
       <p class="evd-eyebrow-note">Cada cifra es una referencia mayorista frente a su propio normal de ±26 semanas — un movimiento de mercado, nunca un precio entregado.</p>

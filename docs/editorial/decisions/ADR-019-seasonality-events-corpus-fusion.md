@@ -70,9 +70,19 @@ no supply verb, no cause, no forecast). The label/verdict language is the **site
 disclaimers live in dedicated caveat / `<details class="cite">` elements the fusion gate exempts from its
 positive-token scan.
 
-### Events (`/cost-index/events/`) — sequenced next
+### Events (`/cost-index/events/`) — exposure leg landed 2026-07-24
 
-Per the audited events spec: reliance-branched exposure (never an import-HHI gauge on a domestic item), a
+**Landed:** the per-event **"Why these ingredients were exposed"** block on all 39 detail pages (+ ES),
+via the reliance-branched generator `scripts/lib/event-exposure.mjs` (37/37 self-test): import-origin
+concentration + HHI (a value share) for the 12 import-exposed affected items, a domestic-production-structure
+note (NO import-HHI gauge — the audit's binding fix) for the 31 domestic items, and the catchpair (two
+different measures, never a supply share) for the 7 seafood items. Additive via `inject-event-exposure.mjs`
+(idempotent, sentinel-delimited body + head-CSS, preserving the engine-ahead nav/JSON-LD) + a mirror into
+`emitEventPage()`; both `--check` + the lib self-test are wired into `check-all`. The caveat is adaptive —
+an all-domestic page does not define import-value HHI. The existing `check-cost-index-events.mjs` confirms
+the block asserts no event→price causation and keeps the co-occurrence marker.
+
+**Sequenced next** (per the audited events spec): reliance-branched exposure is done; still to come — a
 severity percentile against the 432-move population, a **permutation-null base rate** for co-movement
 (shuffle labels over the same move population — the corpus has no all-week series, so an all-week null is
 the wrong null), a taxonomy of silence for the 23 flat events, a "which rung moved" note from the

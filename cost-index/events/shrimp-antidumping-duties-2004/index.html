@@ -308,6 +308,13 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* event-exposure-css:start */
+.evd-exposure{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.evd-exposure li{padding:11px 14px;background:var(--white,#fff);border:1px solid var(--line,#e5e0d8);border-radius:10px;font-size:14.5px;line-height:1.55;color:var(--ink,#2a2a26)}
+.evd-exposure .evd-exp__name{font-weight:700}
+.evd-exposure .evd-exp__mode{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;margin-left:8px;padding:2px 8px;border-radius:999px;border:1px solid var(--line,#e5e0d8);color:var(--ink-soft,#615c53)}
+.evd-exposure .evd-exp__cav{color:var(--ink-soft,#615c53)}
+/* event-exposure-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -595,12 +602,17 @@ main{padding-top:64px}
       <h2 id="evd-aff-h">Affected ingredients</h2>
       <ul class="evd-affected"><li><span>Shrimp</span></li><li><span>Shrimp Head On</span></li><li><span>Shrimp Pd</span></li></ul>
     </section>
+    <!-- event-exposure:start --><section class="evd-section evd-exp" aria-labelledby="evd-exp-h">
+      <h2 id="evd-exp-h">Why these ingredients were exposed</h2>
+      <p class="evd-eyebrow-note">Each affected ingredient's public supply structure — where it comes from and how much it leans on imports. Context that makes the co-occurrence with a documented event legible, never its cause.</p>
+      <ul class="evd-exposure"><li><span class="evd-exp__name">Shrimp</span><span class="evd-exp__mode">Wild vs imported</span> US wild landings were $312M (2024), beside $1.62B of imports — two different measures, not a supply share. Most imports of this species are farmed abroad.</li><li><span class="evd-exp__name">Shrimp (head-on)</span><span class="evd-exp__mode">Wild vs imported</span> US wild landings were $312M (2024), beside $1.62B of imports — two different measures, not a supply share. Most imports of this species are farmed abroad.</li><li><span class="evd-exp__name">Shrimp (P&amp;D)</span><span class="evd-exp__mode">Wild vs imported</span> US wild landings were $312M (2024), beside $3.32B of imports — two different measures, not a supply share. Most imports of this species are farmed abroad.</li></ul>
+      <p class="evd-caveat">Wild landings and imports are two different measures, not a supply share. It explains why an ingredient sits in the path of a documented event — not that the event caused any price move. Co-occurrence in time, never a cause.</p>
+    </section><!-- /event-exposure:end -->
     <section class="evd-section" aria-labelledby="evd-mv-h">
       <h2 id="evd-mv-h">The detected moves that overlapped</h2>
       <p class="evd-eyebrow-note">Each figure is a wholesale reference against its own ±26-week normal — a market move, never a delivered price.</p>
       <p class="evd-empty">No sustained wholesale move in our detected set falls inside this event's window. The event is documented; our public price series simply didn't flag a notable departure from normal for these ingredients then — an honest absence, not a hidden one.</p>
     </section>
-    
     <section class="evd-section" aria-labelledby="evd-src-h">
       <h2 id="evd-src-h">Sources</h2>
       <details class="evd-src" open><summary>4 sources</summary><ul><li data-quoted-source><a href="https://www.federalregister.gov/documents/2004/01/27/04-1698/notice-of-initiation-of-antidumping-duty-investigations-certain-frozen-and-canned-warmwater-shrimp" rel="nofollow noopener" target="_blank">Notice of Initiation of Antidumping Duty Investigations: Certain Frozen and Canned Warmwater Shrimp From Brazil, Ecuador, India, Thailand, the People&#39;s Republic of China and the Socialist Republic of Vietnam (69 FR 3876)</a> — US Federal Register (Department of Commerce)</li><li data-quoted-source><a href="https://www.federalregister.gov/documents/2005/02/01/E5-373/notice-of-amended-final-determination-of-sales-at-less-than-fair-value-and-antidumping-duty-order" rel="nofollow noopener" target="_blank">Notice of Amended Final Determination of Sales at Less Than Fair Value and Antidumping Duty Order: Certain Frozen Warmwater Shrimp from Ecuador (Feb 1, 2005)</a> — US Federal Register (Department of Commerce)</li><li data-quoted-source><a href="https://enforcement.trade.gov/download/factsheets/amended-factsheet-shrimp-brazil-ecuador-india-thailand-prc-vietnam-amended-final-020105.pdf" rel="nofollow noopener" target="_blank">Imports of Certain Frozen Warmwater Shrimp (Amended Final Determinations fact sheet, Feb 1, 2005)</a> — US Department of Commerce, Enforcement &amp; Compliance</li><li data-quoted-source><a href="https://www.usitc.gov/publications/701_731/pub4429.pdf" rel="nofollow noopener" target="_blank">Frozen Warmwater Shrimp from China, Ecuador, India, Thailand and Vietnam (2013 five-year sunset review)</a> — US International Trade Commission</li></ul></details>
