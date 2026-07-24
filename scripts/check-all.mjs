@@ -535,6 +535,10 @@ const CHECKS = [
   ['MARTS open-data self-test','build-marts-open-data.mjs','--self-test'],
   ['MARTS open-data sync','build-marts-open-data.mjs','--check'],
   ['NASS aquaculture adapter self-test','fetch-nass-aquaculture.mjs','--self-test'],
+  // /open/recalls/ explorer page (spec-corpus-explorers.md §1.2) — the generator self-asserts the
+  // structural no-price guarantee + the required honesty literals; --check pins the committed HTML.
+  ['Recalls explorer page self-test','build-open-recalls-page.mjs','--self-test'],
+  ['Recalls explorer page sync','build-open-recalls-page.mjs','--check'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
   ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
   // Study evidence dataset (ADR-019): the menu-pricing paper's claims × its 36 grounding sources
