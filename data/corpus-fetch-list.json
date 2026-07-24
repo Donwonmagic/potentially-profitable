@@ -1,0 +1,189 @@
+{
+  "_doc": "Corpus-expansion fetch list — the vetted public-data sources to pull onto the Cost Index open-data engine. Product of the 2026-07-24 scout/verify workflow (verdict ship-with-fixes; four access/license mislabels corrected and applied here). Per ADR-013 the LIVE fetch runs on the operator Mac (keys + network); the container builds each adapter with a --demo/fixture mode + honest-subset gate, and the surface that consumes it. Every source routes to the cost-intelligence funnel; nothing touches the retired/frozen surfaces, and nothing enters the measured tier or the Vendor Benchmark reference.",
+  "generated": "2026-07-24",
+  "source_workflow": "scout/verify — 17 cataloged, 6 shortlisted; see docs/handoff/strategic-council-board.md",
+  "status_legend": {
+    "ready": "keyless + verified — an adapter can fetch it now (operator Mac)",
+    "park": "endpoint real but blocked on a credential the operator must request first",
+    "context-only": "goes into sourced-claims prose (dispatch), NEVER an /open series or a pressure input"
+  },
+  "waves": [
+    { "wave": 1, "name": "Keyless recall event feeds", "why": "highest on-funnel leverage, zero new UI — dated documented events straight into the ADR-011 co-occurrence surface" },
+    { "wave": 2, "name": "Keyed event feed", "why": "same events lane, a beat later once the credential is pulled" },
+    { "wave": 3, "name": "Descriptive backdrops (labor / demand / packaging+freight)", "why": "fenced-off new lanes — the ~30% of the plate the food index is silent on; strictly descriptive, kept out of the index/pressure/VB" },
+    { "wave": 4, "name": "Nutrient multiplier", "why": "a CC0 composition constant × existing prices+yields → a derived CC-BY $/g-protein layer" },
+    { "wave": 5, "name": "World supply", "why": "non-US production/stocks/exports behind imported items; email-keyed adapters" },
+    { "wave": 6, "name": "Context-only (forecast / stated / statutory)", "why": "quarantined to sourced-claims prose; the risk here is the honesty boundary, not access" }
+  ],
+  "sources": [
+    {
+      "id": "openfda-food-enforcement", "name": "openFDA Food Enforcement (recalls)", "publisher": "US FDA",
+      "domain": "federal", "lane": "events", "wave": 1, "status": "ready", "access": "keyless",
+      "endpoint": "https://api.fda.gov/food/enforcement.json",
+      "key_env": null, "key_note": "optional free api.data.gov key only raises rate limits",
+      "license": "CC0-1.0 / public-domain-usgov", "redistributable": true, "confidence": "verified",
+      "adds": "Dated recall events (reason, class, firm, distribution states) for produce/seafood/dairy/spices/nuts.",
+      "honesty_guard": "Co-occurrence only on the ADR-011 events surface — an event flag/count beside a price window, never an asserted cause or magnitude; direction only where it agrees with directionExpected.",
+      "adapter": "scripts/fetch-food-recalls.mjs", "output": "data/food-recalls.json"
+    },
+    {
+      "id": "fsis-recall", "name": "USDA FSIS Recall & Public Health Alert API", "publisher": "USDA FSIS",
+      "domain": "federal", "lane": "events", "wave": 1, "status": "ready", "access": "keyless",
+      "endpoint": "https://www.fsis.usda.gov/fsis/api/recall/v/1",
+      "key_env": null, "license": "public-domain-usgov", "redistributable": true, "confidence": "verified",
+      "adds": "The meat/poultry/egg half openFDA excludes — recalls + PHAs (product, establishment, reason, states, dates).",
+      "honesty_guard": "Same co-occurrence framing as openFDA; pairs with it so the recall lane spans both jurisdictions without double-claiming an event.",
+      "adapter": "scripts/fetch-meat-recalls.mjs", "output": "data/meat-recalls.json"
+    },
+    {
+      "id": "fda-import-refusals", "name": "FDA Import Refusals (Data Dashboard API)", "publisher": "US FDA (OII)",
+      "domain": "federal", "lane": "events", "wave": 2, "status": "park", "access": "free-key",
+      "endpoint": "https://api-datadashboard.fda.gov/v1/import_refusals",
+      "key_env": "FDA_DASHBOARD_KEY", "key_note": "AUDIT FIX: NOT keyless (bare endpoint → 403). Requires Authorization-User + Authorization-Key from the OII Unified Logon (manual approval); a distinct credential from BLS/Census/data.gov keys. Also confirm whether the monthly Import Refusal Report bulk files give a truly keyless path.",
+      "license": "public-domain-usgov", "redistributable": true, "confidence": "likely",
+      "adds": "Refused-entry lines by product × country × charge — turns the Census origin-HHI already in the ISR into a live risk read.",
+      "honesty_guard": "Co-occurrence event lane; a refusal is a documented border event, never an asserted price cause.",
+      "adapter": "scripts/fetch-import-refusals.mjs", "output": "data/import-refusals.json"
+    },
+    {
+      "id": "bls-qcew-food-service", "name": "BLS QCEW — county avg weekly wage (NAICS 722/7225)", "publisher": "US BLS",
+      "domain": "federal", "lane": "labor", "wave": 3, "status": "ready", "access": "keyless",
+      "endpoint": "https://data.bls.gov/cew/data/api/{YEAR}/{QTR}/area/{FIPS}.csv",
+      "key_env": null, "key_note": "Montgomery County MD FIPS 24031", "license": "public-domain-usgov",
+      "redistributable": true, "confidence": "verified",
+      "adds": "County restaurant-industry avg weekly wage + employment — opens the labor slice the food index is silent on.",
+      "honesty_guard": "Separate LABOR lane, descriptive tier — never blended into the food index, the pressure math, or the Vendor Benchmark reference.",
+      "adapter": "scripts/fetch-qcew-wages.mjs", "output": "data/qcew-wages.json"
+    },
+    {
+      "id": "census-marts-foodservice", "name": "Census MARTS — Food Services & Drinking Places sales", "publisher": "US Census Bureau (EITS)",
+      "domain": "federal", "lane": "demand", "wave": 3, "status": "park", "access": "free-key",
+      "endpoint": "https://api.census.gov/data/timeseries/eits/marts",
+      "key_env": "CENSUS_KEY", "key_note": "free key, may be held; FRED mirror series RSFSDP/RSFSDPN needs no key",
+      "license": "public-domain-usgov", "redistributable": true, "confidence": "verified",
+      "adds": "Monthly NAICS 722 top-line = the sell-side / pricing-power backdrop the corpus lacks.",
+      "honesty_guard": "Observed sales, not a demand forecast; the advance estimate is labeled provisional; never fed into the pressure math.",
+      "adapter": "scripts/fetch-marts-sales.mjs", "output": "data/marts-sales.json"
+    },
+    {
+      "id": "usda-fooddata-central", "name": "USDA FoodData Central", "publisher": "USDA ARS",
+      "domain": "federal", "lane": "nutrient", "wave": 4, "status": "park", "access": "free-key",
+      "endpoint": "https://api.nal.usda.gov/fdc/v1",
+      "key_env": "FDC_KEY", "key_note": "AUDIT FIX: source nutrient constants from Foundation Foods + SR Legacy (clean CC0), NOT the contributor-supplied Branded subset; bulk download at fdc.nal.usda.gov/download-datasets",
+      "license": "CC0-1.0", "redistributable": true, "confidence": "verified",
+      "adds": "Nutrient composition/100g × existing price levels + edible yields → $/g-protein, $/calorie, cost-per-nutrient rankings.",
+      "honesty_guard": "A composition constant, not a price; the derived $/nutrient output is OUR deterministic recompute (published CC-BY 'Muntin Digital' per ADR-015), never a market level.",
+      "adapter": "scripts/fetch-fdc-nutrients.mjs", "output": "data/fdc-nutrients.json"
+    },
+    {
+      "id": "bls-oews-metro-wage", "name": "BLS OEWS — occupation × metro wage", "publisher": "US BLS",
+      "domain": "federal", "lane": "labor", "wave": 3, "status": "park", "access": "free-key",
+      "endpoint": "https://api.bls.gov/publicAPI/v2/timeseries/data/",
+      "key_env": "BLS_KEY", "key_note": "OEUM… series; cooks 35-2014, servers 35-3031, dishwashers 35-9021, supervisors 35-1012; Washington-Arlington-Alexandria MSA. Bulk file bls.gov/oes/current/oes_msa.htm",
+      "license": "public-domain-usgov", "redistributable": true, "confidence": "likely",
+      "adds": "Per-role wage (mean + percentiles) — the cut QCEW's industry average can't give.",
+      "honesty_guard": "Separate LABOR lane; an annual point-in-time snapshot labeled lagged ~1yr — descriptive backdrop, not a wholesale level.",
+      "adapter": "scripts/fetch-oews-wages.mjs", "output": "data/oews-wages.json"
+    },
+    {
+      "id": "bls-ppi-packaging", "name": "BLS PPI — packaging & non-food leaves", "publisher": "US BLS",
+      "domain": "federal", "lane": "packaging", "wave": 3, "status": "park", "access": "free-key",
+      "endpoint": "https://api.bls.gov/publicAPI/v2/timeseries/data/",
+      "key_env": "BLS_KEY", "key_note": "WPU commodity series — corrugated/fiber boxes, plastics film, foil, foam, nitrile gloves, cleaning compounds, CO2. PIN the exact WPU codes before shipping (never a guessed code).",
+      "license": "public-domain-usgov", "redistributable": true, "confidence": "likely",
+      "adds": "Off-premise / operating-cost backdrop distinct from the food commodities.",
+      "honesty_guard": "Separate PACKAGING lane, descriptive; never blended into the food index or pressure math.",
+      "adapter": "scripts/fetch-ppi-packaging.mjs", "output": "data/ppi-packaging.json"
+    },
+    {
+      "id": "bls-ppi-trucking", "name": "BLS PPI — long-distance / refrigerated TL trucking", "publisher": "US BLS",
+      "domain": "federal", "lane": "freight", "wave": 3, "status": "park", "access": "free-key",
+      "endpoint": "https://api.bls.gov/publicAPI/v2/timeseries/data/",
+      "key_env": "BLS_KEY", "key_note": "PPI industry series PCU484121… — confirm the exact series ID before shipping",
+      "license": "public-domain-usgov", "redistributable": true, "confidence": "likely",
+      "adds": "The freight rate distinct from the wired EIA diesel input — 'fuel, or the trucking market tightening?'",
+      "honesty_guard": "Separate FREIGHT lane, descriptive; sits beside (not inside) the diesel driver.",
+      "adapter": "scripts/fetch-ppi-trucking.mjs", "output": "data/ppi-trucking.json"
+    },
+    {
+      "id": "nass-aquaculture", "name": "USDA NASS — Catfish & Trout + Census of Aquaculture", "publisher": "USDA NASS",
+      "domain": "federal", "lane": "world-supply", "wave": 5, "status": "park", "access": "free-key",
+      "endpoint": "https://quickstats.nass.usda.gov/api/api_GET/",
+      "key_env": "NASS_KEY", "key_note": "confirm commodity_desc=CATFISH/TROUT; Census-of-Aquaculture bulk tables for shrimp/salmon/tilapia farmed fundamentals",
+      "license": "public-domain-usgov", "redistributable": true, "confidence": "likely",
+      "adds": "US farmed-seafood fundamentals the wild-landings (NOAA) + customs unit-value (Census) pair can't see.",
+      "honesty_guard": "Honest subset per ADR-013 — never the measured tier or the VB reference; a production fundamental, not a price.",
+      "adapter": "scripts/fetch-nass-aquaculture.mjs", "output": "data/nass-aquaculture.json"
+    },
+    {
+      "id": "fas-psd-online", "name": "USDA FAS — PSD Online", "publisher": "USDA FAS",
+      "domain": "federal", "lane": "world-supply", "wave": 5, "status": "park", "access": "email-key",
+      "endpoint": "https://apps.fas.usda.gov/PSDOnlineDataServices/api/CommodityData/GetAllData",
+      "key_env": "FAS_KEY", "key_note": "AUDIT FIX: key is NOT self-serve — request by emailing psdonline@fas.usda.gov; passed in a non-standard header named API_KEY (not a data.gov api_key query param). Confirm whether GATS/ESR share this credential/host before treating them as one adapter.",
+      "license": "public-domain-usgov", "redistributable": true, "confidence": "verified",
+      "adds": "Country-level area/yield/production/stocks-to-use for non-US/world supply of imported produce, coffee, sugar, oils, beef.",
+      "honesty_guard": "Settled marketing-year rows descriptive; forward-year rows attributed context-only, never a forecast in our voice.",
+      "adapter": "scripts/fetch-fas-psd.mjs", "output": "data/fas-psd.json"
+    },
+    {
+      "id": "fas-esr", "name": "USDA FAS — Export Sales Reporting (ESR)", "publisher": "USDA FAS",
+      "domain": "federal", "lane": "world-supply", "wave": 5, "status": "park", "access": "email-key",
+      "endpoint": "https://apps.fas.usda.gov/OpenData/api/esr/",
+      "key_env": "FAS_KEY", "key_note": "confirm the ESR endpoint + commodity list share the FAS_KEY/host with PSD (OpendataWeb v2)",
+      "license": "public-domain-usgov", "redistributable": true, "confidence": "likely",
+      "adds": "Weekly US export commitments (beef, pork, grains/oils) — cadence matches the weekly dispatch.",
+      "honesty_guard": "A documented weekly commitment, co-occurrence with domestic protein windows — never an asserted supply-tightening cause.",
+      "adapter": "scripts/fetch-fas-esr.mjs", "output": "data/fas-esr.json"
+    },
+    {
+      "id": "usda-wasde", "name": "USDA WASDE", "publisher": "USDA OCE",
+      "domain": "federal", "lane": "context-only", "wave": 6, "status": "context-only", "access": "keyless",
+      "endpoint": "https://www.usda.gov/oce/commodity-markets/wasde-report",
+      "key_env": null, "key_note": "consolidated CSV 2010–present, no key", "license": "public-domain-usgov",
+      "redistributable": true, "confidence": "verified",
+      "adds": "Monthly ending stocks, stocks-to-use, USDA's own season-avg farm-price range.",
+      "honesty_guard": "CONTEXT-ONLY: this is USDA's forecast — cited in dispatch prose as USDA's number, NEVER an /open series and NEVER a pressure input; the fact gate keeps it out of our own voice.",
+      "adapter": null, "output": "sourced-claims (dispatch prose)"
+    },
+    {
+      "id": "sec-edgar", "name": "SEC EDGAR — distributor & chain filings", "publisher": "US SEC",
+      "domain": "federal", "lane": "context-only", "wave": 6, "status": "context-only", "access": "keyless",
+      "endpoint": "https://data.sec.gov/api/xbrl/companyconcept/CIK{…}/us-gaap/GrossProfit.json",
+      "key_env": null, "key_note": "AUDIT FIX: numeric XBRL facts are public-domain and OK; the filer's MD&A NARRATIVE is authored text — extract numbers + short attributed quotes ('Sysco reported product cost inflation of X%'), NEVER republish MD&A prose as an /open series.",
+      "license": "public-domain-usgov (numeric facts only)", "redistributable": true, "confidence": "verified",
+      "adds": "Broadliner gross-margin trend (Sysco/USFD/PFGC) + stated product-cost inflation by category.",
+      "honesty_guard": "CONTEXT-ONLY, numbers-not-narrative: numeric facts + short attributed quotes in dispatch prose; never a republished series.",
+      "adapter": null, "output": "sourced-claims (dispatch prose)"
+    },
+    {
+      "id": "usitc-hts", "name": "USITC — HTS tariff schedule (+ DataWeb)", "publisher": "USITC",
+      "domain": "federal", "lane": "context-only", "wave": 6, "status": "context-only", "access": "keyless",
+      "endpoint": "https://hts.usitc.gov/reststop/exportList",
+      "key_env": null, "key_note": "HTS export JSON/CSV no key; DataWeb (datawebws.usitc.gov) needs a free token — PARK",
+      "license": "public-domain-usgov", "redistributable": true, "confidence": "verified",
+      "adds": "Column-1 duty rates + scheduled/Section-301 changes by HTS — turns origin-HHI into a cost-risk flag.",
+      "honesty_guard": "CONTEXT-ONLY: a duty-rate schedule (a published fact), cited in prose; never blended into the measured tier.",
+      "adapter": null, "output": "sourced-claims (dispatch prose)"
+    },
+    {
+      "id": "usbr-rise", "name": "USBR RISE — reservoir storage", "publisher": "US Bureau of Reclamation",
+      "domain": "federal", "lane": "context-only", "wave": 6, "status": "context-only", "access": "keyless",
+      "endpoint": "https://data.usbr.gov/rise/api/result",
+      "key_env": null, "key_note": "map per-reservoir IDs to growing regions (CA Central Valley, Colorado River)", "license": "public-domain-usgov",
+      "redistributable": true, "confidence": "verified",
+      "adds": "Reservoir storage vs 30-yr avg — water-supply backdrop behind produce, tree nuts, cattle liquidation.",
+      "honesty_guard": "CONTEXT-ONLY backdrop, co-occurrence with growing regions; never an asserted price cause or forecast.",
+      "adapter": null, "output": "sourced-claims (dispatch prose)"
+    },
+    {
+      "id": "md-montgomery-min-wage", "name": "MD + Montgomery County statutory min/tipped wage schedule", "publisher": "MD DOL / Montgomery County",
+      "domain": "state-highered", "lane": "labor", "wave": 6, "status": "context-only", "access": "keyless",
+      "endpoint": "https://www.montgomerycountymd.gov/humanrights/minimumwage.html",
+      "key_env": null, "key_note": "HTML/PDF, manual upkeep, no API; the wage floor is law, stepping every July 1, CPI-indexed",
+      "license": "public-domain (statute / edict of government)", "redistributable": true, "confidence": "likely",
+      "adds": "A rare forward-SCHEDULED, non-forecast number — the wage floor is law, not a prediction.",
+      "honesty_guard": "A statutory schedule (a published legal fact), cited in prose; the one 'forward' number allowed because it is enacted law, not a forecast.",
+      "adapter": null, "output": "sourced-claims (dispatch prose)"
+    }
+  ]
+}
