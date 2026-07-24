@@ -530,6 +530,7 @@ const CHECKS = [
   ['Recalls open-data sync','build-recalls-open-data.mjs','--check'],
   ['QCEW labor adapter self-test','fetch-qcew-wages.mjs','--self-test'],
   ['MARTS demand adapter self-test','fetch-marts-sales.mjs','--self-test'],
+  ['NASS aquaculture adapter self-test','fetch-nass-aquaculture.mjs','--self-test'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
   ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
   // Study evidence dataset (ADR-019): the menu-pricing paper's claims × its 36 grounding sources
