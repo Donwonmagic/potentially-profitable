@@ -138,6 +138,30 @@ trustworthy read of an UNsteady bill with a low-confidence read → plain "{n}%"
 window on the routes (VR-2-window — a "which window?" product knob; the honest "prompt to look, not a verdict"
 framing already softens the permanent-scar read). apps/api 3181 green; r2 re-audit → 0 (journal-verified).
 
+And **line-item-drift — ✅ CONVERGED r1→r3 (2026-07-24)** (product-only; `/insights/drift`, a per-vendor
+ACCUSATION that a line description was renamed/grade-swapped, computed from a Jaccard token-overlap heuristic
+over free-text descriptions). 2-lens audit → **5 confirmed = 3 distinct.** (DRIFT-1, HIGH) the header "Detects
+when a vendor renamed a SKU" + table "Likely renames" asserted a VENDOR ACTION from bare token overlap ≥ 0.5 —
+"chicken breast boneless"→"chicken thigh boneless" scores *exactly* 0.50, so an operator switching cuts was told
+the vendor renamed a SKU (and the tool never reads a SKU field — it tokenizes free-text descriptions). Fixed:
+reframed to a non-attributive prompt ("can mean a vendor renamed an item — or that you started ordering a
+different one. A prompt to look, not a verdict"; table → "Possible description changes"). (DRIFT-2, HIGH) the
+empty state "Vendors are sticking with the same line descriptions" claimed earned calm over missing/thin data
+(undated invoices skipped; nothing below MIN_OBS(3) trackable). Fixed: compute returns
+`records_scanned`/`records_dated`/`descriptions_tracked`; the page gates the reassuring copy on
+`descriptions_tracked>0`, else a thin-data state naming the undated count. (DRIFT-4, MED) the "Disappeared (no
+partner)" list was framed as "renames the matcher missed", attributing operator-side stops/over-buys/menu-drops
+to the vendor → neutral "Stopped/Started appearing" + "not necessarily the vendor." Refuted: the grade-change
+example living only in a docblock (safe under-detection); "Similarity 0.50" as false precision ("Similarity" is
+honestly named, 0.50 sorts to the *bottom*). **Then r2 caught DRIFT-2-STORE-PREFILTER (MED)** — my DRIFT-2 fix
+worked in the unit test but not in production: `GET /line-item-drift` fetches via `listForOrg` with a `startDate`,
+whose Neon SQL is `WHERE e.issue_date >= $`, and `NULL >= x` is NULL, so undated invoices were dropped **at the
+store before the compute** — `undatedCount` was structurally ~0 and my disclosure a dead branch (the
+blast-radius store-vs-compute divergence again; the unit test fed undated records straight to the compute,
+bypassing the store filter). Fixed r3: taught `listForOrg` the `dateBasis:"coalesce"` path (mirrors
+`listLedgerForOrg`/BP-CHIP-02; default basis unchanged, no other caller affected) so undated invoices are
+returned and counted honestly. r3 re-audit → 0. apps/api 3186 green.
+
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
   (happened again 2026-07-23). Before each audit: `git reset --hard origin/<branch>` and verify
@@ -161,6 +185,16 @@ framing already softens the permanent-scar read). apps/api 3181 green; r2 re-aud
   cards contradict each other on the same data.
 - **Convergence discipline** — a re-audit only "converges" if the agents genuinely read/ran the
   code (check the workflow journal for real tool activity), not merely returned empty.
+- **A data-sufficiency fix must be verified through the REAL fetch path, not just the compute unit**
+  — line-item-drift DRIFT-2 added records_scanned/undatedCount so the empty state could disclose
+  undated invoices, and the compute unit test (feeding undated records straight in) passed. But the
+  production route fetches via `listForOrg` whose SQL is `WHERE e.issue_date >= $`, and `NULL >= x`
+  is NULL, so undated rows were dropped AT THE STORE before the compute ever counted them — the
+  disclosure was a dead branch (r2 caught it, DRIFT-2-STORE-PREFILTER). When a fix counts or discloses
+  "missing" rows, trace the actual query that feeds it: a filter on a nullable column silently
+  excludes the very NULLs you meant to count. Fix by fetching undated-inclusive (`dateBasis:"coalesce"`
+  — the same COALESCE(issue_date, created_at) pattern budget-pacing already established), not by
+  trusting the unit test that bypassed the store.
 - **When a metric measures a proxy for its label, relabel to the proxy — don't keep the aspirational
   word** — vendor "reliability" was `1 - cv(invoice.total)`: a bill-TOTAL variance labeled as "prices"
   and "reliability" (a proxy blamed on the vendor for the operator's own order-size swings). The true
