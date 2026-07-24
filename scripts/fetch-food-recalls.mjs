@@ -73,8 +73,8 @@ function matchSlugs(product, kws) {
 // merely names an ingredient as a flavor. Keep a match only when the product reads like the commodity:
 // a fresh/raw cue is present, OR the name is short (the product basically IS the ingredient) — and
 // never when a processed-form word (rings/pudding/chips/sauce/…) is present.
-const FRESH_CUE = /\b(fresh|raw|whole|organic|bulk|sprouts?|salad|leafy|bunch|clamshell|shell[- ]?on|head|cut|diced|sliced|peeled|produce)\b/;
-const PROCESSED_CUE = /\b(rings?|pudding|cookies?|candy|chocolate|lassi|sauce|dressing|snacks?|bars?|drinks?|beverage|dessert|cakes?|pie|ice[- ]?cream|flavou?red|seasoning|marshmallow|cereal|granola|chips?|crackers?|jerky|bread|muffins?|smoothie|latte|syrup|jam|jelly|spread|dip)\b/;
+const FRESH_CUE = /\b(fresh|raw|whole|organic|bulk|sprouts?|leafy|bunch|clamshell|shell[- ]?on|head|cut|diced|sliced|peeled|produce)\b/;
+const PROCESSED_CUE = /\b(rings?|pudding|cookies?|candy|chocolate|lassi|sauce|dressing|snacks?|bars?|drinks?|beverage|dessert|cakes?|cheesecake|pie|ice[- ]?cream|flavou?red|seasoning|marshmallow|cereal|granola|chips?|crackers?|jerky|bread|muffins?|smoothie|latte|syrup|jam|jelly|spread|dip|salad|burgers?|fillets?|sandwich|sandwiches|patty|patties|pizza|wraps?|meals?|kit|entree|hummus|deli|tacos?|burritos?|sushi|rolls?|nuggets?|tenders?|dumplings?)\b/;
 function isFreshCommodity(product) {
   const p = String(product || '').toLowerCase();
   if (PROCESSED_CUE.test(p)) return false;
@@ -134,6 +134,9 @@ function selfTest() {
   eq('short commodity name → kept', isFreshCommodity('Romaine Lettuce 10 oz'), true);
   eq('processed form (chips) → dropped even though it names onion', isFreshCommodity('Wise Sour Cream & Onion Potato Chips, 3.75 oz'), false);
   eq('long finished product with no fresh cue → dropped', isFreshCommodity('Chicken Fillet Deluxe Sandwich with Bacon and Cheese'), false);
+  eq('prepared deli salad → dropped (salad is not a fresh cue)', isFreshCommodity('boichik bagels Whitefish Salad'), false);
+  eq('short dessert name → dropped (cheesecake)', isFreshCommodity('Strawberry Cheesecake The Original'), false);
+  eq('brand "Fresh …" burger → dropped (processed wins over the fresh cue)', isFreshCommodity('Fresh to You Burger with Bacon'), false);
   const out = assemble(DEMO.results, kws, null);
   eq('filter keeps only the fresh cilantro/onion tray (drops cookie dough + onion chips)', out.matched, 1);
   eq('kept recall carries slug tags', out.recalls[0].slugs.sort().join(','), 'cilantro,onion');
