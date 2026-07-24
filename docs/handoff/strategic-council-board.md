@@ -86,6 +86,22 @@ the tool never computes → relabel "Internal-use spend (may be taxable)". (UT-4
 unearned clean bill (the WEB-N3 pattern again) → `invoices_scanned` denominator + split. (UT-2) every row's
 `/document/${synthetic-id}` link 404'd → render vendor as plain text (real-id wiring is a follow-up). apps/
 api 3164 green; r2 re-audit → 0.
+And **duplicate detector — ✅ CONVERGED r1→r4 (2026-07-24)** (product-only; a double-bill accusation — the
+last verdict kind in the anomaly family). 2-lens audit → **5 confirmed = 3 distinct.** (DUP-1, HIGH) the
+matcher used vendor + EXACT total + line-item hash and NEVER read `invoice_number`, so a standing weekly
+order (identical items+total, DIFFERENT invoice number, within 30d) scored 1.0 and was flagged "Possible
+duplicate ... Confidence 100%" — a re-scan of the same bill shares its number, a repeat differs, and that
+field (the app's dedup key in posting-dedup/statement-matcher) was discarded. (DUP-2, HIGH) "Confidence N%"
+rendered a 3-value match-tier ordinal {0.75,0.85,1.0} as a calibrated probability. (DUP-3) the 0.75 tier
+fires when line counts DIFFER — proof they're not the same scan — yet warned "75%". Fixed: read
+`invoice_number` (same→warn "same bill twice"; differ→info "repeat" + "check for a double charge";
+absent→warn that says we couldn't compare); dropped the "%" for what-actually-matched wording; 0.75→calm
+info. DUP-4 (card omits number/date) refuted. **Then r2+r3 each caught a branch-logic defect** in the new
+4-branch decision matrix: r2 **DUP-CONV-1** (tested the tier before `numbersMatch`, so a same-number re-scan
+at 0.75 read "likely unrelated" — reorder numbersMatch first); r3 **DUP-CONV-R3-1** (the tier-only branch
+also swallowed the ABSENT-number@0.75 cell, asserting "unrelated" for an unreadable-number off-by-one, the
+re-scan signature — narrowed the guard to `numbersDiffer && best<0.85`). r4 walked all 12 tier×number cells
+→ 0. apps/api 3169 green.
 
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
@@ -124,6 +140,12 @@ api 3164 green; r2 re-audit → 0.
   when the scanned set was empty. Both the anomaly strip (WEB-N3, `window_extractions`) and the use-tax
   watchdog (UT-4, `invoices_scanned`) needed a denominator to split "no data" from "reviewed, clean."
   Check every summary/empty surface for this before shipping.
+- **When a fix becomes a branch MATRIX, every cell is a claim** — replacing one string with a
+  severity+copy decision over `states × tiers` (duplicate: {match/differ/absent} × {0.75/0.85/1.0}) means
+  the catch-all branch silently OWNS the cells you didn't name. The duplicate re-audit caught a wrong cell
+  each round (r2 numbersMatch-ordering, r3 absent@0.75) until r4 walked all twelve. Enumerate the full
+  matrix and check each cell — and order the branches so the strongest signal (a matching id) wins before
+  a coarser tier gate short-circuits it (same bug shape as AN-B1).
 
 ## ⮕ CURRENT STATE — AUTONOMOUS REDESIGN RUN (updated 2026-07-11)
 
