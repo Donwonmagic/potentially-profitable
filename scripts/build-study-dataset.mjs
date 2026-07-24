@@ -197,6 +197,95 @@ function buildDatapackage({ studyCsv, menuCsv, version }) {
   };
 }
 
+const RESEARCH_URL = URL;
+const OPEN_URL = 'https://muntin.digital/open/';
+const METHODS_URL = 'https://muntin.digital/methods/';
+const yq = (s) => '"' + String(s == null ? '' : s).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
+const bareDoi = (s) => (s || '').replace(/^https?:\/\/(dx\.)?doi\.org\//, '');
+
+// CITATION.cff 1.2.0 — CI-validatable citation metadata. The paper's own DOI is deliberately a
+// commented `pending` placeholder (minted on the operator Mac; never fabricated); the 36 upstream
+// sources are listed as references with their real DOIs.
+function buildCitationCff(ev, version) {
+  const kw = (ev.paper.keywords || []).map((k) => `  - ${yq(k)}`).join('\n');
+  const refs = ev.sources.map((s) => {
+    const idLine = s.doi ? `\n    doi: ${yq(bareDoi(s.doi))}` : (s.id ? `\n    url: ${yq(s.id)}` : '');
+    return `  - type: article\n    title: ${yq(s.title)}\n    year: ${s.year}\n    authors:\n      - name: ${yq(s.authors)}${idLine}`;
+  }).join('\n');
+  return [
+    'cff-version: 1.2.0',
+    `message: ${yq('If you use this field report or its data, please cite it as below.')}`,
+    `title: ${yq(ev.paper.title)}`,
+    'type: dataset',
+    'authors:',
+    '  - name: "The Muntin Desk"',
+    '  - family-names: Goldstein',
+    '    given-names: Don',
+    `version: ${yq(version)}`,
+    `date-released: ${yq(version.replace(/\./g, '-'))}`,
+    'license: CC-BY-4.0',
+    `url: ${yq(RESEARCH_URL)}`,
+    '# doi: pending — reserved, minted on the operator Mac; never fabricated',
+    'keywords:',
+    kw,
+    'references:',
+    refs,
+    '',
+  ].join('\n');
+}
+
+// DataCite 4.x metadata — PREPARED, NOT MINTED. doi is null; ORCID is TO-FILL. The operator mints.
+function buildDataCite(ev, version) {
+  return {
+    _doc: 'DataCite 4.x metadata for the Menu-Pricing field report — PREPARED, NOT MINTED. doi is a null placeholder and the ORCID is TO-FILL; both are set when the operator mints the DOI on the Mac. Never fabricate a DOI or ORCID.',
+    data: {
+      type: 'dois',
+      attributes: {
+        doi: null,
+        titles: [{ title: ev.paper.title }],
+        creators: [
+          { name: 'The Muntin Desk', nameType: 'Organizational' },
+          { name: 'Goldstein, Don', nameType: 'Personal', givenName: 'Don', familyName: 'Goldstein', nameIdentifiers: [{ nameIdentifier: 'TO-FILL', nameIdentifierScheme: 'ORCID' }] },
+        ],
+        publisher: 'Muntin Cost Index',
+        publicationYear: Number(version.slice(0, 4)),
+        types: { resourceTypeGeneral: 'Text', resourceType: 'Working paper (practitioner field report; not peer-reviewed)' },
+        version,
+        rightsList: [{ rights: 'Creative Commons Attribution 4.0 International', rightsIdentifier: 'cc-by-4.0', rightsIdentifierScheme: 'SPDX', rightsUri: CCBY }],
+        relatedIdentifiers: [
+          { relationType: 'IsSupplementTo', relatedIdentifier: RESEARCH_URL, relatedIdentifierType: 'URL' },
+          { relationType: 'IsDerivedFrom', relatedIdentifier: OPEN_URL, relatedIdentifierType: 'URL' },
+          { relationType: 'IsDocumentedBy', relatedIdentifier: METHODS_URL, relatedIdentifierType: 'URL' },
+        ],
+        subjects: (ev.paper.keywords || []).map((k) => ({ subject: k })),
+        descriptions: [{ description: ev.paper.abstract, descriptionType: 'Abstract' }],
+      },
+    },
+  };
+}
+
+// CHANGELOG.md — Keep a Changelog. Re-render/re-derive events are logged, never silently overwritten.
+function buildChangelog(version) {
+  return [
+    '# Changelog — Menu-Pricing field report & datasets',
+    '',
+    'All notable changes to the field report (`/cost-index/menu-pricing/study/`) and its CC-BY data',
+    'bundle (`study.csv`, `datapackage.json`, `menu-pricing.csv`). Format: [Keep a Changelog]. The',
+    'paper is versioned by date (WP-001 = 2026.07.11). Re-render and re-derive events are logged here,',
+    'never silently overwritten; a correction links old→new via the DataCite `IsCorrectedBy` relation.',
+    '',
+    `## [${version}] — ${version.replace(/\./g, '-')} · WP-001`,
+    '',
+    '### Added',
+    '- Initial practitioner field report grounding a per-ingredient menu-pricing method in 36 sources.',
+    '- Machine bundle: 13-column lossless `study.csv`, Frictionless `datapackage.json` (sha256-pinned),',
+    '  `CITATION.cff`, `datacite.json` (prepared, DOI reserved), and this changelog.',
+    '',
+    '[Keep a Changelog]: https://keepachangelog.com/en/1.1.0/',
+    '',
+  ].join('\n');
+}
+
 function artifacts() {
   const studyFile = rd('data/cost-research-study.json');
   const study = studyFile.en;
@@ -212,6 +301,9 @@ function artifacts() {
     { rel: 'cost-index/menu-pricing/study/study.json', content: JSON.stringify(buildJson(ev, studyFile.generated), null, 2) + '\n' },
     { rel: 'cost-index/menu-pricing/study/study.csv', content: studyCsv },
     { rel: 'cost-index/menu-pricing/study/datapackage.json', content: JSON.stringify(dp, null, 2) + '\n' },
+    { rel: 'cost-index/menu-pricing/study/CITATION.cff', content: buildCitationCff(ev, version) },
+    { rel: 'cost-index/menu-pricing/study/datacite.json', content: JSON.stringify(buildDataCite(ev, version), null, 2) + '\n' },
+    { rel: 'cost-index/menu-pricing/study/CHANGELOG.md', content: buildChangelog(version) },
   ];
 }
 
@@ -260,6 +352,17 @@ function selfTest() {
   eq('live paper cites 36 sources', live.sources.length, 36);
   eq('live every source carries a persistent id', live.sources.every((s) => s.id), true);
   eq('live 35 of 36 have a DOI (the lone book uses OCLC/ISBN)', live.sources.filter((s) => s.doi).length, 35);
+  // machine-citation artifacts (CITATION.cff / datacite.json / CHANGELOG.md) — honesty: no fabricated DOI/ORCID
+  const cff = buildCitationCff(live, '2026.07.11');
+  eq('CFF is cff-version 1.2.0', cff.startsWith('cff-version: 1.2.0'), true);
+  eq('CFF lists all 36 upstream references', (cff.match(/^  - type: article$/gm) || []).length, 36);
+  eq('CFF does not fabricate a paper DOI (only a commented pending)', /^doi:/m.test(cff), false);
+  const dc = buildDataCite(live, '2026.07.11');
+  eq('DataCite DOI is null (pending mint, never fabricated)', dc.data.attributes.doi, null);
+  eq('DataCite ORCID is the TO-FILL placeholder', dc.data.attributes.creators[1].nameIdentifiers[0].nameIdentifier, 'TO-FILL');
+  eq('DataCite rights carry the CC-BY-4.0 SPDX id', dc.data.attributes.rightsList[0].rightsIdentifier, 'cc-by-4.0');
+  eq('DataCite relates to the /open/ derivation + /methods', dc.data.attributes.relatedIdentifiers.map((r) => r.relationType).sort().join(','), 'IsDerivedFrom,IsDocumentedBy,IsSupplementTo');
+  eq('CHANGELOG carries the WP-001 version heading', buildChangelog('2026.07.11').includes('## [2026.07.11]'), true);
   console.log(`build-study-dataset self-test: ${pass}/${pass + fail} passed.`);
   process.exit(fail ? 1 : 0);
 }
@@ -276,5 +379,5 @@ if (isMain()) {
     process.exit(0);
   }
   for (const a of arts) fs.writeFileSync(path.join(repo, a.rel), a.content);
-  console.log(`Wrote study.{json,csv,datapackage.json} — ${JSON.parse(arts[0].content).paper.source_count} sources.`);
+  console.log(`Wrote the study bundle (${arts.length} files: study.{json,csv}, datapackage.json, CITATION.cff, datacite.json, CHANGELOG.md) — ${JSON.parse(arts[0].content).paper.source_count} sources.`);
 }
