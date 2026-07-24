@@ -247,12 +247,19 @@ jobs:
           # leaving them out lets them drift stale until the next full build), and
           # the cost-index surfaces. Then discard the incidental site-wide nav
           # re-stamp from sync-includes, so the commit is always exactly the read.
+          # The revisions ledger travels as a PAIR: the public log (data/cost-revisions.json
+          # + cost-index/revisions.json, staged below) AND its diff-basis vintage
+          # (data/cost-index-readings.prev.json). Staging the log alone rolled it forward but
+          # then the `git checkout -- .` below discarded the freshly-rolled prev, so every
+          # later checkout (the Workers deploy, any PR's check-all) saw prev != current and
+          # the revisions --check went red. Stage both so prev never drifts again.
           git add data/cost-index.json data/cost-index.js \
             data/cost-index-health.json data/seasonality.json \
             data/cost-lockfloat.json data/cost-lockfloat.js \
             data/cost-index-audit.json data/cost-index-calibration-report.json \
             data/cost-forecast-backtest.json data/cost-outlook.json \
-            data/cost-revisions.json data/cost-confidence-calibration.json \
+            data/cost-revisions.json data/cost-index-readings.prev.json \
+            data/cost-confidence-calibration.json \
             data/cost-confidence-shadow.json data/email-preview/ \
             cost-index/ es/cost-index/ \
             library/ingredient-yields/ es/library/ingredient-yields/ sitemap.xml
