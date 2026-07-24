@@ -462,7 +462,7 @@ main{padding-top:64px}
   <hr class="od-rule">
   <section aria-labelledby="od-series">
     <h2 class="od-h2" id="od-series">Explore the public series</h2>
-    <p class="od-sub">Thirteen interactive explorers — one per raw public dataset behind the Cost Index. Each runs in the browser, downloads in an open format, and states its own source and license. US-government data is public domain (CC0); Muntin's derivations are CC-BY 4.0.</p>
+    <p class="od-sub">Sixteen interactive explorers — one per raw public dataset behind the Cost Index. Each runs in the browser, downloads in an open format, and states its own source and license. US-government data is public domain (CC0); Muntin's derivations are CC-BY 4.0.</p>
     <div class="od-grid">
       <div class="od-card" style="--accent:var(--teal)">
         <h3>The Import Shelf</h3>
@@ -542,6 +542,26 @@ main{padding-top:64px}
         <p class="od-card__desc">The fused per-ingredient browser — posture, own-baseline band, imports, domestic supply, reliance and the seafood catchpair, one record at a time.</p>
         <div class="od-card__links"><a href="/open/record/">Explore</a><a href="/cost-index/ingredient-state-record.json" download>JSON</a><span class="od-lic">CC-BY</span></div>
       </div>
+      <!-- open-hub:corpus-cards:start -->
+      <div class="od-card" style="--accent:var(--gold)">
+        <h3>Food recalls</h3>
+        <p class="od-card__stat">718 recalls · 96 ingredients · 426 distinct Class-I</p>
+        <p class="od-card__desc">Dated FDA food recalls matched to tracked ingredients by product text — a documented record surfaced on its own, never joined to a price, never a cause.</p>
+        <div class="od-card__links"><a href="/open/recalls/">Explore</a><a href="/cost-index/food-recalls.csv" download>CSV</a><a href="/cost-index/food-recalls-by-ingredient.json" download>JSON</a><span class="od-lic">CC0 · CC-BY</span></div>
+      </div>
+      <div class="od-card" style="--accent:var(--teal)">
+        <h3>Restaurant wages (county)</h3>
+        <p class="od-card__stat">Montgomery County, MD · descriptive backdrop</p>
+        <p class="od-card__desc">County food-services average weekly wage and employment (BLS QCEW) — a descriptive lane, never blended into the food index, the pressure math, or the Vendor Benchmark.</p>
+        <div class="od-card__links"><a href="/open/labor/">Explore</a><a href="/cost-index/qcew-wages.csv" download>CSV</a><a href="/cost-index/qcew-wages.json" download>JSON</a><span class="od-lic">CC0</span></div>
+      </div>
+      <div class="od-card" style="--accent:var(--season)">
+        <h3>Food-service sales</h3>
+        <p class="od-card__stat">National · 138 months · latest provisional</p>
+        <p class="od-card__desc">US food-services monthly sales (Census MARTS) — observed sales, never a forecast; the newest month is a provisional advance estimate.</p>
+        <div class="od-card__links"><a href="/open/demand/">Explore</a><a href="/cost-index/marts-sales.csv" download>CSV</a><a href="/cost-index/marts-sales.json" download>JSON</a><span class="od-lic">CC0</span></div>
+      </div>
+      <!-- open-hub:corpus-cards:end -->
       </div>
   </section>
   <hr class="od-rule">

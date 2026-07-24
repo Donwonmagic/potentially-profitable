@@ -549,6 +549,10 @@ const CHECKS = [
   // forecast/causation vocabulary (scripts/lib/co-occurrence-patterns.mjs) with the events gate.
   ['Open-lane honesty self-test','check-open-lane-honesty.mjs','--self-test'],
   ['Open-lane honesty','check-open-lane-honesty.mjs'],
+  // corpus explorer cards injected into the EN + ES /open hub grids (spec §1.5a) — sentinel block,
+  // count-word reconciled by counting cards; self-test pins the injector, --check pins the hub files.
+  ['Open hub cards self-test','inject-open-cards.mjs','--self-test'],
+  ['Open hub cards sync','inject-open-cards.mjs','--check'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
   ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
   // Study evidence dataset (ADR-019): the menu-pricing paper's claims × its 36 grounding sources
