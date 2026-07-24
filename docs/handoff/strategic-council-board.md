@@ -179,6 +179,28 @@ claimed the opposite ("days between the last two ... null when <2"); fixed heade
 optional `li.sku` is ignored); → "Items (90d)" + doc corrected. apps/api 3188 green; r2 re-audit → 0. **Vendor-
 judgment family now fully audited** (vendor-reliability, vendor-relationships) + the anomaly/spend families.
 
+And **ap-pacing — ✅ CONVERGED r1→r4 (2026-07-24)** (product-only; `/insights/ap-pacing`, a 14-day AP cash pacer:
+"Total to clear (14d)", "Biggest upcoming day", a Due/vendors/bar day table — a money-out planning surface,
+already heavily caveated). 2-lens audit → **3 confirmed = 2 distinct, 1 refuted.** (BAR, HIGH) the day-table bar
+ran off `known_cents`, which for bucket 0 folds in ALL past-due, so an overdue backlog drew TODAY the longest bar
+("today is the biggest day to fund") — contradicting the "Biggest upcoming day" card that deliberately excludes
+folded past-due. Fixed: the compute exposes per-bucket `folded_past_cents`; the page renders a two-segment bar
+(muted overdue + solid upcoming) so the solid length matches the card. (TOTAL-COMPLETENESS, MED) no-due-date bills
+were dropped with no counter, so "Total to clear" silently understated — asymmetric with the *quantified* currency
+exclusion on the same card. Fixed: `excluded_no_due_date_count` returned + a quantified page line. Refuted: the row
+"Due" dollar including folded past-due (correct cash-pacer semantics — overdue is more urgent — disclosed 3×).
+**Then the convergence loop caught residual imprecision in my OWN fixes across two rounds:** r2 — my two-segment
+legend branded still-ambiguous folded bills "Past-due (folded into today)", re-introducing the exact evening-UTC
+false scare `PAST_DUE_CONFIRM_MS` exists to prevent (fixed: neutral "Due earlier (folded in)"), + a pre-existing
+blank-vendor silent drop (fixed: unnamed dateable bills now count in the total, keyed by day not vendor); r3 — that
+SAME over-assertion survived in the hardcoded bar **tooltip** (`title="past-due folded into today"`, also
+untranslated in ES) + my reworded limitation said "(counted below)" when the count renders above (fixed: tooltips
+driven from COPY, "above", and all operator-facing "past-due" now reserved for the confirmed pill + total sub-line
+only). r4 → 0. apps/api 3190 green. **All 6 insight surfaces in `apps/api/src/lib/insights/` now audited**
+(vendor-reliability, vendor-relationship, line-item-drift, budget-pacing, use-tax-watchdog, ap-pacing) — plus
+currency-scope hardened transitively (3 surfaces depend on it; no defects surfaced across the vendor-relationships
++ ap-pacing audits that read it).
+
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
   (happened again 2026-07-23). Before each audit: `git reset --hard origin/<branch>` and verify
@@ -202,6 +224,14 @@ judgment family now fully audited** (vendor-reliability, vendor-relationships) +
   cards contradict each other on the same data.
 - **Convergence discipline** — a re-audit only "converges" if the agents genuinely read/ran the
   code (check the workflow journal for real tool activity), not merely returned empty.
+- **A neutralizing reword must reach EVERY render point of the value, not just the visible label** —
+  ap-pacing's "past-due" over-assertion on the folded superset was fixed in the legend (r2) but survived
+  in the header subhead (caught same round), then in the hardcoded bar-segment `title=` tooltip AND the
+  caveat prose (r3). When you soften a word because a value doesn't support it, grep the whole surface for
+  that word — legend, tooltip/`title` attributes, subhead, caveat copy, both locales — and drive hover text
+  from the same COPY string as the visible label so they can't drift. The convergence loop caught three
+  separate residual instances of one reword across r2+r3; a single grep-sweep at fix time would have caught
+  all of them.
 - **A relabel must propagate to EVERY surface that consumes the same number** — when
   vendor-reliability's score was relabeled "prices"→"Bill steadiness" with an order-size caveat,
   the sibling vendor-relationships table still rendered the identical `scoreVendorReliability`
