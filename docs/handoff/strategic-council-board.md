@@ -162,6 +162,23 @@ bypassing the store filter). Fixed r3: taught `listForOrg` the `dateBasis:"coale
 `listLedgerForOrg`/BP-CHIP-02; default basis unchanged, no other caller affected) so undated invoices are
 returned and counted honestly. r3 re-audit → 0. apps/api 3186 green.
 
+And **vendor-relationships — ✅ CONVERGED r1→r2 (2026-07-24)** (product-only; `/insights/vendor-relationships`,
+a per-vendor rollup table that CONSUMES the just-relabeled `scoreVendorReliability`). 2-lens audit → **8 confirmed
+= 4 distinct, 0 refuted** (both lenses independently found Pricing, SKUs, cadence). (VR-PRICING, HIGH) the
+"Pricing" column showed "low (40)" straight from the bill-steadiness score (`1 - cv(invoice.total)`, order-size
+confounded) under the OLD "pricing" label — so a vendor with flat unit prices but variable operator order sizes
+reads "Pricing: low", **contradicting the sibling `/insights/vendors` surface** which now shows the same number as
+"Bill steadiness / order size moves this too." Fixed: column → "Bill steadiness" + the same order-size caveat in
+the header. (VR-MIXED-CURRENCY, HIGH) spend was summed across currencies with NO scoping and force-stamped "$" —
+a $100 + €100 rendered "$200", an all-EUR vendor showed "$X". Fixed: `computeVendorRelationships` now runs
+`scopeToDominantCurrency` first (like ap-pacing), returns `currency` + `excluded_currency_count`; the page formats
+via `Intl.NumberFormat` off the payload currency and discloses exclusions. (VR-CADENCE, MED) the header called
+days-since-last-invoice "cadence drift" — but it's *recency*, not an inter-invoice interval, and the field doc
+claimed the opposite ("days between the last two ... null when <2"); fixed header ("how recently you last bought")
++ doc. (VR-SKUS, MED) "SKUs (90d)" counted trim+lowercased free-text descriptions (OCR variance inflates; a real
+optional `li.sku` is ignored); → "Items (90d)" + doc corrected. apps/api 3188 green; r2 re-audit → 0. **Vendor-
+judgment family now fully audited** (vendor-reliability, vendor-relationships) + the anomaly/spend families.
+
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
   (happened again 2026-07-23). Before each audit: `git reset --hard origin/<branch>` and verify
@@ -185,6 +202,13 @@ returned and counted honestly. r3 re-audit → 0. apps/api 3186 green.
   cards contradict each other on the same data.
 - **Convergence discipline** — a re-audit only "converges" if the agents genuinely read/ran the
   code (check the workflow journal for real tool activity), not merely returned empty.
+- **A relabel must propagate to EVERY surface that consumes the same number** — when
+  vendor-reliability's score was relabeled "prices"→"Bill steadiness" with an order-size caveat,
+  the sibling vendor-relationships table still rendered the identical `scoreVendorReliability`
+  number as a bare "Pricing: low (40)" — so the two operator surfaces contradicted each other on
+  the same vendor (VR-PRICING). After you rename what a metric IS on one surface, grep for every
+  other consumer of that compute and fix the label there too, or reuse one shared copy string.
+  A metric's honest name is a property of the metric, not of one page.
 - **A data-sufficiency fix must be verified through the REAL fetch path, not just the compute unit**
   — line-item-drift DRIFT-2 added records_scanned/undatedCount so the empty state could disclose
   undated invoices, and the compute unit test (feeding undated records straight in) passed. But the
