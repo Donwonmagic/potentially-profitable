@@ -118,6 +118,25 @@ on `COALESCE(issue_date, created_at)`. (BP-CHIP-02, MED) the panel DROPPED undat
 `issue_date` window) → a real over-budget read "On pace"; fixed with an opt-in `dateBasis:"coalesce"` so the
 panel and verdict now share one basis. BP-2 ("On pace to" is already the pace-conditional hedge) + BP-3 (UTC
 skew, conservative + immaterial) refuted. apps/api 3178 green; r2 → 0.
+And **vendor-reliability → "bill steadiness" — ✅ CONVERGED r1→r2 (2026-07-24)** (product-only; a per-vendor
+JUDGMENT — a 0-100 score sorted worst-first = "who needs a look first"). 2-lens audit → **11 confirmed = 8
+distinct; 6 shipped, 2 deferred as founder forks.** The core defect (VR-1, HIGH): the score is
+`1 - cv(invoice.total.value)` — the variation of **whole-invoice TOTALS** — yet every label called it "prices"
+/ "Reliability" / "who you can count on". Totals swing with **order size**, not only unit price, so the metric
+silently blamed the vendor for the restaurant's own ordering, dressed as a broad trust verdict. The true fix is
+a re-architecture (per-unit price dispersion from line items) — a founder fork — so the honest **interim was to
+RELABEL to what's actually measured**: "Bill steadiness" / "Invoice totals" across tile, index, detail + score
+label (EN+ES), and the caveat now discloses that order size moves the number and it can't see deliveries,
+quality, or on-time delivery (VR-1/VR-2). Also: (VR-3) list rows hid the sample size (a 3-invoice score looked
+as authoritative as a 50-invoice one) → "{n} invoices seen" on every row; (VR-4) `scoreAllVendors` deduped
+case-SENSITIVELY while the score filters case-INSENSITIVELY, so "Sysco"/"SYSCO" became duplicate rows with the
+same merged score → Map keyed on `toLowerCase()`, first-seen casing; (VR-5) a non-positive median total emitted
+a false "0 out of 100" → suppress with a new honest `unscorable_totals` quality; (VR-6) the steadiness sub-score
+routed through `ConfidenceChip`, painting a low value solid-red "do not trust — look here" — conflating a
+trustworthy read of an UNsteady bill with a low-confidence read → plain "{n}%", no confidence semantics.
+**Deferred forks:** the per-unit-price re-architecture + `reliability` code-identifier rename; a recency date
+window on the routes (VR-2-window — a "which window?" product knob; the honest "prompt to look, not a verdict"
+framing already softens the permanent-scar read). apps/api 3181 green; r2 re-audit → 0 (journal-verified).
 
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
@@ -142,6 +161,17 @@ skew, conservative + immaterial) refuted. apps/api 3178 green; r2 → 0.
   cards contradict each other on the same data.
 - **Convergence discipline** — a re-audit only "converges" if the agents genuinely read/ran the
   code (check the workflow journal for real tool activity), not merely returned empty.
+- **When a metric measures a proxy for its label, relabel to the proxy — don't keep the aspirational
+  word** — vendor "reliability" was `1 - cv(invoice.total)`: a bill-TOTAL variance labeled as "prices"
+  and "reliability" (a proxy blamed on the vendor for the operator's own order-size swings). The true
+  fix (per-unit price dispersion from line items) is a re-architecture; the honest interim is to
+  rename the surface to what the number ACTUALLY is ("Bill steadiness" / "Invoice totals") and
+  disclose the confound in the caveat — not to keep a label the compute can't support and hope the
+  bottom hedge cures it. A bottom caveat never cures a headline verdict.
+- **A steadiness/score value is NOT a confidence** — routing a computed sub-score (0..1) through the
+  OCR `ConfidenceChip` (vendor VR-6) makes a low-but-certain reading render as red "do not trust —
+  look here", conflating "we're unsure what we read" with "we're sure, and it's low/unsteady". Render
+  derived scores with their own plain treatment; reserve confidence chrome for extraction confidence.
 - **A softening fix can mint a sharper false claim** — replacing a vague word with a precise one
   (anomaly AN-1: "typical" → "last recorded") can create a NEW falsifiable claim in a corner the
   vague word happened to cover (an override value that appears on no invoice). Make the sharper word
