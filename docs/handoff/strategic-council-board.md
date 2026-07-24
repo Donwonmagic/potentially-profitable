@@ -73,6 +73,19 @@ value on no invoice), fixed by keying the word + info-downgrade off PROVENANCE (
 warn when the shown value is the operator's override). r3 walked the full decision table → 0. AN-2 refuted
 (the title always travels with the "vs … $Y" body). **Open knobs:** `MIN_BASELINE_OBS_FOR_TYPICAL = 2`;
 whether `grade_switch` should block a post (left blocking — a copy-honesty vs posting-UX fork).
+And **use-tax watchdog — ✅ CONVERGED r1→r2 (2026-07-24)** (product-only; a tax-liability accusation —
+a false "you owe use tax" or "you're clear" both carry real consequences). 2-lens audit → **8 confirmed =
+4 distinct issues, each found by BOTH lenses.** The surface was already well-hedged ("your CPA decides"),
+so the defects were precise: (UT-1, HIGH) the page asserted "the vendor charged no sales tax" but the flag
+fires whenever `tax_total.value === 0`, and the engine emits value 0 / confidence 0 BOTH for a genuine
+no-tax invoice AND for an *unread* tax line — an assert-from-missing-data false accusation. The adversarial
+verify's key catch: confidence-0 is ALSO the legitimate no-tax signal, so *soften the claim, don't suppress
+the flag* — carry `tax_unread`, reword the premise to "we didn't find sales tax charged", mark unread rows
+"†". (UT-3) "Estimated taxable" labeled keyword-matched internal-use spend as a per-state legal conclusion
+the tool never computes → relabel "Internal-use spend (may be taxable)". (UT-4) the empty state was an
+unearned clean bill (the WEB-N3 pattern again) → `invoices_scanned` denominator + split. (UT-2) every row's
+`/document/${synthetic-id}` link 404'd → render vendor as plain text (real-id wiring is a follow-up). apps/
+api 3164 green; r2 re-audit → 0.
 
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
@@ -102,6 +115,15 @@ whether `grade_switch` should block a post (left blocking — a copy-honesty vs 
   vague word happened to cover (an override value that appears on no invoice). Make the sharper word
   provenance-true across EVERY path that feeds the value, then re-audit for over-correction — the
   convergence re-audit is there to catch exactly this, and did (AN-B1, r2).
+- **A dual-meaning signal: soften the CLAIM, don't suppress the flag** — when one value means two
+  things (use-tax UT-1: `tax_total` value 0 / confidence 0 = *either* a genuine no-tax invoice *or* an
+  unread tax line), you cannot skip it (that kills the legitimate case) and you cannot assert either
+  reading as fact. Carry the ambiguity (`tax_unread`) and word the operator-facing claim to what is
+  actually knowable ("we didn't find sales tax charged", not "the vendor charged none").
+- **The empty-state denominator recurs** — "nothing flagged" must never render as an earned all-clear
+  when the scanned set was empty. Both the anomaly strip (WEB-N3, `window_extractions`) and the use-tax
+  watchdog (UT-4, `invoices_scanned`) needed a denominator to split "no data" from "reviewed, clean."
+  Check every summary/empty surface for this before shipping.
 
 ## ⮕ CURRENT STATE — AUTONOMOUS REDESIGN RUN (updated 2026-07-11)
 
