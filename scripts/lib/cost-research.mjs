@@ -16,6 +16,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadEventsData, coMovement, companyStat, durationSummary } from './cost-events-analysis.mjs';
+import { buildEvidence, parseCsv } from '../build-study-dataset.mjs';
 
 const CC0 = 'https://creativecommons.org/publicdomain/zero/1.0/';
 const CCBY = 'https://creativecommons.org/licenses/by/4.0/';
@@ -1487,6 +1488,97 @@ export function studyAnswersBlock(study, es, escHtml, canon) {
   return `${STUDY_ANSWERS_SENTINEL.start}<section class="rs-ask" aria-labelledby="ask-h"><h2 id="ask-h">${H}</h2><p class="rs-ask__intro">${intro}</p><ul class="rs-ask__jump">${jump}</ul>${items}${faqLd}</section>${STUDY_ANSWERS_SENTINEL.end}`;
 }
 
+// "The evidence, on the page" (ADR-019 §C) — the scholar surface: a 36-source evidence table (every
+// quantitative claim now has something to SEE) + two figures. All derived deterministically: the 36
+// sources from buildEvidence(), the posture split from the per-ingredient instrument (menu-pricing.csv),
+// the category trim multipliers from researchInputs() (the 134-row yield reference — the SAME numbers
+// the paper's "citrus 2.16× / mushroom 1.14×" headline uses, NOT the per-ingredient means). The study
+// page is not article-gated (SCAN_ROOTS excludes it), so figures use page-native accessible markup.
+export const STUDY_EVIDENCE_SENTINEL = { start: '<!-- study-evidence:start -->', end: '<!-- /study-evidence:end -->' };
+export const STUDY_EVIDENCE_CSS_SENTINEL = { start: '/* study-evidence-css:start */', end: '/* study-evidence-css:end */' };
+export const STUDY_EVIDENCE_CSS = `${STUDY_EVIDENCE_CSS_SENTINEL.start}
+.rs-evi{margin:0 0 26px}
+.rs-evi__caveat{font-size:12.5px;line-height:1.5;color:var(--ink-soft);margin:0 0 16px;max-width:72ch;border-left:2px solid var(--line);padding-left:12px}
+.rs-figc{margin:0 0 22px}
+.rs-figc figcaption{font-size:12.5px;line-height:1.5;color:var(--ink-soft);margin:8px 0 0;max-width:72ch}
+.rs-post{display:flex;height:36px;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.rs-post__s{display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;color:#fff;min-width:0;overflow:hidden;white-space:nowrap;padding:0 4px}
+.rs-post__s--lock{background:var(--teal)}.rs-post__s--cushion{background:#6d86d8}.rs-post__s--float{background:var(--gold)}.rs-post__s--withhold{background:var(--stone)}
+.rs-cats{display:flex;flex-direction:column;gap:4px;margin:2px 0 0}
+.rs-cats__r{display:grid;grid-template-columns:92px 1fr;align-items:center;gap:10px}
+.rs-cats__l{font-size:12px;color:var(--ink-soft);text-align:right;text-transform:capitalize}
+.rs-cats__t{background:var(--line);border-radius:4px;height:18px;position:relative}
+.rs-cats__f{background:var(--teal);height:18px;border-radius:4px;min-width:30px;display:flex;align-items:center;justify-content:flex-end;color:#fff;font-size:10.5px;font-weight:600;padding-right:6px;font-variant-numeric:tabular-nums}
+.rs-evi__tablewrap{overflow-x:auto;margin:2px 0 0}
+.rs-evi__t{width:100%;border-collapse:collapse;font-size:12px;line-height:1.45}
+.rs-evi__t th,.rs-evi__t td{text-align:left;vertical-align:top;padding:6px 9px;border-bottom:1px solid var(--line)}
+.rs-evi__t thead th{position:sticky;top:0;background:var(--cream);font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--stone);border-bottom:2px solid var(--line)}
+.rs-evi__t td:first-child{font-variant-numeric:tabular-nums;color:var(--stone);font-weight:600}
+.rs-evi__t td.rs-evi__src{min-width:210px}
+.rs-evi__t td.rs-evi__myth{color:var(--ink-soft)}
+.rs-evi__t .rs-evi__conf{font-size:10.5px;text-transform:uppercase;letter-spacing:.02em;color:var(--stone)}
+.rs-evi__t tr:target{background:var(--teal-wash)}
+.rs-evi .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+${STUDY_EVIDENCE_CSS_SENTINEL.end}`;
+
+export function studyEvidenceData(study, refsData, repoRoot) {
+  const ev = buildEvidence(study, refsData);
+  const cats = researchInputs(repoRoot).trimTaxCats;
+  const all = parseCsv(fs.readFileSync(path.join(repoRoot, 'cost-index/menu-pricing.csv'), 'utf8'));
+  const H = all[0], body = all.slice(1).filter((r) => r.length > 1), ci = (n) => H.indexOf(n);
+  const postures = { lock: 0, cushion: 0, float: 0, withhold: 0 };
+  const wh = { no_series: 0, too_volatile: 0 }; const tv = [];
+  for (const r of body) {
+    const p = r[ci('posture')]; if (postures[p] != null) postures[p]++;
+    if (p === 'withhold') { const w = r[ci('withhold_reason')]; if (wh[w] != null) wh[w]++; if (w === 'too_volatile') { const b = parseFloat(r[ci('band_pct')]); if (isFinite(b)) tv.push(b); } }
+  }
+  const round1 = (x) => Math.round(x * 10) / 10;
+  return { sources: ev.sources, postures, withhold: { ...wh, bandLo: round1(Math.min(...tv)), bandHi: round1(Math.max(...tv)) }, cats, total: body.length };
+}
+
+export function studyEvidenceBlock(data, es, escHtml) {
+  const { sources, postures, withhold, cats, total } = data;
+  const T = es ? {
+    h: 'La evidencia, en la página',
+    caveat: 'Las celdas de hallazgo / cómo-fundamenta / mito son el análisis compilado de Muntin (CC BY 4.0), mostradas en su síntesis original en inglés; el título, los autores y el DOI son hecho público. Cada resumen se limita a lo que la fuente muestra.',
+    postH: `De ${total} ingredientes: la postura por su propia línea base`,
+    postCap: `De ${total} ingredientes: ${postures.lock} fijan, ${postures.cushion} amortiguan, ${postures.float} flotan, ${postures.withhold} se reservan. Los ${postures.withhold} reservados se dividen en ${withhold.no_series} sin serie pública (banda cero) y ${withhold.too_volatile} demasiado volátiles para anclar (bandas ${withhold.bandLo}%–${withhold.bandHi}%).`,
+    catH: 'Multiplicadores de merma por categoría (referencia de 134 ingredientes)',
+    catCap: 'Promedios por categoría — los ingredientes individuales varían alrededor de su cifra de categoría (p. ej. lima 2.86×, limón 2.22×).',
+    catCite: 'Fuente: la referencia de rendimiento comestible de 134 ingredientes. Impuesto de merma = 1 ÷ rendimiento medio de la categoría; un multiplicador de referencia, no un costo de entrega.',
+    cols: ['#', 'Fuente', 'Capa', 'Hallazgo', 'Cómo fundamenta', 'Mito que corrige', 'Conf.', 'Citado en'],
+    trimPenalty: 'longitud de barra = multiplicador de merma; los cítricos, más empinados con 2.16×, hasta los hongos con 1.14×',
+  } : {
+    h: 'The evidence, on the page',
+    caveat: "The finding / how-it-grounds / myth cells are Muntin's own compiled analysis (CC BY 4.0); the title, authors, and DOI are public fact. Each summary is bounded to what the source shows.",
+    postH: `Of ${total} ingredients: the posture read against each one's own baseline`,
+    postCap: `Of ${total} ingredients: ${postures.lock} lock, ${postures.cushion} cushion, ${postures.float} float, ${postures.withhold} withhold. The ${postures.withhold} withholds split ${withhold.no_series} with no public series (band zero) and ${withhold.too_volatile} too volatile to anchor (bands ${withhold.bandLo}%–${withhold.bandHi}%).`,
+    catH: 'Category trim multipliers (134-ingredient yield reference)',
+    catCap: 'Category averages — individual ingredients vary around their category figure (e.g. lime 2.86×, lemon 2.22×).',
+    catCite: 'Source: the 134-ingredient edible-yield reference. Trim tax = 1 ÷ mean category yield; a reference multiplier, not a delivered cost.',
+    cols: ['#', 'Source', 'Layer', 'Finding', 'How it grounds', 'Myth it corrects', 'Conf.', 'Cited in'],
+    trimPenalty: 'bar length = trim multiplier; citrus steepest at 2.16× down to mushroom at 1.14×',
+  };
+  const pct = (n) => Math.round((n / total) * 1000) / 10;
+  const seg = (k, label) => `<div class="rs-post__s rs-post__s--${k}" style="width:${pct(postures[k])}%" title="${postures[k]} ${label}">${postures[k]} ${label}</div>`;
+  const postBar = `<div class="rs-post" role="img" aria-label="${escHtml(T.postCap)}">${seg('lock', es ? 'fijan' : 'lock')}${seg('cushion', es ? 'amortiguan' : 'cushion')}${seg('float', es ? 'flotan' : 'float')}${seg('withhold', es ? 'se reservan' : 'withhold')}</div>`;
+  const maxTax = Math.max(...cats.map((c) => c.tax));
+  const catRows = cats.map((c) => {
+    const w = Math.max(6, Math.round((c.tax / maxTax) * 100));
+    return `<div class="rs-cats__r"><span class="rs-cats__l">${escHtml(c.cat)}</span><div class="rs-cats__t"><div class="rs-cats__f" style="width:${w}%">×${c.tax.toFixed(2)}</div></div></div>`;
+  }).join('');
+  const catBars = `<div class="rs-cats" role="img" aria-label="${escHtml(T.catH + '. ' + T.trimPenalty + '. ' + T.catCap)}">${catRows}</div>`;
+  const th = T.cols.map((c) => `<th scope="col">${escHtml(c)}</th>`).join('');
+  const rowsHtml = sources.map((s) => {
+    const src = `${escHtml(s.authors)} (${s.year}). <em>${escHtml(s.title)}</em>.${s.doi ? ` <a href="${escHtml(s.doi)}" rel="nofollow noopener" target="_blank">DOI</a>` : (s.id ? ` ${escHtml(s.id)}` : '')}`;
+    const nCited = (s.cited_in_sections || []).length;
+    const citedTitle = escHtml((s.cited_in_sections || []).join(' · '));
+    return `<tr id="claim-ref${s.ref_n}"><td>${s.ref_n}</td><td class="rs-evi__src">${src}</td><td>${escHtml(s.layer || '—')}</td><td>${escHtml(s.finding || '—')}</td><td>${escHtml(s.grounds_how || '—')}</td><td class="rs-evi__myth">${escHtml(s.myth || '—')}</td><td><span class="rs-evi__conf">${escHtml(s.confidence || '—')}</span></td><td title="${citedTitle}">${nCited}</td></tr>`;
+  }).join('');
+  const table = `<div class="rs-evi__tablewrap"><table class="rs-evi__t"><caption class="sr-only">${escHtml(T.h)}</caption><thead><tr>${th}</tr></thead><tbody>${rowsHtml}</tbody></table></div>`;
+  return `${STUDY_EVIDENCE_SENTINEL.start}<section class="rs-evi" aria-labelledby="evi-h"><h2 id="evi-h">${T.h}</h2><p class="rs-evi__caveat">${T.caveat}</p><figure class="rs-figc">${postBar}<figcaption>${escHtml(T.postCap)}</figcaption></figure><figure class="rs-figc"><h3 class="rs-ask__q">${escHtml(T.catH)}</h3>${catBars}<figcaption>${escHtml(T.catCap)}</figcaption><details class="cite"><summary>${es ? 'Fuente' : 'Source'}</summary>${escHtml(T.catCite)}</details></figure>${table}</section>${STUDY_EVIDENCE_SENTINEL.end}`;
+}
+
 function emitStudy(locale, ctx) {
   const { pageHead, pageTail, escHtml, repoRoot } = ctx;
   const es = locale === 'es'; const lang = es ? 'es' : 'en'; const base = es ? '/es' : '';
@@ -1522,6 +1614,7 @@ function emitStudy(locale, ctx) {
   // into a citable CC-BY surface. Built by the shared studyCiteBlock so the engine and the
   // idempotent injector (inject-study-cite.mjs) can never diverge. Reuses .pb-cite CSS in extraCss.
   const studyCiteHtml = studyCiteBlock(locale, study.title, escHtml);
+  const evData = studyEvidenceData(study, refsData, repoRoot);
   const toolUrl = `${base}/cost-index/menu-pricing/`;
   const body = `
   <nav class="breadcrumb" aria-label="Breadcrumb"><a href="${base}/">${es ? 'Inicio' : 'Home'}</a> › <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> › <a href="${toolUrl}">${es ? 'Manual de precios' : 'Menu-pricing playbook'}</a> › ${es ? 'El informe' : 'The field report'}</nav>
@@ -1535,6 +1628,7 @@ function emitStudy(locale, ctx) {
     ${studyAnswersBlock(study, es, escHtml, es ? canonEs : canonEn)}
     <section class="pb-contribution"><h2>${es ? 'Nuestra contribución' : 'Our contribution'}</h2><p>${escHtml(study.contribution)}</p></section>
     ${secHtml}
+    ${studyEvidenceBlock(evData, es, escHtml)}
     ${studyMlBlocks(study, es, escHtml)}
     ${study.takeaway ? `<p class="pb-takeaway">${escHtml(study.takeaway)}</p>` : ''}
     ${refsHtml}
@@ -1543,7 +1637,7 @@ function emitStudy(locale, ctx) {
     <div class="rs-cta"><a class="btn btn-primary" href="${toolUrl}">${es ? 'Abre el manual interactivo' : 'Open the interactive playbook'} <span aria-hidden="true">→</span></a></div>
   </div>
   </div>`;
-  return pageHead({ lang, locale, title, desc: study.metaDesc, canonEn, canonEs, jsonld, extraCss: `<style>${RESEARCH_CSS}${PLAYBOOK_CSS}${STUDY_CSS}${STUDY_ANSWERS_CSS}</style>` }) + body + pageTail;
+  return pageHead({ lang, locale, title, desc: study.metaDesc, canonEn, canonEs, jsonld, extraCss: `<style>${RESEARCH_CSS}${PLAYBOOK_CSS}${STUDY_CSS}${STUDY_ANSWERS_CSS}${STUDY_EVIDENCE_CSS}</style>` }) + body + pageTail;
 }
 
 // Build the /cost-index/research/ targets. Empty until data/cost-research-content.json exists,

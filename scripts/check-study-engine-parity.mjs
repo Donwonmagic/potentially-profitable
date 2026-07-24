@@ -24,12 +24,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { studyMlBlocks, studyAnswersBlock, STUDY_ANSWERS_SENTINEL, STUDY_ANSWERS_CSS_SENTINEL } from './lib/cost-research.mjs';
+import { studyMlBlocks, studyAnswersBlock, studyEvidenceData, studyEvidenceBlock, STUDY_ANSWERS_SENTINEL, STUDY_ANSWERS_CSS_SENTINEL, STUDY_EVIDENCE_SENTINEL, STUDY_EVIDENCE_CSS_SENTINEL } from './lib/cost-research.mjs';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const EN_PAGE = 'cost-index/menu-pricing/study/index.html';
 const ES_PAGE = 'es/cost-index/menu-pricing/study/index.html';
 const STUDY_JSON = 'data/cost-research-study.json';
+const REFS_JSON = 'data/research-references.json';
 const CANON = { en: 'https://muntin.digital/cost-index/menu-pricing/study/', es: 'https://muntin.digital/es/cost-index/menu-pricing/study/' };
 
 // the host escaper — kept byte-identical to escHtml() in scripts/build-cost-index-pages.mjs
@@ -69,7 +70,7 @@ function limParaCount(mlRegion, label) {
   return m ? (m[1].match(/<p>/g) || []).length : -1;
 }
 
-function check({ study, enPage, esPage }) {
+function check({ study, refsData, enPage, esPage }) {
   const errs = [];
   const LOCS = [
     { loc: 'en', es: false, page: enPage, name: 'EN', confH: 'How sure we are', daH: 'Data availability', limH: 'Limitations' },
@@ -125,6 +126,27 @@ function check({ study, enPage, esPage }) {
         for (const x of (s.answers || [])) if (!committedAns.includes(`id="ans-${x.slug}"`)) errs.push(`${L.name}: committed answers block is missing anchor id="ans-${x.slug}"`);
       }
       if (!L.page.includes(STUDY_ANSWERS_CSS_SENTINEL.start)) errs.push(`${L.name}: committed <head> is missing the study-answers CSS block (the answer cards would be unstyled)`);
+    }
+
+    // "The evidence, on the page" (§C): engine render → committed region parity + honesty invariants
+    if (refsData) {
+      const eStart = L.page.indexOf(STUDY_EVIDENCE_SENTINEL.start);
+      const eEnd = L.page.indexOf(STUDY_EVIDENCE_SENTINEL.end);
+      if (eStart < 0 || eEnd < 0) errs.push(`${L.name}: committed page is missing the study-evidence sentinel block`);
+      else {
+        const committedEvi = L.page.slice(eStart, eEnd + STUDY_EVIDENCE_SENTINEL.end.length);
+        const evData = studyEvidenceData(s, refsData, repo);
+        if (norm(studyEvidenceBlock(evData, L.es, escHtml)) !== norm(committedEvi)) {
+          const a = norm(studyEvidenceBlock(evData, L.es, escHtml)), b = norm(committedEvi); let i = 0; while (i < Math.min(a.length, b.length) && a[i] === b[i]) i++;
+          errs.push(`${L.name}: engine studyEvidenceBlock() render DRIFTS from the committed page near "${b.slice(Math.max(0, i - 20), i + 30)}" — re-run the study propagation`);
+        }
+        const rows = (committedEvi.match(/id="claim-ref\d+"/g) || []).length;
+        if (rows !== evData.sources.length) errs.push(`${L.name}: evidence table has ${rows} rows, expected ${evData.sources.length}`);
+        if (!/Category trim multipliers|Multiplicadores de merma por categor/.test(committedEvi)) errs.push(`${L.name}: figure 2 is not titled "Category trim multipliers"`);
+        if (/trim[-\s]tax range|rango de merma/i.test(committedEvi)) errs.push(`${L.name}: the category-multiplier figure uses a banned "range" label (it is a category average, not a per-ingredient range)`);
+        if (!/li[mn][ae] 2\.86×/.test(committedEvi)) errs.push(`${L.name}: the category figure does not reconcile category-vs-individual (lime 2.86×)`);
+      }
+      if (!L.page.includes(STUDY_EVIDENCE_CSS_SENTINEL.start)) errs.push(`${L.name}: committed <head> is missing the study-evidence CSS block`);
     }
   }
 
@@ -201,14 +223,15 @@ function selfTest() {
 
 if (process.argv.includes('--self-test')) selfTest();
 
-let study, enPage, esPage;
+let study, refsData, enPage, esPage;
 try {
   study = JSON.parse(fs.readFileSync(path.join(repo, STUDY_JSON), 'utf8'));
+  refsData = (JSON.parse(fs.readFileSync(path.join(repo, REFS_JSON), 'utf8')).studies) || [];
   enPage = fs.readFileSync(path.join(repo, EN_PAGE), 'utf8');
   esPage = fs.readFileSync(path.join(repo, ES_PAGE), 'utf8');
 } catch (e) { console.error(`check-study-engine-parity: cannot read a source file: ${e.message}`); process.exit(1); }
 
-const errors = check({ study, enPage, esPage });
+const errors = check({ study, refsData, enPage, esPage });
 if (errors.length) {
   console.error(`✗ Study engine-parity gate — ${errors.length} violation(s):`);
   for (const e of errors) console.error('  - ' + e);
