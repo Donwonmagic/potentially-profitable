@@ -43,6 +43,10 @@
   'use strict';
 
   var FLAT_PCT = 2; // a net move within +/-2% over the window reads "held steady"
+  // ...but "steady" is a claim about the PATH, not just the endpoints. A net-flat
+  // window whose peak↔trough swung beyond SWING_PCT is disclosed (range shown),
+  // never called steady — so a dish that spiked and returned is never a false calm.
+  var SWING_PCT = 10;
 
   function tt(locale, en, es) { return locale === 'es' ? es : en; }
   function money(cents) { return '$' + (cents / 100).toFixed(2); }
@@ -90,6 +94,14 @@
 
     var direction = Math.abs(netDeltaPct) < FLAT_PCT ? 'flat' : (netDeltaPct > 0 ? 'up' : 'down');
 
+    // A net-flat window is only "steady" if the PATH stayed calm too — a
+    // spike-and-return that nets flat must never be spoken as steady (the
+    // sparkline that would show it has no live consumer; the headline is the surface).
+    var peakCents = Math.max.apply(null, spark);
+    var troughCents = Math.min.apply(null, spark);
+    var swingPct = ((peakCents - troughCents) / firstCents) * 100;
+    var steady = direction === 'flat' && swingPct <= SWING_PCT;
+
     // Optional, honestly-labeled market side-by-side for a NAMED ingredient.
     var market = '';
     var mPct = input.marketDeltaPct;
@@ -100,10 +112,15 @@
     }
 
     var headline;
-    if (direction === 'flat') {
+    if (steady) {
       headline = tt(locale,
         'Your ' + dish + "'s plate cost has held steady " + win + ' — around ' + money(lastCents) + '.' + market,
         'El costo de tu ' + dish + ' se ha mantenido estable ' + win + ' — alrededor de ' + money(lastCents) + '.' + market);
+    } else if (direction === 'flat') {
+      // Net roughly flat, but the path swung materially — disclose the range.
+      headline = tt(locale,
+        'Your ' + dish + "'s plate cost ended about where it started " + win + ' (around ' + money(lastCents) + '), but it swung between ' + money(troughCents) + ' and ' + money(peakCents) + '.' + market,
+        'El costo de tu ' + dish + ' terminó cerca de donde empezó ' + win + ' (alrededor de ' + money(lastCents) + '), pero varió entre ' + money(troughCents) + ' y ' + money(peakCents) + '.' + market);
     } else if (direction === 'up') {
       headline = tt(locale,
         'Your ' + dish + "'s plate cost is up " + pct1(netDeltaPct) + ' ' + win + ' — ' + money(firstCents) + ' to ' + money(lastCents) + '.' + market,
@@ -116,7 +133,7 @@
 
     // Ambient: a steady dish needs no action (calm). A material move offers a
     // look at the dish — never an upgrade CTA.
-    var options = direction === 'flat'
+    var options = steady
       ? []
       : [{ kind: 'open_dish', dish: dish, label: tt(locale, 'Open ' + dish, 'Abre ' + dish) }];
 

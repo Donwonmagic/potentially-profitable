@@ -75,3 +75,47 @@ test('HONESTY: bad points are dropped; order is normalized regardless of input o
   assert.deepEqual(c.spark, [540, 589]); // sorted oldest->newest, invalid removed
   assert.equal(c.direction, 'up');
 });
+
+test("HONESTY: a net-flat but VOLATILE path is NOT called 'held steady' — the swing is disclosed", () => {
+  const c = build({
+    dish: 'Caesar',
+    points: [
+      { at: at(0), plateCostCents: 500 },
+      { at: at(19), plateCostCents: 900 }, // +80% spike mid-window
+      { at: at(31), plateCostCents: 505 }, // net +1% (flat endpoints)
+    ],
+    locale: 'en',
+  });
+  assert.equal(c.direction, 'flat');
+  assert.doesNotMatch(c.headline, /held steady/);
+  assert.match(c.headline, /swung between \$5\.00 and \$9\.00/);
+  assert.equal(c.options.length, 1);
+});
+
+test("HONESTY (ES): a volatile net-flat path discloses the swing, not 'estable'", () => {
+  const c = build({
+    dish: 'Caesar',
+    points: [
+      { at: at(0), plateCostCents: 500 },
+      { at: at(19), plateCostCents: 900 },
+      { at: at(31), plateCostCents: 505 },
+    ],
+    locale: 'es',
+  });
+  assert.doesNotMatch(c.headline, /mantenido estable/);
+  assert.match(c.headline, /varió entre \$5\.00 y \$9\.00/);
+});
+
+test("keeps 'held steady' for a genuinely calm net-flat path (small wobble under the swing band)", () => {
+  const c = build({
+    dish: 'Caesar',
+    points: [
+      { at: at(0), plateCostCents: 500 },
+      { at: at(19), plateCostCents: 530 }, // ~6% swing, under the 10% band
+      { at: at(31), plateCostCents: 505 },
+    ],
+    locale: 'en',
+  });
+  assert.match(c.headline, /held steady/);
+  assert.deepEqual(c.options, []);
+});
