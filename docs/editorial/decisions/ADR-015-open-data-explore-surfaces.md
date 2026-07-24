@@ -106,3 +106,28 @@ the engine, prose in the content JSON, gated.
   `/open` card + `llms.txt` entry, and wire a `--check` into `check-all` + the refresh.
 - Any co-movement or events prose that reads as causation or forecast is a gate failure,
   now including the detail pages.
+
+## Addendum (2026-07-24c) — corpus-expansion explorers (recalls / labor / demand)
+
+Three new `/open` explorers ship under this same contract, extending the corpus with
+openFDA food recalls, BLS QCEW county wages, and Census MARTS demand:
+
+- **`/open/recalls/` (The Recall Record).** Decision-2 tier split, applied per artifact:
+  `cost-index/food-recalls.csv` is a near-verbatim openFDA passthrough (+ one slug column)
+  → **CC0 `gov`**; `cost-index/food-recalls-by-ingredient.json` keys the recalls onto
+  Muntin's tracked-ingredient taxonomy — a **creative selection/compilation onto the
+  tracked slugs**, the same posture as `ers-food-availability-mapped` — → **CC-BY
+  `derived`**. So the page carries a **dual CC0 + CC-BY chip**. The surface deletes price
+  entirely (a food-safety / supplier-diligence lane): no `$` token appears anywhere, the
+  headline count is **distinct events (`event_id`), not notices**, and every recall is
+  co-occurrence, never a cause, never joined to a price.
+- **`/open/labor/`, `/open/demand/`** are raw gov reshapes → **CC0 `gov`**, single chip,
+  and are **fenced descriptive lanes** (ADR-013): never in the food index / pressure math
+  / Vendor Benchmark. Demand marks its newest month a provisional advance estimate.
+- **Honesty gate:** `check-open-lane-honesty.mjs` (registry-driven) scans all three plus
+  the injected hub cards, sharing the forecast/causation vocabulary via
+  `scripts/lib/co-occurrence-patterns.mjs` (extracted from `check-cost-index-events.mjs`).
+- Each explorer is a generator + committed page + `--check` drift, catalogued in
+  `build-open-data-catalog.mjs`, carded into the EN + ES hub via `inject-open-cards.mjs`
+  (count-word reconciled by counting cards), and listed in `llms.txt` — the Decision-2
+  publishing checklist, honored end to end.
