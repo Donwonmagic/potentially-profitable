@@ -1418,14 +1418,23 @@ export function studyCiteBlock(locale, title, escHtml) {
   const citeYr = RESEARCH_PUBLISHED.slice(0, 4);
   const apa = `The Muntin Desk. (${citeYr}). ${title}. Muntin Cost Index. ${canonUrl}`;
   const bib = `@techreport{muntin_menu_pricing_${citeYr},\n  title       = {${title}},\n  author      = {{The Muntin Desk}},\n  institution = {Muntin Cost Index},\n  type        = {Field report},\n  year        = {${citeYr}},\n  url         = {${canonUrl}},\n  note        = {CC BY 4.0}\n}`;
+  const ris = `TY  - RPRT\nTI  - ${title}\nAU  - The Muntin Desk\nPY  - ${citeYr}\nDA  - ${RESEARCH_PUBLISHED}\nPB  - Muntin Cost Index\nUR  - ${canonUrl}\nLA  - ${es ? 'es' : 'en'}\nN1  - CC BY 4.0; DOI pending\nER  - `;
+  const csl = JSON.stringify({ type: 'report', id: `muntin-menu-pricing-${citeYr}`, title, author: [{ literal: 'The Muntin Desk' }], issued: { 'date-parts': [[Number(citeYr), 7, 11]] }, publisher: 'Muntin Cost Index', URL: canonUrl, license: CCBY, language: es ? 'es-US' : 'en-US' });
   const dl = (href, label, lic) => `<a href="${href}">${label}</a>${lic ? ` <span class="pb-cite__lab">${lic}</span>` : ''}`;
+  // Deterministic recompute badge — "verified <version date>", never a live git-sha (that would make
+  // the page non-reproducible); it points at the one-command --check recipe. The ceiling note below
+  // states plainly that this is recomputation of the reported figures, NOT replication of a finding.
+  const badge = `<p class="pb-cite__badge" style="display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12px;color:var(--teal);background:var(--teal-wash);border:1px solid var(--teal);border-radius:999px;padding:5px 13px;margin:0 0 12px"><span aria-hidden="true">✓</span> ${es ? 'Recalculado desde datos abiertos · verificado' : 'Recomputed from open data · verified'} ${RESEARCH_PUBLISHED} · <code>node scripts/build-study-dataset.mjs --check</code></p>`;
   return `<section class="pb-cite" aria-labelledby="pb-studycite-h">
     <h2 id="pb-studycite-h" class="rs-section-h">${es ? 'Cómo citar y descargar (CC BY 4.0)' : 'Cite this &amp; download (CC BY 4.0)'}</h2>
+    ${badge}
     <p>${es ? 'Este informe de campo y su tabla de evidencia se publican bajo ' : 'This field report and its evidence table are released under '}<a href="${CCBY}" rel="license">CC BY 4.0</a>${es ? ' — reutilízalos con atribución a Muntin Cost Index.' : ' — reuse with attribution to Muntin Cost Index.'}</p>
     <p class="pb-cite__cite"><span class="pb-cite__lab">APA</span>${escHtml(apa)}</p>
     <p class="pb-cite__cite"><span class="pb-cite__lab">BibTeX</span>${escHtml(bib).replace(/\n/g, '<br>')}</p>
-    <p class="pb-cite__dl">${dl('/cost-index/menu-pricing/study/study.json', 'study.json', 'CC BY')} ${dl('/cost-index/menu-pricing/study/study.csv', 'study.csv', '')} ${dl('/cost-index/menu-pricing.json', 'menu-pricing.json', '')} ${dl('/cost-index/menu-pricing.csv', 'menu-pricing.csv', '')}</p>
-    <p class="pb-groundedin" style="margin-top:8px">${es ? '<b>study.json/.csv</b>: la tabla de evidencia — las afirmaciones del informe × las 36 fuentes que las respaldan (con DOI). <b>menu-pricing.json/.csv</b>: los datos por ingrediente detrás de las cifras.' : '<b>study.json/.csv</b>: the evidence table — the report’s claims × the 36 sources that ground them (with DOIs). <b>menu-pricing.json/.csv</b>: the per-ingredient data behind the numbers.'}</p>
+    <p class="pb-cite__cite"><span class="pb-cite__lab">RIS</span>${escHtml(ris).replace(/\n/g, '<br>')}</p>
+    <p class="pb-cite__cite"><span class="pb-cite__lab">CSL-JSON</span>${escHtml(csl)}</p>
+    <p class="pb-cite__dl">${dl('/cost-index/menu-pricing/study/study.json', 'study.json', 'CC BY')} ${dl('/cost-index/menu-pricing/study/study.csv', 'study.csv', '')} ${dl('/cost-index/menu-pricing/study/datapackage.json', 'datapackage.json', '')} ${dl('/cost-index/menu-pricing/study/CITATION.cff', 'CITATION.cff', '')} ${dl('/cost-index/menu-pricing/study/datacite.json', 'datacite.json', '')} ${dl('/cost-index/menu-pricing.json', 'menu-pricing.json', '')} ${dl('/cost-index/menu-pricing.csv', 'menu-pricing.csv', '')}</p>
+    <p class="pb-groundedin" style="margin-top:8px">${es ? '<b>study.json/.csv</b>: la tabla de evidencia — las afirmaciones del informe × las 36 fuentes que las respaldan (con DOI). <b>menu-pricing.json/.csv</b>: los datos por ingrediente detrás de las cifras. La insignia significa una recalculación de las cifras reportadas desde datos abiertos y una receta divulgada — explícitamente no una replicación de un hallazgo.' : '<b>study.json/.csv</b>: the evidence table — the report’s claims × the 36 sources that ground them (with DOIs). <b>menu-pricing.json/.csv</b>: the per-ingredient data behind the numbers. The badge means a recomputation of the reported figures from open data and a disclosed recipe — explicitly not replication of a finding.'}</p>
   </section>`;
 }
 
