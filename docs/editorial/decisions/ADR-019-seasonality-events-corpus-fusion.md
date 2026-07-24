@@ -151,3 +151,40 @@ touch (the `/open/` hub is engine-behind — a surgical add). No DOI mint (opera
 Remaining seasonality spec depth (Now-Board decision cards, the plate translation, the protein/events
 bridges, the FAQ-in-DOM) and the remaining events depth (severity percentile, QAPage capsules) are
 sequenced increments under this ADR.
+
+**Also landed (2026-07-24) — research surface Phase 1 (§A/§B/§G-1), the field report as a
+citable/answerable/recomputable object.** Audited spec: `spec-research-surface.md` (ClaimReview CUT;
+Phases 2–3 optional). The study **body is now engine-owned** — `emitStudy()` was silently behind the
+committed page, so a regen would have dropped the CC-BY-critical confidence + data-availability blocks.
+
+- **§A (`d322972ea`):** exported `studyMlBlocks()` renders Methods(`id="methods"`)/confidence/Limitations
+  (4-paragraph array)/data-availability; `cost-research-study.json` gained `limitations[]` + a
+  `dataAvailability` field (stored as ready HTML carrying the CC-BY download links + the `#methods`
+  anchor, rendered raw). Gate `check-study-engine-parity.mjs` (wired) diffs the engine render against the
+  committed body **normalized** for insignificant whitespace + named-entity-vs-glyph encoding (the
+  committed page uses `&rsquo;`/`&mdash;` the uniform escaper renders as literal glyphs) — a byte-diff was
+  impossible, a normalized render-equivalence diff is the correct guarantee. Body edits propagate by
+  **region-swap** (`<div class="ci-body rs-body pb-study">…</main>`) preserving the engine-behind head;
+  head CSS + JSON-LD stay off the regen path (JSON-LD placed in the body).
+- **§G-1 (`530305a07`):** `study.csv` 10→**13 lossless RFC4180 columns** (+finding/grounds_how/myth) +
+  `datapackage.json` (Frictionless, typed fields, posture enum, per-resource CC-BY, **sha256+bytes pinned**
+  to both study.csv and menu-pricing.csv). Gate `check-study-datapackage.mjs` proves the descriptor never
+  drifts from the data.
+- **§B (`155f7050b`):** `answers[]` (EN+ES, 7 owned questions) each welding its number AND its type into
+  the shortest quotable span (the trim-tax atom reconciles the 2.16×/1.14× **category** multipliers against
+  per-ingredient rows — lime 2.86×, lemon 2.22× — so a short quote can't strand a contradiction); shared
+  `studyAnswersBlock()` renders the jump-list + `id="ans-*"` cards + a **FAQPage JSON-LD node in the body**;
+  `llms.txt` (EN+ES) registers the seven questions.
+
+**Remaining Phase 1 (sequenced under this ADR):** §C on-page evidence table (36 rows) + two `viz-bars`
+figures (the second titled **"Category trim multipliers,"** never "range"); §H `/open/` study card (fixes the
+dangling `isBasedOn: /open/`); §4 the `ScholarlyArticle` head upgrade (typed citations, `speakable` +
+`.rs-answer`, `isBasedOn` → the Dataset `@id`) + a `Dataset` JSON-LD node (distributions carrying the
+datapackage sha256) + `CITATION.cff` + `datacite.json` prep + RIS/CSL export + the recompute badge
+(git-sha with a date-only fallback). No DOI mint (operator-Mac step).
+
+**Also (2026-07-24) — corpus-expansion scout** (separate large workflow, `ship-with-fixes`): 17 new
+public-data sources cataloged, 6 shortlisted, 4 access/license mislabels corrected; recommended sequence
+starts with the two **keyless recall event feeds** (openFDA Food Enforcement + FSIS Recall/PHA) into the
+ADR-011 events surface as co-occurrence. Integration pending a build slot; live fetch is an operator-Mac
+step (ADR-013). Full catalog + strategy on the strategic-council board.
