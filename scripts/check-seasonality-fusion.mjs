@@ -94,6 +94,21 @@ export function auditHtml(html, rel) {
     }
   }
 
+  // ---- §3 bankability scatter: the signal-to-noise ratio must be labeled a HEURISTIC and
+  // the band width must carry its "not a forecast" caveat, so the figure can't read as a
+  // formal statistic or a prediction.
+  const bank = section(html, 'sea-bank');
+  if (bank) {
+    const voice = stripTags(siteVoice(bank));
+    let h;
+    if ((h = reHit(CAUSAL_RE, voice))) problems.push(`${rel}: §3 scatter voice asserts a cause — "${h}"`);
+    if ((h = reHit(FORECAST_RE, voice))) problems.push(`${rel}: §3 scatter voice speaks a forecast — "${h}"`);
+    if (!/heuristic ratio|razón heurística/i.test(bank)) problems.push(`${rel}: §3 scatter must label signal-to-noise a "heuristic ratio"`);
+    if (!/predictability descriptor, not a price forecast|un descriptor de previsibilidad, no un pronóstico/i.test(bank)) {
+      problems.push(`${rel}: §3 scatter is missing the band-width "not a forecast" caveat`);
+    }
+  }
+
   // ---- REFUSED forecast-adjacent fields must never render on this surface.
   for (const bad of ['pressure_dir', 'pressure_conf', 'pressure_dir_es']) {
     if (html.includes(bad)) problems.push(`${rel}: REFUSED field '${bad}' leaked into the rendered page`);
@@ -156,6 +171,13 @@ function selfTest() {
     + '<details class="cite"><summary>Source</summary><p>nominal value, never tonnage</p></details>'
     + '<div class="od-note sea-caveat"><p>never volume, tonnage, or supply share</p></div></section>';
   ok.push(['cite-drawer "tonnage" disclaimer exempt', auditHtml(disclaimerCite, 'x').length === 0]);
+  // §3 bankability scatter arm
+  const goodBank = goodWhy + '<section aria-labelledby="sea-bank"><p>signal-to-noise is a heuristic ratio of two percentages, not a formal statistic.</p>'
+    + '<div class="od-note sea-caveat"><p>Band width is how far this item routinely swings — a predictability descriptor, not a price forecast or a direction call.</p></div></section>';
+  ok.push(['clean §3 scatter passes', auditHtml(goodBank, 'x').length === 0]);
+  const noHeur = goodWhy + '<section aria-labelledby="sea-bank"><p>signal-to-noise ratio</p>'
+    + '<div class="od-note sea-caveat"><p>a predictability descriptor, not a price forecast</p></div></section>';
+  ok.push(['§3 missing "heuristic ratio" label caught', auditHtml(noHeur, 'x').some((p) => /heuristic ratio/.test(p))]);
 
   const failed = ok.filter((c) => !c[1]);
   failed.forEach((c) => console.error('  ✗ ' + c[0]));

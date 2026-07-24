@@ -124,6 +124,18 @@ meat-price-chain, and caveat-welded QAPage capsules — all additive via the sup
 The seasonality hub stops describing a curve it hid and starts explaining *why* the low lands (a second
 **value** calendar drawn beside the domestic one, never one causing the other) and *what to buy instead*
 when an item peaks — every fusion keeping its caveat, nothing forecast, nothing caused, nothing invented.
-The improvement-loop refinements are folded in as they land; the architecture above is fixed. Remaining
-seasonality spec depth (Now-Board decision cards, the bankability scatter, the plate translation, the
-protein/events bridges, the FAQ-in-DOM) and the full events build are sequenced increments under this ADR.
+The improvement-loop refinements are folded in as they land; the architecture above is fixed.
+
+**Also landed (2026-07-24) — the §3 bankability scatter** ("Big gap isn't the same as a good buy"): plots
+every classified item that carries a band (67) by its seasonal saving (x) against **signal-to-noise =
+saving ÷ its own band** (y, log scale) — a HEURISTIC ratio, labeled as such. A noise-floor line at 1×
+separates bankable (saving beats routine swing — e.g. whole-turkey, 35% saving on a 0.8% band) from swamped
+(the season is smaller than the item's own week-to-week noise — e.g. zucchini, 42% saving on a 43% band; 6
+fall below). Accessible SVG (position vs the drawn floor is the redundant cue, not color) + a ranked table
+as the canonical SR/no-JS layer + the band-width "predictability descriptor, not a forecast" caveat. The
+figure lives on the un-article-gated `/open/` surface, so it uses accessible `.sea-scatter` classes rather
+than a new `viz-scatter` family; `check-seasonality-fusion` pins the "heuristic ratio" label + the caveat.
+
+Remaining seasonality spec depth (Now-Board decision cards, the plate translation, the protein/events
+bridges, the FAQ-in-DOM) and the remaining events depth (severity percentile, QAPage capsules) are
+sequenced increments under this ADR.

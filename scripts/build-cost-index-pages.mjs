@@ -3603,10 +3603,17 @@ function seasonalityFusion() {
         hedge = { swapSlug, swapName, coMove, verdict, swapCheap: swapItem.cheap, swapDear: swapItem.dear };
       }
     }
+    const bp = isr && typeof isr.band_pct === 'number' ? isr.band_pct : null;
+    const save = saveOf(it.amp);
+    const scc = seasonalClass(SEASON[it.slug]);
     rows[it.slug] = {
       slug: it.slug, cheap: it.cheap, dear: it.dear, amp: it.amp, cls: it.cls,
-      save: saveOf(it.amp),
-      band_pct: isr && typeof isr.band_pct === 'number' ? isr.band_pct : null,
+      save,
+      band_pct: bp,
+      // signal-to-noise: the seasonal saving against the item's own routine band. A HEURISTIC
+      // ratio of two same-baseline percentages (labeled as such), never a formal statistic.
+      sig: bp && bp > 0 ? +(save / bp).toFixed(2) : null,
+      years: scc && typeof scc.years === 'number' ? scc.years : null,
       posture: isr && typeof isr.posture === 'string' ? isr.posture : null,
       importIndex: isr && Array.isArray(isr.import_seasonal_index) ? isr.import_seasonal_index : null,
       mech, conc, hedge,
@@ -3761,6 +3768,28 @@ const OPEN_CSS = `<style>
 .sea-swap__badge--mirror{color:#8a2a2a;background:rgba(138,42,42,.10);border-color:rgba(138,42,42,.3)}
 .sea-swap__badge--shared-calendar{color:var(--ink-soft);background:var(--white)}
 .sea-swap__line{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
+/* §3 bankability scatter */
+.sea-scatter{margin:16px 0;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-radius:14px}
+.sea-scatter__svg{width:100%;height:auto;display:block;overflow:visible}
+.scat-grid{stroke:var(--line);stroke-width:1;opacity:.6}
+.scat-tick{font-size:10px;fill:var(--stone)}
+.scat-axlab{font-size:11px;fill:var(--ink-soft);font-weight:600}
+.scat-floor{stroke:var(--rust,#b5623f);stroke-width:1.5;stroke-dasharray:5 4}
+.scat-floorlab{font-size:10.5px;fill:var(--rust,#b5623f);font-weight:700}
+.scat-dot{stroke:var(--white);stroke-width:1}
+.scat-dot--bank{fill:var(--teal)}
+.scat-dot--swamp{fill:var(--rust,#b5623f)}
+.sea-scatter figcaption{font-size:13px;color:var(--ink-soft);margin:10px 0 0;line-height:1.5}
+.sea-scattbl{margin:12px 0 0}
+.sea-scattbl>summary{cursor:pointer;color:var(--teal);font-weight:600;font-size:14px;padding:6px 0}
+.sea-scattbl__wrap{overflow-x:auto}
+.sea-scattbl table{border-collapse:collapse;width:100%;font-size:13.5px;margin:6px 0 0}
+.sea-scattbl th,.sea-scattbl td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+.sea-scattbl thead th{font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--ink-soft)}
+.sea-scattbl th[scope=row] a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px solid transparent}
+.sea-scattbl th[scope=row] a:hover{border-bottom-color:var(--teal)}
+.sea-scattbl .scat-r--swamp td:last-child{color:var(--rust,#b5623f);font-weight:700}
+.sea-scattbl .scat-r--bank td:last-child{color:var(--teal);font-weight:700}
 @media (max-width:640px){.sea-clock{grid-template-columns:1fr}.sea-row{grid-template-columns:104px 1fr 46px}.sea-dual__grid{grid-template-columns:1fr}.sea-dual__rowlab{margin-top:6px}}
 </style>`;
 
@@ -4121,6 +4150,66 @@ function seaSwapHtml(locale) {
   </section>`;
 }
 
+// §3 — Big gap ≠ good buy: the bankability scatter. Plots every classified item that
+// carries a band by how big its seasonal saving is (x) against how much it jitters anyway
+// (y = saving ÷ own band, a HEURISTIC ratio). Below the noise floor (ratio 1.0) the seasonal
+// gap is real but smaller than the item's own routine swing — swamped, not bankable.
+function seaScatterHtml(locale) {
+  const es = locale === 'es';
+  const MO = es ? MONTHS_ES : MONTHS_EN;
+  const fu = seasonalityFusion();
+  const nameOf = (slug) => { const l = LABELS[slug] || {}; return (es ? (l.es || l.en) : l.en) || slug; };
+  const base = es ? '/es' : '';
+  const pts = Object.values(fu.rows).filter((r) => r.sig != null && r.save != null).sort((a, b) => b.sig - a.sig);
+  const lackBand = Object.values(fu.rows).filter((r) => r.sig == null).length;
+  if (pts.length < 8) return '';
+  // scales
+  const maxSave = Math.max(50, Math.ceil(Math.max(...pts.map((p) => p.save)) / 10) * 10);
+  const minY = 0.3, maxY = Math.max(20, Math.ceil(Math.max(...pts.map((p) => p.sig))));
+  const W = 640, H = 340, mL = 52, mR = 16, mT = 16, mB = 46;
+  const plotW = W - mL - mR, plotH = H - mT - mB;
+  const xS = (save) => mL + (save / maxSave) * plotW;
+  const l10 = (v) => Math.log10(Math.max(minY, v));
+  const yS = (sig) => mT + plotH - (l10(sig) - l10(minY)) / (l10(maxY) - l10(minY)) * plotH;
+  const floorY = yS(1);
+  const gridVals = [0.5, 1, 2, 5, 10, 20].filter((v) => v >= minY && v <= maxY);
+  const grid = gridVals.map((v) => `<line class="scat-grid" x1="${mL}" y1="${yS(v).toFixed(1)}" x2="${W - mR}" y2="${yS(v).toFixed(1)}"/><text class="scat-tick" x="${mL - 6}" y="${(yS(v) + 3).toFixed(1)}" text-anchor="end">${v}×</text>`).join('');
+  const xticks = [0, Math.round(maxSave / 2), maxSave].map((v) => `<text class="scat-tick" x="${xS(v).toFixed(1)}" y="${H - mB + 18}" text-anchor="middle">${v}%</text>`).join('');
+  const rOf = (y) => (y >= 5 ? 5.5 : y >= 4 ? 4.5 : 3.5);
+  const dots = pts.map((p) => {
+    const bankable = p.sig >= 1;
+    const t = `${nameOf(p.slug)}: ${p.save}% ${es ? 'más barato' : 'cheaper'}, ${es ? 'banda' : 'band'} ${p.band_pct}%, S/N ${p.sig} (${p.posture || '—'})`;
+    return `<circle class="scat-dot scat-dot--${bankable ? 'bank' : 'swamp'}" cx="${xS(p.save).toFixed(1)}" cy="${yS(p.sig).toFixed(1)}" r="${rOf(p.years)}"><title>${escHtml(t)}</title></circle>`;
+  }).join('');
+  const alt = es
+    ? `Diagrama de dispersión de ${pts.length} ingredientes clasificados: eje X, el ahorro estacional (% más barato); eje Y en escala logarítmica, la señal-ruido (ahorro ÷ banda propia). Una línea de "piso de ruido" en 1×: por encima, el ahorro estacional supera el vaivén rutinario del artículo (comprable); por debajo, el ahorro es real pero menor que su propio ruido semanal (ahogado). ${pts.filter((p) => p.sig < 1).length} caen bajo el piso.`
+    : `Scatter of ${pts.length} classified ingredients: x-axis, the seasonal saving (% cheaper); y-axis on a log scale, the signal-to-noise (saving ÷ the item's own band). A "noise floor" line at 1×: above it the seasonal saving beats the item's routine swing (bankable); below it the saving is real but smaller than its own week-to-week noise (swamped). ${pts.filter((p) => p.sig < 1).length} fall below the floor.`;
+  // ranked table — the canonical screen-reader + no-JS reading
+  const rows = pts.map((p) => `<tr class="scat-r--${p.sig >= 1 ? 'bank' : 'swamp'}"><th scope="row"><a href="${base}/cost-index/${p.slug}/#cheapest">${escHtml(nameOf(p.slug))}</a></th><td>${MO[p.cheap]}</td><td>${p.save}%</td><td>${p.band_pct}%</td><td>${p.sig}×</td><td>${escHtml(p.posture || '—')}</td><td>${p.sig >= 1 ? (es ? 'Comprable' : 'Bankable') : (es ? 'Ahogado' : 'Swamped')}</td></tr>`).join('');
+  return `
+  <section aria-labelledby="sea-bank">
+    <h2 class="od-h2" id="sea-bank">${es ? 'Una gran brecha no es lo mismo que una buena compra' : "Big gap isn't the same as a good buy"}</h2>
+    <p class="od-sub">${es ? 'La amplitud por sí sola engaña. Aquí cada ventana se posiciona por cuánto ahorra (eje X) frente a cuánto oscila igual todo el año (eje Y = ahorro ÷ su propia banda). Bajo el piso de ruido, la temporada queda ahogada por el vaivén rutinario del artículo.' : "Amplitude alone misleads. Here each window is placed by how much it saves (x) against how much it swings anyway all year (y = saving ÷ its own band). Below the noise floor, the season is swamped by the item's routine jitter."}</p>
+    <figure class="sea-scatter" data-audio-alt="${escHtml(alt)}">
+      <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${escHtml(alt.slice(0, 240))}" class="sea-scatter__svg">
+        ${grid}
+        <line class="scat-floor" x1="${mL}" y1="${floorY.toFixed(1)}" x2="${W - mR}" y2="${floorY.toFixed(1)}"/>
+        <text class="scat-floorlab" x="${W - mR}" y="${(floorY - 5).toFixed(1)}" text-anchor="end">${es ? 'piso de ruido (1×)' : 'noise floor (1×)'}</text>
+        ${xticks}
+        <text class="scat-axlab" x="${(mL + plotW / 2).toFixed(1)}" y="${H - 6}" text-anchor="middle">${es ? '% más barato (ahorro estacional)' : '% cheaper (seasonal saving)'}</text>
+        <text class="scat-axlab" transform="translate(13,${(mT + plotH / 2).toFixed(1)}) rotate(-90)" text-anchor="middle">${es ? 'señal-ruido (log)' : 'signal-to-noise (log)'}</text>
+        ${dots}
+      </svg>
+      <figcaption>${es ? `Por encima del piso = comprable; por debajo = la temporada queda ahogada por el ruido propio. ${pts.filter((p) => p.sig < 1).length} de ${pts.length} caen debajo.` : `Above the floor = bankable; below = the season is swamped by the item's own noise. ${pts.filter((p) => p.sig < 1).length} of ${pts.length} fall below.`}</figcaption>
+      <details class="cite"><summary>${es ? 'Datos y método' : 'Data & method'}</summary><p>${es ? `Ahorro estacional de la mediana mensual de 5 años (CC0); banda propia del registro del ingrediente. Señal-ruido = ahorro ÷ banda, una razón heurística de dos porcentajes, no un estadístico formal. ${lackBand} artículos clasificados sin banda no aparecen.` : `Seasonal saving from the 5-year monthly median (CC0); own band from the ingredient state record. Signal-to-noise = saving ÷ band, a heuristic ratio of two percentages, not a formal statistic. ${lackBand} classified items without a band do not appear.`}</p></details>
+    </figure>
+    <details class="sea-scattbl"><summary>${es ? 'Ver la tabla ordenada' : 'See the ranked table'}</summary>
+      <div class="sea-scattbl__wrap"><table><thead><tr><th scope="col">${es ? 'Ingrediente' : 'Ingredient'}</th><th scope="col">${es ? 'Más barato' : 'Cheapest'}</th><th scope="col">${es ? '% barato' : '% cheaper'}</th><th scope="col">${es ? 'Banda' : 'Band'}</th><th scope="col">S/N</th><th scope="col">${es ? 'Postura' : 'Posture'}</th><th scope="col">${es ? 'Veredicto' : 'Verdict'}</th></tr></thead><tbody>${rows}</tbody></table></div>
+    </details>
+    <div class="od-note sea-caveat" style="margin-top:14px"><p>${es ? 'El ancho de banda es cuánto oscila normalmente el precio de este artículo — un descriptor de previsibilidad, no un pronóstico ni una dirección. La señal-ruido es una razón heurística de dos porcentajes, no un estadístico formal. Un punto bajo la línea significa que la brecha estacional es real pero menor que el ruido semana a semana del propio artículo — la temporada puede quedar ahogada en cualquier semana dada.' : "Band width is how far this item's price routinely swings — a predictability descriptor, not a price forecast or a direction call. Signal-to-noise is a heuristic ratio of two percentages, not a formal statistic. A point below the line means the seasonal gap is real but smaller than the item's own week-to-week noise — the season can be swamped in any given week."}</p></div>
+  </section>`;
+}
+
 function emitSeasonalityHub(locale) {
   const es = locale === 'es';
   const lang = es ? 'es' : 'en';
@@ -4255,6 +4344,8 @@ function emitSeasonalityHub(locale) {
   </section>
   <hr class="od-rule">
   ${seaWhyHtml(locale)}
+  <hr class="od-rule">
+  ${seaScatterHtml(locale)}
   <hr class="od-rule">
   <section class="od-prose" aria-labelledby="sea-read">
     <h2 class="od-h2" id="sea-read">${es ? 'Cómo leer la curva de 12 meses' : 'How to read the 12-month curve'}</h2>
