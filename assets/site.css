@@ -7814,6 +7814,96 @@ table[data-viz-sortable] th[aria-sort="descending"]::after{content:"\2193";color
 .viz-sparks .viz-spark{margin:0}
 @media (min-width:640px){.viz-sparks--board{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.viz-sparks--board>.viz-spark:first-child{grid-column:1/-1}}
 
+/* .viz-diverge — a SIGNED horizontal bar chart with zero at the centre.
+   The right form for a quantity that can push up OR pull down (per-
+   ingredient reads vs baseline; basket contributions). Length encodes
+   MAGNITUDE (--w is |value|/max, 0..1, so the largest fills half the
+   track); SIDE encodes direction (rust building/positive grows right of
+   centre, teal easing/negative grows left). Direction is therefore read
+   from position AND colour AND the signed number — never colour alone,
+   the flaw a one-directional .viz-bars leaves when the data is signed.
+   Tone is 1:1 with sign in this domain, so one data-tone attribute
+   carries both colour and side. Tokens-only; same dark-mode posture. */
+.viz-diverge{display:grid;grid-template-columns:minmax(92px,30%) minmax(60px,1fr) auto;gap:9px 13px;align-items:center;margin:16px 0;font-family:var(--font-body);font-size:14px;color:var(--ink)}
+.viz-diverge__row{display:contents}
+.viz-diverge__title{grid-column:1/-1;font-family:var(--font-display);font-size:14.5px;font-weight:500;color:var(--ink);margin:0 0 2px;letter-spacing:-0.005em;line-height:1.4}
+.viz-diverge__label{font-variant-numeric:tabular-nums;line-height:1.3}
+.viz-diverge__label small{color:var(--stone);font-size:0.85em}
+.viz-diverge__track{position:relative;height:20px;background:var(--cream-2);border-radius:4px}
+.viz-diverge__zero{position:absolute;left:50%;top:-4px;bottom:-4px;width:1.5px;background:var(--stone-2);opacity:0.85;transform:translateX(-0.75px)}
+.viz-diverge__fill{position:absolute;top:0;bottom:0;height:100%;width:calc(var(--w,0) * 50%)}
+.viz-diverge__fill[data-tone="rust"]{left:50%;background:var(--rust);border-radius:0 3px 3px 0}
+.viz-diverge__fill[data-tone="teal"]{right:50%;background:var(--teal);border-radius:3px 0 0 3px}
+.viz-diverge__num{font-variant-numeric:tabular-nums;color:var(--ink);text-align:right;line-height:1.3;font-weight:500}
+.viz-diverge__axis{grid-column:1/-1;display:flex;justify-content:space-between;gap:8px;font-size:11px;letter-spacing:0.03em;text-transform:uppercase;color:var(--stone);margin-top:6px;padding-top:7px;border-top:1px solid var(--line)}
+.viz-diverge__axis .is-teal{color:var(--teal);font-weight:600}
+.viz-diverge__axis .is-rust{color:var(--rust);font-weight:600}
+.viz-diverge__note{grid-column:1/-1;font-size:12.5px;line-height:1.5;color:var(--stone);margin:4px 0 0;font-style:italic}
+.viz-diverge__note strong,.viz-diverge__note b{color:var(--ink);font-style:normal;font-weight:600}
+@media (prefers-reduced-motion:no-preference){
+  .viz-diverge[data-animate="grow"] .viz-diverge__fill{transform:scaleX(0);transition:transform 800ms cubic-bezier(0.2,0.8,0.2,1);transition-delay:var(--delay,0ms)}
+  .viz-diverge[data-animate="grow"] .viz-diverge__fill[data-tone="rust"]{transform-origin:left center}
+  .viz-diverge[data-animate="grow"] .viz-diverge__fill[data-tone="teal"]{transform-origin:right center}
+  .viz-diverge[data-animate="grow"].in .viz-diverge__fill{transform:scaleX(1)}
+}
+@media (max-width:560px){
+  .viz-diverge{grid-template-columns:minmax(0,1fr) auto;gap:5px 10px}
+  .viz-diverge__label{grid-column:1/-1;margin-top:6px}
+  .viz-diverge__track{height:16px}
+}
+
+/* .viz-split — a single stacked bar showing how a WHOLE divides into
+   named parts (the panel's 81 ingredients as below/flat/above). The
+   honest replacement for a progress ring that drew only one slice and
+   left the rest in the caption. Segment widths are shares of the whole
+   (--w = count/total); counts live in the legend in ink text so the
+   bar stays legible in both themes. */
+.viz-split{margin:16px 0;font-family:var(--font-body);font-size:14px;color:var(--ink)}
+.viz-split__title{font-family:var(--font-display);font-size:14.5px;font-weight:500;color:var(--ink);margin:0 0 8px;letter-spacing:-0.005em;line-height:1.4}
+.viz-split__bar{display:flex;gap:2px;height:26px;border-radius:5px;overflow:hidden;background:transparent}
+.viz-split__seg{width:calc(var(--w,0) * 100%);min-width:3px}
+.viz-split__seg[data-tone="teal"]{background:var(--teal)}
+.viz-split__seg[data-tone="stone"]{background:var(--stone)}
+.viz-split__seg[data-tone="rust"]{background:var(--rust)}
+.viz-split__legend{display:flex;flex-wrap:wrap;gap:7px 18px;margin:12px 0 0;font-size:12.5px;color:var(--stone)}
+.viz-split__key{display:inline-flex;align-items:center;gap:7px}
+.viz-split__swatch{width:11px;height:11px;border-radius:3px;flex:none}
+.viz-split__swatch[data-tone="teal"]{background:var(--teal)}
+.viz-split__swatch[data-tone="stone"]{background:var(--stone)}
+.viz-split__swatch[data-tone="rust"]{background:var(--rust)}
+.viz-split__key strong{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:600}
+.viz-split__note{font-size:12.5px;line-height:1.5;color:var(--stone);margin:10px 0 0;font-style:italic}
+.viz-split__note strong,.viz-split__note b{color:var(--ink);font-style:normal;font-weight:600}
+
+/* .viz-gauge — one signed headline value placed on a zero-centred axis,
+   so a −5.0% basket reads as a POSITION (left of baseline = easing)
+   rather than an arbitrary ring-fill. The number leads; the axis gives
+   it spatial meaning. Fill + dot are positioned by the generator from
+   the value and a symmetric range. */
+.viz-gauge{margin:18px 0;font-family:var(--font-body);color:var(--ink);max-width:380px}
+.viz-gauge__big{font-family:var(--font-display);font-size:40px;font-weight:500;letter-spacing:-0.02em;line-height:1;margin:0;font-variant-numeric:tabular-nums}
+.viz-gauge__big[data-tone="teal"]{color:var(--teal)}
+.viz-gauge__big[data-tone="rust"]{color:var(--rust)}
+.viz-gauge__big[data-tone="stone"]{color:var(--stone)}
+.viz-gauge__sub{font-size:12.5px;color:var(--stone);margin:6px 0 16px;line-height:1.4}
+.viz-gauge__sub strong{color:var(--ink);font-weight:600}
+.viz-gauge__track{position:relative;height:32px}
+.viz-gauge__line{position:absolute;left:0;right:0;top:50%;height:3px;background:var(--cream-2);border-radius:2px;transform:translateY(-50%)}
+.viz-gauge__fill{position:absolute;top:50%;height:8px;transform:translateY(-50%);border-radius:4px}
+.viz-gauge__fill[data-tone="teal"]{background:var(--teal)}
+.viz-gauge__fill[data-tone="rust"]{background:var(--rust)}
+.viz-gauge__zero{position:absolute;left:50%;top:1px;bottom:1px;width:2px;background:var(--stone-2);transform:translateX(-1px)}
+.viz-gauge__dot{position:absolute;top:50%;width:15px;height:15px;border-radius:50%;transform:translate(-50%,-50%);border:3px solid var(--cream)}
+.viz-gauge__dot[data-tone="teal"]{background:var(--teal)}
+.viz-gauge__dot[data-tone="rust"]{background:var(--rust)}
+.viz-gauge__ends{display:flex;justify-content:space-between;font-size:11px;color:var(--stone);margin-top:7px;font-variant-numeric:tabular-nums}
+.viz-gauge__ends .mid{color:var(--stone-2);text-transform:uppercase;letter-spacing:0.04em}
+
+/* .viz-pair — pairs two related standings side by side (spread + basket)
+   the way .viz-rings used to; degrades to a single column on phones. */
+.viz-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:26px;align-items:center;margin:20px 0}
+.viz-pair>*{margin:0;min-width:0}
+
 /* @shell:core === Window Phase 2/3.6/4/5+ additions (sash/sidelight, attach, now, pulses, admin) === */
 /* ============ THE WINDOW — Phase 2/3.6/4/5+ additions ============
    Sash/sidelight named-pane composer (Phase 2.1), photo+voice attach

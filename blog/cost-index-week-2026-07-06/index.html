@@ -44,7 +44,7 @@
       "url": "https://muntin.digital/blog/cost-index-week-2026-07-06/",
       "inLanguage": "en-US",
       "datePublished": "2026-07-06T13:00:00-04:00",
-      "dateModified": "2026-07-06",
+      "dateModified": "2026-07-24",
       "author": {
         "@id": "https://muntin.digital/#don-goldstein",
         "@type": "Person",
@@ -88,7 +88,7 @@
       "url": "https://muntin.digital/blog/cost-index-week-2026-07-06/",
       "isPartOf": { "@id": "https://muntin.digital/cost-index/#index-dataset" },
       "datePublished": "2026-07-06",
-      "dateModified": "2026-07-06",
+      "dateModified": "2026-07-24",
       "temporalCoverage": "2026-07-06",
       "license": "https://creativecommons.org/publicdomain/zero/1.0/",
       "creator": { "@id": "https://muntin.digital/#business" },
@@ -458,68 +458,75 @@ header.nav{min-height:64px}
 
       <p>One honesty line before the numbers, because it changes how you read every one of them. Each ingredient's percentage here is its read against <em>its own tracked baseline window</em> &mdash; the gap, not a price. New: the dispatch now carries a permanent edition archive, so it can show the honest move since last week where the rulers match. The basket's data anchor has not refreshed since the prior edition (still 2026-05-01), so there is no new basket move to report &mdash; rather than invent one, I say so. The weekly panel underneath it did move, and the per-ingredient reads below are current. And every figure is a <strong>public wholesale level, never your delivered price</strong>: this is a read on the <a href="/glossary/cost-index/">cost index</a>, not a line for your <a href="/glossary/food-cost/">food cost</a> sheet. The point is direction and gap, not a number to paste into a cost sheet.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="Two readings of where the panel sits this week. The first ring shows the spread: 24 of 81 tracked ingredients are reading above their own baseline window, 36 below, and 21 flat. The second ring shows the weighted basket, as of 2026-05-01: it reads -5.0% against its baseline at high confidence across 16 contributing ingredients. Both are state-of-play reads versus each baseline window, never a move since last week.">
-        <div class="viz-rings">
-          <div class="viz-ring" data-band="good" style="--score:30;">
-            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-spread" focusable="false">
-              <title id="ring-spread">24 of 81 ingredients reading above baseline</title>
-              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">24/81</text>
-            </svg>
-            <p class="viz-ring__label"><strong>Above baseline</strong>36 below &middot; 21 flat</p>
+            <figure class="viz-figure article-figure" data-audio-alt="Two readings of where the panel sits this week. First, the spread across all 81 tracked ingredients: 24 read above their own baseline window (cost building), 36 below it (cost easing), and 21 flat — shown as one stacked bar so every part is visible. Second, the weighted basket reads minus 5.0% against its baseline (high confidence · 16 ingredients), placed as a position left or right of the baseline line. Both are state-of-play reads versus each baseline window, never a move since last week.">
+        <div class="viz-pair">
+          <div class="viz-split">
+            <p class="viz-split__title">All 81 tracked ingredients, by where they read</p>
+            <div class="viz-split__bar">
+              <span class="viz-split__seg" data-tone="teal" style="--w:0.4444"></span>
+              <span class="viz-split__seg" data-tone="stone" style="--w:0.2593"></span>
+              <span class="viz-split__seg" data-tone="rust" style="--w:0.2963"></span>
+            </div>
+            <div class="viz-split__legend">
+              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="teal"></span>Below &mdash; easing <strong>36</strong></span>
+              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="stone"></span>Flat <strong>21</strong></span>
+              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="rust"></span>Above &mdash; building <strong>24</strong></span>
+            </div>
           </div>
-          <div class="viz-ring" data-band="good" style="--score:10;--delay:120ms;">
-            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-basket" focusable="false">
-              <title id="ring-basket">Weighted basket reads -5.0% against baseline</title>
-              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">−5.0%</text>
-            </svg>
-            <p class="viz-ring__label"><strong>Weighted basket</strong>high confidence &middot; 16 ingredients</p>
+          <div class="viz-gauge">
+            <p class="viz-gauge__big" data-tone="teal">−5.0%</p>
+            <p class="viz-gauge__sub"><strong>below baseline</strong> &middot; high confidence &middot; 16 ingredients</p>
+            <div class="viz-gauge__track">
+              <span class="viz-gauge__line"></span>
+              <span class="viz-gauge__fill" data-tone="teal" style="left:25.00%;width:25.00%"></span>
+              <span class="viz-gauge__zero"></span>
+              <span class="viz-gauge__dot" data-tone="teal" style="left:25.00%"></span>
+            </div>
+            <div class="viz-gauge__ends"><span>&minus;10%</span><span class="mid">baseline</span><span>+10%</span></div>
           </div>
         </div>
-        <figcaption>Where the panel sits, week of 2026-07-06: the spread of reads above baseline, and the weighted basket's own reading. Both are reads versus each baseline window, not a week-over-week move.</figcaption>
+        <figcaption>Where the panel sits, week of 2026-07-06: the spread of reads across the panel, and the weighted basket's position against its baseline. Both are reads versus each baseline window, not a week-over-week move.</figcaption>
       </figure>
 
       <h2 id="what-s-moving-the-basket">What's moving the basket</h2>
 <p>The basket is not one number &mdash; it is a weighted blend of 16 staples, so the headline −5.0% is really a tug-of-war. A heavy line barely moving anchors it: Chicken breast (boneless) is 17% of the basket, so it steadies the whole read. But the swing comes from elsewhere. This week Vegetable oil, at just 12% of the basket but reading +29.3% against its baseline, adds about +3.5 pts, while Chicken breast (boneless) pulls back −2.4 pts (the pressure read is <strong>easing</strong>, led by feed grain (corn) on a 6–9 week lead). Here is the headline taken apart, so −5.0% is a story you can see rather than a figure to take on faith.</p>
-      <figure class="viz-figure article-figure" data-audio-alt="What makes up the basket reading this week, ingredient by ingredient. The weighted basket reads -5.0% against baseline, and that single number is the sum of each staple's weight times its own read. Rust bars push the basket up, teal bars pull it down; the bars are scaled so the largest contributor fills the track. Vegetable oil, 12 percent of the basket and reading +29.3% against baseline, contributes +3.5 points; Chicken breast (boneless), 17 percent of the basket and reading -14.0% against baseline, contributes -2.4 points; Tomatoes (round), 5 percent of the basket and reading -33.3% against baseline, contributes -1.7 points; Onions, 6 percent of the basket and reading +25.6% against baseline, contributes +1.4 points; Pork shoulder, 5 percent of the basket and reading -19.8% against baseline, contributes -1.0 points; Butter (AA, bulk), 6 percent of the basket and reading -15.1% against baseline, contributes -0.9 points. The contributions sum, with offsets, to the headline basket figure — a couple of movers usually do most of the talking while the steady staples hold it down.">
-        <div class="viz-bars">
-          <p class="viz-bars__title">What's moving the basket this week (each staple's weight × its own read; rust pushes the basket up, teal pulls it down)</p>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Vegetable oil <span style="opacity:.6">(12% of basket)</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.000"></span></div>
-            <p class="viz-bars__num">+3.5 pts</p>
+            <figure class="viz-figure article-figure" data-audio-alt="What makes up the basket reading this week, ingredient by ingredient, on a zero-centred axis. Each staple's contribution is its weight times its own read: bars to the right of centre (rust) are staples pushing the basket up, bars to the left (teal) are pulling it down, and distance from the centre is how hard. Vegetable oil +3.5 pts; Onions +1.4 pts; Butter (AA, bulk) −0.9 pts; Pork shoulder −1.0 pts; Tomatoes (round) −1.7 pts; Chicken breast (boneless) −2.4 pts. A couple of movers usually do most of the talking while the steady staples hold the middle.">
+        <div class="viz-diverge">
+          <p class="viz-diverge__title">What's moving the basket this week &mdash; each staple's contribution (weight &times; its own read)</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Vegetable oil <small>12% of basket</small></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="rust" style="--w:1.000"></span></div>
+            <p class="viz-diverge__num">+3.5 pts</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Chicken breast (boneless) <span style="opacity:.6">(17% of basket)</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.677"></span></div>
-            <p class="viz-bars__num">−2.4 pts</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Onions <small>6% of basket</small></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="rust" style="--w:0.400"></span></div>
+            <p class="viz-diverge__num">+1.4 pts</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Tomatoes (round) <span style="opacity:.6">(5% of basket)</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.475"></span></div>
-            <p class="viz-bars__num">−1.7 pts</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Butter (AA, bulk) <small>6% of basket</small></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="teal" style="--w:0.257"></span></div>
+            <p class="viz-diverge__num">−0.9 pts</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Onions <span style="opacity:.6">(6% of basket)</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.402"></span></div>
-            <p class="viz-bars__num">+1.4 pts</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Pork shoulder <small>5% of basket</small></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="teal" style="--w:0.286"></span></div>
+            <p class="viz-diverge__num">−1.0 pts</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Pork shoulder <span style="opacity:.6">(5% of basket)</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.282"></span></div>
-            <p class="viz-bars__num">−1.0 pts</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Tomatoes (round) <small>5% of basket</small></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="teal" style="--w:0.486"></span></div>
+            <p class="viz-diverge__num">−1.7 pts</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Butter (AA, bulk) <span style="opacity:.6">(6% of basket)</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.258"></span></div>
-            <p class="viz-bars__num">−0.9 pts</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Chicken breast (boneless) <small>17% of basket</small></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="teal" style="--w:0.686"></span></div>
+            <p class="viz-diverge__num">−2.4 pts</p>
           </div>
-          <p class="viz-bars__note">A "point" is one one-hundredth of the basket percentage. Each bar is <strong>weight × that ingredient's read</strong> &mdash; a heavy staple barely moving anchors the basket, a light one moving hard can still swing it.</p>
+          <div class="viz-diverge__axis"><span class="is-teal">&larr; easing (cost down)</span><span>baseline</span><span class="is-rust">building (cost up) &rarr;</span></div>
+          <p class="viz-diverge__note">A "point" is one one-hundredth of the basket percentage. Distance from the centre is how hard a staple pushes; <strong>side is which way</strong>. A heavy staple barely moving sits near the centre; a light one moving hard reaches out.</p>
         </div>
-        <figcaption>The basket figure for the week of 2026-07-06, decomposed: each staple's contribution is its weight times its own read. Rust pushes up, teal pulls down.</figcaption>
+        <figcaption>The basket read for the week of 2026-07-06, decomposed: each staple's contribution is its weight times its own read. Right of centre pushes the basket up, left pulls it down.</figcaption>
       </figure>
 <p>That is the honest shape of an index: a couple of volatile lines do most of the talking, and the steady staples keep it from whipping around. So read −5.0% as &ldquo;Vegetable oil pushing, Chicken breast (boneless) easing&rdquo; &mdash; not as every shelf in the walk-in moving together. If the line doing the pushing is not one you carry, the basket may be louder than your own invoice this week.</p>
 
@@ -552,42 +559,43 @@ header.nav{min-height:64px}
       <h2 id="the-widest-gaps-from-baseline">The widest gaps from baseline</h2>
       <p>Beyond the action flags, here is the full spread of movement. Reading above baseline this week: Green beans +125.4% &middot; Blueberries +42.3% &middot; Asparagus +39.7% &middot; Cantaloupe +34.2%. Reading below: Romaine lettuce −55.9% &middot; Lime −53.1% &middot; Zucchini −51.9% &middot; Eggplant −39.1%. The bars below scale to the largest mover so the gaps are legible &mdash; rust where cost is building, teal where it is easing.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The widest gaps from baseline across the tracked panel this week, with bars scaled so the largest mover fills the track. Rust bars are ingredients reading above their own baseline window (cost building); teal bars are reading below it (cost easing). Each percentage is a state-of-play read versus that ingredient's own tracked baseline, not a week-over-week change. Reading the bars: Green beans +125.4% vs its tracked baseline; Romaine lettuce -55.9% vs its tracked baseline; Lime -53.1% vs its tracked baseline; Zucchini -51.9% vs its tracked baseline; Blueberries +42.3% vs its tracked baseline; Asparagus +39.7% vs its tracked baseline.">
-        <div class="viz-bars">
-          <p class="viz-bars__title">Widest gaps from baseline this week (bars scaled to the largest mover; rust is building cost, teal is easing)</p>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Green beans</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.000"></span></div>
-            <p class="viz-bars__num">+125.4%</p>
+            <figure class="viz-figure article-figure" data-audio-alt="The widest gaps from baseline across the tracked panel this week, on a zero-centred axis so the direction is unmistakable. Bars to the right of centre (rust) are ingredients reading above their own baseline window — cost building; bars to the left (teal) are reading below it — cost easing. Distance from the centre is how wide the gap. Reading the bars: Green beans +125.4%; Blueberries +42.3%; Asparagus +39.7%; Zucchini −51.9%; Lime −53.1%; Romaine lettuce −55.9%.">
+        <div class="viz-diverge">
+          <p class="viz-diverge__title">Widest gaps from baseline this week &mdash; building cost to the right, easing to the left</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Green beans</p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="rust" style="--w:1.000"></span></div>
+            <p class="viz-diverge__num">+125.4%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Romaine lettuce</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.446"></span></div>
-            <p class="viz-bars__num">−55.9%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Blueberries</p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="rust" style="--w:0.337"></span></div>
+            <p class="viz-diverge__num">+42.3%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Lime</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.424"></span></div>
-            <p class="viz-bars__num">−53.1%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Asparagus</p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="rust" style="--w:0.317"></span></div>
+            <p class="viz-diverge__num">+39.7%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Zucchini</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.414"></span></div>
-            <p class="viz-bars__num">−51.9%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Zucchini</p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="teal" style="--w:0.414"></span></div>
+            <p class="viz-diverge__num">−51.9%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Blueberries</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.338"></span></div>
-            <p class="viz-bars__num">+42.3%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Lime</p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="teal" style="--w:0.423"></span></div>
+            <p class="viz-diverge__num">−53.1%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Asparagus</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.317"></span></div>
-            <p class="viz-bars__num">+39.7%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Romaine lettuce</p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="teal" style="--w:0.446"></span></div>
+            <p class="viz-diverge__num">−55.9%</p>
           </div>
-          <p class="viz-bars__note">Each bar is a read versus <strong>that ingredient's own tracked baseline window</strong> &mdash; a state-of-play snapshot of what's flashing, not a move since last week.</p>
+          <div class="viz-diverge__axis"><span class="is-teal">&larr; easing (cost down)</span><span>baseline</span><span class="is-rust">building (cost up) &rarr;</span></div>
+          <p class="viz-diverge__note">Each bar is a read versus <strong>that ingredient's own tracked baseline window</strong> &mdash; distance from the centre is the size of the gap, side is the direction. A state-of-play snapshot, not a move since last week.</p>
         </div>
-        <figcaption>The widest gaps from each ingredient's tracked baseline, week of 2026-07-06. Rust bars are building cost; teal bars are easing.</figcaption>
+        <figcaption>The widest gaps from each ingredient's tracked baseline, week of 2026-07-06. Right of centre is building cost; left is easing.</figcaption>
       </figure>
 
       <p>Read these as gaps, not verdicts. A wide rust bar on a seasonal item often unwinds when the season turns; a wide teal bar can be a vendor clearing inventory rather than a durable easing. The bar tells you where to look; your delivered invoice tells you whether it reached your back door.</p>

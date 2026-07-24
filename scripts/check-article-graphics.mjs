@@ -195,6 +195,8 @@ const DEDUP_ALLOW = new Set([
 // New kinds: add here AND mention in the canon §8 list.
 export const VIZ_KINDS = [
   'viz-bars',
+  'viz-diverge',
+  'viz-split',
   'viz-flow',
   'viz-tree',
   'viz-ba',
