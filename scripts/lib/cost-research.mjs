@@ -1447,6 +1447,46 @@ export function studyMlBlocks(study, es, escHtml) {
   return blocks.join('\n    ');
 }
 
+// "Ask this paper" — the owned-questions answer layer (ADR-019 §B). Each answer atom repeats its
+// number AND its type inline and welds its caveat into the prose, so the shortest quotable span
+// stays true. Renders the visible jump-list + Q/A cards (styled by STUDY_ANSWERS_CSS) AND a FAQPage
+// JSON-LD node in the body (Google reads JSON-LD anywhere; keeps it off the engine-behind <head>).
+// Exported + sentinel-wrapped, shared by emitStudy (body) and check-study-engine-parity.mjs.
+export const STUDY_ANSWERS_SENTINEL = { start: '<!-- study-answers:start -->', end: '<!-- /study-answers:end -->' };
+export const STUDY_ANSWERS_CSS_SENTINEL = { start: '/* study-answers-css:start */', end: '/* study-answers-css:end */' };
+export const STUDY_ANSWERS_CSS = `${STUDY_ANSWERS_CSS_SENTINEL.start}
+.rs-ask{margin:0 0 24px}
+.rs-ask__intro{font-size:15.5px;line-height:1.6;color:var(--ink);margin:0 0 14px;max-width:68ch}
+.rs-ask__jump{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;padding:0;list-style:none}
+.rs-ask__jump a{font-size:12.5px;color:var(--teal);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:3px 11px}
+.rs-ask__jump a:hover{border-color:var(--teal)}
+.rs-ask__item{margin:0 0 14px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--cream)}
+.rs-ask__q{font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--ink);margin:0 0 6px;letter-spacing:0;text-transform:none}
+.rs-answer{font-size:14.5px;line-height:1.58;color:var(--ink);margin:0;max-width:70ch}
+.rs-ask__item .pb-groundedin{margin-top:8px}
+${STUDY_ANSWERS_CSS_SENTINEL.end}`;
+
+export function studyAnswersBlock(study, es, escHtml, canon) {
+  const answers = study.answers || [];
+  if (!answers.length) return '';
+  const H = es ? 'Pregúntale a este informe' : 'Ask this paper';
+  const intro = es
+    ? 'Siete preguntas que responde este informe de campo — cada respuesta lleva su propia salvedad para que siga siendo cierta citada en corto.'
+    : 'Seven questions this field report answers — each answer carries its own caveat so it stays true quoted short.';
+  const groundLabel = es ? 'Se apoya en' : 'Grounded in';
+  const recordLabel = es ? 'Del registro seguido' : 'From the tracked record';
+  const jump = answers.map((x) => `<li><a href="#ans-${x.slug}">${escHtml(x.q)}</a></li>`).join('');
+  const items = answers.map((x) => {
+    const grounds = (x.groundsRefs || []).length
+      ? `<p class="pb-groundedin"><b>${groundLabel}:</b> ${x.groundsRefs.map((r) => `<a href="#ref-${r}">[${r}]</a>`).join(' ')}</p>`
+      : `<p class="pb-groundedin"><b>${recordLabel}</b></p>`;
+    return `<div class="rs-ask__item" id="ans-${escHtml(x.slug)}"><h3 class="rs-ask__q">${escHtml(x.q)}</h3><p class="rs-answer">${escHtml(x.a)}</p>${grounds}</div>`;
+  }).join('');
+  const faq = { '@context': 'https://schema.org', '@type': 'FAQPage', '@id': canon + '#faq', 'inLanguage': es ? 'es-US' : 'en-US', 'mainEntity': answers.map((x) => ({ '@type': 'Question', 'name': x.q, 'acceptedAnswer': { '@type': 'Answer', 'text': x.a } })) };
+  const faqLd = `<script type="application/ld+json">${JSON.stringify(faq).replace(/</g, '\\u003c')}</script>`;
+  return `${STUDY_ANSWERS_SENTINEL.start}<section class="rs-ask" aria-labelledby="ask-h"><h2 id="ask-h">${H}</h2><p class="rs-ask__intro">${intro}</p><ul class="rs-ask__jump">${jump}</ul>${items}${faqLd}</section>${STUDY_ANSWERS_SENTINEL.end}`;
+}
+
 function emitStudy(locale, ctx) {
   const { pageHead, pageTail, escHtml, repoRoot } = ctx;
   const es = locale === 'es'; const lang = es ? 'es' : 'en'; const base = es ? '/es' : '';
@@ -1492,6 +1532,7 @@ function emitStudy(locale, ctx) {
     <div class="rs-cta" style="margin-top:20px"><a class="btn btn-primary" href="${toolUrl}">${es ? 'Abre el manual interactivo' : 'Open the interactive playbook'} <span aria-hidden="true">→</span></a></div>
   </section>
   <div class="ci-body rs-body pb-study">
+    ${studyAnswersBlock(study, es, escHtml, es ? canonEs : canonEn)}
     <section class="pb-contribution"><h2>${es ? 'Nuestra contribución' : 'Our contribution'}</h2><p>${escHtml(study.contribution)}</p></section>
     ${secHtml}
     ${studyMlBlocks(study, es, escHtml)}
@@ -1502,7 +1543,7 @@ function emitStudy(locale, ctx) {
     <div class="rs-cta"><a class="btn btn-primary" href="${toolUrl}">${es ? 'Abre el manual interactivo' : 'Open the interactive playbook'} <span aria-hidden="true">→</span></a></div>
   </div>
   </div>`;
-  return pageHead({ lang, locale, title, desc: study.metaDesc, canonEn, canonEs, jsonld, extraCss: `<style>${RESEARCH_CSS}${PLAYBOOK_CSS}${STUDY_CSS}</style>` }) + body + pageTail;
+  return pageHead({ lang, locale, title, desc: study.metaDesc, canonEn, canonEs, jsonld, extraCss: `<style>${RESEARCH_CSS}${PLAYBOOK_CSS}${STUDY_CSS}${STUDY_ANSWERS_CSS}</style>` }) + body + pageTail;
 }
 
 // Build the /cost-index/research/ targets. Empty until data/cost-research-content.json exists,

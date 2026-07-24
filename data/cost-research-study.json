@@ -140,7 +140,62 @@
   ],
   "takeaway": "Price the plate, not the invoice; hold the menu through a spike, which across our 432 episodes cleared in a median of about 77 days; and swap only when the co-movement test says the substitute actually protects cost — not when it merely moves in step with the ingredient you are trying to escape.",
   "confidence": "How sure we are, layer by layer. Two of these reads are close to definitions, and we lean on them hardest: the trim tax is one divided by edible yield, arithmetic, not an estimate; and the shock-duration figures are the median and quartiles of 432 measured episode lengths (77 days, half of them between 50 and 105). The seasonal windows and the substitute-mirror flags are lighter — they rest on a handful of episodes per ingredient and on the cutoffs below, so they point rather than prove — and a posture sitting near a band edge is a close call. Where the price-theory literature appears — menu costs, price stickiness, the excess co-movement of commodities — it explains why an operator behaves as they do; it is context we stand on, not a measurement of our own numbers.",
-  "dataAvailability": "The full per-ingredient table behind every posture, band, trim tax, and cheapest month is a public download &mdash; 100 ingredients, released CC BY 4.0: <a href=\"/cost-index/menu-pricing.json\">menu-pricing.json</a> (structured) and <a href=\"/cost-index/menu-pricing.csv\">menu-pricing.csv</a> (spreadsheet). Every band is a wholesale reference read against each ingredient&#39;s own baseline window &mdash; never a delivered or invoice price; the trim tax is 1 divided by edible-yield; a cheapest month is named only when the seasonal trough clears the dispersion noise gate, and a blank means the ingredient priced year-round. Each column maps to the <a href=\"#methods\">Methods</a> above; every read is descriptive of the tracked record and based on co-occurrence, never a forecast and never a measured cause."
+  "dataAvailability": "The full per-ingredient table behind every posture, band, trim tax, and cheapest month is a public download &mdash; 100 ingredients, released CC BY 4.0: <a href=\"/cost-index/menu-pricing.json\">menu-pricing.json</a> (structured) and <a href=\"/cost-index/menu-pricing.csv\">menu-pricing.csv</a> (spreadsheet). Every band is a wholesale reference read against each ingredient&#39;s own baseline window &mdash; never a delivered or invoice price; the trim tax is 1 divided by edible-yield; a cheapest month is named only when the seasonal trough clears the dispersion noise gate, and a blank means the ingredient priced year-round. Each column maps to the <a href=\"#methods\">Methods</a> above; every read is descriptive of the tracked record and based on co-occurrence, never a forecast and never a measured cause.",
+  "answers": [
+   {
+    "slug": "inflation-posture",
+    "q": "How should a restaurant price a menu against inflation?",
+    "a": "Price ingredient by ingredient against each one's own baseline, not the menu as a single block. In this field report's 100 ingredients the split is 37 lock, 19 cushion, 7 float, and 37 withhold — and the instrument declines to publish a read for the 37 it can't stand behind rather than guess. This is a descriptive read of a tracked wholesale reference against each ingredient's own history, never a forecast of where a price goes next.",
+    "groundsRefs": [
+     1
+    ]
+   },
+   {
+    "slug": "reprint-spike",
+    "q": "Should I reprint the menu when a price spikes?",
+    "a": "Usually not on the spike itself. In the tracked record these large moves cleared in a median of about 77 days, with the middle half between 50 and 105 days — long enough to disrupt a menu but short enough that a reflexive reprint often reverses. That is a description of what happened in the record, not a prediction of the next spike.",
+    "groundsRefs": [
+     1
+    ]
+   },
+   {
+    "slug": "yield-trim-tax",
+    "q": "How do I price on yield instead of the invoice?",
+    "a": "Divide the purchase price by the edible yield: the trim tax is 1 ÷ yield, so a 45%-yield lemon costs 2.22× its purchase price per usable pound. On a category basis citrus is the steepest at 2.16× and mushroom the gentlest at 1.14×, but that is a reference multiplier, not your measured yield and not a delivered cost — individual ingredients vary around their category figure (lime is 2.86×, lemon 2.22×).",
+    "groundsRefs": [
+     14
+    ]
+   },
+   {
+    "slug": "swap-save",
+    "q": "Does swapping to a cheaper ingredient actually save money?",
+    "a": "Check it pair by pair — a cheaper stand-in only protects cost if it does not move with the thing it replaces. Across 432 large-move episodes in the tracked record, 94% traveled with at least one other ingredient, so most “backups” rise at the same time. Co-movement here is association across the record, not a measured cause, and it is why a swap has to be verified rather than assumed.",
+    "groundsRefs": []
+   },
+   {
+    "slug": "seasonal-window",
+    "q": "Is it worth buying an ingredient in its cheaper month?",
+    "a": "Sometimes — 54 of the 100 ingredients carry a seasonal window that cleared a dispersion noise gate, and the other 46 show only scatter, where a “cheapest month” would be noise dressed as a signal. Where a window cleared, buying in it is a real saving against that ingredient's own high; where it didn't, the calendar won't help you. These windows describe the tracked record, not a forecast, and “in season” is not the same as “cheapest.”",
+    "groundsRefs": []
+   },
+   {
+    "slug": "failure-rate",
+    "q": "What share of restaurants actually fail in year one?",
+    "a": "About 26% in the first year — not the 90% that circulates as folklore. The widely repeated 90% figure was traced to a misquote with no data behind it; the measured first-year failure rate for independent restaurants is roughly a quarter. This is Muntin's compiled reading of source [6], a descriptive statistic, not a prediction about any one restaurant.",
+    "groundsRefs": [
+     6
+    ]
+   },
+   {
+    "slug": "cost-matters",
+    "q": "Does ingredient cost even matter to the plate?",
+    "a": "Yes — a small farm share is not a small stake. The farm's value share of the U.S. food dollar is about 15.9¢ (a value proxy, not a volume share), and reducing kitchen waste returns roughly 7:1, not the mis-applied 14:1. A thin-margin plate can't absorb a costing mistake, which is exactly why yield and posture discipline — not the raw commodity price — move the margin. Muntin's compiled reading of sources [2] and [34].",
+    "groundsRefs": [
+     2,
+     34
+    ]
+   }
+  ]
  },
  "es": {
   "title": "El manual de precios de menú — Muntin",
@@ -281,6 +336,61 @@
   ],
   "takeaway": "Ponle precio al plato, no a la factura; sostén el menú a través de un pico, que en nuestros 432 episodios se despejó en una mediana de cerca de 77 días; y cambia solo cuando la prueba de comovimiento diga que el sustituto de verdad protege el costo —no cuando apenas se mueva al mismo compás que el ingrediente del que intentas escapar—.",
   "confidence": "Qué tan seguros estamos, capa por capa. Dos de estas lecturas están cerca de ser definiciones, y en ellas nos apoyamos más: el impuesto de merma es uno dividido entre el rendimiento comestible, aritmética, no una estimación; y las cifras de duración del pico son la mediana y los cuartiles de 432 longitudes de episodio medidas (77 días, la mitad entre 50 y 105). Las ventanas estacionales y las señales de espejo-sustituto son más ligeras —descansan sobre un puñado de episodios por ingrediente y sobre los cortes de abajo, así que apuntan más que prueban— y una postura pegada al borde de una banda es un caso límite. Donde aparece la literatura de teoría de precios —costos de menú, rigidez de precios, el co-movimiento excesivo de las materias primas— explica por qué un operador se comporta como lo hace; es contexto sobre el que nos paramos, no una medición de nuestros propios números.",
-  "dataAvailability": "La tabla completa por ingrediente detrás de cada postura, banda, impuesto de merma y mes más barato es una descarga pública &mdash; 100 ingredientes, publicados bajo CC BY 4.0: <a href=\"/cost-index/menu-pricing.json\">menu-pricing.json</a> (estructurada) y <a href=\"/cost-index/menu-pricing.csv\">menu-pricing.csv</a> (hoja de cálculo). Cada banda es una referencia mayorista leída contra la propia ventana base de cada ingrediente &mdash; nunca un precio de entrega ni de factura; el impuesto de merma es 1 dividido entre el rendimiento comestible; un mes más barato se nombra solo cuando el valle estacional pasa el filtro de ruido por dispersión, y un espacio en blanco quiere decir que el ingrediente tiene precio todo el año. Cada columna corresponde a los <a href=\"#methods\">Métodos</a> de arriba; cada lectura es descriptiva del registro seguido y se basa en la coincidencia, nunca un pronóstico y nunca una causa medida."
+  "dataAvailability": "La tabla completa por ingrediente detrás de cada postura, banda, impuesto de merma y mes más barato es una descarga pública &mdash; 100 ingredientes, publicados bajo CC BY 4.0: <a href=\"/cost-index/menu-pricing.json\">menu-pricing.json</a> (estructurada) y <a href=\"/cost-index/menu-pricing.csv\">menu-pricing.csv</a> (hoja de cálculo). Cada banda es una referencia mayorista leída contra la propia ventana base de cada ingrediente &mdash; nunca un precio de entrega ni de factura; el impuesto de merma es 1 dividido entre el rendimiento comestible; un mes más barato se nombra solo cuando el valle estacional pasa el filtro de ruido por dispersión, y un espacio en blanco quiere decir que el ingrediente tiene precio todo el año. Cada columna corresponde a los <a href=\"#methods\">Métodos</a> de arriba; cada lectura es descriptiva del registro seguido y se basa en la coincidencia, nunca un pronóstico y nunca una causa medida.",
+  "answers": [
+   {
+    "slug": "inflation-posture",
+    "q": "¿Cómo debería un restaurante fijar precios frente a la inflación?",
+    "a": "Fija el precio ingrediente por ingrediente contra la propia línea base de cada uno, no el menú como un solo bloque. En los 100 ingredientes de este informe de campo el reparto es 37 fijan, 19 amortiguan, 7 flotan y 37 se reservan — y el instrumento prefiere no publicar una lectura para los 37 que no puede sostener antes que adivinar. Es una lectura descriptiva de una referencia mayorista seguida contra el propio historial de cada ingrediente, nunca un pronóstico de a dónde va un precio.",
+    "groundsRefs": [
+     1
+    ]
+   },
+   {
+    "slug": "reprint-spike",
+    "q": "¿Debo reimprimir el menú cuando un precio se dispara?",
+    "a": "Normalmente no sobre el pico mismo. En el registro seguido estos movimientos grandes se resolvieron en una mediana de unos 77 días, con la mitad central entre 50 y 105 días — suficiente para trastornar un menú pero suficientemente corto como para que una reimpresión refleja a menudo se revierta. Es una descripción de lo que pasó en el registro, no una predicción del próximo pico.",
+    "groundsRefs": [
+     1
+    ]
+   },
+   {
+    "slug": "yield-trim-tax",
+    "q": "¿Cómo fijo precio sobre el rendimiento en vez de la factura?",
+    "a": "Divide el precio de compra entre el rendimiento comestible: el impuesto de merma es 1 ÷ rendimiento, así que un limón de 45% de rendimiento cuesta 2.22× su precio de compra por libra utilizable. Por categoría los cítricos son los más empinados con 2.16× y los hongos los más suaves con 1.14×, pero es un multiplicador de referencia, no tu rendimiento medido ni un costo de entrega — los ingredientes individuales varían alrededor de su cifra de categoría (la lima es 2.86×, el limón 2.22×).",
+    "groundsRefs": [
+     14
+    ]
+   },
+   {
+    "slug": "swap-save",
+    "q": "¿Cambiar a un ingrediente más barato realmente ahorra dinero?",
+    "a": "Compruébalo par por par — un sustituto más barato solo protege el costo si no se mueve con lo que reemplaza. A lo largo de 432 episodios de movimiento grande en el registro seguido, el 94% viajó con al menos otro ingrediente, así que la mayoría de los “respaldos” suben al mismo tiempo. El co-movimiento aquí es asociación a lo largo del registro, no una causa medida, y por eso un cambio hay que verificarlo en vez de asumirlo.",
+    "groundsRefs": []
+   },
+   {
+    "slug": "seasonal-window",
+    "q": "¿Vale la pena comprar un ingrediente en su mes más barato?",
+    "a": "A veces — 54 de los 100 ingredientes llevan una ventana estacional que superó un filtro de dispersión, y los otros 46 muestran solo dispersión, donde un “mes más barato” sería ruido disfrazado de señal. Donde una ventana se superó, comprar en ella es un ahorro real contra el propio máximo de ese ingrediente; donde no, el calendario no te ayudará. Estas ventanas describen el registro seguido, no un pronóstico, y “de temporada” no es lo mismo que “más barato.”",
+    "groundsRefs": []
+   },
+   {
+    "slug": "failure-rate",
+    "q": "¿Qué proporción de restaurantes realmente fracasa en el primer año?",
+    "a": "Alrededor del 26% en el primer año — no el 90% que circula como folclore. La repetida cifra del 90% se rastreó hasta una cita errónea sin datos detrás; la tasa medida de fracaso en el primer año para restaurantes independientes es cerca de una cuarta parte. Esta es la lectura compilada de Muntin de la fuente [6], un estadístico descriptivo, no una predicción sobre ningún restaurante en particular.",
+    "groundsRefs": [
+     6
+    ]
+   },
+   {
+    "slug": "cost-matters",
+    "q": "¿Importa siquiera el costo del ingrediente para el plato?",
+    "a": "Sí — una participación agrícola pequeña no es una apuesta pequeña. La participación en valor de la finca del dólar alimentario de EE. UU. es de unos 15.9¢ (un proxy de valor, no una participación de volumen), y reducir el desperdicio de cocina rinde cerca de 7:1, no el mal aplicado 14:1. Un plato de margen delgado no puede absorber un error de costeo, que es exactamente por qué la disciplina de rendimiento y postura — no el precio bruto de la materia prima — mueve el margen. Lectura compilada de Muntin de las fuentes [2] y [34].",
+    "groundsRefs": [
+     2,
+     34
+    ]
+   }
+  ]
  }
 }

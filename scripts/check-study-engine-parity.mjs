@@ -24,12 +24,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { studyMlBlocks } from './lib/cost-research.mjs';
+import { studyMlBlocks, studyAnswersBlock, STUDY_ANSWERS_SENTINEL, STUDY_ANSWERS_CSS_SENTINEL } from './lib/cost-research.mjs';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const EN_PAGE = 'cost-index/menu-pricing/study/index.html';
 const ES_PAGE = 'es/cost-index/menu-pricing/study/index.html';
 const STUDY_JSON = 'data/cost-research-study.json';
+const CANON = { en: 'https://muntin.digital/cost-index/menu-pricing/study/', es: 'https://muntin.digital/es/cost-index/menu-pricing/study/' };
 
 // the host escaper — kept byte-identical to escHtml() in scripts/build-cost-index-pages.mjs
 function escHtml(s) {
@@ -105,10 +106,30 @@ function check({ study, enPage, esPage }) {
     if (!committed.includes(`<h2>${L.daH}</h2>`)) errs.push(`${L.name}: committed page is missing the "${L.daH}" (data-availability) block`);
     const nLim = limParaCount(committed, L.limH);
     if (nLim !== s.limitations.length) errs.push(`${L.name}: committed Limitations has ${nLim} paragraph(s) but the JSON carries ${s.limitations.length}`);
+
+    // "Ask this paper" answer layer (§B): JSON shape → engine render → committed region parity
+    if (!Array.isArray(s.answers) || !s.answers.length) errs.push(`${L.name}: study.${L.loc}.answers must be a non-empty array`);
+    else {
+      for (const x of s.answers) if (!x.q || !x.a || !x.slug) errs.push(`${L.name}: an answer atom is missing q/a/slug`);
+      const start = L.page.indexOf(STUDY_ANSWERS_SENTINEL.start);
+      const end = L.page.indexOf(STUDY_ANSWERS_SENTINEL.end);
+      if (start < 0 || end < 0) errs.push(`${L.name}: committed page is missing the study-answers sentinel block`);
+      else {
+        const committedAns = L.page.slice(start, end + STUDY_ANSWERS_SENTINEL.end.length);
+        const rendered = studyAnswersBlock(s, L.es, escHtml, CANON[L.loc]);
+        if (norm(rendered) !== norm(committedAns)) {
+          const a = norm(rendered), b = norm(committedAns); let i = 0; while (i < Math.min(a.length, b.length) && a[i] === b[i]) i++;
+          errs.push(`${L.name}: engine studyAnswersBlock() render DRIFTS from the committed page near "${b.slice(Math.max(0, i - 20), i + 30)}"`);
+        }
+        if (!committedAns.includes('"FAQPage"')) errs.push(`${L.name}: answers block is missing its FAQPage JSON-LD`);
+        for (const x of (s.answers || [])) if (!committedAns.includes(`id="ans-${x.slug}"`)) errs.push(`${L.name}: committed answers block is missing anchor id="ans-${x.slug}"`);
+      }
+      if (!L.page.includes(STUDY_ANSWERS_CSS_SENTINEL.start)) errs.push(`${L.name}: committed <head> is missing the study-answers CSS block (the answer cards would be unstyled)`);
+    }
   }
 
-  // EN/ES field parity for the four engine-owned fields
-  const need = ['methods', 'confidence', 'limitations', 'dataAvailability'];
+  // EN/ES field parity for the engine-owned fields
+  const need = ['methods', 'confidence', 'limitations', 'dataAvailability', 'answers'];
   if (study.en && study.es) {
     for (const k of need) {
       const inEn = study.en[k] != null, inEs = study.es[k] != null;
@@ -120,13 +141,16 @@ function check({ study, enPage, esPage }) {
 }
 
 function selfTest() {
+  const ans = (n) => [{ slug: 'x', q: 'Q?', a: 'A' + n, groundsRefs: [1] }];
   const mk = () => ({
-    en: { methods: 'M', confidence: 'C', limitations: ['a', 'b'], dataAvailability: 'x <a href="/cost-index/menu-pricing.json">j</a> <a href="#methods">m</a> y' },
-    es: { methods: 'Mx', confidence: 'Cx', limitations: ['ax', 'bx'], dataAvailability: 'xs <a href="/cost-index/menu-pricing.json">j</a> <a href="#methods">m</a> ys' },
+    en: { methods: 'M', confidence: 'C', limitations: ['a', 'b'], dataAvailability: 'x <a href="/cost-index/menu-pricing.json">j</a> <a href="#methods">m</a> y', answers: ans('en') },
+    es: { methods: 'Mx', confidence: 'Cx', limitations: ['ax', 'bx'], dataAvailability: 'xs <a href="/cost-index/menu-pricing.json">j</a> <a href="#methods">m</a> ys', answers: ans('es') },
   });
   const pageOf = (study, es, opts = {}) => {
-    const rendered = studyMlBlocks(es ? study.es : study.en, es, escHtml);
-    return `<main><div class="pb-study">${opts.pre || ''}${opts.mlOverride != null ? opts.mlOverride : rendered}<p class="pb-takeaway">t</p></div></main>`;
+    const s = es ? study.es : study.en;
+    const ml = opts.mlOverride != null ? opts.mlOverride : studyMlBlocks(s, es, escHtml);
+    const answers = opts.ansOverride != null ? opts.ansOverride : studyAnswersBlock(s, es, escHtml, CANON[es ? 'es' : 'en']);
+    return `<head><style>${STUDY_ANSWERS_CSS_SENTINEL.start} ${STUDY_ANSWERS_CSS_SENTINEL.end}</style></head><main><div class="pb-study">${answers}${opts.pre || ''}${ml}<p class="pb-takeaway">t</p></div></main>`;
   };
 
   // sanity: studyMlBlocks emits all four blocks in order
@@ -159,6 +183,12 @@ function selfTest() {
     }, 'id="methods"'],
     // EN/ES parity break
     ['parity break', () => { const g = mk(); delete g.es.dataAvailability; return { study: g, enPage: pageOf(g, false), esPage: pageOf(g, true) }; }, 'parity'],
+    // committed page drops the whole answers block
+    ['answers block dropped', () => { const g = mk(); return { study: g, enPage: pageOf(g, false, { ansOverride: '' }), esPage: pageOf(g, true) }; }, 'sentinel block'],
+    // answers block present but FAQPage stripped
+    ['FAQPage stripped', () => { const g = mk(); const a = studyAnswersBlock(g.en, false, escHtml, CANON.en).replace(/<script[\s\S]*?<\/script>/, ''); return { study: g, enPage: pageOf(g, false, { ansOverride: a }), esPage: pageOf(g, true) }; }, 'FAQPage'],
+    // head CSS block missing → unstyled cards
+    ['answers CSS missing', () => { const g = mk(); const p = pageOf(g, false).replace(STUDY_ANSWERS_CSS_SENTINEL.start, ''); return { study: g, enPage: p, esPage: pageOf(g, true) }; }, 'CSS block'],
   ];
   const missed = [];
   for (const [name, build, want] of cases) {
