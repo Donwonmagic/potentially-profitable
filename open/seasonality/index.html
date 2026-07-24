@@ -68,6 +68,17 @@ main{padding-top:64px}
 .ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
 .ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
 .ci-body li{margin:0 0 8px}
+.ci-profile{margin:34px 0 0;padding:20px 22px;background:var(--cream);border:1px solid var(--line);border-radius:14px}
+.ci-profile h2{margin:0 0 4px;font-size:20px}
+.ci-prof__note{margin:0 0 14px;font-size:13px;line-height:1.5;color:var(--ink-soft)}
+.ci-prof__note a{color:var(--teal);font-weight:600}
+.ci-prof__grid{margin:0;display:grid;gap:0}
+.ci-prof__row{display:grid;grid-template-columns:170px 1fr;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
+.ci-prof__row:first-child{border-top:none}
+.ci-prof__row dt{margin:0;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--teal)}
+.ci-prof__row dd{margin:0;font-size:14.5px;line-height:1.5;color:var(--ink)}
+.ci-prof__src{margin:14px 0 0;font-size:11.5px;line-height:1.5;color:var(--stone)}
+@media(max-width:560px){.ci-prof__row{grid-template-columns:1fr;gap:2px}}
 .ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
 .ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
@@ -308,6 +319,12 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
@@ -385,7 +402,60 @@ main{padding-top:64px}
 .od-note{background:var(--cream-2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:8px 0}
 .od-note p{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px}
 .od-note p:last-child{margin:0}
-@media (max-width:640px){.sea-clock{grid-template-columns:1fr}.sea-row{grid-template-columns:104px 1fr 46px}}
+.sea-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+/* §0 honesty capsule + funnel + license */
+.sea-hero2{margin:6px 0 4px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:14px}
+.sea-capsule{font-size:16px;line-height:1.6;color:var(--ink);margin:0 0 14px;max-width:70ch}
+.sea-capsule strong{color:var(--teal);font-weight:700}
+.sea-funnel{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 0 12px}
+.sea-funnel__step{font-size:13px;color:var(--ink-soft);background:var(--white);border:1px solid var(--line);border-radius:999px;padding:5px 12px}
+.sea-funnel__step b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:700}
+.sea-funnel__arr{color:var(--stone);font-weight:700}
+.sea-lic{font-size:12px;color:var(--stone);margin:0}
+.sea-lic__t{font-weight:700;letter-spacing:.03em;color:var(--ink-soft)}
+/* §4 mechanism grid + chips */
+.sea-mechgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:12px;margin:14px 0 0}
+.sea-mechcard{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+.sea-mechcard__hd{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 8px}
+.sea-mechcard__hd a{color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;border-bottom:1px solid transparent}
+.sea-mechcard__hd a:hover{border-bottom-color:var(--teal)}
+.sea-mechcard__mo{font-size:11.5px;color:var(--stone);white-space:nowrap}
+.sea-mechcard__tag{font-size:12.5px;line-height:1.5;color:var(--ink-soft);margin:8px 0 0}
+.sea-mchip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.02em;padding:3px 9px;border-radius:999px;border:1px solid var(--line);margin:0 5px 4px 0}
+.sea-mchip--counter-phase{color:#0d6b6b;background:rgba(13,107,107,.08);border-color:rgba(13,107,107,.25)}
+.sea-mchip--domestic-low{color:#8a4b2a;background:rgba(138,75,42,.08);border-color:rgba(138,75,42,.25)}
+.sea-mchip--domestic-only{color:var(--ink-soft);background:var(--cream-2)}
+.sea-mchip--conc{color:var(--stone);background:transparent}
+/* dual-calendar figure */
+.sea-dual{margin:16px 0;padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:14px}
+.sea-dual__grid{display:grid;grid-template-columns:130px 1fr;gap:8px 12px;align-items:center}
+.sea-dual__rowlab{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft)}
+.sea-dual__row{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;align-items:end;height:64px}
+.sea-dual__cell{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:2px;border-radius:4px}
+.sea-dual__cell--cheap{background:rgba(13,107,107,.10)}
+.sea-dual__bar{display:block;width:70%;height:var(--h);border-radius:3px 3px 0 0;min-height:4px}
+.sea-dual__bar--dom{background:var(--teal)}
+.sea-dual__bar--imp{background:#b98a4b}
+.sea-dual__bar--na{background:repeating-linear-gradient(45deg,var(--line),var(--line) 2px,transparent 2px,transparent 4px)}
+.sea-dual__mo{font-size:8px;color:var(--stone);font-weight:600}
+.sea-dual figcaption{font-size:13px;color:var(--ink-soft);margin:12px 0 0;line-height:1.5}
+.sea-dual .cite,.sea-swap .cite{margin:8px 0 0;font-size:12px}
+.sea-dual .cite summary,.sea-caveat .cite summary{cursor:pointer;color:var(--stone);font-weight:600}
+.sea-dual .cite p{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:6px 0 0}
+/* §6 Swap Validator */
+.sea-swap{display:grid;gap:14px;margin:8px 0 0}
+.sea-swap__pick{display:flex;flex-direction:column;gap:5px;max-width:340px}
+.sea-swap__pick span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft)}
+.sea-swap__pick select{font:inherit;font-size:15px;padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:var(--white);color:var(--ink)}
+.sea-swap__pick select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.sea-swap__out{padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px}
+.sea-swap__badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.02em;padding:4px 11px;border-radius:999px;margin:0 0 8px;border:1px solid var(--line)}
+.sea-swap__badge--real-hedge{color:#0d6b6b;background:rgba(13,107,107,.10);border-color:rgba(13,107,107,.3)}
+.sea-swap__badge--offset{color:#8a6a2a;background:rgba(138,106,42,.10);border-color:rgba(138,106,42,.3)}
+.sea-swap__badge--mirror{color:#8a2a2a;background:rgba(138,42,42,.10);border-color:rgba(138,42,42,.3)}
+.sea-swap__badge--shared-calendar{color:var(--ink-soft);background:var(--white)}
+.sea-swap__line{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
+@media (max-width:640px){.sea-clock{grid-template-columns:1fr}.sea-row{grid-template-columns:104px 1fr 46px}.sea-dual__grid{grid-template-columns:1fr}.sea-dual__rowlab{margin-top:6px}}
 </style></head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -406,6 +476,19 @@ main{padding-top:64px}
     <p class="od-eyebrow"><a href="/open/">Muntin Open Data</a> → Seasonality</p>
     <h1>What actually moves produce prices?</h1>
     <p class="od-hero__lede">Seasonality is the yearly rhythm in what an ingredient costs — set by harvest, storage, imports and weather. The honest headline: a handful of fresh field crops reward timing, and most storage crops, year-round imports, and proteins do not.</p>
+  </section>
+  
+  <section class="sea-hero2" aria-labelledby="sea-hero2-h">
+    <h2 class="sea-sr" id="sea-hero2-h">The honest headline</h2>
+    <p class="sea-capsule">For a handful of fresh field crops, buying in the right month cuts the wholesale reference <strong>22–45%</strong> against that item's own 5-year monthly normal. For most storage crops, year-round imports, and proteins, the calendar barely moves the number. These are reference levels vs each item's own season — not a delivered price, and never a forecast.</p>
+    <div class="sea-funnel" role="img" aria-label="Classification funnel: 84 ingredients with a 5-year normal, 74 earn a named cheap and dear month, 57 carry a clear seasonal window.">
+      <span class="sea-funnel__step"><b>84</b> 5-yr normal</span>
+      <span class="sea-funnel__arr" aria-hidden="true">→</span>
+      <span class="sea-funnel__step"><b>74</b> named cheap/dear month</span>
+      <span class="sea-funnel__arr" aria-hidden="true">→</span>
+      <span class="sea-funnel__step"><b>57</b> clear seasonal window</span>
+    </div>
+    <p class="sea-lic">Raw normals: <span class="sea-lic__t">CC0</span> · Derived classifications: <span class="sea-lic__t">CC-BY 4.0</span></p>
   </section>
   <section class="sea-clock" aria-labelledby="sea-clock-h">
     <svg viewBox="0 0 300 300" width="300" height="300" role="group" aria-label="Interactive seasonal clock: how many of 74 ingredients hit their lowest price in each month. Choose a month to see which." preserveAspectRatio="xMidYMid meet">
@@ -459,6 +542,73 @@ main{padding-top:64px}
     <div class="od-note" style="margin-top:16px"><p>Deliberately excluded: Green onion, Lime show even larger raw swings that are almost certainly a pack or unit change between summer and winter fruit, not a real price move. The direction is reliable; the exact multiple is not.</p></div>
   </section>
   <hr class="od-rule">
+  
+  <section aria-labelledby="sea-why">
+    <h2 class="od-h2" id="sea-why">Why the low lands when it does</h2>
+    <p class="od-sub">Each seasonal window now carries a structural descriptor derived from that item's import-value calendar — where import value sits relative to the domestic low. It's the shape of the curve, never a price cause or a supply flow.</p>
+    
+  <figure class="sea-dual" data-audio-alt="Two 12-month calendars for Russet potatoes, side by side: on top, the domestic wholesale-reference curve normalized to its own mean; below, the import-value index. The domestic cheapest month (April) is shaded. Import value rises in March and November, when the domestic wholesale reference dips — two calendars in counter-phase. Import value is nominal, never volume or supply share; neither curve causes the other.">
+    <div class="sea-dual__grid">
+      <span class="sea-dual__rowlab">Domestic reference</span>
+      <div class="sea-dual__row"><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:53%"></span><span class="sea-dual__mo">J</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:47%"></span><span class="sea-dual__mo">F</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:46%"></span><span class="sea-dual__mo">M</span></span><span class="sea-dual__cell sea-dual__cell--cheap"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:45%"></span><span class="sea-dual__mo">A</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:48%"></span><span class="sea-dual__mo">M</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:48%"></span><span class="sea-dual__mo">J</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:50%"></span><span class="sea-dual__mo">J</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:100%"></span><span class="sea-dual__mo">A</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:57%"></span><span class="sea-dual__mo">S</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:50%"></span><span class="sea-dual__mo">O</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:51%"></span><span class="sea-dual__mo">N</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:47%"></span><span class="sea-dual__mo">D</span></span></div>
+      <span class="sea-dual__rowlab">Import value</span>
+      <div class="sea-dual__row"><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:91%"></span><span class="sea-dual__mo">J</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:80%"></span><span class="sea-dual__mo">F</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:98%"></span><span class="sea-dual__mo">M</span></span><span class="sea-dual__cell sea-dual__cell--cheap"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:83%"></span><span class="sea-dual__mo">A</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:70%"></span><span class="sea-dual__mo">M</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:61%"></span><span class="sea-dual__mo">J</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:45%"></span><span class="sea-dual__mo">J</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:47%"></span><span class="sea-dual__mo">A</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:64%"></span><span class="sea-dual__mo">S</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:81%"></span><span class="sea-dual__mo">O</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:100%"></span><span class="sea-dual__mo">N</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:88%"></span><span class="sea-dual__mo">D</span></span></div>
+    </div>
+    <figcaption>Russet potatoes: two calendars, import-value counter-phase — shown together, neither causing the other.</figcaption>
+    <details class="cite"><summary>Source</summary><p>Domestic curve: 5-year monthly normals (USDA/BLS/FRED, CC0). Import-value index: U.S. customs value (Census, public domain) — nominal value, never tonnage.</p></details>
+  </figure>
+    <div class="sea-mechgrid"><div class="sea-mechcard">
+      <div class="sea-mechcard__hd"><a href="/cost-index/iceberg-lettuce/#cheapest">Iceberg lettuce</a><span class="sea-mechcard__mo">cheapest January</span></div>
+      <span class="sea-mchip sea-mchip--domestic-low">▽ Domestic-season low (not import-aligned)</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Mexico, HHI 0.61, a value share) with reliance-by-value 12% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
+      <p class="sea-mechcard__tag">Inferred from the domestic reference troughing while import value is not peaking — not a measured harvest calendar.</p>
+    </div><div class="sea-mechcard">
+      <div class="sea-mechcard__hd"><a href="/cost-index/blueberry/#cheapest">Blueberries</a><span class="sea-mechcard__mo">cheapest August</span></div>
+      <span class="sea-mchip sea-mchip--domestic-low">▽ Domestic-season low (not import-aligned)</span>
+      <p class="sea-mechcard__tag">Inferred from the domestic reference troughing while import value is not peaking — not a measured harvest calendar.</p>
+    </div><div class="sea-mechcard">
+      <div class="sea-mechcard__hd"><a href="/cost-index/russet-potato/#cheapest">Russet potatoes</a><span class="sea-mechcard__mo">cheapest April</span></div>
+      <span class="sea-mchip sea-mchip--counter-phase">⇄ Import-value counter-phase</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Canada, HHI 1.00, a value share) with reliance-by-value 7% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
+      <p class="sea-mechcard__tag">Import value rises in March and November, when the domestic wholesale reference dips — two calendars in counter-phase.</p>
+    </div><div class="sea-mechcard">
+      <div class="sea-mechcard__hd"><a href="/cost-index/celery/#cheapest">Celery</a><span class="sea-mechcard__mo">cheapest September</span></div>
+      <span class="sea-mchip sea-mchip--domestic-low">▽ Domestic-season low (not import-aligned)</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Mexico, HHI 0.81, a value share) with reliance-by-value 16% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
+      <p class="sea-mechcard__tag">Inferred from the domestic reference troughing while import value is not peaking — not a measured harvest calendar.</p>
+    </div><div class="sea-mechcard">
+      <div class="sea-mechcard__hd"><a href="/cost-index/green-leaf-lettuce/#cheapest">Green leaf lettuce</a><span class="sea-mechcard__mo">cheapest January</span></div>
+      <span class="sea-mchip sea-mchip--counter-phase">⇄ Import-value counter-phase</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Canada, HHI 0.50, a value share) with reliance-by-value 12% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
+      <p class="sea-mechcard__tag">Import value rises in January and February, when the domestic wholesale reference dips — two calendars in counter-phase.</p>
+    </div><div class="sea-mechcard">
+      <div class="sea-mechcard__hd"><a href="/cost-index/green-beans/#cheapest">Green beans</a><span class="sea-mechcard__mo">cheapest March</span></div>
+      <span class="sea-mchip sea-mchip--counter-phase">⇄ Import-value counter-phase</span>
+      <p class="sea-mechcard__tag">Import value rises in December, when the domestic wholesale reference dips — two calendars in counter-phase.</p>
+    </div><div class="sea-mechcard">
+      <div class="sea-mechcard__hd"><a href="/cost-index/raspberry/#cheapest">Raspberries</a><span class="sea-mechcard__mo">cheapest June</span></div>
+      <span class="sea-mchip sea-mchip--domestic-low">▽ Domestic-season low (not import-aligned)</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Mexico, HHI 1.00, a value share) with reliance-by-value 83% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
+      <p class="sea-mechcard__tag">Inferred from the domestic reference troughing while import value is not peaking — not a measured harvest calendar.</p>
+    </div><div class="sea-mechcard">
+      <div class="sea-mechcard__hd"><a href="/cost-index/whole-chicken/#cheapest">Whole chicken</a><span class="sea-mechcard__mo">cheapest May</span></div>
+      <span class="sea-mchip sea-mchip--domestic-only">▪ Domestically sourced (no import calendar)</span>
+      <p class="sea-mechcard__tag">Carries no import-value calendar; its shape is set by the domestic market.</p>
+    </div><div class="sea-mechcard">
+      <div class="sea-mechcard__hd"><a href="/cost-index/romaine-lettuce/#cheapest">Romaine lettuce</a><span class="sea-mechcard__mo">cheapest January</span></div>
+      <span class="sea-mchip sea-mchip--counter-phase">⇄ Import-value counter-phase</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Mexico, HHI 0.80, a value share) with reliance-by-value 12% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
+      <p class="sea-mechcard__tag">Import value rises in January, when the domestic wholesale reference dips — two calendars in counter-phase.</p>
+    </div><div class="sea-mechcard">
+      <div class="sea-mechcard__hd"><a href="/cost-index/tomato/#cheapest">Tomatoes (round)</a><span class="sea-mechcard__mo">cheapest March</span></div>
+      <span class="sea-mchip sea-mchip--counter-phase">⇄ Import-value counter-phase</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Mexico, HHI 0.68, a value share) with reliance-by-value 81% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
+      <p class="sea-mechcard__tag">Import value rises in January, when the domestic wholesale reference dips — two calendars in counter-phase.</p>
+    </div><div class="sea-mechcard">
+      <div class="sea-mechcard__hd"><a href="/cost-index/snow-peas/#cheapest">Snow peas</a><span class="sea-mechcard__mo">cheapest March</span></div>
+      <span class="sea-mchip sea-mchip--counter-phase">⇄ Import-value counter-phase</span>
+      <p class="sea-mechcard__tag">Import value rises in January, when the domestic wholesale reference dips — two calendars in counter-phase.</p>
+    </div><div class="sea-mechcard">
+      <div class="sea-mechcard__hd"><a href="/cost-index/artichoke/#cheapest">Artichoke</a><span class="sea-mechcard__mo">cheapest August</span></div>
+      <span class="sea-mchip sea-mchip--domestic-low">▽ Domestic-season low (not import-aligned)</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Mexico, HHI 0.93, a value share) with reliance-by-value 3% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
+      <p class="sea-mechcard__tag">Inferred from the domestic reference troughing while import value is not peaking — not a measured harvest calendar.</p>
+    </div></div>
+    <div class="od-note sea-caveat" style="margin-top:16px"><p>Two calendars shown beside each other — one is not causing the other. The import figure is nominal import-value seasonality, never volume, tonnage, or supply share; HHI is concentration of import value, not of total supply; reliance is a value proxy, not a supply-security score. This describes the curve&#39;s shape via import-value structure — never a price cause, never a supply flow, and never a forecast.</p></div>
+  </section>
+  <hr class="od-rule">
   <section class="od-prose" aria-labelledby="sea-read">
     <h2 class="od-h2" id="sea-read">How to read the 12-month curve</h2>
     <p>Every ingredient page carries a 12-month curve built from multi-year medians. The <strong>line</strong> is each month’s median (typical) price — the middle of the historical range, so one freak year doesn’t distort the shape. The shaded <strong>band</strong> is the spread: how much that month has varied year to year. A tight band means dependable; a wide band means volatile.</p>
@@ -468,6 +618,29 @@ main{padding-top:64px}
   <section aria-labelledby="sea-play-h">
     <h2 class="od-h2" id="sea-play-h">The operator’s playbook</h2>
     <ol class="sea-play"><li>Read the <strong>cheapest month</strong> as your feature-and-buy window and the <strong>priciest month</strong> as your trim-or-substitute window.</li><li>When the amplitude is large, the calendar is worth building the menu around: feature the item at its low, substitute or pre-buy ahead of its high.</li><li>When the amplitude is small — under about 15-20% — the curve is mostly noise: buy to need and shop the current spot deal instead.</li><li>Check the spread band before you commit spec: a cheap month with a wide band can still spike.</li><li>Remember the line is a median, not a forecast. It tells you the usual rhythm, not what next week’s truck will cost.</li></ol>
+  </section>
+  <hr class="od-rule">
+  
+  <section aria-labelledby="sea-swap-h">
+    <h2 class="od-h2" id="sea-swap-h">When your item peaks, what's actually cheap instead?</h2>
+    <p class="od-sub">For 31 items with a candidate swap on record, the validator uses seasonality as referee: it certifies calendar offset — it does not promise a price outcome.</p>
+    <div class="sea-swap">
+      <label class="sea-swap__pick"><span>Your item</span>
+        <select id="seaSwapSel"><option value="apple">Apples</option><option value="artichoke">Artichoke</option><option value="banana">Bananas</option><option value="broccoli">Broccoli</option><option value="butter-lettuce">Butter lettuce</option><option value="butternut-squash">Butternut squash</option><option value="cabbage">Cabbage</option><option value="carrot">Carrot</option><option value="cauliflower">Cauliflower</option><option value="cherry-tomato">Cherry tomatoes</option><option value="chicken-breast">Chicken breast (boneless)</option><option value="chicken-thigh">Chicken thigh</option><option value="collard-greens">Collard greens</option><option value="cucumber">Cucumber</option><option value="eggplant">Eggplant</option><option value="grapefruit">Grapefruit</option><option value="green-beans">Green beans</option><option value="green-leaf-lettuce">Green leaf lettuce</option><option value="iceberg-lettuce">Iceberg lettuce</option><option value="kale">Kale</option><option value="leek">Leek</option><option value="onion">Onions</option><option value="raspberry">Raspberries</option><option value="red-leaf-lettuce">Red leaf lettuce</option><option value="red-onion">Red onion</option><option value="romaine-lettuce">Romaine lettuce</option><option value="rutabaga">Rutabaga</option><option value="short-rib">Short rib</option><option value="tomato">Tomatoes (round)</option><option value="yellow-squash">Yellow squash</option><option value="zucchini">Zucchini</option></select>
+      </label>
+      <div class="sea-swap__out" id="seaSwapOut" aria-live="polite"><span class="sea-swap__badge sea-swap__badge--shared-calendar">Shared calendar</span><p class="sea-swap__line">Grapefruit and Apples share a cheap month and co-move — a plausibly shared calendar, not a hedge.</p></div>
+    </div>
+    <div class="od-note sea-caveat" style="margin-top:14px"><p>Co-movement is a fraction of one item&#39;s own moves — co-occurrence, not cause, with no coefficient, lead, or lag. A shared cheap month names a plausibly shared calendar; this certifies calendar offset, it does not promise a price outcome and asserts no shared cause.</p></div>
+    <script type="application/json" id="seaSwapData">{"apple":{"anchor":"Apples","swap":"Grapefruit","key":"shared-calendar","label":"Shared calendar","line":"Grapefruit and Apples share a cheap month and co-move — a plausibly shared calendar, not a hedge.","cheap":"May","dear":"October"},"artichoke":{"anchor":"Artichoke","swap":"Leek","key":"real-hedge","label":"Real hedge","line":"Leek is cheapest in April, roughly opposite Artichoke's cheap month (August) — so it tends to sit at its own low when Artichoke is dearer. Offset calendars.","cheap":"August","dear":"December"},"banana":{"anchor":"Bananas","swap":"Apple","key":"offset","label":"Partial offset","line":"Apple doesn't share Bananas's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"July","dear":"February"},"broccoli":{"anchor":"Broccoli","swap":"Cauliflower","key":"offset","label":"Partial offset","line":"Cauliflower doesn't share Broccoli's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"June","dear":"April"},"butter-lettuce":{"anchor":"Butter lettuce","swap":"Green leaf lettuce","key":"offset","label":"Partial offset","line":"Green leaf lettuce doesn't share Butter lettuce's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"March","dear":"December"},"butternut-squash":{"anchor":"Butternut squash","swap":"Red onion","key":"offset","label":"Partial offset","line":"Red onion doesn't share Butternut squash's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"January","dear":"July"},"cabbage":{"anchor":"Cabbage","swap":"Kale","key":"offset","label":"Partial offset","line":"Kale doesn't share Cabbage's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"April","dear":"July"},"carrot":{"anchor":"Carrot","swap":"Rutabaga","key":"offset","label":"Partial offset","line":"Rutabaga doesn't share Carrot's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"December","dear":"May"},"cauliflower":{"anchor":"Cauliflower","swap":"Broccoli","key":"offset","label":"Partial offset","line":"Broccoli doesn't share Cauliflower's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"September","dear":"December"},"cherry-tomato":{"anchor":"Cherry tomatoes","swap":"Yellow squash","key":"offset","label":"Partial offset","line":"Yellow squash doesn't share Cherry tomatoes's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"October","dear":"November"},"chicken-breast":{"anchor":"Chicken breast (boneless)","swap":"Chicken thigh","key":"offset","label":"Partial offset","line":"Chicken thigh doesn't share Chicken breast (boneless)'s cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"November","dear":"August"},"chicken-thigh":{"anchor":"Chicken thigh","swap":"Chicken breast","key":"offset","label":"Partial offset","line":"Chicken breast doesn't share Chicken thigh's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"January","dear":"July"},"collard-greens":{"anchor":"Collard greens","swap":"Leek","key":"offset","label":"Partial offset","line":"Leek doesn't share Collard greens's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"February","dear":"August"},"cucumber":{"anchor":"Cucumber","swap":"Zucchini","key":"offset","label":"Partial offset","line":"Zucchini doesn't share Cucumber's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"July","dear":"February"},"eggplant":{"anchor":"Eggplant","swap":"Red onion","key":"offset","label":"Partial offset","line":"Red onion doesn't share Eggplant's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"January","dear":"July"},"grapefruit":{"anchor":"Grapefruit","swap":"Apple","key":"shared-calendar","label":"Shared calendar","line":"Apple and Grapefruit share a cheap month and co-move — a plausibly shared calendar, not a hedge.","cheap":"May","dear":"November"},"green-beans":{"anchor":"Green beans","swap":"Cherry tomato","key":"real-hedge","label":"Real hedge","line":"Cherry tomato is cheapest in October, roughly opposite Green beans's cheap month (March) — so it tends to sit at its own low when Green beans is dearer. Offset calendars.","cheap":"March","dear":"November"},"green-leaf-lettuce":{"anchor":"Green leaf lettuce","swap":"Iceberg lettuce","key":"shared-calendar","label":"Shared calendar","line":"Iceberg lettuce and Green leaf lettuce share a cheap month and co-move — a plausibly shared calendar, not a hedge.","cheap":"January","dear":"November"},"iceberg-lettuce":{"anchor":"Iceberg lettuce","swap":"Red leaf lettuce","key":"shared-calendar","label":"Shared calendar","line":"Red leaf lettuce and Iceberg lettuce share a cheap month and co-move — a plausibly shared calendar, not a hedge.","cheap":"January","dear":"November"},"kale":{"anchor":"Kale","swap":"Cabbage","key":"offset","label":"Partial offset","line":"Cabbage doesn't share Kale's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"May","dear":"March"},"leek":{"anchor":"Leek","swap":"Artichoke","key":"real-hedge","label":"Real hedge","line":"Artichoke is cheapest in August, roughly opposite Leek's cheap month (April) — so it tends to sit at its own low when Leek is dearer. Offset calendars.","cheap":"April","dear":"November"},"onion":{"anchor":"Onions","swap":"Short rib","key":"offset","label":"Partial offset","line":"Short rib doesn't share Onions's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"December","dear":"August"},"raspberry":{"anchor":"Raspberries","swap":"Romaine lettuce","key":"real-hedge","label":"Real hedge","line":"Romaine lettuce is cheapest in January, roughly opposite Raspberries's cheap month (June) — so it tends to sit at its own low when Raspberries is dearer. Offset calendars.","cheap":"June","dear":"February"},"red-leaf-lettuce":{"anchor":"Red leaf lettuce","swap":"Iceberg lettuce","key":"shared-calendar","label":"Shared calendar","line":"Iceberg lettuce and Red leaf lettuce share a cheap month and co-move — a plausibly shared calendar, not a hedge.","cheap":"January","dear":"November"},"red-onion":{"anchor":"Red onion","swap":"Butternut squash","key":"offset","label":"Partial offset","line":"Butternut squash doesn't share Red onion's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"April","dear":"August"},"romaine-lettuce":{"anchor":"Romaine lettuce","swap":"Red leaf lettuce","key":"shared-calendar","label":"Shared calendar","line":"Red leaf lettuce and Romaine lettuce share a cheap month and co-move — a plausibly shared calendar, not a hedge.","cheap":"January","dear":"November"},"rutabaga":{"anchor":"Rutabaga","swap":"Carrot","key":"offset","label":"Partial offset","line":"Carrot doesn't share Rutabaga's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"September","dear":"January"},"short-rib":{"anchor":"Short rib","swap":"Onion","key":"offset","label":"Partial offset","line":"Onion doesn't share Short rib's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"November","dear":"August"},"tomato":{"anchor":"Tomatoes (round)","swap":"Cherry tomato","key":"real-hedge","label":"Real hedge","line":"Cherry tomato is cheapest in October, roughly opposite Tomatoes (round)'s cheap month (March) — so it tends to sit at its own low when Tomatoes (round) is dearer. Offset calendars.","cheap":"March","dear":"December"},"yellow-squash":{"anchor":"Yellow squash","swap":"Cherry tomato","key":"offset","label":"Partial offset","line":"Cherry tomato doesn't share Yellow squash's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"July","dear":"February"},"zucchini":{"anchor":"Zucchini","swap":"Cucumber","key":"offset","label":"Partial offset","line":"Cucumber doesn't share Zucchini's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"April","dear":"January"}}</script>
+    <script>
+    (function(){
+      var el=document.getElementById('seaSwapData'),sel=document.getElementById('seaSwapSel'),out=document.getElementById('seaSwapOut');
+      if(!el||!sel||!out)return;var d;try{d=JSON.parse(el.textContent)}catch(e){return}
+      function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+      function render(k){var x=d[k];if(!x)return;out.innerHTML='<span class="sea-swap__badge sea-swap__badge--'+x.key+'">'+esc(x.label)+'</span><p class="sea-swap__line">'+esc(x.line)+'</p>'}
+      sel.addEventListener('change',function(){render(sel.value)});
+    })();
+    </script>
   </section>
   <hr class="od-rule">
   <section aria-labelledby="sea-honest">

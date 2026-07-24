@@ -425,6 +425,13 @@ const CHECKS = [
   // USDA-sourced posture: every entry carries a citation + EN/ES + a real key.
   ['Cost-index seasonality education','check-seasonality-education.mjs'],
   ['Cost-index seasonality education self-test','check-seasonality-education.mjs','--self-test'],
+  // Seasonality corpus-fusion honesty (ADR-018 CHAIN) — the /open/seasonality/ hub fuses
+  // the ISR (import-VALUE seasonality, origin concentration, reliance, hedge_swap) into
+  // mechanism labels + a Swap Validator. Guards that no fusion launders a supply/volume
+  // claim out of value data, asserts a price cause, forecasts, or leaks a REFUSED field.
+  ['Seasonality fusion honesty self-test','check-seasonality-fusion.mjs','--self-test'],
+  ['Seasonality fusion honesty','check-seasonality-fusion.mjs'],
+  ['Seasonality fusion lib self-test','lib/seasonality-fusion.mjs','--self-test'],
   // Seasonal band enforcement (P1d) — the rendered "typical for this month"
   // bands on the ingredient pages state a multi-year norm (median + p25–p75).
   // The fabrication regex can't catch a wrong statistic, so this re-derives
