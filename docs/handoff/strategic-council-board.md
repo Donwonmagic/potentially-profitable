@@ -13,7 +13,7 @@ repo survives. Update this file as threads move.
 council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 #234–#239 product) are merged to main and closed.
 
-## ⮕ CURRENT STATE — HONESTY-AUDIT LOOP on Ledger insight surfaces (updated 2026-07-23)
+## ⮕ CURRENT STATE — HONESTY-AUDIT LOOP on Ledger insight surfaces (updated 2026-07-24)
 
 **What this thread is:** a sustained `ground → build → audit → iterate` loop hardening the
 honesty-critical **insight surfaces** of the Ledger product (`Muntin-Invoice-Decoder`, same
@@ -57,6 +57,22 @@ dish that spiked and returned ($5→$9→$5.05, net +1%) was spoken as calm — 
 `spark` array, which has no live consumer. Fixed with a peak↔trough volatility guard (`steady = flat
 && (peak−trough)/first ≤ SWING_PCT`): genuinely-steady dishes keep the copy; a net-flat-but-swung dish
 discloses the range and offers a look. **Open knob:** `SWING_PCT = 10%` (like the margin-map threshold).
+And **anomalies — ✅ CONVERGED r1→r3 (2026-07-24)** (product-only; the most accusatory surface —
+flagging IS an accusation, so the risk is claiming more certainty than the evidence supports). Five
+findings, all the same signature (*a certainty / causal / forward word from thin evidence*): the loud
+`price_hike` verdict called a SINGLE prior price "typical" and blocked the post (422) at warn whether the
+median rested on 1 point or 50 (AN-1/AN-3); `grade_switch` asserted "Vendor switched product" as FACT from
+a token-overlap heuristic that can't tell a real swap from the operator ordering iceberg instead of romaine
+(GRADE-SWITCH); `promo_restore` asserted a causal+forward "Promo ended … baseline $Y" from one low print +
+one restored (PROMO-RESTORE); the 12-week strip's empty-state claimed an earned "nothing to flag. Quiet."
+even with no invoices at all (WEB-N3). Fixed: `computePriceHike` surfaces `historical_count` → thin
+baseline says "last recorded" + info (never blocks); hedged "Possible product swap" title; observed-only
+"Price returned to its usual range"; a `window_extractions` denominator splits the empty-state honestly. r2
+caught + fixed **AN-B1** — my AN-1 "softening" minted a NEW false claim ("last recorded" naming an override
+value on no invoice), fixed by keying the word + info-downgrade off PROVENANCE ("your accepted baseline" +
+warn when the shown value is the operator's override). r3 walked the full decision table → 0. AN-2 refuted
+(the title always travels with the "vs … $Y" body). **Open knobs:** `MIN_BASELINE_OBS_FOR_TYPICAL = 2`;
+whether `grade_switch` should block a post (left blocking — a copy-honesty vs posting-UX fork).
 
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
@@ -81,6 +97,11 @@ discloses the range and offers a look. **Open knob:** `SWING_PCT = 10%` (like th
   cards contradict each other on the same data.
 - **Convergence discipline** — a re-audit only "converges" if the agents genuinely read/ran the
   code (check the workflow journal for real tool activity), not merely returned empty.
+- **A softening fix can mint a sharper false claim** — replacing a vague word with a precise one
+  (anomaly AN-1: "typical" → "last recorded") can create a NEW falsifiable claim in a corner the
+  vague word happened to cover (an override value that appears on no invoice). Make the sharper word
+  provenance-true across EVERY path that feeds the value, then re-audit for over-correction — the
+  convergence re-audit is there to catch exactly this, and did (AN-B1, r2).
 
 ## ⮕ CURRENT STATE — AUTONOMOUS REDESIGN RUN (updated 2026-07-11)
 
