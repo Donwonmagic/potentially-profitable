@@ -539,6 +539,12 @@ const CHECKS = [
   // structural no-price guarantee + the required honesty literals; --check pins the committed HTML.
   ['Recalls explorer page self-test','build-open-recalls-page.mjs','--self-test'],
   ['Recalls explorer page sync','build-open-recalls-page.mjs','--check'],
+  // /open/labor/ + /open/demand/ descriptive-lane explorers (spec §1.3–1.4) — each generator asserts
+  // its fence literals + (labor) no pressure token / (demand) provisional-adjacent latest value.
+  ['Labor explorer page self-test','build-open-labor-page.mjs','--self-test'],
+  ['Labor explorer page sync','build-open-labor-page.mjs','--check'],
+  ['Demand explorer page self-test','build-open-demand-page.mjs','--self-test'],
+  ['Demand explorer page sync','build-open-demand-page.mjs','--check'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
   ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
   // Study evidence dataset (ADR-019): the menu-pricing paper's claims × its 36 grounding sources
