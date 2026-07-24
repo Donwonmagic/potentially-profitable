@@ -526,6 +526,8 @@ const CHECKS = [
   // co-occurrence-never-cause honesty framing are CI-pinned; the LIVE openFDA fetch runs on the
   // operator Mac (ADR-013), so only the offline transform is gated here.
   ['Food-recall adapter self-test','fetch-food-recalls.mjs','--self-test'],
+  ['Recalls open-data self-test','build-recalls-open-data.mjs','--self-test'],
+  ['Recalls open-data sync','build-recalls-open-data.mjs','--check'],
   ['QCEW labor adapter self-test','fetch-qcew-wages.mjs','--self-test'],
   ['MARTS demand adapter self-test','fetch-marts-sales.mjs','--self-test'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
