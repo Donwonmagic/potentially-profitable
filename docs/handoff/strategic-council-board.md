@@ -102,6 +102,22 @@ at 0.75 read "likely unrelated" — reorder numbersMatch first); r3 **DUP-CONV-R
 also swallowed the ABSENT-number@0.75 cell, asserting "unrelated" for an unreadable-number off-by-one, the
 re-scan signature — narrowed the guard to `numbersDiffer && best<0.85`). r4 walked all 12 tier×number cells
 → 0. apps/api 3169 green.
+And **budget-pacing — ✅ CONVERGED r1→r2 (2026-07-24)** (product-only; a spend-PROJECTION accusation — the
+first surface where the honesty risk is a FORECAST, not a past/present claim). 2-lens audit → **5 raised, 3
+confirmed, 2 refuted.** (BP-1, HIGH) the /today card projects month-end spend as a naive linear run-rate
+(`projected = spent / fraction-of-month-elapsed`) and renders it "On pace to hit $X" — early in the month
+that amplifies ONE invoice by 1/fraction, so a $3,000 day-3 delivery projected "$30,000" on a $10,000 budget
+(3×–10×). Fixed: extracted the math to a pure tested helper + raised the floor to `MIN_PROJECTION_FRACTION =
+0.25` (~day 8) — below it the forecast is WITHHELD (factual read only); the factual over/crossed tiers still
+fire the moment spend actually crosses (not projection-gated), so nothing real is hidden. (BP-VERDICT-01,
+HIGH) the `budget_pace` verdict dated "this month" by UPLOAD time (`created_at`), not the invoice — a
+backfilled June invoice uploaded in July fired a false "over budget this month" (July), printed "Jun 28"
+under "this month," and disagreed with the /insights panel (which uses `issue_date`); violated the module's
+own "keys off invoice date, never upload time" canon. Fixed: period from `effectiveObservedAt`, spend CTEs
+on `COALESCE(issue_date, created_at)`. (BP-CHIP-02, MED) the panel DROPPED undated invoices (strict
+`issue_date` window) → a real over-budget read "On pace"; fixed with an opt-in `dateBasis:"coalesce"` so the
+panel and verdict now share one basis. BP-2 ("On pace to" is already the pace-conditional hedge) + BP-3 (UTC
+skew, conservative + immaterial) refuted. apps/api 3178 green; r2 → 0.
 
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
@@ -146,6 +162,17 @@ re-scan signature — narrowed the guard to `numbersDiffer && best<0.85`). r4 wa
   each round (r2 numbersMatch-ordering, r3 absent@0.75) until r4 walked all twelve. Enumerate the full
   matrix and check each cell — and order the branches so the strongest signal (a matching id) wins before
   a coarser tier gate short-circuits it (same bug shape as AN-B1).
+- **A projection is a forward claim: withhold when the window is too thin** — a run-rate that linearly
+  extrapolates a fraction of a period (budget-pacing BP-1: `spent / fraction-elapsed`) amplifies one early
+  data point by `1/fraction`, so it manufactures an absurd forecast from lumpy data. Don't just hedge the
+  wording ("On pace to" was already fine) — gate the MATH: withhold the projection until enough of the
+  window has elapsed to be a real trend, and lean on the FACTUAL tiers (already-over) which need no forecast.
+- **Date the claim by the event, not the upload** — anything that says "this month / this week" must window
+  on the INVOICE date (`issue_date`), never `created_at` (upload time); a backfilled/batch upload otherwise
+  fires a false "over budget this month" (budget-pacing BP-VERDICT-01) and disagrees with sibling surfaces.
+  Use `COALESCE(issue_date, created_at)` so undated rows fall back rather than being silently dropped
+  (BP-CHIP-02) — and put every surface that answers the same question on the SAME basis so they never
+  contradict each other.
 
 ## ⮕ CURRENT STATE — AUTONOMOUS REDESIGN RUN (updated 2026-07-11)
 
