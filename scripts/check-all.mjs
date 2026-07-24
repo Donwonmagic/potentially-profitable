@@ -526,6 +526,7 @@ const CHECKS = [
   // co-occurrence-never-cause honesty framing are CI-pinned; the LIVE openFDA fetch runs on the
   // operator Mac (ADR-013), so only the offline transform is gated here.
   ['Food-recall adapter self-test','fetch-food-recalls.mjs','--self-test'],
+  ['QCEW labor adapter self-test','fetch-qcew-wages.mjs','--self-test'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
   ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
   // Study evidence dataset (ADR-019): the menu-pricing paper's claims × its 36 grounding sources
