@@ -20,7 +20,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadEventsData, flatEvents, coMovement, companyStat } from './lib/cost-events-analysis.mjs';
+import { loadEventsData, flatEvents, coMovement, companyStat, coMovementBaseRate } from './lib/cost-events-analysis.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot = path.resolve(path.dirname(__filename), '..');
@@ -127,6 +127,13 @@ function selfTest() {
   const ls = companyStat(live);
   eq('live 432 events', ls.total, 432);
   eq('live 94% with company', ls.pct, 94);
+  // Permutation-null base rate (ADR-019): deterministic (seeded), its observed matches companyStat,
+  // and — the honest point — the null is close to the observed (company is the norm, not a signal).
+  const br1 = coMovementBaseRate(live, { seed: 1234567, iters: 200 });
+  const br2 = coMovementBaseRate(live, { seed: 1234567, iters: 200 });
+  eq('base rate deterministic', br1.basePct, br2.basePct);
+  eq('base rate observed matches companyStat', br1.observedPct, ls.pct);
+  eq('base rate near observed (density artifact, not signal)', Math.abs(br1.basePct - br1.observedPct) <= 8, true);
   console.log(`build-events-open-data self-test: ${pass}/${pass + fail} passed.`);
   process.exit(fail ? 1 : 0);
 }

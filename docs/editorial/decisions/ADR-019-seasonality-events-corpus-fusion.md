@@ -82,7 +82,15 @@ different measures, never a supply share) for the 7 seafood items. Additive via 
 an all-domestic page does not define import-value HHI. The existing `check-cost-index-events.mjs` confirms
 the block asserts no event→price causation and keeps the co-occurrence marker.
 
-**Sequenced next** (per the audited events spec): reliance-branched exposure is done; still to come — a
+**Also landed (2026-07-24):** the hub co-movement **base-rate honesty fix**. `coMovementBaseRate()` in
+`scripts/lib/cost-events-analysis.mjs` computes a seeded, deterministic **permutation null** — hold the 432
+(date, direction) moves fixed, shuffle which ingredient each belongs to, recompute the shared-week fraction.
+Result: observed 94%, null **94%** (93–94% over 500 permutations). So "94% had company" is a density artifact,
+not a signal — the hub now says so in its own voice ("had company barely beats chance: the signal is *which*
+ingredient co-moved, and why"). Surgical in-place edit of the 2 committed hub files + engine mirror (the hub is
+engine-behind); pinned by the `build-events-open-data` self-test (determinism + observed-matches + near-observed).
+
+**Sequenced next** (per the audited events spec): reliance-branched exposure + base-rate done; still to come — a
 severity percentile against the 432-move population, a **permutation-null base rate** for co-movement
 (shuffle labels over the same move population — the corpus has no all-week series, so an all-week null is
 the wrong null), a taxonomy of silence for the 23 flat events, a "which rung moved" note from the

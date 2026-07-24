@@ -58,7 +58,7 @@ import { createRequire } from 'node:module';
 // The single honest computation over the detected price-events dataset (co-movement +
 // the "shocks had company" stat). Shared with the CC0 downloads + the research page so
 // no two surfaces can drift. Co-occurrence, never cause — bounded, directed counts only.
-import { coMovement, companyStat } from './lib/cost-events-analysis.mjs';
+import { coMovement, companyStat, coMovementBaseRate } from './lib/cost-events-analysis.mjs';
 import { researchTargets } from './lib/cost-research.mjs';
 import { supplyPicture, SUPPLY_CSS } from './lib/supply-picture.mjs';
 import { mechanismFor, concentrationFor, MECHANISM_STRINGS, concentrationString, mechanismCaveat,
@@ -142,6 +142,11 @@ const REGISTRY_EVENTS = (() => {
 // measure is "in K of X's own N notable moves, Y co-moved the same direction."
 const CO_MOVEMENT = coMovement({ items: EVENTS });
 const COMPANY_STAT = companyStat({ items: EVENTS });
+// The permutation-null base rate for the "had company" stat (ADR-019): shuffle which
+// ingredient each move belongs to and recompute the shared-week fraction. Seeded +
+// deterministic so the rendered number is stable across builds. If the null ≈ the
+// observed, "had company" is the norm, not a signal — the signal is WHICH ingredient.
+const COMPANY_BASE = coMovementBaseRate({ items: EVENTS, params: { cohortWeeks: 6 } }, { seed: 1234567, iters: 500 });
 // Prefer the deep backfill (enough points to backtest coverage); fall back to the
 // vendored capped history.
 function bandSeries(slug, entry) {
@@ -3306,6 +3311,8 @@ const EVH_ADD_CSS = `<style>
 .cmv-hero{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin:0 0 12px;padding:16px 18px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
 .cmv-hero__pct{font-family:var(--font-display);font-size:clamp(40px,8vw,64px);font-weight:560;line-height:.95;color:var(--teal);letter-spacing:-.02em}
 .cmv-hero__gloss{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0;max-width:54ch;flex:1 1 260px}
+.cmv-null{font-size:14px;line-height:1.6;color:var(--ink);margin:0 0 12px;max-width:72ch;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--rust,#b5623f);border-radius:8px}
+.cmv-null strong{font-weight:700;font-variant-numeric:tabular-nums}
 .cmv-caveat{font-size:13px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;max-width:72ch;padding:10px 12px;background:var(--white);border:1px solid var(--line);border-radius:8px}
 .cmv-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 14px}
 .cmv-controls__lab{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
@@ -3394,6 +3401,7 @@ function emitEventsHubPage(locale) {
 
   // ---- Co-movement explorer (94% had company) --------------------------------
   const cs = COMPANY_STAT;
+  const cb = COMPANY_BASE;
   const cmvDef = defaultCmvAnchor();
   const cmvView = renderCmvView(cmvDef, es, base, 8);
   const cmvOptions = Object.keys(CO_MOVEMENT)
@@ -3407,9 +3415,12 @@ function emitEventsHubPage(locale) {
       <div class="cmv-hero">
         <span class="cmv-hero__pct">${cs.pct}%</span>
         <p class="cmv-hero__gloss">${es
-          ? `de los ${cs.total} movimientos de precio notables que detectamos (${cs.withCompany} de ${cs.total}) compartieron sus semanas con al menos otro ingrediente que corrió en la misma dirección. Solo ${cs.alone} se movieron en soledad.`
-          : `of the ${cs.total} notable price shocks we detected (${cs.withCompany} of ${cs.total}) shared their weeks with at least one other ingredient running the same direction. Just ${cs.alone} moved alone.`}</p>
+          ? `de los ${cs.total} movimientos de precio notables que detectamos (${cs.withCompany} de ${cs.total}) compartieron sus semanas con al menos otro ingrediente que corrió en la misma dirección. Pero eso es lo normal, no una señal — mira el nulo abajo.`
+          : `of the ${cs.total} notable price shocks we detected (${cs.withCompany} of ${cs.total}) shared their weeks with at least one other ingredient running the same direction. But that is the norm, not a signal — read the null below.`}</p>
       </div>
+      <p class="cmv-null">${es
+        ? `En un nulo barajado — donde esos mismos ${cs.total} movimientos se reasignan al azar a ingredientes (${cb.iters} permutaciones) — cerca del <strong>${cb.basePct}%</strong> aún comparte una semana en la misma dirección. Así que "tuvo compañía" apenas supera al azar: la señal no es que un choque tuviera compañía, sino <strong>cuál</strong> ingrediente se movió junto, y por qué.`
+        : `In a shuffled null — where those same ${cs.total} moves are randomly reassigned to ingredients (${cb.iters} permutations) — about <strong>${cb.basePct}%</strong> still share a same-direction week. So "had company" barely beats chance: the signal is not that a shock had company, but <strong>which</strong> ingredient co-moved, and why.`}</p>
       <p class="cmv-caveat">${es
         ? 'Moverse en las mismas semanas no es que una cosa cause la otra — muchos comparten una región de cultivo, una ruta de envío o un pasillo. Es un conteo dirigido y acotado: en K de los movimientos propios de un ingrediente, otro corrió igual.'
         : "Moving in the same weeks is not one thing causing another — many share a growing region, a shipping lane, or an aisle. It is a directed, bounded count: in K of an ingredient's own moves, another ran the same way."}</p>

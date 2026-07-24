@@ -355,6 +355,8 @@ main{padding-top:64px}
 .cmv-hero{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin:0 0 12px;padding:16px 18px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
 .cmv-hero__pct{font-family:var(--font-display);font-size:clamp(40px,8vw,64px);font-weight:560;line-height:.95;color:var(--teal);letter-spacing:-.02em}
 .cmv-hero__gloss{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0;max-width:54ch;flex:1 1 260px}
+.cmv-null{font-size:14px;line-height:1.6;color:var(--ink);margin:0 0 12px;max-width:72ch;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--rust,#b5623f);border-radius:8px}
+.cmv-null strong{font-weight:700;font-variant-numeric:tabular-nums}
 .cmv-caveat{font-size:13px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;max-width:72ch;padding:10px 12px;background:var(--white);border:1px solid var(--line);border-radius:8px}
 .cmv-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 14px}
 .cmv-controls__lab{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
@@ -847,8 +849,9 @@ main{padding-top:64px}
       <h2 id="cmv-h">Cuando un choque tuvo compañía</h2>
       <div class="cmv-hero">
         <span class="cmv-hero__pct">94%</span>
-        <p class="cmv-hero__gloss">de los 432 movimientos de precio notables que detectamos (407 de 432) compartieron sus semanas con al menos otro ingrediente que corrió en la misma dirección. Solo 25 se movieron en soledad.</p>
+        <p class="cmv-hero__gloss">de los 432 movimientos de precio notables que detectamos (407 de 432) compartieron sus semanas con al menos otro ingrediente que corrió en la misma dirección. Pero eso es lo normal, no una señal — mira el nulo abajo.</p>
       </div>
+      <p class="cmv-null">En un nulo barajado — donde esos mismos 432 movimientos se reasignan al azar a ingredientes (500 permutaciones) — cerca del <strong>94%</strong> aún comparte una semana en la misma dirección. Así que "tuvo compañía" apenas supera al azar: la señal no es que un choque tuviera compañía, sino <strong>cuál</strong> ingrediente se movió junto, y por qué.</p>
       <p class="cmv-caveat">Moverse en las mismas semanas no es que una cosa cause la otra — muchos comparten una región de cultivo, una ruta de envío o un pasillo. Es un conteo dirigido y acotado: en K de los movimientos propios de un ingrediente, otro corrió igual.</p>
       <div class="cmv-controls">
         <label class="cmv-controls__lab" for="cmvAnchor">Ingrediente ancla</label>
