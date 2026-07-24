@@ -41,6 +41,16 @@ over 1.5× target / losing money get honest wording) + exclude zero-coverage dis
 them as uncosted. r2 caught + fixed an over-correction (a vacuous "every costed dish" when NOTHING
 was costed). **Open editorial knob:** the 1.5×-target "well over" threshold + severe wording (a
 doctrine-anchored default; the ≥100% "losing money" floor is objective) — founder may retune.
+And **POS menu-margin (M3) — ✅ CONVERGED r1→r3 (2026-07-24)** (product-only, POS `$` margin; the
+first surface with a real web render): the top-8 card TRUNCATED away every negative-margin dish —
+the leakage the compute deliberately preserves (fixed: always show the money-losers); a cross-
+currency org FABRICATED a `gross(CAD)−cost(USD)` margin while the sibling food-cost card honestly
+withheld the same mix (fixed: borrow food-cost's purchase-currency signal, incl. its `cents!==0`
+guard — r2); a recipe archived AFTER mapping still drove a stale margin (fixed: re-check
+`archived_at` on read); coverage counted *priced* as "mapped" (fixed: honest derived counts).
+**Follow-ups (need a schema change / UX pass, not honesty-blocking):** a `currency` column on
+`recipe_cost_snapshots` for the pre-window-invoice case; a "cost this recipe" CTA + a re-map
+affordance for archived-recipe mappings.
 
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
@@ -58,6 +68,11 @@ doctrine-anchored default; the ≥100% "losing money" floor is objective) — fo
   CI was green while prod misled. When a store method has two impls, diff their filters for SQL-vs-JS
   truthiness gaps (`IS NOT NULL` ≠ `!x`), and prefer fixing at the write boundary so bad data never
   persists in either.
+- **Borrow ALL of a sibling's honesty logic, not most of it** — menu-margin's cross-currency fix
+  mirrored food-cost's currency check but dropped its `cents !== 0` guard, re-opening the exact
+  zero-value-row regression food-cost had already been hardened against (its tested HIGH-1a/1b).
+  When you reuse a neighbour's proven honesty pattern, port its edge-guards too, or the sibling
+  cards contradict each other on the same data.
 - **Convergence discipline** — a re-audit only "converges" if the agents genuinely read/ran the
   code (check the workflow journal for real tool activity), not merely returned empty.
 
