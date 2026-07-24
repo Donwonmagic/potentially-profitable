@@ -54,7 +54,7 @@
       "description": "The 5-test audit framework + 4-tier data model + a worked example. Verifiable in your own browser, under a minute per test.",
       "url": "https://muntin.digital/library/how-to-tell-if-a-restaurant-tool-is-safe/",
       "datePublished": "2026-04-30",
-      "dateModified": "2026-06-10",
+      "dateModified": "2026-07-24",
       "author": {
         "@id": "https://muntin.digital/#muntin-desk",
         "@type": "Organization",
@@ -694,46 +694,32 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>The principle: <strong>data never flows up a tier.</strong> A Tier 3 vendor doesn't get Tier 4 access just because they asked. A Tier 1 audience (a platform, a listing site) doesn't get Tier 2. The easiest way to reduce your attack surface is to stop volunteering data that wasn't actually required.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="The four-tier data model, drawn as four rings sized by how widely each tier is allowed to travel. Tier one — public data like menu, hours, photos, and address — is fully open: optimize aggressively because this is how customers find you. Tier two — competitive-sensitive data like supplier list, real cost of goods, and the actual commission tier — flows only under NDA, shown as roughly three-quarters of the open circle. Tier three — operational-confidential data like the monthly P and L, food cost percentage, and customer pipeline — sits at about half: inside the business, only under written contract. Tier four — regulated data like SSN, EIN, card data, and I-9s — is the smallest ring, encrypted-only, never email, never shared spreadsheets. The principle: data never flows up a tier.">
-        <div class="viz-rings reveal">
-          <div class="viz-ring" data-band="good" style="--score:100;">
-            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="tier-1-title" focusable="false">
-              <title id="tier-1-title">Tier 1: Public data flows fully open</title>
-              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">T1</text>
-            </svg>
-            <p class="viz-ring__label"><strong>Public</strong>Menu, hours, photos, address. Optimize aggressively.</p>
+            <figure class="viz-figure article-figure" data-audio-alt="The four-tier data model, drawn as a bar ladder sized by how widely each tier is allowed to travel &mdash; the bar shrinks as the data tightens. Tier one, public data like menu, hours, photos, and address, is fully open: optimize aggressively, because this is how customers find you. Tier two, competitive-sensitive data like suppliers, costs, and real commission terms, travels less freely. Tier three, operational-confidential data like your P and L, food cost, pipeline, and schedules, is tighter still. Tier four, regulated data like SSNs, EINs, card data, and I-9s, is the narrowest bar: encrypted only, never optimized, never shared. The single rule across all four: data never flows up a tier.">
+        <div class="viz-bars">
+          <p class="viz-bars__title">How widely each data tier may travel &mdash; it tightens as you go down</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label"><strong>T1 &middot; Public</strong> <small>menu, hours, photos, address</small></p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:1.00"></span></div>
+            <p class="viz-bars__num">optimize hard</p>
           </div>
-          <div class="viz-ring" data-band="warn" style="--score:75;--delay:120ms;">
-            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="tier-2-title" focusable="false">
-              <title id="tier-2-title">Tier 2: Competitive-sensitive data flows under NDA only</title>
-              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">T2</text>
-            </svg>
-            <p class="viz-ring__label"><strong>Competitive-sensitive</strong>Suppliers, costs, real commission tier. NDA only.</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label"><strong>T2 &middot; Competitive</strong> <small>suppliers, costs, commission terms</small></p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.75"></span></div>
+            <p class="viz-bars__num">share carefully</p>
           </div>
-          <div class="viz-ring" data-band="warn" style="--score:50;--delay:240ms;">
-            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="tier-3-title" focusable="false">
-              <title id="tier-3-title">Tier 3: Operational-confidential data stays inside the business under written contract</title>
-              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">T3</text>
-            </svg>
-            <p class="viz-ring__label"><strong>Operational-confidential</strong>P&amp;L, food cost, pipeline, schedules. Contract only.</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label"><strong>T3 &middot; Operational</strong> <small>P&amp;L, food cost, pipeline, schedules</small></p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="stone" style="--w:0.50"></span></div>
+            <p class="viz-bars__num">inside only</p>
           </div>
-          <div class="viz-ring" data-band="bad" style="--score:20;--delay:360ms;">
-            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="tier-4-title" focusable="false">
-              <title id="tier-4-title">Tier 4: Regulated data is encrypted only, never email, never shared spreadsheets</title>
-              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">T4</text>
-            </svg>
-            <p class="viz-ring__label"><strong>Regulated</strong>SSN, EIN, card data, I-9s. Encrypted only. Never email.</p>
+          <div class="viz-bars__row">
+            <p class="viz-bars__label"><strong>T4 &middot; Regulated</strong> <small>SSN, EIN, card data, I-9s</small></p>
+            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.20"></span></div>
+            <p class="viz-bars__num">encrypted, never</p>
           </div>
+          <p class="viz-bars__note">Bar length is how widely each tier may travel, not a share of anything. The single rule: <strong>data never flows up a tier.</strong></p>
         </div>
-        <figcaption>Four tiers, four allowable audiences. The ring shrinks as the data tightens. The single rule: <strong>data never flows up a tier.</strong></figcaption>
+        <figcaption>Four tiers, four allowable audiences. The bar shrinks as the data tightens. The single rule: <strong>data never flows up a tier.</strong></figcaption>
       </figure>
 
       <h2 id="3-what-safe-looks-like-the-worked-example">3. What &ldquo;safe&rdquo; looks like — the worked example</h2>
