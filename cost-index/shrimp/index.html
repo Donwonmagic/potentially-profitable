@@ -308,6 +308,17 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
 /* supply-picture-css:start */
 .ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
 .ci-supply__rel strong{font-weight:700}
@@ -369,6 +380,13 @@ main{padding-top:64px}
       <a class="btn btn-ghost" href="/glossary/cost-index/">What is a cost index?</a>
     </div>
   </div></div>
+<!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-shrimp">
+    <h2 id="ci-recalls-h-shrimp">Food-safety recall history</h2>
+    <p class="ci-recalls__lede">22 documented recall events name this ingredient in the product text, 2 Class I — shown as co-occurrence, never a cause, never joined to a price.</p>
+    <p class="ci-recalls__stat mono">22 events · 41 notices · latest 2026-06-10</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2026-06-10 · Class III · Terminated · Albertsons Companies LLC · Nationwide.</span></p><p class="ci-recalls__prod">UPC 23070400000 SHRIMP SKEWER MEDIUM RAW CILANTRO LIME This is Albertson's store-made item and sold by random weight at point of sale with grocery store's scale label.</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2026-06-10 · Class II · Terminated · Albertsons Companies LLC · Nationwide.</span></p><p class="ci-recalls__prod">UPC 23245700000 SHRIMP &amp; SURIMI CEVICHE FRESH This is Albertson's store-made item and sold by random weight at point of sale with grocery store's scale label.</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2026-02-25 · Class II · Terminated · H &amp; N Group Inc. · Product was distributed to a single retail consignee with multiple locations (~30) in the greater Houston and Gulf Coas…</span></p><p class="ci-recalls__prod">Frozen Cooked Medium Shrimp Peeled &amp; Deveined, Tail Off-White Shrimp; 1 lbs retail plastic bag. UPC: 041220333035</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2026-01-21 · Class II · Ongoing · AZ Gems, Inc. · Product was shipped nationwide and distributed exclusively under the Member's Mark label.</span></p><p class="ci-recalls__prod">Jumbo RAW SHRIMP, All Natural, Chemical Free, No artificial ingredients, NET WT. 32 OZ (2 LB) 907g UPC: 1 93968 00697 6</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2026-01-14 · Class II · Terminated · DIRECT SOURCE SEAFOOD LLC · Market 32 brand frozen raw shrimp was sold in CT, MA, NH, NY, PA, and VT. waterfront BISTRO frozen raw shrimp was sold …</span></p><p class="ci-recalls__prod">waterfront BISTRO brand Frozen Raw Shrimp EZ PEEL SHELL &amp; TAIL ON Colossal 8-12 Count per Lb. Net wt. 32oz (2LB). Product is packaged in white flexible plastic pouch with multicol…</p></li></ul>
+    <p class="ci-recalls__caveat">The tag is a whole-word text match on the product, not a supply or price link; it can include composite products that merely name the ingredient. Events are distinct counts, not notices. FDA-regulated foods only.</p>
+  </section><!-- /ingredient-recalls:end -->
 </main>
 <footer class="site-footer" id="footer"></footer>
 <!-- Newsletter signup — eager progressive enhancement. This page ships

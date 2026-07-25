@@ -308,6 +308,17 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
 /* supply-picture-css:start */
 .ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
 .ci-supply__rel strong{font-weight:700}
@@ -369,6 +380,13 @@ main{padding-top:64px}
       <a class="btn btn-ghost" href="/es/glossary/cost-index/">Qué es un índice de costos</a>
     </div>
   </div></div>
+<!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-salmon-skin-on-fillet">
+    <h2 id="ci-recalls-h-salmon-skin-on-fillet">Historial de retiros de seguridad alimentaria</h2>
+    <p class="ci-recalls__lede">8 eventos de retiro documentados nombran este ingrediente en el texto del producto, 6 de Clase I — mostrados como co-ocurrencia, nunca una causa, nunca unidos a un precio.</p>
+    <p class="ci-recalls__stat mono">8 eventos · 15 avisos · último 2025-10-22</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2025-10-22 · Class I · Terminated · D &amp; M Smoked Fish, Inc. · NY, NJ, PA, WA, CA, IL, FL</span></p><p class="ci-recalls__prod">Haifa COLD SMOKED SALMON 8 OZ.</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2023-04-19 · Class I · Terminated · Seven Seas International USA LLC · Domestic distribution only.</span></p><p class="ci-recalls__prod">Biltmore Smoked Sockeye Salmon - 4 oz</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2021-12-15 · Class I · Terminated · Oregon Lox Company · distributed in AK, CA, OR, and WA.</span></p><p class="ci-recalls__prod">Aqua Nova - Sliced Nova Lox, Oregon Cold Smoked Salmon, net wt. 3 oz. UPC 008603001608. Aqua Nova -Sliced Nova Lox, Oregon Cold Smoked Salmon, net wt. 1 lb. UPC 008603001400. Aqua…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2021-09-29 · Class II · Terminated · Seabear Company · distributed in AZ, CA, and GA.</span></p><p class="ci-recalls__prod">Banquet Cut European Style Cold Smoked Salmon, Item Number 2-92845, brand Gerard and Dominique Seafoods, packaged in pouch, net wt. per pouch is random, frozen, UPC of pouch: 2 92…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2021-09-22 · Class I · Terminated · Loki Fish Company - Office · distributed in Oregon and Washington.</span></p><p class="ci-recalls__prod">Loki Fish Wild Keta Salmon Lox, packaged in a 4 oz. plastic pouch, sliced on a coated board, 24 packages to a case. UPC 92103 00111. The label is read in parts: LOKI FISH *** WILD…</p></li></ul>
+    <p class="ci-recalls__caveat">La etiqueta es una coincidencia de texto completo en el producto, no un vínculo de suministro ni de precio; puede incluir productos compuestos que solo mencionan el ingrediente. Los eventos son recuentos distintos, no avisos. Solo alimentos regulados por la FDA.</p>
+  </section><!-- /ingredient-recalls:end -->
 </main>
 <footer class="site-footer" id="footer"></footer>
 <!-- Newsletter signup — eager progressive enhancement. This page ships

@@ -319,6 +319,17 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
 /* supply-picture-css:start */
 .ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
 .ci-supply__rel strong{font-weight:700}
@@ -478,6 +489,13 @@ main{padding-top:64px}
         </form>
       </div>
     </div>
+    <!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-kale">
+    <h2 id="ci-recalls-h-kale">Food-safety recall history</h2>
+    <p class="ci-recalls__lede">12 documented recall events name this ingredient in the product text, 7 Class I — shown as co-occurrence, never a cause, never joined to a price.</p>
+    <p class="ci-recalls__stat mono">12 events · 15 notices · latest 2026-02-04</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2026-02-04 · Class I · Completed · SUPERFOODS, INC. · Nationwide, including Puerto Rico, Guam, and Virgin Islands; United Kingdom</span></p><p class="ci-recalls__prod">Live it Up brand Super Greens; Chlorella, Spirulina, Wheatgrass, Kale, Broccoli, Spinach, Barley grass, Moringa, Parsley; Whole food dietary supplement powder; 30 day supply; NET …</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2026-02-04 · Class I · Completed · SUPERFOODS, INC. · Nationwide, including Puerto Rico, Guam, and Virgin Islands; United Kingdom</span></p><p class="ci-recalls__prod">a.) Live it Up brand Super Greens; Natural Wild Berry Flavor; Chlorella, Spirulina, Wheatgrass, Kale, Broccoli, Spinach, Barley grass, Moringa, Parsley; Whole food dietary supplem…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2026-01-21 · Class I · Ongoing · WFM Purchasing, LP · New York, New Jersey and Virginia</span></p><p class="ci-recalls__prod">Brussel Sprouts &amp; Kale Slaw</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2025-12-24 · Class I · Terminated · Lexunder Inc · AK, AL, AR, AZ, CA, CO, CT, DE, FL, GA, GU, HI, ID, IL, IN, KS, MA, MD, ME, MI, MN, MO, MT, NC, NJ, NM, NV, NY, OH, OR,…</span></p><p class="ci-recalls__prod">Food to Live brand ORGANIC SUPERGREENS POWDER MIX, packaged heat-sealed, resealable stand-up pouches in 8 oz, 1 lb., 1.5 lb., 3 lb., 6 lb., 12 lb.; Ingredients: ORGANIC KALE; ORGA…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2025-07-16 · Class II · Terminated · UNFI General Corporate · NJ, NY, MD, DC, PA</span></p><p class="ci-recalls__prod">1. USA KALE BUNCH CTN 2. USA OG2 KALE 3. USA OG1 LACINATO KALE</p></li></ul>
+    <p class="ci-recalls__caveat">The tag is a whole-word text match on the product, not a supply or price link; it can include composite products that merely name the ingredient. Events are distinct counts, not notices. FDA-regulated foods only.</p>
+  </section><!-- /ingredient-recalls:end -->
     <section class="ci-faq" aria-labelledby="ci-faq-h-kale">
   <h2 id="ci-faq-h-kale">Frequently asked</h2>
   <div class="ci-faq__item"><h3 class="ci-faq__q">What does kale cost wholesale right now?</h3><p class="ci-faq__a">It moves week to week. The market read above shows the current typical range and the date behind it; read it against your own invoice.</p></div>

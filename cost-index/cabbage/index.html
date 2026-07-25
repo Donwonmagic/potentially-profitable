@@ -319,6 +319,17 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
 /* supply-picture-css:start */
 .ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
 .ci-supply__rel strong{font-weight:700}
@@ -479,6 +490,13 @@ main{padding-top:64px}
         </form>
       </div>
     </div>
+    <!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-cabbage">
+    <h2 id="ci-recalls-h-cabbage">Food-safety recall history</h2>
+    <p class="ci-recalls__lede">5 documented recall events name this ingredient in the product text, 1 Class I — shown as co-occurrence, never a cause, never joined to a price.</p>
+    <p class="ci-recalls__stat mono">5 events · 26 notices · latest 2025-05-21</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2025-05-21 · Class II · Completed · Advance Food International Inc. · NY, NJ, CT, MA, PA, MD</span></p><p class="ci-recalls__prod">National brand Kasundi PEELED MANGO PICKLE IN OIL; Net Wt.: 1 Kg (35.27 oz)/ 2.20lb; Ingredients: Kasundi (Peeled Mango), Canola Oil, Cabbage, Salt, Mixed Spices, Vinegar, Sodium …</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2024-02-07 · Class I · Terminated · World Variety Produce Inc dba Melissa's · U.S. distribution to the following: CA, TX, FL No foreign distribution.</span></p><p class="ci-recalls__prod">Melissa's Hot Kimchi Pickled Napa Cabbage NET WT. 14 oz (397g) Ingredients: Napa Cabbage, Radish, Water, Garlic, Red Pepper, Organic Sugar Cane, Sea Salt, Calcium Lactate, Ginger,…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2023-01-18 · Class III · Terminated · Dole Fresh Vegetables Inc · U.S. distribution to the following: AL, CT, FL, GA, LA, MA, MD, NC, NY, PA, SC, VA No foreign distribution.</span></p><p class="ci-recalls__prod">Dole Diced Southern Slaw Green Cabbage, Carrots Preservative Free Thoroughly Washed Perishable/Keep Refrigerated NET WT 14 OZ (397 g) UPC 7143001036 Also Classic Coleslaw under Li…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2021-08-18 · Class II · Terminated · 5000 Years Foods, Inc. · The recalled product was distributed in ILLINOIS where the product was further distributed and it reached customers thr…</span></p><p class="ci-recalls__prod">5000 Years Foods NO MSG SLICED CABBAGE KIMCHI in 5GAL plastic tubs, and 128 oz, 64 oz, 32 oz, &amp; 16 oz glass jars</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2021-08-18 · Class II · Terminated · 5000 Years Foods, Inc. · The recalled product was distributed in ILLINOIS where the product was further distributed and it reached customers thr…</span></p><p class="ci-recalls__prod">5000 Years Foods NO MSG JULRADO WHOLE CABBAGE KIMCHI in 128 oz and 64 oz glass jars</p></li></ul>
+    <p class="ci-recalls__caveat">The tag is a whole-word text match on the product, not a supply or price link; it can include composite products that merely name the ingredient. Events are distinct counts, not notices. FDA-regulated foods only.</p>
+  </section><!-- /ingredient-recalls:end -->
     <section class="ci-faq" aria-labelledby="ci-faq-h-cabbage">
   <h2 id="ci-faq-h-cabbage">Frequently asked</h2>
   <div class="ci-faq__item"><h3 class="ci-faq__q">What does cabbage cost wholesale right now?</h3><p class="ci-faq__a">It moves week to week. The market read above shows the current typical range and the date behind it; read it against your own invoice.</p></div>

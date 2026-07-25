@@ -556,6 +556,7 @@ const CHECKS = [
   // Phase 2 — the per-ingredient recall-history section generator (spec §4). The lib pins the
   // co-occurrence markup + distinct-events-not-notices + graceful absence; the injector lands next.
   ['Recall-roster lib self-test','lib/recall-roster.mjs','--self-test'],
+  ['Ingredient recalls sync','inject-ingredient-recalls.mjs','--check'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
   ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
   // Study evidence dataset (ADR-019): the menu-pricing paper's claims × its 36 grounding sources

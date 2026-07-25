@@ -319,6 +319,17 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
 /* supply-picture-css:start */
 .ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
 .ci-supply__rel strong{font-weight:700}
@@ -485,6 +496,13 @@ main{padding-top:64px}
         </form>
       </div>
     </div>
+    <!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-yellow-squash">
+    <h2 id="ci-recalls-h-yellow-squash">Food-safety recall history</h2>
+    <p class="ci-recalls__lede">3 documented recall events name this ingredient in the product text, 2 Class I — shown as co-occurrence, never a cause, never joined to a price.</p>
+    <p class="ci-recalls__stat mono">3 events · 3 notices · latest 2024-12-04</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2024-12-04 · Class II · Terminated · Pero Family Farms Food Company LLC · Domestic distribution only: FL, MO, IL, VA</span></p><p class="ci-recalls__prod">Pero Family Farms Squash Sliced Zucchinni &amp; Yellow Squash, Net Wt. 11oz (311g) Plastic Tray, 4 trays per carton, Microwavable Tray, Keep Refrigerated. UPC 874896009764</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2024-08-14 · Class I · Terminated · Wiers Farm Inc · CT, DE, IL, IN, KY, ME, MD, MI, MO, NJ, NY, NC, OH, PA, RI, TN, VA, WV</span></p><p class="ci-recalls__prod">Wiers Farm - Organic Yellow Squash packaged into 2 count trays - cases dependent on customer</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2022-10-05 · Class I · Terminated · Southeast Processing Ltd · Product was shipped to GA &amp; SC.</span></p><p class="ci-recalls__prod">Yellow Squash sold as Bulk, Diced, Half Moon Sliced, Julienne and Planks (Product codes 168-173)</p></li></ul>
+    <p class="ci-recalls__caveat">The tag is a whole-word text match on the product, not a supply or price link; it can include composite products that merely name the ingredient. Events are distinct counts, not notices. FDA-regulated foods only.</p>
+  </section><!-- /ingredient-recalls:end -->
     <section class="ci-faq" aria-labelledby="ci-faq-h-yellow-squash">
   <h2 id="ci-faq-h-yellow-squash">Frequently asked</h2>
   <div class="ci-faq__item"><h3 class="ci-faq__q">What does yellow squash cost wholesale right now?</h3><p class="ci-faq__a">It moves week to week. The market read above shows the current typical range and the date behind it; read it against your own invoice.</p></div>

@@ -319,6 +319,17 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
 /* supply-picture-css:start */
 .ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
 .ci-supply__rel strong{font-weight:700}
@@ -479,6 +490,13 @@ main{padding-top:64px}
         </form>
       </div>
     </div>
+    <!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-apple">
+    <h2 id="ci-recalls-h-apple">Historial de retiros de seguridad alimentaria</h2>
+    <p class="ci-recalls__lede">16 eventos de retiro documentados nombran este ingrediente en el texto del producto, 5 de Clase I — mostrados como co-ocurrencia, nunca una causa, nunca unidos a un precio.</p>
+    <p class="ci-recalls__stat mono">16 eventos · 19 avisos · último 2026-03-18</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2026-03-18 · Class I · Ongoing · Made Fresh Salads Inc · New York</span></p><p class="ci-recalls__prod">Made Fresh Salads brand Apple Cinnamon Cream Cheese; 5 lb white plastic tub</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2026-03-18 · Class I · Ongoing · Made Fresh Salads Inc · New York</span></p><p class="ci-recalls__prod">Made Fresh Salads brand Caramel Apple Cream Cheese; 5 lb white plastic tub</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2025-10-22 · Class II · Ongoing · Sprout Organics Inc. · U.S. States: AZ, CA, CO, CT, FL, GA, HI, ID, IN, KY, LA, MA, MD, MI, MO, MS, MT, NC, NE, NH, NJ, NM, NV, NY, OH, PA, RI…</span></p><p class="ci-recalls__prod">6+ Months SPROUT ORGANICS Made With Organic Sweet Potato, Apple &amp; Spinach NET WT. 3.5 OZ (99g) INGREDIENTS: ORGANIC SWEET POTATOES, ORGANIC APPLES, ORGANIC SPINACH, WATER, ORGANIC…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2024-12-11 · Class II · Ongoing · Apple Wedge LLC · Products were shipped to GA, NC, SC and FL.</span></p><p class="ci-recalls__prod">No Preservatives 100% CIDER Pasteurized APPLE WEDGE CIDER 1/2 Gal. (1.89L) HENDERSONVILLE, NC 28792 Keep Refrigerated Produce of USA UPC 0 36482 64000 7</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2024-12-11 · Class II · Ongoing · Apple Wedge LLC · Products were shipped to GA, NC, SC and FL.</span></p><p class="ci-recalls__prod">Cinnamon Pasteurized APPLE WEDGE CIDER 1/2 Gal. (1.89L) HENDERSONVILLE, NC 28792 Keep Refrigerated Produce of USA Ingredients: Apples, Natural Cinnamon Flavor. 0.1% Potassium Sorb…</p></li></ul>
+    <p class="ci-recalls__caveat">La etiqueta es una coincidencia de texto completo en el producto, no un vínculo de suministro ni de precio; puede incluir productos compuestos que solo mencionan el ingrediente. Los eventos son recuentos distintos, no avisos. Solo alimentos regulados por la FDA.</p>
+  </section><!-- /ingredient-recalls:end -->
     <section class="ci-faq" aria-labelledby="ci-faq-h-apple">
   <h2 id="ci-faq-h-apple">Preguntas frecuentes</h2>
   <div class="ci-faq__item"><h3 class="ci-faq__q">¿Cuánto cuesta manzana al mayoreo ahora mismo?</h3><p class="ci-faq__a">Cambia semana a semana. La lectura de mercado de arriba muestra el rango típico actual y la fecha detrás del dato; compárala con tu propia factura.</p></div>

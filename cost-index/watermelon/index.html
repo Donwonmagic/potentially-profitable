@@ -308,6 +308,17 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
 /* supply-picture-css:start */
 .ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
 .ci-supply__rel strong{font-weight:700}
@@ -369,6 +380,13 @@ main{padding-top:64px}
       <a class="btn btn-ghost" href="/glossary/cost-index/">What is a cost index?</a>
     </div>
   </div></div>
+<!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-watermelon">
+    <h2 id="ci-recalls-h-watermelon">Food-safety recall history</h2>
+    <p class="ci-recalls__lede">4 documented recall events name this ingredient in the product text, 2 Class I — shown as co-occurrence, never a cause, never joined to a price.</p>
+    <p class="ci-recalls__stat mono">4 events · 6 notices · latest 2025-10-22</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2025-10-22 · Class I · Terminated · WHOLESALE PRODUCE SUPPLY LLC DBA · IA, IL, ND, NE, WI</span></p><p class="ci-recalls__prod">Cut Fresh Melon Mix. Contains: Cantaloupe, Honeydew, Watermelon. Keep Refrigerated. Packed under the following brands and sizes: 1. Melon Mix &quot;HC&quot; 4/16 oz. Harvest Cuts UPC 7 9062…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2025-10-22 · Class I · Terminated · WHOLESALE PRODUCE SUPPLY LLC DBA · IA, IL, ND, NE, WI</span></p><p class="ci-recalls__prod">Cut Fresh Fruit Mix. Contains: Cantaloupe, Honeydew, Watermelon and Red Grapes. Keep Refrigerated. Packed under the following brands and sizes: 1. Fruit Mix CHWG (MCT) 1/5 lb. UPC…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2022-09-28 · Class II · Terminated · Russ Davis Wholesale, LLC · IA, MI, MN, ND, SD, WI</span></p><p class="ci-recalls__prod">Deluxe Fruit Bowl. Contains Pineapple, Cantaloupe, Honeydew, Watermelon, Kiwi, Strawberry. Keep Refrigerated. Item 80935. Net Wt. 3.5 lb. Packed under brands: Crazy Fresh, quick &amp;…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2022-06-22 · Class II · Terminated · THISTLE HEALTH INC · U.S. distribution to the following: CA, NV, OR, WA No foreign distribution.</span></p><p class="ci-recalls__prod">Thistle Watermelon Berry Cold-Pressed Organic Juice watermelon strawberry lime chia 32 FL OZ (355 mL) Keep Refrigerated Distributed By: Thistle Health, Inc., Vacaville, CA 95688</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2022-06-22 · Class II · Terminated · THISTLE HEALTH INC · U.S. distribution to the following: CA, NV, OR, WA No foreign distribution.</span></p><p class="ci-recalls__prod">Thistle Tropical Limeade Cold-Pressed Organic Juice watermelon pineapple lime strawberry papaya activated charcoal 32 FL OZ (355 mL) Keep Refrigerated Distributed By: Thistle Heal…</p></li></ul>
+    <p class="ci-recalls__caveat">The tag is a whole-word text match on the product, not a supply or price link; it can include composite products that merely name the ingredient. Events are distinct counts, not notices. FDA-regulated foods only.</p>
+  </section><!-- /ingredient-recalls:end -->
 </main>
 <footer class="site-footer" id="footer"></footer>
 <!-- Newsletter signup — eager progressive enhancement. This page ships

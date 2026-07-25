@@ -319,6 +319,17 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
 /* supply-picture-css:start */
 .ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
 .ci-supply__rel strong{font-weight:700}
@@ -485,6 +496,13 @@ main{padding-top:64px}
         </form>
       </div>
     </div>
+    <!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-onion">
+    <h2 id="ci-recalls-h-onion">Historial de retiros de seguridad alimentaria</h2>
+    <p class="ci-recalls__lede">33 eventos de retiro documentados nombran este ingrediente en el texto del producto, 28 de Clase I — mostrados como co-ocurrencia, nunca una causa, nunca unidos a un precio.</p>
+    <p class="ci-recalls__stat mono">33 eventos · 143 avisos · último 2026-02-04</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2026-02-04 · Class II · Terminated · Prima Vera Nueva, Inc. · U.S. Distribution: CA, NV</span></p><p class="ci-recalls__prod">Mushroom, Spinach &amp; Salsa Tamales with 2 Cheeses Ingredients: Organic Corn Flour Masa, Mushrooms, Spinach, Onions, Jalapenos, Jack and White Cheddar Cheese (pasteurized milk, chee…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2026-02-04 · Class II · Terminated · Prima Vera Nueva, Inc. · U.S. Distribution: CA, NV</span></p><p class="ci-recalls__prod">Black Bean Bonanza Tamales with Black Beans NO DAIRY Ingredients: Organic Corn Flour Masa, Black Beans, Salsa (Tomatoes, Onions, Chiles, Garlic &amp; Cilantro), Non-GMO Corn, Non-hydr…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2026-02-04 · Class II · Terminated · Prima Vera Nueva, Inc. · U.S. Distribution: CA, NV</span></p><p class="ci-recalls__prod">BBQ Chipotle Bean &amp; White Cheddar Tamales Ingredients: Organic Corn Flour Masa, Beans, Jack Cheese (Pasteurized Milk, Cheese Cultures, Salt and Enzymes), Salsa (Tomatoes, Onions, …</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2026-02-04 · Class II · Terminated · Prima Vera Nueva, Inc. · U.S. Distribution: CA, NV</span></p><p class="ci-recalls__prod">Mushroom, Spinach &amp; Salsa Tamales No Dairy Ingredients: Organic Corn Flour Masa, Mushrooms, Spinach, Tomatoes, Onions, Jalapenos, Non-hydrogenated Vegetable Shortning, Salt, Spice…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2025-10-22 · Class I · Terminated · Garden Fresh Foods, Inc. · Distributed in WA only</span></p><p class="ci-recalls__prod">Sliced (1/4&quot;) green onions, refrigerated, packaged in plastic bag. Each case consist 5/6lbs. bag (net wt. 30lbs.). Garden Fresh Foods Inc. Woodinville, WA. Product is distributed …</p></li></ul>
+    <p class="ci-recalls__caveat">La etiqueta es una coincidencia de texto completo en el producto, no un vínculo de suministro ni de precio; puede incluir productos compuestos que solo mencionan el ingrediente. Los eventos son recuentos distintos, no avisos. Solo alimentos regulados por la FDA.</p>
+  </section><!-- /ingredient-recalls:end -->
     <section class="ci-faq" aria-labelledby="ci-faq-h-onion">
   <h2 id="ci-faq-h-onion">Preguntas frecuentes</h2>
   <div class="ci-faq__item"><h3 class="ci-faq__q">¿Cuánto cuesta cebolla al mayoreo ahora mismo?</h3><p class="ci-faq__a">Cambia semana a semana. La lectura de mercado de arriba muestra el rango típico actual y la fecha detrás del dato; compárala con tu propia factura.</p></div>

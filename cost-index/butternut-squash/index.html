@@ -319,6 +319,17 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
 /* supply-picture-css:start */
 .ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
 .ci-supply__rel strong{font-weight:700}
@@ -479,6 +490,13 @@ main{padding-top:64px}
         </form>
       </div>
     </div>
+    <!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-butternut-squash">
+    <h2 id="ci-recalls-h-butternut-squash">Food-safety recall history</h2>
+    <p class="ci-recalls__lede">8 documented recall events name this ingredient in the product text, 2 Class I — shown as co-occurrence, never a cause, never joined to a price.</p>
+    <p class="ci-recalls__stat mono">8 events · 10 notices · latest 2026-02-04</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2026-02-04 · Class II · Terminated · Prima Vera Nueva, Inc. · U.S. Distribution: CA, NV</span></p><p class="ci-recalls__prod">Butternut Squash Tamales with Roasted Green Chiles, NO DAIRY Ingredients: Organic Corn Flour Masa, Organic Butternut Squash, Roasted Green Chiles, Non-GMO Corn, Non-hydrogenated V…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2026-02-04 · Class II · Terminated · Prima Vera Nueva, Inc. · U.S. Distribution: CA, NV</span></p><p class="ci-recalls__prod">Butternut Squash Tamales With Roasted Green Chiles, Corn &amp; Jack Cheese Ingredients: Organic Corn Flour Masa, Organic Butternut Squash, Organic Roasted Green Chiles, Non-GMO Corn, …</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2023-10-25 · Class II · Terminated · Safeway Fresh Foods LLC · The product was distributed to the following states, Washington DC, Maryland, Pennsylvania, and Virgnia</span></p><p class="ci-recalls__prod">Sunnyside Farms, diced Organic Butternut Squash , 32-oz. , plastic tray, 6 trays per case, Perishable Keep Refrigerated .</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2023-10-04 · Class I · Terminated · Fresh Unlimited Inc · US Foods Distribution locations: IN, NC, NY, SC, WV</span></p><p class="ci-recalls__prod">Freshway Foods - Diced Butternut Squash, packaged in 4 pound plastic bags - 4 bags per case.</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2023-03-22 · Class I · Terminated · FRESH IDEATION FOOD GROUP, LLC dba Fresh Creative Cuisine · The recalled product was distributed to the following states: MD, PA, DE, NY, DC, NJ, NC, CT, SC, VA, MA .</span></p><p class="ci-recalls__prod">Fresh Creative Cuisine White Label - Butternut Squash Lasagna. Single Serving, Keep refrigerated</p></li></ul>
+    <p class="ci-recalls__caveat">The tag is a whole-word text match on the product, not a supply or price link; it can include composite products that merely name the ingredient. Events are distinct counts, not notices. FDA-regulated foods only.</p>
+  </section><!-- /ingredient-recalls:end -->
     <section class="ci-faq" aria-labelledby="ci-faq-h-butternut-squash">
   <h2 id="ci-faq-h-butternut-squash">Frequently asked</h2>
   <div class="ci-faq__item"><h3 class="ci-faq__q">What does butternut squash cost wholesale right now?</h3><p class="ci-faq__a">It moves week to week. The market read above shows the current typical range and the date behind it; read it against your own invoice.</p></div>

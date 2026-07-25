@@ -319,6 +319,17 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
 /* supply-picture-css:start */
 .ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
 .ci-supply__rel strong{font-weight:700}
@@ -451,6 +462,13 @@ main{padding-top:64px}
         </form>
       </div>
     </div>
+    <!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-banana">
+    <h2 id="ci-recalls-h-banana">Food-safety recall history</h2>
+    <p class="ci-recalls__lede">5 documented recall events name this ingredient in the product text, 2 Class I — shown as co-occurrence, never a cause, never joined to a price.</p>
+    <p class="ci-recalls__stat mono">5 events · 6 notices · latest 2023-07-26</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2023-07-26 · Class I · Terminated · Scenic Fruit Company, LLC · Trader Joe s Organic Tropical Fruit Blend 16 oz. bags were distributed nationwide. Cadia Organic Pineapple 10oz. bags w…</span></p><p class="ci-recalls__prod">Trader Joe s Organic Tropical Fruit Blend Pineapple, Banana, Strawberry, Mango, SKU #051191, packaged in pillow bags. Each case consists of 24 bags and each bag is 16 oz. UPC on r…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2023-07-26 · Class I · Terminated · SunOpta Grains and Foods Inc. · Nationwide</span></p><p class="ci-recalls__prod">Trader Joe's Organic Tropical Fruit Blend, Pineapple, Bananas, Strawberries &amp; Mango. Net Wt. 16 oz (1 lb) 454g. UPC Keep Frozen.</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2023-07-26 · Class I · Terminated · SunOpta Grains and Foods Inc. · Nationwide</span></p><p class="ci-recalls__prod">365 Whole Foods Market Organic Sliced Strawberries &amp; Bananas. Net Wt 32 oz (2 lb) 907g, UPC 0 99482-51908 7, Keep Frozen until ready to use. Distributed By: Whole Foods Market, Au…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2022-07-20 · Class II · Terminated · Fruselva America SPA · The firm only distribute only to their stores; MA, ME, NH, NY, VT, MD, PA, WV</span></p><p class="ci-recalls__prod">Nature s Promise Organic Mango, Banana, Kale, Rice &amp; Pineapple Baby Food, 3.5 oz (99 g), Pouch, Case pack of 12 (12 inners of 6 each). Store in a dry ventilated area. Do not expos…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2022-01-26 · Class II · Terminated · Aroma Meats LLC · Distributed in Oregon.</span></p><p class="ci-recalls__prod">Fresh Banana Pickle is packaged in clear plastic pouch, net wt. 500 gm (1/2 KG). No UPC. Product is imported from Jampani SRT 252, Opp to Tata Motors, Sanath Nagar, Hyderabad, 500…</p></li></ul>
+    <p class="ci-recalls__caveat">The tag is a whole-word text match on the product, not a supply or price link; it can include composite products that merely name the ingredient. Events are distinct counts, not notices. FDA-regulated foods only.</p>
+  </section><!-- /ingredient-recalls:end -->
     <section class="ci-faq" aria-labelledby="ci-faq-h-banana">
   <h2 id="ci-faq-h-banana">Frequently asked</h2>
   <div class="ci-faq__item"><h3 class="ci-faq__q">What does bananas cost wholesale right now?</h3><p class="ci-faq__a">It moves week to week. The market read above shows the current typical range and the date behind it; read it against your own invoice.</p></div>

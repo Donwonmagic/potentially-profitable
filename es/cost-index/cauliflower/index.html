@@ -319,6 +319,17 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
 /* supply-picture-css:start */
 .ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
 .ci-supply__rel strong{font-weight:700}
@@ -479,6 +490,13 @@ main{padding-top:64px}
         </form>
       </div>
     </div>
+    <!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-cauliflower">
+    <h2 id="ci-recalls-h-cauliflower">Historial de retiros de seguridad alimentaria</h2>
+    <p class="ci-recalls__lede">4 eventos de retiro documentados nombran este ingrediente en el texto del producto, 1 de Clase I — mostrados como co-ocurrencia, nunca una causa, nunca unidos a un precio.</p>
+    <p class="ci-recalls__stat mono">4 eventos · 10 avisos · último 2025-07-16</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2025-07-16 · Class II · Terminated · UNFI General Corporate · NJ, NY, MD, DC, PA</span></p><p class="ci-recalls__prod">1. WLD HRVST OG2 CAULIFLOWER</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2025-03-05 · Class II · Terminated · Deiorio Foods Inc · TX, MD, WI, CA, CO, NC, AZ, ID, OR, OH, UT</span></p><p class="ci-recalls__prod">5912MOD-CAU 11&quot; Gluten Free Friendly Cauliflower Shell; Bulk packaged in a blue poly bag, within a corrugated box. 20 units per case; Product UPC: 074542659125; Master Case GTIN: …</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2024-12-18 · Class I · Terminated · 4 Earth Farms formerly Mcl Fresh Inc · The firm distributed to seven (7) direct account consignees. Five(5) of those were distribution centers, two (2) were d…</span></p><p class="ci-recalls__prod">Organic Vegetable Medley; Broccoli, Carrots &amp; Cauliflower. Washed and ready to prepare; Perishable keep refrigerated. NET WT 12 OZ (340g) (6 pack/case) DISTRIBUTED BY: Walmart Inc…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2024-12-18 · Class I · Terminated · 4 Earth Farms formerly Mcl Fresh Inc · The firm distributed to seven (7) direct account consignees. Five(5) of those were distribution centers, two (2) were d…</span></p><p class="ci-recalls__prod">Organic Vegetable Medley; Broccoli, Cauliflower, &amp; Carrots. Washed and ready to prepare; Perishable keep refrigerated. NET WT 12 OZ (340g) (6 pack/case) DISTRIBUTED BY: UNFI, Prov…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2022-09-28 · Class II · Terminated · Russ Davis Wholesale, LLC · IA, MI, MN, ND, SD, WI</span></p><p class="ci-recalls__prod">Roasting Vegetables. With Olive Oil and Herbs. Contains: . Keep Refrigerated. Item 89350. Butternut Squash, Brussel Sprouts, Cauliflower, Carrot, Parsnip, Olive Oil, Salt, Black P…</p></li></ul>
+    <p class="ci-recalls__caveat">La etiqueta es una coincidencia de texto completo en el producto, no un vínculo de suministro ni de precio; puede incluir productos compuestos que solo mencionan el ingrediente. Los eventos son recuentos distintos, no avisos. Solo alimentos regulados por la FDA.</p>
+  </section><!-- /ingredient-recalls:end -->
     <section class="ci-faq" aria-labelledby="ci-faq-h-cauliflower">
   <h2 id="ci-faq-h-cauliflower">Preguntas frecuentes</h2>
   <div class="ci-faq__item"><h3 class="ci-faq__q">¿Cuánto cuesta coliflor al mayoreo ahora mismo?</h3><p class="ci-faq__a">Cambia semana a semana. La lectura de mercado de arriba muestra el rango típico actual y la fecha detrás del dato; compárala con tu propia factura.</p></div>

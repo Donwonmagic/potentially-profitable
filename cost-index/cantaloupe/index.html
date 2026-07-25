@@ -319,6 +319,17 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
 /* supply-picture-css:start */
 .ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
 .ci-supply__rel strong{font-weight:700}
@@ -484,6 +495,13 @@ main{padding-top:64px}
         </form>
       </div>
     </div>
+    <!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-cantaloupe">
+    <h2 id="ci-recalls-h-cantaloupe">Food-safety recall history</h2>
+    <p class="ci-recalls__lede">16 documented recall events name this ingredient in the product text, 15 Class I — shown as co-occurrence, never a cause, never joined to a price.</p>
+    <p class="ci-recalls__stat mono">16 events · 34 notices · latest 2026-04-15</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2026-04-15 · Class I · Terminated · AYCO FARMS INC · Distributed to PA, FL, CA, NY. No foreign distribution and none to government agencies.</span></p><p class="ci-recalls__prod">Fresh Cantaloupe (Whole, Fresh), brand name Ayco, wrapped in food safe plastic bags packed in corrugated cardboard cartons; 6-12 melons per box; individual carton count per label.…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2025-10-22 · Class I · Terminated · WHOLESALE PRODUCE SUPPLY LLC DBA · IA, IL, ND, NE, WI</span></p><p class="ci-recalls__prod">Cut Fresh Fruit Mix. Contains: Cantaloupe, Honeydew, Pineapple, and Red Grapes. Keep Refrigerated. Packed under the following brands and sizes: 1. Fruit Mix CHPG (MCT) 1/5 lb. 2. …</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2025-10-22 · Class I · Terminated · WHOLESALE PRODUCE SUPPLY LLC DBA · IA, IL, ND, NE, WI</span></p><p class="ci-recalls__prod">Cut Fresh Cantaloupe Chunks packaged into the following size containers some under brand names Fresh &amp; Finest or Harvest Cuts: 1. CANTALOUPE CHUNKS &quot;PRMK&quot; 30/2 OZ 2. CANTALOUPE CH…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2025-10-22 · Class I · Terminated · WHOLESALE PRODUCE SUPPLY LLC DBA · IA, IL, ND, NE, WI</span></p><p class="ci-recalls__prod">Cut Fresh Fruit Mix. Contains: Cantaloupe, Honeydew, and Red Grapes. Keep Refrigerated. Packed under the following brands and sizes: 1. Fruit Mix &quot;HC&quot; 6/6oz. UPC 7 90629-11821 6. …</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2025-10-22 · Class I · Terminated · WHOLESALE PRODUCE SUPPLY LLC DBA · IA, IL, ND, NE, WI</span></p><p class="ci-recalls__prod">Cut Fresh Luau Blend Fruit Mix &quot;F&amp;F&quot;. 4/10 oz. Fresh &amp; Finest. Contains: Cantaloupe, Honeydew, Pineapple, Red Grapes, Strawberry, Blueberry. Keep Refrigerated. UPC 0 70253-00572 5…</p></li></ul>
+    <p class="ci-recalls__caveat">The tag is a whole-word text match on the product, not a supply or price link; it can include composite products that merely name the ingredient. Events are distinct counts, not notices. FDA-regulated foods only.</p>
+  </section><!-- /ingredient-recalls:end -->
     <section class="ci-faq" aria-labelledby="ci-faq-h-cantaloupe">
   <h2 id="ci-faq-h-cantaloupe">Frequently asked</h2>
   <div class="ci-faq__item"><h3 class="ci-faq__q">What does cantaloupe cost wholesale right now?</h3><p class="ci-faq__a">It moves week to week. The market read above shows the current typical range and the date behind it; read it against your own invoice.</p></div>
