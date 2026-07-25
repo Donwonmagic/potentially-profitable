@@ -68,7 +68,12 @@ Large coordinated scout/verify **workflow** swept federal/research/higher-ed for
 - **§1.5b — the hub `@graph` `Dataset[]` JSON-LD** (SEO-only; each page already carries its own `Dataset` JSON-LD in head). Add 3 `Dataset` nodes to `emitOpenHub()` `@graph` (L3927) and `CI_ONLY_PATH=open/index` regen BOTH locales on a scratch checkout; ship only if the diff touches nothing but `@graph`, else node-inject. Engine-behind — the one deferred piece.
 - **ES explorer pages** (task P4) — the three ship EN-only for now, matching the existing 14; `*_es` caveat strings can be threaded when ES parity is taken up.
 
-**Phase 2 (next) — per-ingredient recall roster** on `cost-index/<slug>/` + `/cost-index/events/` (spec §4): additive `inject-ingredient-recalls.mjs`, reuse `ci-events__ctx` so `check-cost-index-events` enforces co-occurrence for free; 73/169 ingredients have zero recalls → graceful "no recall in the openFDA window" + FDA-only incompleteness. **Waves 3–6** (spec §3) slot by lane.
+**Phase 2 — per-ingredient recall roster: inc 1 + 2 SHIPPED (2026-07-24c).** The "Food-safety recall history" section is live on all ingredient pages.
+  - **inc 1 — `scripts/lib/recall-roster.mjs`** (`a8494573a`): the section generator (EN+ES) from the CC-BY index — distinct-events-led, co-occurrence marker verbatim, "Documented around this time" tags, product verbatim, NO cause/reason field, no price, graceful absence with FDA-only incompleteness. Self-test 17/17.
+  - **inc 2 — `scripts/inject-ingredient-recalls.mjs`** (`6ddce617f`): additive+idempotent inject into 198 pages (99 EN + 99 ES), 59 EN with a real record. Reuses `ci-events__ctx` so **check-cost-index-events stays green** across all ingredient pages (verified). Two idempotency fixes: strip-as-a-unit (fixed-point `--check`); recall CSS inserted BEFORE the supply-picture CSS block so supply-picture's own `--check` order holds (both injector `--check`s green). Full check-all back to the 29-item baseline. `--check` wired into check-all.
+  - **inc 3 — ENGINE MIRROR (next):** mirror the roster into the ingredient-page emit helper in `build-cost-index-pages.mjs` (the S2.4 supply-picture precedent) so a full regen re-emits the sections byte-identically. Until then the injector is the load-bearing committed state (recalls data only refreshes on operator-Mac fetch, so no silent drift). Optionally add a per-ingredient recall block on `/cost-index/events/` too.
+
+  **Waves 3–6** (spec §3) slot by lane as keys/codes land.
 
 <details><summary>Original §1.2–1.6 build plan (now shipped — kept for reference)</summary>
 
