@@ -201,6 +201,25 @@ only). r4 → 0. apps/api 3190 green. **All 6 insight surfaces in `apps/api/src/
 currency-scope hardened transitively (3 surfaces depend on it; no defects surfaced across the vendor-relationships
 + ap-pacing audits that read it).
 
+And **cross-surface consistency — 🔶 OPEN after r1→r3 (2026-07-25)** (product-only; the first audit that is NOT
+about one surface — it asks whether the surfaces AGREE WITH EACH OTHER). Runbook:
+`runbooks/audits/cross-surface-2026-07.md`. **r1: 16 confirmed → 10 distinct; r2: 14 → 9; r3: 16 → 11.** All
+HIGHs are fixed and pushed; **8 MED + 1 LOW remain open and enumerated in the runbook.**
+**Why it matters more than any single-surface round:** several defects were caused by *this loop's own earlier
+fixes*. The VR-4 dedup, the bill-steadiness relabel and the ap-pacing disclosure were each correct on the surface
+they were made and each created a disagreement with a sibling reading the same data — and r2 caught my r1
+XS-CURRENCY fix making one row internally contradictory (spend columns and steadiness score over DISJOINT invoice
+sets, with the page's own "left out" footnote describing exactly the scored invoices). **Fixing a surface in
+isolation can introduce a cross-surface defect.** Highlights: the bill-steadiness score was computed over
+different record sets, windows, row caps and vendor-identity rules on the two pages that render it (now one
+population, one rule — `insights/vendor-identity.ts`); `use-tax`, the hub "Spend this month" KPI, `budget-vs-actual`
+and both aggregate SQL queries all summed money across currencies under a hardcoded "$"; and **r3 found a genuine
+production bug** — `getVendorSpend` selected `v.name`, a column the `vendors` table does not have, so the hub's
+Pareto card fails while a sibling lists the same vendors. **⚠ Top follow-up:** the new dominant-currency SQL in
+`insights-aggregates-store.ts` is syntax-checked only (the stub returns zeros; no Postgres in-container) — run it
+against Neon before trusting those cards. **Not converged:** each round's fixes held, but every round the lenses
+reach one hop further out (now `/today`, the budget panel, the Ledger, the aggregates store). apps/api 3196 green.
+
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
   (happened again 2026-07-23). Before each audit: `git reset --hard origin/<branch>` and verify
@@ -232,6 +251,13 @@ currency-scope hardened transitively (3 surfaces depend on it; no defects surfac
   from the same COPY string as the visible label so they can't drift. The convergence loop caught three
   separate residual instances of one reword across r2+r3; a single grep-sweep at fix time would have caught
   all of them.
+- **Audit the SEAMS, not just the surfaces** — every insight surface passed its own convergence audit, then a
+  cross-surface audit found 30 confirmed defects across three rounds in the gaps BETWEEN them: the same number
+  computed over different populations, windows, row caps and identity rules; exclusions quantified on one page and
+  invisible on its sibling; a chip and a tile naming one page two things. Single-surface convergence does not imply
+  product coherence, and worse, **a correct single-surface fix can create a cross-surface defect** (three of r1's
+  findings were caused by this loop's own earlier fixes). When a fix changes what a number MEANS, re-audit the
+  seam, not just the page.
 - **A relabel must propagate to EVERY surface that consumes the same number** — when
   vendor-reliability's score was relabeled "prices"→"Bill steadiness" with an order-size caveat,
   the sibling vendor-relationships table still rendered the identical `scoreVendorReliability`
