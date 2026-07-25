@@ -553,6 +553,9 @@ const CHECKS = [
   // count-word reconciled by counting cards; self-test pins the injector, --check pins the hub files.
   ['Open hub cards self-test','inject-open-cards.mjs','--self-test'],
   ['Open hub cards sync','inject-open-cards.mjs','--check'],
+  // Phase 2 — the per-ingredient recall-history section generator (spec §4). The lib pins the
+  // co-occurrence markup + distinct-events-not-notices + graceful absence; the injector lands next.
+  ['Recall-roster lib self-test','lib/recall-roster.mjs','--self-test'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
   ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
   // Study evidence dataset (ADR-019): the menu-pricing paper's claims × its 36 grounding sources
