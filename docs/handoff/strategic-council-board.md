@@ -107,6 +107,32 @@ last-good). A year of coursework is close to the best thing that could happen to
     `check-competitor-claims.mjs` already has a monthly cron. After the pressure fix, no known
     absence-blind alarm remains in either repo.
 
+**Third workflow landed + two agent overclaims caught (2026-07-28, overnight)**
+
+  `docs/strategy/2026-07-28-legitimately-useful.md`. Both corrections below were found by checking
+  the repo, and both are recorded in that file's own header so it can never be read straight.
+
+  - **FALSE — "the human page does not abstain."** The doc's headline finding claims 13 of the 19
+    ingredients withheld from the CC0 feed still render a reading on their HTML page. The counts
+    are right (100 tracked → 81 published → 19 withheld, 13 with pages); the conclusion is wrong.
+    **All 13 explicitly abstain and explain why** — `/cost-index/shrimp/` renders "Coverage in
+    progress… we're not publishing a number. The index shows a price only when public data supports
+    an honest one." None renders a price. 13 of 13, zero exceptions. **The abstention discipline is
+    intact on both surfaces. Nothing to fix.** Acting on this would have meant "repairing" the
+    site's single most distinctive property while it was working correctly.
+  - **OVERSTATED — "llms.txt says: restaurant web-design blog."** The llms.txt *description* leads
+    correctly: "Muntin Digital builds the Cost Index — weekly wholesale reference prices… from
+    public U.S. data (USDA, BLS, FRED)." The positioning is right. What is diluted is the *link
+    list*: of 56 library/blog entries, ~26 are web-design/SEO flavoured against ~20 cost/margin.
+    So the modest, true version of the strategy stands — freezing retired-line articles would
+    concentrate the inventory — but the domain is not mis-describing itself.
+  - **Useful mechanism the doc surfaced (unverified, worth checking before use):** it claims
+    `build-sitemap.mjs`, `build-llms-txt.mjs`, `build-llms-full.mjs` and `inject-feed-discovery.mjs`
+    all already honour `<meta name="robots" noindex>`, which would make "freeze, don't delete" a
+    one-stamp, fully reversible retirement that keeps URLs 200-ing and inbound links intact — no
+    301s, no slug changes. If the operator wants to prune, verify that claim first; it is the whole
+    basis of the low-risk path.
+
 **Open — needs the operator, deliberately not decided**
 
   1. **The `data/` posture.** Exclude it from the deploy tar, or license + document it and take
