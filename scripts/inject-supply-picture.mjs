@@ -62,6 +62,27 @@ function removeSupplyQ(json) {
   return json;
 }
 
+// Visible FAQ item markers — keep on-page FAQ markup byte-matched to the FAQPage JSON-LD supply Q.
+const SUPPLY_FAQ_HTML = { start: '<!-- supply-faq:start -->', end: '<!-- /supply-faq:end -->' };
+
+function removeSupplyFaqHtml(html) {
+  html = strip(html, SUPPLY_FAQ_HTML.start, SUPPLY_FAQ_HTML.end);
+  // Collapse blank lines the insert left between </h2> and the next FAQ item (idempotent re-runs).
+  return html.replace(/(<\/h2>)\n(?:[ \t]*\n)+([ \t]*<div class="ci-faq__item")/g, '$1\n$2');
+}
+
+// Insert the supply Q&A as the first item of the visible .ci-faq block (same text as JSON-LD).
+function injectFaqHtml(html, faq) {
+  html = removeSupplyFaqHtml(html);
+  if (!faq) return html;
+  const sec = html.search(/<section[^>]*class="[^"]*\bci-faq\b/);
+  if (sec < 0) return html; // scaffold pages with no visible FAQ — JSON-LD only stays
+  const h2end = html.indexOf('</h2>', sec);
+  if (h2end < 0) return html;
+  const item = `${SUPPLY_FAQ_HTML.start}<div class="ci-faq__item" id="faq-supply"><h3 class="ci-faq__q">${faq.q}</h3><p class="ci-faq__a">${faq.a}</p></div>${SUPPLY_FAQ_HTML.end}`;
+  return html.slice(0, h2end + 5) + '\n  ' + item + html.slice(h2end + 5);
+}
+
 // Insert the supply Q&A as the first item of the FAQPage mainEntity (caveat lives inside the answer).
 function injectFaq(html, faq) {
   const s = html.indexOf('<script type="application/ld+json">');
@@ -124,8 +145,10 @@ function processPage(file, slug, locale) {
     html = html.slice(0, lineStart) + block + '\n' + indent + html.slice(lineStart + indent.length);
   }
 
-  // 3) supply FAQ into the FAQPage JSON-LD (idempotent; removed first, re-added when faq present)
-  html = injectFaq(html, block ? faq : null);
+  // 3) supply FAQ into the FAQPage JSON-LD + visible .ci-faq (idempotent; removed first, re-added when faq present)
+  const supplyFaq = block ? faq : null;
+  html = injectFaq(html, supplyFaq);
+  html = injectFaqHtml(html, supplyFaq);
 
   const changed = html !== before;
   if (changed && !CHECK) fs.writeFileSync(file, html);
