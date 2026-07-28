@@ -83,6 +83,30 @@ last-good). A year of coursework is close to the best thing that could happen to
   - Naive ingredient-name matching is **unsafe**: it flagged 55/55 articles because "apple"
     matches Apple. Any corpus↔index mapping must be curated or evidence-derived, never fuzzy.
 
+**Late-session additions (2026-07-28, overnight)**
+
+  - **A product feature had been silently dead for 22 days.**
+    `apps/api/src/data/cost-pressure-snapshot.json` sat at asOf 2026-06-15 while its resolver
+    (`supply-pressure-suggest.ts`) fails closed at 21 days — dormant since 2026-07-06, every
+    supply-pressure suggestion returning no band, nothing logged. Its sibling snapshot had a CI
+    gate; this one had none. Re-vendored (→ 2026-07-20, 22 slugs) and
+    `check-cost-pressure-snapshot-fresh.mjs` added, wired into ci.yml and into the weekly watch,
+    which now covers both snapshots. Product commit `3475807`.
+  - **The CORS gap does NOT self-resolve when PR #523 lands.** #523's `_headers` adds
+    `Access-Control-Allow-Origin: *` + a CC0 `Link` for `/data/*.jsonl` and `/data/cpc-oni.txt`
+    only. It does **not** cover `/cost-index/*.json|csv` — the per-edition CC0 snapshots the site
+    actually tells people to cite ("Cite this edition", Dataset JSON-LD). After #523 merges, add a
+    block mirroring its `/data/*.jsonl` pattern. Deliberately NOT done now: `_headers` is modified
+    by #523, so touching it here guarantees a conflict in a file not worth fighting over.
+  - **Correction to an earlier note in this thread:** the product's `.typecheck-baseline.json`
+    carries **0** accepted errors (apps/api 0, apps/web 0, apps/email-worker 0, all stamped
+    2026-07-03), not 2. An earlier statement in this session counted object keys, not errors.
+  - **Product decay audit — honest negative results.** `check-subprocessor-freshness.mjs` looked
+    absence-blind but is not: its 30-day rule asserts `(now − since) >= 30`, which gets *easier*
+    with time, and drift requires an IaC change, which requires a push. Correctly activity-gated.
+    `check-competitor-claims.mjs` already has a monthly cron. After the pressure fix, no known
+    absence-blind alarm remains in either repo.
+
 **Open — needs the operator, deliberately not decided**
 
   1. **The `data/` posture.** Exclude it from the deploy tar, or license + document it and take
