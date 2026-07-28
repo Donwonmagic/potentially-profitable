@@ -47,7 +47,7 @@ The operator bio: **Don Goldstein, full-time Front-of-House Manager at Tacombi �
 CI orchestrator is `scripts/check-all.mjs` — runs every `check-*.mjs` script in sequence and fails fast.
 
   - **Fabrication blocklist** (`check-fabrications.mjs`) — blocks the May-2026 fabrication patterns (invented cohorts, fake URLs, the "two restaurants" bio drift). Fail-CI.
-  - **Article graphics** (`check-article-graphics.mjs`) — 8 rules per article: ≥2 content figures, ≥2 distinct viz-* kinds, ≥80-char `data-audio-alt`, `<figcaption>` per figure, teal↔rust tone balance, viz-bars `--w` vs num consistency, cross-post dedup, no autolink markers inside attribute values. Per-slug `HISTORICAL_WAIVERS` + `DEDUP_ALLOW` allowlist, both with dated comments.
+  - **Article graphics** (`check-article-graphics.mjs`) — 9 rules per article: ≥2 content figures, ≥2 distinct viz-* kinds, ≥80-char `data-audio-alt`, `<figcaption>` per figure, teal↔rust tone balance, viz-bars `--w` vs num consistency, cross-post dedup, no autolink markers inside attribute values, and **rule 9 — signed data may not ride a one-directional `viz-bars`** (labels mixing + and − must use `viz-diverge`; detection keys on the numeric labels, never `data-tone`, since ~60 figures legitimately use rust/teal for pass/fail categories over all-positive values). Per-slug `HISTORICAL_WAIVERS` + `DEDUP_ALLOW` allowlist, both with dated comments. `GENERATED_ROOTS` (`cost-index/`, `es/cost-index/`) are additionally scanned for figure QUALITY only — rules 3, 4, 6, 8, 9 — because those pages are template-built, carry no `id="post-body"`, and may legitimately ship one figure or none; pages without figures are skipped.
   - **Article graphics tests** (`run-article-graphics-tests.mjs` → `test-article-graphics.mjs`) — `node:test` suite that pins the gate's parser behavior. Run manually with `node --test scripts/test-article-graphics.mjs`.
   - **Overview quality** (`check-overview-quality.mjs`) — stricter bar for batch overviews (≥5 H2, ≥3 figures with ≥1 viz-bars, capstone present, audio not pending, ≥5-min read).
   - **Image dimensions / formats / lazy** (`check-image-dimensions.mjs`, `check-image-formats.mjs`, `check-lazy-images.mjs`) — CLS / LCP guards.
@@ -60,7 +60,9 @@ CI orchestrator is `scripts/check-all.mjs` — runs every `check-*.mjs` script i
 
 Defined in `assets/site-article.css`. New article figures should use these wrappers (`viz-figure` is the post-Phase-1 marker; `article-figure` is the pre-Phase-1 wrapper still in use across some ES mirrors):
 
-  - `viz-bars` — measured share, before/after on a single metric, comparative ranking.
+  - `viz-bars` — measured share, before/after on a single metric, comparative ranking. **Same-sign values only** — see `viz-diverge` for signed data (rule 9).
+  - `viz-diverge` — SIGNED data on a zero-centred axis (a read vs baseline, a contribution, any +/− change). Length = magnitude, **side = direction**, colour reinforces. `data-dir` (pos/neg) sets the side and `data-tone` the sentiment, so a metric where *down is bad* renders rust-on-the-left.
+  - `viz-split` — one stacked bar showing how a whole divides into named parts, every part drawn (the honest replacement for a ring that renders only one slice). `.viz-splitrow` stacks several for comparison.
   - `viz-flow` — mechanism sequences, the order a process walks.
   - `viz-tree` — decision diagnostics, branching troubleshooting. Library leans here.
   - `viz-ba` — before/after rewrites of a specific paragraph, profile, or schema block.

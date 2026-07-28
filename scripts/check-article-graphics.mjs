@@ -26,6 +26,17 @@
  *   - Drafts marked `data-draft="true"` on the post-body root are
  *     skipped, matching the overview-quality script's convention.
  *
+ * Generated data surfaces (GENERATED_ROOTS)
+ *   Cost Index pages under `cost-index/` and `es/cost-index/` are
+ *   machine-built from a template and carry no `id="post-body"`, so they
+ *   are scanned separately and only for figure QUALITY — rules 3, 4, 6, 8
+ *   and 9. The editorial rules are skipped by construction: a data page
+ *   may legitimately ship one figure or none (rules 1/2), tone rhythm is a
+ *   prose convention (rule 5), and a shared template figure across ~200
+ *   pages is correct rather than duplication (rule 7). Pages with no
+ *   figures are skipped entirely, so this stays silent until a generator
+ *   actually ships a chart.
+ *
  * Rules
  *   1. Floor — ≥ 2 content figures (wrapper class `viz-figure` or
  *      `article-figure`).
@@ -54,6 +65,15 @@
  *      copy-paste of body content (already autolinked) into an
  *      attribute value, which then breaks attribute parsing at the
  *      first unescaped quote in the autolink markup.
+ *   9. Signed-data encoding — a `.viz-bars` figure whose numeric labels
+ *      mix + and − is SIGNED data (a change, a read vs baseline, a
+ *      gain/loss). A one-directional track encodes magnitude only, so
+ *      direction ends up carried by colour alone. Those figures must use
+ *      `.viz-diverge` (zero-centred; side = direction, length =
+ *      magnitude). Detection keys on the numeric labels, never on
+ *      `data-tone` — mixed rust/teal is used legitimately across ~60
+ *      figures for pass/fail and good/bad categories over all-positive
+ *      values, so tone would be almost entirely false positives.
  *
  * Not enforced here (intentional gaps)
  *   - Citation-slug registry. Originally proposed: figures using a
@@ -142,6 +162,21 @@ const args        = new Set(process.argv.slice(2));
 const skipDrafts  = args.has('--skip-drafts');
 
 export const SCAN_ROOTS = ['library', 'blog', 'es/library', 'es/blog'];
+
+// Generated data surfaces (Cost Index ingredient pages + the events/weekly/
+// methodology sub-hubs, EN + ES). These are MACHINE-BUILT from a template by
+// scripts/build-cost-index-pages.mjs, so the editorial rules do not apply:
+//   - Rule 1 (>=2 figures) / Rule 2 (>=2 kinds) encode an authoring expectation
+//     for hand-written articles. A data page legitimately ships one figure, or
+//     none at all.
+//   - Rule 5 (tone balance) is a canon visual-rhythm rule for prose posts.
+//   - Rule 7 (cross-post dedup) would fire on all ~200 pages at once: sharing a
+//     figure shape IS the point of a generated template.
+// What DOES apply is figure QUALITY and encoding honesty — rules 3, 4, 6, 8 and
+// 9 — so a chart that ships here is held to the same standard as one in an
+// article. These pages also carry no `id="post-body"` marker, which is why
+// simply adding them to SCAN_ROOTS would silently scan and skip every one.
+export const GENERATED_ROOTS = ['cost-index', 'es/cost-index'];
 
 // { path: 'library/<slug>', rule: 1..7, why: 'YYYY-MM-DD — short reason' }
 //
@@ -372,6 +407,52 @@ function parseVizBarsRows(inner) {
   return rows;
 }
 
+// Rule 9 — SIGNED data must not ride a one-directional bar.
+//
+// A `.viz-bars` track grows left→right from a fixed origin, so length encodes
+// magnitude and nothing encodes SIGN. When a chart's own numeric labels mix +
+// and − (a read vs baseline, a change, a gain/loss), drawing it as viz-bars
+// leaves direction carried by COLOUR ALONE — the reader sees "big → small" and
+// has to decode the legend to learn which way each bar points. `.viz-diverge`
+// is the correct family: zero at the centre, side = direction, length =
+// magnitude, colour reinforcing rather than load-bearing.
+//
+// The signal is deliberately the NUMERIC LABELS, not `data-tone`. Mixed
+// rust/teal tone is far too noisy to gate on: 62 figures on this site use the
+// two tones for pass/fail, good/bad, or category emphasis over all-positive
+// values (contrast ratios, menu-quadrant shares, retained-dollar comparisons),
+// and every one would be a false positive. Mixed +/− labels are unambiguous.
+//
+// Same-sign charts are untouched by design: a ranked Pareto of losses
+// (−15, −9, −3) or a list of increases (+12%, +2%) is a magnitude comparison
+// and belongs on viz-bars. Ranges ("4–6 weeks", "8–12 fields") are not matched
+// because the hyphen there is preceded by a digit, not by start/space/paren.
+const SIGNED_POS_RE = /(?:^|[\s(])\+\s*\d/;
+const SIGNED_NEG_RE = /(?:^|[\s(])-\s*\d/;
+
+export function findSignedVizBars(figs) {
+  const hits = [];
+  figs.forEach((f, i) => {
+    if (!/class="viz-bars"/.test(f.inner)) return;
+    const nums = [...f.inner.matchAll(/<p\s+class="viz-bars__num"[^>]*>([\s\S]*?)<\/p>/g)]
+      .map((m) => m[1]
+        .replace(/<[^>]+>/g, '')
+        .replace(/&minus;|&ndash;|&mdash;|[−–—]/g, '-')
+        .replace(/&plus;/g, '+')
+        .trim());
+    const pos = nums.filter((n) => SIGNED_POS_RE.test(n));
+    const neg = nums.filter((n) => SIGNED_NEG_RE.test(n));
+    if (pos.length && neg.length) {
+      hits.push({
+        figIndex: i,
+        sample: `${pos[0]} … ${neg[0]}`,
+        count: nums.length,
+      });
+    }
+  });
+  return hits;
+}
+
 function checkVizBarsConsistency(figs) {
   // Returns an array of mismatch strings, one per failing row.
   const failures = [];
@@ -478,7 +559,25 @@ for (const root of SCAN_ROOTS) {
       hashToSlugs.get(h).add(slugPath);
     }
 
-    articles.push({ abs, rel, slugPath, html, figs, vizKinds });
+    articles.push({ abs, rel, slugPath, html, figs, vizKinds, kind: 'article' });
+  }
+}
+
+// Generated data surfaces: figure-quality rules only. A page with no figures
+// has nothing to enforce and is skipped, so this stays quiet until a generator
+// actually ships a chart here. Their figures are deliberately NOT added to
+// hashToSlugs — a templated page sharing a figure shape across 80 ingredients
+// is correct, and hashing them would detonate rule 7.
+for (const root of GENERATED_ROOTS) {
+  for (const abs of walkArticleHtml(root)) {
+    const rel = path.relative(REPO, abs);
+    const html = fs.readFileSync(abs, 'utf8');
+    const figs = collectContentFigures(html);
+    if (!figs.length) continue;
+    articles.push({
+      abs, rel, slugPath: relSlugPath(abs), html, figs,
+      vizKinds: new Set(), kind: 'generated',
+    });
   }
 }
 
@@ -490,9 +589,12 @@ const failures = [];
 
 for (const art of articles) {
   const { rel, slugPath, html, figs, vizKinds } = art;
+  // Generated data pages run figure-quality rules only (3, 4, 6, 8, 9).
+  // See GENERATED_ROOTS for why the editorial rules are skipped.
+  const editorial = art.kind !== 'generated';
 
   // Rule 1 — floor.
-  if (figs.length < 2 && !isWaived(slugPath, 1)) {
+  if (editorial && figs.length < 2 && !isWaived(slugPath, 1)) {
     failures.push({
       file: rel, rule: 1,
       msg: `${figs.length} content figure(s); canon floor is 2`,
@@ -502,7 +604,7 @@ for (const art of articles) {
   // Rule 2 — variety. Only meaningful when the floor is met. A "kind" is a
   // distinct viz-* sub-kind OR a non-viz enrichment kind (table/photo/scan/
   // map/shot/render — ADR-006), so the floor can be met more than one way.
-  if (figs.length >= 2 && vizKinds.size < 2 && !isWaived(slugPath, 2)) {
+  if (editorial && figs.length >= 2 && vizKinds.size < 2 && !isWaived(slugPath, 2)) {
     const detected = [...vizKinds].sort().join(', ') || '(none detected)';
     failures.push({
       file: rel, rule: 2,
@@ -531,7 +633,7 @@ for (const art of articles) {
   // Rule 5 — tone balance. If any figure uses data-tone="teal", the post
   // body needs a data-tone="rust" somewhere.
   const figsTeal = figs.some((f) => /\bdata-tone="teal"/.test(f.inner));
-  if (figsTeal && !/\bdata-tone="rust"/.test(html) && !isWaived(slugPath, 5)) {
+  if (editorial && figsTeal && !/\bdata-tone="rust"/.test(html) && !isWaived(slugPath, 5)) {
     failures.push({
       file: rel, rule: 5,
       msg: 'figures use data-tone="teal" but the post never uses data-tone="rust"; the visual phase-break from canon §8 is missing',
@@ -543,6 +645,16 @@ for (const art of articles) {
     const mismatches = checkVizBarsConsistency(figs);
     for (const m of mismatches) {
       failures.push({ file: rel, rule: 6, msg: m });
+    }
+  }
+
+  // Rule 9 — signed data on a one-directional bar. See findSignedVizBars.
+  if (!isWaived(slugPath, 9)) {
+    for (const h of findSignedVizBars(figs)) {
+      failures.push({
+        file: rel, rule: 9,
+        msg: `figure #${h.figIndex + 1}: .viz-bars carries SIGNED values (${h.sample}) across ${h.count} row(s) — a one-directional track encodes magnitude only, leaving direction to colour alone. Use .viz-diverge (zero-centred: side = direction, length = magnitude). See voice-canon-library §8.`,
+      });
     }
   }
 
@@ -582,12 +694,16 @@ for (const dg of dupGroups) {
 //  Report
 // --------------------------------------------------------------------
 
+const nGen = articles.filter((a) => a.kind === 'generated').length;
+const nArt = articles.length - nGen;
+const scanNote = `${nArt} article(s)` + (nGen ? ` + ${nGen} generated data page(s) with figures` : '');
+
 if (failures.length === 0) {
-  console.log(`check-article-graphics: ${articles.length} article(s) scanned, 0 violations.`);
+  console.log(`check-article-graphics: ${scanNote} scanned, 0 violations.`);
   process.exit(0);
 }
 
-console.error(`check-article-graphics: ${failures.length} violation(s) across ${articles.length} article(s):\n`);
+console.error(`check-article-graphics: ${failures.length} violation(s) across ${scanNote}:\n`);
 
 const byFile = new Map();
 for (const v of failures) {
