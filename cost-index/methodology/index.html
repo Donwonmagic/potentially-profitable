@@ -102,6 +102,17 @@ main{padding-top:64px}
 .ci-rel__bar{display:block;height:100%;background:var(--teal);border-radius:3px}
 .ci-rel__val{flex:0 0 42px;font-size:13px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
 .ci-rel figcaption{font-size:13px;color:var(--ink-soft);margin-top:8px}
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
@@ -516,6 +527,10 @@ main{padding-top:64px}
       <li><strong>No forecast.</strong> We publish measured levels, measured directions, and inferred directional pressure — never a price forecast.</li>
     </ul>
 
+    <!-- ingredient-recalls:start --><section class="ci-profile ci-recalls ci-recalls--none" aria-labelledby="ci-recalls-h-methodology">
+    <h2 id="ci-recalls-h-methodology">Food-safety recall history</h2>
+    <p class="ci-recalls__none">No recall in the openFDA window (since 2020). FDA-regulated foods only — USDA/FSIS meat, poultry and egg recalls are absent here, so an empty record is not an all-clear.</p>
+  </section><!-- /ingredient-recalls:end -->
     <section class="ci-faq" aria-labelledby="faq-heading">
       <h2 id="faq-heading">Questions about the method</h2>
       <div class="ci-faq__item">

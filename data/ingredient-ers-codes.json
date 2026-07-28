@@ -1,0 +1,370 @@
+{
+  "_doc": "Slug -> USDA ERS Food Availability (per-capita) commodity. The VOLUME cross-check for the value-based reliance seam: how many lbs/person/yr of this commodity are available domestically (production + imports - exports - loss-side uses, per ERS). Per-capita availability is published at the COMMODITY level, so a variety/cut maps to its parent commodity (scope=commodity) and the figure is labeled as the commodity per-capita, never the exact cut. Descriptive of the tracked ERS series, never a forecast; lbs available, never a price.",
+  "_source": "USDA ERS Food Availability (Per Capita) Data System. Public domain. data/ers-food-availability.jsonl (rows {group,commodity,year,attribute,value}).",
+  "attributes": {
+    "fruit-fresh": "Food availability-Per capita availability-Farm-Pounds",
+    "vegetables-fresh": "Food availability-Per capita availability-Farm-Pounds",
+    "red-meat": "Food availability-Per capita availability-Boneless-Pounds",
+    "poultry": "Food availability-Per capita availability-Boneless-Pounds",
+    "eggs": "Food availability-Retail weight-Per capita-Pounds",
+    "grains": "Food availability-Per capita availability-Pounds"
+  },
+  "map": {
+    "avocado": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh avocados: Supply and use",
+      "scope": "commodity"
+    },
+    "banana": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh bananas: Supply and use",
+      "scope": "commodity"
+    },
+    "apple": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh apples: Supply and use",
+      "scope": "commodity"
+    },
+    "pear": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh pears: Supply and use",
+      "scope": "commodity"
+    },
+    "grapes": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh grapes: Supply and use",
+      "scope": "commodity"
+    },
+    "strawberry": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh strawberries: Supply and use",
+      "scope": "commodity"
+    },
+    "blueberry": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh blueberries: Supply and use",
+      "scope": "commodity"
+    },
+    "raspberry": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh raspberries: Supply and use",
+      "scope": "commodity"
+    },
+    "cantaloupe": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh cantaloupe: Supply and use",
+      "scope": "commodity"
+    },
+    "watermelon": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh watermelon: Supply and use",
+      "scope": "commodity"
+    },
+    "pineapple": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh pineapples: Supply and use",
+      "scope": "commodity"
+    },
+    "mango": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh mangoes: Supply and use",
+      "scope": "commodity"
+    },
+    "papaya": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh papayas: Supply and use",
+      "scope": "commodity"
+    },
+    "kiwi": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh kiwifruit: Supply and use",
+      "scope": "commodity"
+    },
+    "orange": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh oranges and temples: Supply and use",
+      "scope": "commodity"
+    },
+    "grapefruit": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh grapefruit: Supply and use",
+      "scope": "commodity"
+    },
+    "lemon": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh lemons: Supply and use",
+      "scope": "commodity"
+    },
+    "lime": {
+      "group": "fruit-fresh",
+      "commodity": "Fresh limes: Supply and use",
+      "scope": "commodity"
+    },
+    "tomato": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh tomatoes (field and hothouse): Supply and use",
+      "scope": "commodity"
+    },
+    "cherry-tomato": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh tomatoes (field and hothouse): Supply and use",
+      "scope": "commodity"
+    },
+    "broccoli": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh broccoli: Supply and use",
+      "scope": "commodity"
+    },
+    "cauliflower": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh cauliflower: Supply and use",
+      "scope": "commodity"
+    },
+    "carrot": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh carrots: Supply and use",
+      "scope": "commodity"
+    },
+    "celery": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh celery: Supply and use",
+      "scope": "commodity"
+    },
+    "cabbage": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh cabbage: Supply and use",
+      "scope": "commodity"
+    },
+    "napa-cabbage": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh cabbage: Supply and use",
+      "scope": "commodity"
+    },
+    "cucumber": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh cucumbers: Supply and use",
+      "scope": "commodity"
+    },
+    "eggplant": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh eggplant: Supply and use",
+      "scope": "commodity"
+    },
+    "garlic": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh garlic: Supply and use",
+      "scope": "commodity"
+    },
+    "bell-pepper": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh bell peppers: Supply and use",
+      "scope": "commodity"
+    },
+    "spinach": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh spinach: Supply and use",
+      "scope": "commodity"
+    },
+    "kale": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh kale: Supply and use",
+      "scope": "commodity"
+    },
+    "collard-greens": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh collard greens: Supply and use",
+      "scope": "commodity"
+    },
+    "asparagus": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh asparagus: Supply and use",
+      "scope": "commodity"
+    },
+    "artichoke": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh artichokes: Supply and use",
+      "scope": "commodity"
+    },
+    "brussels-sprouts": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh brussels sprouts: Supply and use",
+      "scope": "commodity"
+    },
+    "okra": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh okra: Supply and use",
+      "scope": "commodity"
+    },
+    "onion": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh onions: Supply and use",
+      "scope": "commodity"
+    },
+    "red-onion": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh onions: Supply and use",
+      "scope": "commodity"
+    },
+    "green-onion": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh onions: Supply and use",
+      "scope": "commodity"
+    },
+    "button-mushroom": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh mushrooms: Supply and use",
+      "scope": "commodity"
+    },
+    "shiitake": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh mushrooms: Supply and use",
+      "scope": "commodity"
+    },
+    "iceberg-lettuce": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh head lettuce: Supply and use",
+      "scope": "commodity"
+    },
+    "butter-lettuce": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh head lettuce: Supply and use",
+      "scope": "commodity"
+    },
+    "romaine-lettuce": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh romaine and leaf lettuce: Supply and use",
+      "scope": "commodity"
+    },
+    "red-leaf-lettuce": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh romaine and leaf lettuce: Supply and use",
+      "scope": "commodity"
+    },
+    "green-leaf-lettuce": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh romaine and leaf lettuce: Supply and use",
+      "scope": "commodity"
+    },
+    "russet-potato": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh potatoes: Supply and use",
+      "scope": "commodity"
+    },
+    "red-potato": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh potatoes: Supply and use",
+      "scope": "commodity"
+    },
+    "sweet-potato": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh sweet potatoes: Supply and use",
+      "scope": "commodity"
+    },
+    "acorn-squash": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh squash: Supply and use",
+      "scope": "commodity"
+    },
+    "butternut-squash": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh squash: Supply and use",
+      "scope": "commodity"
+    },
+    "yellow-squash": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh squash: Supply and use",
+      "scope": "commodity"
+    },
+    "zucchini": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh squash: Supply and use",
+      "scope": "commodity"
+    },
+    "corn-on-the-cob": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh sweet corn: Supply and use",
+      "scope": "commodity"
+    },
+    "green-beans": {
+      "group": "vegetables-fresh",
+      "commodity": "Fresh snap beans: Supply and use",
+      "scope": "commodity"
+    },
+    "ribeye": {
+      "group": "red-meat",
+      "commodity": "Beef: Supply and use - carcass weight",
+      "scope": "commodity"
+    },
+    "striploin": {
+      "group": "red-meat",
+      "commodity": "Beef: Supply and use - carcass weight",
+      "scope": "commodity"
+    },
+    "short-rib": {
+      "group": "red-meat",
+      "commodity": "Beef: Supply and use - carcass weight",
+      "scope": "commodity"
+    },
+    "beef-tenderloin": {
+      "group": "red-meat",
+      "commodity": "Beef: Supply and use - carcass weight",
+      "scope": "commodity"
+    },
+    "ground-beef": {
+      "group": "red-meat",
+      "commodity": "Beef: Supply and use - carcass weight",
+      "scope": "commodity"
+    },
+    "pork-belly": {
+      "group": "red-meat",
+      "commodity": "Pork: Supply and use - carcass weight",
+      "scope": "commodity"
+    },
+    "pork-loin": {
+      "group": "red-meat",
+      "commodity": "Pork: Supply and use - carcass weight",
+      "scope": "commodity"
+    },
+    "pork-shoulder": {
+      "group": "red-meat",
+      "commodity": "Pork: Supply and use - carcass weight",
+      "scope": "commodity"
+    },
+    "bacon": {
+      "group": "red-meat",
+      "commodity": "Pork: Supply and use - carcass weight",
+      "scope": "commodity"
+    },
+    "lamb": {
+      "group": "red-meat",
+      "commodity": "Lamb: Supply and use - carcass weight",
+      "scope": "commodity"
+    },
+    "chicken-breast": {
+      "group": "poultry",
+      "commodity": "Total chicken: Supply and use",
+      "scope": "commodity"
+    },
+    "chicken-thigh": {
+      "group": "poultry",
+      "commodity": "Total chicken: Supply and use",
+      "scope": "commodity"
+    },
+    "whole-chicken": {
+      "group": "poultry",
+      "commodity": "Total chicken: Supply and use",
+      "scope": "commodity"
+    },
+    "whole-turkey": {
+      "group": "poultry",
+      "commodity": "Turkey: Supply and use",
+      "scope": "commodity"
+    },
+    "eggs": {
+      "group": "eggs",
+      "commodity": "Eggs: Per capita availability",
+      "attribute": "Total-Retail weight-Pounds-Per capita-Pounds",
+      "scope": "commodity"
+    }
+  }
+}

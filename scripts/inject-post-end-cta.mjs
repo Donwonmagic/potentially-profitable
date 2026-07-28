@@ -87,11 +87,18 @@ function buildBlock(slug, entry, locale, foundIn) {
   // so the destination's Workshop save panel can pre-flag the entry as
   // article-originated. Tools keep intent=watch (existing behavior).
   const isSheet = /^\/(?:es\/)?sheets\//.test(url);
-  const intent = isSheet ? 'save' : 'watch';
+  const isTool  = /^\/(?:es\/)?tools\//.test(url);
+  // intent= routes through the destination's Workshop-save wiring: tools load
+  // workbench-save.js (intent=watch), sheets load sheets.js (intent=save). A
+  // non-tool/non-sheet target (e.g. the cost-index instrument) has neither, so
+  // it carries NO intent param — this matches check-intent-param-targets, which
+  // only accepts /tools/ and /sheets/ paths.
+  const intent = isSheet ? 'save' : (isTool ? 'watch' : null);
   // from=<namespace>/<slug> — namespace reflects where the post actually
   // lives so analytics attribute correctly post the Phase-7 split.
   const namespace = foundIn.replace(/^es\//, '');
-  const href = `${url}?from=${namespace}%2F${encodeURIComponent(slug)}&intent=${intent}`;
+  const base = `${url}?from=${namespace}%2F${encodeURIComponent(slug)}`;
+  const href = intent ? `${base}&intent=${intent}` : base;
   return [
     '<!-- post-end-cta:start -->',
     '    <aside class="post-end-cta" aria-label="Workshop next step">',

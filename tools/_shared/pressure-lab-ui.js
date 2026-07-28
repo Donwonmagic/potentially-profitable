@@ -92,7 +92,7 @@
   function assessFor(obsMap) {
     var observations = {};
     for (var id in obsMap) observations[id] = { changePct: obsMap[id], asOf: LIVE.asOf };
-    return ENGINE.assess(panel, observations, { anchorPrintDate: anchorDate, asOf: LIVE.asOf, ruleVersion: RULES._version });
+    return ENGINE.assess(panel, observations, { anchorPrintDate: anchorDate, asOf: LIVE.asOf, now: Date.now(), ruleVersion: RULES._version });
   }
   function modified() { for (var id in scenario) if (scenario[id] !== base[id]) return true; return false; }
 

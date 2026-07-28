@@ -16,9 +16,9 @@
 (function (root) {
   'use strict';
   var DATA = {
-  "_doc": "Vendor Benchmark ingredient picker: the honest list of what the tool can benchmark, derived from the browser seed + the shared category taxonomy. 81 ingredient(s); 20 carry a firm dollar reference.",
+  "_doc": "Vendor Benchmark ingredient picker: the honest list of what the tool can benchmark, derived from the browser seed + the shared category taxonomy. 81 ingredient(s); 19 carry a firm dollar reference.",
   "count": 81,
-  "dollarRefCount": 20,
+  "dollarRefCount": 19,
   "groups": [
     {"key":"beef","label_en":"Beef","label_es":"Res"},
     {"key":"poultry","label_en":"Poultry","label_es":"Aves"},
@@ -103,11 +103,11 @@
     {"key":"tarragon","label_en":"Tarragon","label_es":"Estragón","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"thyme","label_en":"Thyme","label_es":"Tomillo","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"tomato","label_en":"Tomatoes (round)","label_es":"Jitomate (bola)","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
+    {"key":"watermelon","label_en":"Watermelon","label_es":"Sandía","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"yellow-squash","label_en":"Yellow squash","label_es":"Calabaza amarilla","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"zucchini","label_en":"Zucchini","label_es":"Calabacín","unit_en":"carton","unit_es":"caja","group":"produce","dollarRef":false},
     {"key":"butter","label_en":"Butter (AA, bulk)","label_es":"Mantequilla (AA, a granel)","unit_en":"lb","unit_es":"libra","group":"dairy-eggs","dollarRef":true},
-    {"key":"cheddar-cheese","label_en":"Cheddar cheese","label_es":"Queso cheddar","unit_en":"lb","unit_es":"libra","group":"dairy-eggs","dollarRef":true},
-    {"key":"eggs","label_en":"Eggs","label_es":"Huevo","unit_en":"dozen","unit_es":"docena","group":"dairy-eggs","dollarRef":true}
+    {"key":"cheddar-cheese","label_en":"Cheddar cheese","label_es":"Queso cheddar","unit_en":"lb","unit_es":"libra","group":"dairy-eggs","dollarRef":true}
   ]
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = DATA;

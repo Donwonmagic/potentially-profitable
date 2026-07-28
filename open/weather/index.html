@@ -1,0 +1,873 @@
+<title>The Origin Climate Envelope — Growing-Region Weather at the Source</title>
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"Dataset",
+ "name":"The Origin Climate Envelope — Growing-Region Weather at the Source",
+ "description":"Observed daily minimum/maximum temperature at a representative NOAA GHCN-Daily station in each US produce import-origin growing belt, rendered as 1991–2020 climatological normals with each station's recent departures. Observed record, never a forecast; a regional proxy for the origin belt, not the exact farm.",
+ "url":"https://muntin.digital/open/",
+ "creator":{"@type":"Organization","name":"Muntin","url":"https://muntin.digital"},
+ "isBasedOn":{"@type":"Dataset","name":"NOAA NCEI Global Historical Climatology Network — Daily (GHCN-Daily)","creator":{"@type":"Organization","name":"NOAA National Centers for Environmental Information"}},
+ "license":"https://creativecommons.org/publicdomain/zero/1.0/",
+ "isAccessibleForFree":true,
+ "temporalCoverage":"1991-01-01/2026-06-30",
+ "spatialCoverage":"Mexico; Peru; Costa Rica",
+ "variableMeasured":["daily minimum temperature (TMIN, °C)","daily maximum temperature (TMAX, °C)","daily precipitation (PRCP)"],
+ "distribution":[{"@type":"DataDownload","name":"weather-observations.jsonl","encodingFormat":"application/x-ndjson","contentUrl":"https://muntin.digital/data/weather-observations.jsonl"}]
+}
+</script>
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="description" content="Observed daily min/max temperature at a NOAA GHCN-Daily station in each US produce import-origin belt — 1991–2020 normals plus recent departures." />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="https://muntin.digital/open/weather/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/open/weather/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/open/weather/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/open/weather/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="The Origin Climate Envelope — Growing-Region Weather at the Source" />
+<meta property="og:description" content="Observed daily min/max temperature at a NOAA GHCN-Daily station in each US produce import-origin belt — 1991–2020 normals plus recent departures." />
+<meta property="og:url" content="https://muntin.digital/open/weather/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The Origin Climate Envelope — Growing-Region Weather at the Source" />
+<meta name="twitter:description" content="Observed daily min/max temperature at a NOAA GHCN-Daily station in each US produce import-origin belt — 1991–2020 normals plus recent departures." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Open data","item":"https://muntin.digital/open/"},{"@type":"ListItem","position":3,"name":"The Origin Climate Envelope","item":"https://muntin.digital/open/weather/"}]}</script>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site-core.css" />
+<style>
+:root{
+  --paper:#f7f4ee; --surface:#fffdf9; --surface-2:#f1ece2;
+  --ink:#1b1f24; --ink-soft:#4a525a; --muted:#63696a;
+  --line:#e5ddce; --line-soft:#efe9dc;
+  --teal:#2f7d78; --teal-ink:#215a56; --teal-wash:#e4efed;
+  --gold:#8a6216; --rust:#a8442d;
+  --up:var(--rust); --dn:var(--teal-ink); --flat:var(--muted);
+  --focus:#1b6be0; --focus-ring:0 0 0 3px rgba(27,107,224,.55);
+  --ok-badge-bd:var(--teal); --ok-badge-ink:var(--teal-ink);
+  --font-display:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+  --font-sans:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-mono:ui-monospace,'SF Mono','Cascadia Code',Menlo,Consolas,monospace;
+  --sh:0 1px 2px rgba(20,24,29,.05),0 8px 24px rgba(20,24,29,.07);
+  --tap:44px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#13161a; --surface:#1a1e23; --surface-2:#222831;
+  --ink:#eef1f0; --ink-soft:#b7bec3; --muted:#8b949c;
+  --line:#2b3138; --line-soft:#242a30;
+  --teal:#57b7af; --teal-ink:#7fcfc7; --teal-wash:#16302e;
+  --gold:#d3a44c; --rust:#e08a72;
+  --focus:#7ab6ff; --focus-ring:0 0 0 3px rgba(122,182,255,.6);
+  --sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);
+}}
+:root[data-theme="dark"]{ --paper:#13161a;--surface:#1a1e23;--surface-2:#222831;--ink:#eef1f0;--ink-soft:#b7bec3;--muted:#8b949c;--line:#2b3138;--line-soft:#242a30;--teal:#57b7af;--teal-ink:#7fcfc7;--teal-wash:#16302e;--gold:#d3a44c;--rust:#e08a72;--focus:#7ab6ff;--focus-ring:0 0 0 3px rgba(122,182,255,.6);--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4); }
+:root[data-theme="light"]{ --paper:#f7f4ee;--surface:#fffdf9;--surface-2:#f1ece2;--ink:#1b1f24;--ink-soft:#4a525a;--muted:#63696a;--line:#e5ddce;--line-soft:#efe9dc;--teal:#2f7d78;--teal-ink:#215a56;--teal-wash:#e4efed;--gold:#8a6216;--rust:#a8442d;--focus:#1b6be0;--focus-ring:0 0 0 3px rgba(27,107,224,.55); }
+*{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:clamp(18px,3.5vw,44px) clamp(14px,4vw,30px) 90px}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+h1{font-family:var(--font-display);font-weight:600;line-height:1.03;letter-spacing:-.01em;text-wrap:balance;margin:0 0 10px;font-size:clamp(28px,5.6vw,48px)}
+h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.01em}
+a{color:var(--teal-ink)} a:hover{text-decoration:underline}
+svg{display:block;max-width:100%;height:auto}
+figure{margin:0}
+:where(a,button,select,input,summary,[tabindex]):focus-visible{outline:2px solid var(--focus);outline-offset:2px;box-shadow:var(--focus-ring);border-radius:6px}
+button,select,input{min-height:var(--tap);font:inherit}
+button,[role=button]{min-width:var(--tap)}
+input,select{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.lic{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--ok-badge-bd);color:var(--ok-badge-ink);border-radius:5px;padding:1px 7px;font:600 10.5px/1.4 var(--font-mono);letter-spacing:.06em}
+.lic::before{content:'\2713'} .lic[data-lic="cc-by"]::before{content:'\24B8'} .lic[data-lic="pd"]::before{content:'\2713'}
+.honest{display:block;font:400 11.5px/1.4 var(--font-sans);color:var(--muted);font-style:italic}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+@media (forced-colors:active){.lic,.chip{border:1px solid CanvasText}[data-series]{forced-color-adjust:none}}
+
+header.mast{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:22px}
+.kick{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-ink);margin:0 0 12px;display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.lede{font-size:clamp(15px,2.2vw,18px);color:var(--ink-soft);max-width:66ch;margin:0}
+.lede b{color:var(--ink);font-weight:600}
+.tt{margin-left:auto;background:var(--surface);border:1px solid var(--line);border-radius:9px;color:var(--ink-soft);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 12px;font-size:12px;font-family:var(--font-mono)}
+.section-h{font-size:clamp(19px,3vw,26px);margin:34px 0 4px}
+.section-sub{color:var(--muted);font-size:13.5px;margin:0 0 16px;max-width:64ch}
+
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:16px 22px;align-items:flex-end;margin:18px 0 8px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.ctl label{display:block;font:600 11px/1.5 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.ctl input[type=range]{width:160px;accent-color:var(--teal);min-height:auto;padding:0}
+.ctl .val{font-family:var(--font-mono);font-weight:600;color:var(--teal-ink);margin-left:8px}
+.toggle{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.toggle button{background:var(--surface);border:0;color:var(--ink-soft);padding:0 14px;font-size:13px;cursor:pointer;min-height:40px}
+.toggle button[aria-pressed=true]{background:var(--teal-wash);color:var(--teal-ink);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px;min-height:1px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--teal-wash);color:var(--teal-ink);border:1px solid var(--teal);border-radius:20px;padding:4px 12px;font:600 12px/1.3 var(--font-sans)}
+
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0 4px;font-size:12px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:14px;height:14px;border-radius:3px;flex:none}
+.sw.band{background:var(--teal-wash);border:1px solid var(--teal)}
+.sw.warm{background:var(--rust)} .sw.cool{background:var(--teal)}
+.sw.chill{background:repeating-linear-gradient(90deg,var(--gold) 0 5px,transparent 5px 9px);height:3px;border-radius:0}
+
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:14px;margin-top:14px}
+.card{border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column;text-align:left;color:inherit;font:inherit;cursor:pointer;width:100%;padding:0}
+.card:hover{border-color:var(--teal)}
+.card:hover .cardh h3{text-decoration:underline}
+.card[data-absent=true]{cursor:default;opacity:.96;border-style:dashed}
+.cardh{padding:12px 14px 6px}
+.cardh h3{font-size:16px;margin:0 0 2px}
+.cardh .belt-sub{font:400 11px/1.3 var(--font-mono);color:var(--muted)}
+.foods{display:flex;flex-wrap:wrap;gap:4px;padding:0 14px 8px}
+.food{font:600 10.5px/1.4 var(--font-sans);background:var(--surface-2);color:var(--ink-soft);border-radius:4px;padding:1px 6px}
+.card svg.env{width:100%;height:auto}
+.cardf{padding:8px 14px 12px;border-top:1px solid var(--line-soft);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.stat{font:400 11px/1.4 var(--font-mono);color:var(--muted)}
+.stat b{color:var(--ink);font-weight:600}
+.dep{font:600 12px/1.3 var(--font-mono);display:inline-flex;align-items:center;gap:4px}
+.dep .g{font-size:11px}
+.dep.up{color:var(--up)} .dep.dn{color:var(--dn)} .dep.flat{color:var(--flat)}
+.thru{font:400 10px/1.3 var(--font-mono);color:var(--muted);letter-spacing:.02em}
+.absent-body{padding:14px;color:var(--muted);font-size:12.5px;display:flex;flex-direction:column;gap:8px;flex:1;justify-content:center;min-height:150px;text-align:center}
+.absent-body .tagline{font:600 11px/1.4 var(--font-mono);color:var(--gold);letter-spacing:.05em;text-transform:uppercase}
+
+/* aha */
+.aha{border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:var(--sh);padding:20px 22px;margin-top:14px}
+.aha .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:560px){.aha .pair{grid-template-columns:1fr}}
+.aha figure figcaption{font-size:12px;color:var(--ink-soft);margin-top:6px;text-align:center}
+.aha figure h3{font-size:15px;margin:0 0 6px;text-align:center}
+.aha .punch{font-family:var(--font-display);font-size:clamp(16px,2.6vw,21px);line-height:1.35;margin:16px 0 0;text-wrap:balance}
+.aha .punch b{color:var(--teal-ink)}
+
+/* departure strip */
+.strip-wrap{border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--sh);padding:14px 16px;margin-top:14px;overflow-x:auto}
+
+/* detail */
+.detail{display:none}
+body[data-view=detail] .overview{display:none}
+body[data-view=detail] .detail{display:block}
+.back{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);border-radius:9px;color:var(--teal-ink);font:inherit;font-size:14px;cursor:pointer;padding:9px 14px;margin:0 0 16px}
+.back:hover{background:var(--teal-wash)}
+.dhead{border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:16px}
+.dhead h2{font-size:clamp(24px,4.4vw,36px);margin:2px 0 8px}
+.dhead .note{color:var(--ink-soft);font-size:14px;margin:0;max-width:60ch}
+.dgrid{display:grid;grid-template-columns:1fr;gap:18px}
+.panel{border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--sh);padding:16px 18px}
+.panel h3{font-size:16px;margin:0 0 10px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:4px 0 0}
+.kpi{background:var(--surface-2);border-radius:10px;padding:10px 12px}
+.kpi .n{font-family:var(--font-mono);font-size:20px;font-weight:600;color:var(--teal-ink);line-height:1}
+.kpi .l{font-size:11px;color:var(--muted);margin-top:4px}
+details.cite{margin-top:12px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);padding:2px 12px}
+details.cite summary{cursor:pointer;font:600 12px/2.4 var(--font-mono);color:var(--teal-ink);letter-spacing:.04em}
+details.cite[open] summary{border-bottom:1px solid var(--line)}
+details.cite .body{padding:8px 0 12px;font-size:12.5px;color:var(--ink-soft)}
+details.cite dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+details.cite dt{color:var(--muted);font-family:var(--font-mono);font-size:11.5px}
+details.cite dd{margin:0;font-variant-numeric:tabular-nums}
+
+/* tables */
+table{border-collapse:collapse;width:100%;font-size:13px}
+caption{text-align:left;font:600 12px/1.5 var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:0 0 8px}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--sh);padding:14px 16px;margin-top:14px}
+th,td{padding:7px 9px;text-align:right;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+thead th{position:sticky;top:0;background:var(--surface);color:var(--muted);font:600 10.5px/1.4 var(--font-mono);letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+tbody th[scope=row]{text-align:left;font-weight:600}
+tbody th .tsub{display:block;font:400 10.5px/1.3 var(--font-mono);color:var(--muted)}
+th:first-child,td:first-child{text-align:left}
+tbody tr:hover{background:var(--teal-wash)}
+.oni-row td{color:var(--muted);font-style:italic;text-align:left}
+
+footer.prov{margin-top:40px;border-top:1px solid var(--line);padding-top:20px;color:var(--ink-soft);font-size:13px}
+footer.prov h2{font-size:15px;margin:0 0 10px}
+footer.prov code{font-family:var(--font-mono);font-size:12px;background:var(--surface-2);padding:1px 6px;border-radius:5px}
+footer.prov a.dl{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--teal);color:var(--teal-ink);border-radius:9px;padding:9px 14px;text-decoration:none;font:600 13px/1 var(--font-sans);margin:6px 8px 6px 0}
+footer.prov a.dl:hover{background:var(--teal-wash)}
+.status{position:fixed;bottom:0;left:0}
+</style>
+
+<div class="wrap">
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital">
+      <img class="logo-mark" src="/brand/mark/mark-square-ink.svg" alt="" width="36" height="36" />
+      <span class="logo-text">Muntin Digital</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary"><a href="/open/">Open data</a><a href="/cost-index/">Cost Index</a></nav>
+  </div>
+</header>
+<header class="mast">
+  <p class="kick">
+    <span>Muntin Open Data · Explorer</span>
+    <span class="lic" data-lic="cc0">CC0</span>
+    <span class="lic" data-lic="pd" title="US-government public domain, redistributable">NOAA GHCN · public domain</span>
+    <button type="button" class="tt" id="themeToggle" aria-label="Switch color theme">◐ Theme</button>
+  </p>
+  <h1>The Origin Climate Envelope</h1>
+  <p class="lede">The produce a US kitchen depends on grows somewhere US drought and freeze maps can't see. This reads <b>observed weather</b> — never a forecast — at a representative station in each import origin's growing belt, drawn as a 12-month climatological band (1991–2020) with the most-recent readings' <b>departure</b> from that normal laid over the top. A <b>regional proxy</b>, held-until-calibrated: a station is not the farm.</p>
+</header>
+
+<main>
+<div class="overview">
+
+  <!-- THE AHA -->
+  <section aria-labelledby="aha-h">
+    <h2 class="section-h" id="aha-h">The shape is the exposure</h2>
+    <p class="section-sub">Two belts, two bands. Read which origin dips below the chill line and which never does — at a glance, with zero forecasting.</p>
+    <div class="aha">
+      <div class="pair" id="ahaPair"><!-- filled by JS --></div>
+      <p class="punch">The <b>thickness of the band is the diurnal range</b> — the belt's climate fingerprint. Michoacan's wide band sags to the chill line at the depth of winter; Costa Rica's thin ribbon floats high and never touches it. Then the recent departure comb fades in: <b>warm rust marks lifting off the winter floor</b> across the grid at once — the winter floor rising inside the record itself.</p>
+      <p class="honest">Bands are 1991–2020 monthly normals; comb marks are each station's own most-recent readings vs that month's normal. Descriptive of the tracked record, not a forecast.</p>
+    </div>
+  </section>
+
+  <!-- CONTROLS -->
+  <h2 class="section-h" id="grid-h">The origin climate grid</h2>
+  <p class="section-sub">One card per growing belt, foods labeled. Filled band = normal TMIN floor to TMAX ceiling, Jan→Dec. The dashed <span style="color:var(--gold);font-weight:600">chill line</span> sits at the same temperature on every card, so you can see which winter floors dip below it.</p>
+
+  <section aria-label="Explorer controls" class="controls">
+    <div class="ctl">
+      <label for="frostSlider">Tune the chill line</label>
+      <input type="range" id="frostSlider" min="2" max="6" step="2" value="6"
+             aria-valuetext="Chill line at 6 degrees Celsius">
+      <span class="val mono" id="frostVal">6 °C</span>
+    </div>
+    <div class="ctl">
+      <label id="viewLbl">View</label>
+      <div class="toggle" role="group" aria-labelledby="viewLbl">
+        <button type="button" id="viewAbs" aria-pressed="true">Absolute °C</button>
+        <button type="button" id="viewDep" aria-pressed="false">Departure only</button>
+      </div>
+    </div>
+  </section>
+  <div class="legend" aria-hidden="true">
+    <span><span class="sw band"></span> normal TMIN→TMAX band</span>
+    <span><span class="sw warm"></span> recent mark ▲ above normal</span>
+    <span><span class="sw cool"></span> recent mark ▼ below normal</span>
+    <span><span class="sw chill"></span> chill line</span>
+  </div>
+  <div class="chips" id="chips" aria-hidden="true"></div>
+
+  <section aria-labelledby="grid-h">
+    <div class="grid" id="grid"><!-- JS cards --></div>
+    <p class="honest" style="margin-top:12px">Each card is stamped with its own <b>observed-through</b> date. Stations end on different dates — "recent departure" is anchored to each station's own last readings, not a shared week, so the grid never implies simultaneity.</p>
+  </section>
+
+  <!-- DEPARTURE STRIP -->
+  <section aria-labelledby="strip-h">
+    <h2 class="section-h" id="strip-h">Current thermal tilt, all belts at once</h2>
+    <p class="section-sub">One lane per station. Each mark is a recent night-temperature (TMIN) departure, zero-centered. Rust ▲ = warmer than its own normal, teal ▼ = cooler. Descriptive only — no belt is implied to cause another, and no line is projected past the last real dot.</p>
+    <div class="strip-wrap">
+      <div id="strip"></div>
+      <p class="sr-only" id="stripAlt"></p>
+      <p class="honest" style="margin-top:8px"><b>*</b> recent-departure window spans far more than a ~45-day stretch (sparse daily reporting) — read that mean with a wider error bar than the dense stations. <b>†</b> monthly normals built from a thin baseline sample; indicative, not robust. Both are disclosed per station in the source table below and the provenance drawers.</p>
+    </div>
+  </section>
+
+  <!-- FULL DATA TABLE (source of record; no-JS fallback) -->
+  <section aria-labelledby="tbl-h">
+    <h2 class="section-h" id="tbl-h">Every station, every signal</h2>
+    <p class="section-sub">The source of record. Normals are robust monthly means over the 1991–2020 baseline; physically-impossible readings are excluded before averaging. This table is present without JavaScript.</p>
+    <div class="tbl-wrap">
+      <table>
+        <caption>Growing-region climate normals and recent departures · NOAA GHCN-Daily, 1991–2020 baseline</caption>
+        <thead><tr>
+          <th scope="col">Belt / station</th>
+          <th scope="col">Foods (import-origin)</th>
+          <th scope="col">Diurnal °C</th>
+          <th scope="col">Jan TMIN °C</th>
+          <th scope="col">Jul TMAX °C</th>
+          <th scope="col">Chill ≤4°C</th>
+          <th scope="col">Heat ≥38°C</th>
+          <th scope="col">Recent Δnight</th>
+          <th scope="col">Recent Δday</th>
+          <th scope="col">Observed thru</th>
+        </tr></thead>
+        <tbody>
+        <tr>
+<th scope="row">Sinaloa<span class="tsub">76412 · Culiacan winter-veg belt</span></th>
+<td>Tomato, Bell pepper, Jalapeno, Serrano</td>
+<td class="mono">16.7</td>
+<td class="mono">10.6</td>
+<td class="mono">37.0</td>
+<td class="mono">5</td>
+<td class="mono">603</td>
+<td class="mono">+1.5</td>
+<td class="mono">+1.6</td>
+<td class="mono">2025-08-24</td>
+</tr><tr>
+<th scope="row">Sinaloa<span class="tsub">76458 · Culiacan winter-veg belt</span></th>
+<td>Tomato, Bell pepper, Jalapeno, Serrano</td>
+<td class="mono">10.2</td>
+<td class="mono">14.2</td>
+<td class="mono">33.5</td>
+<td class="mono">5</td>
+<td class="mono">23</td>
+<td class="mono">+0.5</td>
+<td class="mono">+4.2</td>
+<td class="mono">2026-06-30</td>
+</tr><tr>
+<th scope="row">Michoacan<span class="tsub">76665 · Morelia + Zamora</span></th>
+<td>Avocado, Lime, Lemon</td>
+<td class="mono">17.5</td>
+<td class="mono">5.7</td>
+<td class="mono">27.1</td>
+<td class="mono">272</td>
+<td class="mono">13</td>
+<td class="mono">+6</td>
+<td class="mono">+1.6</td>
+<td class="mono">2026-06-30</td>
+</tr><tr>
+<th scope="row">Michoacan<span class="tsub">76662 · Morelia + Zamora</span></th>
+<td>Avocado, Lime, Lemon</td>
+<td class="mono">18.1</td>
+<td class="mono">6.8</td>
+<td class="mono">29.3</td>
+<td class="mono">144</td>
+<td class="mono">75</td>
+<td class="mono">+4.8</td>
+<td class="mono">-0.4</td>
+<td class="mono">2026-06-30</td>
+</tr><tr>
+<th scope="row">Baja California<span class="tsub">76040 · Mexicali</span></th>
+<td>Kale, Bok choy, Collards, Brussels</td>
+<td class="mono">18.9</td>
+<td class="mono">5.5</td>
+<td class="mono">43.1</td>
+<td class="mono">741</td>
+<td class="mono">3071</td>
+<td class="mono">+3.4</td>
+<td class="mono">-0.7</td>
+<td class="mono">2026-06-29</td>
+</tr><tr>
+<th scope="row">Bajio<span class="tsub">76625 · Queretaro + Guanajuato *</span></th>
+<td>Raspberry</td>
+<td class="mono">15.9</td>
+<td class="mono">6.4</td>
+<td class="mono">28.0</td>
+<td class="mono">32</td>
+<td class="mono">1</td>
+<td class="mono">+1.3</td>
+<td class="mono">+0.7</td>
+<td class="mono">2025-08-24</td>
+</tr><tr>
+<th scope="row">Bajio<span class="tsub">76573 · Queretaro + Guanajuato †</span></th>
+<td>Raspberry</td>
+<td class="mono">15.5</td>
+<td class="mono">4.5</td>
+<td class="mono">28.9</td>
+<td class="mono">1</td>
+<td class="mono">4</td>
+<td class="mono">+7.6</td>
+<td class="mono">+0.6</td>
+<td class="mono">2026-06-30</td>
+</tr><tr>
+<th scope="row">Peru coast<span class="tsub">84531 · central coast *</span></th>
+<td>Blueberry</td>
+<td class="mono">7.4</td>
+<td class="mono">19.2</td>
+<td class="mono">22.8</td>
+<td class="mono">0</td>
+<td class="mono">0</td>
+<td class="mono">-1.3</td>
+<td class="mono">-0.6</td>
+<td class="mono">2025-08-23</td>
+</tr><tr>
+<th scope="row">Costa Rica<span class="tsub">81003 · lowlands</span></th>
+<td>Pineapple</td>
+<td class="mono">7.8</td>
+<td class="mono">20.8</td>
+<td class="mono">29.7</td>
+<td class="mono">0</td>
+<td class="mono">1</td>
+<td class="mono">+0</td>
+<td class="mono">+0.7</td>
+<td class="mono">2025-08-24</td>
+</tr><tr>
+<th scope="row">Soconusco<span class="tsub">76903 · Tapachula, GT border</span></th>
+<td>Cantaloupe</td>
+<td class="mono">12.2</td>
+<td class="mono">21.1</td>
+<td class="mono">34.4</td>
+<td class="mono">0</td>
+<td class="mono">322</td>
+<td class="mono">-5.1</td>
+<td class="mono">-4.7</td>
+<td class="mono">2026-06-30</td>
+</tr>
+        <tr class="oni-row"><th scope="row">Ocean-sourced<span class="tsub">shrimp · salmon</span></th><td>Ecuador / Chile / India</td><td colspan="7" class="mono">No land station — ENSO/ONI regime gauge, absent here</td></tr>
+        </tbody>
+      </table>
+      <p class="honest" style="margin-top:10px">Δnight / Δday = mean of each station's last 45 valid readings minus that month's normal. Chill and heat counts are whole-record event tallies. Ocean-sourced items (shrimp, salmon) have no land station in this file — an ENSO/ONI regime gauge, deliberately absent rather than faked. <b>*</b> the recent-departure window spans far more than a ~45-day stretch (sparse daily reporting) — read that mean with a wider error bar. <b>†</b> normals built from a thin baseline sample; indicative, not robust.</p>
+    </div>
+  </section>
+
+</div><!-- /overview -->
+
+<!-- DETAIL -->
+<div class="detail" id="detail" tabindex="-1">
+  <button type="button" class="back" id="backBtn" aria-label="Back to the grid">← All belts</button>
+  <div id="detailBody"></div>
+</div>
+</main>
+
+<footer class="prov">
+  <h2>About this data</h2>
+  <p><b>Source:</b> NOAA NCEI Global Historical Climatology Network — Daily (GHCN-Daily), per-station TMIN/TMAX/PRCP. US-government public domain, redistributable. Values arrive in tenths of °C; divided by 10 here.</p>
+  <p><b>Method:</b> monthly climatological normals over the 1991–2020 baseline, computed with a robust mean that drops physically-impossible readings (e.g. a single −24.7 °C TMIN in coastal Sinaloa whose true winter floor is ~14 °C). Recent departure = each station's last 45 valid daily readings minus the corresponding month normal. <b>Observed weather, never a forecast; a regional proxy for the origin belt, not the exact farm — held-until-calibrated.</b> Crop→region assignments follow <code>data/ingredient-weather-codes.json</code>.</p>
+  <p>
+    <a class="dl" href="https://muntin.digital/data/weather-observations.jsonl" download>⭳ Download weather-observations.jsonl <span class="lic" data-lic="cc0" style="border-color:currentColor">CC0</span></a>
+    <a class="dl" href="https://muntin.digital/open/">Open-data catalog →</a>
+  </p>
+  <p class="honest">Schema: one JSON object per line — <code>{station, region, unit:"tenths", points:[[DATE,TMIN,TMAX,PRCP], …]}</code>. Ocean-sourced proteins use the NOAA CPC ONI regime gauge, not a land station, and are shown here as a deliberate absence.</p>
+</footer>
+
+<div class="status sr-only" id="status" role="status" aria-live="polite"></div>
+
+<script type="application/json" id="data">{"stations":{"MXM00076412":{"station":"MXM00076412","region":"mx-sinaloa","note":"Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg)","tminC":[10.6,11.2,11.7,13.8,17,22.4,24,24,23.4,20.9,15.6,11.5],"tmaxC":[29.4,30.2,31.6,33.5,35.5,36.3,37,36.9,36.2,36.3,33.7,30.3],"diurnal":[18.8,19,19.9,19.7,18.5,13.9,13,12.9,12.8,15.4,18.1,18.8],"diurnalMean":16.7,"diurnalMin":12.8,"diurnalMax":19.9,"chill4":5,"heat38":603,"chillByMonth":[[0,0,0,0,0,0,0,0,0,0,0,0],[4,0,0,0,0,0,0,0,0,0,0,1],[27,7,1,0,0,0,0,0,0,0,0,16]],"tminSuspects":0,"obsThrough":"2025-08-24","lastValidTmin":"2025-08-23","tminDep":1.5,"tmaxDep":1.6,"recentFrom":"2025-05-28","recentTo":"2025-08-23","recentN":45,"nBaseline":10829,"nTotal":12512,"comb":[{"doy":148,"k":"n","v":1.9},{"doy":149,"k":"n","v":2.7},{"doy":150,"k":"n","v":3.8},{"doy":154,"k":"n","v":-2},{"doy":156,"k":"n","v":-1},{"doy":157,"k":"n","v":-1},{"doy":158,"k":"n","v":0.2},{"doy":159,"k":"n","v":2.6},{"doy":160,"k":"n","v":2.6},{"doy":161,"k":"n","v":3.4},{"doy":163,"k":"n","v":3},{"doy":166,"k":"n","v":4.2},{"doy":167,"k":"n","v":5},{"doy":171,"k":"n","v":4.8},{"doy":172,"k":"n","v":3},{"doy":173,"k":"n","v":3},{"doy":180,"k":"n","v":2.6},{"doy":181,"k":"n","v":4.2},{"doy":182,"k":"n","v":0},{"doy":184,"k":"n","v":1.4},{"doy":186,"k":"n","v":1},{"doy":187,"k":"n","v":1.4},{"doy":188,"k":"n","v":1.4},{"doy":189,"k":"n","v":0},{"doy":191,"k":"n","v":-1},{"doy":192,"k":"n","v":-1},{"doy":193,"k":"n","v":0.6},{"doy":194,"k":"n","v":0.6},{"doy":198,"k":"n","v":1.3},{"doy":200,"k":"n","v":0},{"doy":204,"k":"n","v":0.1},{"doy":205,"k":"n","v":0.2},{"doy":206,"k":"n","v":0.6},{"doy":207,"k":"n","v":1.3},{"doy":210,"k":"n","v":0.8},{"doy":212,"k":"n","v":1.8},{"doy":217,"k":"n","v":2.7},{"doy":218,"k":"n","v":1.2},{"doy":219,"k":"n","v":1.2},{"doy":220,"k":"n","v":1},{"doy":222,"k":"n","v":0.8},{"doy":225,"k":"n","v":2.6},{"doy":231,"k":"n","v":1.7},{"doy":232,"k":"n","v":1.6},{"doy":235,"k":"n","v":1.3},{"doy":148,"k":"x","v":3},{"doy":149,"k":"x","v":2.5},{"doy":150,"k":"x","v":2.3},{"doy":154,"k":"x","v":1.7},{"doy":156,"k":"x","v":1.6},{"doy":157,"k":"x","v":2.7},{"doy":158,"k":"x","v":1.7},{"doy":159,"k":"x","v":1.7},{"doy":160,"k":"x","v":2.9},{"doy":161,"k":"x","v":2.9},{"doy":163,"k":"x","v":3.6},{"doy":166,"k":"x","v":2.7},{"doy":167,"k":"x","v":0.8},{"doy":171,"k":"x","v":4.1},{"doy":172,"k":"x","v":0.3},{"doy":173,"k":"x","v":-0.9},{"doy":180,"k":"x","v":4.7},{"doy":181,"k":"x","v":2.3},{"doy":182,"k":"x","v":3},{"doy":184,"k":"x","v":-2.1},{"doy":186,"k":"x","v":-0.3},{"doy":187,"k":"x","v":0},{"doy":188,"k":"x","v":-0.6},{"doy":189,"k":"x","v":0},{"doy":191,"k":"x","v":1},{"doy":192,"k":"x","v":-0.4},{"doy":193,"k":"x","v":0},{"doy":194,"k":"x","v":-1},{"doy":198,"k":"x","v":0.7},{"doy":200,"k":"x","v":0},{"doy":204,"k":"x","v":2},{"doy":205,"k":"x","v":2.2},{"doy":206,"k":"x","v":0.7},{"doy":207,"k":"x","v":1},{"doy":210,"k":"x","v":2.8},{"doy":212,"k":"x","v":3.2},{"doy":217,"k":"x","v":3.1},{"doy":218,"k":"x","v":3.3},{"doy":219,"k":"x","v":2.1},{"doy":220,"k":"x","v":2},{"doy":222,"k":"x","v":0.5},{"doy":225,"k":"x","v":2.1},{"doy":231,"k":"x","v":2.5},{"doy":232,"k":"x","v":3.5},{"doy":235,"k":"x","v":-0.7}]},"MXM00076458":{"station":"MXM00076458","region":"mx-sinaloa","note":"Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg)","tminC":[14.2,14.5,15.3,17.2,20.8,25,25.2,25,24.9,23.7,19.4,15.3],"tmaxC":[26.5,26.4,26.8,28.2,30.5,32.6,33.5,33.8,33.3,32.8,30.6,27.5],"diurnal":[12.3,11.9,11.5,11,9.7,7.6,8.3,8.8,8.4,9.1,11.2,12.2],"diurnalMean":10.2,"diurnalMin":7.6,"diurnalMax":12.3,"chill4":5,"heat38":23,"chillByMonth":[[1,0,0,1,0,0,0,0,0,0,0,0],[1,3,0,1,0,0,0,0,0,0,0,0],[1,3,0,1,0,0,0,0,0,0,0,0]],"tminSuspects":1,"obsThrough":"2026-06-30","lastValidTmin":"2026-06-30","tminDep":0.5,"tmaxDep":4.2,"recentFrom":"2026-05-15","recentTo":"2026-06-30","recentN":45,"nBaseline":10554,"nTotal":12206,"comb":[{"doy":135,"k":"n","v":3.8},{"doy":136,"k":"n","v":7.2},{"doy":137,"k":"n","v":4},{"doy":139,"k":"n","v":4.2},{"doy":140,"k":"n","v":3.4},{"doy":141,"k":"n","v":-2.6},{"doy":142,"k":"n","v":2.2},{"doy":143,"k":"n","v":8.2},{"doy":144,"k":"n","v":2},{"doy":145,"k":"n","v":2.4},{"doy":146,"k":"n","v":3.8},{"doy":147,"k":"n","v":2.4},{"doy":148,"k":"n","v":1.2},{"doy":149,"k":"n","v":3},{"doy":150,"k":"n","v":5.8},{"doy":151,"k":"n","v":-2.6},{"doy":152,"k":"n","v":-3.8},{"doy":153,"k":"n","v":-2.7},{"doy":154,"k":"n","v":-2.1},{"doy":155,"k":"n","v":-1.8},{"doy":156,"k":"n","v":-6.4},{"doy":157,"k":"n","v":-1.8},{"doy":158,"k":"n","v":-1},{"doy":159,"k":"n","v":-1.2},{"doy":160,"k":"n","v":1},{"doy":162,"k":"n","v":0.2},{"doy":163,"k":"n","v":4.2},{"doy":164,"k":"n","v":1},{"doy":165,"k":"n","v":0.6},{"doy":166,"k":"n","v":-1},{"doy":167,"k":"n","v":-2.8},{"doy":168,"k":"n","v":0.3},{"doy":169,"k":"n","v":2.2},{"doy":170,"k":"n","v":0.5},{"doy":171,"k":"n","v":-7},{"doy":172,"k":"n","v":0.4},{"doy":173,"k":"n","v":3.6},{"doy":174,"k":"n","v":1.2},{"doy":175,"k":"n","v":1.2},{"doy":176,"k":"n","v":1.6},{"doy":177,"k":"n","v":0.3},{"doy":178,"k":"n","v":-6.1},{"doy":179,"k":"n","v":-2},{"doy":180,"k":"n","v":-0.2},{"doy":181,"k":"n","v":-5.4},{"doy":135,"k":"x","v":12.3},{"doy":136,"k":"x","v":6.7},{"doy":137,"k":"x","v":4.5},{"doy":139,"k":"x","v":9.3},{"doy":140,"k":"x","v":3.9},{"doy":141,"k":"x","v":4.2},{"doy":142,"k":"x","v":-0.5},{"doy":143,"k":"x","v":1.5},{"doy":144,"k":"x","v":4.5},{"doy":145,"k":"x","v":7.3},{"doy":146,"k":"x","v":6.2},{"doy":147,"k":"x","v":8.1},{"doy":148,"k":"x","v":6.8},{"doy":149,"k":"x","v":-0.5},{"doy":150,"k":"x","v":1.7},{"doy":151,"k":"x","v":6.5},{"doy":152,"k":"x","v":3.4},{"doy":153,"k":"x","v":3},{"doy":154,"k":"x","v":3},{"doy":155,"k":"x","v":7.8},{"doy":156,"k":"x","v":8},{"doy":157,"k":"x","v":8.4},{"doy":158,"k":"x","v":1.6},{"doy":159,"k":"x","v":1.8},{"doy":160,"k":"x","v":4.6},{"doy":162,"k":"x","v":4.6},{"doy":163,"k":"x","v":5.6},{"doy":164,"k":"x","v":3.6},{"doy":165,"k":"x","v":-1.4},{"doy":166,"k":"x","v":2.7},{"doy":167,"k":"x","v":2.7},{"doy":168,"k":"x","v":3.8},{"doy":169,"k":"x","v":6.4},{"doy":170,"k":"x","v":-1},{"doy":171,"k":"x","v":2.8},{"doy":172,"k":"x","v":3.6},{"doy":173,"k":"x","v":1.6},{"doy":174,"k":"x","v":2.9},{"doy":175,"k":"x","v":6.8},{"doy":176,"k":"x","v":4.6},{"doy":177,"k":"x","v":3.6},{"doy":178,"k":"x","v":5.4},{"doy":179,"k":"x","v":2.6},{"doy":180,"k":"x","v":2.4},{"doy":181,"k":"x","v":0.5}]},"MXM00076665":{"station":"MXM00076665","region":"mx-michoacan","note":"Morelia + Zamora, Michoacan — avocado, lime, citrus, berry","tminC":[5.7,7.3,9.1,11.2,13.2,14.2,13.4,13.4,13.2,11.1,8.3,6.3],"tmaxC":[25.5,27.9,29.8,31.9,32.2,29.7,27.1,27,26.7,26.9,26.3,25.6],"diurnal":[19.8,20.6,20.7,20.7,19,15.5,13.7,13.6,13.5,15.8,18,19.3],"diurnalMean":17.5,"diurnalMin":13.5,"diurnalMax":20.7,"chill4":272,"heat38":13,"chillByMonth":[[49,13,4,1,1,0,0,0,0,4,9,22],[95,36,9,2,1,0,0,0,0,6,36,87],[314,111,35,2,1,0,0,0,1,14,118,272]],"tminSuspects":0,"obsThrough":"2026-06-30","lastValidTmin":"2026-06-27","tminDep":6,"tmaxDep":1.6,"recentFrom":"2026-04-27","recentTo":"2026-06-27","recentN":45,"nBaseline":9484,"nTotal":11153,"comb":[{"doy":117,"k":"n","v":12.5},{"doy":118,"k":"n","v":12.3},{"doy":120,"k":"n","v":9.4},{"doy":122,"k":"n","v":-0.1},{"doy":123,"k":"n","v":7.2},{"doy":124,"k":"n","v":4.2},{"doy":126,"k":"n","v":9.1},{"doy":127,"k":"n","v":12.2},{"doy":129,"k":"n","v":6.8},{"doy":132,"k":"n","v":2.8},{"doy":133,"k":"n","v":3},{"doy":134,"k":"n","v":3.8},{"doy":135,"k":"n","v":4.7},{"doy":136,"k":"n","v":13.6},{"doy":137,"k":"n","v":13.7},{"doy":138,"k":"n","v":11.7},{"doy":139,"k":"n","v":8.1},{"doy":140,"k":"n","v":12.1},{"doy":142,"k":"n","v":3},{"doy":143,"k":"n","v":14.2},{"doy":144,"k":"n","v":0.2},{"doy":145,"k":"n","v":2.6},{"doy":146,"k":"n","v":8.1},{"doy":147,"k":"n","v":3.1},{"doy":148,"k":"n","v":2.9},{"doy":149,"k":"n","v":3.3},{"doy":150,"k":"n","v":5.6},{"doy":151,"k":"n","v":9.6},{"doy":153,"k":"n","v":11},{"doy":154,"k":"n","v":8},{"doy":155,"k":"n","v":0.6},{"doy":156,"k":"n","v":5.8},{"doy":157,"k":"n","v":-2.7},{"doy":158,"k":"n","v":-1.1},{"doy":159,"k":"n","v":10.2},{"doy":162,"k":"n","v":-0.2},{"doy":163,"k":"n","v":8.7},{"doy":164,"k":"n","v":8},{"doy":167,"k":"n","v":6},{"doy":168,"k":"n","v":2.3},{"doy":169,"k":"n","v":11.2},{"doy":170,"k":"n","v":0.5},{"doy":171,"k":"n","v":-0.9},{"doy":177,"k":"n","v":2.8},{"doy":178,"k":"n","v":0.4},{"doy":117,"k":"x","v":3.7},{"doy":118,"k":"x","v":-2},{"doy":120,"k":"x","v":2.1},{"doy":122,"k":"x","v":-2.1},{"doy":123,"k":"x","v":-3},{"doy":124,"k":"x","v":-0.4},{"doy":126,"k":"x","v":5.6},{"doy":127,"k":"x","v":1.6},{"doy":129,"k":"x","v":3.8},{"doy":132,"k":"x","v":7.2},{"doy":133,"k":"x","v":2.6},{"doy":134,"k":"x","v":3},{"doy":135,"k":"x","v":7.5},{"doy":136,"k":"x","v":-0.7},{"doy":137,"k":"x","v":-1.2},{"doy":138,"k":"x","v":0.6},{"doy":139,"k":"x","v":-1.9},{"doy":140,"k":"x","v":-0.7},{"doy":142,"k":"x","v":-0.6},{"doy":143,"k":"x","v":0.5},{"doy":144,"k":"x","v":-0.1},{"doy":145,"k":"x","v":0.8},{"doy":146,"k":"x","v":-0.1},{"doy":147,"k":"x","v":-5.4},{"doy":148,"k":"x","v":0.9},{"doy":149,"k":"x","v":4.7},{"doy":150,"k":"x","v":1.2},{"doy":151,"k":"x","v":-0.5},{"doy":153,"k":"x","v":7.4},{"doy":154,"k":"x","v":0.9},{"doy":155,"k":"x","v":2.6},{"doy":156,"k":"x","v":4.4},{"doy":157,"k":"x","v":4.9},{"doy":158,"k":"x","v":-3.1},{"doy":159,"k":"x","v":1.8},{"doy":162,"k":"x","v":0.4},{"doy":163,"k":"x","v":1.2},{"doy":164,"k":"x","v":0.9},{"doy":167,"k":"x","v":-1.2},{"doy":168,"k":"x","v":2.7},{"doy":169,"k":"x","v":3.3},{"doy":170,"k":"x","v":6.7},{"doy":171,"k":"x","v":2.6},{"doy":177,"k":"x","v":6.5},{"doy":178,"k":"x","v":4.9}]},"MXM00076662":{"station":"MXM00076662","region":"mx-michoacan","note":"Morelia + Zamora, Michoacan — avocado, lime, citrus, berry","tminC":[6.8,8.3,10,11.9,14.5,16.2,15.3,15.2,14.9,12.6,10,7.6],"tmaxC":[27.1,28.9,31.2,32.9,34.1,32.2,29.3,29.3,29.2,29.5,28.9,27.8],"diurnal":[20.3,20.6,21.2,21,19.6,16,14,14.1,14.3,16.9,18.9,20.2],"diurnalMean":18.1,"diurnalMin":14,"diurnalMax":21.2,"chill4":144,"heat38":75,"chillByMonth":[[9,2,0,0,0,0,0,0,0,1,3,18],[58,24,3,0,0,0,0,0,0,3,10,46],[243,96,26,0,1,0,0,0,0,10,55,200]],"tminSuspects":0,"obsThrough":"2026-06-30","lastValidTmin":"2026-06-30","tminDep":4.8,"tmaxDep":-0.4,"recentFrom":"2026-05-11","recentTo":"2026-06-30","recentN":45,"nBaseline":7780,"nTotal":9384,"comb":[{"doy":131,"k":"n","v":0.7},{"doy":132,"k":"n","v":7.6},{"doy":133,"k":"n","v":9.1},{"doy":134,"k":"n","v":2.5},{"doy":135,"k":"n","v":3.1},{"doy":136,"k":"n","v":8.5},{"doy":137,"k":"n","v":9.1},{"doy":138,"k":"n","v":12.9},{"doy":139,"k":"n","v":5.5},{"doy":140,"k":"n","v":4.4},{"doy":141,"k":"n","v":0.7},{"doy":142,"k":"n","v":0.9},{"doy":143,"k":"n","v":0.4},{"doy":144,"k":"n","v":7.9},{"doy":145,"k":"n","v":9.7},{"doy":146,"k":"n","v":5.7},{"doy":147,"k":"n","v":4.5},{"doy":148,"k":"n","v":12.3},{"doy":149,"k":"n","v":5.5},{"doy":150,"k":"n","v":3.5},{"doy":151,"k":"n","v":0.1},{"doy":152,"k":"n","v":5.4},{"doy":153,"k":"n","v":3.4},{"doy":154,"k":"n","v":3.2},{"doy":155,"k":"n","v":7.8},{"doy":156,"k":"n","v":-2.5},{"doy":157,"k":"n","v":4.2},{"doy":159,"k":"n","v":9.6},{"doy":160,"k":"n","v":10.5},{"doy":161,"k":"n","v":2.2},{"doy":162,"k":"n","v":6.8},{"doy":163,"k":"n","v":11.3},{"doy":164,"k":"n","v":8.2},{"doy":166,"k":"n","v":-0.2},{"doy":167,"k":"n","v":1},{"doy":169,"k":"n","v":1.8},{"doy":170,"k":"n","v":8.6},{"doy":172,"k":"n","v":2.6},{"doy":173,"k":"n","v":9.8},{"doy":174,"k":"n","v":-0.5},{"doy":175,"k":"n","v":3.4},{"doy":176,"k":"n","v":5.4},{"doy":178,"k":"n","v":-2.5},{"doy":180,"k":"n","v":0.3},{"doy":181,"k":"n","v":1.8},{"doy":131,"k":"x","v":-2.7},{"doy":132,"k":"x","v":-3.9},{"doy":133,"k":"x","v":1.1},{"doy":134,"k":"x","v":-3.4},{"doy":135,"k":"x","v":5.2},{"doy":136,"k":"x","v":0.3},{"doy":137,"k":"x","v":-3.3},{"doy":138,"k":"x","v":2.1},{"doy":139,"k":"x","v":-0.3},{"doy":140,"k":"x","v":-2.7},{"doy":141,"k":"x","v":1.1},{"doy":142,"k":"x","v":-2.1},{"doy":143,"k":"x","v":-4.6},{"doy":144,"k":"x","v":-1.8},{"doy":145,"k":"x","v":0.5},{"doy":146,"k":"x","v":-2.4},{"doy":147,"k":"x","v":-3.7},{"doy":148,"k":"x","v":-1.1},{"doy":149,"k":"x","v":-0.5},{"doy":150,"k":"x","v":-4.1},{"doy":151,"k":"x","v":-5},{"doy":152,"k":"x","v":-1.5},{"doy":153,"k":"x","v":4.2},{"doy":154,"k":"x","v":2.7},{"doy":155,"k":"x","v":1},{"doy":156,"k":"x","v":3.9},{"doy":157,"k":"x","v":-1.2},{"doy":159,"k":"x","v":0.8},{"doy":160,"k":"x","v":1.2},{"doy":161,"k":"x","v":-1.3},{"doy":162,"k":"x","v":-3},{"doy":163,"k":"x","v":2.7},{"doy":164,"k":"x","v":-2.2},{"doy":166,"k":"x","v":0.3},{"doy":167,"k":"x","v":-10.4},{"doy":169,"k":"x","v":-0.1},{"doy":170,"k":"x","v":-0.1},{"doy":172,"k":"x","v":0.5},{"doy":173,"k":"x","v":3.8},{"doy":174,"k":"x","v":5.1},{"doy":175,"k":"x","v":0.3},{"doy":176,"k":"x","v":1.6},{"doy":178,"k":"x","v":3},{"doy":180,"k":"x","v":4.2},{"doy":181,"k":"x","v":0.5}]},"MXM00076040":{"station":"MXM00076040","region":"mx-baja","note":"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)","tminC":[5.5,6.8,9.2,11.4,15.1,19.2,24.1,25,21.3,14.8,8.8,5],"tmaxC":[22.1,23.9,28.1,31.7,36.7,41.5,43.1,42.8,40.6,34.2,26.9,21],"diurnal":[16.6,17.1,18.9,20.3,21.6,22.3,19,17.8,19.3,19.4,18.1,16],"diurnalMean":18.9,"diurnalMin":16,"diurnalMax":22.3,"chill4":741,"heat38":3071,"chillByMonth":[[97,55,8,0,0,0,0,0,0,2,31,110],[226,136,32,2,0,0,0,0,0,2,74,269],[377,263,91,16,0,0,0,0,1,2,148,432]],"tminSuspects":0,"obsThrough":"2026-06-29","lastValidTmin":"2026-06-18","tminDep":3.4,"tmaxDep":-0.7,"recentFrom":"2026-04-27","recentTo":"2026-06-18","recentN":45,"nBaseline":9633,"nTotal":10988,"comb":[{"doy":117,"k":"n","v":0.4},{"doy":118,"k":"n","v":1.8},{"doy":119,"k":"n","v":1.4},{"doy":120,"k":"n","v":2.9},{"doy":121,"k":"n","v":-0.3},{"doy":123,"k":"n","v":10.5},{"doy":124,"k":"n","v":2.9},{"doy":125,"k":"n","v":-2.3},{"doy":126,"k":"n","v":-3.5},{"doy":127,"k":"n","v":-1.3},{"doy":128,"k":"n","v":2.7},{"doy":129,"k":"n","v":10.9},{"doy":131,"k":"n","v":13.5},{"doy":132,"k":"n","v":10.5},{"doy":133,"k":"n","v":3.1},{"doy":134,"k":"n","v":6.1},{"doy":135,"k":"n","v":3.9},{"doy":136,"k":"n","v":6.1},{"doy":138,"k":"n","v":1.9},{"doy":139,"k":"n","v":1.5},{"doy":140,"k":"n","v":2.1},{"doy":141,"k":"n","v":0.3},{"doy":143,"k":"n","v":2.9},{"doy":144,"k":"n","v":3.9},{"doy":145,"k":"n","v":3.7},{"doy":146,"k":"n","v":2.5},{"doy":148,"k":"n","v":-1.4},{"doy":150,"k":"n","v":1.9},{"doy":151,"k":"n","v":2.3},{"doy":152,"k":"n","v":0.3},{"doy":153,"k":"n","v":1},{"doy":154,"k":"n","v":0},{"doy":155,"k":"n","v":2},{"doy":156,"k":"n","v":7.8},{"doy":157,"k":"n","v":1.6},{"doy":158,"k":"n","v":1.6},{"doy":159,"k":"n","v":0.4},{"doy":160,"k":"n","v":5.2},{"doy":161,"k":"n","v":1.6},{"doy":162,"k":"n","v":4.2},{"doy":163,"k":"n","v":4.4},{"doy":164,"k":"n","v":12.2},{"doy":165,"k":"n","v":6.2},{"doy":166,"k":"n","v":7.5},{"doy":169,"k":"n","v":4.8},{"doy":117,"k":"x","v":-4.3},{"doy":118,"k":"x","v":-1.3},{"doy":119,"k":"x","v":1.7},{"doy":120,"k":"x","v":0.4},{"doy":121,"k":"x","v":-1.7},{"doy":123,"k":"x","v":-0.7},{"doy":124,"k":"x","v":-1},{"doy":125,"k":"x","v":-8.4},{"doy":126,"k":"x","v":-5.4},{"doy":127,"k":"x","v":1},{"doy":128,"k":"x","v":3.5},{"doy":129,"k":"x","v":5.1},{"doy":131,"k":"x","v":7.1},{"doy":132,"k":"x","v":1.7},{"doy":133,"k":"x","v":3},{"doy":134,"k":"x","v":1.3},{"doy":135,"k":"x","v":1.5},{"doy":136,"k":"x","v":-0.1},{"doy":138,"k":"x","v":-4},{"doy":139,"k":"x","v":-3.5},{"doy":140,"k":"x","v":-1.3},{"doy":141,"k":"x","v":2.6},{"doy":143,"k":"x","v":-1.7},{"doy":144,"k":"x","v":-1.1},{"doy":145,"k":"x","v":0.3},{"doy":146,"k":"x","v":0.7},{"doy":148,"k":"x","v":-5.9},{"doy":150,"k":"x","v":-1.9},{"doy":151,"k":"x","v":2.9},{"doy":152,"k":"x","v":-0.5},{"doy":153,"k":"x","v":-0.3},{"doy":154,"k":"x","v":-2.1},{"doy":155,"k":"x","v":-0.5},{"doy":156,"k":"x","v":-1.1},{"doy":157,"k":"x","v":-4.3},{"doy":158,"k":"x","v":-2.1},{"doy":159,"k":"x","v":-2.6},{"doy":160,"k":"x","v":-1.1},{"doy":161,"k":"x","v":0.4},{"doy":162,"k":"x","v":-8.3},{"doy":163,"k":"x","v":-2.7},{"doy":164,"k":"x","v":2.1},{"doy":165,"k":"x","v":-0.5},{"doy":166,"k":"x","v":-0.5},{"doy":169,"k":"x","v":2.5}]},"MXM00076573":{"station":"MXM00076573","region":"mx-bajio","note":"Guanajuato / Queretaro / Jalisco Bajio berry + veg belt","tminC":[4.5,null,9.9,14.4,14.5,15.1,14.4,14.6,null,null,15.3,null],"tmaxC":[24.3,null,27.6,30.7,31.4,31.4,28.9,28.6,null,null,23.9,null],"diurnal":[19.8,null,17.7,16.3,16.9,16.3,14.5,14,null,null,8.6,null],"diurnalMean":15.5,"diurnalMin":8.6,"diurnalMax":19.8,"chill4":1,"heat38":4,"chillByMonth":[[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,1],[4,2,0,0,0,0,0,0,0,0,0,8]],"tminSuspects":0,"obsThrough":"2026-06-30","lastValidTmin":"2026-06-30","tminDep":7.6,"tmaxDep":0.6,"recentFrom":"2026-04-11","recentTo":"2026-06-30","recentN":45,"nBaseline":38,"nTotal":740,"comb":[{"doy":101,"k":"n","v":9.8},{"doy":104,"k":"n","v":5},{"doy":107,"k":"n","v":5.4},{"doy":110,"k":"n","v":1.3},{"doy":111,"k":"n","v":8.5},{"doy":113,"k":"n","v":7},{"doy":114,"k":"n","v":8.2},{"doy":117,"k":"n","v":8.8},{"doy":118,"k":"n","v":-1.8},{"doy":119,"k":"n","v":9},{"doy":121,"k":"n","v":4.7},{"doy":122,"k":"n","v":5.5},{"doy":123,"k":"n","v":6.8},{"doy":125,"k":"n","v":7.4},{"doy":126,"k":"n","v":3.1},{"doy":128,"k":"n","v":9.2},{"doy":131,"k":"n","v":11.6},{"doy":132,"k":"n","v":-0.5},{"doy":133,"k":"n","v":10.2},{"doy":135,"k":"n","v":13.4},{"doy":136,"k":"n","v":13.9},{"doy":137,"k":"n","v":7.3},{"doy":138,"k":"n","v":7},{"doy":146,"k":"n","v":7.8},{"doy":147,"k":"n","v":-5.7},{"doy":148,"k":"n","v":-4},{"doy":149,"k":"n","v":3.7},{"doy":151,"k":"n","v":9},{"doy":152,"k":"n","v":5.5},{"doy":155,"k":"n","v":5.2},{"doy":156,"k":"n","v":7.2},{"doy":161,"k":"n","v":10.3},{"doy":162,"k":"n","v":12.1},{"doy":163,"k":"n","v":12.8},{"doy":164,"k":"n","v":12.6},{"doy":165,"k":"n","v":9.9},{"doy":166,"k":"n","v":7},{"doy":168,"k":"n","v":7},{"doy":169,"k":"n","v":11.8},{"doy":170,"k":"n","v":11.3},{"doy":174,"k":"n","v":10.2},{"doy":177,"k":"n","v":12.6},{"doy":178,"k":"n","v":13.8},{"doy":180,"k":"n","v":9.3},{"doy":181,"k":"n","v":9.8},{"doy":101,"k":"x","v":1.3},{"doy":104,"k":"x","v":-4.6},{"doy":107,"k":"x","v":-3.1},{"doy":110,"k":"x","v":-4.2},{"doy":111,"k":"x","v":-1.9},{"doy":113,"k":"x","v":-0.7},{"doy":114,"k":"x","v":0.8},{"doy":117,"k":"x","v":-0.3},{"doy":118,"k":"x","v":1.6},{"doy":119,"k":"x","v":2.9},{"doy":121,"k":"x","v":-4},{"doy":122,"k":"x","v":-1.3},{"doy":123,"k":"x","v":-3.3},{"doy":125,"k":"x","v":-2},{"doy":126,"k":"x","v":-2.9},{"doy":128,"k":"x","v":2.8},{"doy":131,"k":"x","v":5.1},{"doy":132,"k":"x","v":5.8},{"doy":133,"k":"x","v":3.8},{"doy":135,"k":"x","v":1.9},{"doy":136,"k":"x","v":1.9},{"doy":137,"k":"x","v":-1.6},{"doy":138,"k":"x","v":1.4},{"doy":146,"k":"x","v":-1.9},{"doy":147,"k":"x","v":0.6},{"doy":148,"k":"x","v":-1.4},{"doy":149,"k":"x","v":-5.6},{"doy":151,"k":"x","v":-0.3},{"doy":152,"k":"x","v":-0.5},{"doy":155,"k":"x","v":0.3},{"doy":156,"k":"x","v":0.5},{"doy":161,"k":"x","v":0.1},{"doy":162,"k":"x","v":3.6},{"doy":163,"k":"x","v":3.6},{"doy":164,"k":"x","v":1.6},{"doy":165,"k":"x","v":3},{"doy":166,"k":"x","v":0.8},{"doy":168,"k":"x","v":0.8},{"doy":169,"k":"x","v":2.6},{"doy":170,"k":"x","v":8.3},{"doy":174,"k":"x","v":4},{"doy":177,"k":"x","v":3.4},{"doy":178,"k":"x","v":1.9},{"doy":180,"k":"x","v":-0.5},{"doy":181,"k":"x","v":2.3}]},"MXM00076625":{"station":"MXM00076625","region":"mx-bajio","note":"Guanajuato / Queretaro / Jalisco Bajio berry + veg belt","tminC":[6.4,7.9,10,12.1,13.9,14.6,14.6,14.1,14.2,12.2,9.4,8.1],"tmaxC":[23.5,25.7,28.5,30.2,31.2,29.6,28,28.3,27.2,26.5,25.3,24.7],"diurnal":[17.1,17.8,18.5,18.1,17.3,15,13.4,14.2,13,14.3,15.9,16.6],"diurnalMean":15.9,"diurnalMin":13,"diurnalMax":18.5,"chill4":32,"heat38":1,"chillByMonth":[[8,4,0,0,0,0,0,0,0,0,1,3],[16,7,1,0,0,0,0,0,0,0,3,5],[38,22,8,0,0,0,0,0,0,0,8,17]],"tminSuspects":0,"obsThrough":"2025-08-24","lastValidTmin":"2025-08-07","tminDep":1.3,"tmaxDep":0.7,"recentFrom":"2023-10-20","recentTo":"2025-08-07","recentN":45,"nBaseline":9798,"nTotal":11481,"comb":[{"doy":293,"k":"n","v":-1.2},{"doy":297,"k":"n","v":4.3},{"doy":298,"k":"n","v":4.8},{"doy":318,"k":"n","v":3.9},{"doy":324,"k":"n","v":0.8},{"doy":326,"k":"n","v":-1.4},{"doy":331,"k":"n","v":0.4},{"doy":333,"k":"n","v":3},{"doy":347,"k":"n","v":0.9},{"doy":348,"k":"n","v":1},{"doy":358,"k":"n","v":0.4},{"doy":364,"k":"n","v":-1},{"doy":7,"k":"n","v":1.1},{"doy":28,"k":"n","v":4.1},{"doy":80,"k":"n","v":-5},{"doy":93,"k":"n","v":3.8},{"doy":131,"k":"n","v":4.9},{"doy":148,"k":"n","v":-2.6},{"doy":176,"k":"n","v":0.4},{"doy":183,"k":"n","v":2.2},{"doy":196,"k":"n","v":-0.9},{"doy":202,"k":"n","v":1.4},{"doy":210,"k":"n","v":0.2},{"doy":214,"k":"n","v":1.8},{"doy":240,"k":"n","v":-1.3},{"doy":246,"k":"n","v":1.1},{"doy":249,"k":"n","v":2.3},{"doy":254,"k":"n","v":-0.7},{"doy":280,"k":"n","v":1.9},{"doy":295,"k":"n","v":0.8},{"doy":346,"k":"n","v":3.9},{"doy":354,"k":"n","v":2},{"doy":45,"k":"n","v":5.5},{"doy":78,"k":"n","v":0.4},{"doy":79,"k":"n","v":3},{"doy":125,"k":"n","v":2.5},{"doy":138,"k":"n","v":-1.1},{"doy":141,"k":"n","v":2.7},{"doy":153,"k":"n","v":1.9},{"doy":154,"k":"n","v":1.3},{"doy":155,"k":"n","v":1.3},{"doy":169,"k":"n","v":0.1},{"doy":175,"k":"n","v":0.4},{"doy":198,"k":"n","v":1.2},{"doy":219,"k":"n","v":0.4},{"doy":293,"k":"x","v":1.9},{"doy":297,"k":"x","v":0.9},{"doy":298,"k":"x","v":1.1},{"doy":318,"k":"x","v":-0.3},{"doy":324,"k":"x","v":3.2},{"doy":326,"k":"x","v":-2.3},{"doy":331,"k":"x","v":0.6},{"doy":333,"k":"x","v":-0.8},{"doy":347,"k":"x","v":-3.4},{"doy":348,"k":"x","v":-5},{"doy":358,"k":"x","v":-1.6},{"doy":364,"k":"x","v":-4.5},{"doy":7,"k":"x","v":0.5},{"doy":28,"k":"x","v":3},{"doy":80,"k":"x","v":2.6},{"doy":93,"k":"x","v":3.1},{"doy":131,"k":"x","v":7},{"doy":148,"k":"x","v":6.6},{"doy":176,"k":"x","v":0.7},{"doy":183,"k":"x","v":-2.3},{"doy":196,"k":"x","v":-0.2},{"doy":202,"k":"x","v":-0.4},{"doy":210,"k":"x","v":-0.2},{"doy":214,"k":"x","v":0},{"doy":240,"k":"x","v":2.4},{"doy":246,"k":"x","v":3.3},{"doy":249,"k":"x","v":3.3},{"doy":254,"k":"x","v":1.3},{"doy":280,"k":"x","v":1.4},{"doy":295,"k":"x","v":-2.9},{"doy":346,"k":"x","v":2.2},{"doy":354,"k":"x","v":0.1},{"doy":45,"k":"x","v":2.4},{"doy":78,"k":"x","v":1.2},{"doy":79,"k":"x","v":1},{"doy":125,"k":"x","v":2.2},{"doy":138,"k":"x","v":6.1},{"doy":141,"k":"x","v":5.1},{"doy":153,"k":"x","v":1},{"doy":154,"k":"x","v":0.4},{"doy":155,"k":"x","v":0.1},{"doy":169,"k":"x","v":-2.9},{"doy":175,"k":"x","v":-7.5},{"doy":198,"k":"x","v":-1.7},{"doy":219,"k":"x","v":0.7}]},"PEM00084531":{"station":"PEM00084531","region":"pe-coast","note":"Peru central coast (blueberry) — refine toward Ica / La Libertad on calibration","tminC":[19.2,20.4,20.2,18.1,17,16.2,15.8,15.8,15.9,15.6,16.6,18.1],"tmaxC":[27.4,28.2,28,25.6,24.3,23.5,22.8,22.6,22.6,22.7,23.9,25.6],"diurnal":[8.2,7.8,7.8,7.5,7.3,7.3,7,6.8,6.7,7.1,7.3,7.5],"diurnalMean":7.4,"diurnalMin":6.7,"diurnalMax":8.2,"chill4":0,"heat38":0,"chillByMonth":[[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],"tminSuspects":0,"obsThrough":"2025-08-23","lastValidTmin":"2025-05-29","tminDep":-1.3,"tmaxDep":-0.6,"recentFrom":"2001-01-03","recentTo":"2025-05-29","recentN":45,"nBaseline":2317,"nTotal":3376,"comb":[{"doy":3,"k":"n","v":-2.7},{"doy":4,"k":"n","v":-1.2},{"doy":5,"k":"n","v":-2.2},{"doy":8,"k":"n","v":-0.2},{"doy":9,"k":"n","v":-2.7},{"doy":10,"k":"n","v":-0.2},{"doy":11,"k":"n","v":-0.2},{"doy":12,"k":"n","v":0},{"doy":16,"k":"n","v":-1.2},{"doy":17,"k":"n","v":-0.2},{"doy":18,"k":"n","v":-0.2},{"doy":19,"k":"n","v":-1.2},{"doy":20,"k":"n","v":-0.2},{"doy":23,"k":"n","v":-0.8},{"doy":24,"k":"n","v":-0.2},{"doy":25,"k":"n","v":-1.4},{"doy":27,"k":"n","v":-1},{"doy":29,"k":"n","v":-0.5},{"doy":30,"k":"n","v":-0.8},{"doy":31,"k":"n","v":-1.7},{"doy":33,"k":"n","v":-2.1},{"doy":34,"k":"n","v":-3.4},{"doy":37,"k":"n","v":-3.2},{"doy":39,"k":"n","v":-2.2},{"doy":41,"k":"n","v":-5.4},{"doy":44,"k":"n","v":-3.6},{"doy":45,"k":"n","v":-0.9},{"doy":47,"k":"n","v":-0.9},{"doy":48,"k":"n","v":-2.4},{"doy":51,"k":"n","v":-0.4},{"doy":17,"k":"n","v":-3.2},{"doy":316,"k":"n","v":-0.6},{"doy":151,"k":"n","v":-2.1},{"doy":180,"k":"n","v":-4.3},{"doy":283,"k":"n","v":-0.1},{"doy":290,"k":"n","v":-0.6},{"doy":7,"k":"n","v":-0.8},{"doy":97,"k":"n","v":-0.2},{"doy":140,"k":"n","v":-1.8},{"doy":180,"k":"n","v":1.7},{"doy":188,"k":"n","v":-2.4},{"doy":215,"k":"n","v":-1.8},{"doy":107,"k":"n","v":1.5},{"doy":77,"k":"n","v":-0.4},{"doy":149,"k":"n","v":-0.6},{"doy":326,"k":"x","v":-2.4},{"doy":329,"k":"x","v":-1.4},{"doy":330,"k":"x","v":-1.3},{"doy":333,"k":"x","v":-0.4},{"doy":337,"k":"x","v":-1.6},{"doy":340,"k":"x","v":-3.2},{"doy":341,"k":"x","v":-1.4},{"doy":342,"k":"x","v":-1.6},{"doy":344,"k":"x","v":-2.2},{"doy":349,"k":"x","v":0.6},{"doy":351,"k":"x","v":-0.6},{"doy":354,"k":"x","v":-1.6},{"doy":355,"k":"x","v":-0.2},{"doy":356,"k":"x","v":1.4},{"doy":357,"k":"x","v":-1.4},{"doy":358,"k":"x","v":-0.7},{"doy":361,"k":"x","v":-0.1},{"doy":363,"k":"x","v":-0.1},{"doy":364,"k":"x","v":-1.4},{"doy":365,"k":"x","v":-0.6},{"doy":2,"k":"x","v":-1.6},{"doy":3,"k":"x","v":-0.2},{"doy":4,"k":"x","v":-0.4},{"doy":5,"k":"x","v":-0.4},{"doy":9,"k":"x","v":-1.4},{"doy":10,"k":"x","v":-0.9},{"doy":11,"k":"x","v":-0.4},{"doy":12,"k":"x","v":0.6},{"doy":16,"k":"x","v":-1.2},{"doy":17,"k":"x","v":-1},{"doy":18,"k":"x","v":-0.2},{"doy":20,"k":"x","v":0.1},{"doy":24,"k":"x","v":0.4},{"doy":25,"k":"x","v":0.3},{"doy":27,"k":"x","v":-1.9},{"doy":30,"k":"x","v":0.6},{"doy":31,"k":"x","v":-2.1},{"doy":34,"k":"x","v":1.3},{"doy":37,"k":"x","v":-3.7},{"doy":40,"k":"x","v":1.8},{"doy":41,"k":"x","v":-1.7},{"doy":44,"k":"x","v":-0.2},{"doy":51,"k":"x","v":1.2},{"doy":52,"k":"x","v":1.3},{"doy":249,"k":"x","v":2.6}]},"CS000081003":{"station":"CS000081003","region":"cr-lowlands","note":"Costa Rica lowlands (pineapple)","tminC":[20.8,20.7,21.2,22,22.9,22.9,22.7,22.6,22.5,22.4,22,21.3],"tmaxC":[28.8,29,29.4,30,30.2,30.3,29.7,30,30.6,30.6,29.6,29],"diurnal":[8,8.3,8.2,8,7.3,7.4,7,7.4,8.1,8.2,7.6,7.7],"diurnalMean":7.8,"diurnalMin":7,"diurnalMax":8.3,"chill4":0,"heat38":1,"chillByMonth":[[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],"tminSuspects":0,"obsThrough":"2025-08-24","lastValidTmin":"2025-08-24","tminDep":0,"tmaxDep":0.7,"recentFrom":"2025-06-26","recentTo":"2025-08-24","recentN":45,"nBaseline":10793,"nTotal":12447,"comb":[{"doy":177,"k":"n","v":0.1},{"doy":179,"k":"n","v":0.6},{"doy":180,"k":"n","v":0.6},{"doy":181,"k":"n","v":0.2},{"doy":186,"k":"n","v":0.3},{"doy":187,"k":"n","v":0.3},{"doy":188,"k":"n","v":-0.6},{"doy":189,"k":"n","v":0.7},{"doy":192,"k":"n","v":0},{"doy":194,"k":"n","v":-0.4},{"doy":196,"k":"n","v":0.5},{"doy":197,"k":"n","v":-1.3},{"doy":198,"k":"n","v":0.4},{"doy":200,"k":"n","v":-0.5},{"doy":201,"k":"n","v":-0.5},{"doy":202,"k":"n","v":1},{"doy":203,"k":"n","v":0.6},{"doy":205,"k":"n","v":0.4},{"doy":206,"k":"n","v":-0.4},{"doy":207,"k":"n","v":0.1},{"doy":208,"k":"n","v":0.1},{"doy":209,"k":"n","v":0.4},{"doy":210,"k":"n","v":0.4},{"doy":211,"k":"n","v":0.9},{"doy":213,"k":"n","v":0.7},{"doy":214,"k":"n","v":0.4},{"doy":215,"k":"n","v":0.4},{"doy":216,"k":"n","v":-0.9},{"doy":217,"k":"n","v":0.4},{"doy":218,"k":"n","v":0.5},{"doy":219,"k":"n","v":-1.8},{"doy":220,"k":"n","v":0.1},{"doy":221,"k":"n","v":-1.2},{"doy":222,"k":"n","v":-1.2},{"doy":225,"k":"n","v":0.7},{"doy":226,"k":"n","v":1},{"doy":228,"k":"n","v":-0.3},{"doy":229,"k":"n","v":-0.3},{"doy":230,"k":"n","v":-0.3},{"doy":231,"k":"n","v":0.4},{"doy":232,"k":"n","v":-0.3},{"doy":233,"k":"n","v":0.4},{"doy":234,"k":"n","v":-0.8},{"doy":235,"k":"n","v":-0.8},{"doy":236,"k":"n","v":0.8},{"doy":177,"k":"x","v":0.5},{"doy":179,"k":"x","v":0.3},{"doy":180,"k":"x","v":-0.6},{"doy":181,"k":"x","v":-0.6},{"doy":186,"k":"x","v":0.7},{"doy":187,"k":"x","v":0.1},{"doy":188,"k":"x","v":-0.7},{"doy":189,"k":"x","v":0.3},{"doy":192,"k":"x","v":1.4},{"doy":194,"k":"x","v":0.6},{"doy":196,"k":"x","v":0.4},{"doy":197,"k":"x","v":0.9},{"doy":198,"k":"x","v":0.9},{"doy":200,"k":"x","v":1.4},{"doy":201,"k":"x","v":1.5},{"doy":202,"k":"x","v":1.5},{"doy":203,"k":"x","v":-1.9},{"doy":205,"k":"x","v":0.8},{"doy":206,"k":"x","v":1},{"doy":207,"k":"x","v":1.4},{"doy":208,"k":"x","v":1.4},{"doy":209,"k":"x","v":1},{"doy":210,"k":"x","v":1.1},{"doy":211,"k":"x","v":0},{"doy":213,"k":"x","v":0.2},{"doy":214,"k":"x","v":0.5},{"doy":215,"k":"x","v":0.7},{"doy":216,"k":"x","v":-0.6},{"doy":217,"k":"x","v":0},{"doy":218,"k":"x","v":2},{"doy":219,"k":"x","v":2},{"doy":220,"k":"x","v":1},{"doy":221,"k":"x","v":0.7},{"doy":222,"k":"x","v":0.3},{"doy":225,"k":"x","v":0.7},{"doy":226,"k":"x","v":1.1},{"doy":228,"k":"x","v":1.5},{"doy":229,"k":"x","v":1.5},{"doy":230,"k":"x","v":0.9},{"doy":231,"k":"x","v":1.3},{"doy":232,"k":"x","v":1.4},{"doy":233,"k":"x","v":1.5},{"doy":234,"k":"x","v":1.4},{"doy":235,"k":"x","v":1.6},{"doy":236,"k":"x","v":1}]},"MXM00076903":{"station":"MXM00076903","region":"gt-soconusco","note":"Tapachula / Soconusco (Guatemala-border melon)","tminC":[21.1,21.7,22.7,23.8,23.8,23.2,22.7,22.8,22.8,22.6,22.3,21.6],"tmaxC":[34.8,35.7,36.4,36.6,35.3,34,34.4,34.4,33.7,33.5,34.2,34.5],"diurnal":[13.7,14,13.7,12.8,11.5,10.8,11.7,11.6,10.9,10.9,11.9,12.9],"diurnalMean":12.2,"diurnalMin":10.8,"diurnalMax":14,"chill4":0,"heat38":322,"chillByMonth":[[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0]],"tminSuspects":0,"obsThrough":"2026-06-30","lastValidTmin":"2026-06-30","tminDep":-5.1,"tmaxDep":-4.7,"recentFrom":"2026-05-11","recentTo":"2026-06-30","recentN":45,"nBaseline":10280,"nTotal":11861,"comb":[{"doy":131,"k":"n","v":-2.8},{"doy":132,"k":"n","v":-4.4},{"doy":133,"k":"n","v":-6.7},{"doy":134,"k":"n","v":-8},{"doy":135,"k":"n","v":-15.4},{"doy":136,"k":"n","v":3.3},{"doy":138,"k":"n","v":3.4},{"doy":139,"k":"n","v":-6.2},{"doy":140,"k":"n","v":-6.4},{"doy":141,"k":"n","v":-3},{"doy":142,"k":"n","v":0.6},{"doy":143,"k":"n","v":-7.1},{"doy":144,"k":"n","v":-5.7},{"doy":145,"k":"n","v":-11.2},{"doy":146,"k":"n","v":-7.5},{"doy":147,"k":"n","v":-4.6},{"doy":148,"k":"n","v":0.1},{"doy":149,"k":"n","v":0},{"doy":150,"k":"n","v":1.8},{"doy":151,"k":"n","v":-8.8},{"doy":153,"k":"n","v":-5.4},{"doy":154,"k":"n","v":-9.2},{"doy":155,"k":"n","v":-6.6},{"doy":156,"k":"n","v":-6.6},{"doy":159,"k":"n","v":-7.3},{"doy":160,"k":"n","v":-6},{"doy":161,"k":"n","v":-3.9},{"doy":162,"k":"n","v":-3.2},{"doy":163,"k":"n","v":-6.8},{"doy":164,"k":"n","v":-7.6},{"doy":165,"k":"n","v":-6},{"doy":166,"k":"n","v":-6.2},{"doy":167,"k":"n","v":-8},{"doy":169,"k":"n","v":-2},{"doy":170,"k":"n","v":4.7},{"doy":171,"k":"n","v":-3.7},{"doy":172,"k":"n","v":-6.4},{"doy":173,"k":"n","v":-4.6},{"doy":174,"k":"n","v":-11.8},{"doy":175,"k":"n","v":-4.4},{"doy":177,"k":"n","v":1.2},{"doy":178,"k":"n","v":-6.7},{"doy":179,"k":"n","v":-7.2},{"doy":180,"k":"n","v":-7.7},{"doy":181,"k":"n","v":-10.8},{"doy":131,"k":"x","v":-6.5},{"doy":132,"k":"x","v":-9.3},{"doy":133,"k":"x","v":-2.7},{"doy":134,"k":"x","v":-3.5},{"doy":135,"k":"x","v":-1.1},{"doy":136,"k":"x","v":-1.1},{"doy":138,"k":"x","v":-3.1},{"doy":139,"k":"x","v":-2.6},{"doy":140,"k":"x","v":-2.1},{"doy":141,"k":"x","v":-4.7},{"doy":142,"k":"x","v":-1.1},{"doy":143,"k":"x","v":-2.9},{"doy":144,"k":"x","v":-2.1},{"doy":145,"k":"x","v":-5.1},{"doy":146,"k":"x","v":-3.7},{"doy":147,"k":"x","v":0.8},{"doy":148,"k":"x","v":-2.8},{"doy":149,"k":"x","v":-0.8},{"doy":150,"k":"x","v":-4.3},{"doy":151,"k":"x","v":-1.1},{"doy":153,"k":"x","v":-2.6},{"doy":154,"k":"x","v":-6.2},{"doy":155,"k":"x","v":-3.9},{"doy":156,"k":"x","v":-12.2},{"doy":159,"k":"x","v":-8.5},{"doy":160,"k":"x","v":-10.6},{"doy":161,"k":"x","v":-7.2},{"doy":162,"k":"x","v":-4.7},{"doy":163,"k":"x","v":-2.6},{"doy":164,"k":"x","v":-5.3},{"doy":165,"k":"x","v":-3.2},{"doy":166,"k":"x","v":-11.2},{"doy":167,"k":"x","v":-5.1},{"doy":169,"k":"x","v":-3.2},{"doy":170,"k":"x","v":-4.4},{"doy":171,"k":"x","v":-6.8},{"doy":172,"k":"x","v":-7},{"doy":173,"k":"x","v":-4},{"doy":174,"k":"x","v":-7.3},{"doy":175,"k":"x","v":-6.8},{"doy":177,"k":"x","v":-4.2},{"doy":178,"k":"x","v":-9.4},{"doy":179,"k":"x","v":-9.6},{"doy":180,"k":"x","v":-3.8},{"doy":181,"k":"x","v":-2.6}]}},"regionOrder":[],"foodsByRegion":{"mx-michoacan":["avocado","lime","lemon"],"mx-bajio":["raspberry"],"mx-sinaloa":["tomato","bell-pepper","jalapeno","serrano-pepper","poblano-pepper","habanero-pepper","cucumber","eggplant"],"mx-baja":["kale","bok-choy","collard-greens","brussels-sprouts","cilantro","leek","daikon","rutabaga"],"pe-coast":["blueberry"],"cr-lowlands":["pineapple"],"gt-soconusco":["cantaloupe"]},"oniFoods":["shrimp","shrimp-pd","shrimp-head-on","salmon-fillet","salmon-skin-on-fillet"],"regions":{"mx-sinaloa":{"stations":["MXM00076412","MXM00076458"],"note":"Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg)"},"mx-michoacan":{"stations":["MXM00076665","MXM00076662"],"note":"Morelia + Zamora, Michoacan — avocado, lime, citrus, berry"},"mx-baja":{"stations":["MXM00076040"],"note":"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)"},"mx-bajio":{"stations":["MXM00076573","MXM00076625"],"note":"Guanajuato / Queretaro / Jalisco Bajio berry + veg belt"},"pe-coast":{"stations":["PEM00084531"],"note":"Peru central coast (blueberry) — refine toward Ica / La Libertad on calibration"},"cr-lowlands":{"stations":["CS000081003"],"note":"Costa Rica lowlands (pineapple)"},"gt-soconusco":{"stations":["MXM00076903"],"note":"Tapachula / Soconusco (Guatemala-border melon)"}},"belts":[{"id":"mx-sinaloa","name":"Sinaloa","sub":"Culiacan winter-veg belt","stations":["MXM00076412","MXM00076458"]},{"id":"mx-michoacan","name":"Michoacan","sub":"Morelia + Zamora","stations":["MXM00076665","MXM00076662"]},{"id":"mx-baja","name":"Baja California","sub":"Mexicali","stations":["MXM00076040"]},{"id":"mx-bajio","name":"Bajio","sub":"Queretaro + Guanajuato","stations":["MXM00076625","MXM00076573"]},{"id":"pe-coast","name":"Peru coast","sub":"central coast","stations":["PEM00084531"]},{"id":"cr-lowlands","name":"Costa Rica","sub":"lowlands","stations":["CS000081003"]},{"id":"gt-soconusco","name":"Soconusco","sub":"Tapachula, GT border","stations":["MXM00076903"]}]}</script>
+<script>
+(function(){
+"use strict";
+var DATA=JSON.parse(document.getElementById('data').textContent);
+var ST=DATA.stations, BELTS=DATA.belts, FBR=DATA.foodsByRegion;
+var MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+var FOOD={"avocado":"Avocado","lime":"Lime","lemon":"Lemon","raspberry":"Raspberry","tomato":"Tomato","bell-pepper":"Bell pepper","jalapeno":"Jalapeno","serrano-pepper":"Serrano","poblano-pepper":"Poblano","habanero-pepper":"Habanero","cucumber":"Cucumber","eggplant":"Eggplant","kale":"Kale","bok-choy":"Bok choy","collard-greens":"Collards","brussels-sprouts":"Brussels","cilantro":"Cilantro","leek":"Leek","daikon":"Daikon","rutabaga":"Rutabaga","blueberry":"Blueberry","pineapple":"Pineapple","cantaloupe":"Cantaloupe"};
+var reduceMotion=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+// global temp scale
+var GMIN=99,GMAX=-99;
+Object.keys(ST).forEach(function(k){var s=ST[k];s.tminC.forEach(function(v){if(v!=null)GMIN=Math.min(GMIN,v);});s.tmaxC.forEach(function(v){if(v!=null)GMAX=Math.max(GMAX,v);});});
+GMIN=Math.floor(GMIN-2);GMAX=Math.ceil(GMAX+2);
+
+var state={frost:6,view:'abs'};
+
+function ce(t,cls,txt){var e=document.createElement(t);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+function fmt(v){return (v>=0?'+':'')+v.toFixed(1);}
+function sign(v){return v>=0.15?'up':(v<=-0.15?'dn':'flat');}
+function glyph(v){return v>=0.15?'▲':(v<=-0.15?'▼':'–');}
+function say(msg){var s=document.getElementById('status');s.textContent=msg;}
+function daysBetween(a,b){return Math.round((new Date(b)-new Date(a))/86400000);}
+function sparseRecent(s){return s.recentFrom && s.recentTo && daysBetween(s.recentFrom,s.recentTo) > 120;}
+function thinBaseline(s){return s.nBaseline!=null && s.nBaseline < 400;}
+
+// ---- envelope SVG ----
+// opts: {absolute:bool, mini:bool, overlay:[stationsInBelt]}
+function envelopeSVG(belt, opts){
+  opts=opts||{};
+  var W=260,H=150,PL=30,PR=10,PT=12,PB=22;
+  var iw=W-PL-PR, ih=H-PT-PB;
+  var stations=belt.stations.map(function(k){return ST[k];});
+  var primary=stations[0];
+  var xm=function(m){return PL+ (m+0.5)/12*iw;};
+  var yv, y0, y1;
+  if(opts.absolute){
+    y0=GMIN;y1=GMAX;
+    yv=function(t){return PT+ih-(t-y0)/(y1-y0)*ih;};
+  } else {
+    y0=-8;y1=8; // departure scale
+    yv=function(t){return PT+ih-(t-y0)/(y1-y0)*ih;};
+  }
+  var ns='http://www.w3.org/2000/svg';
+  var svg=document.createElementNS(ns,'svg');
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  svg.setAttribute('class','env');
+  svg.setAttribute('role','img');
+  svg.setAttribute('preserveAspectRatio','none');
+
+  // y gridlines / axis labels
+  var g=document.createElementNS(ns,'g');g.setAttribute('aria-hidden','true');
+  var ticks = opts.absolute ? [0,10,20,30,40] : [-8,-4,0,4,8];
+  ticks.forEach(function(t){
+    if(t<y0||t>y1)return;
+    var yy=yv(t);
+    var ln=document.createElementNS(ns,'line');
+    ln.setAttribute('x1',PL);ln.setAttribute('x2',W-PR);ln.setAttribute('y1',yy);ln.setAttribute('y2',yy);
+    ln.setAttribute('stroke','var(--line)');ln.setAttribute('stroke-width','1');
+    if(!opts.absolute&&t===0){ln.setAttribute('stroke','var(--ink-soft)');ln.setAttribute('stroke-dasharray','2 2');}
+    g.appendChild(ln);
+    var tx=document.createElementNS(ns,'text');
+    tx.setAttribute('x',PL-4);tx.setAttribute('y',yy+3);tx.setAttribute('text-anchor','end');
+    tx.setAttribute('font-size','8');tx.setAttribute('font-family','var(--font-mono)');tx.setAttribute('fill','var(--muted)');
+    tx.textContent=t;
+    g.appendChild(tx);
+  });
+  svg.appendChild(g);
+
+  if(opts.absolute){
+    // bands (overlay all stations in belt)
+    stations.forEach(function(s,si){
+      var pts=[];
+      for(var m=0;m<12;m++){ if(s.tmaxC[m]!=null) pts.push([xm(m),yv(s.tmaxC[m])]); }
+      for(var m=11;m>=0;m--){ if(s.tminC[m]!=null) pts.push([xm(m),yv(s.tminC[m])]); }
+      var poly=document.createElementNS(ns,'polygon');
+      poly.setAttribute('points',pts.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' '));
+      poly.setAttribute('fill','var(--teal)');
+      poly.setAttribute('fill-opacity', stations.length>1 ? (si===0?'0.20':'0.14') : '0.22');
+      poly.setAttribute('stroke','var(--teal)');
+      poly.setAttribute('stroke-width', si===0?'1.4':'1');
+      poly.setAttribute('stroke-opacity', si===0?'0.9':'0.55');
+      if(si>0) poly.setAttribute('stroke-dasharray','3 2');
+      poly.setAttribute('data-series','band'+si);
+      svg.appendChild(poly);
+    });
+    // chill line
+    var cy=yv(state.frost);
+    var cl=document.createElementNS(ns,'line');
+    cl.setAttribute('x1',PL);cl.setAttribute('x2',W-PR);cl.setAttribute('y1',cy);cl.setAttribute('y2',cy);
+    cl.setAttribute('stroke','var(--gold)');cl.setAttribute('stroke-width','1.6');cl.setAttribute('stroke-dasharray','5 4');
+    cl.setAttribute('class','chillline');cl.setAttribute('aria-hidden','true');
+    svg.appendChild(cl);
+    // comb marks (primary station only for legibility)
+    primary.comb.forEach(function(mk){
+      var m=Math.min(11,Math.floor((mk.doy-1)/30.44));
+      var base = mk.k==='n'? primary.tminC[m] : primary.tmaxC[m];
+      if(base==null)return;
+      var actual=base+mk.v;
+      var x=PL+ (mk.doy/366)*iw;
+      var yA=yv(actual);
+      var mkl=document.createElementNS(ns,'line');
+      mkl.setAttribute('x1',x);mkl.setAttribute('x2',x);
+      mkl.setAttribute('y1',yA-3.2);mkl.setAttribute('y2',yA+3.2);
+      mkl.setAttribute('stroke', mk.v>=0.15?'var(--rust)':(mk.v<=-0.15?'var(--teal)':'var(--muted)'));
+      mkl.setAttribute('stroke-width','1.5');mkl.setAttribute('stroke-linecap','round');
+      mkl.setAttribute('opacity','0.85');mkl.setAttribute('aria-hidden','true');
+      mkl.setAttribute('data-series','comb');
+      svg.appendChild(mkl);
+    });
+  } else {
+    // departure view: zero line + comb around zero
+    primary.comb.forEach(function(mk){
+      var x=PL+ (mk.doy/366)*iw;
+      var yA=yv(Math.max(y0,Math.min(y1,mk.v)));
+      var y0l=yv(0);
+      var mkl=document.createElementNS(ns,'line');
+      mkl.setAttribute('x1',x);mkl.setAttribute('x2',x);
+      mkl.setAttribute('y1',y0l);mkl.setAttribute('y2',yA);
+      mkl.setAttribute('stroke', mk.v>=0.15?'var(--rust)':(mk.v<=-0.15?'var(--teal)':'var(--muted)'));
+      mkl.setAttribute('stroke-width', mk.k==='n'?'2':'1.2');
+      mkl.setAttribute('opacity', mk.k==='n'?'0.9':'0.5');
+      mkl.setAttribute('aria-hidden','true');mkl.setAttribute('data-series','comb');
+      svg.appendChild(mkl);
+    });
+  }
+  // month ticks
+  var mg=document.createElementNS(ns,'g');mg.setAttribute('aria-hidden','true');
+  ['J','F','M','A','M','J','J','A','S','O','N','D'].forEach(function(l,m){
+    var tx=document.createElementNS(ns,'text');
+    tx.setAttribute('x',xm(m));tx.setAttribute('y',H-7);tx.setAttribute('text-anchor','middle');
+    tx.setAttribute('font-size','7.5');tx.setAttribute('font-family','var(--font-mono)');tx.setAttribute('fill','var(--muted)');
+    tx.textContent=l;
+    mg.appendChild(tx);
+  });
+  svg.appendChild(mg);
+
+  // accessible title+desc
+  var chillMonths=[];
+  for(var m=0;m<12;m++){ if(primary.tminC[m]!=null && primary.tminC[m]<=state.frost) chillMonths.push(MONTHS[m]); }
+  var desc = belt.name+': climate band from '+Math.min.apply(null,primary.tminC.filter(function(v){return v!=null;})).toFixed(0)+'°C winter floor to '+Math.max.apply(null,primary.tmaxC.filter(function(v){return v!=null;})).toFixed(0)+'°C summer ceiling. Mean diurnal range '+primary.diurnalMean+'°C. Recent nights '+fmt(primary.tminDep)+'°C vs normal, days '+fmt(primary.tmaxDep)+'°C. '+(chillMonths.length? ('Winter floor dips below the '+state.frost+'°C chill line in '+chillMonths.join(', ')+'.') : ('Never dips below the '+state.frost+'°C chill line.'))+' Observed through '+primary.obsThrough+'. Descriptive record, 1991–2020 baseline, not a forecast.';
+  var titleEl=document.createElementNS(ns,'title');titleEl.textContent=belt.name+' climate envelope';
+  var descEl=document.createElementNS(ns,'desc');descEl.textContent=desc;
+  svg.insertBefore(descEl,svg.firstChild);svg.insertBefore(titleEl,svg.firstChild);
+  svg.setAttribute('aria-label',desc);
+  return svg;
+}
+
+// ---- overview grid ----
+function crossesChill(belt){
+  var s=ST[belt.stations[0]];var out=[];
+  for(var m=0;m<12;m++){ if(s.tminC[m]!=null && s.tminC[m]<=state.frost) out.push(m); }
+  return out;
+}
+function buildGrid(){
+  var grid=document.getElementById('grid');grid.innerHTML='';
+  BELTS.forEach(function(belt){
+    var s=ST[belt.stations[0]];
+    var card=ce('button','card');
+    card.type='button';card.setAttribute('data-belt',belt.id);
+    card.setAttribute('aria-label','Open '+belt.name+' climate detail');
+    card.addEventListener('click',function(){go(belt.id);});
+    var h=ce('div','cardh');
+    var h3=ce('h3',null,belt.name);
+    var sub=ce('div','belt-sub', belt.stations.map(function(k){return k.slice(-5);}).join(' + ')+' · '+belt.sub);
+    h.appendChild(h3);h.appendChild(sub);card.appendChild(h);
+    var foods=ce('div','foods');
+    (FBR[belt.id]||[]).slice(0,4).forEach(function(f){foods.appendChild(ce('span','food',FOOD[f]||f));});
+    card.appendChild(foods);
+    card.appendChild(envelopeSVG(belt,{absolute:state.view==='abs'}));
+    var f=ce('div','cardf');
+    var cm=crossesChill(belt);
+    var st=ce('div','stat');
+    st.innerHTML='diurnal <b>'+s.diurnalMean+'°C</b> · '+(cm.length? ('<b>'+cm.length+'</b> mo below line') : 'stays above line');
+    var dep=ce('div','dep '+sign(s.tminDep));
+    dep.innerHTML='<span class="g" role="img" aria-label="'+(s.tminDep>=0.15?'up':(s.tminDep<=-0.15?'down':'flat'))+'">'+glyph(s.tminDep)+'</span> '+fmt(s.tminDep)+'°C nights';
+    f.appendChild(st);f.appendChild(dep);
+    card.appendChild(f);
+    var thru=ce('div','thru','observed through '+s.obsThrough+(sparseRecent(s)?' · recent window spans multiple years':'')+(thinBaseline(s)?' · thin baseline':''));thru.style.padding='0 14px 12px';
+    card.appendChild(thru);
+    grid.appendChild(card);
+  });
+  // honest-absence card
+  var ab=ce('div','card');ab.setAttribute('data-absent','true');
+  var ah=ce('div','cardh');ah.appendChild(ce('h3',null,'Shrimp · Salmon'));
+  ah.appendChild(ce('div','belt-sub','Ecuador / Chile / India — ocean-sourced'));
+  ab.appendChild(ah);
+  var abo=ce('div','absent-body');
+  abo.appendChild(ce('div','tagline','No land station'));
+  abo.appendChild(ce('p',null,'A cold snap at one growing-belt station is not the driver for Pacific aquaculture. The honest signal is the ENSO/ONI regime gauge — not a station.'));
+  abo.appendChild(ce('p',null,'Rendered as a deliberate absence, so the explorer degrades by absence rather than faking a card.'));
+  ab.appendChild(abo);
+  grid.appendChild(ab);
+}
+
+// ---- aha pair ----
+function buildAha(){
+  var pair=document.getElementById('ahaPair');pair.innerHTML='';
+  [['mx-michoacan','Michoacan — avocado, lime','Wide band, winter floor sags below the chill line in the heart of winter.'],
+   ['cr-lowlands','Costa Rica — pineapple','Thin ribbon floating high: never reaches the chill line.']].forEach(function(row){
+    var belt=BELTS.filter(function(b){return b.id===row[0];})[0];
+    var fig=ce('figure');
+    fig.appendChild(ce('h3',null,row[1]));
+    fig.appendChild(envelopeSVG(belt,{absolute:true}));
+    fig.appendChild(ce('figcaption',null,row[2]));
+    pair.appendChild(fig);
+  });
+}
+
+// ---- departure strip ----
+function buildStrip(){
+  var host=document.getElementById('strip');host.innerHTML='';
+  var rows=[];
+  BELTS.forEach(function(b){ b.stations.forEach(function(k){ rows.push({belt:b,st:ST[k]}); }); });
+  var W=680,rh=26,PL=132,PR=40,H=rows.length*rh+30;
+  var iw=W-PL-PR;
+  var DMAX=8;
+  var xd=function(v){return PL+iw/2 + Math.max(-DMAX,Math.min(DMAX,v))/DMAX*(iw/2);};
+  var ns='http://www.w3.org/2000/svg';
+  var svg=document.createElementNS(ns,'svg');
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);svg.setAttribute('role','img');
+  svg.style.minWidth='620px';
+  // zero line + scale
+  var g=document.createElementNS(ns,'g');g.setAttribute('aria-hidden','true');
+  [-8,-4,0,4,8].forEach(function(t){
+    var x=xd(t);
+    var ln=document.createElementNS(ns,'line');ln.setAttribute('x1',x);ln.setAttribute('x2',x);ln.setAttribute('y1',18);ln.setAttribute('y2',H-8);
+    ln.setAttribute('stroke',t===0?'var(--ink-soft)':'var(--line)');ln.setAttribute('stroke-width',t===0?'1.2':'1');if(t===0)ln.setAttribute('stroke-dasharray','2 2');
+    g.appendChild(ln);
+    var tx=document.createElementNS(ns,'text');tx.setAttribute('x',x);tx.setAttribute('y',12);tx.setAttribute('text-anchor','middle');tx.setAttribute('font-size','9');tx.setAttribute('font-family','var(--font-mono)');tx.setAttribute('fill','var(--muted)');tx.textContent=(t>0?'+':'')+t;g.appendChild(tx);
+  });
+  svg.appendChild(g);
+  rows.forEach(function(r,i){
+    var y=30+i*rh;
+    var lab=document.createElementNS(ns,'text');
+    lab.setAttribute('x',8);lab.setAttribute('y',y+4);lab.setAttribute('font-size','11');lab.setAttribute('font-family','var(--font-sans)');lab.setAttribute('fill','var(--ink)');
+    lab.textContent=r.belt.name+' '+r.st.station.slice(-5)+(sparseRecent(r.st)?' *':'')+(thinBaseline(r.st)?' †':'');
+    svg.appendChild(lab);
+    // individual tmin comb marks
+    r.st.comb.filter(function(m){return m.k==='n';}).forEach(function(m){
+      var cx=xd(m.v);
+      var c=document.createElementNS(ns,'circle');
+      c.setAttribute('cx',cx);c.setAttribute('cy',y);c.setAttribute('r','2.4');
+      c.setAttribute('fill', m.v>=0.15?'var(--rust)':(m.v<=-0.15?'var(--teal)':'var(--muted)'));
+      c.setAttribute('fill-opacity','0.5');c.setAttribute('aria-hidden','true');
+      svg.appendChild(c);
+    });
+    // mean marker (glyph)
+    var mx=xd(r.st.tminDep);
+    var tri=document.createElementNS(ns,'path');
+    var up=r.st.tminDep>=0;
+    tri.setAttribute('d', up? ('M'+mx+' '+(y-5)+' l4 7 h-8 z') : ('M'+mx+' '+(y+5)+' l4 -7 h-8 z'));
+    tri.setAttribute('fill', up?'var(--rust)':'var(--teal-ink)');tri.setAttribute('aria-hidden','true');
+    svg.appendChild(tri);
+    var vt=document.createElementNS(ns,'text');
+    vt.setAttribute('x',W-PR+6);vt.setAttribute('y',y+4);vt.setAttribute('font-size','10.5');vt.setAttribute('font-family','var(--font-mono)');vt.setAttribute('font-weight','600');
+    vt.setAttribute('fill', up?'var(--rust)':'var(--teal-ink)');vt.textContent=fmt(r.st.tminDep);
+    svg.appendChild(vt);
+  });
+  var desc='Recent night-temperature departure by station, zero-centered. '+rows.map(function(r){return r.belt.name+' '+r.st.station.slice(-5)+' '+fmt(r.st.tminDep)+' degrees;';}).join(' ')+' Descriptive of the tracked record, not a forecast, no belt implied to cause another.';
+  var t=document.createElementNS(ns,'title');t.textContent='Recent thermal tilt by station';
+  var d=document.createElementNS(ns,'desc');d.textContent=desc;
+  svg.insertBefore(d,svg.firstChild);svg.insertBefore(t,svg.firstChild);
+  svg.setAttribute('aria-label',desc);
+  host.appendChild(svg);
+  document.getElementById('stripAlt').textContent=desc;
+}
+
+// ---- chips ----
+function buildChips(){
+  var host=document.getElementById('chips');host.innerHTML='';
+  var below=BELTS.filter(function(b){return crossesChill(b).length>0;});
+  var chip=ce('span','chip');
+  chip.innerHTML='<span role="img" aria-label="chill">❄</span> '+below.length+' of '+BELTS.length+' belts dip below '+state.frost+'°C';
+  host.appendChild(chip);
+  var never=BELTS.filter(function(b){return crossesChill(b).length===0;}).map(function(b){return b.name;});
+  if(never.length){var c2=ce('span','chip');c2.style.background='var(--surface-2)';c2.style.color='var(--ink-soft)';c2.style.borderColor='var(--line)';c2.textContent='stays above the line: '+never.join(', ');host.appendChild(c2);}
+}
+
+// ---- detail ----
+function belt(id){return BELTS.filter(function(b){return b.id===id;})[0];}
+function buildDetail(id){
+  var b=belt(id);if(!b){document.getElementById('detailBody').innerHTML='';return;}
+  var body=document.getElementById('detailBody');body.innerHTML='';
+  var head=ce('div','dhead');
+  var kick=ce('div');kick.style.cssText='font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)';
+  kick.textContent='Growing belt · '+b.stations.map(function(k){return k.slice(-5);}).join(' + ');
+  head.appendChild(kick);
+  var h2=ce('h2',null,b.name);h2.id='dh';h2.setAttribute('tabindex','-1');head.appendChild(h2);
+  head.appendChild(ce('p','note', ST[b.stations[0]].note));
+  var foods=ce('div','foods');foods.style.padding='10px 0 0';
+  (FBR[b.id]||[]).forEach(function(f){foods.appendChild(ce('span','food',FOOD[f]||f));});
+  if((FBR[b.id]||[]).length) head.appendChild(foods);
+  body.appendChild(head);
+
+  var grid=ce('div','dgrid');
+
+  // envelope panel (with two-station overlay when applicable)
+  var p1=ce('div','panel');
+  p1.appendChild(ce('h3',null, b.stations.length>1 ? 'Climate envelope — both stations overlaid' : 'Climate envelope'));
+  var fig=ce('figure');
+  fig.appendChild(envelopeSVG(b,{absolute:state.view==='abs'}));
+  var cap=ce('figcaption');cap.style.cssText='font-size:12px;color:var(--ink-soft);margin-top:8px';
+  cap.innerHTML= (b.stations.length>1? 'Solid = '+b.stations[0].slice(-5)+', dashed = '+b.stations[1].slice(-5)+'. The shaded spread between them <b>is the proxy uncertainty</b> — a region is not a point.' : 'Filled band = normal TMIN floor to TMAX ceiling. Comb marks = most-recent readings vs normal.');
+  fig.appendChild(cap);
+  p1.appendChild(fig);
+  // sr alt table for the envelope
+  var sp=ce('p','sr-only');
+  var s0=ST[b.stations[0]];
+  sp.textContent=b.name+' monthly normals, degrees C: '+MONTHS.map(function(mm,i){return mm+' low '+(s0.tminC[i]==null?'n/a':s0.tminC[i])+' high '+(s0.tmaxC[i]==null?'n/a':s0.tmaxC[i]);}).join('; ')+'.';
+  p1.appendChild(sp);
+  grid.appendChild(p1);
+
+  // signals KPIs
+  b.stations.forEach(function(k){
+    var s=ST[k];
+    var p=ce('div','panel');
+    p.appendChild(ce('h3',null,'Signals · station '+k.slice(-5)));
+    var kp=ce('div','kpis');
+    function kpi(n,l){var d=ce('div','kpi');var nn=ce('div','n',n);var ll=ce('div','l',l);d.appendChild(nn);d.appendChild(ll);kp.appendChild(d);}
+    kpi(s.diurnalMean+'°C','mean diurnal range');
+    kpi((s.tminDep>=0?'+':'')+s.tminDep+'°C','recent night departure');
+    kpi((s.tmaxDep>=0?'+':'')+s.tmaxDep+'°C','recent day departure');
+    kpi(''+s.chill4,'chill nights ≤4°C (record)');
+    kpi(''+s.heat38,'heat days ≥38°C (record)');
+    kpi(s.diurnalMin+'–'+s.diurnalMax,'diurnal min–max °C');
+    p.appendChild(kp);
+    // asymmetric warming callout
+    var asym=ce('p');asym.style.cssText='font-size:13px;color:var(--ink-soft);margin:12px 0 0';
+    var gap=+(s.tminDep-s.tmaxDep).toFixed(1);
+    if(Math.abs(gap)>=1.5){
+      asym.innerHTML='<b>Asymmetric:</b> nights are departing '+(gap>0?'up':'down')+' '+Math.abs(gap)+'°C more than days — '+(gap>0?'the winter floor is quietly rising in the record.':'a counter-direction against the warm grid, worth surfacing rather than smoothing.');
+      p.appendChild(asym);
+    }
+    // provenance drawer
+    var det=ce('details','cite');
+    var sm=ce('summary',null,'ⓘ Robust-normal provenance');det.appendChild(sm);
+    var db=ce('div','body');
+    var dl=document.createElement('dl');
+    function kv(kk,vv){dl.appendChild(ce('dt',null,kk));dl.appendChild(ce('dd',null,vv));}
+    kv('Baseline window','1991–2020 monthly normals');
+    kv('Days in baseline', s.nBaseline.toLocaleString()+' obs');
+    kv('Total record', s.nTotal.toLocaleString()+' daily rows');
+    kv('Suspect readings excluded', s.tminSuspects+ (s.tminSuspects? ' (physically-impossible TMIN dropped before averaging)':' — none'));
+    kv('Recent window', s.recentN+' valid readings, '+s.recentFrom+' → '+s.recentTo);
+    kv('Observed through', s.obsThrough);
+    kv('Proxy note','regional station, not the exact farm — held-until-calibrated');
+    db.appendChild(dl);
+    det.appendChild(db);
+    p.appendChild(det);
+    grid.appendChild(p);
+  });
+
+  // frost calendar table
+  var pc=ce('div','panel');
+  pc.appendChild(ce('h3',null,'Chill calendar & monthly normals'));
+  var pcp=ce('p');pcp.style.cssText='font-size:12.5px;color:var(--ink-soft);margin:0 0 12px';
+  pcp.textContent='Chill nights (TMIN ≤4°C) tallied by month across the whole record — the belt\'s own chill season. Zero across a row means that month never dips below the chill line in the tracked record.';
+  pc.appendChild(pcp);
+  var s0=ST[b.stations[0]];
+  var wrap=ce('div');wrap.style.cssText='overflow-x:auto';
+  var tbl=document.createElement('table');
+  var thead='<thead><tr><th scope="col">Metric</th>'+MONTHS.map(function(m){return '<th scope="col">'+m+'</th>';}).join('')+'</tr></thead>';
+  var chill4arr=s0.chillByMonth[1];
+  var rowN='<tr><th scope="row">Normal TMIN °C</th>'+s0.tminC.map(function(v){return '<td class="mono">'+(v==null?'—':v.toFixed(1))+'</td>';}).join('')+'</tr>';
+  var rowX='<tr><th scope="row">Normal TMAX °C</th>'+s0.tmaxC.map(function(v){return '<td class="mono">'+(v==null?'—':v.toFixed(1))+'</td>';}).join('')+'</tr>';
+  var rowC='<tr><th scope="row">Chill nights ≤4°C</th>'+chill4arr.map(function(v){return '<td class="mono"'+(v>0?' style="color:var(--teal-ink);font-weight:600"':'')+'>'+v+'</td>';}).join('')+'</tr>';
+  tbl.innerHTML=thead+'<tbody>'+rowN+rowX+rowC+'</tbody>';
+  wrap.appendChild(tbl);pc.appendChild(wrap);
+  grid.appendChild(pc);
+
+  body.appendChild(grid);
+}
+
+// ---- routing ----
+function go(id){location.hash='#belt='+id;}
+function render(){
+  var m=/belt=([\w-]+)/.exec(location.hash);
+  if(m && belt(m[1])){
+    document.body.setAttribute('data-view','detail');
+    buildDetail(m[1]);
+    var h=document.getElementById('dh');
+    if(h){ if(!reduceMotion) window.scrollTo(0,0); h.focus(); }
+    say('Showing detail for '+belt(m[1]).name);
+  } else {
+    document.body.setAttribute('data-view','overview');
+    if(lastCard){ lastCard.focus(); lastCard=null; }
+  }
+}
+var lastCard=null;
+document.getElementById('grid') && document.getElementById('grid').addEventListener('click',function(e){var b=e.target.closest('[data-belt]');if(b)lastCard=b;});
+document.getElementById('backBtn').addEventListener('click',function(){history.length>1?history.back():(location.hash='');});
+window.addEventListener('hashchange',render);
+
+// ---- controls ----
+var slider=document.getElementById('frostSlider');
+slider.addEventListener('input',function(){
+  state.frost=+slider.value;
+  document.getElementById('frostVal').textContent=state.frost+' °C';
+  var below=BELTS.filter(function(b){return crossesChill(b).length>0;}).map(function(b){return b.name;});
+  slider.setAttribute('aria-valuetext','Chill line at '+state.frost+' degrees Celsius, '+below.length+' belts below the line: '+(below.join(', ')||'none'));
+  buildGrid();buildAha();buildChips();
+  var det=/belt=([\w-]+)/.exec(location.hash); if(det) buildDetail(det[1]);
+  say(below.length+' of '+BELTS.length+' belts dip below '+state.frost+'°C: '+(below.join(', ')||'none'));
+});
+function setView(v){
+  state.view=v;
+  document.getElementById('viewAbs').setAttribute('aria-pressed', v==='abs');
+  document.getElementById('viewDep').setAttribute('aria-pressed', v==='dep');
+  buildGrid();buildAha();
+  var det=/belt=([\w-]+)/.exec(location.hash); if(det) buildDetail(det[1]);
+  say(v==='abs'?'Absolute temperature view':'Departure-only view — seasonal cycle removed, baseline 1991–2020');
+}
+document.getElementById('viewAbs').addEventListener('click',function(){setView('abs');});
+document.getElementById('viewDep').addEventListener('click',function(){setView('dep');});
+
+// theme
+var tt=document.getElementById('themeToggle');
+function applyTheme(t){document.documentElement.setAttribute('data-theme',t);tt.setAttribute('aria-label','Switch color theme (now '+t+')');}
+tt.addEventListener('click',function(){
+  var cur=document.documentElement.getAttribute('data-theme');
+  var isDark = cur? cur==='dark' : matchMedia('(prefers-color-scheme:dark)').matches;
+  applyTheme(isDark?'light':'dark');
+  buildGrid();buildAha();buildStrip();
+  var det=/belt=([\w-]+)/.exec(location.hash); if(det) buildDetail(det[1]);
+});
+
+// init
+buildAha();buildGrid();buildStrip();buildChips();render();
+})();
+</script>

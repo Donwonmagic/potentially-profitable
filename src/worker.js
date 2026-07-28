@@ -540,6 +540,21 @@ export default {
       }
     }
 
+    // 2026-07-11 research consolidation — the seven thin /cost-index/research/
+    // pages + their hub were folded into the single interactive menu-pricing
+    // playbook (/cost-index/menu-pricing/), which joins all four data layers
+    // per ingredient. In code (not _redirects) for the same 100-rule-cap
+    // reason as the tool redirects above. Prefix match covers the hub, every
+    // retired slug, and any sub-path/asset. EN + ES.
+    if (request.method === 'GET') {
+      if (pathname === '/cost-index/research' || pathname === '/cost-index/research/' || pathname.startsWith('/cost-index/research/')) {
+        return new Response(null, { status: 301, headers: { location: '/cost-index/menu-pricing/' + url.search } });
+      }
+      if (pathname === '/es/cost-index/research' || pathname === '/es/cost-index/research/' || pathname.startsWith('/es/cost-index/research/')) {
+        return new Response(null, { status: 301, headers: { location: '/es/cost-index/menu-pricing/' + url.search } });
+      }
+    }
+
     // Sprint D3: embeddable SVG audit badge. Handled outside the
     // /api/* routing because it serves an SVG (not JSON) and is
     // meant to be dropped into an <img src=...> on a restaurant's

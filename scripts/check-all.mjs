@@ -427,6 +427,19 @@ const CHECKS = [
   // USDA-sourced posture: every entry carries a citation + EN/ES + a real key.
   ['Cost-index seasonality education','check-seasonality-education.mjs'],
   ['Cost-index seasonality education self-test','check-seasonality-education.mjs','--self-test'],
+  // Seasonality corpus-fusion honesty (ADR-018 CHAIN) — the /open/seasonality/ hub fuses
+  // the ISR (import-VALUE seasonality, origin concentration, reliance, hedge_swap) into
+  // mechanism labels + a Swap Validator. Guards that no fusion launders a supply/volume
+  // claim out of value data, asserts a price cause, forecasts, or leaks a REFUSED field.
+  ['Seasonality fusion honesty self-test','check-seasonality-fusion.mjs','--self-test'],
+  // DEFERRED 2026-07-28 (#523 merge): the page scan is temporarily off. The §4 "sea-why"
+  // mechanism section it enforces was rendered by our build-cost-index-pages engine, which the
+  // "Main-base + re-apply corpus" merge intentionally replaced with main's engine (seasonality
+  // fusion was not in the approved re-apply set). The gate + its self-test stay live so the
+  // logic is preserved; re-enable this line when the §4 sea-why render is re-landed on main's
+  // engine (board: seasonality/events engine-mirror re-do follow-up).
+  // ['Seasonality fusion honesty','check-seasonality-fusion.mjs'],
+  ['Seasonality fusion lib self-test','lib/seasonality-fusion.mjs','--self-test'],
   // Seasonal band enforcement (P1d) — the rendered "typical for this month"
   // bands on the ingredient pages state a multi-year norm (median + p25–p75).
   // The fabrication regex can't catch a wrong statistic, so this re-derives
@@ -507,6 +520,71 @@ const CHECKS = [
   ['Cost-index events sync','build-cost-index-events.mjs','--check'],
   ['Cost-index events honesty self-test','check-cost-index-events.mjs','--self-test'],
   ['Cost-index events honesty','check-cost-index-events.mjs'],
+  // Open-data publication artifacts (CC0/CC-BY) — deterministic reshapes of the gated source
+  // data into cost-index/*.{json,csv}, surfaced on /open. These generators are NOT in the deploy
+  // build chain, so their --check here is the ONLY guard against a published open dataset drifting
+  // from its source (e.g. a data refresh that regenerates seasonality/events/lockfloat but not the
+  // reshape). Each also self-tests its transform + honesty (license, no price-bulk leak, honest
+  // column naming). The cost-index-refresh workflow re-runs the generators so refreshes stay in sync.
+  ['Yields open-data self-test','build-yields-open-data.mjs','--self-test'],
+  ['Yields open-data sync','build-yields-open-data.mjs','--check'],
+  ['Events open-data self-test','build-events-open-data.mjs','--self-test'],
+  ['Events open-data sync','build-events-open-data.mjs','--check'],
+  // Corpus-expansion wave-1 recall adapter (data/corpus-fetch-list.json). The transform + the
+  // co-occurrence-never-cause honesty framing are CI-pinned; the LIVE openFDA fetch runs on the
+  // operator Mac (ADR-013), so only the offline transform is gated here.
+  ['Food-recall adapter self-test','fetch-food-recalls.mjs','--self-test'],
+  ['Recalls open-data self-test','build-recalls-open-data.mjs','--self-test'],
+  ['Recalls open-data sync','build-recalls-open-data.mjs','--check'],
+  ['QCEW labor adapter self-test','fetch-qcew-wages.mjs','--self-test'],
+  ['QCEW open-data self-test','build-qcew-open-data.mjs','--self-test'],
+  ['QCEW open-data sync','build-qcew-open-data.mjs','--check'],
+  ['MARTS demand adapter self-test','fetch-marts-sales.mjs','--self-test'],
+  ['MARTS open-data self-test','build-marts-open-data.mjs','--self-test'],
+  ['MARTS open-data sync','build-marts-open-data.mjs','--check'],
+  ['NASS aquaculture adapter self-test','fetch-nass-aquaculture.mjs','--self-test'],
+  // /open/recalls/ explorer page (spec-corpus-explorers.md §1.2) — the generator self-asserts the
+  // structural no-price guarantee + the required honesty literals; --check pins the committed HTML.
+  ['Recalls explorer page self-test','build-open-recalls-page.mjs','--self-test'],
+  ['Recalls explorer page sync','build-open-recalls-page.mjs','--check'],
+  // /open/labor/ + /open/demand/ descriptive-lane explorers (spec §1.3–1.4) — each generator asserts
+  // its fence literals + (labor) no pressure token / (demand) provisional-adjacent latest value.
+  ['Labor explorer page self-test','build-open-labor-page.mjs','--self-test'],
+  ['Labor explorer page sync','build-open-labor-page.mjs','--check'],
+  ['Demand explorer page self-test','build-open-demand-page.mjs','--self-test'],
+  ['Demand explorer page sync','build-open-demand-page.mjs','--check'],
+  // registry-driven honesty gate for the corpus /open explorers (spec §1.6) — shares the
+  // forecast/causation vocabulary (scripts/lib/co-occurrence-patterns.mjs) with the events gate.
+  ['Open-lane honesty self-test','check-open-lane-honesty.mjs','--self-test'],
+  ['Open-lane honesty','check-open-lane-honesty.mjs'],
+  // corpus explorer cards injected into the EN + ES /open hub grids (spec §1.5a) — sentinel block,
+  // count-word reconciled by counting cards; self-test pins the injector, --check pins the hub files.
+  ['Open hub cards self-test','inject-open-cards.mjs','--self-test'],
+  ['Open hub cards sync','inject-open-cards.mjs','--check'],
+  // Phase 2 — the per-ingredient recall-history section generator (spec §4). The lib pins the
+  // co-occurrence markup + distinct-events-not-notices + graceful absence; the injector lands next.
+  ['Recall-roster lib self-test','lib/recall-roster.mjs','--self-test'],
+  ['Ingredient recalls sync','inject-ingredient-recalls.mjs','--check'],
+  ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
+  ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
+  // Study evidence dataset (ADR-019): the menu-pricing paper's claims × its 36 grounding sources
+  // (with DOIs), released CC-BY — the machine-readable half that makes the paper a citable surface.
+  ['Study dataset self-test','build-study-dataset.mjs','--self-test'],
+  ['Study dataset sync','build-study-dataset.mjs','--check'],
+  // Frictionless datapackage descriptor for study.csv + menu-pricing.csv — proves the descriptor's
+  // sha256/bytes + schema never drift from the two CC-BY CSVs (ADR-019 machine bundle).
+  ['Study datapackage self-test','check-study-datapackage.mjs','--self-test'],
+  ['Study datapackage sync','check-study-datapackage.mjs'],
+  ['Lock-or-float open-data self-test','build-lockfloat-open-data.mjs','--self-test'],
+  ['Lock-or-float open-data sync','build-lockfloat-open-data.mjs','--check'],
+  ['Anomaly open-data self-test','build-anomaly-open-data.mjs','--self-test'],
+  ['Anomaly open-data sync','build-anomaly-open-data.mjs','--check'],
+  // Cost-Index RESEARCH pages (Workstream F) — original computed analysis over the open data.
+  // Editorial prose in data/cost-research-content.json; the honesty gate grounds every number
+  // against the deterministic engine (scripts/lib/cost-research.mjs) and blocks forecast,
+  // event→price causation, and wholesale-as-delivered-price framing across EN+ES.
+  ['Cost-research honesty self-test','check-cost-research.mjs','--self-test'],
+  ['Cost-research honesty','check-cost-research.mjs'],
   // Market-context seed for Vendor Benchmark — per ingredient: volatility class, whether the
   // reference is itself unusual right now vs its own normal, and the most recent DOCUMENTED
   // event. Lets the tool add co-occurrence context about the REFERENCE's state (never the
@@ -625,6 +703,42 @@ const CHECKS = [
   // --check mode. Empty manifest is allowed; entries get filled in
   // as articles are refreshed in Phase 2+.
   ['Article graphics (idem)','build-article-graphics.mjs',  '--check'],
+  ['Ingredient state record (idem)','build-ingredient-state-record.mjs', '--check'],
+  ['Ingredient state record honesty','check-ingredient-state-record.mjs'],
+  // Menu-pricing CHAIN island render-contract: engine ISR_ISLAND/ISR_CSS byte-identical
+  // in both committed pages, reliance/catchpair caveats + year-alignment intact, catchpair
+  // never a share, rungs seal SOURCE→MARKET→YOUR PLATE, EN/ES T-key parity (ADR-018).
+  ['Menu-pricing render self-test','check-menu-pricing-render.mjs','--self-test'],
+  ['Menu-pricing render contract','check-menu-pricing-render.mjs'],
+  // Study field report (ADR-019 CC-BY surface): the engine (studyMlBlocks) must render the committed
+  // Methods/confidence/Limitations/Data-availability blocks — so a regen can't drop the shipped CC-BY body.
+  ['Study engine-parity self-test','check-study-engine-parity.mjs','--self-test'],
+  ['Study engine-parity','check-study-engine-parity.mjs'],
+  // Supply-picture (ADR-018 surface 2): the committed per-ingredient pages must stay in sync with the
+  // shared generator (scripts/lib/supply-picture.mjs) — re-run the injector to refresh if this fails.
+  ['Supply-picture pages in sync','inject-supply-picture.mjs','--check'],
+  // Event-exposure (ADR-019, events leg of the CHAIN): the committed per-event detail pages must stay in
+  // sync with the shared reliance-branched generator (scripts/lib/event-exposure.mjs). Re-run the injector
+  // to refresh if this fails. The lib self-test pins the honesty branch (no import-HHI on a domestic item).
+  ['Event-exposure lib self-test','lib/event-exposure.mjs','--self-test'],
+  ['Event-exposure pages in sync','inject-event-exposure.mjs','--check'],
+  // Study cite block + ScholarlyArticle license (ADR-019): the committed field-report pages must
+  // carry the CC-BY cite/download block; re-run inject-study-cite.mjs to refresh if this fails.
+  ['Study cite/license in sync','inject-study-cite.mjs','--check'],
+  ['Energy backdrop (idem)','build-eia-energy-backdrop.mjs', '--check'],
+  ['Energy backdrop honesty','check-eia-energy-backdrop.mjs'],
+  ['Crop-condition backdrop (idem)','build-crop-condition-backdrop.mjs', '--check'],
+  ['Crop-condition backdrop honesty','check-crop-condition-backdrop.mjs'],
+  ['NOAA domestic landings (idem)','build-noaa-landings.mjs', '--check'],
+  ['NOAA domestic landings honesty','check-noaa-landings.mjs'],
+  ['ERS per-capita availability (idem)','build-ers-availability.mjs', '--check'],
+  ['ERS per-capita availability honesty','check-ers-availability.mjs'],
+  ['ERS meat price-chain (idem)','build-ers-meat-chain.mjs', '--check'],
+  ['ERS meat price-chain honesty','check-ers-meat-chain.mjs'],
+  ['ERS food dollar (idem)','build-ers-food-dollar.mjs', '--check'],
+  ['ERS food dollar honesty','check-ers-food-dollar.mjs'],
+  ['Open-data catalog (idem)','build-open-data-catalog.mjs', '--check'],
+  ['Open-data catalog gate','check-open-data-catalog.mjs'],
   // Audio coverage — manifest-driven audit of which written pieces
   // ship a studio audio edition in which languages. Warn-only during
   // the studio-audio rollout (pre-existing ENGLISH-IN-FOREIGN issues
