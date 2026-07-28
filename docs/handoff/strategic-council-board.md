@@ -102,6 +102,39 @@ last-good). A year of coursework is close to the best thing that could happen to
   - Naive ingredient-name matching is **unsafe**: it flagged 55/55 articles because "apple"
     matches Apple. Any corpus↔index mapping must be curated or evidence-derived, never fuzzy.
 
+**Post-main-merge cadence (2026-07-28) — the theme was "a gate nobody runs"**
+
+  Every item below is the same shape: something documented as protection that was not running,
+  or documentation that had drifted from what the code does. Both repos now fail CI on it.
+
+  - **5 of 128 storefront check scripts ran nowhere; 5 of 38 in the product.** CLAUDE.md claimed
+    `check-all.mjs` "runs every `check-*.mjs` script" — it did not. **`check-gate-coverage.mjs`
+    now runs FIRST in both repos** (storefront `check-all`, product privacy job): every check
+    script must be wired or in a documented `UNWIRED` registry with a date, status, and reason.
+    No third state. A stale entry (now wired, or deleted) also fails, so the list cannot rot into
+    a mute allowlist. Both verified by negative test with a throwaway script.
+  - **The product's five were the serious ones, and three had drifted while nobody looked.**
+      - `check-funnel-no-pii` (no personal data in analytics emits) and `check-view-rls` (a SQL
+        view must not become an RLS bypass) both **passed** — wired while wiring was free.
+        `check-view-rls` had **zero references anywhere in the repo**, not even a runbook.
+      - `check-es-coverage` and `check-pronunciations` each named a **`ci.yml -> locale-parity
+        job` that does not exist** — they documented coverage they never had. `check-pronunciations`
+        was even marked "BLOCKING as of P3 C7."
+      - Consequences that accumulated: **13 competitor pages** (`/vs/*`, `/switch/*`) emitted
+        `hreflang="es-MX"` while rendering English — `canonical.ts`'s own doc comment forbids
+        exactly this ("does NOT emit an es-MX hreflang it cannot honour"). Set to `hasES: false`,
+        which is what they are; the 18 routes that really render Spanish are untouched. And **6
+        unwrapped QBO acronyms** that Spanish VoiceOver mispronounces — 4 wrapped in `<Abbr>`, 2
+        were inside a `<meta description>` where JSX cannot go, so it spells out "QuickBooks
+        Online". All five now wired. Product commits `be330dd`, `fb4f8de`.
+  - **Storefront `_headers` license claims are now gated** (`check-headers-license.mjs`) — see the
+    closed CORS item above for why a blanket CC0 glob would have relicensed 13 CC-BY files.
+  - **`llms.txt` now honours `noindex`**, which both completes "freeze, don't delete" and drops 32
+    off-funnel entries — see the verified mechanism note above.
+  - **`CLAUDE.md` corrected in both repos:** storefront — the dispatch is monthly + hand-written
+    with no publish cron (it claimed weekly + a Tuesday cron), and `check-all` gates the deploy;
+    product — the check-script wiring rule.
+
 **Late-session additions (2026-07-28, overnight)**
 
   - **A product feature had been silently dead for 22 days.**
