@@ -94,6 +94,24 @@ function bareUrl(u) {
   return String(u || '').replace(/^https?:\/\//, '').replace(/\/$/, '');
 }
 
+/**
+ * A claim whose "source" is a Muntin-owned URL is self-referential, and its URL
+ * lives in the shared nav/footer on every page. Matching on it does not find
+ * citations, it finds chrome: before this exclusion the widened inverse check
+ * reported 665 "undocumented citations", almost all of them the footer's link to
+ * ledger.muntin.digital. Two claims are affected today —
+ * muntin_cost_index_ribeye_2026_06 (muntin.digital/cost-index/) and
+ * ledger_founding_offer_2026 (ledger.muntin.digital) — against 45 with genuinely
+ * external sources.
+ *
+ * The FORWARD direction still checks these normally; only the inverse
+ * "who else cites this?" sweep skips them, because for a self-referential URL
+ * that question has no useful answer.
+ */
+export function isSelfReferential(url) {
+  return /(^|\/\/|\.)muntin\.digital/i.test(String(url || ''));
+}
+
 function selfTest() {
   const fake = new Set(['library/foo/index.html', 'learn/research/bar', 'blog/baz/index.html']);
   const exists = (p) => fake.has(p);
@@ -127,25 +145,57 @@ if (args.has('--self-test')) selfTest();
 
 const registry = JSON.parse(fs.readFileSync(path.join(REPO, REGISTRY), 'utf8'));
 
-// Every article body, indexed once, so the bidirectional check is one pass.
-const ARTICLE_ROOTS = ['library', 'blog', 'es/library', 'es/blog', 'learn/research'];
+// Every reader-facing page, indexed once, so the bidirectional check is one pass.
+//
+// WIDENED 2026-07-28. This used to index only
+// library/blog/es-library/es-blog/learn/research — 483 pages — which made the
+// INVERSE check (a page citing a claim's source without being recorded in that
+// claim's used_in) blind to 945 other pages. Chrome and marketing surfaces cite
+// sourced claims too: /methods/, /about/, the homepage, /tools/, /cost-index/,
+// /ledger/, /receipts/, /security/. Since used_in is published verbatim in the
+// public /claims.json, a citation the gate cannot see is a citation that
+// artifact under-reports.
+//
+// The forward (ERROR) direction was never affected: resolveUsedIn's ROOTS
+// include the empty prefix, so a full path always resolved.
+const SKIP_TOP = new Set([
+  'node_modules', 'assets', 'brand', 'docs', 'scripts', 'src', '_includes',
+  'tests', 'dist', 'data',
+  // /claims/ IS the rendered registry — build-claims-json.mjs emits it FROM
+  // sourced-claims.json, so it necessarily renders every source_url. Counting
+  // it as an undocumented citation would be circular by construction and would
+  // add ~94 permanent false warnings.
+  'claims',
+]);
+
 const articles = [];
-for (const root of ARTICLE_ROOTS) {
-  const dir = path.join(REPO, root);
-  if (!fs.existsSync(dir)) continue;
-  for (const name of fs.readdirSync(dir)) {
-    const file = path.join(dir, name, 'index.html');
-    if (!fs.existsSync(file)) continue;
-    articles.push({
-      // match the registry's existing convention: bare slug for EN library/blog,
-      // full path for everything else.
-      ref: root === 'library' || root === 'blog' ? name : `${root}/${name}`,
-      bare: name,
-      slug: `${root}/${name}`,
-      html: fs.readFileSync(file, 'utf8'),
-    });
+(function walk(dir, depth, rel) {
+  if (depth > 4) return;
+  let entries;
+  try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
+  for (const e of entries) {
+    if (e.name.startsWith('.')) continue;
+    const next = rel ? `${rel}/${e.name}` : e.name;
+    if (e.isDirectory()) {
+      if (depth === 0 && SKIP_TOP.has(e.name)) continue;
+      if (rel === 'es' && SKIP_TOP.has(e.name)) continue; // es/claims mirrors claims
+      walk(path.join(dir, e.name), depth + 1, next);
+    } else if (e.name === 'index.html') {
+      const slug = next.replace(/\/index\.html$/, '');
+      const parts = slug.split('/');
+      const root = parts.slice(0, -1).join('/');
+      const name = parts[parts.length - 1];
+      articles.push({
+        // match the registry's existing convention: bare slug for EN
+        // library/blog, full path for everything else.
+        ref: root === 'library' || root === 'blog' ? name : slug,
+        bare: name,
+        slug,
+        html: fs.readFileSync(path.join(REPO, next), 'utf8'),
+      });
+    }
   }
-}
+})(REPO, 0, '');
 
 const errors = [];
 const warnings = [];
@@ -171,7 +221,8 @@ for (const group of GROUPS) {
       }
     }
     // Inverse: pages that cite this claim's source but are not declared.
-    const url = bareUrl(entry.source_url);
+    // Self-referential sources are skipped — see isSelfReferential above.
+    const url = isSelfReferential(entry.source_url) ? '' : bareUrl(entry.source_url);
     if (url) {
       const declared = new Set(used.map((u) => String(u).replace(/^\/+|\/+$/g, '')));
       for (const a of articles) {
