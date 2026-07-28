@@ -350,6 +350,31 @@ const CATEGORIES = {
 // Curated first batch (sourced yields from plate-cost.js YIELD_TABLE).
 // unit + apCents are ILLUSTRATIVE example AP prices for the worked math.
 const INGREDIENTS = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/ingredient-yields.json'), 'utf8'));
+// Cut specs (founder call 2026-07-28). A yield percentage is meaningless without the CUT it
+// was measured on: chard is 0.92 with stems used and ~0.60 leaves-only; orange is 0.50 as
+// JUICE from a reamed Valencia and ~0.40 for a navel. Two cited authorities disagreeing about
+// the same slug is usually two DIFFERENT CUTS, not a contradiction — but a reader could only
+// see the contradiction, never the reason. data/ingredient-depth.json carries `cutSpec` and
+// `yieldSource` for 126 of 134 ingredients; the 3 published yields with no spec render
+// without the block rather than inventing one.
+const DEPTH = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/ingredient-depth.json'), 'utf8')).ingredients || {}; }
+  catch { return {}; }
+})();
+/**
+ * The "what this measures" block. EN renders the source's own cut description. ES renders the
+ * translatable framing in Spanish and keeps the source wording marked lang="en" — there is no
+ * cutSpec_es, and hiding the detail from Spanish readers would be worse than quoting it.
+ */
+function cutSpecBlock(slug, locale) {
+  const d = DEPTH[slug];
+  const spec = d && d.cutSpec;
+  if (!spec) return '';
+  const esc = (x) => String(x).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  return locale === 'es'
+    ? `<p class="iy-spec"><strong>Qué mide este rendimiento:</strong> <span lang="en">${esc(spec)}</span> La cifra de arriba sigue la tabla de rendimientos del CIA; la descripción del corte procede de fuentes independientes (USDA, The Book of Yields, FAO, cartas del sector). Un corte distinto da legítimamente un número distinto \u2014 no es una contradicción.</p>`
+    : `<p class="iy-spec"><strong>What this yield measures:</strong> ${esc(spec)} The figure above follows the CIA yield table; the cut description is sourced independently (USDA, The Book of Yields, FAO, trade charts). A different cut spec legitimately gives a different number \u2014 it is not a contradiction.</p>`;
+}
 
 const RELATED_CAP = 8;   // cap the sibling rail so a large category can't spray 30+ links (link-farm/doorway guard)
 function relatedInCategory(ing, locale) {
@@ -552,6 +577,8 @@ main{padding-top:64px}
 .iy-body p{margin:0 0 16px}
 .iy-calc{margin:8px 0 0;padding:18px 20px;background:var(--white);border:1px solid var(--line);border-radius:10px;font-variant-numeric:tabular-nums}
 .iy-calc .iy-calc-line{font-size:15px;color:var(--ink);margin:0 0 6px}
+.iy-spec{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:14px 0 0;padding:10px 12px;border-left:3px solid var(--line);background:var(--cream-2)}
+.iy-spec strong{color:var(--ink)}
 .iy-calc .iy-calc-ep{font-weight:600;color:var(--ink)}
 .iy-calc small{display:block;font-size:12px;color:var(--ink-soft);margin-top:6px}
 .iy-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0 0}
@@ -711,14 +738,16 @@ function emitIngredientPage(ing, locale) {
   <p class="iy-calc-line">Digamos que tu factura muestra <strong>${money(ing.apCents)}</strong> por ${unit} de ${name.toLowerCase()} (precio AP, de ejemplo).</p>
   <p class="iy-calc-line">Con ${pct}% de rendimiento, tu costo real es <span class="iy-calc-ep">${money(ep)} por ${unit} EP</span> &mdash; porque ${money(ing.apCents)} ÷ ${ing.yield.toFixed(2)} = ${money(ep)}.</p>
   <small>Precio AP ilustrativo; el EP se calcula (AP ÷ rendimiento). Usa tu factura real abajo.</small>
-</div>`
+</div>
+${cutSpecBlock(ing.slug, 'es')}`
     : `<p><strong>Yield</strong> is the fraction of an ingredient that actually reaches the plate after you clean, peel, and trim it. What you pay is the <em>AP</em> (as-purchased) price; what it costs on the plate is the <em>EP</em> (edible-portion) price.</p>
 <p>${guide}</p>
 <div class="iy-calc">
   <p class="iy-calc-line">Say your invoice shows <strong>${money(ing.apCents)}</strong> per ${unit} of ${name.toLowerCase()} (an example AP price).</p>
   <p class="iy-calc-line">At ${pct}% yield, your real cost is <span class="iy-calc-ep">${money(ep)} per ${unit} EP</span> &mdash; because ${money(ing.apCents)} ÷ ${ing.yield.toFixed(2)} = ${money(ep)}.</p>
   <small>AP price is illustrative; the EP figure is computed (AP ÷ yield). Use your real invoice price below.</small>
-</div>`;
+</div>
+${cutSpecBlock(ing.slug, 'en')}`;
 
   // One-line trim-tax read — the ×N.NN cost multiplier. Unit-agnostic on purpose:
   // ingredients ship by lb, head, each, ear, or bunch, so a "you buy N lb" weight

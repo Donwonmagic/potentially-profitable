@@ -65,9 +65,19 @@ const LIB = (slug) => `library/ingredient-yields/${slug}/index.html`;
 const TOL_PP = 1;
 
 /**
- * Known collisions, 2026-07-28. Each is a real disagreement left in place because the two
- * numbers measure different cut specs and choosing one changes published trim-tax math —
- * an editorial decision, not a lint fix. Removing a line here is how a fix gets recorded.
+ * Known collisions, 2026-07-28.
+ *
+ * RESOLVED BY DISCLOSURE (founder call, 2026-07-28): rather than pick a winner — which would
+ * have moved published trim-tax math across the library pages, the cost-index pages, the
+ * CC-BY dataset and the plate-cost tool — every yield now PUBLISHES THE CUT IT MEASURES.
+ * build-ingredient-yield-pages.mjs renders a "What this yield measures" block from
+ * ingredient-depth.json's `cutSpec` on all 118 EN + ES pages (115 have a spec; the 3 without
+ * render nothing rather than inventing one). A reader who sees 75% here and 92% there is now
+ * told why: one counts the chard stems, the other does not.
+ *
+ * The entries below therefore remain as the RECORD of which pairs differ and on what cut —
+ * not as an excuse. An eighth still fails, and a waiver that no longer describes a real
+ * disagreement fails too, so this list cannot rot into permanent cover.
  */
 export const WAIVERS = {
   'whole-branzino': '2026-07-28: 35% = two skin-on fillets (depth cutSpec, Reluctant Gourmet / fish-yield charts) vs CIA YIELD_TABLE 55%, consistent with gutted-and-scaled whole fish rather than fillets. Both cited, different cuts; needs an editorial call on which one the pages publish.',

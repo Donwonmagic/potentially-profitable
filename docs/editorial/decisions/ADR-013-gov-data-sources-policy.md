@@ -72,7 +72,19 @@ answered: what to pull, and how to use it WITHOUT breaching the fact gate.
   protein chains; any energy→single-ingredient pass-through / lead-lag / forecast.
 
 ### /open/ publishing guard (all three)
-Redistribute the raw public-domain series + HS↔ingredient crosswalk (CC0). **Never
+Redistribute the raw public-domain series + HS↔ingredient crosswalk (CC0).
+
+> **SUPERSEDED IN PART, 2026-07-28 (founder call).** The "(CC0)" on the HS↔ingredient
+> crosswalk above is superseded by **ADR-015's CC0/CC-BY split**, which
+> `cost-index/open-data-catalog.json` encodes machine-readably as `gov_public_domain` vs
+> `muntin_compilation`. The published crosswalk
+> (`cost-index/ingredient-codes.{json,csv}`, built by `scripts/build-ingredient-codes.mjs`)
+> ships **CC BY 4.0**. Reasoning: the CODES and their descriptions are US-Government works
+> and cannot be copyrighted, but the MAPPING — which slug stands for which code, at what
+> granularity, and with which bindings disclosed as shared — is Muntin editorial work, and
+> it is the same compilation the CC-BY Ingredient State Record fuses. The raw series named
+> alongside it (`census-imports` et al.) remain **CC0** and are unaffected. This note exists
+> because two ADRs genuinely disagreed; do not re-litigate it from line 75 alone. **Never
 co-publish any IMF/World-Bank/Comtrade-derived series** (`imf-salmon`, `imf-shrimp`, FX,
 deep-sea-freight — present in `pressure-source-specs.json`) — those are barred.
 
