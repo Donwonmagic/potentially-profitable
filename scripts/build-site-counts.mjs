@@ -33,7 +33,18 @@ const REPO       = path.resolve(path.dirname(__filename), '..');
 const require    = createRequire(import.meta.url);
 const checkOnly  = process.argv.includes('--check');
 
-function countDirs(rel, { skip = new Set(), require = 'index.html' } = {}) {
+const NOINDEX_RE = /<meta name="robots"[^>]*content="[^"]*noindex/i;
+
+// `skipNoindex` counts only what a surface actually OFFERS. Used for the topic
+// pillars, where the library index renders one <li> per non-frozen pillar: with
+// a plain directory count the page said "9 topic pillars" above a list of 7.
+//
+// It is deliberately NOT applied to glossary.terms or articles.*. Those hubs
+// still list every frozen page — freeze-don't-delete means the pages stay live
+// and reachable — so "171 terms" remains true for the human reading the hub.
+// Turn this on for a count only when the corresponding surface stops rendering
+// the frozen entries; otherwise the number would understate what is on offer.
+function countDirs(rel, { skip = new Set(), require = 'index.html', skipNoindex = false } = {}) {
   const dir = path.join(REPO, rel);
   if (!fs.existsSync(dir)) return 0;
   let n = 0;
@@ -41,7 +52,9 @@ function countDirs(rel, { skip = new Set(), require = 'index.html' } = {}) {
     if (!entry.isDirectory()) continue;
     if (entry.name.startsWith('.') || entry.name.startsWith('_')) continue;
     if (skip.has(entry.name)) continue;
-    if (require && !fs.existsSync(path.join(dir, entry.name, require))) continue;
+    const index = path.join(dir, entry.name, require || 'index.html');
+    if (require && !fs.existsSync(index)) continue;
+    if (skipNoindex && fs.existsSync(index) && NOINDEX_RE.test(fs.readFileSync(index, 'utf8'))) continue;
     n++;
   }
   return n;
@@ -105,7 +118,7 @@ const counts = {
   glossary: {
     terms: countDirs('glossary'),
   },
-  topics:   countDirs('learn/topics'),
+  topics:   countDirs('learn/topics', { skipNoindex: true }),
   articles: {
     total:   blogArticles + libraryArticles,
     library: libraryArticles,
