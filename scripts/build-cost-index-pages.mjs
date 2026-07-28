@@ -64,6 +64,7 @@ import { supplyPicture, SUPPLY_CSS } from './lib/supply-picture.mjs';
 import { mechanismFor, concentrationFor, MECHANISM_STRINGS, concentrationString, mechanismCaveat,
   swapVerdict, SWAP_STRINGS, swapCaveat, headlineRange, slugifyName } from './lib/seasonality-fusion.mjs';
 import { exposureSection as eventExposureSection, EXPOSURE_CSS as EVENT_EXPOSURE_CSS } from './lib/event-exposure.mjs';
+import { injectRecall } from './lib/recall-roster.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
@@ -2504,6 +2505,9 @@ const INGREDIENT_DEPTH = (() => { try { return JSON.parse(fs.readFileSync(path.j
 // The Ingredient State Record, keyed by slug — feeds the per-ingredient import-context block so
 // the Census import layer (value, sources, seasonality) is plugged into the cost-index corpus.
 const ISR_RECORD = (() => { try { const a = JSON.parse(fs.readFileSync(path.join(repoRoot, 'cost-index/ingredient-state-record.json'), 'utf8')).ingredients || []; const m = {}; for (const r of a) m[r.slug] = r; return m; } catch { return {}; } })();
+// Per-ingredient recall index (Phase 2) — mirrored onto every ingredient page via injectRecall, the
+// SAME code path inject-ingredient-recalls.mjs uses, so a regenerate matches the committed page byte-for-byte.
+const RECALL_INDEX = (() => { try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'cost-index/food-recalls-by-ingredient.json'), 'utf8')).index || {}; } catch { return {}; } })();
 function kitchenProfileBlock(slug, locale) {
   const D = INGREDIENT_DEPTH[slug]; if (!D) return '';
   const es = locale === 'es';
@@ -4383,8 +4387,8 @@ if (ONLY) {
 
 const targets = [];
 for (const slug of buildSlugs) {
-  targets.push({ path: `cost-index/${slug}/index.html`,    content: emitIngredientPage(slug, 'en') });
-  targets.push({ path: `es/cost-index/${slug}/index.html`, content: emitIngredientPage(slug, 'es') });
+  targets.push({ path: `cost-index/${slug}/index.html`,    content: injectRecall(emitIngredientPage(slug, 'en'), slug, RECALL_INDEX, false) });
+  targets.push({ path: `es/cost-index/${slug}/index.html`, content: injectRecall(emitIngredientPage(slug, 'es'), slug, RECALL_INDEX, true) });
   // Downloadable series only for shippable readings — never expose the thin
   // data behind an "expanding coverage" ingredient as a data file.
   if (shippable(slug)) {

@@ -90,6 +90,35 @@ ${ROSTER_CSS_SENTINEL.end}`;
 
 export function wrap(html) { return `${ROSTER_SENTINEL.start}${html}${ROSTER_SENTINEL.end}`; }
 
+// Shared injection — the SINGLE code path used by both inject-ingredient-recalls.mjs (writing the
+// committed pages) and build-cost-index-pages.mjs (the engine mirror), so the injected page and a
+// from-scratch regenerate are byte-identical. Idempotent: strips any prior injection as a unit first.
+const reEsc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+function stripUnit(s, start, end) {
+  return s.replace(new RegExp('[ \\t]*' + reEsc(start) + '[\\s\\S]*?' + reEsc(end) + '\\n?', 'g'), '');
+}
+export function injectRecall(html, slug, index, es = false) {
+  const block = wrap(rosterSection(slug, (index && index[slug]) || null, es));
+  const css = rosterCss();
+  // 1) idempotent removal of any prior injection (body + head CSS), each stripped as a unit
+  html = stripUnit(html, ROSTER_SENTINEL.start, ROSTER_SENTINEL.end);
+  html = stripUnit(html, ROSTER_CSS_SENTINEL.start, ROSTER_CSS_SENTINEL.end);
+  // 2a) CSS into the first <style>, BEFORE the supply-picture CSS block if present (so supply-picture
+  //     stays immediately before </style> and its own --check re-injection order holds), else </style>.
+  let cssAt = html.indexOf('/* supply-picture-css:start */');
+  if (cssAt < 0) cssAt = html.indexOf('</style>');
+  if (cssAt < 0) return html; // no <style>: nothing to hang CSS on, leave the page untouched
+  html = html.slice(0, cssAt) + css + '\n' + html.slice(cssAt);
+  // 2b) body block before the FAQ section (so it follows supply-picture, clear of the price hero);
+  //     fall back to before </main> on the expanding "not wired up yet" pages that carry no FAQ.
+  const faq = html.indexOf('class="ci-faq"');
+  const sIdx = faq >= 0 ? html.lastIndexOf('<section', faq) : html.lastIndexOf('</main>');
+  if (sIdx < 0) return html;
+  const lineStart = html.lastIndexOf('\n', sIdx) + 1;
+  const indent = html.slice(lineStart, sIdx);
+  return html.slice(0, lineStart) + indent + block + '\n' + html.slice(lineStart);
+}
+
 // ---- self-test -----------------------------------------------------------------------------------
 async function selfTest() {
   const { causalHit, forecastHit } = await import('./co-occurrence-patterns.mjs');
@@ -122,6 +151,21 @@ async function selfTest() {
   ok('none-variant carries the ci-recalls--none marker', none.includes('ci-recalls--none'));
   ok('css block is sentinel-wrapped', rosterCss().startsWith(ROSTER_CSS_SENTINEL.start) && rosterCss().trim().endsWith(ROSTER_CSS_SENTINEL.end));
   ok('wrap() applies the body sentinels', wrap('X') === ROSTER_SENTINEL.start + 'X' + ROSTER_SENTINEL.end);
+  // injectRecall — the shared code path: idempotent (strip(inject(x)) fixed point), anchors correctly
+  const idx = { onion: entry };
+  const shippable = '<html><head><style>.a{}\n/* supply-picture-css:start */.sp{}/* supply-picture-css:end */\n</style></head><body><main>\n    <section class="ci-supply">x</section>\n    <section class="ci-faq" id="f"><h2>FAQ</h2></section>\n  </main></body></html>';
+  const once = injectRecall(shippable, 'onion', idx, false);
+  const twice = injectRecall(once, 'onion', idx, false);
+  ok('injectRecall is idempotent (fixed point)', once === twice);
+  ok('injectRecall places the body before the FAQ section', once.indexOf('ci-recalls') < once.indexOf('class="ci-faq"'));
+  ok('injectRecall places recall CSS before the supply-picture CSS', once.indexOf('ingredient-recalls-css:start') < once.indexOf('supply-picture-css:start'));
+  ok('injectRecall leaves exactly one recall body block', (once.match(/ingredient-recalls:start/g) || []).length === 1);
+  // expanding page (no FAQ) → anchors before </main>
+  const expanding = '<html><head><style>.a{}\n</style></head><body><main>\n    <div class="ci-cta-row">x</div>\n  </main></body></html>';
+  const exp = injectRecall(expanding, 'onion', idx, false);
+  ok('expanding page: recall body lands before </main>', exp.indexOf('ci-recalls') >= 0 && exp.indexOf('ci-recalls') < exp.indexOf('</main>'));
+  ok('expanding page: injectRecall idempotent', injectRecall(exp, 'onion', idx, false) === exp);
+  ok('graceful-absence via injectRecall for an unlisted slug', /ci-recalls--none/.test(injectRecall(shippable, 'nope', idx, false)));
   console.log(`recall-roster self-test: ${pass}/${pass + fail} passed.`);
   process.exit(fail ? 1 : 0);
 }

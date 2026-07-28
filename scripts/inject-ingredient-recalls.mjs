@@ -14,7 +14,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { rosterSection, rosterCss, wrap, ROSTER_SENTINEL, ROSTER_CSS_SENTINEL } from './lib/recall-roster.mjs';
+import { injectRecall } from './lib/recall-roster.mjs';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CHECK = process.argv.includes('--check');
@@ -22,46 +22,13 @@ const rd = (p) => { try { return JSON.parse(fs.readFileSync(path.join(repo, p), 
 
 const INDEX = ((rd('cost-index/food-recalls-by-ingredient.json') || {}).index) || {};
 
-const reEsc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-// Remove a prior injection AS A UNIT — its leading indent + the sentinel block + the trailing newline
-// the injector adds — so strip(inject(x)) === x (a fixed point → idempotent --check).
-function strip(s, start, end) {
-  return s.replace(new RegExp('[ \\t]*' + reEsc(start) + '[\\s\\S]*?' + reEsc(end) + '\\n?', 'g'), '');
-}
-
-// Insert the recall section just before the FAQ section (so it follows "Where it comes from" /
-// supply-picture and stays clear of the price hero); fall back to before </main>.
-function anchorIndex(html) {
-  const faq = html.indexOf('class="ci-faq"');
-  if (faq >= 0) { const s = html.lastIndexOf('<section', faq); if (s >= 0) return s; }
-  const main = html.lastIndexOf('</main>');
-  return main >= 0 ? main : -1;
-}
-
+// The insertion logic lives in lib/recall-roster.mjs (injectRecall) — the SAME code path the engine
+// mirror uses in build-cost-index-pages.mjs — so a committed injected page and a from-scratch
+// regenerate are byte-identical, and both --checks stay green.
 function processPage(file, slug, es) {
-  let html = fs.readFileSync(file, 'utf8');
-  const before = html;
-  const block = wrap(rosterSection(slug, INDEX[slug] || null, es));
-  const css = rosterCss();
-
-  // 1) idempotent removal of any prior injection (body block + head CSS, each stripped as a unit)
-  html = strip(html, ROSTER_SENTINEL.start, ROSTER_SENTINEL.end);
-  html = strip(html, ROSTER_CSS_SENTINEL.start, ROSTER_CSS_SENTINEL.end);
-
-  // 2a) CSS into the first <style> (head). Insert BEFORE the supply-picture CSS block when present so
-  // supply-picture-css stays immediately before </style> — otherwise inject-supply-picture's own --check
-  // (which re-injects its CSS before </style>) would see the order flip and report drift.
-  let cssAt = html.indexOf('/* supply-picture-css:start */');
-  if (cssAt < 0) cssAt = html.indexOf('</style>');
-  if (cssAt < 0) return { status: 'no-style', changed: false };
-  html = html.slice(0, cssAt) + css + '\n' + html.slice(cssAt);
-  // 2b) body block before the anchor section, preserving indentation
-  const sIdx = anchorIndex(html);
-  if (sIdx < 0) return { status: 'no-anchor', changed: false };
-  const lineStart = html.lastIndexOf('\n', sIdx) + 1;
-  const indent = html.slice(lineStart, sIdx);
-  html = html.slice(0, lineStart) + indent + block + '\n' + html.slice(lineStart);
-
+  const before = fs.readFileSync(file, 'utf8');
+  const html = injectRecall(before, slug, INDEX, es);
+  if (!html.includes('ingredient-recalls:start')) return { status: html === before ? 'no-anchor' : 'injected', changed: html !== before };
   const changed = html !== before;
   if (changed && !CHECK) fs.writeFileSync(file, html);
   return { status: 'injected', changed };
