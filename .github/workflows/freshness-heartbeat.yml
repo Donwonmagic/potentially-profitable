@@ -1,0 +1,181 @@
+name: Freshness heartbeat
+
+# Why this exists (2026-07-28)
+#
+# This repo has ~16 gates that measure TIME rather than correctness: has the
+# index refreshed, has the pressure layer refreshed, is a dispatch overdue, are
+# driver citations aging out, does any published confidence outrun the freshness
+# that supports it. They are the alarms that matter most when nobody is looking,
+# because the failure mode they guard is not a broken build — it is a site that
+# quietly keeps serving numbers after the pipeline behind them stopped.
+#
+# They already run inside check-all.mjs. But check-all runs in the Cloudflare
+# Workers build, which runs on PUSH. So through any quiet stretch — a busy
+# season, a course, a month away — the alarms that exist specifically for
+# absence are the alarms that absence switches off.
+#
+# This runs them on a clock instead. It deliberately runs ONLY the time-decay
+# gates, not the full check-all: the (idem) injector checks need the ~75-step
+# build chain to have run first and would otherwise report false drift every
+# week, and a weekly false alarm is worse than no alarm at all — it trains you
+# to ignore the real one.
+#
+# Saturday 12:00 UTC: the index refresh runs Mon/Wed/Fri 13:00, so by Saturday
+# the freshest committed read is a day old. A red here means something actually
+# broke, not that the week's refresh has not happened yet.
+#
+# On failure it opens OR updates a single rolling tracking issue (deduped by
+# label, so a long red stretch is one thread rather than weekly noise) AND fails
+# the job, so the signal arrives by two independent channels: the issue is the
+# actionable artifact, the scheduled-run failure email is the nudge that reaches
+# an inbox.
+#
+# Every gate here exits 0 today and needs no injector chain, verified before
+# this workflow was added.
+
+on:
+  schedule:
+    - cron: "0 12 * * 6" # Saturdays 12:00 UTC, after the week's last refresh
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: freshness-heartbeat
+  cancel-in-progress: false
+
+jobs:
+  heartbeat:
+    name: Time-decay gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run the time-decay gates
+        id: gates
+        run: |
+          set +e
+          GATES="
+          check-cost-index-freshness|the Mon/Wed/Fri index refresh has stopped landing fresh reads
+          check-pressure-freshness|the weekly cost-pressure refresh has stopped landing
+          check-cost-index-dispatch-fresh|a dispatch edition is overdue against the newest data
+          check-cost-index-drivers|a standing driver citation is aging out of its review window
+          check-staleness-honesty|a published confidence outruns the freshness supporting it
+          check-cost-index-editors-note|the editor's note has drifted from its edition snapshot
+          check-kpi-doc|the KPI doc is past its review window
+          "
+          FAILED=0
+          REPORT=""
+          while IFS='|' read -r gate why; do
+            # Trim with sed, not xargs: xargs treats quotes specially and an
+            # apostrophe in the prose ("the editor's note") makes it error out.
+            gate="$(echo "$gate" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+            why="$(echo "$why" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+            [ -z "$gate" ] && continue
+            OUT=$(node "scripts/$gate.mjs" 2>&1); CODE=$?
+            LAST=$(echo "$OUT" | grep -vE '^\s*$' | tail -1)
+            if [ "$CODE" -ne 0 ]; then
+              FAILED=$((FAILED+1))
+              echo "::error::$gate — $why"
+              REPORT="${REPORT}
+          - **FAIL \`$gate\`** — $why
+            \`\`\`
+            $LAST
+            \`\`\`"
+            else
+              REPORT="${REPORT}
+          - ok \`$gate\` — $LAST"
+            fi
+            echo "[$CODE] $gate: $LAST"
+          done <<< "$GATES"
+          set -e
+          echo "failed=$FAILED" >> "$GITHUB_OUTPUT"
+          {
+            echo 'report<<HEARTBEAT_EOF'
+            echo "$REPORT"
+            echo 'HEARTBEAT_EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Open or update tracking issue
+        if: steps.gates.outputs.failed != '0'
+        uses: actions/github-script@v7
+        env:
+          REPORT: ${{ steps.gates.outputs.report }}
+          FAILED: ${{ steps.gates.outputs.failed }}
+        with:
+          script: |
+            const report = process.env.REPORT || '(no output captured)';
+            const failed = process.env.FAILED;
+            const today = new Date().toISOString().slice(0, 10);
+            const LABEL = 'freshness';
+
+            const body = [
+              `## ${failed} time-decay gate(s) went red`,
+              '',
+              'The weekly heartbeat found a pipeline that has stopped, or a surface that',
+              'has aged past its honesty window. Nothing here is a code defect — these',
+              'gates measure TIME, so the fix is usually to re-run a pipeline or refresh',
+              'a review date, not to change logic.',
+              '',
+              '### Results',
+              report.trim(),
+              '',
+              '### Where to start',
+              '',
+              '- **index / pressure freshness** → the scheduled refresh is failing or its',
+              '  API keys lapsed. Check the last `cost-index-refresh` /',
+              '  `cost-pressure-refresh` runs; the fetch no-ops and keeps last-good data,',
+              '  so a green workflow does not mean fresh data.',
+              '- **dispatch overdue** → publish an edition:',
+              '  `node scripts/build-cost-index-dispatch.mjs` then the archive + hero',
+              '  builds, or run the `Cost Index monthly dispatch` workflow.',
+              '- **drivers / KPI doc** → a human re-verifies the cited source and bumps',
+              '  `retrievedAt` / `_lastReviewed`. Do not bump a date without re-reading',
+              '  the source; that is the whole point of the field.',
+              '- **staleness honesty** → a published confidence label is no longer',
+              '  supported by how fresh its data is. Fix the data, not the label.',
+              '',
+              `_Checked ${today} by .github/workflows/freshness-heartbeat.yml_`,
+            ].join('\n');
+
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: LABEL,
+              per_page: 1,
+            });
+
+            if (existing.data.length) {
+              const num = existing.data[0].number;
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: num,
+                body: `Still red as of ${today} (${failed} gate(s)).\n${report.trim()}`,
+              });
+              core.notice(`Updated existing tracking issue #${num}`);
+            } else {
+              const created = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `Freshness heartbeat: ${failed} gate(s) red (${today})`,
+                body,
+                labels: [LABEL],
+              });
+              core.notice(`Opened tracking issue #${created.data.number}`);
+            }
+
+      - name: Fail if any gate is red
+        if: steps.gates.outputs.failed != '0'
+        run: |
+          echo "::error::${{ steps.gates.outputs.failed }} time-decay gate(s) red — see the tracking issue."
+          exit 1
