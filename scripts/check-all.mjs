@@ -379,6 +379,16 @@ const CHECKS = [
   // (or declare a yield_source); slugs unique/kebab, bilingual, valid category.
   ['Ingredient-yield manifest','check-ingredient-yields.mjs','--check'],
   ['Ingredient-yield manifest self-test','check-ingredient-yields.mjs','--self-test'],
+  // Cross-surface yield agreement (audit 2026-07-28) — TWO yield tables reach readers:
+  // ingredient-yields.json `yield` (library pages, cost-index, the CC-BY state record) and
+  // ingredient-depth.json `edibleYield` (the menu-pricing profile table). 22 slugs land on
+  // both surfaces and 7 publish two different numbers. Neither side is uncited — yields.json
+  // is gated against the CIA YIELD_TABLE (above), depth.json names USDA/Book of Yields/FAO
+  // and states a `cutSpec`. They disagree because they measure DIFFERENT CUTS (chard
+  // stems-in vs leaves-only; orange JUICE vs flesh). Resolving each changes published
+  // trim-tax math, so the 7 are pinned with dated reasons and an 8th fails.
+  ['Yield cross-surface agreement','check-yield-agreement.mjs'],
+  ['Yield cross-surface self-test','check-yield-agreement.mjs','--self-test'],
   // Distributor-tie alias registry — every canonical alias key is a real Cost
   // Index key; every stem is in canonical extractStem form, unambiguous, sourced.
   ['Ingredient alias registry','check-ingredient-aliases.mjs','--check'],
