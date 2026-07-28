@@ -624,6 +624,12 @@ const CHECKS = [
   // "Whole chicken UP 27.6%". Wrong ingredient, wrong direction, live. check-agent-guardrails
   // now blocks the class.
   ['About live cost read','inject-about-cost-read.mjs','--check'],
+  // Same class, found by sweeping the injectors that run in NO chain (2026-07-28): their
+  // committed output was never re-verified. These two owned LIVE sentinel regions and had
+  // rotted — 6 hub modified-times stale, and 7 blog posts missing or stale the author card
+  // that 54 other articles carry. Now gated so they cannot rot again.
+  ['Hub modified time','inject-hub-modified-time.mjs','--check'],
+  ['Article author card','inject-article-author-card.mjs','--check'],
   ['Coverage regime in sync','inject-coverage-regime-note.mjs','--check'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
   ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
