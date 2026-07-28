@@ -397,6 +397,14 @@ const CHECKS = [
   // trim-tax math, so the 7 are pinned with dated reasons and an 8th fails.
   ['Yield cross-surface agreement','check-yield-agreement.mjs'],
   ['Yield cross-surface self-test','check-yield-agreement.mjs','--self-test'],
+  // Ingredient identity crosswalk (completes ADR-017) — slug -> the 5 authorities' codes,
+  // carrying the two columns that say how far the identity can be trusted: `granularity`
+  // (an absolute cross-authority level, so the ADR-017 sec.3 mismatch guard is inspectable
+  // from published data instead of living only in code) and `binding` (24 HS codes stand
+  // for TWO ingredients — 080550 is lemon AND lime — so a per-slug figure from one is
+  // really the pair's; `shared_with` names them).
+  ['Ingredient codes self-test','build-ingredient-codes.mjs','--self-test'],
+  ['Ingredient codes in sync','build-ingredient-codes.mjs','--check'],
   // Distributor-tie alias registry — every canonical alias key is a real Cost
   // Index key; every stem is in canonical extractStem form, unambiguous, sourced.
   ['Ingredient alias registry','check-ingredient-aliases.mjs','--check'],

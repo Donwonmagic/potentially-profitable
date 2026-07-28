@@ -147,6 +147,10 @@ jobs:
           # M/W/F measured-read spine + its hub band. Appends ONLY when the read
           # actually changes; otherwise advances lastCheckedAt in place. No post,
           # no email — ADR-012 stands (the dispatch is monthly + hand-written).
+          # Identity crosswalk (ADR-017): slug -> HS/NASS/ERS/NOAA/weather codes with
+          # granularity + binding, so a shared code (080550 = lemon AND lime) is visible
+          # rather than inferred. Rebuilt here because the code tables move with the corpus.
+          node scripts/build-ingredient-codes.mjs
           node scripts/build-cost-index-reads.mjs
           node scripts/inject-cost-index-read-band.mjs
           # Re-stamp the /about/ live basket read (same data the hub composite
@@ -248,6 +252,7 @@ jobs:
           node scripts/inject-provenance-hop.mjs --check
           node scripts/inject-seasonality-why.mjs --check
           node scripts/inject-coverage-regime-note.mjs --check
+          node scripts/build-ingredient-codes.mjs --check
           node scripts/build-cost-index-reads.mjs --check
           node scripts/inject-cost-index-read-band.mjs --check
           node scripts/check-cost-index-confidence.mjs
