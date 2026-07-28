@@ -36,6 +36,14 @@ const CHECKS = [
   // the registry with a real source URL, be cited inline via a
   // <details class="cite"> drawer, or be labeled illustrative.
   ['Fabrication blocklist','check-fabrications.mjs',       '--check'],
+  // Claim-usage gate — the fact registry's own bookkeeping. Every `used_in`
+  // entry in data/sourced-claims.json must resolve to a real page. These are
+  // copied verbatim into the PUBLIC /claims.json, so a broken edge is a false
+  // public statement about where a claim is cited. Added 2026-07-28 after 20 of
+  // 78 edges were found pointing at articles that do not exist (slugs renamed
+  // in the blog/library split, plus articles planned and never written). This
+  // is the gap check-article-graphics.mjs names under "Not enforced here".
+  ['Claim usage',          'check-claim-usage.mjs'],
   // Per-language audio fact gate — the HTML gate above deliberately skips the
   // narration JSON, but the renderer speaks chunks[].text verbatim in six
   // languages. This applies the shared fabrication registry per spoken
@@ -680,6 +688,7 @@ const BASELINE_ALLOW_NONIDEM = new Set([]);
 const BASELINE_DENYLIST = new Set([
   'check-fabrications.mjs',
   'check-audio-fabrications.mjs',
+  'check-claim-usage.mjs',
   'check-retired-links.mjs',
   'check-locale-parity.mjs',
   'check-hreflang-orphans.mjs',
