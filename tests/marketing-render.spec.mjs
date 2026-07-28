@@ -47,8 +47,6 @@ const PAGES = [
   '/es/methods/',
   '/never/',
   '/es/never/',
-  '/cost-index/',
-  '/es/cost-index/',
   '/library/',
   '/es/library/',
   '/blog/',
