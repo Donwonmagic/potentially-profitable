@@ -102,6 +102,37 @@ last-good). A year of coursework is close to the best thing that could happen to
   - Naive ingredient-name matching is **unsafe**: it flagged 55/55 articles because "apple"
     matches Apple. Any corpus↔index mapping must be curated or evidence-derived, never fuzzy.
 
+**POSITIONING — ITERATION 3: the gate had the same blind spot it was written to punish**
+
+  `check-positioning-drift` scanned only `library/blog`, so it would **not** have caught
+  `/learn/start-here/` — the library's own entry point, the worst offender on the site. Exactly the
+  root-list failure recorded one entry below, committed by the gate meant to prevent it.
+
+  - **Site-wide sweep: 23 indexed pages over threshold, 12 of them outside the old roots.** The gate
+    now walks **every** content surface (1095 indexed pages, up from 62) with an **explicit
+    `SKIP_TOP`** — each skip justified as "not reader-facing prose", never left implicit. `ALLOW`
+    matching is now path-aware (full path → directory → bare slug) so hubs and nested pages can be
+    named precisely while the original slug entries keep working.
+  - **All four KEPT pillar hubs were promoting frozen articles** — 13 cards across EN+ES
+    (`operations-margin` 4+4, `ai-search` 2+2, `information-security` 1). Same defect the library
+    index had, on a surface nobody had swept. Pruned. A 14th link survived because it lived in an
+    **injected** pillar essay: the source is `data/topic-essays.json`, so the HTML fix would have
+    been overwritten — de-linked at source and re-injected. **0 frozen links remain on any live
+    topic hub.**
+  - **Judgement calls recorded rather than silently applied** (21 allowlisted, each with a reason):
+    hubs (`blog/index`, `glossary/index`) legitimately list frozen entries — that *is*
+    freeze-don't-delete; a glossary may **define** adjacent words it does not sell (`hosting`); and
+    `client-side` / `fetch-request` / `url-fragment` are the in-browser vocabulary behind the tools'
+    "nothing leaves your browser" promise — product privacy story, not retired line.
+  - **⚠ ONE OPEN DECISION, deliberately not taken.** `/learn/checklists/restaurant-website-checklist/`
+    ("30 Things Your Site Should Do") is retired-line by subject but is **promoted from 11 live
+    pages** — `about`, `for/restaurants`, the learn hub, `start-here`. Retiring it is a navigation
+    change, not a one-token freeze, so it is allowlisted **as an open decision** and will keep
+    showing up in the gate's allow list until someone settles it.
+  - Verified by negative test on a page outside the OLD roots (the checklist), which the previous
+    gate could not have seen. Also observed: `inject-knit-rail` is already freeze-aware — it
+    swapped a frozen article out of a related-reading rail on its own.
+
 **POSITIONING: cost intelligence, not a web-design blog (operator call, 2026-07-28)**
 
   Open item #4 is **decided and executed**. The operator's words: *"we are a cost intelligence

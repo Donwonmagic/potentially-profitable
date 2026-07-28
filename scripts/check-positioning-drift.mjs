@@ -46,8 +46,25 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const REPO = path.resolve(path.dirname(__filename), '..');
 
-const ROOTS = ['library', 'blog', 'es/library', 'es/blog'];
+/**
+ * WIDENED 2026-07-28. This gate originally scanned only library/blog — and so
+ * it would NOT have caught the thing that most needed catching: /learn/start-here/,
+ * the library's own entry point, whose five steps were a website-build
+ * walkthrough ending in a CTA for the retired Services page. A site-wide sweep
+ * found 23 indexed pages over threshold and 12 of them outside the old roots.
+ *
+ * That is the same failure this repo wrote a lesson about the same day: a
+ * link-graph or prose audit is only as good as its root list. So the scan is now
+ * a full walk of every content surface, and the skip list below is explicit —
+ * each entry is skipped because it is not reader-facing prose, not because it
+ * was forgotten.
+ */
+const SKIP_TOP = new Set([
+  'node_modules', 'assets', 'brand', 'docs', 'scripts', 'src', '_includes',
+  'tests', 'dist', 'data', 'course', // course/: frozen retired line, kept live by decision
+]);
 const THRESHOLD = 3;
+const MAX_DEPTH = 5;
 
 /**
  * Vocabulary of the retired website-build line, EN + ES. Deliberately specific:
@@ -90,6 +107,42 @@ export const ALLOW = {
   'decision-app-restaurante': { since: '2026-07-28', why: 'ES mirror of restaurant-app-decision; see that entry.' },
   'pedidos-en-linea-sin-comision-para-restaurantes': { since: '2026-07-28', why: 'ES mirror of commission-free-online-ordering-restaurants; see that entry.' },
   'como-saber-si-una-herramienta-de-restaurante-es-segura': { since: '2026-07-28', why: 'ES mirror of how-to-tell-if-a-restaurant-tool-is-safe; see that entry.' },
+
+  // ---- surfaces the widened scan reached (2026-07-28) ----------------------
+  // Hubs list every entry including frozen ones. That IS freeze-don't-delete:
+  // the pages stay reachable for a human, they are simply not advertised to
+  // crawlers. Pruning a hub would hide live pages, not retire them.
+  'blog/index.html': { since: '2026-07-28', why: 'Blog hub — a complete listing of posts including frozen ones, which is the point of freeze-don\'t-delete.' },
+  'glossary/index.html': { since: '2026-07-28', why: 'Glossary hub — lists all 171 terms including frozen ones so a reader can still reach every definition.' },
+  'es/glossary/index.html': { since: '2026-07-28', why: 'ES glossary hub — lists every term including frozen ones so a reader can still reach each definition.' },
+
+  // A glossary legitimately DEFINES adjacent vocabulary. Defining "hosting" is
+  // not claiming to sell websites, and these four are load-bearing: each is
+  // linked from live pages, and client-side / fetch-request / url-fragment are
+  // the in-browser vocabulary behind the tools' "nothing leaves your browser"
+  // promise — that is the product's privacy story, not the retired line.
+  'glossary/hosting': { since: '2026-07-28', why: 'Glossary definition of an adjacent term, linked from live pages. A reference work may define words it does not sell.' },
+  'glossary/client-side': { since: '2026-07-28', why: 'Backs the in-browser tools promise ("runs in your browser, keeps nothing"). Product privacy vocabulary.' },
+  'glossary/fetch-request': { since: '2026-07-28', why: 'Same in-browser privacy cluster as client-side; heavily cross-linked with data-literacy.' },
+  'glossary/url-fragment': { since: '2026-07-28', why: 'Same in-browser privacy cluster — how a tool keeps state without sending it anywhere.' },
+  'es/glossary/hosting': { since: '2026-07-28', why: 'ES mirror of glossary/hosting — a reference work may define words it does not sell.' },
+  'es/glossary/client-side': { since: '2026-07-28', why: 'ES mirror of glossary/client-side — in-browser privacy vocabulary behind the tools promise.' },
+  'es/glossary/fetch-request': { since: '2026-07-28', why: 'ES mirror of glossary/fetch-request — same in-browser privacy cluster as client-side.' },
+  'es/glossary/url-fragment': { since: '2026-07-28', why: 'ES mirror of glossary/url-fragment — how a tool keeps state without sending it anywhere.' },
+
+  // Margin research that happens to have studied websites. Cited by a kept
+  // AI-search article and the kept operations-margin hub; its subject is
+  // dollars lost, which is cost content.
+  'learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026': { since: '2026-07-28', why: 'Margin research measured in dollars; cited by kept content. Websites are the sample, not the subject.' },
+  'es/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026': { since: '2026-07-28', why: 'ES mirror of the margin-audit research note — websites are the sample, not the subject.' },
+
+  // OPEN DECISION, not a settled allow. "The Restaurant Website Checklist — 30
+  // Things Your Site Should Do" is retired-line by subject, but it is promoted
+  // from 11 live pages (about, for/restaurants, the learn hub, start-here), so
+  // retiring it is a navigation change rather than a one-token freeze. Left
+  // indexed and flagged here so it stays visible until the operator decides.
+  'learn/checklists/restaurant-website-checklist': { since: '2026-07-28', why: 'OPEN DECISION — retired-line by subject but promoted from 11 live pages; retiring it means editing navigation, not just stamping noindex.' },
+  'es/learn/checklists/restaurant-website-checklist': { since: '2026-07-28', why: 'ES mirror of the website checklist — same OPEN DECISION, promoted from live navigation.' },
 };
 
 export const NOINDEX_RE = /<meta name="robots"[^>]*content="[^"]*noindex/i;
@@ -101,6 +154,37 @@ export function prose(html) {
     .replace(/<style[\s\S]*?<\/style>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/\s+/g, ' ');
+}
+
+/** Every reader-facing .html under the repo, skipping non-prose trees. */
+export function walk(repo, skip = SKIP_TOP, maxDepth = MAX_DEPTH) {
+  const out = [];
+  (function rec(dir, depth, rel) {
+    if (depth > maxDepth) return;
+    let entries;
+    try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
+    for (const e of entries) {
+      if (e.name.startsWith('.')) continue;
+      const next = rel ? `${rel}/${e.name}` : e.name;
+      if (e.isDirectory()) {
+        if (depth === 0 && skip.has(e.name)) continue;
+        rec(path.join(dir, e.name), depth + 1, next);
+      } else if (e.name.endsWith('.html')) {
+        out.push(next);
+      }
+    }
+  })(repo, 0, '');
+  return out;
+}
+
+/**
+ * Match an ALLOW entry for a page path. Tries the full path, the containing
+ * directory, and finally the bare slug — so the original slug-keyed entries
+ * keep working while new entries can be path-precise.
+ */
+export function allowEntry(rel, allow = ALLOW) {
+  const dir = rel.replace(/\/index\.html$/, '');
+  return allow[rel] || allow[dir] || allow[dir.split('/').pop()] || null;
 }
 
 export function countRetired(text, vocab = RETIRED_VOCAB) {
@@ -123,6 +207,10 @@ function selfTest() {
     [prose('<a href="/web-design/">x</a>').trim(), 'x', 'attributes are stripped'],
     [NOINDEX_RE.test('<meta name="robots" content="noindex, follow, max-image-preview:large" />'), true, 'detects the freeze stamp'],
     [NOINDEX_RE.test('<meta name="robots" content="max-image-preview:large" />'), false, 'unfrozen page is not detected'],
+    [allowEntry('library/foo/index.html', { foo: { why: 'x' } }) !== null, true, 'a bare-slug entry still matches'],
+    [allowEntry('learn/checklists/bar/index.html', { 'learn/checklists/bar': { why: 'x' } }) !== null, true, 'a directory-path entry matches'],
+    [allowEntry('blog/index.html', { 'blog/index.html': { why: 'x' } }) !== null, true, 'a full-path entry matches a hub file'],
+    [allowEntry('library/other/index.html', { foo: { why: 'x' } }), null, 'an unrelated page is not allowed'],
   ];
   let pass = 0;
   for (const [got, want, why] of cases) {
@@ -151,20 +239,14 @@ function main(argv) {
   let frozen = 0;
   let allowed = 0;
 
-  for (const root of ROOTS) {
-    const dir = path.join(REPO, root);
-    if (!fs.existsSync(dir)) continue;
-    for (const slug of fs.readdirSync(dir)) {
-      const file = path.join(dir, slug, 'index.html');
-      if (!fs.existsSync(file)) continue;
-      const html = fs.readFileSync(file, 'utf8');
-      if (NOINDEX_RE.test(html)) { frozen++; continue; }
-      scanned++;
-      const n = countRetired(prose(html));
-      if (n < THRESHOLD) continue;
-      if (ALLOW[slug]) { allowed++; continue; }
-      drifted.push({ where: `${root}/${slug}`, n });
-    }
+  for (const rel of walk(REPO)) {
+    const html = fs.readFileSync(path.join(REPO, rel), 'utf8');
+    if (NOINDEX_RE.test(html)) { frozen++; continue; }
+    scanned++;
+    const n = countRetired(prose(html));
+    if (n < THRESHOLD) continue;
+    if (allowEntry(rel)) { allowed++; continue; }
+    drifted.push({ where: rel, n });
   }
 
   if (!drifted.length) {
