@@ -252,6 +252,8 @@ jobs:
           node scripts/inject-provenance-hop.mjs --check
           node scripts/inject-seasonality-why.mjs --check
           node scripts/inject-coverage-regime-note.mjs --check
+          node scripts/inject-cost-index-dataset-date.mjs --check
+          node scripts/inject-lazy-script-loader.mjs --check
           node scripts/build-ingredient-codes.mjs --check
           node scripts/build-cost-index-reads.mjs --check
           node scripts/inject-cost-index-read-band.mjs --check

@@ -37,6 +37,12 @@ const CHECKS = [
   // the registry with a real source URL, be cited inline via a
   // <details class="cite"> drawer, or be labeled illustrative.
   ['Fabrication blocklist','check-fabrications.mjs',       '--check'],
+  // Repo conventions, enforced instead of merely written down (2026-07-28). R1/R2: an
+  // injector in the COMMITTING refresh chain must be registered here AND carry a pre-commit
+  // --check there. R3: every script named in this table must exist. R4: every baseline
+  // exemption must carry a dated reason. Each rule had already been broken when written.
+  ['Agent guardrails','check-agent-guardrails.mjs'],
+  ['Agent guardrails self-test','check-agent-guardrails.mjs','--self-test'],
   // Claim staleness (audit 2026-07-28) — the fact gate proves a claim IS sourced; nothing
   // checked whether the source had gone stale. Offline by necessity (no network/keys in the
   // container), so age is the signal. Volatility is INFERRED from the claim text ($ / % /
@@ -612,6 +618,12 @@ const CHECKS = [
   // makes (NOT cost-lockfloat.json, which is a window-26 band), so the qualifier and the
   // sentence above it describe one instrument. Same refresh-cron rule as the hop above.
   ['Coverage regime self-test','inject-coverage-regime-note.mjs','--self-test'],
+  // R1 fix (2026-07-28): this injector ran ONLY in the committing refresh chain with no
+  // entry here, and /about/ + /es/about/ had silently gone stale — "Eggs +71.7%" against a
+  // committed +132.1%, and "Chicken breast (boneless) DOWN 25.3%" where the data said
+  // "Whole chicken UP 27.6%". Wrong ingredient, wrong direction, live. check-agent-guardrails
+  // now blocks the class.
+  ['About live cost read','inject-about-cost-read.mjs','--check'],
   ['Coverage regime in sync','inject-coverage-regime-note.mjs','--check'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
   ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
