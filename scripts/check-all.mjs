@@ -56,6 +56,12 @@ const CHECKS = [
   // ships a link to nothing. That gap has been found by hand three times now
   // (twice on 2026-07-18, once on 2026-07-28); this makes it mechanical.
   ['Blog index links',     'check-blog-index-links.mjs'],
+  // Positioning: an INDEXED article whose prose is about building or buying a
+  // website must be frozen or allowlisted. A pillar-tag sweep cannot catch this
+  // — the five articles that prompted this gate were all tagged
+  // operations-margin while reading as web design (one scored 89 phrases).
+  ['Positioning drift self-test','check-positioning-drift.mjs','--self-test'],
+  ['Positioning drift',    'check-positioning-drift.mjs'],
   // Per-language audio fact gate — the HTML gate above deliberately skips the
   // narration JSON, but the renderer speaks chunks[].text verbatim in six
   // languages. This applies the shared fabrication registry per spoken
@@ -822,6 +828,8 @@ const BASELINE_DENYLIST = new Set([
   'check-audio-fabrications.mjs',
   'check-claim-usage.mjs',
   'check-blog-index-links.mjs',
+  // Positioning is an identity claim, not build freshness — never baseline it.
+  'check-positioning-drift.mjs',
   'check-retired-links.mjs',
   'check-locale-parity.mjs',
   'check-hreflang-orphans.mjs',

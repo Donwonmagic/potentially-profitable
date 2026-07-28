@@ -124,6 +124,40 @@ last-good). A year of coursework is close to the best thing that could happen to
     AI-discovery pieces were deliberately KEPT** — being cited by AI is how the Cost Index gets
     found, so those are the method, not the filler. Corpus is now 27 cost/margin + 7 AI-discovery
     + 2 security, against 20 frozen.
+  - **⚠ ITERATION 2 (same day): the tag-based freeze was INCOMPLETE, and the tag was the reason.**
+    A prose audit of what remained indexed found **five heavily web-design articles still live** —
+    `best-restaurant-website-platform` (74 retired-line phrases), `how-to-hire-a-restaurant-web-designer`
+    (33), `custom-restaurant-website-pricing` (20), `when-to-rebuild-your-restaurant-website` (11),
+    `does-my-restaurant-need-a-website` (4). **All five are tagged `operations-margin` first**, with
+    `brand-design` demoted to second, so a sweep keyed on `topics[0]` could never see them. The tag
+    said cost; the prose said web design. Frozen (10 pages EN+ES), which cascaded **23 more glossary
+    terms** into orphanhood — frozen by the same evidence rule (46 pages).
+    **This also means the earlier "27 cost/margin" count was inflated.** True live figures now:
+    **34 live EN articles** — 22 `operations-margin`, 7 `ai-search`, 2 `information-security`,
+    3 not in `blog_posts` — against **25 frozen**. Glossary: **94 live / 77 frozen** per locale.
+    **203 pages frozen in total.**
+  - **`check-positioning-drift.mjs` closes the loop** (wired, and on the `BASELINE_DENYLIST` —
+    positioning is an identity claim, not build freshness). Any INDEXED library/blog article whose
+    prose carries ≥3 retired-line phrases must be frozen or listed in `ALLOW` with a dated reason.
+    It deliberately does **not** auto-classify: raw counts do not separate cleanly (a kept POS
+    comparison scores 9; a frozen web-design piece scored 4), so the judgement stays human and the
+    gate only guarantees it gets made. Four articles are allowlisted as genuine spend/safety
+    decisions that merely name builders — `toast-vs-square-vs-clover`, `restaurant-app-decision`,
+    `commission-free-online-ordering`, `how-to-tell-if-a-restaurant-tool-is-safe` — plus their ES
+    mirrors. Negative-tested: unfreezing the 74-hit article makes it fail at 89.
+  - **HONEST NEGATIVE — the autolink fix for the 11 orphaned cost terms does NOT work; do not
+    retry it.** `data/glossary-autolink-aliases.json` looked like the answer (its own doc says
+    "Wave-3 seed for the 81 orphan terms", and 81 is exactly the orphan count). It is not.
+    **41 of its 81 entries are terms now frozen** — half that effort went into web-design
+    vocabulary — and **none of the 11 cost terms are in it.** More decisively, a prose probe shows
+    the vocabulary simply is not in the article corpus: `prediction band` 0, `price confidence` 0,
+    `ratio bridge` 0, `data literacy` 0, `CME` 0, `assessed benchmark` 0 across all live articles.
+    These terms are unlinked because **the concepts live on the `cost-index/` pages and in the
+    dispatches, not in the library** — an editorial gap, not a mechanical one. An alias would link
+    nothing. Closing it means writing cost prose that uses the vocabulary, not editing a registry.
+    (Method note: the first probe returned 0 for *everything*, including the word "measured".
+    That was a shell-escaping bug in a `node -e` one-liner mangling `\b`, not a finding — the real
+    count is 18. Probes that scan prose belong in a script file, not a shell one-liner.)
   - **54 glossary terms frozen too (108 pages, EN+ES), chosen by link graph rather than by topic.**
     The method matters, because the earlier lesson stands: a corpus↔index mapping must be
     evidence-derived, never fuzzy. For each of the 171 terms, count inbound links from pages that
