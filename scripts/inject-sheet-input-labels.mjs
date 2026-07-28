@@ -22,9 +22,11 @@
  *
  *   <input name="ing_qty_1" aria-label="Qty — Ingredient 1">
  *
- * The row identifier prefers a static text cell in the row (many sheets name
- * their rows: "Walk-in cooler", "Monday"), and falls back to "row N". That
- * keeps the name meaningful when a table has 30 identical-looking rows.
+ * The row identifier prefers leading static text cells in the row (many sheets
+ * name their rows: "Walk-in cooler", "Monday"). When the first static cell is
+ * shared across rows (e.g. Channel "GBP" with distinct shot types beside it),
+ * those leading cells are joined so each row stays distinguishable. Falls back
+ * to "row N" when the row has no static text.
  *
  * Nothing visual changes: aria-label is invisible to sighted users, so the
  * sheets look and print exactly as before.
@@ -86,6 +88,21 @@ function attrSafe(s) {
 }
 
 /**
+ * Leading static-text cells in a row (stop at the first control). Used as the
+ * human row identifier — one cell when unique, joined when the first repeats.
+ */
+function leadingStaticParts(rowHtml) {
+  const parts = [];
+  const cells = [...rowHtml.matchAll(/<t[dh]\b[^>]*>([\s\S]*?)<\/t[dh]>/gi)];
+  for (const c of cells) {
+    if (/<(input|select|textarea)\b/i.test(c[1])) break;
+    const t = textOf(c[1]);
+    if (t && t !== '—' && t !== '-') parts.push(t);
+  }
+  return parts;
+}
+
+/**
  * Add aria-label to controls inside one <table> block.
  * Returns the rewritten table HTML and a count of labels added.
  */
@@ -101,19 +118,25 @@ function labelTable(tableHtml) {
   const tbodyM = tableHtml.match(/<tbody[\s\S]*?<\/tbody>/i);
   if (!tbodyM) return { html: tableHtml, added };
 
+  // Pre-scan so a shared first cell (Channel "GBP") can pull in the next
+  // leading static cell (Shot type) and stay unique across the table.
+  const leadingByRow = [...tbodyM[0].matchAll(/<tr\b[\s\S]*?<\/tr>/gi)].map((m) => leadingStaticParts(m[0]));
+  const firstCount = new Map();
+  for (const parts of leadingByRow) {
+    const k = parts[0] || '';
+    firstCount.set(k, (firstCount.get(k) || 0) + 1);
+  }
+
   let rowIndex = 0;
   const newTbody = tbodyM[0].replace(/<tr\b[\s\S]*?<\/tr>/gi, (rowHtml) => {
     rowIndex++;
 
-    // Prefer a human row identifier: the first cell that is static text
-    // (no control in it). Many sheets label their rows; those names are far
-    // more useful than an ordinal.
+    const parts = leadingByRow[rowIndex - 1] || [];
     let rowLabel = '';
-    const cells = [...rowHtml.matchAll(/<t[dh]\b[^>]*>([\s\S]*?)<\/t[dh]>/gi)];
-    for (const c of cells) {
-      if (/<(input|select|textarea)\b/i.test(c[1])) continue;
-      const t = textOf(c[1]);
-      if (t && t !== '—' && t !== '-') { rowLabel = t; break; }
+    if (parts.length) {
+      rowLabel = (firstCount.get(parts[0]) > 1 && parts.length > 1)
+        ? parts.join(' · ')
+        : parts[0];
     }
     const rowRef = rowLabel || `row ${rowIndex}`;
 
