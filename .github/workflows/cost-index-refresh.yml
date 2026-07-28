@@ -138,6 +138,11 @@ jobs:
           node scripts/inject-ingredient-recalls.mjs
           node scripts/inject-provenance-hop.mjs
           node scripts/inject-seasonality-why.mjs
+          # M/W/F measured-read spine + its hub band. Appends ONLY when the read
+          # actually changes; otherwise advances lastCheckedAt in place. No post,
+          # no email — ADR-012 stands (the dispatch is monthly + hand-written).
+          node scripts/build-cost-index-reads.mjs
+          node scripts/inject-cost-index-read-band.mjs
           # Re-stamp the /about/ live basket read (same data the hub composite
           # features) so the pledge "the numbers I check on my shifts" never
           # freezes at last build. Reads data/cost-index.json; EN + ES.
@@ -236,6 +241,8 @@ jobs:
           node scripts/inject-ingredient-recalls.mjs --check
           node scripts/inject-provenance-hop.mjs --check
           node scripts/inject-seasonality-why.mjs --check
+          node scripts/build-cost-index-reads.mjs --check
+          node scripts/inject-cost-index-read-band.mjs --check
           node scripts/check-cost-index-confidence.mjs
           node scripts/build-cost-revisions.mjs --check
           node scripts/build-cost-index-reproduce.mjs --check
@@ -290,6 +297,7 @@ jobs:
             data/cost-index-health.json data/seasonality.json \
             data/cost-lockfloat.json data/cost-lockfloat.js \
             data/cost-anomaly-log.json \
+            data/cost-index-reads.json \
             data/cost-index-audit.json data/cost-index-calibration-report.json \
             data/cost-forecast-backtest.json data/cost-outlook.json \
             data/cost-revisions.json data/cost-index-readings.prev.json \

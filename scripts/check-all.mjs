@@ -569,6 +569,14 @@ const CHECKS = [
   // registry (named agency report per slug) + this series' recorded-revision count.
   // build-cost-index-pages.mjs overwrites ingredient HTML, so the refresh cron re-runs
   // this injector; the --check here is what fails the deploy if it is ever skipped.
+  // M/W/F measured-read spine + hub band (2026-07-28). A read is recorded only when it
+  // CHANGES; unchanged refreshes advance lastCheckedAt in place, so the site never
+  // republishes a stale vintage under a fresh date. Separate from the EDITION spine on
+  // purpose — see ADR-021.
+  ['Cost-index reads self-test','build-cost-index-reads.mjs','--self-test'],
+  ['Cost-index reads in sync','build-cost-index-reads.mjs','--check'],
+  ['Cost-index read band self-test','inject-cost-index-read-band.mjs','--self-test'],
+  ['Cost-index read band in sync','inject-cost-index-read-band.mjs','--check'],
   ['Provenance hop self-test','inject-provenance-hop.mjs','--self-test'],
   ['Provenance hop in sync','inject-provenance-hop.mjs','--check'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],

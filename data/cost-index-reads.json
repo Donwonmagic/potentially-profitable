@@ -1,0 +1,20 @@
+{
+  "_doc": "Append-only log of the MEASURED Cost Index basket read, observed on the Mon/Wed/Fri refresh. A row is added only when the read actually CHANGES; when it does not, that row's lastCheckedAt advances, so \"we looked and nothing moved\" is recorded honestly rather than republished as fresh. dataAsOf is the vintage of the underlying public series; firstSeenAt / lastCheckedAt are when Muntin observed it — the two are never collapsed. This is NOT the dispatch archive: published editions live in data/cost-index-editions.json and are hand-written monthly (ADR-011, ADR-012). A wholesale reference, never a delivered price, never a forecast.",
+  "count": 1,
+  "reads": [
+    {
+      "dataAsOf": "2026-06-01",
+      "freshestContributorAsOf": "2026-06-05",
+      "pct": -0.005322,
+      "dir": "down",
+      "agreement": 0.505,
+      "confidence": "medium",
+      "coverage": 1,
+      "nContributing": 16,
+      "nDeclared": 16,
+      "measuredIngredients": 101,
+      "firstSeenAt": "2026-07-28",
+      "lastCheckedAt": "2026-07-28"
+    }
+  ]
+}

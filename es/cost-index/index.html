@@ -616,7 +616,16 @@ main{padding-top:64px}
     </div>
     <details class="ci-composite__src"><summary>Cómo se construye esta cifra</summary><div>Compuesto ponderado de 16 insumos seguidos, cada uno leído frente a su propia ventana base con datos públicos de mercado de EE. UU. (USDA, BLS, FRED, EIA, NOAA). Una lectura frente a la base — no un precio, ni un cambio desde la semana pasada. Ver los 16 pesos y cómo se arma el compuesto en <a href="/es/cost-index/basket/">La Cesta de Restaurante Muntin</a>, o <a href="/es/cost-index/methodology/">cómo se construye el índice</a>.</div></details>
   </section>
-    <section class="ci-scorecard" aria-label="Boleta de calibración" style="margin:22px 0 8px;padding:20px 24px;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:12px;box-shadow:var(--elev-1)">
+
+  <!-- ci-read-band:start --><style>/* ci-read-band */
+.ci-readband{margin:10px 0 0;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:13px;line-height:1.55}
+.ci-readband__cad{font-family:var(--font-display);font-size:12px;letter-spacing:.02em;text-transform:uppercase;opacity:.7}
+.ci-readband__dl{margin-left:6px}
+</style>
+  <p class="ci-readband"><span class="ci-readband__cad">Observado lun/mié/vie</span> · lectura registrada el 28 jul 2026 · datos hasta 2026-06-01<a class="ci-readband__dl" href="/cost-index/reads.json">registro completo (CC0)</a><br><span style="opacity:.7">La referencia mayorista, nunca un precio entregado ni un pronóstico. El despacho mensual se escribe a mano.</span></p>
+<!-- /ci-read-band:end -->
+
+  <section class="ci-scorecard" aria-label="Boleta de calibración" style="margin:22px 0 8px;padding:20px 24px;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:12px;box-shadow:var(--elev-1)">
       <div style="display:flex;flex-wrap:wrap;gap:18px 36px;align-items:flex-start">
         <div style="min-width:120px"><div style="font-family:var(--font-display);font-size:clamp(24px,2.6vw,32px);font-weight:560;letter-spacing:-.015em;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums lining-nums">80%</div><div style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;margin-top:6px">banda nominal</div></div>
         <div style="min-width:120px"><div style="font-family:var(--font-display);font-size:clamp(24px,2.6vw,32px);font-weight:560;letter-spacing:-.015em;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums lining-nums">77%</div><div style="font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;margin-top:6px">cobertura realizada</div></div>
