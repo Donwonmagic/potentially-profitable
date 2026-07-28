@@ -124,6 +124,27 @@ last-good). A year of coursework is close to the best thing that could happen to
     AI-discovery pieces were deliberately KEPT** — being cited by AI is how the Cost Index gets
     found, so those are the method, not the filler. Corpus is now 27 cost/margin + 7 AI-discovery
     + 2 security, against 20 frozen.
+  - **54 glossary terms frozen too (108 pages, EN+ES), chosen by link graph rather than by topic.**
+    The method matters, because the earlier lesson stands: a corpus↔index mapping must be
+    evidence-derived, never fuzzy. For each of the 171 terms, count inbound links from pages that
+    are still indexed. Result: **90 terms are load-bearing** for live content and were left alone;
+    **81 are orphaned**, and those split into two groups that deserve opposite treatment.
+      - **54 linked ONLY by the now-frozen articles → frozen.** The list is unanimous web-design
+        vocabulary (`analogous-colors`, `oklab`, `wcag-contrast`, `favicon`, `lighthouse`,
+        `hreflang`, `robots-txt`, `ttfb`, `viewport-meta`, `pagespeed-insights`, …) with **zero**
+        cost terms in it. They became orphaned *as a consequence* of the article freeze, which is
+        why the link graph found them and a topic guess would not have.
+      - **27 linked by nothing at all → deliberately NOT frozen.** That group is mixed, and
+        freezing it as a block would have deindexed the Cost Index's own honesty vocabulary:
+        `measured-derived-absent`, `prediction-band`, `price-confidence`, `assessed-benchmark`,
+        `cme`, `ratio-bridge`, `cost-data`, `data-literacy`, `restaurant-numbers`, `freshness`,
+        `fda`. Freezing those would have been actively wrong.
+  - **⚠ CONTENT GAP the link graph exposed (not yet fixed):** roughly **11 core Cost-Index glossary
+    terms are linked from no article at all** — the ones listed just above. The company's own
+    defining vocabulary is not wired into its own writing. That is the *opposite* problem from
+    dilution and it is the more valuable one: these are exactly the terms a cost-intelligence
+    company should own definitionally and cite from its cost articles. Worth a pass that adds
+    genuine in-body links from the 27 cost/margin articles to this vocabulary.
   - **Mechanism + how to reverse.** 39 pages (20 EN + 19 ES; one is EN-only) had their existing
     robots meta changed from `content="max-image-preview:large, …"` to
     `content="noindex, follow, max-image-preview:large, …"`. **To unfreeze, delete the
