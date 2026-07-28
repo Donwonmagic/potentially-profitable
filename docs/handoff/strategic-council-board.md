@@ -20,7 +20,26 @@ council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 ## ⮕ CURRENT STATE — HONESTY-SPINE + VIZ THREAD (updated 2026-07-28)
 
 **Branch:** `claude/strategic-council-board-docs-g9yuen` (both repos). All work below is
-committed and pushed there; nothing is merged to main and no PR is open.
+committed and pushed there; no PR is open.
+
+**MAIN MERGED IN 2026-07-28** (`a22f7d7a9`) — 219 commits including PR #523 (Vendor Benchmark
+redesign + the per-ingredient open-data chain). One conflict, `data/library-tags.json`, resolved by
+keeping **both** sides' entries (main's `menu-pricing-grounded-100-ingredients-2026` and this
+branch's `restaurant-prime-cost`). `assets/site.css` auto-merged clean despite both sides touching
+it. Post-merge derived-artifact drift healed by running the seven in-chain injectors.
+
+  - **`check-all` is 327 of 327** — the first fully green container run in this thread. See the
+    ⚠ CORRECTION in Runbooks: the ten `(idem)` reds were one upstream cause (a stale CSS cache-bust
+    hash), not ten problems, and three of them were never deploy-healed to begin with.
+  - **Rule 9 vs PR #523 — checked, nothing to fix.** The worry recorded here was that #523's new
+    per-ingredient sections land in `cost-index/`, a tree with no figure gate before this thread.
+    They ship **no figures at all**: of 142 `cost-index/*/index.html` pages, exactly **one**
+    (`cost-index/menu-pricing/`) carries a `viz-figure`/`article-figure`. `GENERATED_ROOTS` skips
+    figureless pages by design, so the gate is silent and correct. Worth knowing as a content
+    observation, not a defect: 141 of 142 ingredient pages are prose + tables with no data figure.
+  - **Both new gates survived the merge unchanged**, which is the useful signal — they were not
+    tuned to this branch's tree. `check-claim-usage` 144 edges resolving across main's 219 commits;
+    `check-blog-index-links` 62 links (was 59), including main's new post.
 
 **Directive shift this session.** Muntin Ledger moved to **2027** — the operator is starting a
 college course, with little time or money for a launch. That inverts the strategy: the Cost Index
@@ -92,12 +111,21 @@ last-good). A year of coursework is close to the best thing that could happen to
     gate; this one had none. Re-vendored (→ 2026-07-20, 22 slugs) and
     `check-cost-pressure-snapshot-fresh.mjs` added, wired into ci.yml and into the weekly watch,
     which now covers both snapshots. Product commit `3475807`.
-  - **The CORS gap does NOT self-resolve when PR #523 lands.** #523's `_headers` adds
-    `Access-Control-Allow-Origin: *` + a CC0 `Link` for `/data/*.jsonl` and `/data/cpc-oni.txt`
-    only. It does **not** cover `/cost-index/*.json|csv` — the per-edition CC0 snapshots the site
-    actually tells people to cite ("Cite this edition", Dataset JSON-LD). After #523 merges, add a
-    block mirroring its `/data/*.jsonl` pattern. Deliberately NOT done now: `_headers` is modified
-    by #523, so touching it here guarantees a conflict in a file not worth fighting over.
+  - **~~The CORS gap does NOT self-resolve when PR #523 lands.~~ CLOSED 2026-07-28** — #523 merged,
+    `_headers` was free, and the block shipped (commit `decd4432e`). Detail worth keeping: the
+    obvious implementation was wrong. Mirroring the `/data/*.jsonl` pattern with one blanket
+    `/cost-index/*.json` CC0 rule would have **relicensed 13 CC-BY files in transit** — that
+    directory holds 9 files self-declaring CC0, 13 declaring CC BY 4.0, and 7 declaring nothing.
+    What shipped separates the two kinds of statement: **CORS broad** (it only lifts a browser read
+    restriction on files already public to any `curl` — no new exposure) and the **license `Link`
+    narrow** (`week-*.{json,csv}` only, where the JSON self-declares CC0 in-band, the Dataset
+    JSON-LD repeats it, and the dispatch's cite line prints "(CC0)").
+    `scripts/check-headers-license.mjs` now holds that line: every `_headers` rule sending a
+    `Link rel="license"` must match what each matched file declares — in-band for JSON, via
+    `cost-index/open-data-catalog.json` for NDJSON (which has no metadata slot, and which
+    `check-open-data-catalog.mjs` already gates for exactly this reason), or by a named waiver with
+    a written reason. Verified by **negative test**: widening the rule back to `/cost-index/*.json`
+    produces 20 violations naming the CC-BY files, then reverts clean.
   - **Correction to an earlier note in this thread:** the product's `.typecheck-baseline.json`
     carries **0** accepted errors (apps/api 0, apps/web 0, apps/email-worker 0, all stamped
     2026-07-03), not 2. An earlier statement in this session counted object keys, not errors.
@@ -137,8 +165,10 @@ last-good). A year of coursework is close to the best thing that could happen to
 
   1. **The `data/` posture.** Exclude it from the deploy tar, or license + document it and take
      the attribution. Currently neither.
-  2. **CORS on `/cost-index/*`.** One line in `_headers`. Serves already-stated CC0 intent, but it
-     is a publication-posture change, so it was left rather than shipped.
+  2. ~~**CORS on `/cost-index/*`.**~~ **DONE 2026-07-28** (commit `decd4432e`) — see the closed item
+     above. It turned out not to be a posture change at all: the site was already publishing
+     citation instructions for those files, so the missing header meant the instructions did not
+     work. What needed judgement was the license `Link`, not the CORS.
   3. **Cron the dispatch.** `cost-index-dispatch.yml` is `workflow_dispatch:` only — the
      publication does not publish itself, and its 38-day overdue gate goes red ~2026-08-16. Adding
      a cron would make it autonomous through the course, but it publishes live and emails the
@@ -974,6 +1004,35 @@ neither); vanilla publish-threshold. Freight double-count RESOLVED (one live ser
   safe on origin.** Recover: `git fetch origin <branch> && git reset --hard origin/<branch>`
   (working tree is usually clean). **Rule: commit + push every increment BEFORE any slower audit
   — the push is the only durable artifact.**
+- **⚠ CORRECTION 2026-07-28 — the "(idem)" set, verified against the actual deploy command.**
+  The entry below says the idem reds are "deploy-healed ... (sitemap, OG cards, CSS cache-bust,
+  site-counts, glossary/hub schema, RSS, H2 anchors, **theme/cuisine pages**)". That list is
+  **partly wrong**, and the wrong part is the dangerous part. Ground truth is the `build.command`
+  in `wrangler.jsonc:146` — one long `&&` chain ending `… && node scripts/check-all.mjs && mkdir -p
+  dist && tar … | tar -xf - -C dist`. Read it directly; do not infer it.
+    - **In the chain (genuinely deploy-healed):** `inject-css-cache-bust` (runs TWICE — once mid-chain
+      and again after the second `build-css-shells`/`inject-css-shells`), `wire-glossary-knit`,
+      `seed-glossary-og`, `inject-site-counts`, `inject-article-abstract-mentions`, `build-rss`,
+      `inject-italic-font-preloads`.
+    - **NOT in the chain:** `build-themes-review-board`, `build-theme-story-pages`,
+      `build-cuisine-landing-pages` — plus the already-documented `build-library`,
+      `build-cost-index-pages`, `build-claims-json`.
+    - **Why that matters:** `check-all.mjs` runs at the END of the chain, before the tar. A builder
+      that is NOT in the chain but IS in `check-all` cannot be healed by deploying — it **fails the
+      deploy**, and only a human running it and committing clears it. Treating those three as
+      "known noise" is how a red deploy gets ignored.
+    - **Why all ten looked identical anyway (2026-07-28):** they shared one upstream cause. The CSS
+      cache-bust hash was stale in the container, and the three theme/cuisine builders emit pages
+      carrying that stamp, so they reported drift downstream. Running `inject-css-cache-bust` alone
+      cleared all four of the long-standing reds and took `check-all` to **327/327** — the first
+      fully green container run in this thread. Diagnostic that separates real from phantom: run the
+      `--check` on `origin/main` too. Main showed 82 pages, this branch 1278; a shared condition
+      would show the same number on both, so the delta was this branch's own `assets/site.css` edit.
+    - **What the restamp did NOT fix:** nothing user-facing. An earlier commit message in this thread
+      claimed returning visitors were being served stale CSS and that the new viz families would
+      render unstyled. **That was wrong** — deploy re-stamps before tarring, so shipped pages always
+      carried fresh hashes. The value is that a container `check-all` is now trustworthy instead of
+      carrying ten phantom reds that train the next session to ignore reds.
 - **`check-all` deploy-regen baseline — the "(idem)" set.** A partial container run of
   `node scripts/check-all.mjs` reds on ~25 of ~258 checks; **all are deploy-healed idempotency
   builders** (sitemap, OG cards, CSS cache-bust, site-counts, glossary/hub schema, RSS, H2
