@@ -58,7 +58,13 @@ function loadPostEndCtaTool(slug, locale) {
   const data = JSON.parse(fs.readFileSync(f, 'utf8'));
   const entry = (data.posts || {})[slug];
   if (!entry) return null;
-  return locale === 'es' ? entry.tool_url_es : entry.tool_url_en;
+  const u = locale === 'es' ? entry.tool_url_es : entry.tool_url_en;
+  // The smart-next "Try" slot is a TOOL invitation — it stamps intent=watch and
+  // routes through workbench-save. If a post's configured CTA target is the
+  // cost-index instrument (or any non-tool/non-sheet path), fall back to the
+  // default tool rather than point "Try the tool that pairs" at a non-tool
+  // (which would also fail check-intent-param-targets).
+  return /^\/(?:es\/)?(?:tools|sheets)\//.test(u || '') ? u : null;
 }
 
 function firstGlossaryHrefIn(src) {

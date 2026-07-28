@@ -394,7 +394,12 @@ if (errs.length) { console.error('build-open-labor-page: honesty guard failed:\n
 if (args.has('--check')) {
   const p = path.join(repo, OUT);
   const cur = fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : null;
-  if (cur !== html) { console.error(`✗ ${OUT} is stale — run: node scripts/build-open-labor-page.mjs`); process.exit(1); }
+  // Compare only the generator-owned body (<header class="mast"> … </main>): the
+  // deploy chain injects the canonical nav/footer (sync-includes) + dark-mode +
+  // css-cache-bust around and above this body AFTER generation, so a full-string
+  // compare would always drift post-inject. The body is injector-untouched.
+  const body = (s) => { if (s == null) return s; const a = s.indexOf('<header class="mast">'); const b = s.lastIndexOf('</main>'); return (a >= 0 && b > a) ? s.slice(a, b) : s; };
+  if (body(cur) !== body(html)) { console.error(`✗ ${OUT} is stale — run: node scripts/build-open-labor-page.mjs`); process.exit(1); }
   console.log(`✓ ${OUT} in sync.`);
   process.exit(0);
 }

@@ -82,7 +82,31 @@ const REGISTRY = [
   },
 ];
 
-function checkSurface(html, reg) {
+// The bespoke /open explorer pages ship with the canonical nav + footer
+// (sync-includes) and dark-mode/css-cache-bust injected in the deploy build,
+// AROUND the generator-owned body. Scope the honesty scan to that body
+// (<header class="mast"> … </main>) so an injected footer/script "$", nav
+// token, or cross-lane word can't trip the checks. The license chips and the
+// required caveat literals all live inside this body (the mast lede + the main
+// content). Falls back to the whole string when the anchors are absent
+// (self-test fixtures).
+function contentRegion(s) {
+  const a = s.indexOf('<header class="mast">');
+  if (a < 0) return s; // self-test fixtures have no page chrome
+  // End at the injected site footer: sync-includes emits a bare <footer> near
+  // </body> (its "$" would false-trip the no-price check), while the in-content
+  // provenance footer is <footer class="prov"> and stays inside the region. The
+  // generator's client-render <script> blocks (which carry the co-occurrence
+  // caveat literal) live between </main> and that footer, so they must be kept.
+  const mainEnd = s.indexOf('</main>', a);
+  const from = mainEnd >= 0 ? mainEnd : a;
+  let b = s.indexOf('<footer>', from);
+  if (b < 0) b = s.indexOf('</body>', from);
+  if (b < 0) b = s.length;
+  return s.slice(a, b);
+}
+function checkSurface(rawHtml, reg) {
+  const html = contentRegion(rawHtml);
   const problems = [];
   const aff = affirmative(html);
   // shared co-occurrence vocabulary
