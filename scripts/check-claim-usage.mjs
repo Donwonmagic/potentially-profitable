@@ -30,6 +30,12 @@
  *           claim without rendering its URL (a claim-id reference, a shortened
  *           or redirected link, an ES translation citing the EN source). Warn,
  *           never fail, or the gate would punish correct citations.
+ *   WARN  — a page that RENDERS a claim's source_url but is not listed in that
+ *           claim's used_in. The inverse rot: an ES translation ships citing
+ *           the same sources as its EN original and nobody updates the registry.
+ *           79 such citations existed when this gate landed. Warn rather than
+ *           fail, because a page may render a URL incidentally (a related-links
+ *           rail, a quoted example) without that being a citation.
  *   INFO  — a claim with an empty used_in. Registered but not currently cited.
  *           Legitimate for a claim awaiting use and for operator-bio facts that
  *           are referenced in prose rather than per-article, so this is reported
@@ -121,8 +127,29 @@ if (args.has('--self-test')) selfTest();
 
 const registry = JSON.parse(fs.readFileSync(path.join(REPO, REGISTRY), 'utf8'));
 
+// Every article body, indexed once, so the bidirectional check is one pass.
+const ARTICLE_ROOTS = ['library', 'blog', 'es/library', 'es/blog', 'learn/research'];
+const articles = [];
+for (const root of ARTICLE_ROOTS) {
+  const dir = path.join(REPO, root);
+  if (!fs.existsSync(dir)) continue;
+  for (const name of fs.readdirSync(dir)) {
+    const file = path.join(dir, name, 'index.html');
+    if (!fs.existsSync(file)) continue;
+    articles.push({
+      // match the registry's existing convention: bare slug for EN library/blog,
+      // full path for everything else.
+      ref: root === 'library' || root === 'blog' ? name : `${root}/${name}`,
+      bare: name,
+      slug: `${root}/${name}`,
+      html: fs.readFileSync(file, 'utf8'),
+    });
+  }
+}
+
 const errors = [];
 const warnings = [];
+const undocumented = [];
 const uncited = [];
 let edges = 0;
 
@@ -143,12 +170,26 @@ for (const group of GROUPS) {
         warnings.push(`${id}: "${value}" exists but does not render ${url}`);
       }
     }
+    // Inverse: pages that cite this claim's source but are not declared.
+    const url = bareUrl(entry.source_url);
+    if (url) {
+      const declared = new Set(used.map((u) => String(u).replace(/^\/+|\/+$/g, '')));
+      for (const a of articles) {
+        if (!a.html.includes(url)) continue;
+        if (declared.has(a.bare) || declared.has(a.slug)) continue;
+        undocumented.push(`${id}: ${a.slug} renders ${url} but is not in used_in`);
+      }
+    }
   }
 }
 
 for (const w of warnings) console.error(`  warn  ${w}`);
 if (warnings.length) {
   console.error(`check-claim-usage: ${warnings.length} warning(s) — a page may cite a claim without rendering its URL; verify before editing.\n`);
+}
+for (const u of undocumented) console.error(`  warn  ${u}`);
+if (undocumented.length) {
+  console.error(`check-claim-usage: ${undocumented.length} undocumented citation(s) — a page cites the source but the registry does not record it. Add the page to that claim's used_in.\n`);
 }
 if (uncited.length) {
   console.log(`check-claim-usage: ${uncited.length} claim(s) registered but not cited anywhere — ${uncited.join(', ')}`);

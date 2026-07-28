@@ -27,7 +27,8 @@
       "used_in": [
         "tools/vendor-benchmark/",
         "tools/_shared/fair-price-gap.js",
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "es/library/costo-primo-de-restaurante"
       ],
       "notes": "10–30% savings range cross-checked across Restaurant Business (GPO 101 / Dining Alliance, Foodbuy), FoodIndustry.com, and SevenRooms (snippet-verified; full fetches 403-blocked). Directional leverage figure used in the Fair-Price Gap 'worth asking' copy — it frames the upside of negotiating/aggregating when a paid price sits far above the wholesale reference, not a guaranteed saving."
     },
@@ -52,7 +53,8 @@
       "used_in": [
         "tools/plate-cost/",
         "docs/strategy-cost-intelligence-app.md",
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "es/library/costo-primo-de-restaurante"
       ],
       "notes": "28–35% band and service-model breakdown cross-checked across Restaurant365, NetSuite restaurant benchmarks, getmeez, and ChowNow (snippet-verified; full fetch blocked 403). Grounds the default food-cost target in tools/_shared/plate-market-recost.js. Segment edges are approximate industry ranges, not one authority's exact figure — keep labeled as a band."
     },
@@ -75,7 +77,8 @@
       "url_status": "deep-link",
       "used_in": [
         "docs/strategy-cost-intelligence-app.md",
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "es/library/costo-primo-de-restaurante"
       ],
       "notes": "Snippet-verified (full fetch blocked 403). The ~4.4% YoY menu figure aligns with the BLS 'food away from home' CPI trend; the 36%+ wholesale-vs-pre-pandemic figure is Barmetrix's compilation. Re-check against BLS CPI/PPI before any hard number lands in prose; treat as directional. This gap is the core motivation for automatic market recost."
     },
@@ -88,7 +91,8 @@
       "used_in": [
         "tools/plate-cost/",
         "docs/strategy-cost-intelligence-app.md",
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "es/library/costo-primo-de-restaurante"
       ],
       "notes": "Snippet-verified across GoFoodService and MarketMan recipe-costing guidance (full fetch blocked 403). Grounds the recost capability's value proposition: automatic market recost vs the existing 'quarterly check-in' manual banner."
     },
@@ -99,7 +103,8 @@
       "date_verified": "2026-07-23",
       "url_status": "deep-link",
       "used_in": [
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "es/library/costo-primo-de-restaurante"
       ],
       "notes": "Benchmark / rule-of-thumb, NOT a measured statistic — present as 'a common industry benchmark,' a band, never a guarantee. Wording ('full-service 60-65%, quick service 55-60%', ~60% overall target) corroborated across multiple Restaurant365 pages (how-to-calculate-prime-cost, prime-cost-accounting-explained, 5-recommendations-to-reduce-prime-cost); undated blog; direct primary fetch 403-blocked in-container, verified via search extraction 2026-07-23. Keep every per-restaurant dollar split labeled illustrative."
     },
@@ -110,7 +115,8 @@
       "date_verified": "2026-07-23",
       "url_status": "deep-link",
       "used_in": [
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "es/library/costo-primo-de-restaurante"
       ],
       "notes": "Released Feb 2026; corroborated by WTOP (chief-economist quote), Restaurant Dive, Franchise Times. Do NOT bundle the '>10% price-raisers expect lower profit' cross-tab under this key — that is a separate (James Beard Foundation) claim, snippet-only, carried in-article via an inline <details class=cite> and framed illustrative/reported, NOT registered here. Direct primary fetch 403-blocked in-container; verified via search extraction 2026-07-23."
     },
@@ -121,7 +127,8 @@
       "date_verified": "2026-07-23",
       "url_status": "deep-link",
       "used_in": [
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "es/library/costo-primo-de-restaurante"
       ],
       "notes": "Popmenu, NOT NRA. Anonymous survey of 328 U.S. operators fielded Jan 8-31, 2026. NRA coverage echoes a similar 71/57 line — attribute to Popmenu to avoid conflation. Direct PRNewswire fetch 403-blocked in-container; figure + sample verified via search extraction and FSR/QSR coverage 2026-07-23."
     },
@@ -132,7 +139,10 @@
       "date_verified": "2026-07-23",
       "url_status": "deep-link",
       "used_in": [
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "restaurant-menu-inflation-2026",
+        "es/library/costo-primo-de-restaurante",
+        "es/blog/inflacion-de-menu-de-restaurante-2026"
       ],
       "notes": "Food-away-from-home is a menu-PRICE index (what diners pay), not operator input cost — use ONLY for the menu-price vs grocery-price comparison. Corroborated by FMI statement 2026-07-14. Direct bls.gov fetch 403-blocked in-container; verified via search extraction 2026-07-23."
     },
@@ -143,7 +153,8 @@
       "date_verified": "2026-05-22",
       "url_status": "tld-only",
       "used_in": [
-        "may-2026-discovery-changed-under-you"
+        "may-2026-discovery-changed-under-you",
+        "es/blog/la-busqueda-cambio-bajo-tus-pies-mayo-2026"
       ],
       "notes": "Google Search Status Dashboard (status page; tld-only). 'Up to two weeks' is Google's estimate, not a confirmed end date."
     },
@@ -198,7 +209,8 @@
       "date_verified": "2026-05-22",
       "url_status": "deep-link",
       "used_in": [
-        "get-found-fathers-day-weekend-2026"
+        "get-found-fathers-day-weekend-2026",
+        "es/blog/dia-del-padre-que-te-encuentren-2026"
       ],
       "notes": "OpenTable 2026 diner-trends figure (snippet-verified; full fetch blocked). Earlier-circulating 86%/45%/20->29% stats were NOT supported by this report and were dropped."
     },
@@ -243,7 +255,8 @@
       "date_verified": "2026-05-14",
       "url_status": "deep-link",
       "used_in": [
-        "30-days-after-leaving-doordash-restaurant-case-study"
+        "30-days-after-leaving-doordash-restaurant-case-study",
+        "es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante"
       ],
       "notes": "DoorDash Merchant pricing page. Verified via search 2026-05-14. The three Marketplace tiers (Basic 15%, Plus 25%, Premier 30%) are documented here; pickup commission is reduced to 6% across all tiers. Re-check quarterly because DoorDash renames tiers periodically."
     },
@@ -272,7 +285,8 @@
       "date_verified": "2026-05-14",
       "url_status": "deep-link",
       "used_in": [
-        "toast-vs-square-vs-clover-for-restaurants"
+        "toast-vs-square-vs-clover-for-restaurants",
+        "es/library/toast-vs-square-vs-clover-para-restaurantes"
       ],
       "notes": "Toast Loyalty product page. Verified via search 2026-05-14. Pricing: $50/month as an add-on to the core Toast POS platform."
     },
@@ -283,7 +297,8 @@
       "date_verified": "2026-05-14",
       "url_status": "deep-link",
       "used_in": [
-        "toast-vs-square-vs-clover-for-restaurants"
+        "toast-vs-square-vs-clover-for-restaurants",
+        "es/library/toast-vs-square-vs-clover-para-restaurantes"
       ],
       "notes": "Square Loyalty pricing help article. Verified via search 2026-05-14. Starting pricing $25/month per location; 30-day free trial available."
     },
@@ -331,7 +346,13 @@
       "url_status": "deep-link",
       "used_in": [
         "my-restaurant-isnt-on-google-maps-10-minute-diagnostic",
-        "how-to-set-up-google-business-profile-for-your-restaurant"
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "does-my-restaurant-need-a-website",
+        "how-to-get-more-google-reviews-for-your-restaurant",
+        "restaurant-local-seo",
+        "es/library/como-configurar-google-business-profile-para-tu-restaurante",
+        "es/library/como-conseguir-mas-resenas-google-para-tu-restaurante",
+        "es/library/seo-local-para-restaurantes"
       ],
       "notes": "Google Business Profile Help — \"Improve your local ranking.\" Stable Google support answer ID; URL has been live for years."
     },
@@ -386,7 +407,8 @@
       "used_in": [
         "reservation-conversion-guide",
         "learn/research/fittss-law",
-        "learn/research/local-business-websites"
+        "learn/research/local-business-websites",
+        "es/library/guia-conversion-reservas"
       ],
       "notes": "NNG canonical Fitts's Law article. Verified via search 2026-05-14. The library previously linked to /articles/fittss-law/ (double-S) which 404'd — the canonical slug is /articles/fitts-law/ (single S). For non-Fitts NNG references (e.g. local-business usability), the library now credits NNG as a source-on-the-topic with a TLD or topic-page link rather than fabricating a specific article slug."
     },
@@ -398,7 +420,8 @@
       "url_status": "deep-link",
       "used_in": [
         "reservation-conversion-guide",
-        "learn/research/cart-abandonment-rate"
+        "learn/research/cart-abandonment-rate",
+        "es/library/guia-conversion-reservas"
       ],
       "notes": "Baymard canonical cart-abandonment list. Verified via search 2026-05-14. Current average rate ~70.22% based on 50 studies. URL was correct in the library's original citation; the previous defensive sweep that degraded it to a TLD-only link has been reversed."
     },
@@ -411,7 +434,9 @@
       "used_in": [
         "wix-vs-custom-for-restaurants",
         "reservation-conversion-guide",
-        "learn/research/mobile-page-speed-3-second-rule"
+        "learn/research/mobile-page-speed-3-second-rule",
+        "es/library/guia-conversion-reservas",
+        "es/library/wix-vs-custom-para-restaurantes"
       ],
       "notes": "Think with Google canonical page on mobile page-speed benchmarks. Verified via search 2026-05-14. Source of the \"53% of mobile site visitors leave a page that takes longer than three seconds to load\" stat. URL was correct in the library's original citation."
     },
@@ -430,7 +455,9 @@
       "date_verified": "2026-06-14",
       "used_in": [
         "restaurant-menu-inflation-2026",
-        "inflacion-de-menu-de-restaurante-2026"
+        "inflacion-de-menu-de-restaurante-2026",
+        "restaurant-prime-cost",
+        "es/library/costo-primo-de-restaurante"
       ],
       "notes": "Not seasonally adjusted, 12-month change. Verified from the primary release text."
     },
@@ -441,7 +468,9 @@
       "date_verified": "2026-06-14",
       "used_in": [
         "restaurant-menu-inflation-2026",
-        "inflacion-de-menu-de-restaurante-2026"
+        "inflacion-de-menu-de-restaurante-2026",
+        "restaurant-prime-cost",
+        "es/library/costo-primo-de-restaurante"
       ],
       "notes": "Not seasonally adjusted, 12-month change."
     },
@@ -485,7 +514,12 @@
       "date_verified": "2026-06-14",
       "used_in": [
         "restaurant-menu-inflation-2026",
-        "inflacion-de-menu-de-restaurante-2026"
+        "inflacion-de-menu-de-restaurante-2026",
+        "restaurant-prime-cost",
+        "cost-index-2026-07",
+        "cost-index-week-2026-06-18",
+        "cost-index-week-2026-07-06",
+        "es/library/costo-primo-de-restaurante"
       ],
       "notes": "In-repo fact-gated value; provenance usda-lmr, asOf 2026-06-05, weekly flag verdict 'flat'."
     },
@@ -496,7 +530,8 @@
       "date_verified": "2026-06-18",
       "url_status": "deep-link",
       "used_in": [
-        "get-found-fathers-day-weekend-2026"
+        "get-found-fathers-day-weekend-2026",
+        "es/blog/dia-del-padre-que-te-encuentren-2026"
       ],
       "notes": "Verifiable calendar fact."
     },
@@ -507,7 +542,8 @@
       "date_verified": "2026-06-18",
       "url_status": "deep-link",
       "used_in": [
-        "get-found-fathers-day-weekend-2026"
+        "get-found-fathers-day-weekend-2026",
+        "es/blog/dia-del-padre-que-te-encuentren-2026"
       ],
       "notes": "Qualitative ranking from NRA research; no specific volume cited in the post."
     },
@@ -518,7 +554,8 @@
       "date_verified": "2026-06-18",
       "url_status": "deep-link",
       "used_in": [
-        "get-found-fathers-day-weekend-2026"
+        "get-found-fathers-day-weekend-2026",
+        "es/blog/dia-del-padre-que-te-encuentren-2026"
       ],
       "notes": "Directional trend; the post states no specific percentage."
     },
@@ -534,7 +571,49 @@
         "ledger/demo/",
         "es/ledger/demo/",
         "index.html",
-        "es/index.html"
+        "es/index.html",
+        "commission-free-online-ordering-restaurants",
+        "custom-restaurant-website-pricing",
+        "google-review-response-playbook",
+        "how-to-get-cited-in-google-ai-overviews-restaurant",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "how-to-tell-if-a-restaurant-tool-is-safe",
+        "keep-plate-cost-honest-when-prices-change",
+        "loyalty-program-roi",
+        "menu-design-themes",
+        "my-restaurant-isnt-on-google-maps-10-minute-diagnostic",
+        "privacy-forward-restaurant-bookkeeping",
+        "restaurant-app-decision",
+        "restaurant-menu-engineering",
+        "restaurant-prime-cost",
+        "service-charge-vs-tipping-model",
+        "third-party-delivery-comparison",
+        "third-party-delivery-economics",
+        "toast-vs-square-vs-clover-for-restaurants",
+        "what-beef-prices-mean-for-your-restaurant",
+        "30-days-after-leaving-doordash-restaurant-case-study",
+        "instagram-as-restaurant-seo-strategy-2026",
+        "restaurant-menu-inflation-2026",
+        "es/library/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026",
+        "es/library/como-lograr-que-google-cite-tu-restaurante-en-ai-overview",
+        "es/library/como-responder-resenas-google-restaurante-playbook-2026",
+        "es/library/como-saber-si-una-herramienta-de-restaurante-es-segura",
+        "es/library/como-salir-de-doordash-mi-restaurante",
+        "es/library/como-subir-precios-de-menu-sin-perder-reservas",
+        "es/library/contabilidad-de-restaurante-con-privacidad",
+        "es/library/costo-del-plato-cuando-cambian-los-precios",
+        "es/library/costo-primo-de-restaurante",
+        "es/library/decision-app-restaurante",
+        "es/library/ingenieria-de-menu-para-restaurantes",
+        "es/library/menu-design-themes",
+        "es/library/pedidos-en-linea-sin-comision-para-restaurantes",
+        "es/library/precios-de-la-carne-de-res-para-tu-restaurante",
+        "es/library/programas-de-lealtad-para-restaurantes-independientes-2026",
+        "es/library/toast-vs-square-vs-clover-para-restaurantes",
+        "es/library/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026",
+        "es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante",
+        "es/blog/inflacion-de-menu-de-restaurante-2026",
+        "es/blog/instagram-como-seo-para-restaurante-2026"
       ]
     }
   },
