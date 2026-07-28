@@ -31,7 +31,15 @@ function itemOut(slug, it) {
     regime_break: it.changePoint && it.changePoint.date ? { date: it.changePoint.date } : (it.changePoint ? { date: it.changePoint } : null),
   };
 }
-function items(data) { return Object.keys(data.items).sort().map((s) => itemOut(s, data.items[s])); }
+// Source stores items as an array of rows with a `key` slug; also accept a slug-keyed object.
+function items(data) {
+  const raw = data.items;
+  if (Array.isArray(raw)) {
+    return raw.map((it) => itemOut(it.key, it)).sort((a, b) => (a.slug < b.slug ? -1 : a.slug > b.slug ? 1 : 0));
+  }
+  return Object.keys(raw).sort().map((s) => itemOut(s, raw[s]));
+}
+function itemCount(data) { return Array.isArray(data.items) ? data.items.length : Object.keys(data.items).length; }
 
 function buildJson(data) {
   const its = items(data);
@@ -71,8 +79,13 @@ function selfTest() {
   const csv = buildCsv({ items: { x: it } });
   eq('csv header', csv.split('\n')[0], 'slug,kind,date,value_cents,score');
   eq('csv has both kinds', csv.split('\n').filter((l) => l.includes('point_outlier') || l.includes('regime_break')).length, 2);
+  const jArr = buildJson({ items: [it] });
+  eq('array items use key as slug', jArr.ingredients[0].slug, 'x');
+  eq('array csv uses key', buildCsv({ items: [it] }).split('\n')[1].split(',')[0], 'x');
   const live = load();
-  eq('live count == items', buildJson(live).count, Object.keys(live.items).length);
+  const liveJson = buildJson(live);
+  eq('live count == items', liveJson.count, itemCount(live));
+  eq('live slugs are ingredient keys', liveJson.ingredients.every((x) => typeof x.slug === 'string' && x.slug && !/^\d+$/.test(x.slug)), true);
   console.log(`build-anomaly-open-data self-test: ${pass}/${pass + fail} passed.`);
   process.exit(fail ? 1 : 0);
 }
@@ -92,4 +105,4 @@ if (args.has('--check')) {
   process.exit(0);
 }
 for (const a of artifacts) fs.writeFileSync(path.join(repoRoot, a.rel), a.content);
-console.log(`Wrote cost-index/anomaly-log.{json,csv} — ${Object.keys(data.items).length} ingredient(s).`);
+console.log(`Wrote cost-index/anomaly-log.{json,csv} — ${itemCount(data)} ingredient(s).`);
