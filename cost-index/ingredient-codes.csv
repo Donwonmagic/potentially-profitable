@@ -2,7 +2,7 @@ slug,authority,code,label,granularity,native_level,binding,shared_with,note
 acorn-squash,census_hs,0709932035,"ACORN SQUASH, CERT ORG",line,hs10,slug_aggregates_codes,,
 acorn-squash,census_hs,0709932085,"ACORN SQUASH, FRESH OR CHILLED",line,hs10,slug_aggregates_codes,,"Fresh acorn squash, non-organic + organic (0709932035) summed."
 acorn-squash,usda_ers,Fresh squash: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-acorn-squash,usda_nass,SQUASH,SQUASH,commodity,nass_commodity,exact,,
+acorn-squash,usda_nass,SQUASH,SQUASH,commodity,nass_commodity,code_shared_by_slugs,butternut-squash;yellow-squash;zucchini,
 ahi-tuna,census_hs,030232,"YELLOWFIN TUNAS, FRESH OR CHILLED",commodity,hs6,slug_aggregates_codes,,
 ahi-tuna,census_hs,030235,"ATLANTIC & PACIFIC BLUEFIN TUNAS, FRESH OR CHILLED",commodity,hs6,slug_aggregates_codes,,
 ahi-tuna,noaa_fisheries,ahi-tuna,Ahi tuna (yellowfin + bigeye),group,noaa_category,exact,,"Ahi = yellowfin + bigeye specifically — matched as that pair, not the whole tuna group."
@@ -20,12 +20,12 @@ asparagus,census_hs,070920,"ASPARAGUS, FRESH OR CHILLED",commodity,hs6,exact,,
 asparagus,usda_ers,Fresh asparagus: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
 asparagus,usda_nass,ASPARAGUS,ASPARAGUS,commodity,nass_commodity,exact,,
 avocado,census_hs,080440,"AVOCADOS, FRESH OR DRIED",commodity,hs6,exact,,
-avocado,ghcn_weather,mx-michoacan,"Morelia + Zamora, Michoacan — avocado, lime, citrus, berry",proxy,weather_region,code_shared_by_slugs,lime;lemon,stated origin: Mexico 88%
+avocado,ghcn_weather,mx-michoacan,"Morelia + Zamora, Michoacan — avocado, lime, citrus, berry",proxy,weather_region,code_shared_by_slugs,lemon;lime,stated origin: Mexico 88%
 avocado,usda_ers,Fresh avocados: Supply and use,fruit-fresh,commodity,ers_commodity,exact,,scope: commodity
 avocado,usda_nass,AVOCADOS,AVOCADOS,commodity,nass_commodity,exact,,
 bacon,census_hs,021012,"MEAT OF SWINE, BELLIES (BACON ETC), CURED",commodity,hs6,exact,,
 bacon,usda_ers,Pork: Supply and use - carcass weight,red-meat,commodity,ers_commodity,exact,,scope: commodity
-bacon,usda_nass,HOGS,HOGS,commodity,nass_commodity,exact,,
+bacon,usda_nass,HOGS,HOGS,commodity,nass_commodity,code_shared_by_slugs,pork-belly;pork-loin;pork-shoulder,
 banana,census_hs,080390,"BANANAS, FRESH OR DRIED, NESOI",commodity,hs6,exact,,
 banana,usda_ers,Fresh bananas: Supply and use,fruit-fresh,commodity,ers_commodity,exact,,scope: commodity
 banana,usda_nass,BANANAS,BANANAS,commodity,nass_commodity,exact,,US bananas are Hawaii/PR only — a tiny domestic share vs imports (expect very high import reliance).
@@ -33,11 +33,11 @@ basil,usda_nass,BASIL,BASIL,commodity,nass_commodity,exact,,Herb — NASS covers
 beef-tenderloin,census_hs,0201305045,"MEAT,BVNE BNELESS FR/CH US NT 3 EXC PRCSD,LOIN",line,hs10,aggregate_and_shared,striploin,"The boneless beef LOIN primal (fresh) — strip loin, short loin (tenderloin) and sirloin; summed with its frozen twin (0202305045). Not split finer at HS10; data from 2017."
 beef-tenderloin,census_hs,0202305045,"MEAT,BVINE BONELESS FRZN US NTE 3 EXC PRCSD, LOIN",line,hs10,aggregate_and_shared,striploin,
 beef-tenderloin,usda_ers,Beef: Supply and use - carcass weight,red-meat,commodity,ers_commodity,exact,,scope: commodity
-beef-tenderloin,usda_nass,CATTLE,CATTLE,commodity,nass_commodity,exact,,
+beef-tenderloin,usda_nass,CATTLE,CATTLE,commodity,nass_commodity,code_shared_by_slugs,ground-beef;ribeye;short-rib;striploin,
 beet,census_hs,0706903000,"BEETS AND HORSERADISH, FRESH OR CHILLED",line,hs10,exact,,Salad beets and horseradish.
 beet,usda_nass,BEETS,BEETS,commodity,nass_commodity,exact,,
 bell-pepper,census_hs,07096040,"SWEET BELL-TYPE PEPPERS (HS8 0709.60.40, all leaves)",line,hs8,exact,,"All sweet bell-type peppers — every color, field & greenhouse, organic or not — summed via the HS8 subheading. HS10 splits peppers into bell vs chili."
-bell-pepper,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,tomato;jalapeno;serrano-pepper;poblano-pepper;habanero-pepper;cucumber;eggplant,stated origin: Mexico 73%
+bell-pepper,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,cucumber;eggplant;habanero-pepper;jalapeno;poblano-pepper;serrano-pepper;tomato,stated origin: Mexico 73%
 bell-pepper,usda_ers,Fresh bell peppers: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
 bell-pepper,usda_nass,PEPPERS / BELL,PEPPERS,line,nass_commodity_class,exact,,NASS peppers; bell vs chili class where available.
 black-pepper,census_hs,090411,"PEPPER OF GENUS PIPER, WHOLE",commodity,hs6,slug_aggregates_codes,,
@@ -50,15 +50,15 @@ blueberry,ghcn_weather,pe-coast,Peru central coast (blueberry) — refine toward
 blueberry,usda_ers,Fresh blueberries: Supply and use,fruit-fresh,commodity,ers_commodity,exact,,scope: commodity
 blueberry,usda_nass,BLUEBERRIES,BLUEBERRIES,commodity,nass_commodity,exact,,
 bok-choy,census_hs,0704904015,"BOK CHOY, FRESH OR CHILLED, NESOI",line,hs10,exact,,Bok choy specifically.
-bok-choy,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,kale;collard-greens;brussels-sprouts;cilantro;leek;daikon;rutabaga,stated origin: Mexico 78%
-bok-choy,usda_nass,GREENS,GREENS,commodity,nass_commodity,exact,,
+bok-choy,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,brussels-sprouts;cilantro;collard-greens;daikon;kale;leek;rutabaga,stated origin: Mexico 78%
+bok-choy,usda_nass,GREENS,GREENS,commodity,nass_commodity,code_shared_by_slugs,collard-greens;kale,
 branzino,census_hs,030284,"SEABASS, FRESH OR CHILLED",commodity,hs6,exact,,
 broccoli,census_hs,0704904022,"BROCCOLI INCL SPROUTING, FR/CH, CERT ORG",line,hs10,slug_aggregates_codes,,
 broccoli,census_hs,0704904024,"BROCCOLI INCL SPROUTING, FR/CH",line,hs10,slug_aggregates_codes,,"Broccoli incl sprouting, non-organic + organic (0704904022) summed. The US schedule moved broccoli to 0704.90 in 2022; earlier years sat with cauliflower under 0704.10, so this is the recent-years broccoli stream."
 broccoli,usda_ers,Fresh broccoli: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
 broccoli,usda_nass,BROCCOLI,BROCCOLI,commodity,nass_commodity,exact,,
 brussels-sprouts,census_hs,070420,"BRUSSELS SPROUTS, FRESH OR CHILLED",commodity,hs6,exact,,
-brussels-sprouts,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,kale;bok-choy;collard-greens;cilantro;leek;daikon;rutabaga,stated origin: Mexico 87%
+brussels-sprouts,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,bok-choy;cilantro;collard-greens;daikon;kale;leek;rutabaga,stated origin: Mexico 87%
 brussels-sprouts,usda_ers,Fresh brussels sprouts: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
 brussels-sprouts,usda_nass,BRUSSELS SPROUTS,BRUSSELS SPROUTS,commodity,nass_commodity,exact,,
 butter,census_hs,040510,BUTTER,commodity,hs6,exact,,
@@ -66,17 +66,17 @@ butter,usda_nass,BUTTER,BUTTER,commodity,nass_commodity,exact,,NASS dairy-produc
 butter-lettuce,census_hs,0705192040,"LETTUCE, BUTTERHEAD, FRESH/CHILLED (6/1-10/31)",line,hs10,slug_aggregates_codes,,
 butter-lettuce,census_hs,0705194040,"LETTUCE, BUTTERHEAD, FRESH/CHILLED (11/1-5/31)",line,hs10,slug_aggregates_codes,,"Butterhead lettuce, summed across entry periods (0705192040)."
 butter-lettuce,usda_ers,Fresh head lettuce: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-butter-lettuce,usda_nass,LETTUCE / LEAF,LETTUCE,line,nass_commodity_class,exact,,Butterhead falls in NASS leaf/other lettuce.
+butter-lettuce,usda_nass,LETTUCE / LEAF,LETTUCE,line,nass_commodity_class,code_shared_by_slugs,green-leaf-lettuce;red-leaf-lettuce,Butterhead falls in NASS leaf/other lettuce.
 butternut-squash,census_hs,0709932022,"BUTTERNUT SQUASH, CERT ORG",line,hs10,slug_aggregates_codes,,
 butternut-squash,census_hs,0709932060,"BUTTERNUT SQUASH, FRESH OR CHILLED",line,hs10,slug_aggregates_codes,,"Fresh butternut squash, non-organic + organic (0709932022) summed."
 butternut-squash,usda_ers,Fresh squash: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-butternut-squash,usda_nass,SQUASH,SQUASH,commodity,nass_commodity,exact,,
+butternut-squash,usda_nass,SQUASH,SQUASH,commodity,nass_commodity,code_shared_by_slugs,acorn-squash;yellow-squash;zucchini,
 button-mushroom,census_hs,070951,"MUSHROOMS OF THE GENUS AGARICUS, FRESH OR CHILLED",commodity,hs6,exact,,Fresh Agaricus (white button / cremini).
 button-mushroom,usda_ers,Fresh mushrooms: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-button-mushroom,usda_nass,MUSHROOMS,MUSHROOMS,commodity,nass_commodity,exact,,
+button-mushroom,usda_nass,MUSHROOMS,MUSHROOMS,commodity,nass_commodity,code_shared_by_slugs,shiitake,
 cabbage,census_hs,0704902000,"CABBAGE, FRESH OR CHILLED",line,hs10,exact,,Fresh cabbage specifically.
 cabbage,usda_ers,Fresh cabbage: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-cabbage,usda_nass,CABBAGE,CABBAGE,commodity,nass_commodity,exact,,
+cabbage,usda_nass,CABBAGE,CABBAGE,commodity,nass_commodity,code_shared_by_slugs,napa-cabbage,
 canned-tomatoes,census_hs,200210,"TOMATOES WHOLE/PIECES, PREPARED/PRESERVED",commodity,hs6,exact,,
 canned-tuna,census_hs,160414,"TUNAS/SKIPJACK/BONITO, PREPARED OR PRESERVED",commodity,hs6,exact,,
 cantaloupe,census_hs,080719,"MELONS(EXCEPT WATERMELONS) AND PAPAYAS, FRESH",commodity,hs6,exact,,HS6 combines other melons (cantaloupe/honeydew) and papayas; broader than cantaloupe alone.
@@ -102,7 +102,7 @@ celery,usda_ers,Fresh celery: Supply and use,vegetables-fresh,commodity,ers_comm
 celery,usda_nass,CELERY,CELERY,commodity,nass_commodity,exact,,
 chayote,census_hs,0709991000,"CHAYOTE (SECHIUM EDULE), FRESH OR CHILLED",line,hs10,exact,,Fresh chayote.
 cheddar-cheese,census_hs,040690,"CHEESE, NESOI, INCLUDING CHEDDAR AND COLBY",commodity,hs6,exact,,"The 'other cheese' basket, explicitly including cheddar and colby; broader than cheddar alone."
-cheddar-cheese,usda_nass,CHEESE,CHEESE,commodity,nass_commodity,exact,,
+cheddar-cheese,usda_nass,CHEESE,CHEESE,commodity,nass_commodity,code_shared_by_slugs,mozzarella;processed-cheese,
 cherry,census_hs,080929,"CHERRIES, FRESH, NESOI",commodity,hs6,exact,,
 cherry,usda_nass,CHERRIES / SWEET,CHERRIES,line,nass_commodity_class,exact,,
 cherry-tomato,census_hs,0702002019,"CHERRY GREENHOUSE TOMATO, FR",line,hs10,slug_aggregates_codes,,"Cherry tomatoes specifically, summed across entry periods and greenhouse/field lines (a subset of the all-tomatoes total on tomato)."
@@ -112,13 +112,13 @@ cherry-tomato,census_hs,0702004041,"CHERRY TOMATOES (7/15-8/31), FR/CH NESOI",li
 cherry-tomato,census_hs,0702006019,"CHERRY GRNHSE TOMATO (11/15-FEB), FR/CH NESOI",line,hs10,slug_aggregates_codes,,
 cherry-tomato,census_hs,0702006039,"CHERRY TOMATO (11/15-FEB), NESOI",line,hs10,slug_aggregates_codes,,
 cherry-tomato,usda_ers,Fresh tomatoes (field and hothouse): Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-cherry-tomato,usda_nass,TOMATOES / FRESH MARKET,TOMATOES,line,nass_commodity_class,exact,,Shares the fresh-market tomato commodity; no cherry split in NASS.
+cherry-tomato,usda_nass,TOMATOES / FRESH MARKET,TOMATOES,line,nass_commodity_class,code_shared_by_slugs,tomato,Shares the fresh-market tomato commodity; no cherry split in NASS.
 chicken-breast,usda_ers,Total chicken: Supply and use,poultry,commodity,ers_commodity,exact,,scope: commodity
-chicken-breast,usda_nass,CHICKENS / BROILERS,CHICKENS,line,nass_commodity_class,exact,,NASS broilers; not by part.
+chicken-breast,usda_nass,CHICKENS / BROILERS,CHICKENS,line,nass_commodity_class,code_shared_by_slugs,chicken-thigh;whole-chicken,NASS broilers; not by part.
 chicken-thigh,usda_ers,Total chicken: Supply and use,poultry,commodity,ers_commodity,exact,,scope: commodity
-chicken-thigh,usda_nass,CHICKENS / BROILERS,CHICKENS,line,nass_commodity_class,exact,,
+chicken-thigh,usda_nass,CHICKENS / BROILERS,CHICKENS,line,nass_commodity_class,code_shared_by_slugs,chicken-breast;whole-chicken,
 cilantro,census_hs,0709999010,"CILANTRO, FRESH OR CHILLED",line,hs10,exact,,Fresh cilantro specifically (its own HS10 line).
-cilantro,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,kale;bok-choy;collard-greens;brussels-sprouts;leek;daikon;rutabaga,stated origin: Mexico 96%
+cilantro,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,bok-choy;brussels-sprouts;collard-greens;daikon;kale;leek;rutabaga,stated origin: Mexico 96%
 cilantro,usda_nass,CILANTRO,CILANTRO,commodity,nass_commodity,exact,,
 cinnamon,census_hs,090611,"CINNAMON, WHOLE",commodity,hs6,slug_aggregates_codes,,
 cinnamon,census_hs,090619,"CINNAMON-TREE FLOWERS, WHOLE",commodity,hs6,slug_aggregates_codes,,
@@ -136,22 +136,22 @@ cod,noaa_fisheries,cod,Cod,group,noaa_category,exact,,"Atlantic + Pacific cod, b
 coffee,census_hs,090121,"COFFEE, ROASTED, NOT DECAFFEINATED",commodity,hs6,exact,,
 collard-greens,census_hs,0704904025,"COLLARDS, FRESH OR CHILLED, NESOI",line,hs10,slug_aggregates_codes,,"Collards, summed across the two NESOI lines (0704904028)."
 collard-greens,census_hs,0704904028,"COLLARDS, FRESH OR CHILLED, NESOI",line,hs10,slug_aggregates_codes,,
-collard-greens,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,kale;bok-choy;brussels-sprouts;cilantro;leek;daikon;rutabaga,stated origin: Mexico 62%
+collard-greens,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,bok-choy;brussels-sprouts;cilantro;daikon;kale;leek;rutabaga,stated origin: Mexico 62%
 collard-greens,usda_ers,Fresh collard greens: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-collard-greens,usda_nass,GREENS,GREENS,commodity,nass_commodity,exact,,
+collard-greens,usda_nass,GREENS,GREENS,commodity,nass_commodity,code_shared_by_slugs,bok-choy;kale,
 coriander-seed,census_hs,090921,"CORIANDER SEEDS, WHOLE",commodity,hs6,slug_aggregates_codes,,
 coriander-seed,census_hs,090922,"CORIANDER SEEDS, CRUSHED OR GROUND",commodity,hs6,slug_aggregates_codes,,
 corn-on-the-cob,census_hs,0709994500,"SWEET CORN, FRESH OR CHILLED",line,hs10,exact,,Fresh sweet corn.
 corn-on-the-cob,usda_ers,Fresh sweet corn: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
 corn-on-the-cob,usda_nass,SWEET CORN / FRESH MARKET,SWEET CORN,line,nass_commodity_class,exact,,
 cucumber,census_hs,070700,"CUCUMBERS AND GHERKINS, FRESH OR CHILLED",commodity,hs6,exact,,
-cucumber,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,tomato;bell-pepper;jalapeno;serrano-pepper;poblano-pepper;habanero-pepper;eggplant,stated origin: Mexico 54%
+cucumber,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,bell-pepper;eggplant;habanero-pepper;jalapeno;poblano-pepper;serrano-pepper;tomato,stated origin: Mexico 54%
 cucumber,usda_ers,Fresh cucumbers: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
 cucumber,usda_nass,CUCUMBERS,CUCUMBERS,commodity,nass_commodity,exact,,
 cumin,census_hs,090931,"CUMIN SEEDS, WHOLE",commodity,hs6,slug_aggregates_codes,,
 cumin,census_hs,090932,"CUMIN SEEDS, CRUSHED OR GROUND",commodity,hs6,slug_aggregates_codes,,
 daikon,census_hs,0706902000,"RADISHES, FRESH OR CHILLED",line,hs10,exact,,Radishes (daikon is a radish).
-daikon,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,kale;bok-choy;collard-greens;brussels-sprouts;cilantro;leek;rutabaga,stated origin: Mexico 62%
+daikon,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,bok-choy;brussels-sprouts;cilantro;collard-greens;kale;leek;rutabaga,stated origin: Mexico 62%
 daikon,usda_nass,DAIKON,DAIKON,commodity,nass_commodity,exact,,
 dates,census_hs,080410,"DATES, FRESH OR DRIED",commodity,hs6,exact,,
 dates,usda_nass,DATES,DATES,commodity,nass_commodity,exact,,
@@ -160,7 +160,7 @@ dover-sole,census_hs,0302230000,"SOLE, FRESH/CHILLED, EXCEPT FILLETS, LIVERS & R
 dover-sole,census_hs,0303330000,"SOLE, FROZEN, EXCEPT FILLETS, LIVERS AND ROES",line,hs10,slug_aggregates_codes,,
 dover-sole,noaa_fisheries,dover-sole,Dover sole,group,noaa_category,exact,,"US 'dover sole' = Pacific dover sole specifically — matched alone, NOT the whole 15-species sole group."
 eggplant,census_hs,070930,"EGGPLANTS (AUBERGINES), FRESH OR CHILLED",commodity,hs6,exact,,
-eggplant,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,tomato;bell-pepper;jalapeno;serrano-pepper;poblano-pepper;habanero-pepper;cucumber,stated origin: Mexico 87%
+eggplant,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,bell-pepper;cucumber;habanero-pepper;jalapeno;poblano-pepper;serrano-pepper;tomato,stated origin: Mexico 87%
 eggplant,usda_ers,Fresh eggplant: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
 eggplant,usda_nass,EGGPLANT,EGGPLANT,commodity,nass_commodity,exact,,
 eggs,census_hs,040721,"EGGS OF CHICKENS, FRESH, NESOI",commodity,hs6,exact,,Fresh chicken eggs in shell (NESOI); data 2012+.
@@ -185,20 +185,20 @@ green-beans,usda_nass,BEANS / SNAP,BEANS,line,nass_commodity_class,exact,,Fresh 
 green-leaf-lettuce,census_hs,0705192060,"RED AND GREEN LETTUCE, FR/CH (6/1-10/31)",line,hs10,aggregate_and_shared,red-leaf-lettuce,
 green-leaf-lettuce,census_hs,0705194060,"RED AND GREEN LETTUCE, FR/CH (11/1-5/31)",line,hs10,aggregate_and_shared,red-leaf-lettuce,HS10 combines red and green leaf lettuce; summed across entry periods (0705192060).
 green-leaf-lettuce,usda_ers,Fresh romaine and leaf lettuce: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-green-leaf-lettuce,usda_nass,LETTUCE / LEAF,LETTUCE,line,nass_commodity_class,exact,,
+green-leaf-lettuce,usda_nass,LETTUCE / LEAF,LETTUCE,line,nass_commodity_class,code_shared_by_slugs,butter-lettuce;red-leaf-lettuce,
 green-onion,census_hs,0703900020,"GREEN ONIONS OTHER THAN ALLIUM CEPA, FRESH/CHILLED",line,hs10,exact,,Green onions specifically.
 green-onion,usda_ers,Fresh onions: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
 green-onion,usda_nass,ONIONS / GREEN,ONIONS,line,nass_commodity_class,exact,,Green (spring) onions if NASS carries the class; else falls to dry onions.
 ground-beef,census_hs,0201305085,"MEAT,BVNE BNELESS FR/CH US NT 3 EXC PRCSD,NESOI",line,hs10,slug_aggregates_codes,,Boneless beef not in a named primal (fresh) — the lean manufacturing trim that feeds grinding; summed with its frozen twin (0202305085). Data from 2017.
 ground-beef,census_hs,0202305085,"MEAT,BVINE BONELESS FRZN US NTE 3 EXC PRCSD, NESOI",line,hs10,slug_aggregates_codes,,
 ground-beef,usda_ers,Beef: Supply and use - carcass weight,red-meat,commodity,ers_commodity,exact,,scope: commodity
-ground-beef,usda_nass,CATTLE,CATTLE,commodity,nass_commodity,exact,,
+ground-beef,usda_nass,CATTLE,CATTLE,commodity,nass_commodity,code_shared_by_slugs,beef-tenderloin;ribeye;short-rib;striploin,
 grouper,census_hs,0302895061,"GROUPER, FR/CH, EXCEPT FILLET, LIVER AND ROE NESOI",line,hs10,slug_aggregates_codes,,"Whole grouper, fresh + frozen (0303890070) summed; excludes fillets."
 grouper,census_hs,0303890070,"GROUPER, FROZEN, EXCEPT FILLETS, LIVERS AND ROES",line,hs10,slug_aggregates_codes,,
 grouper,noaa_fisheries,grouper,Grouper,group,noaa_category,exact,,Black/gag/red and the wider Epinephelidae group roll up.
 habanero-pepper,census_hs,0709602070,"CHILI PEPPERS, FRESH/CHILLED, NESOI",line,hs10,exact,,Habanero is not separately listed at HS10; shown as the fresh chili-pepper NESOI stream (all other chilies).
-habanero-pepper,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,tomato;bell-pepper;jalapeno;serrano-pepper;poblano-pepper;cucumber;eggplant,stated origin: Mexico 94%
-habanero-pepper,usda_nass,PEPPERS / CHILE,PEPPERS,line,nass_commodity_class,exact,,
+habanero-pepper,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,bell-pepper;cucumber;eggplant;jalapeno;poblano-pepper;serrano-pepper;tomato,stated origin: Mexico 94%
+habanero-pepper,usda_nass,PEPPERS / CHILE,PEPPERS,line,nass_commodity_class,code_shared_by_slugs,jalapeno;poblano-pepper;serrano-pepper,
 haddock,census_hs,030472,"HADDOCK FILLETS, FROZEN",commodity,hs6,exact,,
 haddock,noaa_fisheries,haddock,Haddock,group,noaa_category,exact,,US wild Atlantic haddock.
 honey,census_hs,040900,"HONEY, NATURAL",commodity,hs6,exact,,
@@ -206,13 +206,13 @@ iceberg-lettuce,census_hs,070511,"HEAD LETTUCE (CABBAGE LETTUCE), FRESH OR CHILL
 iceberg-lettuce,usda_ers,Fresh head lettuce: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
 iceberg-lettuce,usda_nass,LETTUCE / HEAD,LETTUCE,line,nass_commodity_class,exact,,NASS splits lettuce by class: head lettuce = iceberg-type.
 jalapeno,census_hs,0709602020,"JALAPENO PEPPERS, FRESH/CHILLED",line,hs10,exact,,Jalapeño peppers specifically.
-jalapeno,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,tomato;bell-pepper;serrano-pepper;poblano-pepper;habanero-pepper;cucumber;eggplant,stated origin: Mexico 98%
-jalapeno,usda_nass,PEPPERS / CHILE,PEPPERS,line,nass_commodity_class,exact,,
+jalapeno,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,bell-pepper;cucumber;eggplant;habanero-pepper;poblano-pepper;serrano-pepper;tomato,stated origin: Mexico 98%
+jalapeno,usda_nass,PEPPERS / CHILE,PEPPERS,line,nass_commodity_class,code_shared_by_slugs,habanero-pepper;poblano-pepper;serrano-pepper,
 jicama,census_hs,0709990500,"JICAMAS AND BREADFRUIT, FRESH OR CHILLED",line,hs10,exact,,HS10 combines jicama and breadfruit.
 kale,census_hs,0704904035,"KALE, FRESH OR CHILLED, NESOI",line,hs10,exact,,Kale specifically.
-kale,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,bok-choy;collard-greens;brussels-sprouts;cilantro;leek;daikon;rutabaga,stated origin: Mexico 96%
+kale,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,bok-choy;brussels-sprouts;cilantro;collard-greens;daikon;leek;rutabaga,stated origin: Mexico 96%
 kale,usda_ers,Fresh kale: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-kale,usda_nass,GREENS,GREENS,commodity,nass_commodity,exact,,Kale falls in the NASS greens commodity.
+kale,usda_nass,GREENS,GREENS,commodity,nass_commodity,code_shared_by_slugs,bok-choy;collard-greens,Kale falls in the NASS greens commodity.
 ketchup,census_hs,210320,TOMATO KETCHUP AND OTHER TOMATO SAUCES,commodity,hs6,exact,,
 kiwi,census_hs,081050,KIWI FRUIT (CHINESE GOOSEBERRIES) FRESH,commodity,hs6,exact,,
 kiwi,usda_ers,Fresh kiwifruit: Supply and use,fruit-fresh,commodity,ers_commodity,exact,,scope: commodity
@@ -226,7 +226,7 @@ lamb,census_hs,020443,"MEAT OF SHEEP, BONELESS, FROZEN",commodity,hs6,slug_aggre
 lamb,usda_ers,Lamb: Supply and use - carcass weight,red-meat,commodity,ers_commodity,exact,,scope: commodity
 lamb,usda_nass,SHEEP,SHEEP,commodity,nass_commodity,exact,,Sheep/lamb; NASS LAMB & MUTTON for product where present.
 leek,census_hs,0703900040,"LEEKS AND OTHER ALLIACEOUS VEGETABLES, FR/CH NESOI",line,hs10,exact,,Leeks and other alliaceous vegetables NESOI.
-leek,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,kale;bok-choy;collard-greens;brussels-sprouts;cilantro;daikon;rutabaga,stated origin: Mexico 67%
+leek,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,bok-choy;brussels-sprouts;cilantro;collard-greens;daikon;kale;rutabaga,stated origin: Mexico 67%
 lemon,census_hs,080550,"LEMONS AND LIMES, FRESH OR DRIED",commodity,hs6,code_shared_by_slugs,lime,HS6 combines lemons and limes; not split at 6 digits.
 lemon,ghcn_weather,mx-michoacan,"Morelia + Zamora, Michoacan — avocado, lime, citrus, berry",proxy,weather_region,code_shared_by_slugs,avocado;lime,stated origin: Mexico 76%
 lemon,usda_ers,Fresh lemons: Supply and use,fruit-fresh,commodity,ers_commodity,exact,,scope: commodity
@@ -244,11 +244,11 @@ mango,usda_ers,Fresh mangoes: Supply and use,fruit-fresh,commodity,ers_commodity
 mango,usda_nass,MANGOES,MANGOES,commodity,nass_commodity,exact,,US mango is Hawaii/PR/FL — tiny; expect high import reliance.
 mint,usda_nass,MINT,MINT,commodity,nass_commodity,exact,,
 mozzarella,census_hs,040610,"CHEESE, FRESH (UNRIPENED), INCL WHEY CHEESE & CURD",commodity,hs6,exact,,
-mozzarella,usda_nass,CHEESE,CHEESE,commodity,nass_commodity,exact,,
+mozzarella,usda_nass,CHEESE,CHEESE,commodity,nass_commodity,code_shared_by_slugs,cheddar-cheese;processed-cheese,
 mustard,census_hs,210330,MUSTARD FLOUR/MEAL AND PREPARED MUSTARD,commodity,hs6,exact,,
 napa-cabbage,census_hs,0704904045,"NAPA CABBAGE, FRESH OR CHILLED, NESOI",line,hs10,exact,,Napa (Chinese) cabbage specifically.
 napa-cabbage,usda_ers,Fresh cabbage: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-napa-cabbage,usda_nass,CABBAGE,CABBAGE,commodity,nass_commodity,exact,,Chinese/napa cabbage folds into NASS cabbage or greens.
+napa-cabbage,usda_nass,CABBAGE,CABBAGE,commodity,nass_commodity,code_shared_by_slugs,cabbage,Chinese/napa cabbage folds into NASS cabbage or greens.
 nopales,census_hs,0709999030,"CACTUS LEAVES, FRESH OR CHILLED, NESOI",line,hs10,exact,,Fresh cactus paddles (nopales).
 nutmeg,census_hs,090811,"NUTMEG, WHOLE",commodity,hs6,slug_aggregates_codes,,
 nutmeg,census_hs,090812,"NUTMEG, CRUSHED OR GROUND",commodity,hs6,slug_aggregates_codes,,
@@ -261,7 +261,7 @@ olives,census_hs,200570,"OLIVES, PREPARED/PRESERVED (NOT VINEGAR), NOT FROZEN",c
 olives,usda_nass,OLIVES,OLIVES,commodity,nass_commodity,exact,,
 onion,census_hs,070310,"ONIONS AND SHALLOTS, FRESH OR CHILLED",commodity,hs6,code_shared_by_slugs,red-onion,HS6 combines onions and shallots; not split by color/variety.
 onion,usda_ers,Fresh onions: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-onion,usda_nass,ONIONS / DRY,ONIONS,line,nass_commodity_class,exact,,
+onion,usda_nass,ONIONS / DRY,ONIONS,line,nass_commodity_class,code_shared_by_slugs,red-onion,
 orange,census_hs,080510,"ORANGES, FRESH",commodity,hs6,exact,,
 orange,usda_ers,Fresh oranges and temples: Supply and use,fruit-fresh,commodity,ers_commodity,exact,,scope: commodity
 orange,usda_nass,ORANGES,ORANGES,commodity,nass_commodity,exact,,
@@ -292,20 +292,20 @@ pistachio,census_hs,080252,"PISTACHIOS, SHELLED",commodity,hs6,exact,,
 pistachio,usda_nass,PISTACHIOS,PISTACHIOS,commodity,nass_commodity,exact,,
 plantain,census_hs,0803101000,"PLANTAINS, FRESH",line,hs10,exact,,Fresh plantains.
 poblano-pepper,census_hs,0709602050,"POBLANO PEPPERS, FRESH/CHILLED",line,hs10,exact,,Poblano peppers specifically.
-poblano-pepper,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,tomato;bell-pepper;jalapeno;serrano-pepper;habanero-pepper;cucumber;eggplant,stated origin: Mexico 100%
-poblano-pepper,usda_nass,PEPPERS / CHILE,PEPPERS,line,nass_commodity_class,exact,,
+poblano-pepper,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,bell-pepper;cucumber;eggplant;habanero-pepper;jalapeno;serrano-pepper;tomato,stated origin: Mexico 100%
+poblano-pepper,usda_nass,PEPPERS / CHILE,PEPPERS,line,nass_commodity_class,code_shared_by_slugs,habanero-pepper;jalapeno;serrano-pepper,
 pork-belly,census_hs,0203194010,"BELLIES OF SWINE, FRESH OR CHILLED, EXC PROCESSED",line,hs10,exact,,Fresh pork bellies specifically (the bacon cut); frozen bellies sit in the pork-cuts NESOI bucket.
 pork-belly,usda_ers,Pork: Supply and use - carcass weight,red-meat,commodity,ers_commodity,exact,,scope: commodity
-pork-belly,usda_nass,HOGS,HOGS,commodity,nass_commodity,exact,,"NASS is live hogs, not by cut — all pork cuts share HOGS."
+pork-belly,usda_nass,HOGS,HOGS,commodity,nass_commodity,code_shared_by_slugs,bacon;pork-loin;pork-shoulder,"NASS is live hogs, not by cut — all pork cuts share HOGS."
 pork-loin,census_hs,020329,"MEAT OF SWINE, NESOI, FROZEN",commodity,hs6,exact,,"Frozen pork cuts (NESOI); HS10 has no loin-specific line, so pork-loin stays on this shared frozen-cuts stream. Belly and shoulder now have their own HS10 codes below."
 pork-loin,usda_ers,Pork: Supply and use - carcass weight,red-meat,commodity,ers_commodity,exact,,scope: commodity
-pork-loin,usda_nass,HOGS,HOGS,commodity,nass_commodity,exact,,
+pork-loin,usda_nass,HOGS,HOGS,commodity,nass_commodity,code_shared_by_slugs,bacon;pork-belly;pork-shoulder,
 pork-shoulder,census_hs,0203129020,SHOULDERS & CUTS SWINE W/ BONE FR/CH EXC PROCESSED,line,hs10,slug_aggregates_codes,,"Fresh bone-in pork shoulder, summed with the frozen ham+shoulder line (0203229000); boneless shoulder sits in the cuts NESOI bucket."
 pork-shoulder,census_hs,0203229000,"HAMS, SHOULDERS & CUTS, SWINE, W/ BONE, FRZN NESOI",line,hs10,slug_aggregates_codes,,
 pork-shoulder,usda_ers,Pork: Supply and use - carcass weight,red-meat,commodity,ers_commodity,exact,,scope: commodity
-pork-shoulder,usda_nass,HOGS,HOGS,commodity,nass_commodity,exact,,
+pork-shoulder,usda_nass,HOGS,HOGS,commodity,nass_commodity,code_shared_by_slugs,bacon;pork-belly;pork-loin,
 processed-cheese,census_hs,040630,"CHEESE, PROCESSED, NOT GRATED OR POWDERED",commodity,hs6,exact,,
-processed-cheese,usda_nass,CHEESE,CHEESE,commodity,nass_commodity,exact,,
+processed-cheese,usda_nass,CHEESE,CHEESE,commodity,nass_commodity,code_shared_by_slugs,cheddar-cheese;mozzarella,
 prosciutto,census_hs,0210110010,HAMS & CUTS OF SWINE W/BONE SALTED/BRINE/DRIED/SMOKED,line,hs10,slug_aggregates_codes,,"Cured swine — bone-in hams plus the boneless cured-swine NESOI line (0210190090), summed. Prosciutto, serrano, speck, etc."
 prosciutto,census_hs,0210190090,"MEAT OF SWINE, SALTED, BRINE, DRIED, SMOKED, NESOI",line,hs10,slug_aggregates_codes,,
 raspberry,census_hs,0810201023,"RASPBERRIES, FRESH, ORGANIC (9/1-6/30)",line,hs10,slug_aggregates_codes,,Raspberries only (org + conventional across entry periods) — excludes the blackberries/mulberries that share the HS6 code.
@@ -320,45 +320,45 @@ raspberry,usda_nass,RASPBERRIES,RASPBERRIES,commodity,nass_commodity,exact,,
 red-leaf-lettuce,census_hs,0705192060,"RED AND GREEN LETTUCE, FR/CH (6/1-10/31)",line,hs10,aggregate_and_shared,green-leaf-lettuce,
 red-leaf-lettuce,census_hs,0705194060,"RED AND GREEN LETTUCE, FR/CH (11/1-5/31)",line,hs10,aggregate_and_shared,green-leaf-lettuce,HS10 combines red and green leaf lettuce; summed across entry periods (0705192060).
 red-leaf-lettuce,usda_ers,Fresh romaine and leaf lettuce: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-red-leaf-lettuce,usda_nass,LETTUCE / LEAF,LETTUCE,line,nass_commodity_class,exact,,
+red-leaf-lettuce,usda_nass,LETTUCE / LEAF,LETTUCE,line,nass_commodity_class,code_shared_by_slugs,butter-lettuce;green-leaf-lettuce,
 red-onion,census_hs,070310,"ONIONS AND SHALLOTS, FRESH OR CHILLED",commodity,hs6,code_shared_by_slugs,onion,HS6 combines onions and shallots; not split by color/variety.
 red-onion,usda_ers,Fresh onions: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-red-onion,usda_nass,ONIONS / DRY,ONIONS,line,nass_commodity_class,exact,,NASS dry onions not split by color.
+red-onion,usda_nass,ONIONS / DRY,ONIONS,line,nass_commodity_class,code_shared_by_slugs,onion,NASS dry onions not split by color.
 red-potato,census_hs,070190,"POTATOES, EXCEPT SEED, FRESH OR CHILLED, NESOI",commodity,hs6,code_shared_by_slugs,russet-potato,Fresh table potatoes; not split by variety.
 red-potato,usda_ers,Fresh potatoes: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-red-potato,usda_nass,POTATOES,POTATOES,commodity,nass_commodity,exact,,
+red-potato,usda_nass,POTATOES,POTATOES,commodity,nass_commodity,code_shared_by_slugs,russet-potato,
 ribeye,census_hs,0201305025,"MEAT,BVNE BNELESS FR/CH US NT 3 EXC PRCSD,RIB",line,hs10,slug_aggregates_codes,,"The boneless beef RIB primal (fresh), of which ribeye is the principal cut; summed with its frozen twin (0202305025). HS10 splits beef by primal, not retail cut; US statistical data from 2017."
 ribeye,census_hs,0202305025,"MEAT,BVINE BONELESS FRZN US NTE 3 EXC PRCSD, RIB",line,hs10,slug_aggregates_codes,,
 ribeye,usda_ers,Beef: Supply and use - carcass weight,red-meat,commodity,ers_commodity,exact,,scope: commodity
-ribeye,usda_nass,CATTLE,CATTLE,commodity,nass_commodity,exact,,"NASS is live cattle / total beef, not by retail cut — all beef cuts share the CATTLE commodity for the domestic production + farm-gate price layer."
+ribeye,usda_nass,CATTLE,CATTLE,commodity,nass_commodity,code_shared_by_slugs,beef-tenderloin;ground-beef;short-rib;striploin,"NASS is live cattle / total beef, not by retail cut — all beef cuts share the CATTLE commodity for the domestic production + farm-gate price layer."
 romaine-lettuce,census_hs,0705192020,"LETTUCE, ROMAINE, FRESH/CHILLED (6/1-10/31)",line,hs10,slug_aggregates_codes,,
 romaine-lettuce,census_hs,0705194020,"LETTUCE, ROMAINE, FRESH/CHILLED (11/1-5/31)",line,hs10,slug_aggregates_codes,,"Romaine, summed across entry periods (0705192020)."
 romaine-lettuce,usda_ers,Fresh romaine and leaf lettuce: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
 romaine-lettuce,usda_nass,LETTUCE / ROMAINE,LETTUCE,line,nass_commodity_class,exact,,
 russet-potato,census_hs,070190,"POTATOES, EXCEPT SEED, FRESH OR CHILLED, NESOI",commodity,hs6,code_shared_by_slugs,red-potato,Fresh table potatoes; not split by variety.
 russet-potato,usda_ers,Fresh potatoes: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-russet-potato,usda_nass,POTATOES,POTATOES,commodity,nass_commodity,exact,,NASS potatoes not split by variety at the national fresh series.
+russet-potato,usda_nass,POTATOES,POTATOES,commodity,nass_commodity,code_shared_by_slugs,red-potato,NASS potatoes not split by variety at the national fresh series.
 rutabaga,census_hs,0706904040,"SALSIFY & SIMILAR EDIBLE ROOTS, FR/CH",line,hs10,exact,,Salsify and similar edible roots NESOI — swedes/rutabaga fall here; no rutabaga-specific line.
-rutabaga,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,kale;bok-choy;collard-greens;brussels-sprouts;cilantro;leek;daikon,stated origin: Mexico 62%
+rutabaga,ghcn_weather,mx-baja,"Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)",proxy,weather_region,code_shared_by_slugs,bok-choy;brussels-sprouts;cilantro;collard-greens;daikon;kale;leek,stated origin: Mexico 62%
 saffron,census_hs,091020,SAFFRON,commodity,hs6,exact,,
 salmon-fillet,census_hs,030441,"PACIFIC, ATLANTIC, DANUBE SALMON FILLETS",commodity,hs6,code_shared_by_slugs,salmon-skin-on-fillet,Fresh salmon fillets; whole salmon is a separate code (030214).
-salmon-fillet,ghcn_weather,,,proxy,weather_region,code_shared_by_slugs,shrimp;shrimp-pd;shrimp-head-on;salmon-skin-on-fillet,stated origin: Chile 63%
+salmon-fillet,noaa_cpc_oni,ONI,Oceanic Niño Index (ENSO regime),proxy,enso_oni_index,code_shared_by_slugs,salmon-skin-on-fillet;shrimp;shrimp-head-on;shrimp-pd,stated origin: Chile 63%
 salmon-fillet,noaa_fisheries,salmon,Salmon (Pacific wild),group,noaa_category,code_shared_by_slugs,salmon-skin-on-fillet;whole-salmon,"US wild = Pacific/Alaska (chinook, coho, sockeye, pink, chum). Atlantic salmon is farmed (US wild Atlantic landing is $0/confidential every year) and is EXCLUDED from the wild figure."
 salmon-skin-on-fillet,census_hs,030441,"PACIFIC, ATLANTIC, DANUBE SALMON FILLETS",commodity,hs6,code_shared_by_slugs,salmon-fillet,Fresh salmon fillets; whole salmon is a separate code (030214).
-salmon-skin-on-fillet,ghcn_weather,,,proxy,weather_region,code_shared_by_slugs,shrimp;shrimp-pd;shrimp-head-on;salmon-fillet,stated origin: Chile 63%
+salmon-skin-on-fillet,noaa_cpc_oni,ONI,Oceanic Niño Index (ENSO regime),proxy,enso_oni_index,code_shared_by_slugs,salmon-fillet;shrimp;shrimp-head-on;shrimp-pd,stated origin: Chile 63%
 salmon-skin-on-fillet,noaa_fisheries,salmon,Salmon (Pacific wild),group,noaa_category,code_shared_by_slugs,salmon-fillet;whole-salmon,"US wild = Pacific/Alaska (chinook, coho, sockeye, pink, chum). Atlantic salmon is farmed (US wild Atlantic landing is $0/confidential every year) and is EXCLUDED from the wild figure."
 sardine,census_hs,160413,"SARDINES/SARDINELLA/BRISLING, PREP/PRESERVED",commodity,hs6,exact,,
 sardine,noaa_fisheries,sardine,Sardine,group,noaa_category,exact,,"Pacific sardine / pilchard, wild; landings swing with the stock's boom-bust cycle."
 scallops,census_hs,030729,"SCALLOPS, NESOI",commodity,hs6,exact,,Scallops not elsewhere specified; some scallop trade sits under other codes.
 scallops,noaa_fisheries,scallop,Scallop,group,noaa_category,exact,,"Sea + bay scallop, wild-harvested."
 serrano-pepper,census_hs,0709602060,"SERRANO PEPPERS, FRESH/CHILLED",line,hs10,exact,,Serrano peppers specifically.
-serrano-pepper,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,tomato;bell-pepper;jalapeno;poblano-pepper;habanero-pepper;cucumber;eggplant,stated origin: Mexico 100%
-serrano-pepper,usda_nass,PEPPERS / CHILE,PEPPERS,line,nass_commodity_class,exact,,
+serrano-pepper,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,bell-pepper;cucumber;eggplant;habanero-pepper;jalapeno;poblano-pepper;tomato,stated origin: Mexico 100%
+serrano-pepper,usda_nass,PEPPERS / CHILE,PEPPERS,line,nass_commodity_class,code_shared_by_slugs,habanero-pepper;jalapeno;poblano-pepper,
 shiitake,census_hs,070959,"MUSHROOMS, FRESH OR CHILLED, NESOI",commodity,hs6,exact,,
 shiitake,usda_ers,Fresh mushrooms: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-shiitake,usda_nass,MUSHROOMS,MUSHROOMS,commodity,nass_commodity,exact,,Specialty mushrooms fold into the NASS mushroom commodity.
+shiitake,usda_nass,MUSHROOMS,MUSHROOMS,commodity,nass_commodity,code_shared_by_slugs,button-mushroom,Specialty mushrooms fold into the NASS mushroom commodity.
 short-rib,usda_ers,Beef: Supply and use - carcass weight,red-meat,commodity,ers_commodity,exact,,scope: commodity
-short-rib,usda_nass,CATTLE,CATTLE,commodity,nass_commodity,exact,,
+short-rib,usda_nass,CATTLE,CATTLE,commodity,nass_commodity,code_shared_by_slugs,beef-tenderloin;ground-beef;ribeye;striploin,
 shrimp,census_hs,0306170004,FARMED SHRIMP FZ SHELL <33/KG,line,hs10,aggregate_and_shared,shrimp-head-on,"Frozen shell-on shrimp, summed across all count-per-kg size grades (farmed + wild). HS does not distinguish head-on from headless shell-on, so both shell slugs share this stream."
 shrimp,census_hs,0306170005,FARMED SHRIMP FZ SHELL 33-45/KG,line,hs10,aggregate_and_shared,shrimp-head-on,
 shrimp,census_hs,0306170007,FARMED SHRIMP FZ SHELL 46-55/KG,line,hs10,aggregate_and_shared,shrimp-head-on,
@@ -375,7 +375,7 @@ shrimp,census_hs,0306170022,SHRIMP FZ SHELL 56-66/KG NESOI,line,hs10,aggregate_a
 shrimp,census_hs,0306170023,SHRIMP FZ SHELL 67-88/KG NESOI,line,hs10,aggregate_and_shared,shrimp-head-on,
 shrimp,census_hs,0306170025,SHRIMP FZ SHELL 89-110/KG NESOI,line,hs10,aggregate_and_shared,shrimp-head-on,
 shrimp,census_hs,0306170026,SHRIMP FZ SHELL 111-132/KG NESOI,line,hs10,aggregate_and_shared,shrimp-head-on,
-shrimp,ghcn_weather,,,proxy,weather_region,code_shared_by_slugs,shrimp-pd;shrimp-head-on;salmon-fillet;salmon-skin-on-fillet,stated origin: Ecuador 50%
+shrimp,noaa_cpc_oni,ONI,Oceanic Niño Index (ENSO regime),proxy,enso_oni_index,code_shared_by_slugs,salmon-fillet;salmon-skin-on-fillet;shrimp-head-on;shrimp-pd,stated origin: Ecuador 50%
 shrimp,noaa_fisheries,shrimp,Shrimp,group,noaa_category,code_shared_by_slugs,shrimp-pd;shrimp-head-on,US wild penaeid (Gulf/South Atlantic) + pandalid (cold-water); imports are mostly farmed — the wild-vs-farmed seam is wide here.
 shrimp-head-on,census_hs,0306170004,FARMED SHRIMP FZ SHELL <33/KG,line,hs10,aggregate_and_shared,shrimp,"Frozen shell-on shrimp, summed across all count-per-kg size grades (farmed + wild). HS does not distinguish head-on from headless shell-on, so both shell slugs share this stream."
 shrimp-head-on,census_hs,0306170005,FARMED SHRIMP FZ SHELL 33-45/KG,line,hs10,aggregate_and_shared,shrimp,
@@ -393,11 +393,11 @@ shrimp-head-on,census_hs,0306170022,SHRIMP FZ SHELL 56-66/KG NESOI,line,hs10,agg
 shrimp-head-on,census_hs,0306170023,SHRIMP FZ SHELL 67-88/KG NESOI,line,hs10,aggregate_and_shared,shrimp,
 shrimp-head-on,census_hs,0306170025,SHRIMP FZ SHELL 89-110/KG NESOI,line,hs10,aggregate_and_shared,shrimp,
 shrimp-head-on,census_hs,0306170026,SHRIMP FZ SHELL 111-132/KG NESOI,line,hs10,aggregate_and_shared,shrimp,
-shrimp-head-on,ghcn_weather,,,proxy,weather_region,code_shared_by_slugs,shrimp;shrimp-pd;salmon-fillet;salmon-skin-on-fillet,stated origin: Ecuador 50%
+shrimp-head-on,noaa_cpc_oni,ONI,Oceanic Niño Index (ENSO regime),proxy,enso_oni_index,code_shared_by_slugs,salmon-fillet;salmon-skin-on-fillet;shrimp;shrimp-pd,stated origin: Ecuador 50%
 shrimp-head-on,noaa_fisheries,shrimp,Shrimp,group,noaa_category,code_shared_by_slugs,shrimp;shrimp-pd,US wild penaeid (Gulf/South Atlantic) + pandalid (cold-water); imports are mostly farmed — the wild-vs-farmed seam is wide here.
 shrimp-pd,census_hs,0306170041,"FARMED SHRIMPS & PRAWNS, FROZEN PEELED",line,hs10,slug_aggregates_codes,,Peeled (P&D) shrimp — farmed + wild (0306170042) summed. The dominant import form.
 shrimp-pd,census_hs,0306170042,"SHRIMPS & PRAWNS, FROZEN PEELED NESOI",line,hs10,slug_aggregates_codes,,
-shrimp-pd,ghcn_weather,,,proxy,weather_region,code_shared_by_slugs,shrimp;shrimp-head-on;salmon-fillet;salmon-skin-on-fillet,stated origin: India 50%
+shrimp-pd,noaa_cpc_oni,ONI,Oceanic Niño Index (ENSO regime),proxy,enso_oni_index,code_shared_by_slugs,salmon-fillet;salmon-skin-on-fillet;shrimp;shrimp-head-on,stated origin: India 50%
 shrimp-pd,noaa_fisheries,shrimp,Shrimp,group,noaa_category,code_shared_by_slugs,shrimp;shrimp-head-on,US wild penaeid (Gulf/South Atlantic) + pandalid (cold-water); imports are mostly farmed — the wild-vs-farmed seam is wide here.
 snapper,census_hs,0302895058,"SNAPPER, FR/CH, EXC FILLET LIVER AND ROE NESOI",line,hs10,slug_aggregates_codes,,"Whole snapper, fresh + frozen (0303890067) summed; excludes fillets."
 snapper,census_hs,0303890067,"SNAPPER, FROZEN, EXCEPT FILLETS, LIVERS AND ROES",line,hs10,slug_aggregates_codes,,
@@ -421,7 +421,7 @@ strawberry,usda_nass,STRAWBERRIES,STRAWBERRIES,commodity,nass_commodity,exact,,
 striploin,census_hs,0201305045,"MEAT,BVNE BNELESS FR/CH US NT 3 EXC PRCSD,LOIN",line,hs10,aggregate_and_shared,beef-tenderloin,"The boneless beef LOIN primal (fresh) — strip loin, short loin (tenderloin) and sirloin; summed with its frozen twin (0202305045). Not split finer at HS10; data from 2017."
 striploin,census_hs,0202305045,"MEAT,BVINE BONELESS FRZN US NTE 3 EXC PRCSD, LOIN",line,hs10,aggregate_and_shared,beef-tenderloin,
 striploin,usda_ers,Beef: Supply and use - carcass weight,red-meat,commodity,ers_commodity,exact,,scope: commodity
-striploin,usda_nass,CATTLE,CATTLE,commodity,nass_commodity,exact,,
+striploin,usda_nass,CATTLE,CATTLE,commodity,nass_commodity,code_shared_by_slugs,beef-tenderloin;ground-beef;ribeye;short-rib,
 sweet-potato,census_hs,071420,"SWEET POTATOES, FRESH OR DRIED, WHETHER/NT PELLETS",commodity,hs6,exact,,
 sweet-potato,usda_ers,Fresh sweet potatoes: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
 sweet-potato,usda_nass,SWEET POTATOES,SWEET POTATOES,commodity,nass_commodity,exact,,
@@ -433,9 +433,9 @@ tilapia,census_hs,030461,"TILAPIA FILLETS, FROZEN",commodity,hs6,slug_aggregates
 tilapia,usda_nass,TILAPIA,TILAPIA,commodity,nass_commodity,exact,,US farmed tilapia if NASS carries it; small vs imports.
 tomatillo,census_hs,0810904610,"TOMATILLOS, FRESH",line,hs10,exact,,Fresh tomatillos specifically.
 tomato,census_hs,070200,"TOMATOES, FRESH OR CHILLED",commodity,hs6,exact,,"All fresh tomatoes (2010-2025 full history). Cherry tomatoes are also broken out to cherry-tomato at HS10 — a subset of this total, not additional; roma and grape are distinct HS10 types left for a specialty pass."
-tomato,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,bell-pepper;jalapeno;serrano-pepper;poblano-pepper;habanero-pepper;cucumber;eggplant,stated origin: Mexico 81%
+tomato,ghcn_weather,mx-sinaloa,Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg),proxy,weather_region,code_shared_by_slugs,bell-pepper;cucumber;eggplant;habanero-pepper;jalapeno;poblano-pepper;serrano-pepper,stated origin: Mexico 81%
 tomato,usda_ers,Fresh tomatoes (field and hothouse): Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-tomato,usda_nass,TOMATOES / FRESH MARKET,TOMATOES,line,nass_commodity_class,exact,,Fresh-market tomatoes; NASS does not split cherry/roma/round at the survey level.
+tomato,usda_nass,TOMATOES / FRESH MARKET,TOMATOES,line,nass_commodity_class,code_shared_by_slugs,cherry-tomato,Fresh-market tomatoes; NASS does not split cherry/roma/round at the survey level.
 tomato-paste,census_hs,200290,TOMATO PASTE ETC,commodity,hs6,exact,,
 tuna-loin,census_hs,030487,"TUNA (GENUS THUNNUS), SKIPJACK TUNA (STRP-BEL), FRZ",commodity,hs6,exact,,"Frozen tuna (Thunnus + skipjack), the dominant import form; fresh tuna is separate codes."
 tuna-loin,noaa_fisheries,tuna,Tuna (all),group,noaa_category,exact,,Yellowfin/bigeye/albacore/bluefin/skipjack roll up; a loin is a cut of the same landing.
@@ -448,7 +448,7 @@ watermelon,census_hs,080711,"WATERMELONS, FRESH",commodity,hs6,exact,,
 watermelon,usda_ers,Fresh watermelon: Supply and use,fruit-fresh,commodity,ers_commodity,exact,,scope: commodity
 watermelon,usda_nass,MELONS / WATERMELON,MELONS,line,nass_commodity_class,exact,,
 whole-chicken,usda_ers,Total chicken: Supply and use,poultry,commodity,ers_commodity,exact,,scope: commodity
-whole-chicken,usda_nass,CHICKENS / BROILERS,CHICKENS,line,nass_commodity_class,exact,,
+whole-chicken,usda_nass,CHICKENS / BROILERS,CHICKENS,line,nass_commodity_class,code_shared_by_slugs,chicken-breast;chicken-thigh,
 whole-crab,census_hs,030614,"CRABS, INCLUDING IN SHELL, FROZEN",commodity,hs6,exact,,Frozen crab (the dominant import form); fresh/live crab is a separate code.
 whole-crab,noaa_fisheries,crab,Crab,group,noaa_category,exact,,"Blue, dungeness, king, snow/tanner and more roll up; all wild."
 whole-halibut,census_hs,030221,"HALIBUT/GREENLAND TURBOT EX FILLET, LVR, ROE FR/CH",commodity,hs6,exact,,"Halibut and Greenland turbot, fresh/chilled, whole (excludes fillets/livers/roes)."
@@ -467,10 +467,10 @@ yeast,census_hs,210210,"YEASTS, ACTIVE",commodity,hs6,exact,,
 yellow-squash,census_hs,0709932030,"YELLOW STRAIGHTNECK SQUASH, CERT ORGANIC",line,hs10,slug_aggregates_codes,,
 yellow-squash,census_hs,0709932075,"YELLOW STRAIGHTNECK SQUASH, FRESH OR CHILLED",line,hs10,slug_aggregates_codes,,"Fresh yellow straightneck squash, non-organic + organic (0709932030) summed."
 yellow-squash,usda_ers,Fresh squash: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-yellow-squash,usda_nass,SQUASH,SQUASH,commodity,nass_commodity,exact,,
+yellow-squash,usda_nass,SQUASH,SQUASH,commodity,nass_commodity,code_shared_by_slugs,acorn-squash;butternut-squash;zucchini,
 yogurt,census_hs,040320,YOGURT,commodity,hs6,exact,,
 yogurt,usda_nass,YOGURT,YOGURT,commodity,nass_commodity,exact,,
 zucchini,census_hs,0709932020,"ZUCCHINI SQUASH, CERT ORGANIC",line,hs10,slug_aggregates_codes,,
 zucchini,census_hs,0709932055,"ZUCCHINI SQUASH, FRESH OR CHILLED",line,hs10,slug_aggregates_codes,,"Fresh zucchini, non-organic + organic (0709932020) summed."
 zucchini,usda_ers,Fresh squash: Supply and use,vegetables-fresh,commodity,ers_commodity,exact,,scope: commodity
-zucchini,usda_nass,SQUASH,SQUASH,commodity,nass_commodity,exact,,NASS squash not split by type.
+zucchini,usda_nass,SQUASH,SQUASH,commodity,nass_commodity,code_shared_by_slugs,acorn-squash;butternut-squash;yellow-squash,NASS squash not split by type.

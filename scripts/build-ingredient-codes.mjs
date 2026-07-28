@@ -111,15 +111,26 @@ export function buildRows(src) {
   }
 
   // ── usda_nass: keyed by SLUG; a `class` split is one level finer ───────────
-  for (const [s, v] of Object.entries((src.nass && src.nass.codes) || {})) {
+  // A NASS SERIES can serve several slugs just as an HS code can — 13 series cover 39
+  // slugs (CATTLE alone binds 5). An earlier version hard-coded binding:'exact' here and
+  // published a claim of exclusivity that the table itself refutes; the shared case is
+  // derived the same way as the HS one.
+  const nassCodes = (src.nass && src.nass.codes) || {};
+  const nassKey = (v) => (v.class ? `${v.commodity} / ${v.class}` : String(v.commodity || ''));
+  const nassUse = new Map();
+  for (const v of Object.values(nassCodes)) nassUse.set(nassKey(v), (nassUse.get(nassKey(v)) || 0) + 1);
+  for (const [s, v] of Object.entries(nassCodes)) {
     const cls = v.class || '';
+    const key = nassKey(v);
     rows.push({
       slug: s, authority: 'usda_nass',
-      code: cls ? `${v.commodity} / ${cls}` : String(v.commodity || ''),
+      code: key,
       label: v.commodity || '',
       granularity: cls ? 'line' : 'commodity',
       native_level: cls ? 'nass_commodity_class' : 'nass_commodity',
-      binding: 'exact', shared_with: '', note: v.note || '',
+      binding: (nassUse.get(key) || 1) > 1 ? 'code_shared_by_slugs' : 'exact',
+      shared_with: Object.entries(nassCodes).filter(([o, ov]) => o !== s && nassKey(ov) === key).map(([o]) => o).sort().join(';'),
+      note: v.note || '',
     });
   }
 
@@ -146,20 +157,47 @@ export function buildRows(src) {
     }
   }
 
-  // ── ghcn_weather: a REGION, not an identity of the ingredient ──────────────
+  // ── weather: TWO authorities, not one ──────────────────────────────────────
+  // ingredient-weather-codes.json fuses two different things under one key, and its own
+  // `_signal_split` says so: `land` = an observed GHCN station in a growing region;
+  // `oni` = the ENSO regime gauge, explicitly "not a land station" — an ocean-basin index
+  // from NOAA CPC with no land geography at all. Publishing them under one authority with
+  // one native_level erases the only distinction that matters here.
+  //
+  // An earlier version keyed the shared-binding map on `v.land`, which is UNDEFINED for
+  // every ONI row. All 5 collapsed onto the same undefined key and were published as
+  // code_shared_by_slugs WITH EACH OTHER and with an EMPTY code — so salmon-fillet was
+  // published as sharing an identifier with shrimp. That relationship does not exist; it
+  // was an artifact of a missing field. A fabricated edge is exactly what this file is
+  // supposed to make impossible, so the two branches are now separated and validated.
   const regions = (src.weather && src.weather.regions) || {};
   const wcodes = (src.weather && src.weather.codes) || {};
-  const regionUse = new Map();
-  for (const v of Object.values(wcodes)) regionUse.set(v.land, (regionUse.get(v.land) || 0) + 1);
+  const landUse = new Map();
+  for (const v of Object.values(wcodes)) if (v.land) landUse.set(v.land, (landUse.get(v.land) || 0) + 1);
+  const oniSlugs = Object.entries(wcodes).filter(([, v]) => !v.land && v.oni).map(([s]) => s).sort();
   for (const [s, v] of Object.entries(wcodes)) {
-    const reg = regions[v.land] || {};
-    rows.push({
-      slug: s, authority: 'ghcn_weather', code: String(v.land || ''), label: reg.note || '',
-      granularity: 'proxy', native_level: 'weather_region',
-      binding: (regionUse.get(v.land) || 1) > 1 ? 'code_shared_by_slugs' : 'exact',
-      shared_with: Object.entries(wcodes).filter(([o, ov]) => ov.land === v.land && o !== s).map(([o]) => o).join(';'),
-      note: v.origin ? `stated origin: ${v.origin}` : '',
-    });
+    if (v.land) {
+      const reg = regions[v.land] || {};
+      rows.push({
+        slug: s, authority: 'ghcn_weather', code: String(v.land), label: reg.note || '',
+        granularity: 'proxy', native_level: 'weather_region',
+        binding: (landUse.get(v.land) || 1) > 1 ? 'code_shared_by_slugs' : 'exact',
+        shared_with: Object.entries(wcodes).filter(([o, ov]) => ov.land === v.land && o !== s).map(([o]) => o).sort().join(';'),
+        note: v.origin ? `stated origin: ${v.origin}` : '',
+      });
+    } else if (v.oni) {
+      // Every ONI row references the SAME index, so the shared binding here is real —
+      // but only because the code is a real shared identifier, not because a field was absent.
+      rows.push({
+        slug: s, authority: 'noaa_cpc_oni', code: 'ONI', label: 'Oceanic Niño Index (ENSO regime)',
+        granularity: 'proxy', native_level: 'enso_oni_index',
+        binding: oniSlugs.length > 1 ? 'code_shared_by_slugs' : 'exact',
+        shared_with: oniSlugs.filter((o) => o !== s).join(';'),
+        note: v.origin ? `stated origin: ${v.origin}` : '',
+      });
+    } else {
+      problems.push(`weather entry "${s}" declares neither a land station nor an ONI index — it names no identifier at all.`);
+    }
   }
 
   rows.sort((a, b) => a.slug.localeCompare(b.slug) || a.authority.localeCompare(b.authority) || a.code.localeCompare(b.code));
@@ -196,10 +234,28 @@ if (process.argv.includes('--self-test')) {
       '1234': { sdesc: 'bad', slugs: ['x'] },
       '070999': { sdesc: 'orphan', slugs: [] },
     } },
-    nass: { codes: { tomato: { commodity: 'TOMATOES', class: 'FRESH MARKET', note: 'n' }, okra: { commodity: 'OKRA' } } },
+    nass: { codes: {
+      tomato: { commodity: 'TOMATOES', class: 'FRESH MARKET', note: 'n' },
+      okra: { commodity: 'OKRA' },
+      // two slugs on ONE series — the case an earlier version published as binding:'exact'
+      striploin: { commodity: 'CATTLE' },
+      'beef-tenderloin': { commodity: 'CATTLE' },
+    } },
     ers: { map: { avocado: { group: 'fruit-fresh', commodity: 'Fresh avocados', scope: 'commodity' } } },
     noaa: { categories: [{ id: 'shrimp', label: 'Shrimp', serves: ['shrimp', 'shrimp-head-on'], wild_note: 'w' }] },
-    weather: { regions: { 'mx-michoacan': { note: 'Michoacan' } }, codes: { avocado: { land: 'mx-michoacan', origin: 'Mexico 88%' } } },
+    weather: {
+      regions: { 'mx-michoacan': { note: 'Michoacan' }, 'mx-sinaloa': { note: 'Sinaloa' } },
+      codes: {
+        avocado: { land: 'mx-michoacan', origin: 'Mexico 88%' },
+        tomato: { land: 'mx-sinaloa', origin: 'Mexico 90%' },
+        cucumber: { land: 'mx-sinaloa', origin: 'Mexico 80%' },
+        // ONI rows carry NO `land` — the case that produced an empty code and a fabricated
+        // shared binding between salmon and shrimp.
+        'salmon-fillet': { oni: true, origin: 'Chile 63%' },
+        shrimp: { oni: true, origin: 'Ecuador 50%' },
+        broken: { origin: 'nowhere' },            // neither land nor oni -> must be a problem
+      },
+    },
   };
   const { rows, problems } = buildRows(src);
 
@@ -223,9 +279,29 @@ if (process.argv.includes('--self-test')) {
   t('a NOAA category is coarser than a commodity', shrimp.granularity === 'group');
   t('a NOAA category serving 2 slugs is shared', shrimp.binding === 'code_shared_by_slugs' && shrimp.shared_with === 'shrimp-head-on');
 
-  const wx = rows.find((r) => r.authority === 'ghcn_weather');
+  const wx = rows.find((r) => r.slug === 'avocado' && r.authority === 'ghcn_weather');
   t('a weather region is a proxy, never an identity', wx.granularity === 'proxy');
   t('the weather row keeps its stated origin', /Mexico 88%/.test(wx.note));
+  t('a region serving 2 slugs is shared', rows.find((r) => r.slug === 'tomato' && r.authority === 'ghcn_weather').shared_with === 'cucumber');
+  t('a region serving 1 slug is exact', wx.binding === 'exact' && wx.shared_with === '');
+
+  // REGRESSION: an ONI row carries no `land`. Keying the shared map on that missing field
+  // collapsed all of them onto one undefined key and published salmon as sharing an
+  // identifier with shrimp, under an EMPTY code.
+  const nassShared = rows.find((r) => r.slug === 'striploin' && r.authority === 'usda_nass');
+  t('a NASS series bound by 2 slugs is NOT claimed exact', nassShared.binding === 'code_shared_by_slugs');
+  t('the shared NASS row names the other slug', nassShared.shared_with === 'beef-tenderloin');
+  t('a NASS series bound by 1 slug stays exact', rows.find((r) => r.slug === 'okra').binding === 'exact');
+
+  const oni = rows.filter((r) => r.authority === 'noaa_cpc_oni');
+  t('ONI rows get their own authority, not ghcn_weather', oni.length === 2);
+  t('no published row may carry an empty code', rows.every((r) => r.code !== ''));
+  t('the ONI code is a real identifier', oni.every((r) => r.code === 'ONI'));
+  t('ONI is typed as an ocean index, not a weather region', oni.every((r) => r.native_level === 'enso_oni_index'));
+  t('ONI slugs share the index with each other and nothing else', oni.find((r) => r.slug === 'shrimp').shared_with === 'salmon-fillet');
+  t('an ONI slug is NEVER bound to a land region', !rows.some((r) => r.authority === 'ghcn_weather' && (r.slug === 'shrimp' || r.slug === 'salmon-fillet')));
+  t('a weather entry naming no identifier at all is a reported problem', problems.some((p) => /"broken"/.test(p)));
+  t('the malformed weather entry publishes no row', !rows.some((r) => r.slug === 'broken'));
 
   t('every row carries a legal granularity', rows.every((r) => GRANULARITY.includes(r.granularity)));
   t('every row carries a legal binding', rows.every((r) => BINDING.includes(r.binding)));

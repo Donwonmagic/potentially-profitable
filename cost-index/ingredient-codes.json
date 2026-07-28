@@ -17,9 +17,10 @@
       "usda_ers": 71,
       "usda_nass": 102,
       "noaa_fisheries": 24,
-      "ghcn_weather": 28
+      "ghcn_weather": 23,
+      "noaa_cpc_oni": 5
     },
-    "sharedCodeRows": 78
+    "sharedCodeRows": 117
   },
   "columns": [
     "slug",
@@ -85,8 +86,8 @@
       "label": "SQUASH",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "butternut-squash;yellow-squash;zucchini",
       "note": ""
     },
     {
@@ -284,7 +285,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "lime;lemon",
+      "shared_with": "lemon;lime",
       "note": "stated origin: Mexico 88%"
     },
     {
@@ -338,8 +339,8 @@
       "label": "HOGS",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "pork-belly;pork-loin;pork-shoulder",
       "note": ""
     },
     {
@@ -426,8 +427,8 @@
       "label": "CATTLE",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "ground-beef;ribeye;short-rib;striploin",
       "note": ""
     },
     {
@@ -471,7 +472,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "tomato;jalapeno;serrano-pepper;poblano-pepper;habanero-pepper;cucumber;eggplant",
+      "shared_with": "cucumber;eggplant;habanero-pepper;jalapeno;poblano-pepper;serrano-pepper;tomato",
       "note": "stated origin: Mexico 73%"
     },
     {
@@ -614,7 +615,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "kale;collard-greens;brussels-sprouts;cilantro;leek;daikon;rutabaga",
+      "shared_with": "brussels-sprouts;cilantro;collard-greens;daikon;kale;leek;rutabaga",
       "note": "stated origin: Mexico 78%"
     },
     {
@@ -624,8 +625,8 @@
       "label": "GREENS",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "collard-greens;kale",
       "note": ""
     },
     {
@@ -702,7 +703,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "kale;bok-choy;collard-greens;cilantro;leek;daikon;rutabaga",
+      "shared_with": "bok-choy;cilantro;collard-greens;daikon;kale;leek;rutabaga",
       "note": "stated origin: Mexico 87%"
     },
     {
@@ -789,8 +790,8 @@
       "label": "LETTUCE",
       "granularity": "line",
       "native_level": "nass_commodity_class",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "green-leaf-lettuce;red-leaf-lettuce",
       "note": "Butterhead falls in NASS leaf/other lettuce."
     },
     {
@@ -833,8 +834,8 @@
       "label": "SQUASH",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "acorn-squash;yellow-squash;zucchini",
       "note": ""
     },
     {
@@ -866,8 +867,8 @@
       "label": "MUSHROOMS",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "shiitake",
       "note": ""
     },
     {
@@ -899,8 +900,8 @@
       "label": "CABBAGE",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "napa-cabbage",
       "note": ""
     },
     {
@@ -1185,8 +1186,8 @@
       "label": "CHEESE",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "mozzarella;processed-cheese",
       "note": ""
     },
     {
@@ -1295,8 +1296,8 @@
       "label": "TOMATOES",
       "granularity": "line",
       "native_level": "nass_commodity_class",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "tomato",
       "note": "Shares the fresh-market tomato commodity; no cherry split in NASS."
     },
     {
@@ -1317,8 +1318,8 @@
       "label": "CHICKENS",
       "granularity": "line",
       "native_level": "nass_commodity_class",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "chicken-thigh;whole-chicken",
       "note": "NASS broilers; not by part."
     },
     {
@@ -1339,8 +1340,8 @@
       "label": "CHICKENS",
       "granularity": "line",
       "native_level": "nass_commodity_class",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "chicken-breast;whole-chicken",
       "note": ""
     },
     {
@@ -1362,7 +1363,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "kale;bok-choy;collard-greens;brussels-sprouts;leek;daikon;rutabaga",
+      "shared_with": "bok-choy;brussels-sprouts;collard-greens;daikon;kale;leek;rutabaga",
       "note": "stated origin: Mexico 96%"
     },
     {
@@ -1560,7 +1561,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "kale;bok-choy;brussels-sprouts;cilantro;leek;daikon;rutabaga",
+      "shared_with": "bok-choy;brussels-sprouts;cilantro;daikon;kale;leek;rutabaga",
       "note": "stated origin: Mexico 62%"
     },
     {
@@ -1581,8 +1582,8 @@
       "label": "GREENS",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "bok-choy;kale",
       "note": ""
     },
     {
@@ -1659,7 +1660,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "tomato;bell-pepper;jalapeno;serrano-pepper;poblano-pepper;habanero-pepper;eggplant",
+      "shared_with": "bell-pepper;eggplant;habanero-pepper;jalapeno;poblano-pepper;serrano-pepper;tomato",
       "note": "stated origin: Mexico 54%"
     },
     {
@@ -1725,7 +1726,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "kale;bok-choy;collard-greens;brussels-sprouts;cilantro;leek;rutabaga",
+      "shared_with": "bok-choy;brussels-sprouts;cilantro;collard-greens;kale;leek;rutabaga",
       "note": "stated origin: Mexico 62%"
     },
     {
@@ -1824,7 +1825,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "tomato;bell-pepper;jalapeno;serrano-pepper;poblano-pepper;habanero-pepper;cucumber",
+      "shared_with": "bell-pepper;cucumber;habanero-pepper;jalapeno;poblano-pepper;serrano-pepper;tomato",
       "note": "stated origin: Mexico 87%"
     },
     {
@@ -2098,8 +2099,8 @@
       "label": "LETTUCE",
       "granularity": "line",
       "native_level": "nass_commodity_class",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "butter-lettuce;red-leaf-lettuce",
       "note": ""
     },
     {
@@ -2175,8 +2176,8 @@
       "label": "CATTLE",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "beef-tenderloin;ribeye;short-rib;striploin",
       "note": ""
     },
     {
@@ -2231,7 +2232,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "tomato;bell-pepper;jalapeno;serrano-pepper;poblano-pepper;cucumber;eggplant",
+      "shared_with": "bell-pepper;cucumber;eggplant;jalapeno;poblano-pepper;serrano-pepper;tomato",
       "note": "stated origin: Mexico 94%"
     },
     {
@@ -2241,8 +2242,8 @@
       "label": "PEPPERS",
       "granularity": "line",
       "native_level": "nass_commodity_class",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "jalapeno;poblano-pepper;serrano-pepper",
       "note": ""
     },
     {
@@ -2330,7 +2331,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "tomato;bell-pepper;serrano-pepper;poblano-pepper;habanero-pepper;cucumber;eggplant",
+      "shared_with": "bell-pepper;cucumber;eggplant;habanero-pepper;poblano-pepper;serrano-pepper;tomato",
       "note": "stated origin: Mexico 98%"
     },
     {
@@ -2340,8 +2341,8 @@
       "label": "PEPPERS",
       "granularity": "line",
       "native_level": "nass_commodity_class",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "habanero-pepper;poblano-pepper;serrano-pepper",
       "note": ""
     },
     {
@@ -2374,7 +2375,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "bok-choy;collard-greens;brussels-sprouts;cilantro;leek;daikon;rutabaga",
+      "shared_with": "bok-choy;brussels-sprouts;cilantro;collard-greens;daikon;leek;rutabaga",
       "note": "stated origin: Mexico 96%"
     },
     {
@@ -2395,8 +2396,8 @@
       "label": "GREENS",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "bok-choy;collard-greens",
       "note": "Kale falls in the NASS greens commodity."
     },
     {
@@ -2550,7 +2551,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "kale;bok-choy;collard-greens;brussels-sprouts;cilantro;daikon;rutabaga",
+      "shared_with": "bok-choy;brussels-sprouts;cilantro;collard-greens;daikon;kale;rutabaga",
       "note": "stated origin: Mexico 67%"
     },
     {
@@ -2747,8 +2748,8 @@
       "label": "CHEESE",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "cheddar-cheese;processed-cheese",
       "note": ""
     },
     {
@@ -2791,8 +2792,8 @@
       "label": "CABBAGE",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "cabbage",
       "note": "Chinese/napa cabbage folds into NASS cabbage or greens."
     },
     {
@@ -2934,8 +2935,8 @@
       "label": "ONIONS",
       "granularity": "line",
       "native_level": "nass_commodity_class",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "red-onion",
       "note": ""
     },
     {
@@ -3276,7 +3277,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "tomato;bell-pepper;jalapeno;serrano-pepper;habanero-pepper;cucumber;eggplant",
+      "shared_with": "bell-pepper;cucumber;eggplant;habanero-pepper;jalapeno;serrano-pepper;tomato",
       "note": "stated origin: Mexico 100%"
     },
     {
@@ -3286,8 +3287,8 @@
       "label": "PEPPERS",
       "granularity": "line",
       "native_level": "nass_commodity_class",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "habanero-pepper;jalapeno;serrano-pepper",
       "note": ""
     },
     {
@@ -3319,8 +3320,8 @@
       "label": "HOGS",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "bacon;pork-loin;pork-shoulder",
       "note": "NASS is live hogs, not by cut — all pork cuts share HOGS."
     },
     {
@@ -3352,8 +3353,8 @@
       "label": "HOGS",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "bacon;pork-belly;pork-shoulder",
       "note": ""
     },
     {
@@ -3396,8 +3397,8 @@
       "label": "HOGS",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "bacon;pork-belly;pork-loin",
       "note": ""
     },
     {
@@ -3418,8 +3419,8 @@
       "label": "CHEESE",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "cheddar-cheese;mozzarella",
       "note": ""
     },
     {
@@ -3583,8 +3584,8 @@
       "label": "LETTUCE",
       "granularity": "line",
       "native_level": "nass_commodity_class",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "butter-lettuce;green-leaf-lettuce",
       "note": ""
     },
     {
@@ -3616,8 +3617,8 @@
       "label": "ONIONS",
       "granularity": "line",
       "native_level": "nass_commodity_class",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "onion",
       "note": "NASS dry onions not split by color."
     },
     {
@@ -3649,8 +3650,8 @@
       "label": "POTATOES",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "russet-potato",
       "note": ""
     },
     {
@@ -3693,8 +3694,8 @@
       "label": "CATTLE",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "beef-tenderloin;ground-beef;short-rib;striploin",
       "note": "NASS is live cattle / total beef, not by retail cut — all beef cuts share the CATTLE commodity for the domestic production + farm-gate price layer."
     },
     {
@@ -3770,8 +3771,8 @@
       "label": "POTATOES",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "red-potato",
       "note": "NASS potatoes not split by variety at the national fresh series."
     },
     {
@@ -3793,7 +3794,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "kale;bok-choy;collard-greens;brussels-sprouts;cilantro;leek;daikon",
+      "shared_with": "bok-choy;brussels-sprouts;cilantro;collard-greens;daikon;kale;leek",
       "note": "stated origin: Mexico 62%"
     },
     {
@@ -3820,13 +3821,13 @@
     },
     {
       "slug": "salmon-fillet",
-      "authority": "ghcn_weather",
-      "code": "",
-      "label": "",
+      "authority": "noaa_cpc_oni",
+      "code": "ONI",
+      "label": "Oceanic Niño Index (ENSO regime)",
       "granularity": "proxy",
-      "native_level": "weather_region",
+      "native_level": "enso_oni_index",
       "binding": "code_shared_by_slugs",
-      "shared_with": "shrimp;shrimp-pd;shrimp-head-on;salmon-skin-on-fillet",
+      "shared_with": "salmon-skin-on-fillet;shrimp;shrimp-head-on;shrimp-pd",
       "note": "stated origin: Chile 63%"
     },
     {
@@ -3853,13 +3854,13 @@
     },
     {
       "slug": "salmon-skin-on-fillet",
-      "authority": "ghcn_weather",
-      "code": "",
-      "label": "",
+      "authority": "noaa_cpc_oni",
+      "code": "ONI",
+      "label": "Oceanic Niño Index (ENSO regime)",
       "granularity": "proxy",
-      "native_level": "weather_region",
+      "native_level": "enso_oni_index",
       "binding": "code_shared_by_slugs",
-      "shared_with": "shrimp;shrimp-pd;shrimp-head-on;salmon-fillet",
+      "shared_with": "salmon-fillet;shrimp;shrimp-head-on;shrimp-pd",
       "note": "stated origin: Chile 63%"
     },
     {
@@ -3936,7 +3937,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "tomato;bell-pepper;jalapeno;poblano-pepper;habanero-pepper;cucumber;eggplant",
+      "shared_with": "bell-pepper;cucumber;eggplant;habanero-pepper;jalapeno;poblano-pepper;tomato",
       "note": "stated origin: Mexico 100%"
     },
     {
@@ -3946,8 +3947,8 @@
       "label": "PEPPERS",
       "granularity": "line",
       "native_level": "nass_commodity_class",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "habanero-pepper;jalapeno;poblano-pepper",
       "note": ""
     },
     {
@@ -3979,8 +3980,8 @@
       "label": "MUSHROOMS",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "button-mushroom",
       "note": "Specialty mushrooms fold into the NASS mushroom commodity."
     },
     {
@@ -4001,8 +4002,8 @@
       "label": "CATTLE",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "beef-tenderloin;ground-beef;ribeye;striploin",
       "note": ""
     },
     {
@@ -4183,13 +4184,13 @@
     },
     {
       "slug": "shrimp",
-      "authority": "ghcn_weather",
-      "code": "",
-      "label": "",
+      "authority": "noaa_cpc_oni",
+      "code": "ONI",
+      "label": "Oceanic Niño Index (ENSO regime)",
       "granularity": "proxy",
-      "native_level": "weather_region",
+      "native_level": "enso_oni_index",
       "binding": "code_shared_by_slugs",
-      "shared_with": "shrimp-pd;shrimp-head-on;salmon-fillet;salmon-skin-on-fillet",
+      "shared_with": "salmon-fillet;salmon-skin-on-fillet;shrimp-head-on;shrimp-pd",
       "note": "stated origin: Ecuador 50%"
     },
     {
@@ -4381,13 +4382,13 @@
     },
     {
       "slug": "shrimp-head-on",
-      "authority": "ghcn_weather",
-      "code": "",
-      "label": "",
+      "authority": "noaa_cpc_oni",
+      "code": "ONI",
+      "label": "Oceanic Niño Index (ENSO regime)",
       "granularity": "proxy",
-      "native_level": "weather_region",
+      "native_level": "enso_oni_index",
       "binding": "code_shared_by_slugs",
-      "shared_with": "shrimp;shrimp-pd;salmon-fillet;salmon-skin-on-fillet",
+      "shared_with": "salmon-fillet;salmon-skin-on-fillet;shrimp;shrimp-pd",
       "note": "stated origin: Ecuador 50%"
     },
     {
@@ -4425,13 +4426,13 @@
     },
     {
       "slug": "shrimp-pd",
-      "authority": "ghcn_weather",
-      "code": "",
-      "label": "",
+      "authority": "noaa_cpc_oni",
+      "code": "ONI",
+      "label": "Oceanic Niño Index (ENSO regime)",
       "granularity": "proxy",
-      "native_level": "weather_region",
+      "native_level": "enso_oni_index",
       "binding": "code_shared_by_slugs",
-      "shared_with": "shrimp;shrimp-head-on;salmon-fillet;salmon-skin-on-fillet",
+      "shared_with": "salmon-fillet;salmon-skin-on-fillet;shrimp;shrimp-head-on",
       "note": "stated origin: India 50%"
     },
     {
@@ -4694,8 +4695,8 @@
       "label": "CATTLE",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "beef-tenderloin;ground-beef;ribeye;short-rib",
       "note": ""
     },
     {
@@ -4827,7 +4828,7 @@
       "granularity": "proxy",
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
-      "shared_with": "bell-pepper;jalapeno;serrano-pepper;poblano-pepper;habanero-pepper;cucumber;eggplant",
+      "shared_with": "bell-pepper;cucumber;eggplant;habanero-pepper;jalapeno;poblano-pepper;serrano-pepper",
       "note": "stated origin: Mexico 81%"
     },
     {
@@ -4848,8 +4849,8 @@
       "label": "TOMATOES",
       "granularity": "line",
       "native_level": "nass_commodity_class",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "cherry-tomato",
       "note": "Fresh-market tomatoes; NASS does not split cherry/roma/round at the survey level."
     },
     {
@@ -4991,8 +4992,8 @@
       "label": "CHICKENS",
       "granularity": "line",
       "native_level": "nass_commodity_class",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "chicken-breast;chicken-thigh",
       "note": ""
     },
     {
@@ -5200,8 +5201,8 @@
       "label": "SQUASH",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "acorn-squash;butternut-squash;zucchini",
       "note": ""
     },
     {
@@ -5266,8 +5267,8 @@
       "label": "SQUASH",
       "granularity": "commodity",
       "native_level": "nass_commodity",
-      "binding": "exact",
-      "shared_with": "",
+      "binding": "code_shared_by_slugs",
+      "shared_with": "acorn-squash;butternut-squash;yellow-squash",
       "note": "NASS squash not split by type."
     }
   ]

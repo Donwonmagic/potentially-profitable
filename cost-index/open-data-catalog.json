@@ -337,22 +337,22 @@
       "license": "CC BY 4.0",
       "license_url": "https://creativecommons.org/licenses/by/4.0/",
       "rights": "Compilation © Muntin Cost Index, licensed CC BY 4.0. Attribution: \"Muntin Cost Index, muntin.digital\".",
-      "source": "Muntin Cost Index — maps our ingredient slugs to US Census HS, USDA NASS, USDA ERS, NOAA Fisheries and GHCN weather identifiers",
-      "honesty_note": "An identity map, never a measurement: no price, no volume, no share, no ranking, no forecast. A code means \"this is the federal identifier we read for this ingredient\" — never that it is imported, grown domestically, or scarce. `granularity` is an absolute cross-authority level (line finer than commodity, group coarser, proxy = a growing region standing in for the ingredient, not an identity of it). `binding` = code_shared_by_slugs marks the codes the source CANNOT split, so any per-slug figure drawn from one is really the combined figure for every ingredient listed in `shared_with`. The codes and their descriptions are US-gov public domain; the slug-to-code mapping is Muntin editorial work, CC BY 4.0.",
+      "source": "Muntin Cost Index — maps our ingredient slugs to US Census HS, USDA NASS, USDA ERS, NOAA Fisheries, GHCN weather-station regions and the NOAA CPC ONI index",
+      "honesty_note": "An identity map, never a measurement: no price, no volume, no share, no ranking, no forecast. A code means \"this is the federal identifier we read for this ingredient\" — never that it is imported, grown domestically, or scarce. `granularity` is an absolute cross-authority level (line finer than commodity, group coarser, proxy = a growing region standing in for the ingredient, not an identity of it). `binding` = code_shared_by_slugs marks the codes the source CANNOT split, so any per-slug figure drawn from one is really the combined figure for every ingredient listed in `shared_with` — 24 HS codes and 13 NASS series are shared this way (NASS `CATTLE` alone stands for five beef cuts). The codes and their descriptions are US-gov public domain; the slug-to-code mapping is Muntin editorial work, CC BY 4.0.",
       "downloads": [
         {
           "path": "cost-index/ingredient-codes.json",
           "url": "https://muntin.digital/cost-index/ingredient-codes.json",
-          "bytes": 152259
+          "bytes": 154118
         },
         {
           "path": "cost-index/ingredient-codes.csv",
           "url": "https://muntin.digital/cost-index/ingredient-codes.csv",
-          "bytes": 58057
+          "bytes": 59890
         }
       ],
       "available": true,
-      "total_bytes": 210316
+      "total_bytes": 214008
     },
     {
       "id": "eia-energy-backdrop",
