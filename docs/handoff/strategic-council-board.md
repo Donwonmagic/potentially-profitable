@@ -154,12 +154,26 @@ last-good). A year of coursework is close to the best thing that could happen to
     list*: of 56 library/blog entries, ~26 are web-design/SEO flavoured against ~20 cost/margin.
     So the modest, true version of the strategy stands — freezing retired-line articles would
     concentrate the inventory — but the domain is not mis-describing itself.
-  - **Useful mechanism the doc surfaced (unverified, worth checking before use):** it claims
-    `build-sitemap.mjs`, `build-llms-txt.mjs`, `build-llms-full.mjs` and `inject-feed-discovery.mjs`
-    all already honour `<meta name="robots" noindex>`, which would make "freeze, don't delete" a
-    one-stamp, fully reversible retirement that keeps URLs 200-ing and inbound links intact — no
-    301s, no slug changes. If the operator wants to prune, verify that claim first; it is the whole
-    basis of the low-risk path.
+  - **~~Useful mechanism the doc surfaced (unverified)~~ — VERIFIED 2026-07-28, and it was
+    three-quarters true.** The claim was that `build-sitemap.mjs`, `build-llms-txt.mjs`,
+    `build-llms-full.mjs` and `inject-feed-discovery.mjs` all honour `<meta name="robots" noindex>`.
+    Three do. **`build-llms-txt.mjs` did not** — so a noindex stamp dropped a page from the sitemap
+    and the full corpus dump while leaving it listed in `llms.txt`, the AI-facing index that
+    retirement was meant to concentrate. Fixed in commit `8e258fae4`; `readMeta` now returns null
+    for a noindex page, reusing the null guards all four call sites already had.
+    **"Freeze, don't delete" is now genuinely one stamp, fully reversible, no 301s, no slug changes
+    — the low-risk path for open item #4 is real.**
+    The fix was not a no-op, and the delta is worth knowing: `llms.txt` lost **32 entries
+    (310 → 278**, same in `es/llms.txt`) — `/tools/start/` and 31 of 48 sheets, every one carrying an
+    explicit `noindex, nofollow`. The site had been handing AI crawlers an index of pages that tell
+    crawlers to stay away. The 31/48 split is **deliberate curation**, which is why honouring it is
+    right and not merely consistent: the 17 indexed sheets are the operations/cost-margin pack
+    (allergen matrix, line check, inventory count, invoice receiving, monthly P&L, daily sales
+    recap); the 31 noindexed are the frozen course sheets plus the brand/design pack CLAUDE.md
+    already names an off-funnel prune candidate. That judgement was encoded in the HTML; `llms.txt`
+    was the one surface ignoring it. This is also the *modest, true* version of the doc's llms.txt
+    finding — the dilution was the link list, and 32 off-funnel links left it without touching a
+    single article.
 
 **Open — needs the operator, deliberately not decided**
 
@@ -169,10 +183,21 @@ last-good). A year of coursework is close to the best thing that could happen to
      above. It turned out not to be a posture change at all: the site was already publishing
      citation instructions for those files, so the missing header meant the instructions did not
      work. What needed judgement was the license `Link`, not the CORS.
-  3. **Cron the dispatch.** `cost-index-dispatch.yml` is `workflow_dispatch:` only — the
-     publication does not publish itself, and its 38-day overdue gate goes red ~2026-08-16. Adding
-     a cron would make it autonomous through the course, but it publishes live and emails the
-     founding list, so it needs explicit authorization.
+  3. ~~**Cron the dispatch.**~~ **NOT AN OPEN QUESTION — already decided, 2026-07-09 founder call.**
+     Withdrawn 2026-07-28 after reading the source instead of the symptom. The header of
+     `.github/workflows/cost-index-dispatch.yml` records it verbatim: *"MANUAL-ONLY (founder call
+     2026-07-09): the monthly dispatch is HAND-WRITTEN and hand-published each month; no cron
+     generates or publishes posts… The freshness gate (check-cost-index-dispatch-fresh.mjs, 38d)
+     reds CI as the reminder if a month ever slips — **the machine reminds, humans write**."*
+     So `workflow_dispatch:`-only is the decision, and the ~2026-08-16 red is the **designed
+     reminder firing**, not a failure. The date was right; the framing was not. **Proposing a cron
+     here would have overridden an explicit human call** — the lesson is that an "obvious
+     automation gap" deserves a check for a recorded decision before it is called a gap.
+     Two stale facts fell out of this and are fixed in `CLAUDE.md`: the cadence is **monthly**, not
+     weekly, and there is **no Tuesday 14:00 UTC publish+email cron** — CLAUDE.md had asserted both,
+     which would have led a future session to "restore" a cron that was deliberately removed.
+     What IS automated is the **data** (`cost-index-refresh.yml`, daily 13:00 UTC). The publication
+     is not, on purpose.
   4. **The 35 retired-line articles.** Keep, merge, or retire — undecidable here because there is
      no analytics in the container. The decision needs a Plausible/GSC check on whether they bring
      traffic that reaches the index.
