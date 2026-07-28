@@ -87,6 +87,14 @@ export const BLOG_LIBRARY_REDIRECTS = new Map([
   ['/blog/keep-plate-cost-honest-when-prices-change/',                       '/library/keep-plate-cost-honest-when-prices-change/'],
   ['/blog/what-beef-prices-mean-for-your-restaurant/',                       '/library/what-beef-prices-mean-for-your-restaurant/'],
 
+  // EN kept-slug gap-close (2026-07-28): the same sweep, one more. A library
+  // article published after the Phase-7 split still gets a blog_posts entry (so
+  // it appears on the blog index) and therefore still needs the 301, exactly as
+  // what-beef-prices (2026-07-05) did. Added together with its
+  // data/library-tags.json entry — the two must land in the same commit, since
+  // the tag alone emits a /blog/ link the map cannot resolve.
+  ['/blog/restaurant-prime-cost/',                                           '/library/restaurant-prime-cost/'],
+
   // EN rename moves (de-timed)
   ['/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/',          '/library/custom-restaurant-website-pricing/'],
   ['/blog/uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026/',           '/library/third-party-delivery-comparison/'],

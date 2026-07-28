@@ -44,6 +44,12 @@ const CHECKS = [
   // in the blog/library split, plus articles planned and never written). This
   // is the gap check-article-graphics.mjs names under "Not enforced here".
   ['Claim usage',          'check-claim-usage.mjs'],
+  // Blog-index link resolvability — build-blog-index.mjs emits /blog/<slug>/ for
+  // every blog_posts entry regardless of `namespace`, so a library-namespace
+  // entry needs a matching 301 in src/lib/blog-library-redirects.js or the index
+  // ships a link to nothing. That gap has been found by hand three times now
+  // (twice on 2026-07-18, once on 2026-07-28); this makes it mechanical.
+  ['Blog index links',     'check-blog-index-links.mjs'],
   // Per-language audio fact gate — the HTML gate above deliberately skips the
   // narration JSON, but the renderer speaks chunks[].text verbatim in six
   // languages. This applies the shared fabrication registry per spoken
@@ -689,6 +695,7 @@ const BASELINE_DENYLIST = new Set([
   'check-fabrications.mjs',
   'check-audio-fabrications.mjs',
   'check-claim-usage.mjs',
+  'check-blog-index-links.mjs',
   'check-retired-links.mjs',
   'check-locale-parity.mjs',
   'check-hreflang-orphans.mjs',
