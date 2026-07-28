@@ -687,6 +687,29 @@ main{padding-top:64px}
     <p>We flag the cheapest month, the priciest, and the <strong>amplitude</strong> — the percent gap between them — which is the single best gauge of whether an item is worth timing at all. Two cautions: check the band before you commit spec, and remember the line is a median, not a forecast.</p>
   </section>
   <hr class="od-rule">
+
+  <!-- seasonality-why:start --><style>/* seasonality-why */
+.sea-mlist{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:10px}
+.sea-mlist li{display:grid;grid-template-columns:auto auto 1fr;gap:10px;align-items:baseline;padding:10px 12px;border:1px solid var(--line);border-radius:8px}
+.sea-mchip{display:inline-block;font-family:var(--font-display);font-size:12px;line-height:1.4;padding:3px 8px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+.sea-mchip--counter-phase{background:rgba(42,80,200,.10)}
+.sea-mchip--domestic-low{background:rgba(42,80,200,.05)}
+.sea-mchip--domestic-only{background:transparent}
+.sea-mchip--concentrated{background:rgba(176,84,44,.10)}
+.sea-mcount{font-family:var(--font-display);font-variant-numeric:tabular-nums;font-weight:600}
+.sea-mgloss{font-size:14px}
+.sea-mex{display:block;margin-top:3px;font-size:13px;opacity:.75}
+@media (max-width:640px){.sea-mlist li{grid-template-columns:1fr;gap:4px}}
+</style>
+  <section aria-labelledby="sea-why">
+    <h2 id="sea-why">Why a curve has the shape it does</h2>
+    <p>Every curve on this page is a domestic wholesale reference. Beside it sits a second, independent calendar: where the nominal value of US imports of that food falls month to month. Across the <b>84</b> ingredients with a settled window, this is how the two calendars line up.</p>
+    <ul class="sea-mlist"><li><span class="sea-mchip sea-mchip--counter-phase">⇄ Import-value counter-phase</span><span class="sea-mcount">28</span><span class="sea-mgloss">Import value rises in the months the domestic wholesale reference dips — two calendars running opposite, set side by side.<span class="sea-mex">e.g. Acorn squash, Apple, Asparagus, Bell pepper</span></span></li><li><span class="sea-mchip sea-mchip--domestic-low">Domestic-season low (not import-aligned)</span><span class="sea-mcount">42</span><span class="sea-mgloss">The domestic reference troughs while import value is not at its high. Inferred from the two series read together, not a measured harvest calendar.<span class="sea-mex">e.g. Artichoke, Avocado, Banana, Beef tenderloin</span></span></li><li><span class="sea-mchip sea-mchip--domestic-only">Domestically sourced (no import calendar)</span><span class="sea-mcount">14</span><span class="sea-mgloss">Carries no import-value calendar at all; the shape of its curve is set in the domestic market.<span class="sea-mex">e.g. Basil, Chicken breast, Chicken thigh, Dill</span></span></li></ul>
+    <p>Separately, <b>44</b> of the 84 carry <span class="sea-mchip sea-mchip--concentrated">Concentrated single-origin import value</span> — most of their annual import value sits with one origin country (HHI ≥ 0.50, a value share).</p>
+    <div class="od-note sea-caveat">Two calendars shown beside each other — one is not causing the other. The import figure is nominal import-value seasonality, never volume, tonnage, or supply share; HHI is concentration of import value, not of total supply; reliance is a value proxy, not a supply-security score. This describes the curve's shape via import-value structure — never a price cause, never a supply flow, and never a forecast.</div>
+  </section>
+<!-- /seasonality-why:end -->
+
   <section aria-labelledby="sea-play-h">
     <h2 class="od-h2" id="sea-play-h">The operator’s playbook</h2>
     <ol class="sea-play"><li>Read the <strong>cheapest month</strong> as your feature-and-buy window and the <strong>priciest month</strong> as your trim-or-substitute window.</li><li>When the amplitude is large, the calendar is worth building the menu around: feature the item at its low, substitute or pre-buy ahead of its high.</li><li>When the amplitude is small — under about 15-20% — the curve is mostly noise: buy to need and shop the current spot deal instead.</li><li>Check the spread band before you commit spec: a cheap month with a wide band can still spike.</li><li>Remember the line is a median, not a forecast. It tells you the usual rhythm, not what next week’s truck will cost.</li></ol>

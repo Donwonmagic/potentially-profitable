@@ -433,13 +433,12 @@ const CHECKS = [
   // mechanism labels + a Swap Validator. Guards that no fusion launders a supply/volume
   // claim out of value data, asserts a price cause, forecasts, or leaks a REFUSED field.
   ['Seasonality fusion honesty self-test','check-seasonality-fusion.mjs','--self-test'],
-  // DEFERRED 2026-07-28 (#523 merge): the page scan is temporarily off. The §4 "sea-why"
-  // mechanism section it enforces was rendered by our build-cost-index-pages engine, which the
-  // "Main-base + re-apply corpus" merge intentionally replaced with main's engine (seasonality
-  // fusion was not in the approved re-apply set). The gate + its self-test stay live so the
-  // logic is preserved; re-enable this line when the §4 sea-why render is re-landed on main's
-  // engine (board: seasonality/events engine-mirror re-do follow-up).
-  // ['Seasonality fusion honesty','check-seasonality-fusion.mjs'],
+  // RE-ENABLED 2026-07-28: §4 "sea-why" is rendered again by inject-seasonality-why.mjs
+  // (the ADR-019 mechanism layer, rebuilt as an injector over the surviving
+  // scripts/lib/seasonality-fusion.mjs after the #523 merge dropped the engine render).
+  ['Seasonality why self-test','inject-seasonality-why.mjs','--self-test'],
+  ['Seasonality why in sync','inject-seasonality-why.mjs','--check'],
+  ['Seasonality fusion honesty','check-seasonality-fusion.mjs'],
   ['Seasonality fusion lib self-test','lib/seasonality-fusion.mjs','--self-test'],
   // Seasonal band enforcement (P1d) — the rendered "typical for this month"
   // bands on the ingredient pages state a multi-year norm (median + p25–p75).

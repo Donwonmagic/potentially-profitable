@@ -137,6 +137,7 @@ jobs:
           node scripts/inject-supply-picture.mjs
           node scripts/inject-ingredient-recalls.mjs
           node scripts/inject-provenance-hop.mjs
+          node scripts/inject-seasonality-why.mjs
           # Re-stamp the /about/ live basket read (same data the hub composite
           # features) so the pledge "the numbers I check on my shifts" never
           # freezes at last build. Reads data/cost-index.json; EN + ES.
@@ -234,6 +235,7 @@ jobs:
           node scripts/inject-supply-picture.mjs --check
           node scripts/inject-ingredient-recalls.mjs --check
           node scripts/inject-provenance-hop.mjs --check
+          node scripts/inject-seasonality-why.mjs --check
           node scripts/check-cost-index-confidence.mjs
           node scripts/build-cost-revisions.mjs --check
           node scripts/build-cost-index-reproduce.mjs --check

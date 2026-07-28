@@ -631,6 +631,29 @@ main{padding-top:64px}
     <p>Marcamos el mes más barato, el más caro y la <strong>amplitud</strong> — el porcentaje entre ellos — que es el mejor indicador de si vale la pena cronometrar un artículo. Dos precauciones: revisa la banda antes de fijar la ficha, y recuerda que la línea es una mediana, no un pronóstico.</p>
   </section>
   <hr class="od-rule">
+
+  <!-- seasonality-why:start --><style>/* seasonality-why */
+.sea-mlist{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:10px}
+.sea-mlist li{display:grid;grid-template-columns:auto auto 1fr;gap:10px;align-items:baseline;padding:10px 12px;border:1px solid var(--line);border-radius:8px}
+.sea-mchip{display:inline-block;font-family:var(--font-display);font-size:12px;line-height:1.4;padding:3px 8px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+.sea-mchip--counter-phase{background:rgba(42,80,200,.10)}
+.sea-mchip--domestic-low{background:rgba(42,80,200,.05)}
+.sea-mchip--domestic-only{background:transparent}
+.sea-mchip--concentrated{background:rgba(176,84,44,.10)}
+.sea-mcount{font-family:var(--font-display);font-variant-numeric:tabular-nums;font-weight:600}
+.sea-mgloss{font-size:14px}
+.sea-mex{display:block;margin-top:3px;font-size:13px;opacity:.75}
+@media (max-width:640px){.sea-mlist li{grid-template-columns:1fr;gap:4px}}
+</style>
+  <section aria-labelledby="sea-why">
+    <h2 id="sea-why">Por qué una curva tiene la forma que tiene</h2>
+    <p>Cada curva de esta página es una referencia mayorista nacional. A su lado hay un segundo calendario independiente: dónde cae mes a mes el valor nominal de las importaciones estadounidenses de ese alimento. De los <b>84</b> ingredientes con una ventana asentada, así se alinean los dos calendarios.</p>
+    <ul class="sea-mlist"><li><span class="sea-mchip sea-mchip--counter-phase">⇄ Valor de importación en contrafase</span><span class="sea-mcount">28</span><span class="sea-mgloss">El valor de importación sube en los meses en que la referencia mayorista nacional baja — dos calendarios opuestos, puestos uno al lado del otro.<span class="sea-mex">p. ej. Acorn squash, Apple, Asparagus, Bell pepper</span></span></li><li><span class="sea-mchip sea-mchip--domestic-low">Mínimo de temporada nacional</span><span class="sea-mcount">42</span><span class="sea-mgloss">La referencia nacional toca fondo mientras el valor de importación no está en su punto alto. Inferido de las dos series leídas juntas, no es un calendario de cosecha medido.<span class="sea-mex">p. ej. Artichoke, Avocado, Banana, Beef tenderloin</span></span></li><li><span class="sea-mchip sea-mchip--domestic-only">De origen nacional (sin calendario de importación)</span><span class="sea-mcount">14</span><span class="sea-mgloss">No lleva ningún calendario de valor de importación; la forma de su curva se fija en el mercado nacional.<span class="sea-mex">p. ej. Basil, Chicken breast, Chicken thigh, Dill</span></span></li></ul>
+    <p>Por separado, <b>44</b> de los 84 llevan <span class="sea-mchip sea-mchip--concentrated">Valor de importación concentrado</span> — la mayor parte de su valor anual de importación se sitúa en un solo país de origen (HHI ≥ 0,50, una cuota de valor).</p>
+    <div class="od-note sea-caveat">Dos calendarios mostrados uno al lado del otro — ninguno causa al otro. La cifra de importación es estacionalidad del valor nominal de importación, nunca volumen, tonelaje ni cuota de oferta; el HHI es concentración del valor de importación, no de la oferta total; la dependencia es un proxy de valor, no una puntuación de seguridad de suministro. Describe la forma de la curva vía la estructura del valor de importación — nunca una causa de precio, nunca un flujo de oferta y nunca un pronóstico.</div>
+  </section>
+<!-- /seasonality-why:end -->
+
   <section aria-labelledby="sea-play-h">
     <h2 class="od-h2" id="sea-play-h">El manual del operador</h2>
     <ol class="sea-play"><li>Trata el <strong>mes más barato</strong> como tu ventana de destacar-y-comprar, y el <strong>mes más caro</strong> como tu ventana de recortar-o-sustituir.</li><li>Cuando la amplitud es grande, vale la pena construir el menú alrededor del calendario: destaca el artículo en su mínimo y sustituye o precompra antes de su máximo.</li><li>Cuando la amplitud es pequeña — bajo ~15-20% — la curva es casi ruido: compra según necesidad y aprovecha la oferta puntual del momento.</li><li>Revisa la banda antes de comprometer la ficha técnica: un mes barato con banda ancha aún puede dispararse.</li><li>Recuerda que la línea es una mediana, no un pronóstico. Te dice el ritmo habitual, no lo que costará el camión de la próxima semana.</li></ol>
