@@ -102,6 +102,47 @@ last-good). A year of coursework is close to the best thing that could happen to
   - Naive ingredient-name matching is **unsafe**: it flagged 55/55 articles because "apple"
     matches Apple. Any corpus↔index mapping must be curated or evidence-derived, never fuzzy.
 
+**POSITIONING: cost intelligence, not a web-design blog (operator call, 2026-07-28)**
+
+  Open item #4 is **decided and executed**. The operator's words: *"we are a cost intelligence
+  company, not web design blog."*
+
+  - **Structured data was the worst offender.** `about/index.html` carried two Person `knowsAbout`
+    lists, and the second read *"Restaurant website design, Small business SEO, Google Business
+    Profile, Restaurant operations, Website conversion optimization"* — four of five terms from the
+    retired line, and **not one word about cost, price, or invoices** in either list. That is the
+    entity signal Google and AI crawlers consume. Replaced with terms backed by live surfaces
+    (cost intelligence, wholesale food price data, food cost, prime cost, invoice/vendor price
+    tracking) plus the operations/FOH/certification entries that were already true. ES mirrored.
+  - **`llms.txt`** now opens "Muntin Digital is a restaurant cost-intelligence company" (it used to
+    end by advertising "a website course"), and the 27-lesson course moved from **second position
+    to last**, its promotional paragraph replaced by one honest line: frozen legacy resource, still
+    works, no longer developed. Nothing was delisted — all entries survived.
+  - **20 articles frozen** (18 tagged `local-seo`/`conversions`/`trust-reviews`/`brand-design`/
+    `speed-mobile`, plus the 2 `ai-search` pieces that are really web-design: *"which restaurant
+    website platform"* and *"Can ChatGPT write your restaurant website?"*). **The 7 genuine
+    AI-discovery pieces were deliberately KEPT** — being cited by AI is how the Cost Index gets
+    found, so those are the method, not the filler. Corpus is now 27 cost/margin + 7 AI-discovery
+    + 2 security, against 20 frozen.
+  - **Mechanism + how to reverse.** 39 pages (20 EN + 19 ES; one is EN-only) had their existing
+    robots meta changed from `content="max-image-preview:large, …"` to
+    `content="noindex, follow, max-image-preview:large, …"`. **To unfreeze, delete the
+    `noindex, follow, ` token and rebuild** — that is the entire operation. `follow` is deliberate:
+    links still pass equity to the cost-intelligence pages they point at. No slug changed, no 301
+    was added, every URL still returns 200, inbound links are intact.
+  - **Rebuild after any freeze change:** `build-sitemap` + `build-llms-txt` (both in the deploy
+    chain and gated) and `build-llms-full` (**NOT in the chain, NOT gated — must be committed by
+    hand or the frozen articles stay in the public corpus dump**). `inject-hub-collection-schema`
+    then heals the hub ItemList. Do **not** run `inject-feed-discovery` for this: it is not in the
+    chain, and running it standalone adds feed blocks to ~679 unrelated pages.
+  - **What the freeze does NOT remove, honestly:** an article that cites a research note still
+    appears as a **back-reference in the research-notes citation graph** in `llms-full.txt`
+    ("this study is cited by …"). Its body is gone from the corpus dump and its entry is gone from
+    every index. Suppressing the back-reference would make the citation record false about who
+    cites what, so it stays. Human-facing `/blog/` and `/library/` still list the frozen articles —
+    that is the point of freeze-don't-delete: readable and reachable, just not advertised to
+    machines. The hub `ItemList` schema dropped them (19 → 15 on the blog hub), which is correct.
+
 **Post-main-merge cadence (2026-07-28) — the theme was "a gate nobody runs"**
 
   Every item below is the same shape: something documented as protection that was not running,
