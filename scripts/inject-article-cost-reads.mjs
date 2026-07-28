@@ -65,6 +65,11 @@ import { isDollarBasis } from './check-cost-index-basis-leak.mjs';
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
 const { stalenessOf, capConfidence } = require(path.join(repoRoot, 'tools/_shared/cost-staleness.js'));
+// The SAME level/trend confidence split the ingredient page uses
+// (build-cost-index-pages.mjs#readingOf). Reused, never re-derived: if the tile
+// computed its own confidence it would eventually contradict the very page it
+// links to, and the reader would catch us disagreeing with ourselves.
+const CONF = require(path.join(repoRoot, 'tools/_shared/cost-confidence.js'));
 
 const SENTINEL_RE = /\n[ \t]*<!-- article-cost-read:start -->[\s\S]*?<!-- article-cost-read:end -->/g;
 
@@ -84,6 +89,7 @@ const COPY = {
     conf: { high: 'high confidence', medium: 'medium confidence', low: 'low confidence', directional: 'directional only' },
     dir: { up: 'up', down: 'down', flat: 'flat' },
     window: 'over the recent window',
+    hint: 'over the window — sources disagree, a hint not a firm move',
     asOf: 'as of',
     hub: '/cost-index/',
   },
@@ -95,6 +101,7 @@ const COPY = {
     conf: { high: 'confianza alta', medium: 'confianza media', low: 'confianza baja', directional: 'solo dirección' },
     dir: { up: 'al alza', down: 'a la baja', flat: 'sin cambio' },
     window: 'en la ventana reciente',
+    hint: 'en la ventana — las fuentes no coinciden; es una pista, no una cifra firme',
     asOf: 'al',
     hub: '/es/cost-index/',
   },
@@ -123,25 +130,63 @@ export function readRow(key, entry, label, locale) {
   if (!asOf) return null;
 
   const st = stalenessOf(point);
-  const conf = capConfidence(point.confidence || 'low', st && st.ceiling);
-  const confWord = c.conf[conf] || c.conf.low;
 
+  // Emit-gates copied verbatim from build-cost-index-pages.mjs#readingOf so the
+  // tile and the ingredient page render the SAME number or no number at all.
   const rc = Array.isArray(lvl.rangeCents) && lvl.rangeCents.length === 2 ? lvl.rangeCents : null;
-  const priceTxt = rc && rc[0] !== rc[1] ? `${money(rc[0])}–${money(rc[1])}` : money(lvl.medianCents);
+  const levelConf = CONF.levelConfidence(lvl);
+  const trendConf = CONF.trendConfidence(point.trend || {});
+  const distinctRange = !!(rc && rc[0] !== rc[1]);
+  const emitPoint = (levelConf === 'high' || levelConf === 'medium') && rc != null;
+  const emitRange = emitPoint || (levelConf === 'low' && distinctRange);
+  if (!emitRange && !emitPoint) return null;               // no shippable $ → drop the row
 
+  // Band basis, in the page's own words: a >=3-market measured spread is a real
+  // cross-market range and says so; anything else is a single market. Without
+  // this, romaine's honest $9.07-$45.57/carton across six terminal markets reads
+  // as a broken widget instead of the market fact it is.
+  const nMk = lvl.nFamilies || 0;
+  const measured = lvl.rangeBasis === 'markets' && nMk >= 3;
+  const bandNote = measured
+    ? (locale === 'es' ? ` en ${nMk} mercados USDA` : ` across ${nMk} USDA markets`)
+    : (locale === 'es' ? ', un mercado USDA' : ', single USDA market');
+  const basisRef = locale === 'es'
+    ? ({ wholesale: 'referencia mayorista', retail: 'referencia minorista', delivered: 'precio entregado' }[lvl.basis] || 'referencia')
+    : ({ wholesale: 'wholesale reference', retail: 'retail reference', delivered: 'delivered' }[lvl.basis] || 'reference');
+  const priceTxt = (emitRange && distinctRange) ? `${money(rc[0])}–${money(rc[1])}` : money(rc[0]);
+
+  // The TREND carries a number only when trendConfidence says it is a move.
+  // A jagged or disagreeing series speaks direction or nothing — never a %.
   const tr = point.trend || {};
   let trendTxt = '';
-  if (typeof tr.pct === 'number' && isFinite(tr.pct) && conf !== 'directional') {
-    const pct = (tr.pct * 100).toFixed(1).replace(/\.0$/, '');
+  // The badge carries the LEVEL's confidence — what the NUMBER is worth — exactly
+  // as build-cost-index-pages.mjs does (`badgeConf = hasNumber ? levelConf : conf`).
+  // Reading point.confidence here would print "directional only" beside a $5.51
+  // the ingredient page labels "medium", and the click-through would catch us
+  // contradicting ourselves. Staleness caps it further; the cap can only lower.
+  const conf = capConfidence(levelConf || point.confidence || 'low', st && st.ceiling);
+  const confWord = c.conf[conf] || c.conf.low;
+
+  // Stricter than the ingredient page on purpose. The page speaks a % only at
+  // trendConf medium/high and otherwise says "the sources disagree — a hint, not
+  // a firm move"; the tile does the same, and the staleness cap silences the %
+  // on top of that. A tile inside evergreen prose carries more weight than a
+  // dashboard the reader knows is live, so it under-claims by design.
+  if (typeof tr.pct === 'number' && isFinite(tr.pct) && trendConf && conf !== 'directional') {
     const word = c.dir[tr.dir] || c.dir.flat;
-    trendTxt = `${word} ${tr.pct >= 0 ? '+' : ''}${pct}% ${c.window}`;
+    if (trendConf === 'low') {
+      trendTxt = `${word} ${c.hint}`;
+    } else {
+      const pct = (tr.pct * 100).toFixed(1).replace(/\.0$/, '');
+      trendTxt = `${word} ${tr.pct >= 0 ? '+' : ''}${pct}% ${c.window}`;
+    }
   }
 
   const name = locale === 'es' ? (label.es || label.en) : label.en;
   const unit = locale === 'es' ? (label.unit_es || label.unit_en) : label.unit_en;
   const href = locale === 'es' ? `/es/cost-index/${key}/` : `/cost-index/${key}/`;
 
-  return { key, href, name, unit, priceTxt, trendTxt, confWord, asOf };
+  return { key, href, name, unit, priceTxt, trendTxt, confWord, asOf, basisRef, bandNote };
 }
 
 export function buildBlock(articleKey, ingredients, locale) {
@@ -159,7 +204,8 @@ export function buildBlock(articleKey, ingredients, locale) {
     return `        <li class="acr-item">`
       + `<a class="acr-name" href="${escAttr(r.href)}">${escText(r.name)}</a> `
       + `<b class="acr-price">${escText(r.priceTxt)}</b>`
-      + `<span class="acr-unit">/${escText(r.unit)}</span>`
+      + `<span class="acr-unit">/${escText(r.unit)}</span> `
+      + `<span class="acr-basis">(${escText(r.basisRef + r.bandNote)})</span>`
       + `<span class="acr-meta">${escText(meta)}</span>`
       + `</li>`;
   }).join('\n');

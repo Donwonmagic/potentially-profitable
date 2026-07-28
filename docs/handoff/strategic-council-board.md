@@ -17,6 +17,94 @@ outage, the /try demo, the 06-27 audits, prior branch states) is frozen verbatim
 council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 #234–#239 product) are merged to main and closed.
 
+## ⮕ CURRENT STATE — HONESTY-SPINE + VIZ THREAD (updated 2026-07-28)
+
+**Branch:** `claude/strategic-council-board-docs-g9yuen` (both repos). All work below is
+committed and pushed there; nothing is merged to main and no PR is open.
+
+**Directive shift this session.** Muntin Ledger moved to **2027** — the operator is starting a
+college course, with little time or money for a launch. That inverts the strategy: the Cost Index
+is not a funnel for a product, it IS the company for the next year, and it happens to be the rare
+asset that compounds while unattended (Mon/Wed/Fri cron, free public gov inputs, degrades to
+last-good). A year of coursework is close to the best thing that could happen to the archive.
+
+**Shipped**
+
+  - **Data-viz honesty sweep.** Signed data was being drawn on one-directional bars across the
+    Cost Index dispatch and 5 articles — direction carried by colour alone. Added `viz-diverge`
+    (zero-centred; side = direction, `data-dir` decoupled from `data-tone` so a "down is bad"
+    metric reads rust-on-the-left), `viz-split` (every part of a whole drawn, replacing rings that
+    drew one slice), `viz-gauge` (a signed value as a position, replacing `|pct|/50%` ring fill).
+    Generators rewritten so every future edition inherits it; 5 published editions restyled in
+    place from their own frozen numbers. **Rule 9** added to `check-article-graphics.mjs`: a
+    `viz-bars` figure whose labels mix + and − fails CI. It keys on the NUMERIC LABELS, never on
+    `data-tone` — 62 figures legitimately use rust/teal for pass/fail over all-positive values and
+    would have been false positives. `GENERATED_ROOTS` now scans `cost-index/` + `es/cost-index/`
+    for figure quality only (those pages carry no `id="post-body"`, so adding them to `SCAN_ROOTS`
+    would have been a silent no-op).
+  - **Launch date retired.** 8 pages named 2026-11-13, JSON-LD asserted `availabilityStarts`, and
+    a live countdown ticked toward it. Retired at the source of record
+    (`sourced-claims.json#ledger_founding_offer_2026`) and re-exported, so the rendered and
+    machine-readable claims cannot disagree. The founding offer is untouched and still true.
+  - **Fact-registry repair + gate.** 20 of 78 `used_in` edges pointed at nothing, and they are
+    copied verbatim into the PUBLIC `/claims.json` — false public statements inside the artifact
+    meant to prove the site does not invent. Repaired **on evidence** (which page renders the
+    claim's source URL), never on slug similarity, which proposed nonsense. Then found the inverse
+    rot: 79 real citations undocumented, almost all ES translations. New
+    `scripts/check-claim-usage.mjs` is bidirectional (ERROR on a dead edge, WARN both ways,
+    INFO on uncited claims). 78 → 144 edges, all resolving. check-all is now **260** checks.
+  - **Decay alarms that fire without the operator.** Both repos had alarms wired only to
+    push/PR — the alarms that exist for absence were switched off by absence.
+    `cost-index-snapshot-watch.yml` (product, weekly) and `freshness-heartbeat.yml` (storefront,
+    Saturdays) now run the time-decay gates on a clock, open a single rolling issue, and fail the
+    job so a scheduled-failure email is a second channel. The product's market-prior snapshot was
+    re-vendored (`07-04..07-14` → `07-18..07-24`) days before its oldest readings went dark.
+
+**Verified facts worth not re-deriving**
+
+  - `data/` is **publicly served and crawlable** (~32MB). The deploy tar excludes `docs/`,
+    `scripts/`, `_includes/`, `src/` — but NOT `data/`, and robots.txt is `Allow: /`. Nothing
+    sensitive is in it (no keys, no drafts; only fictional demo emails), but it is unlicensed and
+    uncredited. **`docs/` is the safe place for any internal artifact.**
+  - **CORS is absent everywhere** — 0 occurrences of `Access-Control-Allow-Origin` in `_headers`,
+    including on the CC0 `/cost-index/*.json` exports. Any browser-side or agent read fails.
+  - **98% of a published series is reconstructed.** `cost-index/ribeye/series.json`: 1,311 of
+    1,337 observations carry `reconstructed: true`; only **26** are measured by Muntin. The data
+    is re-derivable by anyone with a FRED/BLS key. What is NOT re-derivable — by anyone, including
+    Muntin retroactively — is the as-published record.
+  - **The as-published record is 2 editions deep.** `cost-index-editions.json` holds 4 entries;
+    06-05 and 06-16 are reconstructed seeds with **0 reads**. Only 06-18 (82 reads) and 07-06
+    (81 reads) can honestly anchor an "as of" answer.
+  - The fact gate is a **pattern blocklist**, not a semantic validator. The real protection is
+    determinism — that a relation is re-derivable from a committed file.
+  - Corpus composition: of 55 EN articles, **35 (64%) are web-design/SEO advice** for the retired
+    services line; 17 (31%) are cost intelligence. 21 genuine food-cost articles exist and exactly
+    **1** links to a live ingredient page.
+  - Naive ingredient-name matching is **unsafe**: it flagged 55/55 articles because "apple"
+    matches Apple. Any corpus↔index mapping must be curated or evidence-derived, never fuzzy.
+
+**Open — needs the operator, deliberately not decided**
+
+  1. **The `data/` posture.** Exclude it from the deploy tar, or license + document it and take
+     the attribution. Currently neither.
+  2. **CORS on `/cost-index/*`.** One line in `_headers`. Serves already-stated CC0 intent, but it
+     is a publication-posture change, so it was left rather than shipped.
+  3. **Cron the dispatch.** `cost-index-dispatch.yml` is `workflow_dispatch:` only — the
+     publication does not publish itself, and its 38-day overdue gate goes red ~2026-08-16. Adding
+     a cron would make it autonomous through the course, but it publishes live and emails the
+     founding list, so it needs explicit authorization.
+  4. **The 35 retired-line articles.** Keep, merge, or retire — undecidable here because there is
+     no analytics in the container. The decision needs a Plausible/GSC check on whether they bring
+     traffic that reaches the index.
+  5. **PR #523** (open, `dirty` vs main) adds per-ingredient Kitchen-profile / origin / recall
+     sections + an open-data chain. When it merges, this branch needs main merged in (both touch
+     `assets/site.css`), and the new ingredient-page sections must be checked against rule 9 —
+     they land in a tree that had no figure gate until this session.
+
+**In flight:** two strategy workflows (corpus↔index reconciliation; "legitimately useful / better
+than the best"). A third (knowledge-graph review) and a fourth (frontier north star) have landed —
+their findings are the verified facts above.
+
 ## ⮕ CURRENT STATE — UX/UI ELEVATION PROGRAM (updated 2026-07-18)
 
 **Branch:** `claude/strategic-council-board-docs-m3w6dy` (a distinct thread from the redesign
