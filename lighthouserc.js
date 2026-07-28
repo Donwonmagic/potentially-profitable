@@ -24,9 +24,6 @@
  *   /blog/<flagship article>           — long-form article body shape
  *   /glossary/conversion-rate/         — short-form glossary term shape
  *   /sheets/ + pilot sheet + ES sheets — Operator Sheets gate
- *   /course/ + L4 + generator + ES     — Open the Doors bootcamp gate
- *   /method/ + Workshop Kit hub        — brand pages pointing operators
- *                                         at the bootcamp
  */
 
 const BASE = process.env.LHCI_BUILD_BASE_URL || 'http://localhost:8788';
@@ -57,20 +54,9 @@ const PATHS = [
   '/sheets/',
   '/sheets/recipe-cost-card/',
   '/es/sheets/',
-  // Open the Doors bootcamp — hub + canonical vertical-slice lesson
-  // + the terminal L14 generator. The lesson page is dense (rail
-  // iframe + multiple widget mounts) and the generator runs JSZip
-  // lazily; both are load-bearing perf gates.
-  '/course/',
-  '/course/m2-decide/customer/',
-  '/course/m4-launch/generator/',
-  '/es/course/',
-  // Method manifesto + Workshop Kit hub — the brand-defining pages
-  // that point operators at the bootcamp. The Workshop Kit hub
-  // loads a 18-card grid; a regression there cascades into the
-  // bootcamp's perceived quality.
-  '/method/',
-  '/method/workshop/',
+  // 2026-07-28: the Open the Doors course (/course/) + Workshop-Kit method
+  // (/method/) pages were retired (301 to /cost-index/). Their six gated URLs
+  // were removed here — a retired, funnel-off surface should not gate merges.
 ];
 
 const url = PATHS.map((p) => BASE.replace(/\/+$/, '') + p);
