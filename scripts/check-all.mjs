@@ -37,6 +37,14 @@ const CHECKS = [
   // the registry with a real source URL, be cited inline via a
   // <details class="cite"> drawer, or be labeled illustrative.
   ['Fabrication blocklist','check-fabrications.mjs',       '--check'],
+  // Claim staleness (audit 2026-07-28) — the fact gate proves a claim IS sourced; nothing
+  // checked whether the source had gone stale. Offline by necessity (no network/keys in the
+  // container), so age is the signal. Volatility is INFERRED from the claim text ($ / % /
+  // a year => volatile) rather than hand-maintained across 47 entries. Two tiers: warn
+  // loudly and still pass, block much later. Deliberately clock-dependent — like the
+  // dispatch's 38-day freshness gate, going red IS the reminder. MUNTIN_TODAY pins it.
+  ['Claim staleness','check-claim-staleness.mjs'],
+  ['Claim staleness self-test','check-claim-staleness.mjs','--self-test'],
   // Per-language audio fact gate — the HTML gate above deliberately skips the
   // narration JSON, but the renderer speaks chunks[].text verbatim in six
   // languages. This applies the shared fabrication registry per spoken
