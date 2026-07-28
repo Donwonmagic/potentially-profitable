@@ -41,7 +41,7 @@ function model() {
 function page(m) {
   const months = m.months, sp = m.span, tr = m.trough;
   const title = 'The Sector Demand Backdrop — US Food-Services Monthly Sales (Census MARTS)';
-  const desc = 'US Food Services & Drinking Places monthly sales, US$ millions (Census MARTS via FRED, NAICS 722). Observed sales — never a demand forecast; the most recent month is a provisional advance estimate. Never blended into the food index, the pressure math, or the Vendor Benchmark reference.';
+  const desc = 'US Food Services & Drinking Places monthly sales, US$ millions (Census MARTS via FRED, NAICS 722). Observed sales, never a demand forecast.';
   const tbody = months.map((r) => `          <tr${r.provisional ? ' class="dm-prov-row"' : ''}><td class="l mono">${esc(r.date)}</td><td class="mono">${r.sales_sa_musd == null ? '—' : r.sales_sa_musd.toLocaleString('en-US')}</td><td class="mono">${r.sales_nsa_musd == null ? '—' : r.sales_nsa_musd.toLocaleString('en-US')}</td><td class="l">${r.provisional ? '<span class="dm-prov">provisional advance estimate</span>' : 'settled'}</td></tr>`).join('\n');
   const data = {
     meta: { dataset: 'Census MARTS — US food-services monthly sales (NAICS 722)', unit: m.src.unit || 'US$ millions', license: 'CC0 1.0', raw_url: 'https://muntin.digital/data/marts-sales.json', csv_url: 'https://muntin.digital/cost-index/marts-sales.csv', json_url: 'https://muntin.digital/cost-index/marts-sales.json', catalog_url: 'https://muntin.digital/open/', provisional_month: m.provDate, fence: `${OBSERVED}; ${FENCE}`, span: sp },

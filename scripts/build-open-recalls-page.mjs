@@ -62,7 +62,7 @@ function label(slug) { return slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.
 function page(m) {
   const s = m.summary;
   const title = 'The Recall Record — FDA Food Recalls, Tagged to Tracked Ingredients';
-  const desc = 'Dated FDA food recalls tagged to the ingredients named in the recalled product text. A documented food-safety record surfaced on its own — co-occurrence, never a cause, never joined to a price. Distinct recall events by FDA severity class. FDA-regulated foods only. No prices appear on this page.';
+  const desc = 'Dated FDA food recalls tagged to the ingredients named in the product text — co-occurrence, never a cause, never joined to a price.';
   // server-rendered table rows (the no-JS source of record) — 96 ingredients, most-recent-Class-I first
   const tbody = m.rows.map((r) => `          <tr><td class="l"><button type="button" data-id="${esc(r.slug)}">${esc(label(r.slug))}</button></td><td class="mono">${r.events}</td><td class="mono">${r.n}</td><td class="mono">${r.ci}</td><td class="mono">${r.share}%</td><td class="mono">${esc(r.latest || '—')}</td></tr>`).join('\n');
   // the data island — no price fields exist in the index; carry only the documented recall record

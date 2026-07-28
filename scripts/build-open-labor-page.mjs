@@ -39,7 +39,7 @@ function model() {
 function page(m) {
   const q = m.quarters, d = m.drop, sp = m.span;
   const title = 'The County Wage Backdrop — Restaurant Wages & Employment (BLS QCEW)';
-  const desc = 'Montgomery County, MD restaurant-industry average weekly wage and employment (BLS QCEW, NAICS 722 & 7225). A descriptive backdrop — a county industry average, never a per-plate labor cost, and never blended into the food index, the pressure math, or the Vendor Benchmark reference. Not a forecast.';
+  const desc = 'Montgomery County, MD restaurant average weekly wage and employment (BLS QCEW, NAICS 722). A county industry average, never a per-plate labor cost.';
   const tbody = q.slice().sort((a, b) => a.year - b.year || a.qtr - b.qtr || String(a.industry_code).localeCompare(String(b.industry_code)))
     .map((r) => `          <tr><td class="l mono">${r.year} Q${r.qtr}</td><td class="l">${esc(r.industry)} <span class="mono lb-code">(${r.industry_code})</span></td><td class="mono">${r.avg_wkly_wage}</td><td class="mono">${r.oty_wage_pct_chg == null ? '—' : (r.oty_wage_pct_chg > 0 ? '+' : '') + r.oty_wage_pct_chg + '%'}</td><td class="mono">${r.establishments}</td><td class="mono">${r.avg_employment.toLocaleString('en-US')}</td></tr>`).join('\n');
   // data island — a descriptive labor series only; no price, no pressure field
