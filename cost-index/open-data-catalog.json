@@ -1,0 +1,461 @@
+{
+  "name": "Muntin Cost Index — open-data catalog",
+  "description": "Every published Muntin Cost Index dataset with its license, source, and the honesty note that travels with the data. Rights split (ADR-015/ADR-017): raw US-government passthroughs are CC0 (public domain); Muntin's value-added compilations are CC BY 4.0.",
+  "index": "https://muntin.digital/open/",
+  "splits": {
+    "gov_public_domain": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "muntin_compilation": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "counts": {
+    "total": 23,
+    "cc0": 15,
+    "ccby": 8,
+    "available": 23
+  },
+  "datasets": [
+    {
+      "id": "census-imports",
+      "title": "US import value by HS code (2010–2025)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "US Census Bureau — International Trade (imports/HS)",
+      "honesty_note": "General US import value (GEN_VAL_MO) by HS code, monthly, nominal — value, never volume (unpublished at HS6). Public domain.",
+      "downloads": [
+        {
+          "path": "data/census-imports.jsonl",
+          "url": "https://muntin.digital/data/census-imports.jsonl",
+          "bytes": 5298223
+        }
+      ],
+      "available": true,
+      "total_bytes": 5298223
+    },
+    {
+      "id": "census-import-origins-2025",
+      "title": "US import value by source country (2025)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "US Census Bureau — International Trade (imports by CTY)",
+      "honesty_note": "US import value by HS code × source country, 2025. Real countries only. A supply-diversity fact, never a risk forecast. Public domain.",
+      "downloads": [
+        {
+          "path": "data/census-import-origins-2025.jsonl",
+          "url": "https://muntin.digital/data/census-import-origins-2025.jsonl",
+          "bytes": 7124602
+        }
+      ],
+      "available": true,
+      "total_bytes": 7124602
+    },
+    {
+      "id": "census-exports",
+      "title": "US domestic export value by HS6 (2010–2025)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "US Census Bureau — International Trade (exports/HS, DF=1)",
+      "honesty_note": "US domestic exports (DF=1, US-produced goods excluding foreign re-exports) by HS6, monthly, nominal value. Public domain.",
+      "downloads": [
+        {
+          "path": "data/census-exports.jsonl",
+          "url": "https://muntin.digital/data/census-exports.jsonl",
+          "bytes": 3061358
+        }
+      ],
+      "available": true,
+      "total_bytes": 3061358
+    },
+    {
+      "id": "nass-domestic",
+      "title": "US domestic production, farm price, area, yield",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "USDA National Agricultural Statistics Service — QuickStats (SURVEY)",
+      "honesty_note": "National annual production ($ + volume), farm-gate price received, area, yield. Farm price is farm-gate — a distinct point in the chain, never the wholesale reference. Public domain.",
+      "downloads": [
+        {
+          "path": "data/nass-domestic.jsonl",
+          "url": "https://muntin.digital/data/nass-domestic.jsonl",
+          "bytes": 11771173
+        }
+      ],
+      "available": true,
+      "total_bytes": 11771173
+    },
+    {
+      "id": "nass-crop-condition",
+      "title": "US corn & soybean crop condition (weekly)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "USDA National Agricultural Statistics Service — Crop Progress (SURVEY)",
+      "honesty_note": "National weekly share of the corn and soybean crop rated in each condition class (very poor..excellent), by year and week — the feed-complex health signal. An observed present-state rating, never a forecast. Public domain.",
+      "downloads": [
+        {
+          "path": "data/nass-crop-condition.jsonl",
+          "url": "https://muntin.digital/data/nass-crop-condition.jsonl",
+          "bytes": 941518
+        }
+      ],
+      "available": true,
+      "total_bytes": 941518
+    },
+    {
+      "id": "eia-energy",
+      "title": "US energy carriers — diesel, natural gas, electricity",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "US Energy Information Administration",
+      "honesty_note": "Monthly No.2 diesel retail, Henry Hub natural gas spot, US average retail electricity. Public domain.",
+      "downloads": [
+        {
+          "path": "data/eia-energy.jsonl",
+          "url": "https://muntin.digital/data/eia-energy.jsonl",
+          "bytes": 36441
+        }
+      ],
+      "available": true,
+      "total_bytes": 36441
+    },
+    {
+      "id": "noaa-ghcn-weather",
+      "title": "Observed weather at import growing regions (GHCN-Daily)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "NOAA NCEI — Global Historical Climatology Network (Daily)",
+      "honesty_note": "Daily TMIN/TMAX/PRCP (tenths) at representative stations in import-origin growing regions, 1991–present. Observed weather, never a forecast. Public domain.",
+      "downloads": [
+        {
+          "path": "data/weather-observations.jsonl",
+          "url": "https://muntin.digital/data/weather-observations.jsonl",
+          "bytes": 3474192
+        }
+      ],
+      "available": true,
+      "total_bytes": 3474192
+    },
+    {
+      "id": "noaa-cpc-oni",
+      "title": "CPC Oceanic Niño Index (ENSO regime)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "NOAA Climate Prediction Center",
+      "honesty_note": "The observed El Niño / La Niña (ENSO) regime index, 3-month seasons. Observed, never a forecast. Public domain.",
+      "downloads": [
+        {
+          "path": "data/cpc-oni.txt",
+          "url": "https://muntin.digital/data/cpc-oni.txt",
+          "bytes": 22950
+        }
+      ],
+      "available": true,
+      "total_bytes": 22950
+    },
+    {
+      "id": "noaa-landings",
+      "title": "US commercial fish landings by species (1950–2024)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "NOAA Fisheries — FOSS commercial landings",
+      "honesty_note": "US commercial (wild-caught) landings — value ($, nominal ex-vessel) and pounds (round weight) — by species and state, for the restaurant-relevant seafood categories. Confidential rows are withheld (null), never zero-padded. Public domain.",
+      "downloads": [
+        {
+          "path": "data/noaa-landings.jsonl",
+          "url": "https://muntin.digital/data/noaa-landings.jsonl",
+          "bytes": 7556535
+        }
+      ],
+      "available": true,
+      "total_bytes": 7556535
+    },
+    {
+      "id": "ers-food-availability",
+      "title": "US per-capita food availability by commodity",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "USDA Economic Research Service — Food Availability (Per Capita) Data System",
+      "honesty_note": "Per-capita food availability (pounds/person/year) and the underlying supply-and-use series by commodity and year, across 12 food groups. A supply-side proxy for consumption, never a measured intake, never a price, never a forecast. Public domain.",
+      "downloads": [
+        {
+          "path": "data/ers-food-availability.jsonl",
+          "url": "https://muntin.digital/data/ers-food-availability.jsonl",
+          "bytes": 20819704
+        }
+      ],
+      "available": true,
+      "total_bytes": 20819704
+    },
+    {
+      "id": "ers-meat-price-spreads",
+      "title": "US meat price spreads — farm/wholesale/retail (1970–)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "USDA Economic Research Service — Meat Price Spreads",
+      "honesty_note": "Monthly national-average farm value, wholesale value, retail value, and the spreads between them for beef, pork, and broilers, in cents per pound of retail equivalent. The retail figure is national-average grocery retail, never a delivered or menu price; the spreads are documented statistics, never a forecast. Public domain.",
+      "downloads": [
+        {
+          "path": "data/ers-meat-price-spreads.jsonl",
+          "url": "https://muntin.digital/data/ers-meat-price-spreads.jsonl",
+          "bytes": 1824049
+        }
+      ],
+      "available": true,
+      "total_bytes": 1824049
+    },
+    {
+      "id": "ers-food-dollar",
+      "title": "US Food Dollar Series — farm share + marketing chain (1993–2023)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "USDA Economic Research Service — Food Dollar Series",
+      "honesty_note": "How each dollar Americans spend on domestically-produced food splits across the marketing chain (farm production, processing, packaging, transport, wholesale, retail, foodservices, energy, …) in cents per domestic food dollar, plus the farm share. A national macro statistic, never a per-ingredient claim, never a forecast. Public domain.",
+      "downloads": [
+        {
+          "path": "data/ers-food-dollar.jsonl",
+          "url": "https://muntin.digital/data/ers-food-dollar.jsonl",
+          "bytes": 1148117
+        }
+      ],
+      "available": true,
+      "total_bytes": 1148117
+    },
+    {
+      "id": "food-recalls",
+      "title": "FDA food recalls tagged to tracked ingredients (2020–)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "US Food and Drug Administration — openFDA Food Enforcement",
+      "honesty_note": "Dated FDA food-enforcement recalls whose product text names a tracked ingredient, each row tagged with the matched ingredient slug (a whole-word product-text match, not a supply or price link). A documented food-safety record surfaced on its own — co-occurrence, never a cause, never a magnitude, never joined to a price. FDA-regulated foods only (USDA/FSIS meat, poultry, and egg recalls are absent). Public domain.",
+      "downloads": [
+        {
+          "path": "data/food-recalls.json",
+          "url": "https://muntin.digital/data/food-recalls.json",
+          "bytes": 472291
+        },
+        {
+          "path": "cost-index/food-recalls.csv",
+          "url": "https://muntin.digital/cost-index/food-recalls.csv",
+          "bytes": 280397
+        }
+      ],
+      "available": true,
+      "total_bytes": 752688
+    },
+    {
+      "id": "qcew-wages",
+      "title": "County restaurant-industry wages & employment (QCEW, 2019–)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "US Bureau of Labor Statistics — Quarterly Census of Employment and Wages",
+      "honesty_note": "Quarterly average weekly wage, establishments, and employment for the private food-services industry (NAICS 722 & 7225) in Montgomery County, MD. A descriptive county industry average — never a per-plate labor cost, never blended into the food index, the pressure math, or the Vendor Benchmark reference, never a forecast. Public domain.",
+      "downloads": [
+        {
+          "path": "data/qcew-wages.json",
+          "url": "https://muntin.digital/data/qcew-wages.json",
+          "bytes": 14966
+        },
+        {
+          "path": "cost-index/qcew-wages.json",
+          "url": "https://muntin.digital/cost-index/qcew-wages.json",
+          "bytes": 15276
+        },
+        {
+          "path": "cost-index/qcew-wages.csv",
+          "url": "https://muntin.digital/cost-index/qcew-wages.csv",
+          "bytes": 3655
+        }
+      ],
+      "available": true,
+      "total_bytes": 33897
+    },
+    {
+      "id": "marts-sales",
+      "title": "US food-services monthly retail sales (MARTS, 2015–)",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "rights": "US Government work — public domain (17 USC 105); redistributed verbatim.",
+      "source": "US Census Bureau — Monthly Retail Trade Survey (via FRED)",
+      "honesty_note": "Monthly retail sales for Food Services & Drinking Places (NAICS 722), $ millions, seasonally adjusted and not, via FRED's public mirror. Observed sales — never a demand forecast; the most recent month is a provisional advance estimate subject to revision. A descriptive demand backdrop, never blended into the food index, the pressure math, or the Vendor Benchmark reference. Public domain.",
+      "downloads": [
+        {
+          "path": "data/marts-sales.json",
+          "url": "https://muntin.digital/data/marts-sales.json",
+          "bytes": 14795
+        },
+        {
+          "path": "cost-index/marts-sales.json",
+          "url": "https://muntin.digital/cost-index/marts-sales.json",
+          "bytes": 19085
+        },
+        {
+          "path": "cost-index/marts-sales.csv",
+          "url": "https://muntin.digital/cost-index/marts-sales.csv",
+          "bytes": 4063
+        }
+      ],
+      "available": true,
+      "total_bytes": 37943
+    },
+    {
+      "id": "ingredient-state-record",
+      "title": "Ingredient State Record (fused corpus)",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "Compilation © Muntin Cost Index, licensed CC BY 4.0. Attribution: \"Muntin Cost Index, muntin.digital\".",
+      "source": "Muntin Cost Index — fuses Census imports/exports, NASS, and internal price/yield/events layers",
+      "honesty_note": "One present-state record per ingredient. Descriptive, never a forecast; wholesale a market-direction reference, never a delivered price; import value never volume; reliance an apparent-consumption proxy; co-occurrence never cause. Underlying import/export/production columns are US-gov public domain; the fused compilation is CC BY 4.0.",
+      "downloads": [
+        {
+          "path": "cost-index/ingredient-state-record.json",
+          "url": "https://muntin.digital/cost-index/ingredient-state-record.json",
+          "bytes": 505015
+        },
+        {
+          "path": "cost-index/ingredient-state-record.csv",
+          "url": "https://muntin.digital/cost-index/ingredient-state-record.csv",
+          "bytes": 36372
+        }
+      ],
+      "available": true,
+      "total_bytes": 541387
+    },
+    {
+      "id": "eia-energy-backdrop",
+      "title": "Energy backdrop (each carrier vs its own range)",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "Compilation © Muntin Cost Index, licensed CC BY 4.0. Attribution: \"Muntin Cost Index, muntin.digital\".",
+      "source": "Muntin Cost Index — computed from US EIA public-domain series",
+      "honesty_note": "Each energy carrier read against its own multi-decade range (percentile, band, YoY). A coincident site-wide backdrop, never a per-ingredient driver, never a forecast. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.",
+      "downloads": [
+        {
+          "path": "cost-index/eia-energy-backdrop.json",
+          "url": "https://muntin.digital/cost-index/eia-energy-backdrop.json",
+          "bytes": 62666
+        }
+      ],
+      "available": true,
+      "total_bytes": 62666
+    },
+    {
+      "id": "crop-condition-backdrop",
+      "title": "Crop-condition backdrop (corn & soybean feed complex)",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "Compilation © Muntin Cost Index, licensed CC BY 4.0. Attribution: \"Muntin Cost Index, muntin.digital\".",
+      "source": "Muntin Cost Index — computed from USDA NASS public-domain crop-progress series",
+      "honesty_note": "Each feed crop's good-to-excellent share read against its own same-week history in prior seasons (percentile, band). A coincident site-wide backdrop on the feed complex, never a per-ingredient driver, never a forecast. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.",
+      "downloads": [
+        {
+          "path": "cost-index/crop-condition-backdrop.json",
+          "url": "https://muntin.digital/cost-index/crop-condition-backdrop.json",
+          "bytes": 87159
+        }
+      ],
+      "available": true,
+      "total_bytes": 87159
+    },
+    {
+      "id": "noaa-landings-domestic",
+      "title": "US domestic wild-landings by seafood group",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "Compilation © Muntin Cost Index, licensed CC BY 4.0. Attribution: \"Muntin Cost Index, muntin.digital\".",
+      "source": "Muntin Cost Index — computed from NOAA Fisheries FOSS public-domain landings",
+      "honesty_note": "US commercial WILD landings (value + pounds) summed to national by seafood species group — the domestic pair for each seafood import stream. A wild-catch figure set beside a largely-farmed import stream: the wild-vs-farmed seam is named per group, never collapsed into a clean apparent-consumption share; negligible wild fisheries are flagged. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.",
+      "downloads": [
+        {
+          "path": "cost-index/noaa-landings-domestic.json",
+          "url": "https://muntin.digital/cost-index/noaa-landings-domestic.json",
+          "bytes": 104895
+        }
+      ],
+      "available": true,
+      "total_bytes": 104895
+    },
+    {
+      "id": "ers-food-availability-mapped",
+      "title": "Per-capita availability mapped to tracked ingredients",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "Compilation © Muntin Cost Index, licensed CC BY 4.0. Attribution: \"Muntin Cost Index, muntin.digital\".",
+      "source": "Muntin Cost Index — computed from USDA ERS public-domain availability series",
+      "honesty_note": "USDA ERS per-capita availability (lbs/person/year) mapped to tracked ingredients — the VOLUME companion to the value-based reliance read (how many pounds per person are available domestically). A supply-side proxy for consumption, published at the commodity level (a variety/cut carries its parent commodity figure), never a measured intake, never a price, never a forecast. Underlying series are US-gov public domain; the mapping/compilation is CC BY 4.0.",
+      "downloads": [
+        {
+          "path": "cost-index/ers-food-availability.json",
+          "url": "https://muntin.digital/cost-index/ers-food-availability.json",
+          "bytes": 277745
+        }
+      ],
+      "available": true,
+      "total_bytes": 277745
+    },
+    {
+      "id": "meat-price-chain",
+      "title": "Protein price chain (farm → wholesale → retail)",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "Compilation © Muntin Cost Index, licensed CC BY 4.0. Attribution: \"Muntin Cost Index, muntin.digital\".",
+      "source": "Muntin Cost Index — computed from USDA ERS Meat Price Spreads",
+      "honesty_note": "The documented national-average farm → wholesale → retail chain for beef, pork, and broilers, with the spreads and the downstream-markup share (how much of the farm-to-retail spread sits above wholesale — downstream of where a kitchen buys). Retail is national-average grocery retail, never a delivered or menu price; a documented spread, never a forecast. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.",
+      "downloads": [
+        {
+          "path": "cost-index/meat-price-chain.json",
+          "url": "https://muntin.digital/cost-index/meat-price-chain.json",
+          "bytes": 336015
+        }
+      ],
+      "available": true,
+      "total_bytes": 336015
+    },
+    {
+      "id": "food-dollar",
+      "title": "The Food Dollar — farm share + marketing-chain split",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "Compilation © Muntin Cost Index, licensed CC BY 4.0. Attribution: \"Muntin Cost Index, muntin.digital\".",
+      "source": "Muntin Cost Index — computed from USDA ERS Food Dollar Series",
+      "honesty_note": "The farm share of the US food dollar (~16¢) and the marketing-chain split (foodservices, retail, processing, wholesale, farm production, energy, …) summing to 100, per year. The sitewide macro bookend to the per-protein meat chain. A national macro statistic, never a per-ingredient claim, never a forecast. Underlying series are US-gov public domain; the computed reads are CC BY 4.0.",
+      "downloads": [
+        {
+          "path": "cost-index/food-dollar.json",
+          "url": "https://muntin.digital/cost-index/food-dollar.json",
+          "bytes": 19476
+        }
+      ],
+      "available": true,
+      "total_bytes": 19476
+    },
+    {
+      "id": "food-recalls-by-ingredient",
+      "title": "Food recalls indexed to tracked ingredients",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "rights": "Compilation © Muntin Cost Index, licensed CC BY 4.0. Attribution: \"Muntin Cost Index, muntin.digital\".",
+      "source": "Muntin Cost Index — openFDA recalls keyed to the tracked-ingredient taxonomy",
+      "honesty_note": "openFDA food recalls compiled onto Muntin's tracked-ingredient taxonomy: per ingredient, the count of distinct recall events (event_id) by FDA severity class, the raw notice count, and the five most recent notices. The honest headline is distinct events, never the notice count; co-occurrence, never a cause, never joined to a price. The underlying recalls are US-gov public domain; the selection onto the tracked taxonomy is CC BY 4.0.",
+      "downloads": [
+        {
+          "path": "cost-index/food-recalls-by-ingredient.json",
+          "url": "https://muntin.digital/cost-index/food-recalls-by-ingredient.json",
+          "bytes": 188581
+        }
+      ],
+      "available": true,
+      "total_bytes": 188581
+    }
+  ]
+}

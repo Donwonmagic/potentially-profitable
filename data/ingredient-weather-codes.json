@@ -1,0 +1,51 @@
+{
+  "_doc": "Slug -> the OBSERVED-WEATHER pressure signal at the ingredient's real import-origin growing region. For import-dominated produce, a representative NOAA GHCN-Daily station in the origin's growing belt gives a graded frost/heat read (TMIN/TMAX) at the place the Census import-origin concentration already names we depend on — the corpus's biggest pressure blind spot (US-only USDM/NWS cannot reach Michoacan or Sinaloa). For tropical/Pacific ocean-sourced items where a land-station frost read is meaningless, the honest signal is the CPC ONI (El Nino/La Nina regime) instead.",
+  "_source": "NOAA NCEI GHCN-Daily per-station CSV (ncei.noaa.gov/data/global-historical-climatology-network-daily/access/<STATION>.csv; TMIN/TMAX/PRCP in tenths, divide by 10) + NOAA CPC ONI (cpc.ncep.noaa.gov/data/indices/oni.ascii.txt). Both keyless, US-gov public domain, redistributable. Fetch runs on the operator's Mac.",
+  "_signal_split": "land = observed weather at a growing-region station (frost/heat) — for subtropical produce whose supply a cold snap or heat wave at the origin actually moves. oni = the ENSO regime gauge — for Pacific/tropical items (Ecuador/Chile shrimp+salmon aquaculture, tropical fruit) where a single land station is not the driver. Atlantic-Canada wild seafood (lobster/crab/halibut/clams) and temperate produce (Canadian beet) get NEITHER here — their supply is quota/stock-driven (NOAA landings, pending) — an honest absence.",
+  "_status": "V1, GROUNDED STATIONS (each verified recent: TMIN through 2025-26) but crop->region assignments NEED CALIBRATION. A station is a REGIONAL PROXY for the origin growing belt, not the exact farm. The whole layer is HELD-UNTIL-CALIBRATED per ADR-013/014: present-direction only, never a forecast, never a magnitude, never touching the measured price band, and it does not ship 'proven' until data/pressure-calibration.json backs each contributor (incl. the feed-complex double-count guard before any NASS corn/soy CONDITION is stacked on the existing feed proxies).",
+  "regions": {
+    "mx-sinaloa":   { "stations": ["MXM00076412", "MXM00076458"], "note": "Culiacan / Sinaloa winter-vegetable export belt (warm-season fruiting veg)" },
+    "mx-michoacan": { "stations": ["MXM00076665", "MXM00076662"], "note": "Morelia + Zamora, Michoacan — avocado, lime, citrus, berry" },
+    "mx-baja":      { "stations": ["MXM00076040"], "note": "Mexicali / Baja California (cool-season greens, brassicas, herbs, roots; some tomato/berry)" },
+    "mx-bajio":     { "stations": ["MXM00076573", "MXM00076625"], "note": "Guanajuato / Queretaro / Jalisco Bajio berry + veg belt" },
+    "pe-coast":     { "stations": ["PEM00084531"], "note": "Peru central coast (blueberry) — refine toward Ica / La Libertad on calibration" },
+    "cr-lowlands":  { "stations": ["CS000081003"], "note": "Costa Rica lowlands (pineapple)" },
+    "gt-soconusco": { "stations": ["MXM00076903"], "note": "Tapachula / Soconusco (Guatemala-border melon)" }
+  },
+  "codes": {
+    "avocado":         { "land": "mx-michoacan", "origin": "Mexico 88%" },
+    "lime":            { "land": "mx-michoacan", "origin": "Mexico 76%" },
+    "lemon":           { "land": "mx-michoacan", "origin": "Mexico 76%", "note": "Mexican citrus belt (Veracruz/Michoacan) — Michoacan proxy" },
+    "raspberry":       { "land": "mx-bajio", "origin": "Mexico 100%", "note": "Jalisco/Michoacan/Bajio berry belt" },
+    "tomato":          { "land": "mx-sinaloa", "origin": "Mexico 81%" },
+    "bell-pepper":     { "land": "mx-sinaloa", "origin": "Mexico 73%" },
+    "jalapeno":        { "land": "mx-sinaloa", "origin": "Mexico 98%" },
+    "serrano-pepper":  { "land": "mx-sinaloa", "origin": "Mexico 100%" },
+    "poblano-pepper":  { "land": "mx-sinaloa", "origin": "Mexico 100%" },
+    "habanero-pepper": { "land": "mx-sinaloa", "origin": "Mexico 94%", "note": "also Yucatan; Sinaloa proxy for now" },
+    "cucumber":        { "land": "mx-sinaloa", "origin": "Mexico 54%" },
+    "eggplant":        { "land": "mx-sinaloa", "origin": "Mexico 87%" },
+    "kale":            { "land": "mx-baja", "origin": "Mexico 96%" },
+    "bok-choy":        { "land": "mx-baja", "origin": "Mexico 78%" },
+    "collard-greens":  { "land": "mx-baja", "origin": "Mexico 62%" },
+    "brussels-sprouts":{ "land": "mx-baja", "origin": "Mexico 87%" },
+    "cilantro":        { "land": "mx-baja", "origin": "Mexico 96%" },
+    "leek":            { "land": "mx-baja", "origin": "Mexico 67%" },
+    "daikon":          { "land": "mx-baja", "origin": "Mexico 62%" },
+    "rutabaga":        { "land": "mx-baja", "origin": "Mexico 62%" },
+    "blueberry":       { "land": "pe-coast", "origin": "Peru 56%" },
+    "pineapple":       { "land": "cr-lowlands", "origin": "Costa Rica 83%" },
+    "cantaloupe":      { "land": "gt-soconusco", "origin": "Guatemala 58%" },
+    "shrimp":          { "oni": true, "origin": "Ecuador 50%", "note": "Ecuador Pacific aquaculture — ENSO regime, not a land station" },
+    "shrimp-pd":       { "oni": true, "origin": "India 50%" },
+    "shrimp-head-on":  { "oni": true, "origin": "Ecuador 50%" },
+    "salmon-fillet":   { "oni": true, "origin": "Chile 63%", "note": "Chilean Pacific aquaculture — ENSO regime" },
+    "salmon-skin-on-fillet": { "oni": true, "origin": "Chile 63%" }
+  },
+  "_deliberately_absent": {
+    "whole-lobster / whole-crab / whole-halibut / clams": "Atlantic-Canada wild catch — supply is quota/stock-driven, not frost/heat or ENSO; wait for NOAA landings",
+    "whole-trout / (Norway) salmon": "North-Atlantic aquaculture — neither a subtropical land station nor ENSO is the honest driver",
+    "beet (Canada 51%)": "temperate Canadian field crop — no acute frost-kill-at-origin signal the way subtropical produce has",
+    "US-grown items": "keep the existing USDM drought + NWS freeze machinery for domestic growing regions"
+  }
+}

@@ -1,0 +1,844 @@
+{
+  "_doc": "Census MARTS monthly retail sales for Food Services & Drinking Places (NAICS 722), US$ millions, seasonally adjusted (sales_sa_musd) and not (sales_nsa_musd), via FRED's keyless mirror. observed monthly food-services retail sales (Census MARTS) — a descriptive demand backdrop only, never a demand forecast, never blended into the food index / pressure math / Vendor Benchmark. The most recent month is an advance estimate (provisional:true). Source: US Census Bureau, public domain (CC0), via FRED. A straight reshape by build-marts-open-data.mjs from data/marts-sales.json (fetched by fetch-marts-sales.mjs --live).",
+  "source": "Census MARTS via FRED — https://fred.stlouisfed.org/series/RSFSDP",
+  "unit": "US$ millions",
+  "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "lane": "demand (observed sales; never a forecast, never in the food index / pressure / Vendor Benchmark)",
+  "framing": "observed monthly food-services retail sales (Census MARTS) — a descriptive demand backdrop only, never a demand forecast, never blended into the food index / pressure math / Vendor Benchmark",
+  "span": {
+    "from": "2015-01-01",
+    "to": "2026-06-01"
+  },
+  "provisional_month": "2026-06-01",
+  "count": 138,
+  "months": [
+    {
+      "date": "2015-01-01",
+      "sales_sa_musd": 49690,
+      "sales_nsa_musd": 47106,
+      "provisional": false
+    },
+    {
+      "date": "2015-02-01",
+      "sales_sa_musd": 49525,
+      "sales_nsa_musd": 45761,
+      "provisional": false
+    },
+    {
+      "date": "2015-03-01",
+      "sales_sa_musd": 49966,
+      "sales_nsa_musd": 52164,
+      "provisional": false
+    },
+    {
+      "date": "2015-04-01",
+      "sales_sa_musd": 50577,
+      "sales_nsa_musd": 51285,
+      "provisional": false
+    },
+    {
+      "date": "2015-05-01",
+      "sales_sa_musd": 50710,
+      "sales_nsa_musd": 54310,
+      "provisional": false
+    },
+    {
+      "date": "2015-06-01",
+      "sales_sa_musd": 50752,
+      "sales_nsa_musd": 51006,
+      "provisional": false
+    },
+    {
+      "date": "2015-07-01",
+      "sales_sa_musd": 50989,
+      "sales_nsa_musd": 52060,
+      "provisional": false
+    },
+    {
+      "date": "2015-08-01",
+      "sales_sa_musd": 51279,
+      "sales_nsa_musd": 52048,
+      "provisional": false
+    },
+    {
+      "date": "2015-09-01",
+      "sales_sa_musd": 51316,
+      "sales_nsa_musd": 49623,
+      "provisional": false
+    },
+    {
+      "date": "2015-10-01",
+      "sales_sa_musd": 51627,
+      "sales_nsa_musd": 52814,
+      "provisional": false
+    },
+    {
+      "date": "2015-11-01",
+      "sales_sa_musd": 51773,
+      "sales_nsa_musd": 49133,
+      "provisional": false
+    },
+    {
+      "date": "2015-12-01",
+      "sales_sa_musd": 52598,
+      "sales_nsa_musd": 53387,
+      "provisional": false
+    },
+    {
+      "date": "2016-01-01",
+      "sales_sa_musd": 51983,
+      "sales_nsa_musd": 49072,
+      "provisional": false
+    },
+    {
+      "date": "2016-02-01",
+      "sales_sa_musd": 53088,
+      "sales_nsa_musd": 50487,
+      "provisional": false
+    },
+    {
+      "date": "2016-03-01",
+      "sales_sa_musd": 52858,
+      "sales_nsa_musd": 54814,
+      "provisional": false
+    },
+    {
+      "date": "2016-04-01",
+      "sales_sa_musd": 53142,
+      "sales_nsa_musd": 55215,
+      "provisional": false
+    },
+    {
+      "date": "2016-05-01",
+      "sales_sa_musd": 53191,
+      "sales_nsa_musd": 55851,
+      "provisional": false
+    },
+    {
+      "date": "2016-06-01",
+      "sales_sa_musd": 53124,
+      "sales_nsa_musd": 53496,
+      "provisional": false
+    },
+    {
+      "date": "2016-07-01",
+      "sales_sa_musd": 53244,
+      "sales_nsa_musd": 54895,
+      "provisional": false
+    },
+    {
+      "date": "2016-08-01",
+      "sales_sa_musd": 53653,
+      "sales_nsa_musd": 54082,
+      "provisional": false
+    },
+    {
+      "date": "2016-09-01",
+      "sales_sa_musd": 54259,
+      "sales_nsa_musd": 53174,
+      "provisional": false
+    },
+    {
+      "date": "2016-10-01",
+      "sales_sa_musd": 54210,
+      "sales_nsa_musd": 54589,
+      "provisional": false
+    },
+    {
+      "date": "2016-11-01",
+      "sales_sa_musd": 55212,
+      "sales_nsa_musd": 52231,
+      "provisional": false
+    },
+    {
+      "date": "2016-12-01",
+      "sales_sa_musd": 54191,
+      "sales_nsa_musd": 56304,
+      "provisional": false
+    },
+    {
+      "date": "2017-01-01",
+      "sales_sa_musd": 56143,
+      "sales_nsa_musd": 51876,
+      "provisional": false
+    },
+    {
+      "date": "2017-02-01",
+      "sales_sa_musd": 56129,
+      "sales_nsa_musd": 51695,
+      "provisional": false
+    },
+    {
+      "date": "2017-03-01",
+      "sales_sa_musd": 56044,
+      "sales_nsa_musd": 58902,
+      "provisional": false
+    },
+    {
+      "date": "2017-04-01",
+      "sales_sa_musd": 56142,
+      "sales_nsa_musd": 57321,
+      "provisional": false
+    },
+    {
+      "date": "2017-05-01",
+      "sales_sa_musd": 56145,
+      "sales_nsa_musd": 58840,
+      "provisional": false
+    },
+    {
+      "date": "2017-06-01",
+      "sales_sa_musd": 56063,
+      "sales_nsa_musd": 57408,
+      "provisional": false
+    },
+    {
+      "date": "2017-07-01",
+      "sales_sa_musd": 55976,
+      "sales_nsa_musd": 57263,
+      "provisional": false
+    },
+    {
+      "date": "2017-08-01",
+      "sales_sa_musd": 56414,
+      "sales_nsa_musd": 57317,
+      "provisional": false
+    },
+    {
+      "date": "2017-09-01",
+      "sales_sa_musd": 56703,
+      "sales_nsa_musd": 55909,
+      "provisional": false
+    },
+    {
+      "date": "2017-10-01",
+      "sales_sa_musd": 57108,
+      "sales_nsa_musd": 56994,
+      "provisional": false
+    },
+    {
+      "date": "2017-11-01",
+      "sales_sa_musd": 57725,
+      "sales_nsa_musd": 54608,
+      "provisional": false
+    },
+    {
+      "date": "2017-12-01",
+      "sales_sa_musd": 58041,
+      "sales_nsa_musd": 60014,
+      "provisional": false
+    },
+    {
+      "date": "2018-01-01",
+      "sales_sa_musd": 58212,
+      "sales_nsa_musd": 53555,
+      "provisional": false
+    },
+    {
+      "date": "2018-02-01",
+      "sales_sa_musd": 58524,
+      "sales_nsa_musd": 53784,
+      "provisional": false
+    },
+    {
+      "date": "2018-03-01",
+      "sales_sa_musd": 59023,
+      "sales_nsa_musd": 62328,
+      "provisional": false
+    },
+    {
+      "date": "2018-04-01",
+      "sales_sa_musd": 58255,
+      "sales_nsa_musd": 59071,
+      "provisional": false
+    },
+    {
+      "date": "2018-05-01",
+      "sales_sa_musd": 59620,
+      "sales_nsa_musd": 62780,
+      "provisional": false
+    },
+    {
+      "date": "2018-06-01",
+      "sales_sa_musd": 60220,
+      "sales_nsa_musd": 62267,
+      "provisional": false
+    },
+    {
+      "date": "2018-07-01",
+      "sales_sa_musd": 61072,
+      "sales_nsa_musd": 62232,
+      "provisional": false
+    },
+    {
+      "date": "2018-08-01",
+      "sales_sa_musd": 61414,
+      "sales_nsa_musd": 63195,
+      "provisional": false
+    },
+    {
+      "date": "2018-09-01",
+      "sales_sa_musd": 60069,
+      "sales_nsa_musd": 58567,
+      "provisional": false
+    },
+    {
+      "date": "2018-10-01",
+      "sales_sa_musd": 60522,
+      "sales_nsa_musd": 60159,
+      "provisional": false
+    },
+    {
+      "date": "2018-11-01",
+      "sales_sa_musd": 60242,
+      "sales_nsa_musd": 57591,
+      "provisional": false
+    },
+    {
+      "date": "2018-12-01",
+      "sales_sa_musd": 60181,
+      "sales_nsa_musd": 61385,
+      "provisional": false
+    },
+    {
+      "date": "2019-01-01",
+      "sales_sa_musd": 60194,
+      "sales_nsa_musd": 55499,
+      "provisional": false
+    },
+    {
+      "date": "2019-02-01",
+      "sales_sa_musd": 60557,
+      "sales_nsa_musd": 55591,
+      "provisional": false
+    },
+    {
+      "date": "2019-03-01",
+      "sales_sa_musd": 61096,
+      "sales_nsa_musd": 64640,
+      "provisional": false
+    },
+    {
+      "date": "2019-04-01",
+      "sales_sa_musd": 61608,
+      "sales_nsa_musd": 62039,
+      "provisional": false
+    },
+    {
+      "date": "2019-05-01",
+      "sales_sa_musd": 62227,
+      "sales_nsa_musd": 66210,
+      "provisional": false
+    },
+    {
+      "date": "2019-06-01",
+      "sales_sa_musd": 63135,
+      "sales_nsa_musd": 64776,
+      "provisional": false
+    },
+    {
+      "date": "2019-07-01",
+      "sales_sa_musd": 63787,
+      "sales_nsa_musd": 65063,
+      "provisional": false
+    },
+    {
+      "date": "2019-08-01",
+      "sales_sa_musd": 64042,
+      "sales_nsa_musd": 66988,
+      "provisional": false
+    },
+    {
+      "date": "2019-09-01",
+      "sales_sa_musd": 64727,
+      "sales_nsa_musd": 62397,
+      "provisional": false
+    },
+    {
+      "date": "2019-10-01",
+      "sales_sa_musd": 65021,
+      "sales_nsa_musd": 64891,
+      "provisional": false
+    },
+    {
+      "date": "2019-11-01",
+      "sales_sa_musd": 65175,
+      "sales_nsa_musd": 62959,
+      "provisional": false
+    },
+    {
+      "date": "2019-12-01",
+      "sales_sa_musd": 66223,
+      "sales_nsa_musd": 66289,
+      "provisional": false
+    },
+    {
+      "date": "2020-01-01",
+      "sales_sa_musd": 67345,
+      "sales_nsa_musd": 62496,
+      "provisional": false
+    },
+    {
+      "date": "2020-02-01",
+      "sales_sa_musd": 67358,
+      "sales_nsa_musd": 64394,
+      "provisional": false
+    },
+    {
+      "date": "2020-03-01",
+      "sales_sa_musd": 47370,
+      "sales_nsa_musd": 49123,
+      "provisional": false
+    },
+    {
+      "date": "2020-04-01",
+      "sales_sa_musd": 30732,
+      "sales_nsa_musd": 30916,
+      "provisional": false
+    },
+    {
+      "date": "2020-05-01",
+      "sales_sa_musd": 40492,
+      "sales_nsa_musd": 43569,
+      "provisional": false
+    },
+    {
+      "date": "2020-06-01",
+      "sales_sa_musd": 52238,
+      "sales_nsa_musd": 53231,
+      "provisional": false
+    },
+    {
+      "date": "2020-07-01",
+      "sales_sa_musd": 54431,
+      "sales_nsa_musd": 56445,
+      "provisional": false
+    },
+    {
+      "date": "2020-08-01",
+      "sales_sa_musd": 57039,
+      "sales_nsa_musd": 58522,
+      "provisional": false
+    },
+    {
+      "date": "2020-09-01",
+      "sales_sa_musd": 58600,
+      "sales_nsa_musd": 56901,
+      "provisional": false
+    },
+    {
+      "date": "2020-10-01",
+      "sales_sa_musd": 58351,
+      "sales_nsa_musd": 59518,
+      "provisional": false
+    },
+    {
+      "date": "2020-11-01",
+      "sales_sa_musd": 55862,
+      "sales_nsa_musd": 52622,
+      "provisional": false
+    },
+    {
+      "date": "2020-12-01",
+      "sales_sa_musd": 52599,
+      "sales_nsa_musd": 52757,
+      "provisional": false
+    },
+    {
+      "date": "2021-01-01",
+      "sales_sa_musd": 57626,
+      "sales_nsa_musd": 53823,
+      "provisional": false
+    },
+    {
+      "date": "2021-02-01",
+      "sales_sa_musd": 56086,
+      "sales_nsa_musd": 51431,
+      "provisional": false
+    },
+    {
+      "date": "2021-03-01",
+      "sales_sa_musd": 63974,
+      "sales_nsa_musd": 66085,
+      "provisional": false
+    },
+    {
+      "date": "2021-04-01",
+      "sales_sa_musd": 66762,
+      "sales_nsa_musd": 68030,
+      "provisional": false
+    },
+    {
+      "date": "2021-05-01",
+      "sales_sa_musd": 68693,
+      "sales_nsa_musd": 73158,
+      "provisional": false
+    },
+    {
+      "date": "2021-06-01",
+      "sales_sa_musd": 71798,
+      "sales_nsa_musd": 73090,
+      "provisional": false
+    },
+    {
+      "date": "2021-07-01",
+      "sales_sa_musd": 73217,
+      "sales_nsa_musd": 76951,
+      "provisional": false
+    },
+    {
+      "date": "2021-08-01",
+      "sales_sa_musd": 73056,
+      "sales_nsa_musd": 74517,
+      "provisional": false
+    },
+    {
+      "date": "2021-09-01",
+      "sales_sa_musd": 73020,
+      "sales_nsa_musd": 71048,
+      "provisional": false
+    },
+    {
+      "date": "2021-10-01",
+      "sales_sa_musd": 73212,
+      "sales_nsa_musd": 74457,
+      "provisional": false
+    },
+    {
+      "date": "2021-11-01",
+      "sales_sa_musd": 73792,
+      "sales_nsa_musd": 69512,
+      "provisional": false
+    },
+    {
+      "date": "2021-12-01",
+      "sales_sa_musd": 72661,
+      "sales_nsa_musd": 73606,
+      "provisional": false
+    },
+    {
+      "date": "2022-01-01",
+      "sales_sa_musd": 71252,
+      "sales_nsa_musd": 65623,
+      "provisional": false
+    },
+    {
+      "date": "2022-02-01",
+      "sales_sa_musd": 74324,
+      "sales_nsa_musd": 68155,
+      "provisional": false
+    },
+    {
+      "date": "2022-03-01",
+      "sales_sa_musd": 76542,
+      "sales_nsa_musd": 79374,
+      "provisional": false
+    },
+    {
+      "date": "2022-04-01",
+      "sales_sa_musd": 79251,
+      "sales_nsa_musd": 81153,
+      "provisional": false
+    },
+    {
+      "date": "2022-05-01",
+      "sales_sa_musd": 80003,
+      "sales_nsa_musd": 84563,
+      "provisional": false
+    },
+    {
+      "date": "2022-06-01",
+      "sales_sa_musd": 80557,
+      "sales_nsa_musd": 82088,
+      "provisional": false
+    },
+    {
+      "date": "2022-07-01",
+      "sales_sa_musd": 80283,
+      "sales_nsa_musd": 84056,
+      "provisional": false
+    },
+    {
+      "date": "2022-08-01",
+      "sales_sa_musd": 82370,
+      "sales_nsa_musd": 83853,
+      "provisional": false
+    },
+    {
+      "date": "2022-09-01",
+      "sales_sa_musd": 82408,
+      "sales_nsa_musd": 81337,
+      "provisional": false
+    },
+    {
+      "date": "2022-10-01",
+      "sales_sa_musd": 83665,
+      "sales_nsa_musd": 84251,
+      "provisional": false
+    },
+    {
+      "date": "2022-11-01",
+      "sales_sa_musd": 83102,
+      "sales_nsa_musd": 78116,
+      "provisional": false
+    },
+    {
+      "date": "2022-12-01",
+      "sales_sa_musd": 82644,
+      "sales_nsa_musd": 84875,
+      "provisional": false
+    },
+    {
+      "date": "2023-01-01",
+      "sales_sa_musd": 88289,
+      "sales_nsa_musd": 80520,
+      "provisional": false
+    },
+    {
+      "date": "2023-02-01",
+      "sales_sa_musd": 85987,
+      "sales_nsa_musd": 78850,
+      "provisional": false
+    },
+    {
+      "date": "2023-03-01",
+      "sales_sa_musd": 86259,
+      "sales_nsa_musd": 90141,
+      "provisional": false
+    },
+    {
+      "date": "2023-04-01",
+      "sales_sa_musd": 86620,
+      "sales_nsa_musd": 87659,
+      "provisional": false
+    },
+    {
+      "date": "2023-05-01",
+      "sales_sa_musd": 87616,
+      "sales_nsa_musd": 92260,
+      "provisional": false
+    },
+    {
+      "date": "2023-06-01",
+      "sales_sa_musd": 88447,
+      "sales_nsa_musd": 91277,
+      "provisional": false
+    },
+    {
+      "date": "2023-07-01",
+      "sales_sa_musd": 89167,
+      "sales_nsa_musd": 92199,
+      "provisional": false
+    },
+    {
+      "date": "2023-08-01",
+      "sales_sa_musd": 89564,
+      "sales_nsa_musd": 91624,
+      "provisional": false
+    },
+    {
+      "date": "2023-09-01",
+      "sales_sa_musd": 90447,
+      "sales_nsa_musd": 89814,
+      "provisional": false
+    },
+    {
+      "date": "2023-10-01",
+      "sales_sa_musd": 90631,
+      "sales_nsa_musd": 90812,
+      "provisional": false
+    },
+    {
+      "date": "2023-11-01",
+      "sales_sa_musd": 91761,
+      "sales_nsa_musd": 86531,
+      "provisional": false
+    },
+    {
+      "date": "2023-12-01",
+      "sales_sa_musd": 92021,
+      "sales_nsa_musd": 94414,
+      "provisional": false
+    },
+    {
+      "date": "2024-01-01",
+      "sales_sa_musd": 91512,
+      "sales_nsa_musd": 83093,
+      "provisional": false
+    },
+    {
+      "date": "2024-02-01",
+      "sales_sa_musd": 92074,
+      "sales_nsa_musd": 87470,
+      "provisional": false
+    },
+    {
+      "date": "2024-03-01",
+      "sales_sa_musd": 91672,
+      "sales_nsa_musd": 96164,
+      "provisional": false
+    },
+    {
+      "date": "2024-04-01",
+      "sales_sa_musd": 91926,
+      "sales_nsa_musd": 92937,
+      "provisional": false
+    },
+    {
+      "date": "2024-05-01",
+      "sales_sa_musd": 92402,
+      "sales_nsa_musd": 98500,
+      "provisional": false
+    },
+    {
+      "date": "2024-06-01",
+      "sales_sa_musd": 92470,
+      "sales_nsa_musd": 95152,
+      "provisional": false
+    },
+    {
+      "date": "2024-07-01",
+      "sales_sa_musd": 93021,
+      "sales_nsa_musd": 94974,
+      "provisional": false
+    },
+    {
+      "date": "2024-08-01",
+      "sales_sa_musd": 93438,
+      "sales_nsa_musd": 97830,
+      "provisional": false
+    },
+    {
+      "date": "2024-09-01",
+      "sales_sa_musd": 94281,
+      "sales_nsa_musd": 91735,
+      "provisional": false
+    },
+    {
+      "date": "2024-10-01",
+      "sales_sa_musd": 95518,
+      "sales_nsa_musd": 95518,
+      "provisional": false
+    },
+    {
+      "date": "2024-11-01",
+      "sales_sa_musd": 95509,
+      "sales_nsa_musd": 92548,
+      "provisional": false
+    },
+    {
+      "date": "2024-12-01",
+      "sales_sa_musd": 95552,
+      "sales_nsa_musd": 95361,
+      "provisional": false
+    },
+    {
+      "date": "2025-01-01",
+      "sales_sa_musd": 96115,
+      "sales_nsa_musd": 87849,
+      "provisional": false
+    },
+    {
+      "date": "2025-02-01",
+      "sales_sa_musd": 94939,
+      "sales_nsa_musd": 86774,
+      "provisional": false
+    },
+    {
+      "date": "2025-03-01",
+      "sales_sa_musd": 97919,
+      "sales_nsa_musd": 101934,
+      "provisional": false
+    },
+    {
+      "date": "2025-04-01",
+      "sales_sa_musd": 98170,
+      "sales_nsa_musd": 98563,
+      "provisional": false
+    },
+    {
+      "date": "2025-05-01",
+      "sales_sa_musd": 97973,
+      "sales_nsa_musd": 106007,
+      "provisional": false
+    },
+    {
+      "date": "2025-06-01",
+      "sales_sa_musd": 98790,
+      "sales_nsa_musd": 100667,
+      "provisional": false
+    },
+    {
+      "date": "2025-07-01",
+      "sales_sa_musd": 98980,
+      "sales_nsa_musd": 101158,
+      "provisional": false
+    },
+    {
+      "date": "2025-08-01",
+      "sales_sa_musd": 99551,
+      "sales_nsa_musd": 104429,
+      "provisional": false
+    },
+    {
+      "date": "2025-09-01",
+      "sales_sa_musd": 99797,
+      "sales_nsa_musd": 97102,
+      "provisional": false
+    },
+    {
+      "date": "2025-10-01",
+      "sales_sa_musd": 99705,
+      "sales_nsa_musd": 100802,
+      "provisional": false
+    },
+    {
+      "date": "2025-11-01",
+      "sales_sa_musd": 100241,
+      "sales_nsa_musd": 96332,
+      "provisional": false
+    },
+    {
+      "date": "2025-12-01",
+      "sales_sa_musd": 99887,
+      "sales_nsa_musd": 99487,
+      "provisional": false
+    },
+    {
+      "date": "2026-01-01",
+      "sales_sa_musd": 99554,
+      "sales_nsa_musd": 92087,
+      "provisional": false
+    },
+    {
+      "date": "2026-02-01",
+      "sales_sa_musd": 100240,
+      "sales_nsa_musd": 91419,
+      "provisional": false
+    },
+    {
+      "date": "2026-03-01",
+      "sales_sa_musd": 100241,
+      "sales_nsa_musd": 103549,
+      "provisional": false
+    },
+    {
+      "date": "2026-04-01",
+      "sales_sa_musd": 101267,
+      "sales_nsa_musd": 101672,
+      "provisional": false
+    },
+    {
+      "date": "2026-05-01",
+      "sales_sa_musd": 102437,
+      "sales_nsa_musd": 110632,
+      "provisional": false
+    },
+    {
+      "date": "2026-06-01",
+      "sales_sa_musd": 102497,
+      "sales_nsa_musd": 104547,
+      "provisional": true
+    }
+  ]
+}

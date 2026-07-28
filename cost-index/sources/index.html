@@ -102,6 +102,17 @@ main{padding-top:64px}
 .ci-rel__bar{display:block;height:100%;background:var(--teal);border-radius:3px}
 .ci-rel__val{flex:0 0 42px;font-size:13px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
 .ci-rel figcaption{font-size:13px;color:var(--ink-soft);margin-top:8px}
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
@@ -392,7 +403,6 @@ main{padding-top:64px}
       <tr><td><a href="/cost-index/russet-potato/">Russet potatoes</a></td><td>USDA AMS terminal markets (8) · BLS WPU01130603</td></tr>
       <tr><td><a href="/cost-index/butter/">Butter (AA, bulk)</a></td><td>USDA LMR 2993 · BLS WPU0232 · FRED APU0000FS1101</td></tr>
       <tr><td><a href="/cost-index/cheddar-cheese/">Cheddar cheese</a></td><td>USDA LMR 2993 · BLS PCU3115133115131 · FRED APU0000710212</td></tr>
-      <tr><td><a href="/cost-index/eggs/">Eggs</a></td><td>USDA AMS 2848 · BLS WPU017107 · FRED APU0000708111</td></tr>
       <tr><td><a href="/cost-index/ground-beef/">Ground beef</a></td><td>USDA LMR 2453 · BLS WPU022101 · FRED APU0000703112</td></tr>
       <tr><td><a href="/cost-index/short-rib/">Short rib</a></td><td>USDA LMR 2453 · BLS WPU022101 · FRED APU0000FC3101</td></tr>
       <tr><td><a href="/cost-index/chicken-thigh/">Chicken thigh</a></td><td>USDA AMS 3646 · BLS WPU0222</td></tr>
@@ -457,6 +467,7 @@ main{padding-top:64px}
       <tr><td><a href="/cost-index/apple/">Apples</a></td><td>USDA AMS terminal markets (8)</td></tr>
       <tr><td><a href="/cost-index/pear/">Pears</a></td><td>USDA AMS terminal markets (8)</td></tr>
       <tr><td><a href="/cost-index/banana/">Bananas</a></td><td>USDA AMS terminal markets (8)</td></tr>
+      <tr><td><a href="/cost-index/watermelon/">Watermelon</a></td><td>USDA AMS terminal markets (8)</td></tr>
       <tr><td><a href="/cost-index/cantaloupe/">Cantaloupe</a></td><td>USDA AMS terminal markets (8)</td></tr>
       <tr><td><a href="/cost-index/blueberry/">Blueberries</a></td><td>USDA AMS terminal markets (8)</td></tr>
       <tr><td><a href="/cost-index/raspberry/">Raspberries</a></td><td>USDA AMS terminal markets (8)</td></tr>
@@ -467,6 +478,10 @@ main{padding-top:64px}
     <p class="ci-source"><strong>How to cite:</strong> attribute the &ldquo;Muntin Restaurant Cost Index&rdquo; and link the ingredient page or the <a href="/cost-index/">index</a>. These are dated wholesale reference prices, not delivered or retail prices. Full method at <a href="/cost-index/methodology/">methodology</a>.</p>
   
   </div>
+<!-- ingredient-recalls:start --><section class="ci-profile ci-recalls ci-recalls--none" aria-labelledby="ci-recalls-h-sources">
+    <h2 id="ci-recalls-h-sources">Food-safety recall history</h2>
+    <p class="ci-recalls__none">No recall in the openFDA window (since 2020). FDA-regulated foods only — USDA/FSIS meat, poultry and egg recalls are absent here, so an empty record is not an all-clear.</p>
+  </section><!-- /ingredient-recalls:end -->
 </main>
 <footer class="site-footer" id="footer"></footer>
 <!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->

@@ -82,6 +82,25 @@
 /data/ci-history/*
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 
+# ------------------------------------------------------------
+# Open-data downloads — raw US-government passthroughs (public domain, CC0)
+# ------------------------------------------------------------
+# Every data/*.jsonl is a raw US-gov trade/ag/energy pull (Census, NASS, EIA,
+# NOAA) redistributed verbatim. The catalog at /cost-index/open-data-catalog.json
+# is the authoritative license map; check-open-data-catalog.mjs enforces that
+# every data/*.jsonl is a catalogued CC0 gov dataset, so this wildcard can carry
+# the CC0 license Link honestly. CORS-open so notebooks + other sites can fetch.
+/data/*.jsonl
+  Content-Type: application/x-ndjson; charset=utf-8
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Access-Control-Allow-Origin: *
+  Link: <https://creativecommons.org/publicdomain/zero/1.0/>; rel="license"
+
+/data/cpc-oni.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Access-Control-Allow-Origin: *
+  Link: <https://creativecommons.org/publicdomain/zero/1.0/>; rel="license"
 
 # ------------------------------------------------------------
 # Downloadable checklist PDFs

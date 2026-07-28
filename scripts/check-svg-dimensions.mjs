@@ -67,7 +67,10 @@ let svgsTotal = 0;
 
 for (const file of walk(repoRoot)) {
   scanned++;
-  const src = fs.readFileSync(file, 'utf8');
+  // Strip <script> bodies first: SVGs BUILT by client JS (e.g. `'<svg viewBox="0 0 '+W+'…'`) only
+  // exist after the script runs, so they never flash at intrinsic size on first paint — the CLS
+  // concern this gate guards. Only STATIC <svg> in the served markup needs width/height.
+  const src = fs.readFileSync(file, 'utf8').replace(/<script\b[\s\S]*?<\/script>/gi, ' ');
   const tags = src.match(SVG_OPEN_RE) || [];
   for (const t of tags) {
     svgsTotal++;

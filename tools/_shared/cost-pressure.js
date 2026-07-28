@@ -28,7 +28,10 @@
  *                   window, deadband?, group?, cite }] }
  * observations: { [indicatorId]: { changePct, asOf } }  // % change over the
  *   indicator's window, ALREADY lead-shifted by the caller.
- * opts: { anchorPrintDate, asOf, ruleVersion }
+ * opts: { anchorPrintDate, asOf, now?, ruleVersion }
+ *   now — wall-clock ms timestamp for the staleness clock (freshness = now − anchor).
+ *   Live surfaces pass Date.now() so a served snapshot decays as it ages; the builder
+ *   and honesty gate omit it → freshness falls back to asOf (frozen, deterministic).
  *
  * Pure, deterministic, no DOM/network. Browser: window.MuntinCostPressure.
  */
@@ -91,9 +94,24 @@
       activeWeight += g.bucketWeight;
     });
 
+    // Freshness = how old the last measured print is AT READ TIME. Measured against
+    // opts.now (a wall-clock ms timestamp the caller passes) so a snapshot served for
+    // weeks decays and eventually trips under_review as it ages; falls back to asOf for
+    // callers that recompute the frozen build-time record (the builder + the honesty
+    // gate pass no `now`, so they stay byte-for-byte deterministic). BUG FIX: this was
+    // always asOf − anchorPrintDate — two frozen dates — so a stale snapshot read as
+    // 0 weeks old forever, the decay/under_review governor could never fire, and a
+    // 6-week-stale preview presented at full confidence. Staying pure: `now` is an
+    // argument, never Date.now() called in here.
     var freshnessWeeks = null;
     if (opts.anchorPrintDate && opts.asOf) {
-      var ms = Date.parse(opts.asOf) - Date.parse(opts.anchorPrintDate);
+      var refNow = opts.now != null ? opts.now : Date.parse(opts.asOf);
+      // A read is only as fresh as its OLDEST input: the indicator observations (asOf)
+      // and the price anchor they're read against (anchorPrintDate). Age that oldest one
+      // against refNow. min() matters because the anchor can print AFTER the observation
+      // vector — keying on the anchor alone would hide a stale-observation read.
+      var oldest = Math.min(Date.parse(opts.asOf), Date.parse(opts.anchorPrintDate));
+      var ms = refNow - oldest;
       if (isFinite(ms)) freshnessWeeks = Math.max(0, Math.round(ms / (7 * 86400000)));
     }
 

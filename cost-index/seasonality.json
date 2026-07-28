@@ -1,0 +1,6577 @@
+{
+  "_doc": "Seasonal wholesale-reference normals: for each ready ingredient, the median (and p25/p75) reference level by calendar month over a 5-year trailing window of a public-domain deep history, plus its cheapest and priciest month. A reference level vs its own season, NOT a delivered price. Deterministic recompute of the public record.",
+  "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "params": {
+    "minYearsPerMonth": 2,
+    "minEstablishedMonths": 6,
+    "weeksTarget": 78,
+    "windowYears": 5
+  },
+  "count": 84,
+  "ingredients": [
+    {
+      "slug": "apple",
+      "cheapest_month": 5,
+      "priciest_month": 10,
+      "months": {
+        "10": {
+          "median_cents": 3300,
+          "p25_cents": 3225,
+          "p75_cents": 3300,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 3185,
+          "p25_cents": 3150,
+          "p75_cents": 3271,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3263,
+          "p25_cents": 3120,
+          "p75_cents": 3300,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 3100,
+          "p25_cents": 2900,
+          "p75_cents": 3300,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2992,
+          "p25_cents": 2874,
+          "p75_cents": 3150,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 3000,
+          "p25_cents": 2889,
+          "p75_cents": 3210,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2900,
+          "p25_cents": 2818,
+          "p75_cents": 3244,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2850,
+          "p25_cents": 2771,
+          "p75_cents": 2900,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2900,
+          "p25_cents": 2850,
+          "p75_cents": 2953,
+          "n": 21
+        },
+        "07": {
+          "median_cents": 2950,
+          "p25_cents": 2878,
+          "p75_cents": 2991,
+          "n": 19
+        },
+        "08": {
+          "median_cents": 2950,
+          "p25_cents": 2818,
+          "p75_cents": 3151,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2934,
+          "p25_cents": 2888,
+          "p75_cents": 3299,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "asparagus",
+      "cheapest_month": 3,
+      "priciest_month": 8,
+      "months": {
+        "10": {
+          "median_cents": 3680,
+          "p25_cents": 3046,
+          "p75_cents": 4411,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 3185,
+          "p25_cents": 3002,
+          "p75_cents": 3598,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3660,
+          "p25_cents": 3058,
+          "p75_cents": 3860,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 3680,
+          "p25_cents": 3088,
+          "p75_cents": 3825,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 3450,
+          "p25_cents": 3178,
+          "p75_cents": 3815,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2668,
+          "p25_cents": 2295,
+          "p75_cents": 3629,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 3373,
+          "p25_cents": 2909,
+          "p75_cents": 4276,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 3505,
+          "p25_cents": 3219,
+          "p75_cents": 3765,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2950,
+          "p25_cents": 2708,
+          "p75_cents": 3259,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 3438,
+          "p25_cents": 2918,
+          "p75_cents": 4356,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 3945,
+          "p25_cents": 3655,
+          "p75_cents": 4345,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 3775,
+          "p25_cents": 3444,
+          "p75_cents": 4075,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "banana",
+      "cheapest_month": 7,
+      "priciest_month": 2,
+      "months": {
+        "10": {
+          "median_cents": 2030,
+          "p25_cents": 1900,
+          "p75_cents": 2200,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2038,
+          "p25_cents": 1813,
+          "p75_cents": 2188,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2125,
+          "p25_cents": 2000,
+          "p75_cents": 2175,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2175,
+          "p25_cents": 2000,
+          "p75_cents": 2200,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2200,
+          "p25_cents": 2050,
+          "p75_cents": 2203,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2200,
+          "p25_cents": 2050,
+          "p75_cents": 2200,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2113,
+          "p25_cents": 2028,
+          "p75_cents": 2200,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2125,
+          "p25_cents": 1975,
+          "p75_cents": 2200,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1975,
+          "p25_cents": 1950,
+          "p75_cents": 2200,
+          "n": 21
+        },
+        "07": {
+          "median_cents": 1950,
+          "p25_cents": 1900,
+          "p75_cents": 2200,
+          "n": 19
+        },
+        "08": {
+          "median_cents": 2163,
+          "p25_cents": 1881,
+          "p75_cents": 2200,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2163,
+          "p25_cents": 1875,
+          "p75_cents": 2200,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "beef-tenderloin",
+      "cheapest_month": 7,
+      "priciest_month": 12,
+      "months": {
+        "10": {
+          "median_cents": 1398,
+          "p25_cents": 1291,
+          "p75_cents": 1589,
+          "n": 19
+        },
+        "11": {
+          "median_cents": 1521,
+          "p25_cents": 1253,
+          "p75_cents": 1560,
+          "n": 17
+        },
+        "12": {
+          "median_cents": 1564,
+          "p25_cents": 1493,
+          "p75_cents": 1657,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 1335,
+          "p25_cents": 1266,
+          "p75_cents": 1486,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 1286,
+          "p25_cents": 1261,
+          "p75_cents": 1426,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 1300,
+          "p25_cents": 1232,
+          "p75_cents": 1390,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 1342,
+          "p25_cents": 1245,
+          "p75_cents": 1401,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 1368,
+          "p25_cents": 1321,
+          "p75_cents": 1404,
+          "n": 23
+        },
+        "06": {
+          "median_cents": 1372,
+          "p25_cents": 1259,
+          "p75_cents": 1409,
+          "n": 21
+        },
+        "07": {
+          "median_cents": 1247,
+          "p25_cents": 1119,
+          "p75_cents": 1359,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 1266,
+          "p25_cents": 1088,
+          "p75_cents": 1391,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 1311,
+          "p25_cents": 1191,
+          "p75_cents": 1412,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "beet",
+      "cheapest_month": 8,
+      "priciest_month": 2,
+      "months": {
+        "10": {
+          "median_cents": 2280,
+          "p25_cents": 2085,
+          "p75_cents": 2651,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2310,
+          "p25_cents": 2263,
+          "p75_cents": 2604,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2263,
+          "p25_cents": 1950,
+          "p75_cents": 2437,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2388,
+          "p25_cents": 1950,
+          "p75_cents": 2467,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2394,
+          "p25_cents": 2330,
+          "p75_cents": 2500,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2388,
+          "p25_cents": 2145,
+          "p75_cents": 2466,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2250,
+          "p25_cents": 2168,
+          "p75_cents": 2387,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2235,
+          "p25_cents": 2015,
+          "p75_cents": 2375,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2294,
+          "p25_cents": 2100,
+          "p75_cents": 2356,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2280,
+          "p25_cents": 2015,
+          "p75_cents": 2603,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 1900,
+          "p25_cents": 1863,
+          "p75_cents": 2170,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 1900,
+          "p25_cents": 1881,
+          "p75_cents": 2035,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "bell-pepper",
+      "cheapest_month": 5,
+      "priciest_month": 8,
+      "months": {
+        "10": {
+          "median_cents": 2495,
+          "p25_cents": 1888,
+          "p75_cents": 3030,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2994,
+          "p25_cents": 2256,
+          "p75_cents": 3469,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2975,
+          "p25_cents": 2795,
+          "p75_cents": 3719,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2500,
+          "p25_cents": 1900,
+          "p75_cents": 3156,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2325,
+          "p25_cents": 2000,
+          "p75_cents": 3350,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2550,
+          "p25_cents": 2405,
+          "p75_cents": 3850,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2620,
+          "p25_cents": 2336,
+          "p75_cents": 2951,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2255,
+          "p25_cents": 2170,
+          "p75_cents": 2458,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2550,
+          "p25_cents": 2250,
+          "p75_cents": 2638,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 3000,
+          "p25_cents": 2453,
+          "p75_cents": 3683,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 3040,
+          "p25_cents": 2510,
+          "p75_cents": 3665,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2975,
+          "p25_cents": 2695,
+          "p75_cents": 3600,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "blueberry",
+      "cheapest_month": 8,
+      "priciest_month": 10,
+      "months": {
+        "10": {
+          "median_cents": 4534,
+          "p25_cents": 2928,
+          "p75_cents": 5132,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2595,
+          "p25_cents": 2022,
+          "p75_cents": 3074,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2305,
+          "p25_cents": 1916,
+          "p75_cents": 2938,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2838,
+          "p25_cents": 2238,
+          "p75_cents": 3325,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2230,
+          "p25_cents": 2029,
+          "p75_cents": 2760,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2315,
+          "p25_cents": 1703,
+          "p75_cents": 3343,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 3640,
+          "p25_cents": 2805,
+          "p75_cents": 4245,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2470,
+          "p25_cents": 2024,
+          "p75_cents": 2698,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2275,
+          "p25_cents": 1800,
+          "p75_cents": 2720,
+          "n": 21
+        },
+        "07": {
+          "median_cents": 2160,
+          "p25_cents": 1775,
+          "p75_cents": 2677,
+          "n": 19
+        },
+        "08": {
+          "median_cents": 1940,
+          "p25_cents": 1725,
+          "p75_cents": 2123,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2575,
+          "p25_cents": 2331,
+          "p75_cents": 3290,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "butternut-squash",
+      "cheapest_month": 1,
+      "priciest_month": 7,
+      "months": {
+        "10": {
+          "median_cents": 2500,
+          "p25_cents": 2365,
+          "p75_cents": 5118,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2328,
+          "p25_cents": 2013,
+          "p75_cents": 2379,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2350,
+          "p25_cents": 1950,
+          "p75_cents": 2350,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2275,
+          "p25_cents": 2000,
+          "p75_cents": 2500,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2495,
+          "p25_cents": 2314,
+          "p75_cents": 2700,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2425,
+          "p25_cents": 2275,
+          "p75_cents": 2488,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2473,
+          "p25_cents": 2369,
+          "p75_cents": 2579,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2500,
+          "p25_cents": 2425,
+          "p75_cents": 3160,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2725,
+          "p25_cents": 2400,
+          "p75_cents": 3150,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2825,
+          "p25_cents": 2281,
+          "p75_cents": 3213,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2570,
+          "p25_cents": 2236,
+          "p75_cents": 2950,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2300,
+          "p25_cents": 2219,
+          "p75_cents": 2455,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "button-mushroom",
+      "cheapest_month": 8,
+      "priciest_month": 12,
+      "months": {
+        "10": {
+          "median_cents": 2775,
+          "p25_cents": 2669,
+          "p75_cents": 2844,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2750,
+          "p25_cents": 2725,
+          "p75_cents": 2833,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2850,
+          "p25_cents": 2750,
+          "p75_cents": 2850,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2750,
+          "p25_cents": 2725,
+          "p75_cents": 2850,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2750,
+          "p25_cents": 2725,
+          "p75_cents": 2850,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2750,
+          "p25_cents": 2725,
+          "p75_cents": 2850,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2750,
+          "p25_cents": 2728,
+          "p75_cents": 2850,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2750,
+          "p25_cents": 2738,
+          "p75_cents": 2750,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2750,
+          "p25_cents": 2738,
+          "p75_cents": 2750,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2739,
+          "p25_cents": 2672,
+          "p75_cents": 2825,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2732,
+          "p25_cents": 2725,
+          "p75_cents": 2825,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2775,
+          "p25_cents": 2706,
+          "p75_cents": 2831,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "cabbage",
+      "cheapest_month": 4,
+      "priciest_month": 7,
+      "months": {
+        "10": {
+          "median_cents": 2708,
+          "p25_cents": 2444,
+          "p75_cents": 2888,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2798,
+          "p25_cents": 2315,
+          "p75_cents": 3100,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3007,
+          "p25_cents": 2455,
+          "p75_cents": 3480,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2570,
+          "p25_cents": 2375,
+          "p75_cents": 3330,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2600,
+          "p25_cents": 2259,
+          "p75_cents": 3074,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2605,
+          "p25_cents": 2350,
+          "p75_cents": 2753,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2408,
+          "p25_cents": 2279,
+          "p75_cents": 2548,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2983,
+          "p25_cents": 2325,
+          "p75_cents": 3100,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 3100,
+          "p25_cents": 2918,
+          "p75_cents": 3494,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 3182,
+          "p25_cents": 2324,
+          "p75_cents": 3308,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2523,
+          "p25_cents": 2150,
+          "p75_cents": 3085,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2580,
+          "p25_cents": 2291,
+          "p75_cents": 2729,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "cantaloupe",
+      "cheapest_month": 8,
+      "priciest_month": 11,
+      "months": {
+        "10": {
+          "median_cents": 2143,
+          "p25_cents": 1910,
+          "p75_cents": 2398,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2434,
+          "p25_cents": 2141,
+          "p75_cents": 2683,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2325,
+          "p25_cents": 2018,
+          "p75_cents": 2645,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2163,
+          "p25_cents": 1750,
+          "p75_cents": 2325,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2073,
+          "p25_cents": 1811,
+          "p75_cents": 2408,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 1865,
+          "p25_cents": 1693,
+          "p75_cents": 2038,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 1990,
+          "p25_cents": 1788,
+          "p75_cents": 2175,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2095,
+          "p25_cents": 1883,
+          "p75_cents": 2329,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2320,
+          "p25_cents": 1960,
+          "p75_cents": 2531,
+          "n": 21
+        },
+        "07": {
+          "median_cents": 2000,
+          "p25_cents": 1829,
+          "p75_cents": 2288,
+          "n": 19
+        },
+        "08": {
+          "median_cents": 1800,
+          "p25_cents": 1683,
+          "p75_cents": 1883,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2013,
+          "p25_cents": 1788,
+          "p75_cents": 2160,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "cauliflower",
+      "cheapest_month": 9,
+      "priciest_month": 12,
+      "months": {
+        "10": {
+          "median_cents": 2600,
+          "p25_cents": 2583,
+          "p75_cents": 3350,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 3393,
+          "p25_cents": 2600,
+          "p75_cents": 3686,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3450,
+          "p25_cents": 2510,
+          "p75_cents": 3854,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2850,
+          "p25_cents": 2513,
+          "p75_cents": 3290,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 3150,
+          "p25_cents": 2938,
+          "p75_cents": 3325,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2900,
+          "p25_cents": 2600,
+          "p75_cents": 3251,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2685,
+          "p25_cents": 2485,
+          "p75_cents": 3145,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2885,
+          "p25_cents": 2150,
+          "p75_cents": 3288,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2594,
+          "p25_cents": 2150,
+          "p75_cents": 2720,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2628,
+          "p25_cents": 2550,
+          "p75_cents": 2893,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2510,
+          "p25_cents": 2400,
+          "p75_cents": 2978,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2400,
+          "p25_cents": 2398,
+          "p75_cents": 2988,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "celery",
+      "cheapest_month": 9,
+      "priciest_month": 12,
+      "months": {
+        "10": {
+          "median_cents": 1745,
+          "p25_cents": 1700,
+          "p75_cents": 2100,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2583,
+          "p25_cents": 2000,
+          "p75_cents": 3293,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3590,
+          "p25_cents": 2843,
+          "p75_cents": 5440,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2550,
+          "p25_cents": 1900,
+          "p75_cents": 4188,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2363,
+          "p25_cents": 1700,
+          "p75_cents": 3925,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2400,
+          "p25_cents": 2173,
+          "p75_cents": 2568,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2035,
+          "p25_cents": 1770,
+          "p75_cents": 2366,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2852,
+          "p25_cents": 2296,
+          "p75_cents": 3735,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2288,
+          "p25_cents": 2120,
+          "p75_cents": 2615,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 1997,
+          "p25_cents": 1816,
+          "p75_cents": 2169,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 1750,
+          "p25_cents": 1511,
+          "p75_cents": 1974,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 1735,
+          "p25_cents": 1700,
+          "p75_cents": 1950,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "cherry-tomato",
+      "cheapest_month": 10,
+      "priciest_month": 11,
+      "months": {
+        "10": {
+          "median_cents": 1800,
+          "p25_cents": 1575,
+          "p75_cents": 2469,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2500,
+          "p25_cents": 2074,
+          "p75_cents": 2888,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2400,
+          "p25_cents": 1819,
+          "p75_cents": 2798,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2361,
+          "p25_cents": 2100,
+          "p75_cents": 2500,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2194,
+          "p25_cents": 2100,
+          "p75_cents": 2451,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2325,
+          "p25_cents": 2150,
+          "p75_cents": 2515,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2150,
+          "p25_cents": 1850,
+          "p75_cents": 2810,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 1900,
+          "p25_cents": 1600,
+          "p75_cents": 2300,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1913,
+          "p25_cents": 1794,
+          "p75_cents": 2250,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 1865,
+          "p25_cents": 1538,
+          "p75_cents": 1900,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 1820,
+          "p25_cents": 1800,
+          "p75_cents": 2043,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 1825,
+          "p25_cents": 1725,
+          "p75_cents": 2043,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "collard-greens",
+      "cheapest_month": 2,
+      "priciest_month": 8,
+      "months": {
+        "10": {
+          "median_cents": 2775,
+          "p25_cents": 2338,
+          "p75_cents": 2800,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2775,
+          "p25_cents": 2739,
+          "p75_cents": 2814,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2775,
+          "p25_cents": 2372,
+          "p75_cents": 2975,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2775,
+          "p25_cents": 2250,
+          "p75_cents": 2975,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2250,
+          "p25_cents": 2225,
+          "p75_cents": 2775,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2750,
+          "p25_cents": 2300,
+          "p75_cents": 2819,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2750,
+          "p25_cents": 2250,
+          "p75_cents": 2819,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2585,
+          "p25_cents": 2213,
+          "p75_cents": 2838,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2310,
+          "p25_cents": 2213,
+          "p75_cents": 2955,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2470,
+          "p25_cents": 2200,
+          "p75_cents": 2894,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2800,
+          "p25_cents": 2775,
+          "p75_cents": 2875,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2788,
+          "p25_cents": 2463,
+          "p75_cents": 2819,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "cucumber",
+      "cheapest_month": 7,
+      "priciest_month": 2,
+      "months": {
+        "10": {
+          "median_cents": 2100,
+          "p25_cents": 1750,
+          "p75_cents": 2735,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 1818,
+          "p25_cents": 1674,
+          "p75_cents": 2348,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 1830,
+          "p25_cents": 1716,
+          "p75_cents": 2900,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2100,
+          "p25_cents": 1769,
+          "p75_cents": 2640,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2493,
+          "p25_cents": 2198,
+          "p75_cents": 2626,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2250,
+          "p25_cents": 2035,
+          "p75_cents": 2450,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2143,
+          "p25_cents": 1930,
+          "p75_cents": 2340,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 1700,
+          "p25_cents": 1509,
+          "p75_cents": 1995,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1840,
+          "p25_cents": 1700,
+          "p75_cents": 1925,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 1490,
+          "p25_cents": 1450,
+          "p75_cents": 1788,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 1530,
+          "p25_cents": 1450,
+          "p75_cents": 1839,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2200,
+          "p25_cents": 1810,
+          "p75_cents": 2741,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "eggplant",
+      "cheapest_month": 1,
+      "priciest_month": 7,
+      "months": {
+        "10": {
+          "median_cents": 2300,
+          "p25_cents": 2205,
+          "p75_cents": 2500,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2475,
+          "p25_cents": 1925,
+          "p75_cents": 2598,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2163,
+          "p25_cents": 1750,
+          "p75_cents": 3050,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 1750,
+          "p25_cents": 1700,
+          "p75_cents": 2700,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 1825,
+          "p25_cents": 1738,
+          "p75_cents": 2423,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2050,
+          "p25_cents": 1900,
+          "p75_cents": 2450,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2480,
+          "p25_cents": 1970,
+          "p75_cents": 2625,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2060,
+          "p25_cents": 2000,
+          "p75_cents": 2531,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2382,
+          "p25_cents": 2135,
+          "p75_cents": 2750,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2620,
+          "p25_cents": 2185,
+          "p75_cents": 3044,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2575,
+          "p25_cents": 2000,
+          "p75_cents": 2866,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2438,
+          "p25_cents": 2238,
+          "p75_cents": 2505,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "grapefruit",
+      "cheapest_month": 5,
+      "priciest_month": 11,
+      "months": {
+        "10": {
+          "median_cents": 3800,
+          "p25_cents": 3565,
+          "p75_cents": 4158,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 3863,
+          "p25_cents": 3800,
+          "p75_cents": 3988,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3793,
+          "p25_cents": 3700,
+          "p75_cents": 4188,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 3788,
+          "p25_cents": 3700,
+          "p75_cents": 4000,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 3750,
+          "p25_cents": 3570,
+          "p75_cents": 3803,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 3738,
+          "p25_cents": 3555,
+          "p75_cents": 3818,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 3610,
+          "p25_cents": 3470,
+          "p75_cents": 3664,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 3400,
+          "p25_cents": 3334,
+          "p75_cents": 3571,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 3400,
+          "p25_cents": 3250,
+          "p75_cents": 3580,
+          "n": 21
+        },
+        "07": {
+          "median_cents": 3625,
+          "p25_cents": 3560,
+          "p75_cents": 3695,
+          "n": 19
+        },
+        "08": {
+          "median_cents": 3500,
+          "p25_cents": 3500,
+          "p75_cents": 3600,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 3595,
+          "p25_cents": 3500,
+          "p75_cents": 3640,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "green-leaf-lettuce",
+      "cheapest_month": 1,
+      "priciest_month": 11,
+      "months": {
+        "10": {
+          "median_cents": 2620,
+          "p25_cents": 1888,
+          "p75_cents": 4637,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 3398,
+          "p25_cents": 2040,
+          "p75_cents": 5344,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2740,
+          "p25_cents": 2016,
+          "p75_cents": 3000,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 1663,
+          "p25_cents": 1550,
+          "p75_cents": 1970,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 1832,
+          "p25_cents": 1488,
+          "p75_cents": 2384,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2220,
+          "p25_cents": 1651,
+          "p75_cents": 2569,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2120,
+          "p25_cents": 1817,
+          "p75_cents": 2584,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2375,
+          "p25_cents": 1676,
+          "p75_cents": 2851,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1908,
+          "p25_cents": 1650,
+          "p75_cents": 2446,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2215,
+          "p25_cents": 1730,
+          "p75_cents": 2686,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2684,
+          "p25_cents": 1861,
+          "p75_cents": 2847,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2750,
+          "p25_cents": 1829,
+          "p75_cents": 2950,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "green-onion",
+      "cheapest_month": 6,
+      "priciest_month": 9,
+      "months": {
+        "10": {
+          "median_cents": 2308,
+          "p25_cents": 2045,
+          "p75_cents": 3665,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2175,
+          "p25_cents": 1375,
+          "p75_cents": 3165,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2355,
+          "p25_cents": 1538,
+          "p75_cents": 3775,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 3365,
+          "p25_cents": 2225,
+          "p75_cents": 3700,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2050,
+          "p25_cents": 1625,
+          "p75_cents": 3421,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 1548,
+          "p25_cents": 1439,
+          "p75_cents": 2343,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 1663,
+          "p25_cents": 1290,
+          "p75_cents": 2338,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 1365,
+          "p25_cents": 1150,
+          "p75_cents": 1540,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1265,
+          "p25_cents": 1150,
+          "p75_cents": 1538,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 1300,
+          "p25_cents": 1150,
+          "p75_cents": 1591,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 1895,
+          "p25_cents": 1500,
+          "p75_cents": 3075,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 3988,
+          "p25_cents": 3363,
+          "p75_cents": 4550,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "habanero-pepper",
+      "cheapest_month": 7,
+      "priciest_month": 1,
+      "months": {
+        "10": {
+          "median_cents": 2925,
+          "p25_cents": 2413,
+          "p75_cents": 3463,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 3313,
+          "p25_cents": 3050,
+          "p75_cents": 3593,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3350,
+          "p25_cents": 2613,
+          "p75_cents": 3600,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 3600,
+          "p25_cents": 3525,
+          "p75_cents": 3900,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 3300,
+          "p25_cents": 2800,
+          "p75_cents": 3850,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 3100,
+          "p25_cents": 2755,
+          "p75_cents": 3850,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 3200,
+          "p25_cents": 2550,
+          "p75_cents": 3813,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 3100,
+          "p25_cents": 2550,
+          "p75_cents": 3229,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 3100,
+          "p25_cents": 2600,
+          "p75_cents": 3313,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2775,
+          "p25_cents": 2338,
+          "p75_cents": 3100,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2775,
+          "p25_cents": 2600,
+          "p75_cents": 2950,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2895,
+          "p25_cents": 2513,
+          "p75_cents": 2988,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "jalapeno",
+      "cheapest_month": 6,
+      "priciest_month": 7,
+      "months": {
+        "10": {
+          "median_cents": 2220,
+          "p25_cents": 2153,
+          "p75_cents": 2298,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2325,
+          "p25_cents": 2300,
+          "p75_cents": 2350,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2350,
+          "p25_cents": 2306,
+          "p75_cents": 2383,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2350,
+          "p25_cents": 2250,
+          "p75_cents": 2500,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2225,
+          "p25_cents": 2050,
+          "p75_cents": 3228,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2500,
+          "p25_cents": 2175,
+          "p75_cents": 3060,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2500,
+          "p25_cents": 2250,
+          "p75_cents": 3350,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2550,
+          "p25_cents": 2425,
+          "p75_cents": 2800,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2190,
+          "p25_cents": 2150,
+          "p75_cents": 2590,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2600,
+          "p25_cents": 2503,
+          "p75_cents": 3135,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2515,
+          "p25_cents": 2300,
+          "p75_cents": 2875,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2250,
+          "p25_cents": 2088,
+          "p75_cents": 2333,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "kale",
+      "cheapest_month": 5,
+      "priciest_month": 3,
+      "months": {
+        "10": {
+          "median_cents": 2253,
+          "p25_cents": 1831,
+          "p75_cents": 2275,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2328,
+          "p25_cents": 2238,
+          "p75_cents": 2431,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2353,
+          "p25_cents": 2106,
+          "p75_cents": 2402,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2300,
+          "p25_cents": 2275,
+          "p75_cents": 2488,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2375,
+          "p25_cents": 2100,
+          "p75_cents": 2525,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2415,
+          "p25_cents": 2100,
+          "p75_cents": 2525,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2183,
+          "p25_cents": 2100,
+          "p75_cents": 2425,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2125,
+          "p25_cents": 1750,
+          "p75_cents": 2635,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2125,
+          "p25_cents": 1750,
+          "p75_cents": 2485,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2401,
+          "p25_cents": 2125,
+          "p75_cents": 2600,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2307,
+          "p25_cents": 2225,
+          "p75_cents": 2753,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2332,
+          "p25_cents": 2206,
+          "p75_cents": 2510,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "leek",
+      "cheapest_month": 4,
+      "priciest_month": 11,
+      "months": {
+        "10": {
+          "median_cents": 3198,
+          "p25_cents": 2900,
+          "p75_cents": 3238,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 3500,
+          "p25_cents": 3188,
+          "p75_cents": 3842,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3438,
+          "p25_cents": 3150,
+          "p75_cents": 3938,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 3095,
+          "p25_cents": 2950,
+          "p75_cents": 4000,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2950,
+          "p25_cents": 2354,
+          "p75_cents": 3392,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2925,
+          "p25_cents": 2400,
+          "p75_cents": 3828,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2800,
+          "p25_cents": 2400,
+          "p75_cents": 3788,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 3023,
+          "p25_cents": 2500,
+          "p75_cents": 3750,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 3075,
+          "p25_cents": 2710,
+          "p75_cents": 3250,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 3250,
+          "p25_cents": 3038,
+          "p75_cents": 3325,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 3300,
+          "p25_cents": 3250,
+          "p75_cents": 3350,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 3200,
+          "p25_cents": 2950,
+          "p75_cents": 3300,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "lemon",
+      "cheapest_month": 3,
+      "priciest_month": 10,
+      "months": {
+        "10": {
+          "median_cents": 4155,
+          "p25_cents": 3855,
+          "p75_cents": 4250,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 3300,
+          "p25_cents": 2911,
+          "p75_cents": 4373,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2750,
+          "p25_cents": 2360,
+          "p75_cents": 2810,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2500,
+          "p25_cents": 2360,
+          "p75_cents": 2650,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2490,
+          "p25_cents": 2350,
+          "p75_cents": 2615,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2480,
+          "p25_cents": 2305,
+          "p75_cents": 2600,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2825,
+          "p25_cents": 2578,
+          "p75_cents": 3138,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 3055,
+          "p25_cents": 2778,
+          "p75_cents": 3940,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 3238,
+          "p25_cents": 3040,
+          "p75_cents": 4329,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 3730,
+          "p25_cents": 3384,
+          "p75_cents": 4140,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 4023,
+          "p25_cents": 3053,
+          "p75_cents": 4090,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 4050,
+          "p25_cents": 3715,
+          "p75_cents": 4253,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "lime",
+      "cheapest_month": 11,
+      "priciest_month": 4,
+      "months": {
+        "10": {
+          "median_cents": 2645,
+          "p25_cents": 2213,
+          "p75_cents": 4548,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2140,
+          "p25_cents": 1925,
+          "p75_cents": 3110,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2538,
+          "p25_cents": 2000,
+          "p75_cents": 2871,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 3800,
+          "p25_cents": 3250,
+          "p75_cents": 4220,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 3743,
+          "p25_cents": 3348,
+          "p75_cents": 4369,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 5285,
+          "p25_cents": 3910,
+          "p75_cents": 6198,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 6018,
+          "p25_cents": 4153,
+          "p75_cents": 7386,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 4135,
+          "p25_cents": 3263,
+          "p75_cents": 4850,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2450,
+          "p25_cents": 2329,
+          "p75_cents": 3038,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2451,
+          "p25_cents": 2223,
+          "p75_cents": 2955,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 3023,
+          "p25_cents": 2618,
+          "p75_cents": 3373,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 4172,
+          "p25_cents": 3203,
+          "p75_cents": 4878,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "napa-cabbage",
+      "cheapest_month": 6,
+      "priciest_month": 5,
+      "months": {
+        "10": {
+          "median_cents": 2650,
+          "p25_cents": 2500,
+          "p75_cents": 3080,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2683,
+          "p25_cents": 2186,
+          "p75_cents": 2775,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2300,
+          "p25_cents": 1950,
+          "p75_cents": 2563,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2200,
+          "p25_cents": 1950,
+          "p75_cents": 2481,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2398,
+          "p25_cents": 2000,
+          "p75_cents": 2578,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2350,
+          "p25_cents": 1990,
+          "p75_cents": 2861,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2810,
+          "p25_cents": 2196,
+          "p75_cents": 3245,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 3016,
+          "p25_cents": 2120,
+          "p75_cents": 3265,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2014,
+          "p25_cents": 1855,
+          "p75_cents": 2920,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2225,
+          "p25_cents": 2046,
+          "p75_cents": 2500,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2313,
+          "p25_cents": 2100,
+          "p75_cents": 2858,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2995,
+          "p25_cents": 2300,
+          "p75_cents": 3508,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "onion",
+      "cheapest_month": 12,
+      "priciest_month": 8,
+      "months": {
+        "10": {
+          "median_cents": 1850,
+          "p25_cents": 1488,
+          "p75_cents": 2564,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2304,
+          "p25_cents": 1572,
+          "p75_cents": 2956,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 1592,
+          "p25_cents": 1344,
+          "p75_cents": 2454,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2390,
+          "p25_cents": 1600,
+          "p75_cents": 2550,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2508,
+          "p25_cents": 1509,
+          "p75_cents": 2750,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2643,
+          "p25_cents": 1451,
+          "p75_cents": 2730,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2465,
+          "p25_cents": 1475,
+          "p75_cents": 2671,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2210,
+          "p25_cents": 1468,
+          "p75_cents": 2410,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2100,
+          "p25_cents": 1550,
+          "p75_cents": 2406,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2163,
+          "p25_cents": 1884,
+          "p75_cents": 2710,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2830,
+          "p25_cents": 2051,
+          "p75_cents": 3016,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2433,
+          "p25_cents": 2029,
+          "p75_cents": 2856,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "parsley",
+      "cheapest_month": 3,
+      "priciest_month": 12,
+      "months": {
+        "10": {
+          "median_cents": 2140,
+          "p25_cents": 1939,
+          "p75_cents": 2316,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2403,
+          "p25_cents": 2200,
+          "p75_cents": 2448,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2680,
+          "p25_cents": 2499,
+          "p75_cents": 2950,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2425,
+          "p25_cents": 1975,
+          "p75_cents": 2925,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2162,
+          "p25_cents": 1875,
+          "p75_cents": 2233,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 1875,
+          "p25_cents": 1833,
+          "p75_cents": 2100,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2150,
+          "p25_cents": 1970,
+          "p75_cents": 2425,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2339,
+          "p25_cents": 2200,
+          "p75_cents": 2874,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2300,
+          "p25_cents": 2200,
+          "p75_cents": 2505,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2229,
+          "p25_cents": 2094,
+          "p75_cents": 2291,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 1995,
+          "p25_cents": 1823,
+          "p75_cents": 2488,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2000,
+          "p25_cents": 1950,
+          "p75_cents": 2566,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "pear",
+      "cheapest_month": 3,
+      "priciest_month": 5,
+      "months": {
+        "10": {
+          "median_cents": 3325,
+          "p25_cents": 3116,
+          "p75_cents": 3386,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 3335,
+          "p25_cents": 3156,
+          "p75_cents": 3974,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3298,
+          "p25_cents": 3123,
+          "p75_cents": 3718,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 3475,
+          "p25_cents": 3100,
+          "p75_cents": 3585,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 3300,
+          "p25_cents": 3100,
+          "p75_cents": 3605,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 3153,
+          "p25_cents": 2960,
+          "p75_cents": 3888,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 3625,
+          "p25_cents": 3173,
+          "p75_cents": 3850,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 3825,
+          "p25_cents": 3568,
+          "p75_cents": 4106,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 3725,
+          "p25_cents": 3570,
+          "p75_cents": 3825,
+          "n": 21
+        },
+        "07": {
+          "median_cents": 3813,
+          "p25_cents": 3480,
+          "p75_cents": 4245,
+          "n": 19
+        },
+        "08": {
+          "median_cents": 3605,
+          "p25_cents": 3299,
+          "p75_cents": 3979,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 3317,
+          "p25_cents": 3010,
+          "p75_cents": 3443,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "pineapple",
+      "cheapest_month": 11,
+      "priciest_month": 9,
+      "months": {
+        "10": {
+          "median_cents": 1432,
+          "p25_cents": 1255,
+          "p75_cents": 1700,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 1175,
+          "p25_cents": 1013,
+          "p75_cents": 1300,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 1249,
+          "p25_cents": 1153,
+          "p75_cents": 1388,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 1390,
+          "p25_cents": 1350,
+          "p75_cents": 1444,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 1545,
+          "p25_cents": 1508,
+          "p75_cents": 1581,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 1468,
+          "p25_cents": 1380,
+          "p75_cents": 1698,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 1815,
+          "p25_cents": 1675,
+          "p75_cents": 1950,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 1705,
+          "p25_cents": 1440,
+          "p75_cents": 1895,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1585,
+          "p25_cents": 1391,
+          "p75_cents": 1600,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 1500,
+          "p25_cents": 1450,
+          "p75_cents": 1660,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 1760,
+          "p25_cents": 1700,
+          "p75_cents": 1910,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 1850,
+          "p25_cents": 1660,
+          "p75_cents": 2063,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "poblano-pepper",
+      "cheapest_month": 11,
+      "priciest_month": 7,
+      "months": {
+        "10": {
+          "median_cents": 2400,
+          "p25_cents": 2308,
+          "p75_cents": 2488,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2350,
+          "p25_cents": 2263,
+          "p75_cents": 2450,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2350,
+          "p25_cents": 2300,
+          "p75_cents": 2475,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2400,
+          "p25_cents": 2300,
+          "p75_cents": 2500,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2450,
+          "p25_cents": 2400,
+          "p75_cents": 2855,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2500,
+          "p25_cents": 2413,
+          "p75_cents": 2869,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2450,
+          "p25_cents": 2410,
+          "p75_cents": 3238,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2400,
+          "p25_cents": 2100,
+          "p75_cents": 2450,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2450,
+          "p25_cents": 2269,
+          "p75_cents": 2908,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2550,
+          "p25_cents": 2450,
+          "p75_cents": 2725,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2550,
+          "p25_cents": 2358,
+          "p75_cents": 2913,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2455,
+          "p25_cents": 2338,
+          "p75_cents": 2950,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "pork-loin",
+      "cheapest_month": 12,
+      "priciest_month": 7,
+      "months": {
+        "10": {
+          "median_cents": 93,
+          "p25_cents": 90,
+          "p75_cents": 94,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 84,
+          "p25_cents": 83,
+          "p75_cents": 88,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 82,
+          "p25_cents": 81,
+          "p75_cents": 84,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 84,
+          "p25_cents": 82,
+          "p75_cents": 86,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 87,
+          "p25_cents": 84,
+          "p75_cents": 92,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 89,
+          "p25_cents": 86,
+          "p75_cents": 93,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 90,
+          "p25_cents": 87,
+          "p75_cents": 98,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 92,
+          "p25_cents": 87,
+          "p75_cents": 100,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 96,
+          "p25_cents": 94,
+          "p75_cents": 101,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 100,
+          "p25_cents": 97,
+          "p75_cents": 101,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 98,
+          "p25_cents": 96,
+          "p75_cents": 100,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 98,
+          "p25_cents": 96,
+          "p75_cents": 98,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "pork-shoulder",
+      "cheapest_month": 10,
+      "priciest_month": 6,
+      "months": {
+        "10": {
+          "median_cents": 105,
+          "p25_cents": 104,
+          "p75_cents": 115,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 107,
+          "p25_cents": 100,
+          "p75_cents": 108,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 109,
+          "p25_cents": 107,
+          "p75_cents": 110,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 106,
+          "p25_cents": 102,
+          "p75_cents": 109,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 107,
+          "p25_cents": 101,
+          "p75_cents": 111,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 113,
+          "p25_cents": 106,
+          "p75_cents": 116,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 116,
+          "p25_cents": 110,
+          "p75_cents": 117,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 127,
+          "p25_cents": 116,
+          "p75_cents": 131,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 133,
+          "p25_cents": 127,
+          "p75_cents": 145,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 125,
+          "p25_cents": 117,
+          "p75_cents": 152,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 110,
+          "p25_cents": 107,
+          "p75_cents": 118,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 114,
+          "p25_cents": 107,
+          "p75_cents": 123,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "raspberry",
+      "cheapest_month": 6,
+      "priciest_month": 2,
+      "months": {
+        "10": {
+          "median_cents": 1483,
+          "p25_cents": 1070,
+          "p75_cents": 1671,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 1763,
+          "p25_cents": 1081,
+          "p75_cents": 2025,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 1948,
+          "p25_cents": 1624,
+          "p75_cents": 2501,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2740,
+          "p25_cents": 2325,
+          "p75_cents": 3340,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2935,
+          "p25_cents": 2379,
+          "p75_cents": 3631,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2323,
+          "p25_cents": 2088,
+          "p75_cents": 2605,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2773,
+          "p25_cents": 2273,
+          "p75_cents": 3039,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2768,
+          "p25_cents": 2398,
+          "p75_cents": 3205,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1460,
+          "p25_cents": 1225,
+          "p75_cents": 2280,
+          "n": 21
+        },
+        "07": {
+          "median_cents": 2080,
+          "p25_cents": 1035,
+          "p75_cents": 2443,
+          "n": 19
+        },
+        "08": {
+          "median_cents": 2210,
+          "p25_cents": 1660,
+          "p75_cents": 2773,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2408,
+          "p25_cents": 1800,
+          "p75_cents": 2744,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "red-leaf-lettuce",
+      "cheapest_month": 1,
+      "priciest_month": 11,
+      "months": {
+        "10": {
+          "median_cents": 2575,
+          "p25_cents": 1855,
+          "p75_cents": 3063,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 3070,
+          "p25_cents": 2013,
+          "p75_cents": 4577,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2791,
+          "p25_cents": 2100,
+          "p75_cents": 3125,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 1725,
+          "p25_cents": 1550,
+          "p75_cents": 2250,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 1825,
+          "p25_cents": 1728,
+          "p75_cents": 2380,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2160,
+          "p25_cents": 1713,
+          "p75_cents": 2511,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2165,
+          "p25_cents": 1862,
+          "p75_cents": 2538,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2405,
+          "p25_cents": 1693,
+          "p75_cents": 3304,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1948,
+          "p25_cents": 1620,
+          "p75_cents": 2446,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2215,
+          "p25_cents": 1602,
+          "p75_cents": 2589,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2469,
+          "p25_cents": 1653,
+          "p75_cents": 2547,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2250,
+          "p25_cents": 1686,
+          "p75_cents": 2579,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "red-onion",
+      "cheapest_month": 11,
+      "priciest_month": 8,
+      "months": {
+        "10": {
+          "median_cents": 1900,
+          "p25_cents": 1513,
+          "p75_cents": 2008,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 1725,
+          "p25_cents": 1613,
+          "p75_cents": 1895,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 1763,
+          "p25_cents": 1419,
+          "p75_cents": 1900,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 1925,
+          "p25_cents": 1800,
+          "p75_cents": 2019,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 1843,
+          "p25_cents": 1800,
+          "p75_cents": 2154,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 1970,
+          "p25_cents": 1548,
+          "p75_cents": 2548,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 1725,
+          "p25_cents": 1435,
+          "p75_cents": 3015,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 1915,
+          "p25_cents": 1550,
+          "p75_cents": 3175,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1840,
+          "p25_cents": 1575,
+          "p75_cents": 2700,
+          "n": 21
+        },
+        "07": {
+          "median_cents": 2080,
+          "p25_cents": 1588,
+          "p75_cents": 2563,
+          "n": 19
+        },
+        "08": {
+          "median_cents": 2125,
+          "p25_cents": 1828,
+          "p75_cents": 2225,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 1870,
+          "p25_cents": 1633,
+          "p75_cents": 2094,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "red-potato",
+      "cheapest_month": 6,
+      "priciest_month": 8,
+      "months": {
+        "10": {
+          "median_cents": 3738,
+          "p25_cents": 2944,
+          "p75_cents": 4103,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 3683,
+          "p25_cents": 3450,
+          "p75_cents": 4275,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3825,
+          "p25_cents": 2990,
+          "p75_cents": 3950,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 3825,
+          "p25_cents": 2950,
+          "p75_cents": 3950,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 3650,
+          "p25_cents": 2750,
+          "p75_cents": 3851,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 3573,
+          "p25_cents": 2750,
+          "p75_cents": 3643,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 3450,
+          "p25_cents": 2750,
+          "p75_cents": 3450,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 3450,
+          "p25_cents": 2905,
+          "p75_cents": 3590,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 3150,
+          "p25_cents": 3050,
+          "p75_cents": 3700,
+          "n": 21
+        },
+        "07": {
+          "median_cents": 3775,
+          "p25_cents": 2975,
+          "p75_cents": 4175,
+          "n": 19
+        },
+        "08": {
+          "median_cents": 4268,
+          "p25_cents": 3678,
+          "p75_cents": 4570,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 3650,
+          "p25_cents": 3538,
+          "p75_cents": 4113,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "ribeye",
+      "cheapest_month": 8,
+      "priciest_month": 12,
+      "months": {
+        "10": {
+          "median_cents": 1131,
+          "p25_cents": 1054,
+          "p75_cents": 1332,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 1227,
+          "p25_cents": 1129,
+          "p75_cents": 1373,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 1304,
+          "p25_cents": 1215,
+          "p75_cents": 1410,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 1018,
+          "p25_cents": 973,
+          "p75_cents": 1070,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 977,
+          "p25_cents": 964,
+          "p75_cents": 1015,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 1012,
+          "p25_cents": 977,
+          "p75_cents": 1058,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 1036,
+          "p25_cents": 920,
+          "p75_cents": 1171,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 1010,
+          "p25_cents": 906,
+          "p75_cents": 1133,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1076,
+          "p25_cents": 997,
+          "p75_cents": 1159,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 969,
+          "p25_cents": 925,
+          "p75_cents": 1058,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 960,
+          "p25_cents": 932,
+          "p75_cents": 1142,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 1083,
+          "p25_cents": 968,
+          "p75_cents": 1230,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "romaine-lettuce",
+      "cheapest_month": 1,
+      "priciest_month": 11,
+      "months": {
+        "10": {
+          "median_cents": 2477,
+          "p25_cents": 1660,
+          "p75_cents": 4947,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 3872,
+          "p25_cents": 2175,
+          "p75_cents": 5463,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2853,
+          "p25_cents": 1800,
+          "p75_cents": 3460,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2050,
+          "p25_cents": 1750,
+          "p75_cents": 2438,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2338,
+          "p25_cents": 1825,
+          "p75_cents": 2703,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2950,
+          "p25_cents": 2300,
+          "p75_cents": 3685,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2635,
+          "p25_cents": 2394,
+          "p75_cents": 3179,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2538,
+          "p25_cents": 2375,
+          "p75_cents": 3716,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2735,
+          "p25_cents": 2373,
+          "p75_cents": 3055,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2819,
+          "p25_cents": 1811,
+          "p75_cents": 3171,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2600,
+          "p25_cents": 1798,
+          "p75_cents": 3218,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2600,
+          "p25_cents": 1928,
+          "p75_cents": 3422,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "russet-potato",
+      "cheapest_month": 4,
+      "priciest_month": 8,
+      "months": {
+        "10": {
+          "median_cents": 1600,
+          "p25_cents": 1431,
+          "p75_cents": 1934,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 1630,
+          "p25_cents": 1506,
+          "p75_cents": 2718,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 1500,
+          "p25_cents": 1331,
+          "p75_cents": 1798,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 1700,
+          "p25_cents": 1500,
+          "p75_cents": 2330,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 1500,
+          "p25_cents": 1373,
+          "p75_cents": 2350,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 1475,
+          "p25_cents": 1363,
+          "p75_cents": 2350,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 1450,
+          "p25_cents": 1400,
+          "p75_cents": 2200,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 1540,
+          "p25_cents": 1393,
+          "p75_cents": 2200,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1538,
+          "p25_cents": 1413,
+          "p75_cents": 2360,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 1608,
+          "p25_cents": 1515,
+          "p75_cents": 3400,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 3200,
+          "p25_cents": 1625,
+          "p75_cents": 4093,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 1825,
+          "p25_cents": 1580,
+          "p75_cents": 2889,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "rutabaga",
+      "cheapest_month": 9,
+      "priciest_month": 1,
+      "months": {
+        "10": {
+          "median_cents": 2900,
+          "p25_cents": 2525,
+          "p75_cents": 2900,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2900,
+          "p25_cents": 2900,
+          "p75_cents": 3000,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2950,
+          "p25_cents": 2900,
+          "p75_cents": 3000,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 3000,
+          "p25_cents": 2900,
+          "p75_cents": 3000,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 3000,
+          "p25_cents": 2900,
+          "p75_cents": 3000,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 3000,
+          "p25_cents": 2900,
+          "p75_cents": 3000,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2950,
+          "p25_cents": 2900,
+          "p75_cents": 3000,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2900,
+          "p25_cents": 2900,
+          "p75_cents": 3000,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2930,
+          "p25_cents": 2825,
+          "p75_cents": 3000,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2850,
+          "p25_cents": 2500,
+          "p75_cents": 2900,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2850,
+          "p25_cents": 2800,
+          "p75_cents": 3313,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2800,
+          "p25_cents": 2663,
+          "p75_cents": 2900,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "short-rib",
+      "cheapest_month": 11,
+      "priciest_month": 8,
+      "months": {
+        "10": {
+          "median_cents": 569,
+          "p25_cents": 552,
+          "p75_cents": 579,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 540,
+          "p25_cents": 499,
+          "p75_cents": 563,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 551,
+          "p25_cents": 518,
+          "p75_cents": 572,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 595,
+          "p25_cents": 548,
+          "p75_cents": 611,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 585,
+          "p25_cents": 576,
+          "p75_cents": 604,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 581,
+          "p25_cents": 547,
+          "p75_cents": 590,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 572,
+          "p25_cents": 514,
+          "p75_cents": 580,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 584,
+          "p25_cents": 510,
+          "p75_cents": 595,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 590,
+          "p25_cents": 550,
+          "p75_cents": 602,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 596,
+          "p25_cents": 592,
+          "p75_cents": 617,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 607,
+          "p25_cents": 573,
+          "p75_cents": 612,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 575,
+          "p25_cents": 551,
+          "p75_cents": 589,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "spinach",
+      "cheapest_month": 6,
+      "priciest_month": 12,
+      "months": {
+        "10": {
+          "median_cents": 1838,
+          "p25_cents": 1704,
+          "p75_cents": 2016,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 1845,
+          "p25_cents": 1670,
+          "p75_cents": 2150,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2730,
+          "p25_cents": 1844,
+          "p75_cents": 3111,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 1895,
+          "p25_cents": 1700,
+          "p75_cents": 2950,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 1775,
+          "p25_cents": 1700,
+          "p75_cents": 3250,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 1783,
+          "p25_cents": 1700,
+          "p75_cents": 1846,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 1805,
+          "p25_cents": 1764,
+          "p75_cents": 1883,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 1884,
+          "p25_cents": 1825,
+          "p75_cents": 2018,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1657,
+          "p25_cents": 1555,
+          "p75_cents": 1798,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 1673,
+          "p25_cents": 1563,
+          "p75_cents": 1769,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 1880,
+          "p25_cents": 1633,
+          "p75_cents": 2125,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 1840,
+          "p25_cents": 1688,
+          "p75_cents": 2081,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "striploin",
+      "cheapest_month": 9,
+      "priciest_month": 6,
+      "months": {
+        "10": {
+          "median_cents": 681,
+          "p25_cents": 626,
+          "p75_cents": 832,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 752,
+          "p25_cents": 630,
+          "p75_cents": 796,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 759,
+          "p25_cents": 742,
+          "p75_cents": 850,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 778,
+          "p25_cents": 746,
+          "p75_cents": 846,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 837,
+          "p25_cents": 785,
+          "p75_cents": 952,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 893,
+          "p25_cents": 774,
+          "p75_cents": 981,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 969,
+          "p25_cents": 787,
+          "p75_cents": 1065,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 956,
+          "p25_cents": 821,
+          "p75_cents": 1065,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1105,
+          "p25_cents": 938,
+          "p75_cents": 1126,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 910,
+          "p25_cents": 862,
+          "p75_cents": 1021,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 826,
+          "p25_cents": 735,
+          "p75_cents": 851,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 664,
+          "p25_cents": 646,
+          "p75_cents": 729,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "tomato",
+      "cheapest_month": 3,
+      "priciest_month": 12,
+      "months": {
+        "10": {
+          "median_cents": 1925,
+          "p25_cents": 1768,
+          "p75_cents": 2300,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2450,
+          "p25_cents": 2100,
+          "p75_cents": 3138,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3125,
+          "p25_cents": 2200,
+          "p75_cents": 3457,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2300,
+          "p25_cents": 1842,
+          "p75_cents": 2875,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 1735,
+          "p25_cents": 1620,
+          "p75_cents": 2320,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 1650,
+          "p25_cents": 1465,
+          "p75_cents": 2489,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 1805,
+          "p25_cents": 1565,
+          "p75_cents": 2820,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 1875,
+          "p25_cents": 1750,
+          "p75_cents": 2760,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1794,
+          "p25_cents": 1570,
+          "p75_cents": 1938,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 1900,
+          "p25_cents": 1750,
+          "p75_cents": 2175,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 1873,
+          "p25_cents": 1761,
+          "p75_cents": 2243,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 1917,
+          "p25_cents": 1650,
+          "p75_cents": 2152,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "watermelon",
+      "cheapest_month": 10,
+      "priciest_month": 4,
+      "months": {
+        "10": {
+          "median_cents": 2570,
+          "p25_cents": 2435,
+          "p75_cents": 2650,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2825,
+          "p25_cents": 2100,
+          "p75_cents": 3035,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3115,
+          "p25_cents": 2350,
+          "p75_cents": 3350,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2956,
+          "p25_cents": 2756,
+          "p75_cents": 3350,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2898,
+          "p25_cents": 2574,
+          "p75_cents": 3370,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 3575,
+          "p25_cents": 3109,
+          "p75_cents": 4088,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 3625,
+          "p25_cents": 3358,
+          "p75_cents": 3989,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2715,
+          "p25_cents": 2625,
+          "p75_cents": 2900,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2944,
+          "p25_cents": 2550,
+          "p75_cents": 4043,
+          "n": 21
+        },
+        "07": {
+          "median_cents": 2913,
+          "p25_cents": 2480,
+          "p75_cents": 3133,
+          "n": 19
+        },
+        "08": {
+          "median_cents": 2700,
+          "p25_cents": 2466,
+          "p75_cents": 3480,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2657,
+          "p25_cents": 2420,
+          "p75_cents": 2766,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "yellow-squash",
+      "cheapest_month": 7,
+      "priciest_month": 2,
+      "months": {
+        "10": {
+          "median_cents": 1700,
+          "p25_cents": 1510,
+          "p75_cents": 1794,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 1788,
+          "p25_cents": 1630,
+          "p75_cents": 1900,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2100,
+          "p25_cents": 1725,
+          "p75_cents": 2435,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 1750,
+          "p25_cents": 1650,
+          "p75_cents": 2575,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2560,
+          "p25_cents": 1950,
+          "p75_cents": 2600,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2215,
+          "p25_cents": 1913,
+          "p75_cents": 2600,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 1825,
+          "p25_cents": 1600,
+          "p75_cents": 2088,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 1840,
+          "p25_cents": 1500,
+          "p75_cents": 2200,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1773,
+          "p25_cents": 1638,
+          "p75_cents": 2190,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 1428,
+          "p25_cents": 1210,
+          "p75_cents": 1695,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 1700,
+          "p25_cents": 1570,
+          "p75_cents": 2298,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 1850,
+          "p25_cents": 1700,
+          "p75_cents": 2277,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "zucchini",
+      "cheapest_month": 4,
+      "priciest_month": 1,
+      "months": {
+        "10": {
+          "median_cents": 1475,
+          "p25_cents": 1290,
+          "p75_cents": 1677,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 1350,
+          "p25_cents": 1143,
+          "p75_cents": 1665,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 1250,
+          "p25_cents": 1107,
+          "p75_cents": 1720,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2075,
+          "p25_cents": 1303,
+          "p75_cents": 2650,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 1735,
+          "p25_cents": 1475,
+          "p75_cents": 2123,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 1483,
+          "p25_cents": 1100,
+          "p75_cents": 1763,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 1210,
+          "p25_cents": 1113,
+          "p75_cents": 1445,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 1400,
+          "p25_cents": 1250,
+          "p75_cents": 1650,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1325,
+          "p25_cents": 1150,
+          "p75_cents": 1494,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 1300,
+          "p25_cents": 1253,
+          "p75_cents": 1373,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 1260,
+          "p25_cents": 1100,
+          "p75_cents": 1628,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 1550,
+          "p25_cents": 1500,
+          "p75_cents": 1645,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "artichoke",
+      "cheapest_month": 8,
+      "priciest_month": 12,
+      "months": {
+        "10": {
+          "median_cents": 3658,
+          "p25_cents": 2885,
+          "p75_cents": 4795,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 3995,
+          "p25_cents": 3556,
+          "p75_cents": 4619,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 4825,
+          "p25_cents": 4640,
+          "p75_cents": 5000,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 3800,
+          "p25_cents": 3300,
+          "p75_cents": 5030,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 3270,
+          "p25_cents": 2965,
+          "p75_cents": 3743,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2710,
+          "p25_cents": 2363,
+          "p75_cents": 3025,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 3020,
+          "p25_cents": 2738,
+          "p75_cents": 3593,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 3850,
+          "p25_cents": 3360,
+          "p75_cents": 4250,
+          "n": 21
+        },
+        "06": {
+          "median_cents": 3517,
+          "p25_cents": 3200,
+          "p75_cents": 4375,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 3200,
+          "p25_cents": 2558,
+          "p75_cents": 3331,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2648,
+          "p25_cents": 2250,
+          "p75_cents": 3160,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 3020,
+          "p25_cents": 2278,
+          "p75_cents": 3663,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "broccoli",
+      "cheapest_month": 6,
+      "priciest_month": 4,
+      "months": {
+        "10": {
+          "median_cents": 3128,
+          "p25_cents": 2658,
+          "p75_cents": 4005,
+          "n": 17
+        },
+        "11": {
+          "median_cents": 3025,
+          "p25_cents": 2229,
+          "p75_cents": 4003,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3090,
+          "p25_cents": 2410,
+          "p75_cents": 4290,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2950,
+          "p25_cents": 2368,
+          "p75_cents": 3425,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2950,
+          "p25_cents": 2052,
+          "p75_cents": 3775,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 3110,
+          "p25_cents": 2656,
+          "p75_cents": 3306,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 3140,
+          "p25_cents": 3054,
+          "p75_cents": 3363,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2675,
+          "p25_cents": 2480,
+          "p75_cents": 3237,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2450,
+          "p25_cents": 2188,
+          "p75_cents": 2815,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2993,
+          "p25_cents": 2727,
+          "p75_cents": 3076,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2640,
+          "p25_cents": 2475,
+          "p75_cents": 3100,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2675,
+          "p25_cents": 2619,
+          "p75_cents": 3013,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "butter",
+      "cheapest_month": 5,
+      "priciest_month": 10,
+      "months": {
+        "10": {
+          "median_cents": 308,
+          "p25_cents": 274,
+          "p75_cents": 317,
+          "n": 17
+        },
+        "11": {
+          "median_cents": 271,
+          "p25_cents": 199,
+          "p75_cents": 315,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 267,
+          "p25_cents": 259,
+          "p75_cents": 285,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 249,
+          "p25_cents": 206,
+          "p75_cents": 260,
+          "n": 22
+        },
+        "02": {
+          "median_cents": 259,
+          "p25_cents": 242,
+          "p75_cents": 266,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 248,
+          "p25_cents": 237,
+          "p75_cents": 273,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 242,
+          "p25_cents": 234,
+          "p75_cents": 277,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 241,
+          "p25_cents": 235,
+          "p75_cents": 276,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 248,
+          "p25_cents": 244,
+          "p75_cents": 293,
+          "n": 20
+        },
+        "07": {
+          "median_cents": 275,
+          "p25_cents": 247,
+          "p75_cents": 297,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 280,
+          "p25_cents": 254,
+          "p75_cents": 307,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 271,
+          "p25_cents": 268,
+          "p75_cents": 309,
+          "n": 17
+        }
+      }
+    },
+    {
+      "slug": "cheddar-cheese",
+      "cheapest_month": 5,
+      "priciest_month": 10,
+      "months": {
+        "10": {
+          "median_cents": 194,
+          "p25_cents": 182,
+          "p75_cents": 203,
+          "n": 17
+        },
+        "11": {
+          "median_cents": 184,
+          "p25_cents": 177,
+          "p75_cents": 205,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 177,
+          "p25_cents": 166,
+          "p75_cents": 202,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 181,
+          "p25_cents": 153,
+          "p75_cents": 193,
+          "n": 22
+        },
+        "02": {
+          "median_cents": 192,
+          "p25_cents": 154,
+          "p75_cents": 198,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 192,
+          "p25_cents": 160,
+          "p75_cents": 194,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 179,
+          "p25_cents": 161,
+          "p75_cents": 197,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 175,
+          "p25_cents": 166,
+          "p75_cents": 185,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 189,
+          "p25_cents": 166,
+          "p75_cents": 193,
+          "n": 20
+        },
+        "07": {
+          "median_cents": 193,
+          "p25_cents": 159,
+          "p75_cents": 211,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 189,
+          "p25_cents": 172,
+          "p75_cents": 196,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 194,
+          "p25_cents": 188,
+          "p75_cents": 201,
+          "n": 17
+        }
+      }
+    },
+    {
+      "slug": "green-beans",
+      "cheapest_month": 3,
+      "priciest_month": 11,
+      "months": {
+        "10": {
+          "median_cents": 2690,
+          "p25_cents": 2113,
+          "p75_cents": 4133,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 4493,
+          "p25_cents": 3945,
+          "p75_cents": 4910,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3544,
+          "p25_cents": 3010,
+          "p75_cents": 3900,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2800,
+          "p25_cents": 2500,
+          "p75_cents": 4400,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 3965,
+          "p25_cents": 3038,
+          "p75_cents": 4785,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2200,
+          "p25_cents": 2060,
+          "p75_cents": 2400,
+          "n": 21
+        },
+        "04": {
+          "median_cents": 2530,
+          "p25_cents": 2200,
+          "p75_cents": 3085,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 3085,
+          "p25_cents": 2435,
+          "p75_cents": 3533,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2780,
+          "p25_cents": 2425,
+          "p75_cents": 3053,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2788,
+          "p25_cents": 2510,
+          "p75_cents": 3381,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2250,
+          "p25_cents": 2033,
+          "p75_cents": 2810,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2390,
+          "p25_cents": 2208,
+          "p75_cents": 2753,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "serrano-pepper",
+      "cheapest_month": 2,
+      "priciest_month": 11,
+      "months": {
+        "10": {
+          "median_cents": 2910,
+          "p25_cents": 2700,
+          "p75_cents": 3338,
+          "n": 19
+        },
+        "11": {
+          "median_cents": 3960,
+          "p25_cents": 3595,
+          "p75_cents": 4368,
+          "n": 16
+        },
+        "12": {
+          "median_cents": 3900,
+          "p25_cents": 3462,
+          "p75_cents": 4781,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2800,
+          "p25_cents": 2140,
+          "p75_cents": 3500,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2190,
+          "p25_cents": 1900,
+          "p75_cents": 2813,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2938,
+          "p25_cents": 2143,
+          "p75_cents": 3423,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 3480,
+          "p25_cents": 2950,
+          "p75_cents": 5520,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 3825,
+          "p25_cents": 2620,
+          "p75_cents": 6350,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 3458,
+          "p25_cents": 2671,
+          "p75_cents": 4078,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 3145,
+          "p25_cents": 2778,
+          "p75_cents": 3965,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2500,
+          "p25_cents": 2500,
+          "p75_cents": 3500,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 3383,
+          "p25_cents": 2688,
+          "p75_cents": 3700,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "acorn-squash",
+      "cheapest_month": 12,
+      "priciest_month": 9,
+      "months": {
+        "10": {
+          "median_cents": 2500,
+          "p25_cents": 2295,
+          "p75_cents": 2909,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2300,
+          "p25_cents": 2100,
+          "p75_cents": 2838,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2100,
+          "p25_cents": 2050,
+          "p75_cents": 2433,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2425,
+          "p25_cents": 2050,
+          "p75_cents": 2825,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2603,
+          "p25_cents": 2050,
+          "p75_cents": 2788,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2450,
+          "p25_cents": 2050,
+          "p75_cents": 2575,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2325,
+          "p25_cents": 1950,
+          "p75_cents": 2675,
+          "n": 21
+        },
+        "05": {
+          "median_cents": 2575,
+          "p25_cents": 2400,
+          "p75_cents": 3350,
+          "n": 21
+        },
+        "06": {
+          "median_cents": 2820,
+          "p25_cents": 2400,
+          "p75_cents": 3750,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2420,
+          "p25_cents": 2350,
+          "p75_cents": 2638,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2675,
+          "p25_cents": 2450,
+          "p75_cents": 2895,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2825,
+          "p25_cents": 2650,
+          "p75_cents": 2988,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "carrot",
+      "cheapest_month": 12,
+      "priciest_month": 5,
+      "months": {
+        "10": {
+          "median_cents": 2850,
+          "p25_cents": 2475,
+          "p75_cents": 3200,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2663,
+          "p25_cents": 2081,
+          "p75_cents": 2950,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2475,
+          "p25_cents": 2450,
+          "p75_cents": 2950,
+          "n": 17
+        },
+        "01": {
+          "median_cents": 2750,
+          "p25_cents": 2450,
+          "p75_cents": 3031,
+          "n": 20
+        },
+        "02": {
+          "median_cents": 2750,
+          "p25_cents": 2450,
+          "p75_cents": 2950,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2750,
+          "p25_cents": 2450,
+          "p75_cents": 2850,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 3020,
+          "p25_cents": 2450,
+          "p75_cents": 3500,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 3350,
+          "p25_cents": 2450,
+          "p75_cents": 3500,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 3050,
+          "p25_cents": 2464,
+          "p75_cents": 3350,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 3200,
+          "p25_cents": 2860,
+          "p75_cents": 3325,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 3198,
+          "p25_cents": 2750,
+          "p75_cents": 3344,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 3025,
+          "p25_cents": 2740,
+          "p75_cents": 3238,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "okra",
+      "cheapest_month": 8,
+      "priciest_month": 2,
+      "months": {
+        "10": {
+          "median_cents": 1982,
+          "p25_cents": 1706,
+          "p75_cents": 2000,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 2020,
+          "p25_cents": 1828,
+          "p75_cents": 2225,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2350,
+          "p25_cents": 1930,
+          "p75_cents": 2488,
+          "n": 17
+        },
+        "01": {
+          "median_cents": 2440,
+          "p25_cents": 2090,
+          "p75_cents": 2925,
+          "n": 20
+        },
+        "02": {
+          "median_cents": 2688,
+          "p25_cents": 2250,
+          "p75_cents": 3314,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2300,
+          "p25_cents": 2060,
+          "p75_cents": 2460,
+          "n": 21
+        },
+        "04": {
+          "median_cents": 2128,
+          "p25_cents": 1845,
+          "p75_cents": 2420,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 1863,
+          "p25_cents": 1628,
+          "p75_cents": 2031,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 1950,
+          "p25_cents": 1825,
+          "p75_cents": 2000,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 1850,
+          "p25_cents": 1775,
+          "p75_cents": 1994,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 1723,
+          "p25_cents": 1671,
+          "p75_cents": 1873,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 1865,
+          "p25_cents": 1679,
+          "p75_cents": 1980,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "butter-lettuce",
+      "cheapest_month": 3,
+      "priciest_month": 12,
+      "months": {
+        "10": {
+          "median_cents": 2000,
+          "p25_cents": 2000,
+          "p75_cents": 2400,
+          "n": 17
+        },
+        "11": {
+          "median_cents": 2250,
+          "p25_cents": 2106,
+          "p75_cents": 2689,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2310,
+          "p25_cents": 2000,
+          "p75_cents": 2975,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2000,
+          "p25_cents": 1650,
+          "p75_cents": 2678,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2000,
+          "p25_cents": 1650,
+          "p75_cents": 2388,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 1980,
+          "p25_cents": 1913,
+          "p75_cents": 2238,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2289,
+          "p25_cents": 1913,
+          "p75_cents": 2388,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2054,
+          "p25_cents": 1613,
+          "p75_cents": 2576,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2193,
+          "p25_cents": 1750,
+          "p75_cents": 2600,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2000,
+          "p25_cents": 1903,
+          "p75_cents": 2263,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2000,
+          "p25_cents": 1905,
+          "p75_cents": 2150,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2000,
+          "p25_cents": 1950,
+          "p75_cents": 2150,
+          "n": 13
+        }
+      }
+    },
+    {
+      "slug": "corn-on-the-cob",
+      "cheapest_month": 5,
+      "priciest_month": 11,
+      "months": {
+        "10": {
+          "median_cents": 2920,
+          "p25_cents": 2718,
+          "p75_cents": 3144,
+          "n": 15
+        },
+        "11": {
+          "median_cents": 3062,
+          "p25_cents": 2681,
+          "p75_cents": 3515,
+          "n": 16
+        },
+        "12": {
+          "median_cents": 2656,
+          "p25_cents": 2564,
+          "p75_cents": 2796,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2620,
+          "p25_cents": 2475,
+          "p75_cents": 2825,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2941,
+          "p25_cents": 2549,
+          "p75_cents": 3128,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2658,
+          "p25_cents": 2293,
+          "p75_cents": 2848,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 2670,
+          "p25_cents": 2532,
+          "p75_cents": 2900,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 2565,
+          "p25_cents": 2502,
+          "p75_cents": 2905,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2792,
+          "p25_cents": 2628,
+          "p75_cents": 3000,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2788,
+          "p25_cents": 2725,
+          "p75_cents": 2871,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2723,
+          "p25_cents": 2361,
+          "p75_cents": 3068,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2725,
+          "p25_cents": 2575,
+          "p75_cents": 2991,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "garlic",
+      "cheapest_month": 6,
+      "priciest_month": 10,
+      "months": {
+        "10": {
+          "median_cents": 7500,
+          "p25_cents": 7000,
+          "p75_cents": 7500,
+          "n": 17
+        },
+        "11": {
+          "median_cents": 7450,
+          "p25_cents": 7310,
+          "p75_cents": 7788,
+          "n": 14
+        },
+        "12": {
+          "median_cents": 7310,
+          "p25_cents": 7200,
+          "p75_cents": 7675,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 7200,
+          "p25_cents": 6925,
+          "p75_cents": 7550,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 7000,
+          "p25_cents": 6950,
+          "p75_cents": 7165,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 6950,
+          "p25_cents": 6581,
+          "p75_cents": 7000,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 7000,
+          "p25_cents": 6150,
+          "p75_cents": 7194,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 7000,
+          "p25_cents": 5770,
+          "p75_cents": 7150,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 6200,
+          "p25_cents": 5807,
+          "p75_cents": 7000,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 6250,
+          "p25_cents": 6200,
+          "p75_cents": 7363,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 6320,
+          "p25_cents": 6200,
+          "p75_cents": 7000,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 6580,
+          "p25_cents": 6400,
+          "p75_cents": 7148,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "iceberg-lettuce",
+      "cheapest_month": 1,
+      "priciest_month": 11,
+      "months": {
+        "10": {
+          "median_cents": 2248,
+          "p25_cents": 1668,
+          "p75_cents": 3889,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 4718,
+          "p25_cents": 2623,
+          "p75_cents": 6868,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2292,
+          "p25_cents": 1750,
+          "p75_cents": 3586,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 1750,
+          "p25_cents": 1685,
+          "p75_cents": 2075,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 1895,
+          "p25_cents": 1667,
+          "p75_cents": 2646,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 2000,
+          "p25_cents": 1823,
+          "p75_cents": 2241,
+          "n": 18
+        },
+        "04": {
+          "median_cents": 2113,
+          "p25_cents": 1866,
+          "p75_cents": 3041,
+          "n": 20
+        },
+        "05": {
+          "median_cents": 2193,
+          "p25_cents": 1768,
+          "p75_cents": 3033,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2415,
+          "p25_cents": 1663,
+          "p75_cents": 3736,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 2514,
+          "p25_cents": 2158,
+          "p75_cents": 2751,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2663,
+          "p25_cents": 2270,
+          "p75_cents": 3009,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2055,
+          "p25_cents": 1794,
+          "p75_cents": 2625,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "snow-peas",
+      "cheapest_month": 3,
+      "priciest_month": 11,
+      "months": {
+        "10": {
+          "median_cents": 2950,
+          "p25_cents": 2516,
+          "p75_cents": 3438,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 3425,
+          "p25_cents": 3124,
+          "p75_cents": 3903,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 2854,
+          "p25_cents": 2466,
+          "p75_cents": 4029,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 2713,
+          "p25_cents": 2160,
+          "p75_cents": 3040,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 2350,
+          "p25_cents": 1928,
+          "p75_cents": 2727,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 1858,
+          "p25_cents": 1458,
+          "p75_cents": 2211,
+          "n": 18
+        },
+        "04": {
+          "median_cents": 2360,
+          "p25_cents": 2187,
+          "p75_cents": 2656,
+          "n": 20
+        },
+        "05": {
+          "median_cents": 2510,
+          "p25_cents": 2007,
+          "p75_cents": 2950,
+          "n": 22
+        },
+        "06": {
+          "median_cents": 2911,
+          "p25_cents": 2716,
+          "p75_cents": 3715,
+          "n": 22
+        },
+        "07": {
+          "median_cents": 3190,
+          "p25_cents": 2703,
+          "p75_cents": 3425,
+          "n": 18
+        },
+        "08": {
+          "median_cents": 2325,
+          "p25_cents": 2099,
+          "p75_cents": 3414,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 2008,
+          "p25_cents": 1841,
+          "p75_cents": 2678,
+          "n": 16
+        }
+      }
+    },
+    {
+      "slug": "avocado",
+      "cheapest_month": 11,
+      "priciest_month": 6,
+      "months": {
+        "10": {
+          "median_cents": 3960,
+          "p25_cents": 3420,
+          "p75_cents": 4405,
+          "n": 17
+        },
+        "11": {
+          "median_cents": 3226,
+          "p25_cents": 2855,
+          "p75_cents": 3636,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3683,
+          "p25_cents": 3006,
+          "p75_cents": 4779,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 3798,
+          "p25_cents": 2886,
+          "p75_cents": 4254,
+          "n": 18
+        },
+        "02": {
+          "median_cents": 3478,
+          "p25_cents": 2839,
+          "p75_cents": 4316,
+          "n": 16
+        },
+        "03": {
+          "median_cents": 4110,
+          "p25_cents": 3585,
+          "p75_cents": 4823,
+          "n": 19
+        },
+        "04": {
+          "median_cents": 4590,
+          "p25_cents": 4090,
+          "p75_cents": 5078,
+          "n": 16
+        },
+        "05": {
+          "median_cents": 4445,
+          "p25_cents": 3720,
+          "p75_cents": 5091,
+          "n": 18
+        },
+        "06": {
+          "median_cents": 4728,
+          "p25_cents": 3705,
+          "p75_cents": 6125,
+          "n": 18
+        },
+        "07": {
+          "median_cents": 4720,
+          "p25_cents": 3640,
+          "p75_cents": 5610,
+          "n": 17
+        },
+        "08": {
+          "median_cents": 3910,
+          "p25_cents": 3283,
+          "p75_cents": 4828,
+          "n": 18
+        },
+        "09": {
+          "median_cents": 4010,
+          "p25_cents": 3263,
+          "p75_cents": 4463,
+          "n": 17
+        }
+      }
+    },
+    {
+      "slug": "chicken-breast",
+      "cheapest_month": 11,
+      "priciest_month": 8,
+      "months": {
+        "10": {
+          "median_cents": 127,
+          "p25_cents": 114,
+          "p75_cents": 144,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 111,
+          "p25_cents": 98,
+          "p75_cents": 123,
+          "n": 16
+        },
+        "12": {
+          "median_cents": 116,
+          "p25_cents": 98,
+          "p75_cents": 139,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 120,
+          "p25_cents": 109,
+          "p75_cents": 137,
+          "n": 18
+        },
+        "02": {
+          "median_cents": 138,
+          "p25_cents": 127,
+          "p75_cents": 149,
+          "n": 16
+        },
+        "03": {
+          "median_cents": 152,
+          "p25_cents": 141,
+          "p75_cents": 196,
+          "n": 18
+        },
+        "04": {
+          "median_cents": 172,
+          "p25_cents": 161,
+          "p75_cents": 176,
+          "n": 17
+        },
+        "05": {
+          "median_cents": 161,
+          "p25_cents": 142,
+          "p75_cents": 186,
+          "n": 17
+        },
+        "06": {
+          "median_cents": 168,
+          "p25_cents": 135,
+          "p75_cents": 195,
+          "n": 17
+        },
+        "07": {
+          "median_cents": 175,
+          "p25_cents": 121,
+          "p75_cents": 184,
+          "n": 14
+        },
+        "08": {
+          "median_cents": 193,
+          "p25_cents": 154,
+          "p75_cents": 198,
+          "n": 13
+        },
+        "09": {
+          "median_cents": 169,
+          "p25_cents": 157,
+          "p75_cents": 187,
+          "n": 18
+        }
+      }
+    },
+    {
+      "slug": "chicken-thigh",
+      "cheapest_month": 1,
+      "priciest_month": 7,
+      "months": {
+        "10": {
+          "median_cents": 107,
+          "p25_cents": 99,
+          "p75_cents": 115,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 91,
+          "p25_cents": 84,
+          "p75_cents": 101,
+          "n": 16
+        },
+        "12": {
+          "median_cents": 91,
+          "p25_cents": 82,
+          "p75_cents": 118,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 86,
+          "p25_cents": 70,
+          "p75_cents": 101,
+          "n": 18
+        },
+        "02": {
+          "median_cents": 101,
+          "p25_cents": 88,
+          "p75_cents": 109,
+          "n": 16
+        },
+        "03": {
+          "median_cents": 116,
+          "p25_cents": 104,
+          "p75_cents": 125,
+          "n": 18
+        },
+        "04": {
+          "median_cents": 128,
+          "p25_cents": 121,
+          "p75_cents": 133,
+          "n": 17
+        },
+        "05": {
+          "median_cents": 138,
+          "p25_cents": 100,
+          "p75_cents": 162,
+          "n": 17
+        },
+        "06": {
+          "median_cents": 143,
+          "p25_cents": 137,
+          "p75_cents": 161,
+          "n": 17
+        },
+        "07": {
+          "median_cents": 144,
+          "p25_cents": 101,
+          "p75_cents": 145,
+          "n": 14
+        },
+        "08": {
+          "median_cents": 140,
+          "p25_cents": 104,
+          "p75_cents": 145,
+          "n": 13
+        },
+        "09": {
+          "median_cents": 132,
+          "p25_cents": 120,
+          "p75_cents": 143,
+          "n": 18
+        }
+      }
+    },
+    {
+      "slug": "whole-chicken",
+      "cheapest_month": 5,
+      "priciest_month": 8,
+      "months": {
+        "10": {
+          "median_cents": 138,
+          "p25_cents": 109,
+          "p75_cents": 169,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 132,
+          "p25_cents": 100,
+          "p75_cents": 170,
+          "n": 16
+        },
+        "12": {
+          "median_cents": 128,
+          "p25_cents": 98,
+          "p75_cents": 182,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 141,
+          "p25_cents": 100,
+          "p75_cents": 179,
+          "n": 18
+        },
+        "02": {
+          "median_cents": 150,
+          "p25_cents": 118,
+          "p75_cents": 190,
+          "n": 16
+        },
+        "03": {
+          "median_cents": 128,
+          "p25_cents": 101,
+          "p75_cents": 161,
+          "n": 18
+        },
+        "04": {
+          "median_cents": 125,
+          "p25_cents": 100,
+          "p75_cents": 226,
+          "n": 17
+        },
+        "05": {
+          "median_cents": 91,
+          "p25_cents": 88,
+          "p75_cents": 117,
+          "n": 17
+        },
+        "06": {
+          "median_cents": 119,
+          "p25_cents": 88,
+          "p75_cents": 147,
+          "n": 17
+        },
+        "07": {
+          "median_cents": 167,
+          "p25_cents": 111,
+          "p75_cents": 259,
+          "n": 14
+        },
+        "08": {
+          "median_cents": 173,
+          "p25_cents": 135,
+          "p75_cents": 232,
+          "n": 13
+        },
+        "09": {
+          "median_cents": 156,
+          "p25_cents": 122,
+          "p75_cents": 210,
+          "n": 18
+        }
+      }
+    },
+    {
+      "slug": "brussels-sprouts",
+      "cheapest_month": 3,
+      "priciest_month": 7,
+      "months": {
+        "10": {
+          "median_cents": 3300,
+          "p25_cents": 3081,
+          "p75_cents": 5524,
+          "n": 11
+        },
+        "11": {
+          "median_cents": 3800,
+          "p25_cents": 3550,
+          "p75_cents": 4775,
+          "n": 18
+        },
+        "12": {
+          "median_cents": 3982,
+          "p25_cents": 3590,
+          "p75_cents": 5180,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 3750,
+          "p25_cents": 3650,
+          "p75_cents": 4875,
+          "n": 21
+        },
+        "02": {
+          "median_cents": 3969,
+          "p25_cents": 3550,
+          "p75_cents": 4473,
+          "n": 20
+        },
+        "03": {
+          "median_cents": 3000,
+          "p25_cents": 2745,
+          "p75_cents": 3298,
+          "n": 22
+        },
+        "04": {
+          "median_cents": 3330,
+          "p25_cents": 2625,
+          "p75_cents": 3550,
+          "n": 22
+        },
+        "05": {
+          "median_cents": 3885,
+          "p25_cents": 3475,
+          "p75_cents": 4230,
+          "n": 18
+        },
+        "06": {
+          "median_cents": 4053,
+          "p25_cents": 3450,
+          "p75_cents": 4688,
+          "n": 18
+        },
+        "07": {
+          "median_cents": 4800,
+          "p25_cents": 3840,
+          "p75_cents": 5390,
+          "n": 13
+        },
+        "08": {
+          "median_cents": 4620,
+          "p25_cents": 3436,
+          "p75_cents": 5670,
+          "n": 10
+        },
+        "09": {
+          "median_cents": 4575,
+          "p25_cents": 3425,
+          "p75_cents": 5735,
+          "n": 8
+        }
+      }
+    },
+    {
+      "slug": "whole-turkey",
+      "cheapest_month": 2,
+      "priciest_month": 1,
+      "months": {
+        "10": {
+          "median_cents": 146,
+          "p25_cents": 112,
+          "p75_cents": 181,
+          "n": 18
+        },
+        "11": {
+          "median_cents": 146,
+          "p25_cents": 105,
+          "p75_cents": 176,
+          "n": 16
+        },
+        "12": {
+          "median_cents": 141,
+          "p25_cents": 101,
+          "p75_cents": 173,
+          "n": 18
+        },
+        "01": {
+          "median_cents": 167,
+          "p25_cents": 89,
+          "p75_cents": 172,
+          "n": 17
+        },
+        "02": {
+          "median_cents": 109,
+          "p25_cents": 102,
+          "p75_cents": 168,
+          "n": 15
+        },
+        "03": {
+          "median_cents": 149,
+          "p25_cents": 114,
+          "p75_cents": 171,
+          "n": 18
+        },
+        "04": {
+          "median_cents": 125,
+          "p25_cents": 104,
+          "p75_cents": 170,
+          "n": 17
+        },
+        "05": {
+          "median_cents": 143,
+          "p25_cents": 114,
+          "p75_cents": 162,
+          "n": 17
+        },
+        "06": {
+          "median_cents": 144,
+          "p25_cents": 118,
+          "p75_cents": 156,
+          "n": 17
+        },
+        "07": {
+          "median_cents": 139,
+          "p25_cents": 104,
+          "p75_cents": 149,
+          "n": 14
+        },
+        "08": {
+          "median_cents": 131,
+          "p25_cents": 98,
+          "p75_cents": 156,
+          "n": 13
+        },
+        "09": {
+          "median_cents": 143,
+          "p25_cents": 109,
+          "p75_cents": 168,
+          "n": 18
+        }
+      }
+    },
+    {
+      "slug": "basil",
+      "cheapest_month": 10,
+      "priciest_month": 12,
+      "months": {
+        "10": {
+          "median_cents": 650,
+          "p25_cents": 600,
+          "p75_cents": 700,
+          "n": 10
+        },
+        "11": {
+          "median_cents": 700,
+          "p25_cents": 675,
+          "p75_cents": 705,
+          "n": 8
+        },
+        "12": {
+          "median_cents": 750,
+          "p25_cents": 700,
+          "p75_cents": 800,
+          "n": 10
+        },
+        "01": {
+          "median_cents": 700,
+          "p25_cents": 600,
+          "p75_cents": 755,
+          "n": 12
+        },
+        "02": {
+          "median_cents": 700,
+          "p25_cents": 600,
+          "p75_cents": 700,
+          "n": 12
+        },
+        "03": {
+          "median_cents": 700,
+          "p25_cents": 600,
+          "p75_cents": 700,
+          "n": 12
+        },
+        "04": {
+          "median_cents": 700,
+          "p25_cents": 625,
+          "p75_cents": 700,
+          "n": 14
+        },
+        "05": {
+          "median_cents": 700,
+          "p25_cents": 600,
+          "p75_cents": 700,
+          "n": 13
+        },
+        "06": {
+          "median_cents": 700,
+          "p25_cents": 600,
+          "p75_cents": 700,
+          "n": 13
+        },
+        "07": {
+          "median_cents": 700,
+          "p25_cents": 600,
+          "p75_cents": 800,
+          "n": 10
+        },
+        "08": {
+          "median_cents": 700,
+          "p25_cents": 600,
+          "p75_cents": 800,
+          "n": 8
+        },
+        "09": {
+          "median_cents": 650,
+          "p25_cents": 600,
+          "p75_cents": 700,
+          "n": 8
+        }
+      }
+    },
+    {
+      "slug": "cilantro",
+      "cheapest_month": 1,
+      "priciest_month": 7,
+      "months": {
+        "10": {
+          "median_cents": 2925,
+          "p25_cents": 2723,
+          "p75_cents": 3000,
+          "n": 10
+        },
+        "11": {
+          "median_cents": 2640,
+          "p25_cents": 2619,
+          "p75_cents": 2783,
+          "n": 8
+        },
+        "12": {
+          "median_cents": 2632,
+          "p25_cents": 2625,
+          "p75_cents": 2658,
+          "n": 10
+        },
+        "01": {
+          "median_cents": 2600,
+          "p25_cents": 2590,
+          "p75_cents": 3075,
+          "n": 12
+        },
+        "02": {
+          "median_cents": 2775,
+          "p25_cents": 2475,
+          "p75_cents": 3075,
+          "n": 12
+        },
+        "03": {
+          "median_cents": 2700,
+          "p25_cents": 2350,
+          "p75_cents": 2776,
+          "n": 12
+        },
+        "04": {
+          "median_cents": 2700,
+          "p25_cents": 2438,
+          "p75_cents": 2925,
+          "n": 14
+        },
+        "05": {
+          "median_cents": 2700,
+          "p25_cents": 2625,
+          "p75_cents": 2925,
+          "n": 13
+        },
+        "06": {
+          "median_cents": 2925,
+          "p25_cents": 2550,
+          "p75_cents": 2925,
+          "n": 13
+        },
+        "07": {
+          "median_cents": 3200,
+          "p25_cents": 2610,
+          "p75_cents": 3700,
+          "n": 10
+        },
+        "08": {
+          "median_cents": 2935,
+          "p25_cents": 2700,
+          "p75_cents": 3475,
+          "n": 8
+        },
+        "09": {
+          "median_cents": 2820,
+          "p25_cents": 2700,
+          "p75_cents": 3048,
+          "n": 8
+        }
+      }
+    },
+    {
+      "slug": "daikon",
+      "cheapest_month": 1,
+      "priciest_month": 6,
+      "months": {
+        "10": {
+          "median_cents": 3100,
+          "p25_cents": 3100,
+          "p75_cents": 3121,
+          "n": 10
+        },
+        "11": {
+          "median_cents": 3025,
+          "p25_cents": 2725,
+          "p75_cents": 3044,
+          "n": 8
+        },
+        "12": {
+          "median_cents": 2913,
+          "p25_cents": 2450,
+          "p75_cents": 3025,
+          "n": 10
+        },
+        "01": {
+          "median_cents": 2900,
+          "p25_cents": 2900,
+          "p75_cents": 2965,
+          "n": 12
+        },
+        "02": {
+          "median_cents": 2900,
+          "p25_cents": 2900,
+          "p75_cents": 3330,
+          "n": 12
+        },
+        "03": {
+          "median_cents": 3100,
+          "p25_cents": 3100,
+          "p75_cents": 3600,
+          "n": 12
+        },
+        "04": {
+          "median_cents": 3100,
+          "p25_cents": 3100,
+          "p75_cents": 3800,
+          "n": 14
+        },
+        "05": {
+          "median_cents": 3100,
+          "p25_cents": 3100,
+          "p75_cents": 3400,
+          "n": 13
+        },
+        "06": {
+          "median_cents": 3350,
+          "p25_cents": 3100,
+          "p75_cents": 3400,
+          "n": 13
+        },
+        "07": {
+          "median_cents": 3225,
+          "p25_cents": 3100,
+          "p75_cents": 3350,
+          "n": 10
+        },
+        "08": {
+          "median_cents": 3100,
+          "p25_cents": 3050,
+          "p75_cents": 3100,
+          "n": 8
+        },
+        "09": {
+          "median_cents": 3100,
+          "p25_cents": 3100,
+          "p75_cents": 3100,
+          "n": 8
+        }
+      }
+    },
+    {
+      "slug": "dill",
+      "cheapest_month": 1,
+      "priciest_month": 8,
+      "months": {
+        "10": {
+          "median_cents": 2450,
+          "p25_cents": 2400,
+          "p75_cents": 2544,
+          "n": 10
+        },
+        "11": {
+          "median_cents": 3005,
+          "p25_cents": 2430,
+          "p75_cents": 3600,
+          "n": 8
+        },
+        "12": {
+          "median_cents": 2625,
+          "p25_cents": 2300,
+          "p75_cents": 3150,
+          "n": 10
+        },
+        "01": {
+          "median_cents": 2400,
+          "p25_cents": 1855,
+          "p75_cents": 2850,
+          "n": 12
+        },
+        "02": {
+          "median_cents": 2449,
+          "p25_cents": 2150,
+          "p75_cents": 2850,
+          "n": 12
+        },
+        "03": {
+          "median_cents": 2645,
+          "p25_cents": 2500,
+          "p75_cents": 2750,
+          "n": 12
+        },
+        "04": {
+          "median_cents": 2475,
+          "p25_cents": 2371,
+          "p75_cents": 2500,
+          "n": 14
+        },
+        "05": {
+          "median_cents": 2750,
+          "p25_cents": 2265,
+          "p75_cents": 3410,
+          "n": 13
+        },
+        "06": {
+          "median_cents": 2500,
+          "p25_cents": 2045,
+          "p75_cents": 3286,
+          "n": 12
+        },
+        "07": {
+          "median_cents": 2450,
+          "p25_cents": 1625,
+          "p75_cents": 2525,
+          "n": 11
+        },
+        "08": {
+          "median_cents": 3088,
+          "p25_cents": 2875,
+          "p75_cents": 5500,
+          "n": 8
+        },
+        "09": {
+          "median_cents": 3000,
+          "p25_cents": 2893,
+          "p75_cents": 3580,
+          "n": 8
+        }
+      }
+    },
+    {
+      "slug": "ginger",
+      "cheapest_month": 9,
+      "priciest_month": 2,
+      "months": {
+        "10": {
+          "median_cents": 3997,
+          "p25_cents": 3788,
+          "p75_cents": 4470,
+          "n": 10
+        },
+        "11": {
+          "median_cents": 4500,
+          "p25_cents": 4413,
+          "p75_cents": 4573,
+          "n": 8
+        },
+        "12": {
+          "median_cents": 4909,
+          "p25_cents": 4831,
+          "p75_cents": 5213,
+          "n": 10
+        },
+        "01": {
+          "median_cents": 5453,
+          "p25_cents": 5149,
+          "p75_cents": 5685,
+          "n": 12
+        },
+        "02": {
+          "median_cents": 5683,
+          "p25_cents": 5429,
+          "p75_cents": 6394,
+          "n": 12
+        },
+        "03": {
+          "median_cents": 5350,
+          "p25_cents": 4634,
+          "p75_cents": 6300,
+          "n": 12
+        },
+        "04": {
+          "median_cents": 5255,
+          "p25_cents": 4680,
+          "p75_cents": 5638,
+          "n": 14
+        },
+        "05": {
+          "median_cents": 5350,
+          "p25_cents": 4650,
+          "p75_cents": 5380,
+          "n": 13
+        },
+        "06": {
+          "median_cents": 5000,
+          "p25_cents": 4650,
+          "p75_cents": 5425,
+          "n": 13
+        },
+        "07": {
+          "median_cents": 4685,
+          "p25_cents": 4650,
+          "p75_cents": 4750,
+          "n": 10
+        },
+        "08": {
+          "median_cents": 4105,
+          "p25_cents": 3800,
+          "p75_cents": 4250,
+          "n": 8
+        },
+        "09": {
+          "median_cents": 3878,
+          "p25_cents": 3754,
+          "p75_cents": 4000,
+          "n": 8
+        }
+      }
+    },
+    {
+      "slug": "mint",
+      "cheapest_month": 11,
+      "priciest_month": 3,
+      "months": {
+        "10": {
+          "median_cents": 1300,
+          "p25_cents": 1300,
+          "p75_cents": 1300,
+          "n": 10
+        },
+        "11": {
+          "median_cents": 1298,
+          "p25_cents": 1283,
+          "p75_cents": 1300,
+          "n": 8
+        },
+        "12": {
+          "median_cents": 1315,
+          "p25_cents": 1300,
+          "p75_cents": 1335,
+          "n": 10
+        },
+        "01": {
+          "median_cents": 1360,
+          "p25_cents": 1250,
+          "p75_cents": 1546,
+          "n": 12
+        },
+        "02": {
+          "median_cents": 1391,
+          "p25_cents": 1311,
+          "p75_cents": 1528,
+          "n": 12
+        },
+        "03": {
+          "median_cents": 1393,
+          "p25_cents": 1333,
+          "p75_cents": 1475,
+          "n": 12
+        },
+        "04": {
+          "median_cents": 1385,
+          "p25_cents": 1331,
+          "p75_cents": 1412,
+          "n": 14
+        },
+        "05": {
+          "median_cents": 1300,
+          "p25_cents": 1290,
+          "p75_cents": 1300,
+          "n": 13
+        },
+        "06": {
+          "median_cents": 1300,
+          "p25_cents": 1250,
+          "p75_cents": 1300,
+          "n": 13
+        },
+        "07": {
+          "median_cents": 1320,
+          "p25_cents": 1300,
+          "p75_cents": 1348,
+          "n": 10
+        },
+        "08": {
+          "median_cents": 1300,
+          "p25_cents": 1294,
+          "p75_cents": 1300,
+          "n": 8
+        },
+        "09": {
+          "median_cents": 1300,
+          "p25_cents": 1278,
+          "p75_cents": 1303,
+          "n": 8
+        }
+      }
+    },
+    {
+      "slug": "oregano",
+      "cheapest_month": 7,
+      "priciest_month": 12,
+      "months": {
+        "10": {
+          "median_cents": 800,
+          "p25_cents": 800,
+          "p75_cents": 800,
+          "n": 10
+        },
+        "11": {
+          "median_cents": 800,
+          "p25_cents": 800,
+          "p75_cents": 900,
+          "n": 8
+        },
+        "12": {
+          "median_cents": 850,
+          "p25_cents": 800,
+          "p75_cents": 900,
+          "n": 10
+        },
+        "01": {
+          "median_cents": 800,
+          "p25_cents": 750,
+          "p75_cents": 856,
+          "n": 12
+        },
+        "02": {
+          "median_cents": 800,
+          "p25_cents": 750,
+          "p75_cents": 850,
+          "n": 12
+        },
+        "03": {
+          "median_cents": 800,
+          "p25_cents": 750,
+          "p75_cents": 850,
+          "n": 12
+        },
+        "04": {
+          "median_cents": 800,
+          "p25_cents": 763,
+          "p75_cents": 850,
+          "n": 14
+        },
+        "05": {
+          "median_cents": 800,
+          "p25_cents": 750,
+          "p75_cents": 850,
+          "n": 13
+        },
+        "06": {
+          "median_cents": 800,
+          "p25_cents": 750,
+          "p75_cents": 850,
+          "n": 13
+        },
+        "07": {
+          "median_cents": 785,
+          "p25_cents": 750,
+          "p75_cents": 800,
+          "n": 10
+        },
+        "08": {
+          "median_cents": 800,
+          "p25_cents": 800,
+          "p75_cents": 800,
+          "n": 8
+        },
+        "09": {
+          "median_cents": 800,
+          "p25_cents": 800,
+          "p75_cents": 800,
+          "n": 8
+        }
+      }
+    },
+    {
+      "slug": "rosemary",
+      "cheapest_month": 10,
+      "priciest_month": 12,
+      "months": {
+        "10": {
+          "median_cents": 750,
+          "p25_cents": 750,
+          "p75_cents": 750,
+          "n": 10
+        },
+        "11": {
+          "median_cents": 750,
+          "p25_cents": 750,
+          "p75_cents": 850,
+          "n": 8
+        },
+        "12": {
+          "median_cents": 800,
+          "p25_cents": 750,
+          "p75_cents": 850,
+          "n": 10
+        },
+        "01": {
+          "median_cents": 750,
+          "p25_cents": 750,
+          "p75_cents": 850,
+          "n": 12
+        },
+        "02": {
+          "median_cents": 750,
+          "p25_cents": 750,
+          "p75_cents": 850,
+          "n": 12
+        },
+        "03": {
+          "median_cents": 750,
+          "p25_cents": 750,
+          "p75_cents": 850,
+          "n": 12
+        },
+        "04": {
+          "median_cents": 750,
+          "p25_cents": 750,
+          "p75_cents": 850,
+          "n": 14
+        },
+        "05": {
+          "median_cents": 750,
+          "p25_cents": 750,
+          "p75_cents": 850,
+          "n": 13
+        },
+        "06": {
+          "median_cents": 750,
+          "p25_cents": 750,
+          "p75_cents": 850,
+          "n": 13
+        },
+        "07": {
+          "median_cents": 750,
+          "p25_cents": 750,
+          "p75_cents": 750,
+          "n": 10
+        },
+        "08": {
+          "median_cents": 750,
+          "p25_cents": 750,
+          "p75_cents": 750,
+          "n": 8
+        },
+        "09": {
+          "median_cents": 750,
+          "p25_cents": 750,
+          "p75_cents": 750,
+          "n": 8
+        }
+      }
+    },
+    {
+      "slug": "tarragon",
+      "cheapest_month": 1,
+      "priciest_month": 4,
+      "months": {
+        "10": {
+          "median_cents": 1025,
+          "p25_cents": 975,
+          "p75_cents": 1075,
+          "n": 10
+        },
+        "11": {
+          "median_cents": 1025,
+          "p25_cents": 975,
+          "p75_cents": 1075,
+          "n": 8
+        },
+        "12": {
+          "median_cents": 1025,
+          "p25_cents": 975,
+          "p75_cents": 1075,
+          "n": 10
+        },
+        "01": {
+          "median_cents": 982,
+          "p25_cents": 975,
+          "p75_cents": 1075,
+          "n": 12
+        },
+        "02": {
+          "median_cents": 1025,
+          "p25_cents": 975,
+          "p75_cents": 1075,
+          "n": 12
+        },
+        "03": {
+          "median_cents": 1030,
+          "p25_cents": 975,
+          "p75_cents": 1075,
+          "n": 12
+        },
+        "04": {
+          "median_cents": 1075,
+          "p25_cents": 1000,
+          "p75_cents": 1075,
+          "n": 14
+        },
+        "05": {
+          "median_cents": 1075,
+          "p25_cents": 975,
+          "p75_cents": 1075,
+          "n": 13
+        },
+        "06": {
+          "median_cents": 1075,
+          "p25_cents": 975,
+          "p75_cents": 1075,
+          "n": 13
+        },
+        "07": {
+          "median_cents": 1025,
+          "p25_cents": 975,
+          "p75_cents": 1075,
+          "n": 10
+        },
+        "08": {
+          "median_cents": 1025,
+          "p25_cents": 975,
+          "p75_cents": 1075,
+          "n": 8
+        },
+        "09": {
+          "median_cents": 1025,
+          "p25_cents": 975,
+          "p75_cents": 1075,
+          "n": 8
+        }
+      }
+    },
+    {
+      "slug": "thyme",
+      "cheapest_month": 2,
+      "priciest_month": 1,
+      "months": {
+        "10": {
+          "median_cents": 1213,
+          "p25_cents": 1100,
+          "p75_cents": 1325,
+          "n": 10
+        },
+        "11": {
+          "median_cents": 1213,
+          "p25_cents": 1100,
+          "p75_cents": 1325,
+          "n": 8
+        },
+        "12": {
+          "median_cents": 1213,
+          "p25_cents": 1100,
+          "p75_cents": 1325,
+          "n": 10
+        },
+        "01": {
+          "median_cents": 1285,
+          "p25_cents": 1100,
+          "p75_cents": 1300,
+          "n": 12
+        },
+        "02": {
+          "median_cents": 1100,
+          "p25_cents": 1050,
+          "p75_cents": 1300,
+          "n": 12
+        },
+        "03": {
+          "median_cents": 1100,
+          "p25_cents": 1050,
+          "p75_cents": 1300,
+          "n": 12
+        },
+        "04": {
+          "median_cents": 1100,
+          "p25_cents": 1050,
+          "p75_cents": 1250,
+          "n": 14
+        },
+        "05": {
+          "median_cents": 1100,
+          "p25_cents": 1050,
+          "p75_cents": 1300,
+          "n": 13
+        },
+        "06": {
+          "median_cents": 1100,
+          "p25_cents": 1050,
+          "p75_cents": 1315,
+          "n": 13
+        },
+        "07": {
+          "median_cents": 1213,
+          "p25_cents": 1100,
+          "p75_cents": 1325,
+          "n": 10
+        },
+        "08": {
+          "median_cents": 1213,
+          "p25_cents": 1100,
+          "p75_cents": 1325,
+          "n": 8
+        },
+        "09": {
+          "median_cents": 1213,
+          "p25_cents": 1100,
+          "p75_cents": 1325,
+          "n": 8
+        }
+      }
+    },
+    {
+      "slug": "bok-choy",
+      "cheapest_month": 3,
+      "priciest_month": 9,
+      "months": {
+        "10": {
+          "median_cents": 2973,
+          "p25_cents": 2730,
+          "p75_cents": 3110,
+          "n": 10
+        },
+        "11": {
+          "median_cents": 2868,
+          "p25_cents": 2758,
+          "p75_cents": 2925,
+          "n": 8
+        },
+        "12": {
+          "median_cents": 2510,
+          "p25_cents": 2225,
+          "p75_cents": 2800,
+          "n": 10
+        },
+        "01": {
+          "median_cents": 2200,
+          "p25_cents": 2070,
+          "p75_cents": 2327,
+          "n": 11
+        },
+        "02": {
+          "median_cents": 2238,
+          "p25_cents": 1888,
+          "p75_cents": 2525,
+          "n": 12
+        },
+        "03": {
+          "median_cents": 2120,
+          "p25_cents": 2045,
+          "p75_cents": 2416,
+          "n": 12
+        },
+        "04": {
+          "median_cents": 2295,
+          "p25_cents": 2113,
+          "p75_cents": 2450,
+          "n": 14
+        },
+        "05": {
+          "median_cents": 2550,
+          "p25_cents": 2440,
+          "p75_cents": 2650,
+          "n": 13
+        },
+        "06": {
+          "median_cents": 2583,
+          "p25_cents": 2190,
+          "p75_cents": 2650,
+          "n": 13
+        },
+        "07": {
+          "median_cents": 2130,
+          "p25_cents": 1800,
+          "p75_cents": 2710,
+          "n": 10
+        },
+        "08": {
+          "median_cents": 2640,
+          "p25_cents": 2186,
+          "p75_cents": 3993,
+          "n": 8
+        },
+        "09": {
+          "median_cents": 3190,
+          "p25_cents": 2648,
+          "p75_cents": 3758,
+          "n": 8
+        }
+      }
+    },
+    {
+      "slug": "pork-belly",
+      "cheapest_month": 5,
+      "priciest_month": 12,
+      "months": {
+        "10": {
+          "median_cents": 17237,
+          "p25_cents": 16555,
+          "p75_cents": 18096,
+          "n": 4
+        },
+        "11": {
+          "median_cents": 17467,
+          "p25_cents": 16660,
+          "p75_cents": 18284,
+          "n": 4
+        },
+        "12": {
+          "median_cents": 18730,
+          "p25_cents": 18152,
+          "p75_cents": 18854,
+          "n": 4
+        },
+        "01": {
+          "median_cents": 18051,
+          "p25_cents": 16679,
+          "p75_cents": 18148,
+          "n": 5
+        },
+        "02": {
+          "median_cents": 18005,
+          "p25_cents": 16762,
+          "p75_cents": 19760,
+          "n": 5
+        },
+        "03": {
+          "median_cents": 17764,
+          "p25_cents": 17038,
+          "p75_cents": 18377,
+          "n": 5
+        },
+        "04": {
+          "median_cents": 17820,
+          "p25_cents": 17103,
+          "p75_cents": 18247,
+          "n": 5
+        },
+        "05": {
+          "median_cents": 16730,
+          "p25_cents": 16395,
+          "p75_cents": 18185,
+          "n": 5
+        },
+        "06": {
+          "median_cents": 17187,
+          "p25_cents": 16095,
+          "p75_cents": 18068,
+          "n": 4
+        },
+        "07": {
+          "median_cents": 17294,
+          "p25_cents": 16442,
+          "p75_cents": 18232,
+          "n": 4
+        },
+        "08": {
+          "median_cents": 17216,
+          "p25_cents": 16433,
+          "p75_cents": 18057,
+          "n": 4
+        },
+        "09": {
+          "median_cents": 17250,
+          "p25_cents": 16489,
+          "p75_cents": 18167,
+          "n": 4
+        }
+      }
+    },
+    {
+      "slug": "vegetable-oil",
+      "cheapest_month": 1,
+      "priciest_month": 11,
+      "months": {
+        "10": {
+          "median_cents": 23858,
+          "p25_cents": 22971,
+          "p75_cents": 25123,
+          "n": 4
+        },
+        "11": {
+          "median_cents": 24916,
+          "p25_cents": 22894,
+          "p75_cents": 26389,
+          "n": 4
+        },
+        "12": {
+          "median_cents": 23618,
+          "p25_cents": 22526,
+          "p75_cents": 24677,
+          "n": 4
+        },
+        "01": {
+          "median_cents": 23477,
+          "p25_cents": 23298,
+          "p75_cents": 25293,
+          "n": 5
+        },
+        "02": {
+          "median_cents": 23693,
+          "p25_cents": 23237,
+          "p75_cents": 24104,
+          "n": 5
+        },
+        "03": {
+          "median_cents": 24148,
+          "p25_cents": 24006,
+          "p75_cents": 25576,
+          "n": 5
+        },
+        "04": {
+          "median_cents": 23890,
+          "p25_cents": 23569,
+          "p75_cents": 25739,
+          "n": 5
+        },
+        "05": {
+          "median_cents": 24462,
+          "p25_cents": 23494,
+          "p75_cents": 26518,
+          "n": 5
+        },
+        "06": {
+          "median_cents": 23899,
+          "p25_cents": 22824,
+          "p75_cents": 24982,
+          "n": 4
+        },
+        "07": {
+          "median_cents": 24332,
+          "p25_cents": 23489,
+          "p75_cents": 25079,
+          "n": 4
+        },
+        "08": {
+          "median_cents": 24240,
+          "p25_cents": 23336,
+          "p75_cents": 25724,
+          "n": 4
+        },
+        "09": {
+          "median_cents": 24037,
+          "p25_cents": 23334,
+          "p75_cents": 25558,
+          "n": 4
+        }
+      }
+    },
+    {
+      "slug": "eggs",
+      "cheapest_month": 1,
+      "priciest_month": 2,
+      "months": {
+        "01": {
+          "median_cents": 95,
+          "p25_cents": 76,
+          "p75_cents": 138,
+          "n": 5
+        },
+        "02": {
+          "median_cents": 470,
+          "p25_cents": 120,
+          "p75_cents": 820,
+          "n": 8
+        },
+        "03": {
+          "median_cents": 286,
+          "p25_cents": 157,
+          "p75_cents": 393,
+          "n": 10
+        },
+        "04": {
+          "median_cents": 215,
+          "p25_cents": 60,
+          "p75_cents": 370,
+          "n": 8
+        },
+        "05": {
+          "median_cents": 182,
+          "p25_cents": 65,
+          "p75_cents": 348,
+          "n": 8
+        },
+        "06": {
+          "median_cents": 298,
+          "p25_cents": 56,
+          "p75_cents": 303,
+          "n": 9
+        }
+      }
+    },
+    {
+      "slug": "sweet-potato",
+      "cheapest_month": 11,
+      "priciest_month": 3,
+      "months": {
+        "11": {
+          "median_cents": 1825,
+          "p25_cents": 1819,
+          "p75_cents": 1844,
+          "n": 8
+        },
+        "12": {
+          "median_cents": 1900,
+          "p25_cents": 1900,
+          "p75_cents": 1929,
+          "n": 10
+        },
+        "01": {
+          "median_cents": 1938,
+          "p25_cents": 1929,
+          "p75_cents": 1985,
+          "n": 8
+        },
+        "02": {
+          "median_cents": 2050,
+          "p25_cents": 1975,
+          "p75_cents": 2125,
+          "n": 8
+        },
+        "03": {
+          "median_cents": 2069,
+          "p25_cents": 2004,
+          "p75_cents": 2125,
+          "n": 8
+        },
+        "04": {
+          "median_cents": 2069,
+          "p25_cents": 2013,
+          "p75_cents": 2125,
+          "n": 10
+        }
+      }
+    }
+  ]
+}

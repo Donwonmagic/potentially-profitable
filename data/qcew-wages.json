@@ -1,0 +1,571 @@
+{
+  "_doc": "BLS QCEW quarterly average weekly wage + employment for the private food-services industry (NAICS 722 & 7225) in Montgomery County, MD (FIPS 24031). A DESCRIPTIVE labor backdrop for the ~30% of the plate the food index does not track — a county industry AVERAGE, never a per-plate labor cost, never blended into the food index / pressure math / Vendor Benchmark, and never a forecast. Source: BLS QCEW open data, US-gov public domain. Built by scripts/fetch-qcew-wages.mjs --live on the operator Mac.",
+  "source": "BLS QCEW — https://data.bls.gov/cew/downloadable-data-files.htm",
+  "area": "Montgomery County, MD (FIPS 24031)",
+  "license": "public-domain-usgov",
+  "lane": "labor (descriptive; never in the food index)",
+  "fetchedAt": "2026-07-24T13:27:48.780Z",
+  "count": 56,
+  "quarters": [
+    {
+      "year": 2019,
+      "qtr": 1,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 486,
+      "establishments": 1873,
+      "avg_employment": 31470,
+      "oty_wage_pct_chg": 1.2
+    },
+    {
+      "year": 2019,
+      "qtr": 1,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 433,
+      "establishments": 1674,
+      "avg_employment": 29158,
+      "oty_wage_pct_chg": 3.3
+    },
+    {
+      "year": 2019,
+      "qtr": 2,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 479,
+      "establishments": 1890,
+      "avg_employment": 32588,
+      "oty_wage_pct_chg": 5
+    },
+    {
+      "year": 2019,
+      "qtr": 2,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 450,
+      "establishments": 1690,
+      "avg_employment": 29956,
+      "oty_wage_pct_chg": 5.6
+    },
+    {
+      "year": 2019,
+      "qtr": 3,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 498,
+      "establishments": 1896,
+      "avg_employment": 32654,
+      "oty_wage_pct_chg": 6.9
+    },
+    {
+      "year": 2019,
+      "qtr": 3,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 458,
+      "establishments": 1692,
+      "avg_employment": 30104,
+      "oty_wage_pct_chg": 5.5
+    },
+    {
+      "year": 2019,
+      "qtr": 4,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 500,
+      "establishments": 1911,
+      "avg_employment": 32643,
+      "oty_wage_pct_chg": 4.6
+    },
+    {
+      "year": 2019,
+      "qtr": 4,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 467,
+      "establishments": 1713,
+      "avg_employment": 29962,
+      "oty_wage_pct_chg": 4.7
+    },
+    {
+      "year": 2020,
+      "qtr": 1,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 522,
+      "establishments": 1913,
+      "avg_employment": 31419,
+      "oty_wage_pct_chg": 7.4
+    },
+    {
+      "year": 2020,
+      "qtr": 1,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 459,
+      "establishments": 1714,
+      "avg_employment": 29069,
+      "oty_wage_pct_chg": 6
+    },
+    {
+      "year": 2020,
+      "qtr": 2,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 495,
+      "establishments": 1856,
+      "avg_employment": 18690,
+      "oty_wage_pct_chg": 3.3
+    },
+    {
+      "year": 2020,
+      "qtr": 2,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 451,
+      "establishments": 1662,
+      "avg_employment": 17391,
+      "oty_wage_pct_chg": 0.2
+    },
+    {
+      "year": 2020,
+      "qtr": 3,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 502,
+      "establishments": 1831,
+      "avg_employment": 23635,
+      "oty_wage_pct_chg": 0.8
+    },
+    {
+      "year": 2020,
+      "qtr": 3,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 480,
+      "establishments": 1641,
+      "avg_employment": 22306,
+      "oty_wage_pct_chg": 4.8
+    },
+    {
+      "year": 2020,
+      "qtr": 4,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 521,
+      "establishments": 1839,
+      "avg_employment": 23826,
+      "oty_wage_pct_chg": 4.2
+    },
+    {
+      "year": 2020,
+      "qtr": 4,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 488,
+      "establishments": 1652,
+      "avg_employment": 22465,
+      "oty_wage_pct_chg": 4.5
+    },
+    {
+      "year": 2021,
+      "qtr": 1,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 474,
+      "establishments": 1790,
+      "avg_employment": 22832,
+      "oty_wage_pct_chg": -9.2
+    },
+    {
+      "year": 2021,
+      "qtr": 1,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 448,
+      "establishments": 1613,
+      "avg_employment": 21431,
+      "oty_wage_pct_chg": -2.4
+    },
+    {
+      "year": 2021,
+      "qtr": 2,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 538,
+      "establishments": 1799,
+      "avg_employment": 25980,
+      "oty_wage_pct_chg": 8.7
+    },
+    {
+      "year": 2021,
+      "qtr": 2,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 511,
+      "establishments": 1624,
+      "avg_employment": 24268,
+      "oty_wage_pct_chg": 13.3
+    },
+    {
+      "year": 2021,
+      "qtr": 3,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 571,
+      "establishments": 1791,
+      "avg_employment": 28070,
+      "oty_wage_pct_chg": 13.7
+    },
+    {
+      "year": 2021,
+      "qtr": 3,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 544,
+      "establishments": 1618,
+      "avg_employment": 26037,
+      "oty_wage_pct_chg": 13.3
+    },
+    {
+      "year": 2021,
+      "qtr": 4,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 585,
+      "establishments": 1804,
+      "avg_employment": 28416,
+      "oty_wage_pct_chg": 12.3
+    },
+    {
+      "year": 2021,
+      "qtr": 4,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 557,
+      "establishments": 1630,
+      "avg_employment": 26212,
+      "oty_wage_pct_chg": 14.1
+    },
+    {
+      "year": 2022,
+      "qtr": 1,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 553,
+      "establishments": 1799,
+      "avg_employment": 27206,
+      "oty_wage_pct_chg": 16.7
+    },
+    {
+      "year": 2022,
+      "qtr": 1,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 501,
+      "establishments": 1605,
+      "avg_employment": 25114,
+      "oty_wage_pct_chg": 11.8
+    },
+    {
+      "year": 2022,
+      "qtr": 2,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 561,
+      "establishments": 1825,
+      "avg_employment": 28530,
+      "oty_wage_pct_chg": 4.3
+    },
+    {
+      "year": 2022,
+      "qtr": 2,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 534,
+      "establishments": 1628,
+      "avg_employment": 26163,
+      "oty_wage_pct_chg": 4.5
+    },
+    {
+      "year": 2022,
+      "qtr": 3,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 595,
+      "establishments": 1858,
+      "avg_employment": 29178,
+      "oty_wage_pct_chg": 4.2
+    },
+    {
+      "year": 2022,
+      "qtr": 3,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 563,
+      "establishments": 1655,
+      "avg_employment": 26778,
+      "oty_wage_pct_chg": 3.5
+    },
+    {
+      "year": 2022,
+      "qtr": 4,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 601,
+      "establishments": 1867,
+      "avg_employment": 28705,
+      "oty_wage_pct_chg": 2.7
+    },
+    {
+      "year": 2022,
+      "qtr": 4,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 568,
+      "establishments": 1661,
+      "avg_employment": 26034,
+      "oty_wage_pct_chg": 2
+    },
+    {
+      "year": 2023,
+      "qtr": 1,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 622,
+      "establishments": 1819,
+      "avg_employment": 28930,
+      "oty_wage_pct_chg": 12.5
+    },
+    {
+      "year": 2023,
+      "qtr": 1,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 559,
+      "establishments": 1611,
+      "avg_employment": 26573,
+      "oty_wage_pct_chg": 11.6
+    },
+    {
+      "year": 2023,
+      "qtr": 2,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 598,
+      "establishments": 1830,
+      "avg_employment": 29927,
+      "oty_wage_pct_chg": 6.6
+    },
+    {
+      "year": 2023,
+      "qtr": 2,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 559,
+      "establishments": 1618,
+      "avg_employment": 27381,
+      "oty_wage_pct_chg": 4.7
+    },
+    {
+      "year": 2023,
+      "qtr": 3,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 593,
+      "establishments": 1853,
+      "avg_employment": 30278,
+      "oty_wage_pct_chg": -0.3
+    },
+    {
+      "year": 2023,
+      "qtr": 3,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 562,
+      "establishments": 1635,
+      "avg_employment": 27905,
+      "oty_wage_pct_chg": -0.2
+    },
+    {
+      "year": 2023,
+      "qtr": 4,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 623,
+      "establishments": 1883,
+      "avg_employment": 29073,
+      "oty_wage_pct_chg": 3.7
+    },
+    {
+      "year": 2023,
+      "qtr": 4,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 587,
+      "establishments": 1657,
+      "avg_employment": 26725,
+      "oty_wage_pct_chg": 3.3
+    },
+    {
+      "year": 2024,
+      "qtr": 1,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 647,
+      "establishments": 1890,
+      "avg_employment": 29489,
+      "oty_wage_pct_chg": 4
+    },
+    {
+      "year": 2024,
+      "qtr": 1,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 577,
+      "establishments": 1666,
+      "avg_employment": 27228,
+      "oty_wage_pct_chg": 3.2
+    },
+    {
+      "year": 2024,
+      "qtr": 2,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 613,
+      "establishments": 1903,
+      "avg_employment": 30570,
+      "oty_wage_pct_chg": 2.5
+    },
+    {
+      "year": 2024,
+      "qtr": 2,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 585,
+      "establishments": 1676,
+      "avg_employment": 28065,
+      "oty_wage_pct_chg": 4.7
+    },
+    {
+      "year": 2024,
+      "qtr": 3,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 620,
+      "establishments": 1916,
+      "avg_employment": 30239,
+      "oty_wage_pct_chg": 4.6
+    },
+    {
+      "year": 2024,
+      "qtr": 3,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 589,
+      "establishments": 1687,
+      "avg_employment": 27764,
+      "oty_wage_pct_chg": 4.8
+    },
+    {
+      "year": 2024,
+      "qtr": 4,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 645,
+      "establishments": 1918,
+      "avg_employment": 29799,
+      "oty_wage_pct_chg": 3.5
+    },
+    {
+      "year": 2024,
+      "qtr": 4,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 612,
+      "establishments": 1693,
+      "avg_employment": 27314,
+      "oty_wage_pct_chg": 4.3
+    },
+    {
+      "year": 2025,
+      "qtr": 1,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 646,
+      "establishments": 1956,
+      "avg_employment": 29314,
+      "oty_wage_pct_chg": -0.2
+    },
+    {
+      "year": 2025,
+      "qtr": 1,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 581,
+      "establishments": 1728,
+      "avg_employment": 27048,
+      "oty_wage_pct_chg": 0.7
+    },
+    {
+      "year": 2025,
+      "qtr": 2,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 629,
+      "establishments": 1979,
+      "avg_employment": 30249,
+      "oty_wage_pct_chg": 2.6
+    },
+    {
+      "year": 2025,
+      "qtr": 2,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 600,
+      "establishments": 1747,
+      "avg_employment": 27752,
+      "oty_wage_pct_chg": 2.6
+    },
+    {
+      "year": 2025,
+      "qtr": 3,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 642,
+      "establishments": 1954,
+      "avg_employment": 30104,
+      "oty_wage_pct_chg": 3.5
+    },
+    {
+      "year": 2025,
+      "qtr": 3,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 606,
+      "establishments": 1729,
+      "avg_employment": 27767,
+      "oty_wage_pct_chg": 2.9
+    },
+    {
+      "year": 2025,
+      "qtr": 4,
+      "industry_code": "722",
+      "industry": "Food services & drinking places",
+      "avg_wkly_wage": 666,
+      "establishments": 1954,
+      "avg_employment": 29579,
+      "oty_wage_pct_chg": 3.3
+    },
+    {
+      "year": 2025,
+      "qtr": 4,
+      "industry_code": "7225",
+      "industry": "Restaurants & other eating places",
+      "avg_wkly_wage": 626,
+      "establishments": 1730,
+      "avg_employment": 27083,
+      "oty_wage_pct_chg": 2.3
+    }
+  ]
+}

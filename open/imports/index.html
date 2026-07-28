@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Import Shelf — US Food Imports, 2010–2025 · Muntin open data</title>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Dataset",
+  "name":"The Import Shelf — US Food Imports, 2010–2025",
+  "description":"US food imports by value (nominal customs dollars, never volume or delivered price) with 12-month seasonal indices, origin-country mix, source concentration (HHI), and an import-reliance proxy. Descriptive of the tracked record; not a forecast.",
+  "url":"https://muntin.digital/open/import-shelf/",
+  "keywords":["food imports","US Census Bureau","seasonality","HS code","origin concentration","open data"],
+  "temporalCoverage":"2010/2025",
+  "isAccessibleForFree":true,
+  "creator":{"@type":"Organization","name":"Muntin Cost Index","url":"https://muntin.digital/"},
+  "publisher":{"@type":"Organization","name":"Muntin Cost Index","url":"https://muntin.digital/"},
+  "license":"https://creativecommons.org/publicdomain/zero/1.0/",
+  "dateModified":"2026-07-10",
+  "distribution":[{
+    "@type":"DataDownload",
+    "name":"census-imports.jsonl",
+    "encodingFormat":"application/x-ndjson",
+    "contentUrl":"https://muntin.digital/data/census-imports.jsonl"
+  }]
+}
+</script>
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="description" content="US food imports by value (nominal customs dollars, never volume) with 12-month seasonal indices, origin mix, and an import-reliance proxy." />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="https://muntin.digital/open/imports/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/open/imports/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/open/imports/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/open/imports/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="The Import Shelf — US Food Imports, 2010–2025 · Muntin open data" />
+<meta property="og:description" content="US food imports by value (nominal customs dollars, never volume) with 12-month seasonal indices, origin mix, and an import-reliance proxy." />
+<meta property="og:url" content="https://muntin.digital/open/imports/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The Import Shelf — US Food Imports, 2010–2025 · Muntin open data" />
+<meta name="twitter:description" content="US food imports by value (nominal customs dollars, never volume) with 12-month seasonal indices, origin mix, and an import-reliance proxy." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Open data","item":"https://muntin.digital/open/"},{"@type":"ListItem","position":3,"name":"The Import Shelf","item":"https://muntin.digital/open/imports/"}]}</script>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site-core.css" />
+<style>
+:root{
+  --paper:#f7f4ee; --surface:#fffdf9; --surface-2:#f1ece2;
+  --ink:#1b1f24; --ink-soft:#4a525a; --muted:#5e645f;
+  --line:#e5ddce; --line-soft:#efe9dc;
+  --teal:#2f7d78; --teal-ink:#215a56; --teal-wash:#e4efed;
+  --gold:#8a6216; --rust:#a8442d;
+  --up:var(--rust); --dn:var(--teal-ink); --flat:var(--muted);
+  --focus:#1b6be0; --focus-ring:0 0 0 3px rgba(27,107,224,.55);
+  --ok-badge-bd:var(--teal); --ok-badge-ink:var(--teal-ink);
+  --font-display:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+  --font-sans:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-mono:ui-monospace,'SF Mono','Cascadia Code',Menlo,Consolas,monospace;
+  --sh:0 1px 2px rgba(20,24,29,.05),0 8px 24px rgba(20,24,29,.07);
+  --stack-ink:#fff;
+  --tap:44px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#13161a; --surface:#1a1e23; --surface-2:#222831;
+  --ink:#eef1f0; --ink-soft:#b7bec3; --muted:#8b949c;
+  --line:#2b3138; --line-soft:#242a30;
+  --teal:#57b7af; --teal-ink:#7fcfc7; --teal-wash:#16302e;
+  --gold:#d3a44c; --rust:#e08a72;
+  --focus:#7ab6ff; --focus-ring:0 0 0 3px rgba(122,182,255,.6);
+  --sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);
+  --stack-ink:#13161a;
+}}
+:root[data-theme="dark"]{ --paper:#13161a;--surface:#1a1e23;--surface-2:#222831;--ink:#eef1f0;--ink-soft:#b7bec3;--muted:#8b949c;--line:#2b3138;--line-soft:#242a30;--teal:#57b7af;--teal-ink:#7fcfc7;--teal-wash:#16302e;--gold:#d3a44c;--rust:#e08a72;--focus:#7ab6ff;--focus-ring:0 0 0 3px rgba(122,182,255,.6);--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);--stack-ink:#13161a; }
+:root[data-theme="light"]{ --paper:#f7f4ee;--surface:#fffdf9;--surface-2:#f1ece2;--ink:#1b1f24;--ink-soft:#4a525a;--muted:#5e645f;--line:#e5ddce;--line-soft:#efe9dc;--teal:#2f7d78;--teal-ink:#215a56;--teal-wash:#e4efed;--gold:#8a6216;--rust:#a8442d;--focus:#1b6be0;--focus-ring:0 0 0 3px rgba(27,107,224,.55);--stack-ink:#fff; }
+*{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:clamp(18px,3.5vw,44px) clamp(14px,4vw,30px) 90px}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+h1{font-family:var(--font-display);font-weight:600;line-height:1.03;letter-spacing:-.01em;text-wrap:balance;margin:0 0 10px;font-size:clamp(30px,6vw,52px)}
+h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.01em}
+a{color:var(--teal-ink)} a:hover{text-decoration:underline}
+svg{display:block;max-width:100%;height:auto}
+figure{margin:0}
+:where(a,button,select,input,summary,[tabindex]):focus-visible{outline:2px solid var(--focus);outline-offset:2px;box-shadow:var(--focus-ring);border-radius:6px}
+button,select,input{min-height:var(--tap);font:inherit}
+button,[role=button]{min-width:var(--tap)}
+input,select{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.lic{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--ok-badge-bd);color:var(--ok-badge-ink);border-radius:5px;padding:1px 7px;font:600 10.5px/1.4 var(--font-mono);letter-spacing:.06em}
+.lic::before{content:'\2713'} .lic[data-lic="cc-by"]::before{content:'\24B8'}
+.honest{display:block;font:400 11.5px/1.4 var(--font-sans);color:var(--muted);font-style:italic}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+@media (forced-colors:active){.lic,.chip{border:1px solid CanvasText}[data-series]{forced-color-adjust:none}}
+
+/* masthead */
+header.mast{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:22px;display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;justify-content:space-between}
+.mast .lead{flex:1;min-width:280px}
+.kick{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-ink);margin:0 0 10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.lede{font-size:clamp(15px,2.2vw,18px);color:var(--ink-soft);max-width:62ch;margin:0}
+.lede b{color:var(--ink);font-family:var(--font-mono);font-weight:600}
+.theme{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 12px;color:var(--ink-soft);cursor:pointer;display:inline-flex;gap:7px;align-items:center;font-size:13px}
+.theme:hover{background:var(--surface-2)}
+
+/* insight cards */
+.insights{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:22px 0}
+.ins{border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:12px;background:var(--surface);padding:14px 16px;box-shadow:var(--sh)}
+.ins h3{margin:0 0 5px;font-size:14px;color:var(--teal-ink);font-family:var(--font-sans);font-weight:700;letter-spacing:0}
+.ins p{margin:0;font-size:13px;color:var(--ink-soft)}
+.ins .big{font-family:var(--font-mono);font-size:22px;font-weight:600;color:var(--ink);display:block;line-height:1.1;margin-bottom:3px}
+
+/* controls */
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 6px;align-items:end}
+.ctl{display:flex;flex-direction:column;gap:4px}
+.ctl label{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ctl.search{flex:1;min-width:200px}
+.ctl.search input{width:100%}
+.chipbar{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0;min-height:24px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-family:var(--font-mono);padding:5px 10px;border-radius:999px;background:var(--teal-wash);color:var(--teal-ink);border:1px solid var(--teal)}
+.chip button{all:unset;cursor:pointer;font-size:14px;line-height:1;display:inline-flex;align-items:center;justify-content:center;min-height:24px;min-width:24px;padding:0 2px;color:var(--teal-ink)}
+.chip button:focus-visible{outline:2px solid var(--focus);border-radius:4px}
+.status{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin:8px 0 0}
+
+/* section framing */
+.sec{margin:30px 0 0}
+.sec > h2{font-size:clamp(19px,3vw,24px);margin:0 0 4px}
+.sec .subt{font-size:13.5px;color:var(--ink-soft);margin:0 0 14px;max-width:70ch}
+
+/* fingerprint wall */
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.gcell{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:4px;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:8px 9px 9px;min-height:var(--tap);transition:background .12s,border-color .12s}
+.gcell:hover{background:var(--teal-wash);border-color:var(--teal)}
+.gcell:focus-visible{outline:2px solid var(--focus);outline-offset:2px;box-shadow:var(--focus-ring)}
+.gcell .gnm{font-size:12px;font-weight:600;line-height:1.2;color:var(--ink);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;min-height:2.4em}
+.gcell .gmeta{font-family:var(--font-mono);font-size:10px;color:var(--muted);display:flex;justify-content:space-between;gap:6px}
+.gcell svg{width:100%;height:34px}
+
+/* quadrant */
+.quadwrap{border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--sh);padding:16px}
+.quadwrap svg{width:100%;height:auto}
+.qdot{cursor:pointer}
+.qdot:focus-visible circle{stroke:var(--focus);stroke-width:2.5}
+
+/* table */
+.tablewrap{border:1px solid var(--line);border-radius:14px;overflow:auto;background:var(--surface);box-shadow:var(--sh);margin-top:8px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:760px}
+caption{text-align:left;padding:12px 16px;font-size:12.5px;color:var(--muted);border-bottom:1px solid var(--line-soft)}
+thead th{position:sticky;top:0;background:var(--surface-2);text-align:left;padding:0;border-bottom:1px solid var(--line);z-index:1}
+thead th button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:11px 14px;display:flex;gap:5px;align-items:center;min-height:var(--tap)}
+thead th button:hover{color:var(--ink)}
+thead th button:focus-visible{outline:2px solid var(--focus);outline-offset:-2px;border-radius:4px}
+thead th[aria-sort="ascending"] button,thead th[aria-sort="descending"] button{color:var(--teal-ink)}
+.sarrow{font-size:10px}
+tbody th,tbody td{padding:10px 14px;border-top:1px solid var(--line-soft);vertical-align:middle;white-space:nowrap}
+tbody th{font-weight:600;text-align:left}
+tbody th a,tbody td a{color:var(--ink);text-decoration:none;font-weight:600}
+tbody th a:hover{color:var(--teal-ink);text-decoration:underline}
+tbody tr:hover{background:var(--teal-wash)}
+tbody tr[aria-current="true"]{outline:2px solid var(--teal);outline-offset:-2px}
+.up{color:var(--up)} .dn{color:var(--dn)} .flat{color:var(--flat)}
+
+/* detail story */
+.back{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);border-radius:10px;color:var(--teal-ink);font:inherit;font-size:14px;cursor:pointer;padding:9px 14px;margin:0 0 16px;min-height:var(--tap)}
+.back:hover{background:var(--surface-2)}
+.story{border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:var(--sh);overflow:hidden}
+.shead{padding:22px 24px 18px;border-bottom:1px solid var(--line)}
+.shead .cat{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.shead h2{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,4.5vw,38px);margin:4px 0 12px;letter-spacing:-.01em}
+.shead h2:focus{outline:none}
+.bignum{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.bignum .n{font-family:var(--font-mono);font-size:clamp(28px,6vw,42px);font-weight:600;color:var(--teal-ink);line-height:1;letter-spacing:-.02em}
+.bignum .lab{font-size:13px;color:var(--ink-soft);max-width:36ch}
+.beat{padding:20px 24px;border-top:1px solid var(--line-soft)}
+.beat .step{font-family:var(--font-mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--teal-ink);margin:0 0 3px}
+.beat h3{font-family:var(--font-display);font-size:20px;font-weight:600;margin:0 0 4px}
+.beat .read{font-size:14px;color:var(--ink-soft);margin:0 0 16px;max-width:66ch}
+.beat .read b{color:var(--ink)}
+.axis{font-family:var(--font-mono);font-size:10px;fill:var(--muted)}
+.tip{font-family:var(--font-mono);font-size:12px;fill:var(--ink);font-variant-numeric:tabular-nums}
+.fine{font-size:11.5px;color:var(--muted);margin:10px 0 0;font-style:italic}
+
+/* shelf clock + strip */
+.clockgrid{display:grid;grid-template-columns:minmax(180px,240px) 1fr;gap:22px;align-items:center}
+@media(max-width:560px){.clockgrid{grid-template-columns:1fr}}
+.mo{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;align-items:end;height:96px;margin-top:4px}
+.mo .b{background:var(--surface-2);border-radius:3px 3px 0 0;min-height:3px;position:relative}
+.mo .b.pk{background:var(--teal)}
+.mo .b.win{outline:1px dashed var(--gold);outline-offset:-1px}
+.mo-x{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;margin-top:5px}
+.mo-x span{font-family:var(--font-mono);font-size:9px;color:var(--muted);text-align:center}
+.mo-x span.win{color:var(--gold);font-weight:700}
+.legrow{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:11.5px;color:var(--muted)}
+.legrow .k{display:inline-flex;align-items:center;gap:6px}
+.legrow .sw{width:14px;height:12px;border-radius:3px;display:inline-block}
+
+/* origin + hhi */
+.org{display:flex;flex-direction:column;gap:9px;max-width:520px}
+.org .o{display:grid;grid-template-columns:150px 1fr 46px;align-items:center;gap:10px}
+@media(max-width:520px){.org .o{grid-template-columns:110px 1fr 42px}}
+.org .oc{font-size:13.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.org .ot{height:14px;background:var(--surface-2);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.org .of{height:100%;border-radius:7px}
+.org .of.s0{background:var(--teal)} .org .of.s1{background:var(--gold)} .org .of.s2{background:var(--rust)} .org .of.s3{background:var(--ink-soft)}
+.org .op{font-family:var(--font-mono);font-size:12.5px;text-align:right;font-weight:600}
+.org .o.greyed .of{background:var(--muted)!important;opacity:.6}
+.stack{display:flex;height:26px;border-radius:8px;overflow:hidden;border:1px solid var(--line);margin:2px 0 4px;max-width:520px}
+.stack span{display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10px;color:var(--stack-ink);overflow:hidden;white-space:nowrap;min-width:0}
+.hhi{max-width:520px;margin-top:16px}
+.hhi .track{position:relative;height:12px;border-radius:7px;background:linear-gradient(90deg,var(--teal-wash),var(--surface-2));border:1px solid var(--line)}
+.hhi .mk{position:absolute;top:-4px;width:4px;height:20px;background:var(--rust);border-radius:2px;transform:translateX(-2px)}
+.hhi .ticks{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:6px}
+.notrack{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);font-style:italic;padding:10px 0}
+
+.chip.q{background:var(--surface-2);color:var(--ink-soft);border-color:var(--line)}
+.dlbtn{display:inline-flex;align-items:center;gap:7px;background:var(--teal-wash);border:1px solid var(--teal);border-radius:10px;color:var(--teal-ink);font:inherit;font-size:13px;cursor:pointer;padding:9px 14px;min-height:var(--tap);text-decoration:none}
+.dlbtn:hover{background:var(--surface-2)}
+.toggle{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft);cursor:pointer;margin-top:6px}
+.toggle input{min-height:0;width:auto}
+
+details.tblfall{margin-top:26px}
+details.tblfall > summary{cursor:pointer;font-family:var(--font-mono);font-size:12.5px;color:var(--teal-ink);padding:10px 0;min-height:var(--tap);display:flex;align-items:center}
+.jsonly{display:none}
+.nojs-note{font-size:12.5px;color:var(--muted);margin:6px 0 0}
+
+.foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--font-mono);font-size:11.5px;color:var(--muted);line-height:1.7}
+.foot a{color:var(--teal-ink)}
+.foot .row{margin-bottom:6px}
+.foot .badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital">
+      <img class="logo-mark" src="/brand/mark/mark-square-ink.svg" alt="" width="36" height="36" />
+      <span class="logo-text">Muntin Digital</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary"><a href="/open/">Open data</a><a href="/cost-index/">Cost Index</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+<header class="mast">
+  <div class="lead">
+    <p class="kick"><span>Muntin Cost Index · Open data</span> <span class="lic">CC0</span> <span>US Census Bureau</span></p>
+    <h1>The Import Shelf</h1>
+    <p class="lede">Walk through <b>16 years</b> of US food imports — <b>155</b> ingredients, about <b>$72B</b> a year. Every food shows a real import-value trend, a 12-month seasonal fingerprint, and its top origin countries. Every figure is import <b>value</b> (nominal customs dollars), never volume.</p>
+  </div>
+  <button class="theme" id="themeBtn" type="button" aria-label="Switch color theme (currently auto)"><span aria-hidden="true">◐</span> <span id="themeLbl">Auto</span></button>
+</header>
+
+<main id="main">
+<div id="overview">
+  <section class="insights" aria-labelledby="findings-h">
+    <h2 id="findings-h" class="sr-only">Key findings</h2>
+    <div class="ins"><h3>Counter-seasonal fill</h3><span class="big">114 / 155</span><p>items see an import peak in Dec–Mar — the shelf fills exactly when the local harvest is bare. Imports mirror the domestic calendar; they don't parallel it.</p></div>
+    <div class="ins"><h3>A two-country spine</h3><span class="big">82 &amp; 70</span><p>Mexico is a source for 82 foods, Canada for 70. No third country tops 16. And 28 foods draw ≥90% from a single country (18 Mexico, 7 Canada).</p></div>
+    <div class="ins"><h3>Dollars vs. drama</h3><span class="big">flat at the top</span><p>The biggest-value imports (ground beef, avocado, shrimp, banana) run nearly flat year-round; the wild seasonality sits in low-value produce like cherries (amplitude 3.3).</p></div>
+    <div class="ins"><h3>Compounded exposure</h3><span class="big">corr +0.29</span><p>The most seasonal foods also tend to be the most origin-concentrated — two risks that co-occur in the record. Shown as association, never cause.</p></div>
+    <div class="ins"><h3>The record shows its gaps</h3><span class="big">82 blanks</span><p>82 of 155 foods carry no import-reliance figure and 2 no concentration class. Gaps are shown as gaps, never padded.</p></div>
+  </section>
+
+  <form class="controls" role="search" aria-label="Filter and sort foods" onsubmit="return false">
+    <div class="ctl search">
+      <label for="q">Search food</label>
+      <input type="search" id="q" placeholder="e.g. avocado, cherry, shrimp…" autocomplete="off" aria-describedby="qHelp">
+      <span id="qHelp" class="sr-only">Filter the food list by name or slug; the wall, chart and table update as you type.</span>
+    </div>
+    <div class="ctl">
+      <label for="cat">Category</label>
+      <select id="cat" aria-label="Filter by category"><option value="">All categories</option><option value="allium">allium</option><option value="beef">beef</option><option value="beverage">beverage</option><option value="citrus">citrus</option><option value="cruciferous">cruciferous</option><option value="dairy">dairy</option><option value="fruit">fruit</option><option value="fruiting">fruiting</option><option value="greens">greens</option><option value="herbs">herbs</option><option value="meat">meat</option><option value="mushroom">mushroom</option><option value="nut">nut</option><option value="other">other</option><option value="pantry">pantry</option><option value="root">root</option><option value="seafood">seafood</option><option value="shellfish">shellfish</option><option value="spice">spice</option><option value="stalks">stalks</option><option value="tuber">tuber</option></select>
+    </div>
+    <div class="ctl">
+      <label for="reorder">Reorder the wall</label>
+      <select id="reorder" aria-label="Reorder the fingerprint wall">
+        <option value="peak">Peak month (winter wave)</option>
+        <option value="amp">Amplitude (spiky first)</option>
+        <option value="value">Import value (largest first)</option>
+        <option value="hhi">Concentration (most concentrated)</option>
+        <option value="name">Alphabetical</option>
+      </select>
+    </div>
+  </form>
+  <div class="chipbar" id="chipbar" aria-label="Active filters"></div>
+  <p class="status" id="statusLine" role="status" aria-live="polite"></p>
+
+  <section class="sec" aria-labelledby="wall-h">
+    <h2 id="wall-h">The fingerprint wall</h2>
+    <p class="subt">Each glyph is one food's 12-month seasonal fingerprint — the area rises above the dashed <b>1.0</b> baseline in the months imports surge. Reorder by peak month and the winter wave sweeps across the grid. Select any glyph to open its walk-through.</p>
+    <div class="wall" id="wall" role="group" aria-label="Seasonal fingerprints, selectable"></div>
+  </section>
+
+  <section class="sec jsonly" aria-labelledby="quad-h" id="quadSec">
+    <h2 id="quad-h">Value × seasonality</h2>
+    <p class="subt">Where money lives versus where seasonality lives. Horizontal: annual import value (log scale). Vertical: seasonal amplitude (peak index minus trough). Base-load staples sit low-right; spiky produce sits high. Every dot is keyboard-reachable.</p>
+    <div class="quadwrap"><div id="quad"></div></div>
+    <p class="fine">Amplitude is the spread of the seasonal index (max − min), a descriptive shape measure, not a volatility forecast.</p>
+  </section>
+
+  <details class="tblfall" id="tblfall" open>
+    <summary>Full data table — all 155 foods (source of record)</summary>
+    <p class="nojs-note">This table is the complete dataset. The interactive wall and charts above enhance it; the figures here are canonical. Columns are sortable when scripting is on.</p>
+    <div class="tablewrap">
+      <table id="tbl">
+        <caption>US food imports by value, latest year. Sources are the 2025 origin mix; amplitude is the spread of the 12-month seasonal index; reliance is import share of apparent consumption where the record tracks it.</caption>
+        <thead>
+          <tr id="thr">
+            <th scope="col" aria-sort="none" data-k="name"><button type="button">Food <span class="sarrow" aria-hidden="true"></span></button></th>
+            <th scope="col" aria-sort="none" data-k="cat"><button type="button">Category <span class="sarrow" aria-hidden="true"></span></button></th>
+            <th scope="col" aria-sort="descending" data-k="latest"><button type="button">Import value <span class="sarrow" aria-hidden="true">▼</span></button></th>
+            <th scope="col" aria-sort="none" data-k="yoy"><button type="button">YoY <span class="sarrow" aria-hidden="true"></span></button></th>
+            <th scope="col" aria-sort="none" data-k="peak"><button type="button">Peak months <span class="sarrow" aria-hidden="true"></span></button></th>
+            <th scope="col" aria-sort="none" data-k="amp"><button type="button">Amplitude <span class="sarrow" aria-hidden="true"></span></button></th>
+            <th scope="col" aria-sort="none" data-k="src"><button type="button">Top source <span class="sarrow" aria-hidden="true"></span></button></th>
+            <th scope="col" aria-sort="none" data-k="hhi"><button type="button">HHI <span class="sarrow" aria-hidden="true"></span></button></th>
+            <th scope="col" aria-sort="none" data-k="rel"><button type="button">Reliance <span class="sarrow" aria-hidden="true"></span></button></th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+<tr><th scope="row"><a href="#food/ground-beef">Ground beef</a></th><td>beef</td><td class="mono">$5.34B</td><td class="mono">▲ +10.9%</td><td>Jan, Jul, Aug</td><td class="mono">0.31</td><td>Australia 49%</td><td class="mono">0.30</td><td class="mono">5%</td></tr>
+<tr><th scope="row"><a href="#food/avocado">Avocado</a></th><td>fruit</td><td class="mono">$3.66B</td><td class="mono">▼ -3%</td><td>Jan, Mar, Apr</td><td class="mono">0.27</td><td>Mexico 88%</td><td class="mono">0.78</td><td class="mono">88%</td></tr>
+<tr><th scope="row"><a href="#food/shrimp-pd">Shrimp (P&amp;D)</a></th><td>shellfish</td><td class="mono">$3.32B</td><td class="mono">▲ +12.5%</td><td>Aug, Sep, Oct</td><td class="mono">0.25</td><td>India 50%</td><td class="mono">0.32</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/tomato">Tomato</a></th><td>fruiting</td><td class="mono">$2.85B</td><td class="mono">▼ -21.6%</td><td>Jan, Feb, Mar</td><td class="mono">0.49</td><td>Mexico 81%</td><td class="mono">0.68</td><td class="mono">81%</td></tr>
+<tr><th scope="row"><a href="#food/grapes">Grapes (table)</a></th><td>fruit</td><td class="mono">$2.59B</td><td class="mono">▲ +11.1%</td><td>Jan, Mar, Jun</td><td class="mono">2.07</td><td>Peru 47%</td><td class="mono">0.35</td><td class="mono">72%</td></tr>
+<tr><th scope="row"><a href="#food/banana">Banana</a></th><td>fruit</td><td class="mono">$2.51B</td><td class="mono">▲ +2.5%</td><td>Mar, Apr, May</td><td class="mono">0.15</td><td>Guatemala 37%</td><td class="mono">0.22</td><td class="mono">100%</td></tr>
+<tr><th scope="row"><a href="#food/salmon-skin-on-fillet">Salmon (skin-on fillet)</a></th><td>seafood</td><td class="mono">$2.46B</td><td class="mono">▼ -8.4%</td><td>Mar, Apr, May</td><td class="mono">0.25</td><td>Chile 63%</td><td class="mono">0.45</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/salmon-fillet">Salmon fillet</a></th><td>seafood</td><td class="mono">$2.46B</td><td class="mono">▼ -8.4%</td><td>Mar, Apr, May</td><td class="mono">0.25</td><td>Chile 63%</td><td class="mono">0.45</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/coffee">Coffee (roasted)</a></th><td>beverage</td><td class="mono">$2.18B</td><td class="mono">▲ +5.8%</td><td>Oct, Nov, Dec</td><td class="mono">0.30</td><td>Switzerland 56%</td><td class="mono">0.36</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/blueberry">Blueberry</a></th><td>fruit</td><td class="mono">$2.08B</td><td class="mono">▼ -4.5%</td><td>Jan, Feb, Oct</td><td class="mono">1.72</td><td>Peru 56%</td><td class="mono">0.39</td><td class="mono">99%</td></tr>
+<tr><th scope="row"><a href="#food/bell-pepper">Bell pepper</a></th><td>fruiting</td><td class="mono">$1.69B</td><td class="mono">▼ -5.1%</td><td>Jan, Feb, Mar</td><td class="mono">0.77</td><td>Mexico 73%</td><td class="mono">0.60</td><td class="mono">82%</td></tr>
+<tr><th scope="row"><a href="#food/shrimp-head-on">Shrimp (head-on)</a></th><td>shellfish</td><td class="mono">$1.62B</td><td class="mono">▲ +1.7%</td><td>Jan, Nov, Dec</td><td class="mono">0.18</td><td>Ecuador 50%</td><td class="mono">0.30</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/shrimp">Shrimp (shell-on)</a></th><td>shellfish</td><td class="mono">$1.62B</td><td class="mono">▲ +1.7%</td><td>Jan, Nov, Dec</td><td class="mono">0.18</td><td>Ecuador 50%</td><td class="mono">0.30</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/whole-crab">Whole crab</a></th><td>shellfish</td><td class="mono">$1.55B</td><td class="mono">▲ +46.3%</td><td>May, Jun, Jul</td><td class="mono">2.18</td><td>Canada 79%</td><td class="mono">0.63</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/lamb">Lamb</a></th><td>meat</td><td class="mono">$1.49B</td><td class="mono">▲ +12.1%</td><td>Mar, Apr, Dec</td><td class="mono">0.48</td><td>Australia 72%</td><td class="mono">0.60</td><td class="mono">54%</td></tr>
+<tr><th scope="row"><a href="#food/cheddar-cheese">Cheddar cheese</a></th><td>other</td><td class="mono">$1.43B</td><td class="mono">▼ -15.5%</td><td>Oct, Nov, Dec</td><td class="mono">0.38</td><td>Italy 24%</td><td class="mono">0.11</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/cucumber">Cucumber</a></th><td>fruiting</td><td class="mono">$1.31B</td><td class="mono">▼ -9.8%</td><td>Jan, Mar, Apr</td><td class="mono">0.47</td><td>Mexico 54%</td><td class="mono">0.50</td><td class="mono">85%</td></tr>
+<tr><th scope="row"><a href="#food/canned-tuna">Canned tuna</a></th><td>pantry</td><td class="mono">$1.15B</td><td class="mono">▲ +3.5%</td><td>Oct, Nov, Dec</td><td class="mono">0.37</td><td>Thailand 48%</td><td class="mono">0.26</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/beef-tenderloin">Beef tenderloin</a></th><td>beef</td><td class="mono">$1.09B</td><td class="mono">▲ +8%</td><td>Mar, Jun, Oct</td><td class="mono">0.25</td><td>Canada 53%</td><td class="mono">0.36</td><td class="mono">1%</td></tr>
+<tr><th scope="row"><a href="#food/striploin">Striploin</a></th><td>beef</td><td class="mono">$1.09B</td><td class="mono">▲ +8%</td><td>Mar, Jun, Oct</td><td class="mono">0.25</td><td>Canada 53%</td><td class="mono">0.36</td><td class="mono">1%</td></tr>
+<tr><th scope="row"><a href="#food/whole-salmon">Whole salmon</a></th><td>seafood</td><td class="mono">$1.08B</td><td class="mono">▼ -9.1%</td><td>Mar, May, Jun</td><td class="mono">0.26</td><td>Canada 47%</td><td class="mono">0.28</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/raspberry">Raspberry</a></th><td>fruit</td><td class="mono">$1.04B</td><td class="mono">▼ -12.6%</td><td>Mar, Apr, May</td><td class="mono">1.31</td><td>Mexico 100%</td><td class="mono">1.00</td><td class="mono">83%</td></tr>
+<tr><th scope="row"><a href="#food/strawberry">Strawberry</a></th><td>fruit</td><td class="mono">$1.03B</td><td class="mono">▼ -11.5%</td><td>Jan, Feb, Mar</td><td class="mono">2.50</td><td>Mexico 98%</td><td class="mono">0.95</td><td class="mono">21%</td></tr>
+<tr><th scope="row"><a href="#food/lemon">Lemon</a></th><td>citrus</td><td class="mono">$972M</td><td class="mono">▼ -9%</td><td>Jul, Aug, Sep</td><td class="mono">0.77</td><td>Mexico 76%</td><td class="mono">0.60</td><td class="mono">62%</td></tr>
+<tr><th scope="row"><a href="#food/lime">Lime</a></th><td>citrus</td><td class="mono">$972M</td><td class="mono">▼ -9%</td><td>Jul, Aug, Sep</td><td class="mono">0.77</td><td>Mexico 76%</td><td class="mono">0.60</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/mango">Mango</a></th><td>fruit</td><td class="mono">$925M</td><td class="mono">▲ +1.1%</td><td>May, Jun, Jul</td><td class="mono">0.61</td><td>Mexico 58%</td><td class="mono">0.37</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/pineapple">Pineapple</a></th><td>fruit</td><td class="mono">$894M</td><td class="mono">▲ +2.9%</td><td>Apr, May, Jun</td><td class="mono">0.36</td><td>Costa Rica 83%</td><td class="mono">0.70</td><td class="mono">91%</td></tr>
+<tr><th scope="row"><a href="#food/cashew">Cashew</a></th><td>nut</td><td class="mono">$838M</td><td class="mono">▼ -19.6%</td><td>Jul, Aug, Sep</td><td class="mono">0.45</td><td>Vietnam 88%</td><td class="mono">0.78</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/honey">Honey</a></th><td>pantry</td><td class="mono">$657M</td><td class="mono">▲ +6.7%</td><td>May, Jun, Jul</td><td class="mono">0.58</td><td>India 26%</td><td class="mono">0.15</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/olives">Olives</a></th><td>pantry</td><td class="mono">$656M</td><td class="mono">▲ +5.4%</td><td>Jun, Jul, Aug</td><td class="mono">0.34</td><td>Greece 35%</td><td class="mono">0.24</td><td class="mono">84%</td></tr>
+<tr><th scope="row"><a href="#food/whole-lobster">Whole lobster</a></th><td>shellfish</td><td class="mono">$642M</td><td class="mono">▼ -1.3%</td><td>Jun, Aug, Oct</td><td class="mono">2.14</td><td>Canada 99%</td><td class="mono">0.98</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/tilapia">Tilapia</a></th><td>seafood</td><td class="mono">$638M</td><td class="mono">▼ -7.5%</td><td>Jan, Feb, Dec</td><td class="mono">0.67</td><td>China 50%</td><td class="mono">0.29</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/pork-loin">Pork loin</a></th><td>meat</td><td class="mono">$620M</td><td class="mono">▼ -3.1%</td><td>Mar, Apr, Jun</td><td class="mono">0.21</td><td>Mexico 23%</td><td class="mono">0.15</td><td class="mono">2%</td></tr>
+<tr><th scope="row"><a href="#food/black-pepper">Black pepper</a></th><td>spice</td><td class="mono">$598M</td><td class="mono">▲ +13.8%</td><td>May, Jul, Oct</td><td class="mono">0.36</td><td>Vietnam 73%</td><td class="mono">0.56</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/ribeye">Ribeye</a></th><td>beef</td><td class="mono">$590M</td><td class="mono">▼ -3.2%</td><td>Aug, Oct, Nov</td><td class="mono">0.34</td><td>Canada 51%</td><td class="mono">0.34</td><td class="mono">1%</td></tr>
+<tr><th scope="row"><a href="#food/asparagus">Asparagus</a></th><td>stalks</td><td class="mono">$525M</td><td class="mono">▼ -18.8%</td><td>Jan, Feb, Mar</td><td class="mono">1.06</td><td>Mexico 49%</td><td class="mono">0.47</td><td class="mono">100%</td></tr>
+<tr><th scope="row"><a href="#food/paprika">Paprika / chili powder</a></th><td>spice</td><td class="mono">$514M</td><td class="mono">▼ -13.1%</td><td>Oct, Nov, Dec</td><td class="mono">0.20</td><td>Mexico 24%</td><td class="mono">0.17</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/watermelon">Watermelon</a></th><td>fruit</td><td class="mono">$453M</td><td class="mono">▲ +2.8%</td><td>Mar, Apr, May</td><td class="mono">2.96</td><td>Mexico 77%</td><td class="mono">0.62</td><td class="mono">41%</td></tr>
+<tr><th scope="row"><a href="#food/ketchup">Ketchup &amp; tomato sauce</a></th><td>pantry</td><td class="mono">$451M</td><td class="mono">▼ -9.1%</td><td>Oct, Nov, Dec</td><td class="mono">0.43</td><td>Italy 80%</td><td class="mono">0.65</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/cod">Cod</a></th><td>seafood</td><td class="mono">$437M</td><td class="mono">▼ -5.8%</td><td>Jan, Feb, Dec</td><td class="mono">0.48</td><td>China 59%</td><td class="mono">0.38</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/tuna-loin">Tuna loin</a></th><td>seafood</td><td class="mono">$436M</td><td class="mono">▼ -8.1%</td><td>Jun, Jul, Aug</td><td class="mono">0.30</td><td>Indonesia 37%</td><td class="mono">0.26</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/plantain">Plantain</a></th><td>fruit</td><td class="mono">$407M</td><td class="mono">▲ +22.5%</td><td>Aug, Sep, Oct</td><td class="mono">0.19</td><td>Guatemala 50%</td><td class="mono">0.33</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/butter">Butter (AA, bulk)</a></th><td>other</td><td class="mono">$404M</td><td class="mono">▼ -42.7%</td><td>Sep, Oct, Nov</td><td class="mono">0.30</td><td>Ireland 46%</td><td class="mono">0.37</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/pecorino">Pecorino (sheep's-milk cheese)</a></th><td>dairy</td><td class="mono">$403M</td><td class="mono">▼ -6.9%</td><td>Aug, Oct, Nov</td><td class="mono">0.25</td><td>Italy 44%</td><td class="mono">0.28</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/cantaloupe">Cantaloupe</a></th><td>fruit</td><td class="mono">$365M</td><td class="mono">▼ -5.5%</td><td>Jan, Mar, Apr</td><td class="mono">2.08</td><td>Guatemala 58%</td><td class="mono">0.41</td><td class="mono">71%</td></tr>
+<tr><th scope="row"><a href="#food/button-mushroom">Button mushroom</a></th><td>mushroom</td><td class="mono">$352M</td><td class="mono">▼ -7.3%</td><td>Jan, Nov, Dec</td><td class="mono">0.14</td><td>Canada 94%</td><td class="mono">0.88</td><td class="mono">29%</td></tr>
+<tr><th scope="row"><a href="#food/catfish">Catfish</a></th><td>seafood</td><td class="mono">$350M</td><td class="mono">▼ -1%</td><td>Jan, Jun, Jul</td><td class="mono">0.33</td><td>Vietnam 95%</td><td class="mono">0.91</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/kiwi">Kiwi</a></th><td>fruit</td><td class="mono">$347M</td><td class="mono">▲ +25%</td><td>May, Jun, Jul</td><td class="mono">1.05</td><td>New Zealand 56%</td><td class="mono">0.38</td><td class="mono">80%</td></tr>
+<tr><th scope="row"><a href="#food/pecan">Pecan</a></th><td>nut</td><td class="mono">$341M</td><td class="mono">▼ -31.6%</td><td>Jan, Nov, Dec</td><td class="mono">0.97</td><td>Mexico 99%</td><td class="mono">0.98</td><td class="mono">53%</td></tr>
+<tr><th scope="row"><a href="#food/onion">Onion</a></th><td>allium</td><td class="mono">$341M</td><td class="mono">▼ -30.3%</td><td>Mar, May, Nov</td><td class="mono">0.36</td><td>Mexico 64%</td><td class="mono">0.46</td><td class="mono">20%</td></tr>
+<tr><th scope="row"><a href="#food/red-onion">Red onion</a></th><td>allium</td><td class="mono">$341M</td><td class="mono">▼ -30.3%</td><td>Mar, May, Nov</td><td class="mono">0.36</td><td>Mexico 64%</td><td class="mono">0.46</td><td class="mono">20%</td></tr>
+<tr><th scope="row"><a href="#food/red-potato">Red potato</a></th><td>tuber</td><td class="mono">$320M</td><td class="mono">▼ -5.4%</td><td>Jan, Mar, Nov</td><td class="mono">0.73</td><td>Canada 100%</td><td class="mono">1.00</td><td class="mono">7%</td></tr>
+<tr><th scope="row"><a href="#food/russet-potato">Russet potato</a></th><td>tuber</td><td class="mono">$320M</td><td class="mono">▼ -5.4%</td><td>Jan, Mar, Nov</td><td class="mono">0.73</td><td>Canada 100%</td><td class="mono">1.00</td><td class="mono">7%</td></tr>
+<tr><th scope="row"><a href="#food/tea">Tea (black)</a></th><td>beverage</td><td class="mono">$306M</td><td class="mono">▼ -10.3%</td><td>May, Sep, Oct</td><td class="mono">0.27</td><td>India 18%</td><td class="mono">0.09</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/broccoli">Broccoli</a></th><td>cruciferous</td><td class="mono">$303M</td><td class="mono">▼ -24.5%</td><td>Jan, Mar, Dec</td><td class="mono">0.84</td><td>Mexico 91%</td><td class="mono">0.83</td><td class="mono">34%</td></tr>
+<tr><th scope="row"><a href="#food/yeast">Yeast (baking)</a></th><td>pantry</td><td class="mono">$293M</td><td class="mono">▼ -16.5%</td><td>May, Jun, Jul</td><td class="mono">0.23</td><td>Canada 48%</td><td class="mono">0.33</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/prosciutto">Prosciutto &amp; cured ham</a></th><td>meat</td><td class="mono">$291M</td><td class="mono">▲ +3.9%</td><td>Aug, Oct, Nov</td><td class="mono">0.52</td><td>Italy 76%</td><td class="mono">0.61</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/orange">Orange</a></th><td>citrus</td><td class="mono">$281M</td><td class="mono">▲ +7.7%</td><td>Jul, Aug, Sep</td><td class="mono">3.01</td><td>Chile 40%</td><td class="mono">0.26</td><td class="mono">32%</td></tr>
+<tr><th scope="row"><a href="#food/pork-belly">Pork belly</a></th><td>meat</td><td class="mono">$270M</td><td class="mono">▲ +11.3%</td><td>Mar, Aug, Oct</td><td class="mono">0.21</td><td>Canada 95%</td><td class="mono">0.90</td><td class="mono">1%</td></tr>
+<tr><th scope="row"><a href="#food/garlic">Garlic</a></th><td>allium</td><td class="mono">$262M</td><td class="mono">▼ -9.3%</td><td>Jan, Feb, Dec</td><td class="mono">0.29</td><td>China 38%</td><td class="mono">0.25</td><td class="mono">53%</td></tr>
+<tr><th scope="row"><a href="#food/ahi-tuna">Ahi tuna (fresh)</a></th><td>seafood</td><td class="mono">$258M</td><td class="mono">▼ -7.9%</td><td>Mar, May, Jun</td><td class="mono">0.23</td><td>Mexico 32%</td><td class="mono">0.16</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/green-beans">Green beans</a></th><td>fruiting</td><td class="mono">$253M</td><td class="mono">▲ +12.9%</td><td>Jan, Mar, Dec</td><td class="mono">1.10</td><td>—</td><td class="mono">not tracked</td><td class="mono">54%</td></tr>
+<tr><th scope="row"><a href="#food/squid">Squid</a></th><td>shellfish</td><td class="mono">$244M</td><td class="mono">▲ +5.5%</td><td>Jan, Jul, Aug</td><td class="mono">0.28</td><td>Argentina 23%</td><td class="mono">0.12</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/sardine">Sardines</a></th><td>pantry</td><td class="mono">$218M</td><td class="mono">▲ +6.9%</td><td>Jan, Nov, Dec</td><td class="mono">0.25</td><td>Poland 29%</td><td class="mono">0.17</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/cherry">Cherry (sweet)</a></th><td>fruit</td><td class="mono">$209M</td><td class="mono">▲ +85.5%</td><td>Jan, Aug, Dec</td><td class="mono">3.30</td><td>Chile 71%</td><td class="mono">0.56</td><td class="mono">51%</td></tr>
+<tr><th scope="row"><a href="#food/snapper">Snapper</a></th><td>seafood</td><td class="mono">$206M</td><td class="mono">▲ +4.7%</td><td>Jul, Aug, Dec</td><td class="mono">0.27</td><td>Mexico 29%</td><td class="mono">0.17</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/coconut">Coconut</a></th><td>fruit</td><td class="mono">$193M</td><td class="mono">▲ +31.8%</td><td>Jul, Aug, Oct</td><td class="mono">0.47</td><td>Philippines 50%</td><td class="mono">0.30</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/zucchini">Zucchini</a></th><td>fruiting</td><td class="mono">$190M</td><td class="mono">▼ -16.7%</td><td>Jan, Feb, Mar</td><td class="mono">1.82</td><td>Mexico 95%</td><td class="mono">0.91</td><td class="mono">48%</td></tr>
+<tr><th scope="row"><a href="#food/whole-halibut">Whole halibut</a></th><td>seafood</td><td class="mono">$174M</td><td class="mono">▲ +2.5%</td><td>Jun, Jul, Aug</td><td class="mono">1.11</td><td>Canada 89%</td><td class="mono">0.80</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/carrot">Carrot</a></th><td>root</td><td class="mono">$164M</td><td class="mono">▼ -16.9%</td><td>Jan, Nov, Dec</td><td class="mono">0.43</td><td>Mexico 44%</td><td class="mono">0.37</td><td class="mono">8%</td></tr>
+<tr><th scope="row"><a href="#food/cinnamon">Cinnamon</a></th><td>spice</td><td class="mono">$162M</td><td class="mono">▲ +6.4%</td><td>Oct, Nov, Dec</td><td class="mono">0.22</td><td>Indonesia 35%</td><td class="mono">0.30</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/romaine-lettuce">Romaine lettuce</a></th><td>greens</td><td class="mono">$159M</td><td class="mono">▼ -4%</td><td>Jan, Feb, Mar</td><td class="mono">1.15</td><td>Mexico 89%</td><td class="mono">0.80</td><td class="mono">6%</td></tr>
+<tr><th scope="row"><a href="#food/goat">Goat</a></th><td>meat</td><td class="mono">$158M</td><td class="mono">▲ +13.4%</td><td>Apr, May, Dec</td><td class="mono">0.47</td><td>Australia 98%</td><td class="mono">0.96</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/parmesan">Parmesan (Italian grating cheese)</a></th><td>dairy</td><td class="mono">$156M</td><td class="mono">▼ -46%</td><td>Oct, Nov, Dec</td><td class="mono">0.23</td><td>Italy 92%</td><td class="mono">0.85</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/yogurt">Yogurt</a></th><td>dairy</td><td class="mono">$153M</td><td class="mono">▲ +2.1%</td><td>Apr, Jul, Dec</td><td class="mono">0.13</td><td>Canada 50%</td><td class="mono">0.41</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/cassava">Cassava (yuca)</a></th><td>root</td><td class="mono">$146M</td><td class="mono">▲ +31%</td><td>Oct, Nov, Dec</td><td class="mono">0.38</td><td>Costa Rica 85%</td><td class="mono">0.73</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/papaya">Papaya</a></th><td>fruit</td><td class="mono">$145M</td><td class="mono">– +0.2%</td><td>Apr, May, Jun</td><td class="mono">0.38</td><td>Mexico 89%</td><td class="mono">0.80</td><td class="mono">100%</td></tr>
+<tr><th scope="row"><a href="#food/haddock">Haddock</a></th><td>seafood</td><td class="mono">$144M</td><td class="mono">▲ +46.6%</td><td>Jan, Nov, Dec</td><td class="mono">0.55</td><td>China 46%</td><td class="mono">0.31</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/tomatillo">Tomatillo</a></th><td>fruiting</td><td class="mono">$137M</td><td class="mono">▲ +15.9%</td><td>Jan, Nov, Dec</td><td class="mono">0.28</td><td>—</td><td class="mono">not tracked</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/pear">Pear</a></th><td>fruit</td><td class="mono">$128M</td><td class="mono">▲ +0.6%</td><td>Mar, Apr, May</td><td class="mono">2.00</td><td>Argentina 54%</td><td class="mono">0.38</td><td class="mono">46%</td></tr>
+<tr><th scope="row"><a href="#food/jalapeno">Jalapeño</a></th><td>fruiting</td><td class="mono">$124M</td><td class="mono">▼ -26.3%</td><td>Jan, Apr, May</td><td class="mono">0.70</td><td>Mexico 98%</td><td class="mono">0.95</td><td class="mono">100%</td></tr>
+<tr><th scope="row"><a href="#food/branzino">Branzino / sea bass</a></th><td>seafood</td><td class="mono">$121M</td><td class="mono">▲ +8.2%</td><td>Mar, Oct, Dec</td><td class="mono">0.16</td><td>Turkey 43%</td><td class="mono">0.31</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/apple">Apple</a></th><td>fruit</td><td class="mono">$120M</td><td class="mono">▼ -5.6%</td><td>May, Jun, Jul</td><td class="mono">2.63</td><td>Chile 43%</td><td class="mono">0.33</td><td class="mono">8%</td></tr>
+<tr><th scope="row"><a href="#food/dates">Dates</a></th><td>fruit</td><td class="mono">$120M</td><td class="mono">▲ +25.9%</td><td>Feb, Mar, Apr</td><td class="mono">0.67</td><td>Mexico 42%</td><td class="mono">0.23</td><td class="mono">59%</td></tr>
+<tr><th scope="row"><a href="#food/ginger">Ginger root</a></th><td>root</td><td class="mono">$119M</td><td class="mono">▼ -17%</td><td>Mar, Apr, Dec</td><td class="mono">0.25</td><td>Peru 41%</td><td class="mono">0.30</td><td class="mono">99%</td></tr>
+<tr><th scope="row"><a href="#food/mozzarella">Fresh mozzarella / fresh cheese</a></th><td>dairy</td><td class="mono">$117M</td><td class="mono">▼ -18.5%</td><td>Jun, Jul, Aug</td><td class="mono">0.37</td><td>Italy 26%</td><td class="mono">0.14</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/eggs">Eggs</a></th><td>other</td><td class="mono">$116M</td><td class="mono">▲ +1745.1%</td><td>Apr, May, Aug</td><td class="mono">0.58</td><td>Brazil 36%</td><td class="mono">0.27</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/macadamia">Macadamia</a></th><td>nut</td><td class="mono">$114M</td><td class="mono">▲ +21%</td><td>Aug, Sep, Nov</td><td class="mono">0.76</td><td>South Africa 37%</td><td class="mono">0.25</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/bacon">Bacon (cured)</a></th><td>meat</td><td class="mono">$111M</td><td class="mono">▲ +1.4%</td><td>Aug, Sep, Dec</td><td class="mono">0.22</td><td>Canada 98%</td><td class="mono">0.97</td><td class="mono">0%</td></tr>
+<tr><th scope="row"><a href="#food/pickles">Pickles</a></th><td>pantry</td><td class="mono">$109M</td><td class="mono">▲ +14.6%</td><td>Mar, Apr, Sep</td><td class="mono">0.54</td><td>India 50%</td><td class="mono">0.28</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/cauliflower">Cauliflower</a></th><td>cruciferous</td><td class="mono">$109M</td><td class="mono">▲ +6%</td><td>Aug, Sep, Oct</td><td class="mono">0.78</td><td>Mexico 72%</td><td class="mono">0.58</td><td class="mono">28%</td></tr>
+<tr><th scope="row"><a href="#food/soy-sauce">Soy sauce</a></th><td>pantry</td><td class="mono">$108M</td><td class="mono">▼ -8.5%</td><td>Apr, May, Dec</td><td class="mono">0.28</td><td>China 35%</td><td class="mono">0.18</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/cherry-tomato">Cherry tomato</a></th><td>fruiting</td><td class="mono">$104M</td><td class="mono">▼ -7.8%</td><td>Jan, Feb, Apr</td><td class="mono">1.39</td><td>Mexico 75%</td><td class="mono">0.59</td><td class="mono">14%</td></tr>
+<tr><th scope="row"><a href="#food/vanilla">Vanilla</a></th><td>spice</td><td class="mono">$96M</td><td class="mono">▼ -25.9%</td><td>Mar, Apr, May</td><td class="mono">0.85</td><td>Madagascar 70%</td><td class="mono">0.52</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/eggplant">Eggplant</a></th><td>fruiting</td><td class="mono">$95M</td><td class="mono">▼ -20.3%</td><td>Jan, Mar, Dec</td><td class="mono">1.35</td><td>Mexico 87%</td><td class="mono">0.77</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/habanero-pepper">Habanero pepper</a></th><td>fruiting</td><td class="mono">$93M</td><td class="mono">▼ -8.1%</td><td>Mar, Apr, May</td><td class="mono">0.43</td><td>Mexico 94%</td><td class="mono">0.88</td><td class="mono">100%</td></tr>
+<tr><th scope="row"><a href="#food/tomato-paste">Tomato paste</a></th><td>pantry</td><td class="mono">$92M</td><td class="mono">▲ +13.6%</td><td>Jun, Jul, Dec</td><td class="mono">0.30</td><td>Italy 43%</td><td class="mono">0.27</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/spinach">Spinach</a></th><td>greens</td><td class="mono">$88M</td><td class="mono">▼ -8.6%</td><td>Jan, Mar, Dec</td><td class="mono">0.50</td><td>Mexico 71%</td><td class="mono">0.59</td><td class="mono">22%</td></tr>
+<tr><th scope="row"><a href="#food/brussels-sprouts">Brussels sprouts</a></th><td>cruciferous</td><td class="mono">$86M</td><td class="mono">▼ -15.8%</td><td>Feb, Mar, Apr</td><td class="mono">1.84</td><td>Mexico 87%</td><td class="mono">0.77</td><td class="mono">100%</td></tr>
+<tr><th scope="row"><a href="#food/iceberg-lettuce">Iceberg lettuce</a></th><td>greens</td><td class="mono">$83M</td><td class="mono">▼ -13.6%</td><td>Mar, Oct, Nov</td><td class="mono">0.23</td><td>Mexico 74%</td><td class="mono">0.61</td><td class="mono">5%</td></tr>
+<tr><th scope="row"><a href="#food/cilantro">Cilantro</a></th><td>herbs</td><td class="mono">$81M</td><td class="mono">▼ -17.2%</td><td>Jan, Feb, Dec</td><td class="mono">0.53</td><td>Mexico 96%</td><td class="mono">0.91</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/celery">Celery</a></th><td>stalks</td><td class="mono">$78M</td><td class="mono">▼ -10.9%</td><td>Jan, Feb, Mar</td><td class="mono">1.03</td><td>Mexico 90%</td><td class="mono">0.81</td><td class="mono">16%</td></tr>
+<tr><th scope="row"><a href="#food/yam">Yam</a></th><td>root</td><td class="mono">$77M</td><td class="mono">▼ -26%</td><td>Sep, Oct, Nov</td><td class="mono">0.32</td><td>Jamaica 42%</td><td class="mono">0.24</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/cabbage">Cabbage</a></th><td>cruciferous</td><td class="mono">$76M</td><td class="mono">▼ -5.7%</td><td>Aug, Sep, Oct</td><td class="mono">0.85</td><td>Mexico 54%</td><td class="mono">0.50</td><td class="mono">17%</td></tr>
+<tr><th scope="row"><a href="#food/canned-tomatoes">Canned tomatoes</a></th><td>pantry</td><td class="mono">$73M</td><td class="mono">▼ -11.7%</td><td>Mar, Oct, Dec</td><td class="mono">0.28</td><td>Italy 59%</td><td class="mono">0.40</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/corn-on-the-cob">Corn on the cob</a></th><td>fruiting</td><td class="mono">$67M</td><td class="mono">▼ -25.3%</td><td>Jan, Feb, Mar</td><td class="mono">2.22</td><td>Mexico 87%</td><td class="mono">0.76</td><td class="mono">14%</td></tr>
+<tr><th scope="row"><a href="#food/cumin">Cumin</a></th><td>spice</td><td class="mono">$66M</td><td class="mono">▼ -17.2%</td><td>Jul, Aug, Sep</td><td class="mono">0.33</td><td>India 80%</td><td class="mono">0.65</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/caviar">Caviar</a></th><td>pantry</td><td class="mono">$63M</td><td class="mono">▲ +26.1%</td><td>Oct, Nov, Dec</td><td class="mono">1.57</td><td>China 55%</td><td class="mono">0.33</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/grouper">Grouper</a></th><td>seafood</td><td class="mono">$62M</td><td class="mono">▼ -12.4%</td><td>Jan, Apr, Jul</td><td class="mono">0.25</td><td>Mexico 51%</td><td class="mono">0.31</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/processed-cheese">Processed cheese (American)</a></th><td>dairy</td><td class="mono">$60M</td><td class="mono">▲ +3.8%</td><td>Mar, Oct, Nov</td><td class="mono">0.41</td><td>France 22%</td><td class="mono">0.12</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/pork-shoulder">Pork shoulder</a></th><td>meat</td><td class="mono">$60M</td><td class="mono">▼ -29.6%</td><td>May, Jun, Jul</td><td class="mono">0.32</td><td>Canada 76%</td><td class="mono">0.60</td><td class="mono">0%</td></tr>
+<tr><th scope="row"><a href="#food/green-onion">Green onion</a></th><td>allium</td><td class="mono">$59M</td><td class="mono">▲ +3.4%</td><td>Sep, Oct, Dec</td><td class="mono">0.41</td><td>Mexico 95%</td><td class="mono">0.90</td><td class="mono">4%</td></tr>
+<tr><th scope="row"><a href="#food/shiitake">Specialty mushrooms (shiitake, oyster)</a></th><td>mushroom</td><td class="mono">$57M</td><td class="mono">▼ -16.5%</td><td>Oct, Nov, Dec</td><td class="mono">1.59</td><td>Italy 25%</td><td class="mono">0.18</td><td class="mono">6%</td></tr>
+<tr><th scope="row"><a href="#food/chayote">Chayote</a></th><td>fruiting</td><td class="mono">$54M</td><td class="mono">▼ -8.5%</td><td>Mar, Oct, Nov</td><td class="mono">0.41</td><td>Mexico 60%</td><td class="mono">0.52</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/whole-trout">Whole trout</a></th><td>seafood</td><td class="mono">$52M</td><td class="mono">▲ +5.4%</td><td>Mar, May, Sep</td><td class="mono">0.19</td><td>Norway 80%</td><td class="mono">0.65</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/turmeric">Turmeric</a></th><td>spice</td><td class="mono">$51M</td><td class="mono">▼ -0.7%</td><td>May, Jul, Oct</td><td class="mono">0.36</td><td>India 70%</td><td class="mono">0.53</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/sweet-potato">Sweet potato</a></th><td>tuber</td><td class="mono">$45M</td><td class="mono">▼ -9.3%</td><td>Feb, Jul, Oct</td><td class="mono">0.66</td><td>China 58%</td><td class="mono">0.38</td><td class="mono">7%</td></tr>
+<tr><th scope="row"><a href="#food/mahi-mahi">Mahi-mahi</a></th><td>seafood</td><td class="mono">$43M</td><td class="mono">▼ -21.9%</td><td>Feb, Mar, Apr</td><td class="mono">0.58</td><td>Ecuador 71%</td><td class="mono">0.52</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/mustard">Prepared mustard</a></th><td>pantry</td><td class="mono">$43M</td><td class="mono">▼ -6.1%</td><td>Mar, Jun, Oct</td><td class="mono">0.20</td><td>Canada 43%</td><td class="mono">0.34</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/cardamom">Cardamom</a></th><td>spice</td><td class="mono">$43M</td><td class="mono">▲ +54%</td><td>Mar, Apr, May</td><td class="mono">0.65</td><td>Guatemala 55%</td><td class="mono">0.44</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/yellow-squash">Yellow squash</a></th><td>fruiting</td><td class="mono">$42M</td><td class="mono">▼ -40.4%</td><td>Feb, Mar, Apr</td><td class="mono">2.62</td><td>Mexico 100%</td><td class="mono">0.99</td><td class="mono">17%</td></tr>
+<tr><th scope="row"><a href="#food/anchovy">Anchovies</a></th><td>pantry</td><td class="mono">$41M</td><td class="mono">▼ -16%</td><td>Jan, Nov, Dec</td><td class="mono">0.40</td><td>Morocco 32%</td><td class="mono">0.22</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/poblano-pepper">Poblano pepper</a></th><td>fruiting</td><td class="mono">$40M</td><td class="mono">▼ -21.9%</td><td>Jan, Feb, Mar</td><td class="mono">0.94</td><td>Mexico 100%</td><td class="mono">1.00</td><td class="mono">100%</td></tr>
+<tr><th scope="row"><a href="#food/butternut-squash">Butternut squash</a></th><td>fruiting</td><td class="mono">$38M</td><td class="mono">– -0.3%</td><td>Jan, Nov, Dec</td><td class="mono">1.85</td><td>Mexico 95%</td><td class="mono">0.91</td><td class="mono">16%</td></tr>
+<tr><th scope="row"><a href="#food/bok-choy">Bok choy</a></th><td>greens</td><td class="mono">$36M</td><td class="mono">▼ -9.4%</td><td>Jan, Sep, Dec</td><td class="mono">0.65</td><td>Mexico 78%</td><td class="mono">0.66</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/okra">Okra</a></th><td>fruiting</td><td class="mono">$36M</td><td class="mono">▼ -37.7%</td><td>Mar, Jun, Jul</td><td class="mono">0.65</td><td>Honduras 60%</td><td class="mono">0.45</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/red-leaf-lettuce">Red leaf lettuce</a></th><td>greens</td><td class="mono">$34M</td><td class="mono">▲ +26.9%</td><td>Jan, Feb, Mar</td><td class="mono">0.51</td><td>Canada 53%</td><td class="mono">0.50</td><td class="mono">4%</td></tr>
+<tr><th scope="row"><a href="#food/green-leaf-lettuce">Green leaf lettuce</a></th><td>greens</td><td class="mono">$34M</td><td class="mono">▲ +26.9%</td><td>Jan, Feb, Mar</td><td class="mono">0.51</td><td>Canada 53%</td><td class="mono">0.50</td><td class="mono">4%</td></tr>
+<tr><th scope="row"><a href="#food/blue-cheese">Blue cheese</a></th><td>dairy</td><td class="mono">$33M</td><td class="mono">▼ -7.3%</td><td>Sep, Oct, Nov</td><td class="mono">0.49</td><td>France 27%</td><td class="mono">0.21</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/grapefruit">Grapefruit</a></th><td>citrus</td><td class="mono">$33M</td><td class="mono">▼ -16%</td><td>Jul, Aug, Sep</td><td class="mono">1.69</td><td>South Africa 47%</td><td class="mono">0.30</td><td class="mono">21%</td></tr>
+<tr><th scope="row"><a href="#food/serrano-pepper">Serrano pepper</a></th><td>fruiting</td><td class="mono">$31M</td><td class="mono">▼ -34.6%</td><td>Mar, Apr, May</td><td class="mono">0.90</td><td>Mexico 100%</td><td class="mono">1.00</td><td class="mono">100%</td></tr>
+<tr><th scope="row"><a href="#food/daikon">Daikon radish</a></th><td>root</td><td class="mono">$28M</td><td class="mono">▼ -29.7%</td><td>Jan, Feb, Dec</td><td class="mono">1.05</td><td>Mexico 62%</td><td class="mono">0.48</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/snow-peas">Snow peas</a></th><td>fruiting</td><td class="mono">$24M</td><td class="mono">▼ -25.8%</td><td>Jan, Mar, Dec</td><td class="mono">1.27</td><td>Guatemala 51%</td><td class="mono">0.38</td><td class="mono">41%</td></tr>
+<tr><th scope="row"><a href="#food/leek">Leek</a></th><td>allium</td><td class="mono">$24M</td><td class="mono">▼ -33.3%</td><td>Jan, Feb, Mar</td><td class="mono">0.83</td><td>Mexico 67%</td><td class="mono">0.51</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/jicama">Jicama</a></th><td>root</td><td class="mono">$24M</td><td class="mono">▼ -17.1%</td><td>Jan, Mar, Apr</td><td class="mono">0.56</td><td>Mexico 86%</td><td class="mono">0.76</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/scallops">Scallops</a></th><td>shellfish</td><td class="mono">$21M</td><td class="mono">▼ -34%</td><td>Jan, Oct, Dec</td><td class="mono">0.87</td><td>Japan 41%</td><td class="mono">0.23</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/cloves">Cloves</a></th><td>spice</td><td class="mono">$21M</td><td class="mono">▼ -24.8%</td><td>Mar, Apr, May</td><td class="mono">0.28</td><td>Indonesia 46%</td><td class="mono">0.27</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/napa-cabbage">Napa cabbage</a></th><td>greens</td><td class="mono">$20M</td><td class="mono">▼ -11.8%</td><td>Aug, Sep, Oct</td><td class="mono">2.17</td><td>Mexico 51%</td><td class="mono">0.50</td><td class="mono">5%</td></tr>
+<tr><th scope="row"><a href="#food/dover-sole">Sole (Dover/lemon)</a></th><td>seafood</td><td class="mono">$20M</td><td class="mono">▼ -12.8%</td><td>Mar, Apr, May</td><td class="mono">0.79</td><td>Netherlands 62%</td><td class="mono">0.46</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/beet">Beet</a></th><td>root</td><td class="mono">$19M</td><td class="mono">▼ -15.4%</td><td>Feb, Mar, Apr</td><td class="mono">0.92</td><td>Canada 51%</td><td class="mono">0.46</td><td class="mono">75%</td></tr>
+<tr><th scope="row"><a href="#food/nopales">Nopales (cactus paddles)</a></th><td>greens</td><td class="mono">$18M</td><td class="mono">▼ -12.1%</td><td>Feb, Mar, Oct</td><td class="mono">0.32</td><td>Mexico 100%</td><td class="mono">1.00</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/saffron">Saffron</a></th><td>spice</td><td class="mono">$17M</td><td class="mono">▼ -2.3%</td><td>Jul, Aug, Oct</td><td class="mono">0.55</td><td>Spain 80%</td><td class="mono">0.66</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/nutmeg">Nutmeg</a></th><td>spice</td><td class="mono">$16M</td><td class="mono">▼ -10.1%</td><td>May, Sep, Nov</td><td class="mono">0.47</td><td>Indonesia 65%</td><td class="mono">0.46</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/octopus">Octopus</a></th><td>shellfish</td><td class="mono">$16M</td><td class="mono">▼ -29.6%</td><td>Oct, Nov, Dec</td><td class="mono">0.33</td><td>Spain 31%</td><td class="mono">0.17</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/coriander-seed">Coriander seed</a></th><td>spice</td><td class="mono">$12M</td><td class="mono">▼ -11.9%</td><td>Mar, Jul, Oct</td><td class="mono">0.26</td><td>India 46%</td><td class="mono">0.31</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/kale">Kale</a></th><td>greens</td><td class="mono">$12M</td><td class="mono">▼ -36.3%</td><td>Jan, Feb, Mar</td><td class="mono">1.23</td><td>Mexico 96%</td><td class="mono">0.92</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/acorn-squash">Acorn squash</a></th><td>fruiting</td><td class="mono">$11M</td><td class="mono">– -0.5%</td><td>Jan, Feb, Nov</td><td class="mono">2.26</td><td>Mexico 98%</td><td class="mono">0.95</td><td class="mono">5%</td></tr>
+<tr><th scope="row"><a href="#food/rutabaga">Rutabaga</a></th><td>root</td><td class="mono">$11M</td><td class="mono">▼ -4.8%</td><td>Aug, Sep, Oct</td><td class="mono">0.89</td><td>Mexico 62%</td><td class="mono">0.44</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/almond">Almond</a></th><td>nut</td><td class="mono">$10M</td><td class="mono">▼ -27.6%</td><td>Apr, Jul, Dec</td><td class="mono">0.83</td><td>Spain 58%</td><td class="mono">0.38</td><td class="mono">0%</td></tr>
+<tr><th scope="row"><a href="#food/butter-lettuce">Butter lettuce</a></th><td>greens</td><td class="mono">$7M</td><td class="mono">▼ -21.3%</td><td>Jan, Feb, Mar</td><td class="mono">1.38</td><td>Canada 92%</td><td class="mono">0.86</td><td class="mono">1%</td></tr>
+<tr><th scope="row"><a href="#food/walnut">Walnut</a></th><td>nut</td><td class="mono">$6M</td><td class="mono">▲ +42.9%</td><td>Jan, Mar, Dec</td><td class="mono">0.79</td><td>Canada 37%</td><td class="mono">0.25</td><td class="mono">2%</td></tr>
+<tr><th scope="row"><a href="#food/pistachio">Pistachio</a></th><td>nut</td><td class="mono">$3M</td><td class="mono">▼ -58.1%</td><td>Mar, Sep, Dec</td><td class="mono">0.68</td><td>Turkey 76%</td><td class="mono">0.60</td><td class="mono">0%</td></tr>
+<tr><th scope="row"><a href="#food/clams">Clams</a></th><td>shellfish</td><td class="mono">$3M</td><td class="mono">▼ -32.7%</td><td>Jun, Jul, Aug</td><td class="mono">0.62</td><td>Canada 65%</td><td class="mono">0.47</td><td class="mono">—</td></tr>
+<tr><th scope="row"><a href="#food/artichoke">Artichoke</a></th><td>stalks</td><td class="mono">$2M</td><td class="mono">▼ -28.1%</td><td>Jan, Feb, Mar</td><td class="mono">2.95</td><td>Mexico 96%</td><td class="mono">0.93</td><td class="mono">3%</td></tr>
+<tr><th scope="row"><a href="#food/collard-greens">Collard greens</a></th><td>greens</td><td class="mono">$177K</td><td class="mono">▼ -43.9%</td><td>Jan, Nov, Dec</td><td class="mono">2.12</td><td>Mexico 62%</td><td class="mono">0.53</td><td class="mono">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+</div>
+
+<div id="detail" hidden></div>
+</main>
+
+<footer class="foot">
+  <div class="badges"><span class="lic">CC0</span> <span class="lic" data-lic="cc-by">CC-BY 4.0</span></div>
+  <div class="row">Source: <b>US Census Bureau</b>, International Trade (imports by HS code), 2010–2025 — a US-Government work, public domain (CC0). Seasonal, origin and reliance derivations are the Muntin Cost Index (CC-BY 4.0, attribution: <em>Muntin Cost Index, muntin.digital</em>).</div>
+  <div class="row">Import figures are nominal customs value — they blend price and quantity (quantity is unpublished at HS6) and are never a delivered or retail price. Origin shares are the 2025 source-country mix. Reliance is import share of apparent consumption where the record tracks it; blanks mean the proxy isn't trustworthy for that food, not zero.</div>
+  <div class="row">Download the full open dataset: <a href="https://muntin.digital/data/census-imports.jsonl" download>census-imports.jsonl</a> (JSON Lines, CC0) · Catalog: <a href="https://muntin.digital/open/">muntin.digital/open</a> · Method: <a href="https://muntin.digital/cost-index/menu-pricing/">cost-index/menu-pricing</a></div>
+  <div class="row">A few culinary names share one customs (HS) line and appear as byte-identical alias rows — salmon fillet / salmon skin-on fillet, shrimp shell-on / head-on / P&amp;D, beef tenderloin / striploin, onion / red onion, red / russet potato, and lemon / lime. They are listed under both cook's names for findability, so the 155-food count and the ~$72B aggregate include these aliases; they are not 155 distinct HS lines. Where a paired figure differs (e.g. lemon's reliance vs lime's), the proxy is only trustworthy for one of the names.</div>
+  <div class="row">Schema: each record carries <span class="mono">slug, name, category, hs6, import value by year, 12-month seasonal index (1.0 = own-average month), top source countries with share, and source HHI concentration</span>. Last modified 2026-07-10.</div>
+</footer>
+</div>
+
+<script id="data" type="application/json">[{"slug":"ground-beef","name":"Ground beef","cat":"beef","hs6":"0201305085+0202305085","years":"2017-2025","latest":5338810226,"yoy":10.9,"annual":[[2017,1312317036],[2018,2697969606],[2019,2727139552],[2020,3153210216],[2021,3388645356],[2022,3428141939],[2023,3779243081],[2024,4812907972],[2025,5338810226]],"season":[1.17,0.89,1.05,0.99,1.05,1.05,1.13,1.08,0.93,0.92,0.86,0.88],"peak":[1,7,8],"sources":[{"c":"Australia","p":49},{"c":"New Zealand","p":21},{"c":"Mexico","p":12}],"conc":"concentrated","hhi":0.3,"rel":5,"relY":2025},{"slug":"avocado","name":"Avocado","cat":"fruit","hs6":"080440","years":"2010-2025","latest":3656452928,"yoy":-3,"annual":[[2010,574698302],[2011,912998844],[2012,860141745],[2013,1089413449],[2014,1526374873],[2015,1631503552],[2016,1916916757],[2017,2639558615],[2018,2347649735],[2019,2761189549],[2020,2443147972],[2021,3032237094],[2022,3266820983],[2023,2980185195],[2024,3767841541],[2025,3656452928]],"season":[1.15,0.88,1.15,1.08,0.98,0.94,0.97,1.02,1.02,0.99,0.88,0.93],"peak":[1,3,4],"sources":[{"c":"Mexico","p":88},{"c":"Peru","p":6},{"c":"Colombia","p":3}],"conc":"concentrated","hhi":0.78,"rel":88,"relY":2025},{"slug":"shrimp-pd","name":"Shrimp (P&D)","cat":"shellfish","hs6":"0306170041+0306170042","years":"2021-2025","latest":3318448820,"yoy":12.5,"annual":[[2021,2199435983],[2022,3381671045],[2023,2926291265],[2024,2950628393],[2025,3318448820]],"season":[0.99,0.88,0.93,0.9,0.97,0.98,1.04,1.13,1.07,1.09,1.01,1.02],"peak":[8,9,10],"sources":[{"c":"India","p":50},{"c":"Ecuador","p":24},{"c":"Indonesia","p":11}],"conc":"concentrated","hhi":0.32,"rel":null,"relY":null},{"slug":"tomato","name":"Tomato","cat":"fruiting","hs6":"070200","years":"2010-2025","latest":2847479076,"yoy":-21.6,"annual":[[2010,1798238104],[2011,2137869891],[2012,1867604613],[2013,1979769607],[2014,1964852290],[2015,1939099397],[2016,2263178344],[2017,2177333903],[2018,2380487406],[2019,2290467506],[2020,2805810616],[2021,2802195332],[2022,2882278727],[2023,3158305166],[2024,3633993909],[2025,2847479076]],"season":[1.29,1.1,1.14,1.06,1.07,0.98,0.88,0.83,0.8,0.9,0.94,1],"peak":[1,2,3],"sources":[{"c":"Mexico","p":81},{"c":"Canada","p":18},{"c":"Guatemala","p":1}],"conc":"concentrated","hhi":0.68,"rel":81,"relY":2025},{"slug":"grapes","name":"Grapes (table)","cat":"fruit","hs6":"080610","years":"2010-2025","latest":2589597910,"yoy":11.1,"annual":[[2010,1282488437],[2011,1034187499],[2012,1044406005],[2013,1188551742],[2014,1189712492],[2015,1343117419],[2016,1502241184],[2017,1541399786],[2018,1562774647],[2019,1655089036],[2020,1726699820],[2021,1817079308],[2022,2212710479],[2023,2492619145],[2024,2329871715],[2025,2589597910]],"season":[1.91,1.79,1.95,1.31,1.32,2.08,0.19,0.01,0.02,0.08,0.3,1.04],"peak":[1,3,6],"sources":[{"c":"Peru","p":47},{"c":"Chile","p":29},{"c":"Mexico","p":21}],"conc":"concentrated","hhi":0.35,"rel":72,"relY":2025},{"slug":"banana","name":"Banana","cat":"fruit","hs6":"080390","years":"2012-2025","latest":2513367507,"yoy":2.5,"annual":[[2012,1939541627],[2013,2016160730],[2014,2050747543],[2015,2080262494],[2016,2091315579],[2017,2116089535],[2018,2233085902],[2019,2210505457],[2020,2216231939],[2021,2216040312],[2022,2285895587],[2023,2396140828],[2024,2452553076],[2025,2513367507]],"season":[0.96,0.95,1.06,1.03,1.08,1.01,1,1.02,1.01,1,0.93,0.96],"peak":[3,4,5],"sources":[{"c":"Guatemala","p":37},{"c":"Ecuador","p":20},{"c":"Costa Rica","p":14}],"conc":"diversified","hhi":0.22,"rel":100,"relY":2017},{"slug":"salmon-skin-on-fillet","name":"Salmon (skin-on fillet)","cat":"seafood","hs6":"030441","years":"2012-2025","latest":2463146905,"yoy":-8.4,"annual":[[2012,663334887],[2013,1045088662],[2014,1255778201],[2015,1106305254],[2016,1412795197],[2017,1565138807],[2018,1796493174],[2019,1846856796],[2020,1786274208],[2021,2445278805],[2022,2768199228],[2023,2817410462],[2024,2688885435],[2025,2463146905]],"season":[0.97,1,1.14,1.01,1.07,1.01,0.99,1,0.95,0.99,0.89,0.98],"peak":[3,4,5],"sources":[{"c":"Chile","p":63},{"c":"Norway","p":21},{"c":"Netherlands","p":6}],"conc":"concentrated","hhi":0.45,"rel":null,"relY":null},{"slug":"salmon-fillet","name":"Salmon fillet","cat":"seafood","hs6":"030441","years":"2012-2025","latest":2463146905,"yoy":-8.4,"annual":[[2012,663334887],[2013,1045088662],[2014,1255778201],[2015,1106305254],[2016,1412795197],[2017,1565138807],[2018,1796493174],[2019,1846856796],[2020,1786274208],[2021,2445278805],[2022,2768199228],[2023,2817410462],[2024,2688885435],[2025,2463146905]],"season":[0.97,1,1.14,1.01,1.07,1.01,0.99,1,0.95,0.99,0.89,0.98],"peak":[3,4,5],"sources":[{"c":"Chile","p":63},{"c":"Norway","p":21},{"c":"Netherlands","p":6}],"conc":"concentrated","hhi":0.45,"rel":null,"relY":null},{"slug":"coffee","name":"Coffee (roasted)","cat":"beverage","hs6":"090121","years":"2010-2025","latest":2179061589,"yoy":5.8,"annual":[[2010,409422763],[2011,612652578],[2012,614950000],[2013,588579225],[2014,603514596],[2015,722579715],[2016,773051124],[2017,933003946],[2018,860220662],[2019,991827632],[2020,1034509126],[2021,1458896586],[2022,1740661260],[2023,1947159764],[2024,2059180418],[2025,2179061589]],"season":[0.9,0.81,0.99,0.98,0.99,0.98,0.98,1.06,1.03,1.11,1.1,1.07],"peak":[10,11,12],"sources":[{"c":"Switzerland","p":56},{"c":"Canada","p":20},{"c":"Italy","p":8}],"conc":"concentrated","hhi":0.36,"rel":null,"relY":null},{"slug":"blueberry","name":"Blueberry","cat":"fruit","hs6":"0810400024+0810400026+0810400029","years":"2010-2025","latest":2078884911,"yoy":-4.5,"annual":[[2010,5461113],[2011,376023671],[2012,420712680],[2013,452651365],[2014,530272057],[2015,646444216],[2016,828817613],[2017,847928947],[2018,1098266861],[2019,1242103660],[2020,1241523232],[2021,1594369444],[2022,1757470530],[2023,1795935321],[2024,2177477178],[2025,2078884911]],"season":[1.84,1.63,1.14,0.68,0.33,0.12,0.47,0.7,0.83,1.47,1.42,1.39],"peak":[1,2,10],"sources":[{"c":"Peru","p":56},{"c":"Mexico","p":24},{"c":"Chile","p":10}],"conc":"concentrated","hhi":0.39,"rel":99,"relY":2025},{"slug":"bell-pepper","name":"Bell pepper","cat":"fruiting","hs6":"07096040","years":"2010-2025","latest":1688128702,"yoy":-5.1,"annual":[[2010,686780697],[2011,677760305],[2012,782472790],[2013,931912593],[2014,991090962],[2015,948965398],[2016,1172823093],[2017,1048754101],[2018,1202723692],[2019,1358399799],[2020,1487734611],[2021,1582838157],[2022,1536507898],[2023,1541990338],[2024,1778048010],[2025,1688128702]],"season":[1.46,1.24,1.34,1.21,1.13,0.86,0.76,0.76,0.76,0.69,0.74,1.04],"peak":[1,2,3],"sources":[{"c":"Mexico","p":73},{"c":"Canada","p":24},{"c":"Honduras","p":1}],"conc":"concentrated","hhi":0.6,"rel":82,"relY":2025},{"slug":"shrimp-head-on","name":"Shrimp (head-on)","cat":"shellfish","hs6":"030617 (+16 HS10 lines)","years":"2021-2025","latest":1617426401,"yoy":1.7,"annual":[[2021,1361959511],[2022,2231832567],[2023,1801706495],[2024,1589795342],[2025,1617426401]],"season":[1.08,0.93,1.07,0.92,0.97,0.91,0.94,1,0.94,1.08,1.08,1.09],"peak":[1,11,12],"sources":[{"c":"Ecuador","p":50},{"c":"Indonesia","p":14},{"c":"India","p":12}],"conc":"concentrated","hhi":0.3,"rel":null,"relY":null},{"slug":"shrimp","name":"Shrimp (shell-on)","cat":"shellfish","hs6":"030617 (+16 HS10 lines)","years":"2021-2025","latest":1617426401,"yoy":1.7,"annual":[[2021,1361959511],[2022,2231832567],[2023,1801706495],[2024,1589795342],[2025,1617426401]],"season":[1.08,0.93,1.07,0.92,0.97,0.91,0.94,1,0.94,1.08,1.08,1.09],"peak":[1,11,12],"sources":[{"c":"Ecuador","p":50},{"c":"Indonesia","p":14},{"c":"India","p":12}],"conc":"concentrated","hhi":0.3,"rel":null,"relY":null},{"slug":"whole-crab","name":"Whole crab","cat":"shellfish","hs6":"030614","years":"2010-2025","latest":1554237243,"yoy":46.3,"annual":[[2010,611965328],[2011,737257764],[2012,645908170],[2013,840773504],[2014,860246758],[2015,859233520],[2016,1020633573],[2017,1196702211],[2018,1221221510],[2019,1451749610],[2020,1661299493],[2021,2710395675],[2022,2161317501],[2023,970029922],[2024,1062698839],[2025,1554237243]],"season":[0.51,0.46,0.55,1.31,2.62,2.11,1.67,0.85,0.5,0.46,0.44,0.52],"peak":[5,6,7],"sources":[{"c":"Canada","p":79},{"c":"Norway","p":10},{"c":"Argentina","p":3}],"conc":"concentrated","hhi":0.63,"rel":null,"relY":null},{"slug":"lamb","name":"Lamb","cat":"meat","hs6":"020422 (+6 HS10 lines)","years":"2010-2025","latest":1490959179,"yoy":12.1,"annual":[[2010,493224350],[2011,638383228],[2012,537950091],[2013,555632999],[2014,654193532],[2015,649281257],[2016,640864279],[2017,780810053],[2018,880095684],[2019,962506630],[2020,878405140],[2021,1226736855],[2022,1446475998],[2023,1095510923],[2024,1329512710],[2025,1490959179]],"season":[1,0.79,1.27,1.07,1.02,1.04,1.04,0.96,0.87,0.89,0.99,1.06],"peak":[3,4,12],"sources":[{"c":"Australia","p":72},{"c":"New Zealand","p":27},{"c":"Chile","p":0}],"conc":"concentrated","hhi":0.6,"rel":54,"relY":2010},{"slug":"cheddar-cheese","name":"Cheddar cheese","cat":"other","hs6":"040690","years":"2010-2025","latest":1429354808,"yoy":-15.5,"annual":[[2010,876655278],[2011,970087544],[2012,988293096],[2013,1034015055],[2014,1135808551],[2015,1145580774],[2016,1126704294],[2017,1055050369],[2018,1146086171],[2019,1182536550],[2020,1068481793],[2021,1328378367],[2022,1388177798],[2023,1556214209],[2024,1692071956],[2025,1429354808]],"season":[0.85,0.87,0.99,0.9,0.9,0.93,0.95,1.04,1.04,1.21,1.23,1.1],"peak":[10,11,12],"sources":[{"c":"Italy","p":24},{"c":"France","p":16},{"c":"Spain","p":9}],"conc":"diversified","hhi":0.11,"rel":null,"relY":null},{"slug":"cucumber","name":"Cucumber","cat":"fruiting","hs6":"070700","years":"2010-2025","latest":1311271843,"yoy":-9.8,"annual":[[2010,370027520],[2011,386871499],[2012,492070789],[2013,612300070],[2014,632871961],[2015,614418485],[2016,689976591],[2017,685866542],[2018,766604375],[2019,823920543],[2020,909831534],[2021,995761614],[2022,1132971039],[2023,1319299537],[2024,1453155223],[2025,1311271843]],"season":[1.19,1.12,1.21,1.16,1.08,0.82,0.82,0.78,0.74,0.93,1.04,1.11],"peak":[1,3,4],"sources":[{"c":"Mexico","p":54},{"c":"Canada","p":46},{"c":"Honduras","p":0}],"conc":"concentrated","hhi":0.5,"rel":85,"relY":2025},{"slug":"canned-tuna","name":"Canned tuna","cat":"pantry","hs6":"160414","years":"2010-2025","latest":1147151501,"yoy":3.5,"annual":[[2010,906934141],[2011,995453733],[2012,1195473755],[2013,1141482980],[2014,1062349013],[2015,876071683],[2016,810979701],[2017,946298014],[2018,1070435572],[2019,1096173436],[2020,1248383169],[2021,1010729519],[2022,1239178876],[2023,1135872177],[2024,1108177701],[2025,1147151501]],"season":[1.01,0.79,0.94,1.01,1.03,0.96,1,1.01,1,1.04,1.04,1.16],"peak":[10,11,12],"sources":[{"c":"Thailand","p":48},{"c":"Vietnam","p":12},{"c":"Ecuador","p":12}],"conc":"concentrated","hhi":0.26,"rel":null,"relY":null},{"slug":"beef-tenderloin","name":"Beef tenderloin","cat":"beef","hs6":"0201305045+0202305045","years":"2017-2025","latest":1094021575,"yoy":8,"annual":[[2017,143583798],[2018,372690590],[2019,430058043],[2020,568072561],[2021,785341861],[2022,844270949],[2023,1025586363],[2024,1012963109],[2025,1094021575]],"season":[0.97,0.83,1.07,0.95,1.07,1.08,1.01,1.04,0.99,1.07,1.02,0.9],"peak":[3,6,10],"sources":[{"c":"Canada","p":53},{"c":"Australia","p":22},{"c":"Mexico","p":17}],"conc":"concentrated","hhi":0.36,"rel":1,"relY":2025},{"slug":"striploin","name":"Striploin","cat":"beef","hs6":"0201305045+0202305045","years":"2017-2025","latest":1094021575,"yoy":8,"annual":[[2017,143583798],[2018,372690590],[2019,430058043],[2020,568072561],[2021,785341861],[2022,844270949],[2023,1025586363],[2024,1012963109],[2025,1094021575]],"season":[0.97,0.83,1.07,0.95,1.07,1.08,1.01,1.04,0.99,1.07,1.02,0.9],"peak":[3,6,10],"sources":[{"c":"Canada","p":53},{"c":"Australia","p":22},{"c":"Mexico","p":17}],"conc":"concentrated","hhi":0.36,"rel":1,"relY":2025},{"slug":"whole-salmon","name":"Whole salmon","cat":"seafood","hs6":"030214","years":"2012-2025","latest":1084355850,"yoy":-9.1,"annual":[[2012,569829233],[2013,620425219],[2014,576339959],[2015,664315374],[2016,851680301],[2017,949473466],[2018,1035763008],[2019,1055824834],[2020,868289445],[2021,1125142518],[2022,1269499915],[2023,1215841015],[2024,1192750555],[2025,1084355850]],"season":[1.01,0.9,1.09,1.03,1.14,1.05,1.01,0.98,0.93,0.96,0.88,1.01],"peak":[3,5,6],"sources":[{"c":"Canada","p":47},{"c":"United Kingdom","p":16},{"c":"Faroe Islands","p":14}],"conc":"concentrated","hhi":0.28,"rel":null,"relY":null},{"slug":"raspberry","name":"Raspberry","cat":"fruit","hs6":"081020 (+6 HS10 lines)","years":"2018-2025","latest":1039401007,"yoy":-12.6,"annual":[[2018,20964677],[2019,27420198],[2020,36602092],[2021,446221706],[2022,1197520564],[2023,1275876283],[2024,1189462547],[2025,1039401007]],"season":[1.52,1.43,1.61,1.61,1.61,0.55,0.3,0.44,0.47,0.81,0.87,0.77],"peak":[3,4,5],"sources":[{"c":"Mexico","p":100},{"c":"Guatemala","p":0},{"c":"Canada","p":0}],"conc":"single-source","hhi":1,"rel":83,"relY":2025},{"slug":"strawberry","name":"Strawberry","cat":"fruit","hs6":"081010","years":"2010-2025","latest":1034135901,"yoy":-11.5,"annual":[[2010,219261879],[2011,235973657],[2012,350228401],[2013,319125235],[2014,374916986],[2015,390218780],[2016,534023707],[2017,625708570],[2018,591730854],[2019,851077483],[2020,829991586],[2021,1064687625],[2022,1078345173],[2023,1182195153],[2024,1168452783],[2025,1034135901]],"season":[2.48,2.52,2.1,1.17,0.39,0.23,0.06,0.02,0.02,0.29,1.02,1.7],"peak":[1,2,3],"sources":[{"c":"Mexico","p":98},{"c":"Canada","p":2},{"c":"Korea, South","p":0}],"conc":"single-source","hhi":0.95,"rel":21,"relY":2025},{"slug":"lemon","name":"Lemon","cat":"citrus","hs6":"080550","years":"2010-2025","latest":971844855,"yoy":-9,"annual":[[2010,214683471],[2011,236885623],[2012,219294733],[2013,260313385],[2014,368202464],[2015,377271719],[2016,463586987],[2017,509890651],[2018,606479954],[2019,638242467],[2020,601627295],[2021,819811043],[2022,906245560],[2023,1012791573],[2024,1067791392],[2025,971844855]],"season":[0.85,0.84,1.17,1.09,0.93,0.89,1.19,1.45,1.28,0.9,0.68,0.72],"peak":[7,8,9],"sources":[{"c":"Mexico","p":76},{"c":"Colombia","p":11},{"c":"Chile","p":5}],"conc":"concentrated","hhi":0.6,"rel":62,"relY":2025},{"slug":"lime","name":"Lime","cat":"citrus","hs6":"080550","years":"2010-2025","latest":971844855,"yoy":-9,"annual":[[2010,214683471],[2011,236885623],[2012,219294733],[2013,260313385],[2014,368202464],[2015,377271719],[2016,463586987],[2017,509890651],[2018,606479954],[2019,638242467],[2020,601627295],[2021,819811043],[2022,906245560],[2023,1012791573],[2024,1067791392],[2025,971844855]],"season":[0.85,0.84,1.17,1.09,0.93,0.89,1.19,1.45,1.28,0.9,0.68,0.72],"peak":[7,8,9],"sources":[{"c":"Mexico","p":76},{"c":"Colombia","p":11},{"c":"Chile","p":5}],"conc":"concentrated","hhi":0.6,"rel":null,"relY":null},{"slug":"mango","name":"Mango","cat":"fruit","hs6":"080450","years":"2010-2025","latest":925453481,"yoy":1.1,"annual":[[2010,303706941],[2011,353223708],[2012,379798793],[2013,449235769],[2014,443774223],[2015,495212563],[2016,530261084],[2017,597221873],[2018,582211339],[2019,600357544],[2020,654060749],[2021,738010551],[2022,777529098],[2023,805081367],[2024,915109356],[2025,925453481]],"season":[0.74,0.92,1.01,1.22,1.34,1.32,1.29,1.11,0.8,0.73,0.74,0.76],"peak":[5,6,7],"sources":[{"c":"Mexico","p":58},{"c":"Peru","p":16},{"c":"Ecuador","p":7}],"conc":"concentrated","hhi":0.37,"rel":null,"relY":null},{"slug":"pineapple","name":"Pineapple","cat":"fruit","hs6":"080430","years":"2010-2025","latest":893627234,"yoy":2.9,"annual":[[2010,504576198],[2011,474363702],[2012,513122559],[2013,539954255],[2014,604154500],[2015,585381492],[2016,623897255],[2017,637219931],[2018,622556812],[2019,609758658],[2020,615945733],[2021,700209821],[2022,760328643],[2023,804057831],[2024,868825056],[2025,893627234]],"season":[0.87,0.88,1.07,1.1,1.23,1.11,0.98,0.95,0.97,0.94,0.97,0.93],"peak":[4,5,6],"sources":[{"c":"Costa Rica","p":83},{"c":"Mexico","p":7},{"c":"Ecuador","p":3}],"conc":"concentrated","hhi":0.7,"rel":91,"relY":2025},{"slug":"cashew","name":"Cashew","cat":"nut","hs6":"080132","years":"2010-2025","latest":837842754,"yoy":-19.6,"annual":[[2010,692114383],[2011,881368993],[2012,804095761],[2013,911486948],[2014,940702190],[2015,1148283339],[2016,1215760990],[2017,1562467699],[2018,1447665019],[2019,1182487325],[2020,1081489785],[2021,1183538360],[2022,933707466],[2023,817330065],[2024,1042047236],[2025,837842754]],"season":[0.9,0.74,0.74,0.86,1.1,1.12,1.17,1.19,1.16,1.09,0.97,0.95],"peak":[7,8,9],"sources":[{"c":"Vietnam","p":88},{"c":"Cote D'Ivoire","p":6},{"c":"Brazil","p":2}],"conc":"concentrated","hhi":0.78,"rel":null,"relY":null},{"slug":"honey","name":"Honey","cat":"pantry","hs6":"040900","years":"2010-2025","latest":657069427,"yoy":6.7,"annual":[[2010,292770713],[2011,387255139],[2012,416002823],[2013,481080651],[2014,561631428],[2015,583709631],[2016,406142331],[2017,546942022],[2018,463720811],[2019,396188141],[2020,417932778],[2021,628828174],[2022,732207092],[2023,553947627],[2024,615586561],[2025,657069427]],"season":[0.77,0.71,0.95,1.08,1.29,1.19,1.12,1.09,1.02,0.99,0.93,0.86],"peak":[5,6,7],"sources":[{"c":"India","p":26},{"c":"Argentina","p":20},{"c":"Brazil","p":15}],"conc":"diversified","hhi":0.15,"rel":null,"relY":null},{"slug":"olives","name":"Olives","cat":"pantry","hs6":"200570","years":"2010-2025","latest":655593841,"yoy":5.4,"annual":[[2010,400881472],[2011,394933869],[2012,378514187],[2013,387995377],[2014,426663899],[2015,393968903],[2016,418306151],[2017,433088328],[2018,447930537],[2019,473018508],[2020,415946648],[2021,470014610],[2022,530076238],[2023,475340110],[2024,621917282],[2025,655593841]],"season":[0.89,0.79,1.04,1.01,1.03,1.13,1.11,1.09,0.89,1.03,1.01,0.98],"peak":[6,7,8],"sources":[{"c":"Greece","p":35},{"c":"Spain","p":32},{"c":"Italy","p":11}],"conc":"diversified","hhi":0.24,"rel":84,"relY":2025},{"slug":"whole-lobster","name":"Whole lobster","cat":"shellfish","hs6":"030612","years":"2010-2025","latest":641565871,"yoy":-1.3,"annual":[[2010,351577563],[2011,373604591],[2012,395723554],[2013,386620350],[2014,489998148],[2015,493592878],[2016,458928260],[2017,431331154],[2018,526590842],[2019,588562023],[2020,448872183],[2021,863728572],[2022,499927096],[2023,527854230],[2024,649791101],[2025,641565871]],"season":[0.6,0.22,0.15,0.08,1.12,2.22,1.29,1.48,1.35,1.38,0.99,1.13],"peak":[6,8,10],"sources":[{"c":"Canada","p":99},{"c":"United Arab Emirates","p":0},{"c":"Indonesia","p":0}],"conc":"single-source","hhi":0.98,"rel":null,"relY":null},{"slug":"tilapia","name":"Tilapia","cat":"seafood","hs6":"030461+030431+030323","years":"2012-2025","latest":637586484,"yoy":-7.5,"annual":[[2012,909985831],[2013,998677054],[2014,1080167931],[2015,955679084],[2016,734206342],[2017,655752341],[2018,662160585],[2019,574464734],[2020,573956253],[2021,622107442],[2022,702440567],[2023,587343865],[2024,689427999],[2025,637586484]],"season":[1.39,1.04,0.8,0.72,0.9,0.97,1.03,1.03,0.95,0.99,0.99,1.2],"peak":[1,2,12],"sources":[{"c":"China","p":50},{"c":"Indonesia","p":9},{"c":"Colombia","p":9}],"conc":"concentrated","hhi":0.29,"rel":null,"relY":null},{"slug":"pork-loin","name":"Pork loin","cat":"meat","hs6":"020329","years":"2010-2025","latest":619880426,"yoy":-3.1,"annual":[[2010,311141927],[2011,317332842],[2012,337327883],[2013,337292313],[2014,468891889],[2015,461891862],[2016,494244855],[2017,599758140],[2018,589981893],[2019,485914122],[2020,419502995],[2021,665381046],[2022,782070238],[2023,552125549],[2024,639630660],[2025,619880426]],"season":[0.94,0.9,1.11,1.1,1.02,1.03,1.02,1.01,0.93,0.98,0.98,0.98],"peak":[3,4,6],"sources":[{"c":"Mexico","p":23},{"c":"Canada","p":20},{"c":"Denmark","p":16}],"conc":"diversified","hhi":0.15,"rel":2,"relY":2025},{"slug":"black-pepper","name":"Black pepper","cat":"spice","hs6":"090411+090412","years":"2010-2025","latest":597681510,"yoy":13.8,"annual":[[2010,250758053],[2011,391919149],[2012,440976536],[2013,494825351],[2014,554714855],[2015,740452099],[2016,631368479],[2017,477108195],[2018,296961247],[2019,261054013],[2020,249592970],[2021,360386655],[2022,440060009],[2023,316993188],[2024,525090398],[2025,597681510]],"season":[0.96,0.76,0.94,1.04,1.12,1.04,1.06,0.99,1.03,1.07,1.01,0.99],"peak":[5,7,10],"sources":[{"c":"Vietnam","p":73},{"c":"Indonesia","p":11},{"c":"India","p":9}],"conc":"concentrated","hhi":0.56,"rel":null,"relY":null},{"slug":"ribeye","name":"Ribeye","cat":"beef","hs6":"0201305025+0202305025","years":"2017-2025","latest":589972925,"yoy":-3.2,"annual":[[2017,69147214],[2018,149877355],[2019,210364848],[2020,298682783],[2021,465808413],[2022,477277917],[2023,517492406],[2024,609439587],[2025,589972925]],"season":[0.95,0.85,0.94,0.88,1.06,1.01,0.98,1.06,1,1.19,1.08,0.99],"peak":[8,10,11],"sources":[{"c":"Canada","p":51},{"c":"Mexico","p":24},{"c":"Australia","p":15}],"conc":"concentrated","hhi":0.34,"rel":1,"relY":2025},{"slug":"asparagus","name":"Asparagus","cat":"stalks","hs6":"070920","years":"2010-2025","latest":525180705,"yoy":-18.8,"annual":[[2010,418216281],[2011,435807020],[2012,441045705],[2013,589863891],[2014,502344522],[2015,561138418],[2016,630534678],[2017,691749605],[2018,633501233],[2019,694503069],[2020,650601648],[2021,690946958],[2022,619944036],[2023,634559750],[2024,646819371],[2025,525180705]],"season":[1.09,1.62,1.69,0.8,0.63,0.78,0.92,0.87,0.86,0.96,0.93,0.85],"peak":[1,2,3],"sources":[{"c":"Mexico","p":49},{"c":"Peru","p":48},{"c":"Canada","p":3}],"conc":"concentrated","hhi":0.47,"rel":100,"relY":2025},{"slug":"paprika","name":"Paprika / chili powder","cat":"spice","hs6":"090421+090422","years":"2012-2025","latest":514074390,"yoy":-13.1,"annual":[[2012,291561932],[2013,272493762],[2014,268438702],[2015,297515316],[2016,294591947],[2017,287166969],[2018,309133852],[2019,340739575],[2020,374762006],[2021,439209298],[2022,475642195],[2023,543726866],[2024,591503395],[2025,514074390]],"season":[1.02,0.92,0.97,1.02,1.04,0.98,0.92,0.93,0.96,1.12,1.06,1.05],"peak":[10,11,12],"sources":[{"c":"Mexico","p":24},{"c":"India","p":22},{"c":"Spain","p":16}],"conc":"diversified","hhi":0.17,"rel":null,"relY":null},{"slug":"watermelon","name":"Watermelon","cat":"fruit","hs6":"080711","years":"2010-2025","latest":452535301,"yoy":2.8,"annual":[[2010,249209041],[2011,211540911],[2012,237119006],[2013,294367961],[2014,297319410],[2015,322675961],[2016,328901750],[2017,305561346],[2018,318548134],[2019,367998262],[2020,339672236],[2021,368235702],[2022,393454970],[2023,439773100],[2024,440168684],[2025,452535301]],"season":[0.81,0.81,1.28,2.58,3.03,0.91,0.11,0.07,0.1,0.88,0.75,0.67],"peak":[3,4,5],"sources":[{"c":"Mexico","p":77},{"c":"Guatemala","p":17},{"c":"Honduras","p":5}],"conc":"concentrated","hhi":0.62,"rel":41,"relY":2025},{"slug":"ketchup","name":"Ketchup & tomato sauce","cat":"pantry","hs6":"210320","years":"2010-2025","latest":451164009,"yoy":-9.1,"annual":[[2010,90809087],[2011,71806559],[2012,63258881],[2013,57221848],[2014,47210717],[2015,44246116],[2016,38396611],[2017,46074139],[2018,53198420],[2019,57447359],[2020,77102540],[2021,83373219],[2022,120467150],[2023,328168421],[2024,496157230],[2025,451164009]],"season":[0.96,0.89,0.95,0.95,0.96,1.02,0.85,0.9,1.03,1.13,1.07,1.28],"peak":[10,11,12],"sources":[{"c":"Italy","p":80},{"c":"Canada","p":8},{"c":"Costa Rica","p":5}],"conc":"concentrated","hhi":0.65,"rel":null,"relY":null},{"slug":"cod","name":"Cod","cat":"seafood","hs6":"030471+030366+030251","years":"2012-2025","latest":437360664,"yoy":-5.8,"annual":[[2012,261866545],[2013,267029032],[2014,319670806],[2015,344564049],[2016,361851699],[2017,405873922],[2018,442309164],[2019,425050868],[2020,379934621],[2021,403493928],[2022,592527566],[2023,475509493],[2024,464366577],[2025,437360664]],"season":[1.18,1.14,0.9,0.7,0.92,0.96,1,0.97,0.98,1.03,1.07,1.14],"peak":[1,2,12],"sources":[{"c":"China","p":59},{"c":"Iceland","p":12},{"c":"Vietnam","p":11}],"conc":"concentrated","hhi":0.38,"rel":null,"relY":null},{"slug":"tuna-loin","name":"Tuna loin","cat":"seafood","hs6":"030487","years":"2012-2025","latest":435883813,"yoy":-8.1,"annual":[[2012,286870063],[2013,213807921],[2014,226377705],[2015,295654522],[2016,324222498],[2017,342467058],[2018,391346838],[2019,467194477],[2020,361215544],[2021,422700172],[2022,680928769],[2023,441565017],[2024,474294358],[2025,435883813]],"season":[0.96,0.81,0.91,0.97,1.04,1.09,1.11,1.11,0.98,1,1,1.01],"peak":[6,7,8],"sources":[{"c":"Indonesia","p":37},{"c":"Vietnam","p":34},{"c":"Thailand","p":6}],"conc":"concentrated","hhi":0.26,"rel":null,"relY":null},{"slug":"plantain","name":"Plantain","cat":"fruit","hs6":"0803101000","years":"2012-2025","latest":407166305,"yoy":22.5,"annual":[[2012,141710273],[2013,142758868],[2014,140769180],[2015,150804257],[2016,164275515],[2017,188838529],[2018,201890193],[2019,191032382],[2020,207954646],[2021,203955009],[2022,213932433],[2023,325333664],[2024,332333466],[2025,407166305]],"season":[0.91,0.89,0.98,0.98,1,0.95,1.02,1.04,1.06,1.08,1.04,1.04],"peak":[8,9,10],"sources":[{"c":"Guatemala","p":50},{"c":"Ecuador","p":21},{"c":"Colombia","p":19}],"conc":"concentrated","hhi":0.33,"rel":null,"relY":null},{"slug":"butter","name":"Butter (AA, bulk)","cat":"other","hs6":"040510","years":"2010-2025","latest":403587927,"yoy":-42.7,"annual":[[2010,24615286],[2011,32854160],[2012,35714629],[2013,38665880],[2014,68136090],[2015,106940280],[2016,125461983],[2017,162931975],[2018,232998085],[2019,282502894],[2020,267160723],[2021,334901164],[2022,419230103],[2023,477592835],[2024,704046619],[2025,403587927]],"season":[0.84,0.88,1,0.89,0.97,0.92,1.06,1.04,1.1,1.09,1.14,1.06],"peak":[9,10,11],"sources":[{"c":"Ireland","p":46},{"c":"New Zealand","p":38},{"c":"France","p":7}],"conc":"concentrated","hhi":0.37,"rel":null,"relY":null},{"slug":"pecorino","name":"Pecorino (sheep's-milk cheese)","cat":"dairy","hs6":"0406905600+0406905700+0406905900","years":"2010-2025","latest":403169168,"yoy":-6.9,"annual":[[2010,187315043],[2011,205103780],[2012,211829393],[2013,243163268],[2014,263208212],[2015,261631298],[2016,248385129],[2017,241389665],[2018,241583386],[2019,256132523],[2020,256166566],[2021,323803787],[2022,362610135],[2023,408048401],[2024,432910980],[2025,403169168]],"season":[0.96,0.87,0.98,0.93,0.9,1.03,1.01,1.11,0.97,1.12,1.08,1.04],"peak":[8,10,11],"sources":[{"c":"Italy","p":44},{"c":"Spain","p":23},{"c":"Greece","p":16}],"conc":"concentrated","hhi":0.28,"rel":null,"relY":null},{"slug":"cantaloupe","name":"Cantaloupe","cat":"fruit","hs6":"080719","years":"2010-2025","latest":365431178,"yoy":-5.5,"annual":[[2010,229791808],[2011,261195622],[2012,232590419],[2013,258189159],[2014,268660741],[2015,289721167],[2016,380860435],[2017,358963158],[2018,340102889],[2019,325430626],[2020,267297183],[2021,283214226],[2022,302003399],[2023,429526273],[2024,386822136],[2025,365431178]],"season":[1.62,1.48,2.01,2.09,1.27,0.26,0.03,0.01,0.01,0.45,1.2,1.55],"peak":[1,3,4],"sources":[{"c":"Guatemala","p":58},{"c":"Mexico","p":21},{"c":"Honduras","p":17}],"conc":"concentrated","hhi":0.41,"rel":71,"relY":2025},{"slug":"button-mushroom","name":"Button mushroom","cat":"mushroom","hs6":"070951","years":"2010-2025","latest":351719290,"yoy":-7.3,"annual":[[2010,104332295],[2011,103110518],[2012,117647401],[2013,121135894],[2014,129350377],[2015,142544327],[2016,163643689],[2017,177600171],[2018,218134109],[2019,255864682],[2020,296376838],[2021,337387031],[2022,375376967],[2023,362364826],[2024,379447409],[2025,351719290]],"season":[1.04,0.94,1.01,0.97,1.01,0.96,0.95,0.97,0.96,1.03,1.07,1.08],"peak":[1,11,12],"sources":[{"c":"Canada","p":94},{"c":"Mexico","p":6},{"c":"China","p":0}],"conc":"single-source","hhi":0.88,"rel":29,"relY":2025},{"slug":"catfish","name":"Catfish","cat":"seafood","hs6":"030462+030324","years":"2012-2025","latest":349741153,"yoy":-1,"annual":[[2012,346317017],[2013,336156583],[2014,341535609],[2015,352284294],[2016,403748617],[2017,381416052],[2018,548516141],[2019,352768520],[2020,266588096],[2021,350679485],[2022,590691314],[2023,289506659],[2024,353396155],[2025,349741153]],"season":[1.13,0.9,0.81,0.88,1,1.1,1.14,1.08,0.98,0.92,1.02,1.04],"peak":[1,6,7],"sources":[{"c":"Vietnam","p":95},{"c":"China","p":5},{"c":"Thailand","p":0}],"conc":"single-source","hhi":0.91,"rel":null,"relY":null},{"slug":"kiwi","name":"Kiwi","cat":"fruit","hs6":"081050","years":"2010-2025","latest":346923331,"yoy":25,"annual":[[2010,57234854],[2011,63054906],[2012,71388249],[2013,88346123],[2014,104422746],[2015,116707751],[2016,133872516],[2017,121030858],[2018,136925257],[2019,141602607],[2020,165219517],[2021,196599223],[2022,211922648],[2023,190983012],[2024,277550564],[2025,346923331]],"season":[0.63,0.55,0.76,1.05,1.6,1.57,1.27,1.17,1.01,0.76,0.7,0.93],"peak":[5,6,7],"sources":[{"c":"New Zealand","p":56},{"c":"Italy","p":17},{"c":"Greece","p":16}],"conc":"concentrated","hhi":0.38,"rel":80,"relY":2025},{"slug":"pecan","name":"Pecan","cat":"nut","hs6":"080290+080299","years":"2010-2025","latest":341114586,"yoy":-31.6,"annual":[[2010,301808916],[2011,352494006],[2012,370213513],[2013,335959011],[2014,460147539],[2015,519232006],[2016,662484262],[2017,631407408],[2018,827110874],[2019,796496189],[2020,657347136],[2021,687554896],[2022,537417051],[2023,548209299],[2024,499044304],[2025,341114586]],"season":[1.32,0.95,0.9,0.74,0.82,0.77,0.69,0.72,0.75,1.05,1.62,1.66],"peak":[1,11,12],"sources":[{"c":"Mexico","p":99},{"c":"China","p":0},{"c":"Mongolia","p":0}],"conc":"single-source","hhi":0.98,"rel":53,"relY":2025},{"slug":"onion","name":"Onion","cat":"allium","hs6":"070310","years":"2010-2025","latest":340952628,"yoy":-30.3,"annual":[[2010,268137726],[2011,275537180],[2012,269726316],[2013,340448765],[2014,344837431],[2015,417857465],[2016,430189928],[2017,409920420],[2018,419347717],[2019,431414924],[2020,443683970],[2021,501084563],[2022,525076699],[2023,465099246],[2024,489233897],[2025,340952628]],"season":[1.09,1.01,1.09,1.04,1.13,0.89,0.77,0.8,0.91,1.08,1.12,1.06],"peak":[3,5,11],"sources":[{"c":"Mexico","p":64},{"c":"Peru","p":17},{"c":"Canada","p":15}],"conc":"concentrated","hhi":0.46,"rel":20,"relY":2025},{"slug":"red-onion","name":"Red onion","cat":"allium","hs6":"070310","years":"2010-2025","latest":340952628,"yoy":-30.3,"annual":[[2010,268137726],[2011,275537180],[2012,269726316],[2013,340448765],[2014,344837431],[2015,417857465],[2016,430189928],[2017,409920420],[2018,419347717],[2019,431414924],[2020,443683970],[2021,501084563],[2022,525076699],[2023,465099246],[2024,489233897],[2025,340952628]],"season":[1.09,1.01,1.09,1.04,1.13,0.89,0.77,0.8,0.91,1.08,1.12,1.06],"peak":[3,5,11],"sources":[{"c":"Mexico","p":64},{"c":"Peru","p":17},{"c":"Canada","p":15}],"conc":"concentrated","hhi":0.46,"rel":20,"relY":2025},{"slug":"red-potato","name":"Red potato","cat":"tuber","hs6":"070190","years":"2010-2025","latest":319512613,"yoy":-5.4,"annual":[[2010,111274808],[2011,150962794],[2012,106502097],[2013,116170860],[2014,144243223],[2015,129538735],[2016,175888474],[2017,190145376],[2018,200865405],[2019,183697889],[2020,239825850],[2021,241781335],[2022,369544702],[2023,391949002],[2024,337609867],[2025,319512613]],"season":[1.2,1.06,1.3,1.09,0.93,0.81,0.59,0.62,0.84,1.07,1.32,1.16],"peak":[1,3,11],"sources":[{"c":"Canada","p":100},{"c":"Mexico","p":0},{"c":"Colombia","p":0}],"conc":"single-source","hhi":1,"rel":7,"relY":2025},{"slug":"russet-potato","name":"Russet potato","cat":"tuber","hs6":"070190","years":"2010-2025","latest":319512613,"yoy":-5.4,"annual":[[2010,111274808],[2011,150962794],[2012,106502097],[2013,116170860],[2014,144243223],[2015,129538735],[2016,175888474],[2017,190145376],[2018,200865405],[2019,183697889],[2020,239825850],[2021,241781335],[2022,369544702],[2023,391949002],[2024,337609867],[2025,319512613]],"season":[1.2,1.06,1.3,1.09,0.93,0.81,0.59,0.62,0.84,1.07,1.32,1.16],"peak":[1,3,11],"sources":[{"c":"Canada","p":100},{"c":"Mexico","p":0},{"c":"Colombia","p":0}],"conc":"single-source","hhi":1,"rel":7,"relY":2025},{"slug":"tea","name":"Tea (black)","cat":"beverage","hs6":"090230+090240","years":"2010-2025","latest":306130069,"yoy":-10.3,"annual":[[2010,275463949],[2011,302512144],[2012,300607084],[2013,327460273],[2014,333188344],[2015,320044697],[2016,324189777],[2017,323026039],[2018,301127701],[2019,305696635],[2020,285454301],[2021,309192043],[2022,322204389],[2023,297477060],[2024,341415057],[2025,306130069]],"season":[0.89,0.82,0.98,1.01,1.06,1,1.04,1.06,1.07,1.09,1.03,0.96],"peak":[5,9,10],"sources":[{"c":"India","p":18},{"c":"Argentina","p":16},{"c":"Sri Lanka","p":11}],"conc":"diversified","hhi":0.09,"rel":null,"relY":null},{"slug":"broccoli","name":"Broccoli","cat":"cruciferous","hs6":"0704904024+0704904022","years":"2023-2025","latest":303364067,"yoy":-24.5,"annual":[[2023,126803201],[2024,401782487],[2025,303364067]],"season":[1.46,1.27,1.32,1.03,0.86,0.69,0.62,0.67,0.75,0.91,1.11,1.32],"peak":[1,3,12],"sources":[{"c":"Mexico","p":91},{"c":"Guatemala","p":7},{"c":"Canada","p":2}],"conc":"single-source","hhi":0.83,"rel":34,"relY":2025},{"slug":"yeast","name":"Yeast (baking)","cat":"pantry","hs6":"210210","years":"2010-2025","latest":293110965,"yoy":-16.5,"annual":[[2010,152296213],[2011,159882107],[2012,162598525],[2013,172998255],[2014,176710024],[2015,184890882],[2016,174487067],[2017,179789534],[2018,190121480],[2019,201116400],[2020,227125718],[2021,241826591],[2022,281971173],[2023,326001277],[2024,351156589],[2025,293110965]],"season":[0.96,0.89,1,1,1.06,1.06,1.12,1.04,0.98,0.97,0.96,0.97],"peak":[5,6,7],"sources":[{"c":"Canada","p":48},{"c":"Mexico","p":31},{"c":"Belgium","p":4}],"conc":"concentrated","hhi":0.33,"rel":null,"relY":null},{"slug":"prosciutto","name":"Prosciutto & cured ham","cat":"meat","hs6":"0210110010+0210190090","years":"2010-2025","latest":291007582,"yoy":3.9,"annual":[[2010,73049086],[2011,84840212],[2012,91249364],[2013,96582576],[2014,112826976],[2015,99045378],[2016,99694130],[2017,97401607],[2018,106270077],[2019,117759917],[2020,150298797],[2021,212999658],[2022,233236650],[2023,242107244],[2024,280204616],[2025,291007582]],"season":[0.76,0.87,0.95,0.96,0.88,0.97,1.03,1.09,1.04,1.28,1.18,0.99],"peak":[8,10,11],"sources":[{"c":"Italy","p":76},{"c":"Spain","p":17},{"c":"Canada","p":4}],"conc":"concentrated","hhi":0.61,"rel":null,"relY":null},{"slug":"orange","name":"Orange","cat":"citrus","hs6":"080510","years":"2010-2025","latest":281238450,"yoy":7.7,"annual":[[2010,98692922],[2011,96657240],[2012,106998406],[2013,151731149],[2014,129097767],[2015,140415082],[2016,140093230],[2017,163350118],[2018,208436486],[2019,160307780],[2020,190583611],[2021,216016563],[2022,231195647],[2023,219640958],[2024,261176878],[2025,281238450]],"season":[0.27,0.28,0.35,0.36,0.44,0.59,2.63,3.26,1.94,1.39,0.25,0.25],"peak":[7,8,9],"sources":[{"c":"Chile","p":40},{"c":"Mexico","p":22},{"c":"South Africa","p":21}],"conc":"concentrated","hhi":0.26,"rel":32,"relY":2025},{"slug":"pork-belly","name":"Pork belly","cat":"meat","hs6":"0203194010","years":"2010-2025","latest":270149638,"yoy":11.3,"annual":[[2010,159968757],[2011,227225496],[2012,237812098],[2013,339297171],[2014,339373568],[2015,271217784],[2016,249375622],[2017,234445065],[2018,185875299],[2019,157858633],[2020,124002629],[2021,203067481],[2022,312813792],[2023,220489866],[2024,242737117],[2025,270149638]],"season":[0.96,1.02,1.12,0.99,0.92,0.94,1.01,1.07,0.99,1.06,1.01,0.91],"peak":[3,8,10],"sources":[{"c":"Canada","p":95},{"c":"Mexico","p":5},{"c":"Brazil","p":0}],"conc":"single-source","hhi":0.9,"rel":1,"relY":2025},{"slug":"garlic","name":"Garlic","cat":"allium","hs6":"070320","years":"2010-2025","latest":262481127,"yoy":-9.3,"annual":[[2010,130097010],[2011,107745470],[2012,144340208],[2013,184305590],[2014,135126823],[2015,172231540],[2016,211313633],[2017,211042016],[2018,149499267],[2019,186598256],[2020,219479240],[2021,228771900],[2022,243495103],[2023,259300101],[2024,289512926],[2025,262481127]],"season":[1.16,1.04,1.03,1,1.02,0.98,0.91,0.98,0.87,0.94,0.95,1.13],"peak":[1,2,12],"sources":[{"c":"China","p":38},{"c":"Spain","p":22},{"c":"Argentina","p":16}],"conc":"concentrated","hhi":0.25,"rel":53,"relY":2025},{"slug":"ahi-tuna","name":"Ahi tuna (fresh)","cat":"seafood","hs6":"030232+030235","years":"2010-2025","latest":257819287,"yoy":-7.9,"annual":[[2010,140350516],[2011,153986789],[2012,165987483],[2013,175170839],[2014,175129571],[2015,166711217],[2016,176368996],[2017,187149367],[2018,213837199],[2019,215387542],[2020,157393153],[2021,216258519],[2022,251762570],[2023,265736658],[2024,279989556],[2025,257819287]],"season":[0.94,0.89,1.07,1.01,1.12,1.07,1.03,1.03,0.97,0.98,0.89,1],"peak":[3,5,6],"sources":[{"c":"Mexico","p":32},{"c":"Spain","p":16},{"c":"Panama","p":14}],"conc":"diversified","hhi":0.16,"rel":null,"relY":null},{"slug":"green-beans","name":"Green beans","cat":"fruiting","hs6":"0708209010","years":"2010-2024","latest":253323896,"yoy":12.9,"annual":[[2010,77661696],[2011,76457035],[2012,83080133],[2013,90527233],[2014,97374738],[2015,108842533],[2016,115287935],[2017,119021373],[2018,145300272],[2019,149523859],[2020,175522174],[2021,188975926],[2022,200672422],[2023,224339627],[2024,253323896]],"season":[1.42,1.24,1.27,0.99,0.75,0.65,0.66,0.67,0.63,0.75,1.24,1.73],"peak":[1,3,12],"sources":[],"conc":null,"hhi":null,"rel":54,"relY":2024},{"slug":"squid","name":"Squid","cat":"shellfish","hs6":"030743 (+5 HS10 lines)","years":"2017-2025","latest":243728609,"yoy":5.5,"annual":[[2017,179612980],[2018,206087017],[2019,175650017],[2020,133572945],[2021,252785673],[2022,309510862],[2023,230528746],[2024,230994851],[2025,243728609]],"season":[1.12,0.96,0.93,0.84,0.98,1.03,1.09,1.1,0.95,1.02,0.97,1.02],"peak":[1,7,8],"sources":[{"c":"Argentina","p":23},{"c":"New Zealand","p":14},{"c":"Taiwan","p":11}],"conc":"diversified","hhi":0.12,"rel":null,"relY":null},{"slug":"sardine","name":"Sardines","cat":"pantry","hs6":"160413","years":"2010-2025","latest":217873287,"yoy":6.9,"annual":[[2010,91718776],[2011,99479612],[2012,116808996],[2013,117126037],[2014,122293762],[2015,122639672],[2016,117901401],[2017,132328184],[2018,140289881],[2019,130789652],[2020,179870759],[2021,156264665],[2022,199405291],[2023,178330757],[2024,203816927],[2025,217873287]],"season":[1.13,0.93,1.01,1.01,0.88,0.92,0.95,0.9,0.97,1.07,1.11,1.12],"peak":[1,11,12],"sources":[{"c":"Poland","p":29},{"c":"Morocco","p":22},{"c":"Thailand","p":11}],"conc":"diversified","hhi":0.17,"rel":null,"relY":null},{"slug":"cherry","name":"Cherry (sweet)","cat":"fruit","hs6":"080929","years":"2012-2025","latest":208820452,"yoy":85.5,"annual":[[2012,37496448],[2013,36921937],[2014,58126322],[2015,59172829],[2016,74036369],[2017,63257012],[2018,69649330],[2019,57663927],[2020,67070603],[2021,95712360],[2022,157250808],[2023,120310785],[2024,112586973],[2025,208820452]],"season":[3.3,0.71,0.07,0,0,0.01,0.69,2.69,0.11,0.01,1.14,3.26],"peak":[1,8,12],"sources":[{"c":"Chile","p":71},{"c":"Canada","p":24},{"c":"Argentina","p":4}],"conc":"concentrated","hhi":0.56,"rel":51,"relY":2025},{"slug":"snapper","name":"Snapper","cat":"seafood","hs6":"0302895058+0303890067","years":"2012-2025","latest":205648874,"yoy":4.7,"annual":[[2012,94567787],[2013,94607165],[2014,96693345],[2015,112038892],[2016,128132938],[2017,124707251],[2018,131405821],[2019,144080471],[2020,155305596],[2021,215244281],[2022,208986041],[2023,180715077],[2024,196462494],[2025,205648874]],"season":[0.99,0.93,1,0.91,0.87,0.9,1.09,1.06,1.01,1.03,1.05,1.14],"peak":[7,8,12],"sources":[{"c":"Mexico","p":29},{"c":"Brazil","p":24},{"c":"Nicaragua","p":8}],"conc":"diversified","hhi":0.17,"rel":null,"relY":null},{"slug":"coconut","name":"Coconut","cat":"fruit","hs6":"080111+080119","years":"2010-2025","latest":193343301,"yoy":31.8,"annual":[[2010,72869220],[2011,142205448],[2012,128576220],[2013,108247205],[2014,165044856],[2015,167083224],[2016,146315724],[2017,152543159],[2018,158761178],[2019,128566196],[2020,118741262],[2021,181630455],[2022,189001014],[2023,124702831],[2024,146674113],[2025,193343301]],"season":[0.9,0.69,0.97,1.04,0.98,0.98,1.08,1.14,1.08,1.16,1.03,0.95],"peak":[7,8,10],"sources":[{"c":"Philippines","p":50},{"c":"Mexico","p":18},{"c":"Thailand","p":10}],"conc":"concentrated","hhi":0.3,"rel":null,"relY":null},{"slug":"zucchini","name":"Zucchini","cat":"fruiting","hs6":"0709932055+0709932020","years":"2022-2025","latest":189586663,"yoy":-16.7,"annual":[[2022,8429659],[2023,196210203],[2024,227589315],[2025,189586663]],"season":[1.92,2.06,1.71,1.19,0.85,0.36,0.25,0.24,0.28,0.92,1.06,1.16],"peak":[1,2,3],"sources":[{"c":"Mexico","p":95},{"c":"Canada","p":4},{"c":"Guatemala","p":1}],"conc":"single-source","hhi":0.91,"rel":48,"relY":2025},{"slug":"whole-halibut","name":"Whole halibut","cat":"seafood","hs6":"030221","years":"2010-2025","latest":173877021,"yoy":2.5,"annual":[[2010,50881207],[2011,59296292],[2012,62421677],[2013,63325622],[2014,74184696],[2015,83946308],[2016,94104555],[2017,95227746],[2018,103625071],[2019,110217864],[2020,98868411],[2021,136806826],[2022,158566185],[2023,158855284],[2024,169557542],[2025,173877021]],"season":[0.57,0.54,0.86,1.02,1.03,1.4,1.65,1.5,1.15,1.07,0.68,0.54],"peak":[6,7,8],"sources":[{"c":"Canada","p":89},{"c":"Norway","p":6},{"c":"Mexico","p":3}],"conc":"concentrated","hhi":0.8,"rel":null,"relY":null},{"slug":"carrot","name":"Carrot","cat":"root","hs6":"070610","years":"2010-2025","latest":164038992,"yoy":-16.9,"annual":[[2010,51630091],[2011,80262437],[2012,68469053],[2013,74432440],[2014,78845730],[2015,90750263],[2016,93392346],[2017,96168765],[2018,118502379],[2019,113991000],[2020,103264333],[2021,122340347],[2022,158070070],[2023,194179310],[2024,197510375],[2025,164038992]],"season":[1.19,0.95,1.03,0.93,0.9,0.76,0.77,0.95,1.04,1.14,1.17,1.17],"peak":[1,11,12],"sources":[{"c":"Mexico","p":44},{"c":"Canada","p":39},{"c":"Guatemala","p":11}],"conc":"concentrated","hhi":0.37,"rel":8,"relY":2025},{"slug":"cinnamon","name":"Cinnamon","cat":"spice","hs6":"090611+090619+090620","years":"2010-2025","latest":161749241,"yoy":6.4,"annual":[[2010,38195680],[2011,50037368],[2012,47856067],[2013,57361269],[2014,71894919],[2015,73846095],[2016,72877346],[2017,117918898],[2018,120920312],[2019,126100094],[2020,149854161],[2021,176963693],[2022,193937637],[2023,145975186],[2024,152024204],[2025,161749241]],"season":[1.05,0.9,0.94,0.96,0.94,0.9,0.99,1,1.06,1.06,1.09,1.12],"peak":[10,11,12],"sources":[{"c":"Indonesia","p":35},{"c":"Vietnam","p":34},{"c":"Sri Lanka","p":24}],"conc":"concentrated","hhi":0.3,"rel":null,"relY":null},{"slug":"romaine-lettuce","name":"Romaine lettuce","cat":"greens","hs6":"0705194020+0705192020","years":"2023-2025","latest":159408037,"yoy":-4,"annual":[[2023,58407934],[2024,165982895],[2025,159408037]],"season":[1.76,1.67,1.59,0.79,0.8,0.64,0.66,0.67,0.61,0.64,1.01,1.16],"peak":[1,2,3],"sources":[{"c":"Mexico","p":89},{"c":"Canada","p":11}],"conc":"concentrated","hhi":0.8,"rel":6,"relY":2025},{"slug":"goat","name":"Goat","cat":"meat","hs6":"020450","years":"2010-2025","latest":157727947,"yoy":13.4,"annual":[[2010,58428460],[2011,81904954],[2012,72109337],[2013,68370895],[2014,94625928],[2015,91801238],[2016,103650084],[2017,143736850],[2018,96871164],[2019,135714129],[2020,76566112],[2021,138284855],[2022,151052318],[2023,67883620],[2024,139049216],[2025,157727947]],"season":[1.07,0.7,1.05,1.14,1.09,0.93,0.88,0.87,1.02,1.04,1.05,1.17],"peak":[4,5,12],"sources":[{"c":"Australia","p":98},{"c":"Mexico","p":1},{"c":"New Zealand","p":1}],"conc":"single-source","hhi":0.96,"rel":null,"relY":null},{"slug":"parmesan","name":"Parmesan (Italian grating cheese)","cat":"dairy","hs6":"0406904100+0406904200+0406904300","years":"2010-2025","latest":156315447,"yoy":-46,"annual":[[2010,169744659],[2011,199596654],[2012,174993205],[2013,167630830],[2014,158389087],[2015,155090275],[2016,164442714],[2017,157791497],[2018,191985985],[2019,219267235],[2020,170583249],[2021,224390756],[2022,231992065],[2023,250422348],[2024,289342025],[2025,156315447]],"season":[0.93,1,0.97,0.92,0.92,0.94,0.95,1.03,0.97,1.15,1.12,1.09],"peak":[10,11,12],"sources":[{"c":"Italy","p":92},{"c":"Argentina","p":3},{"c":"Lithuania","p":2}],"conc":"single-source","hhi":0.85,"rel":null,"relY":null},{"slug":"yogurt","name":"Yogurt","cat":"dairy","hs6":"040320","years":"2022-2025","latest":152585224,"yoy":2.1,"annual":[[2022,87236866],[2023,124636150],[2024,149416012],[2025,152585224]],"season":[0.98,0.99,1.02,1.04,0.97,0.96,1.07,1.03,0.94,0.96,0.96,1.06],"peak":[4,7,12],"sources":[{"c":"Canada","p":50},{"c":"France","p":39},{"c":"Mexico","p":6}],"conc":"concentrated","hhi":0.41,"rel":null,"relY":null},{"slug":"cassava","name":"Cassava (yuca)","cat":"root","hs6":"071410","years":"2010-2025","latest":146266323,"yoy":31,"annual":[[2010,38848912],[2011,52293094],[2012,55727298],[2013,58255577],[2014,54485352],[2015,56191020],[2016,65735108],[2017,65622528],[2018,69396639],[2019,81459630],[2020,75818187],[2021,75362412],[2022,90242320],[2023,113992601],[2024,111657522],[2025,146266323]],"season":[0.92,0.98,0.91,0.87,0.96,0.91,0.92,0.97,1.01,1.12,1.25,1.18],"peak":[10,11,12],"sources":[{"c":"Costa Rica","p":85},{"c":"Ecuador","p":6},{"c":"Colombia","p":2}],"conc":"concentrated","hhi":0.73,"rel":null,"relY":null},{"slug":"papaya","name":"Papaya","cat":"fruit","hs6":"080720","years":"2010-2025","latest":144816481,"yoy":0.2,"annual":[[2010,87025180],[2011,68376283],[2012,85809759],[2013,89495363],[2014,105590374],[2015,115329762],[2016,118192028],[2017,106793099],[2018,110242358],[2019,115198595],[2020,117186041],[2021,126076587],[2022,135049795],[2023,144708617],[2024,144560637],[2025,144816481]],"season":[0.89,0.97,1.08,1.09,1.2,1.08,1.03,1.01,0.96,0.96,0.92,0.82],"peak":[4,5,6],"sources":[{"c":"Mexico","p":89},{"c":"Guatemala","p":7},{"c":"Brazil","p":2}],"conc":"concentrated","hhi":0.8,"rel":100,"relY":2025},{"slug":"haddock","name":"Haddock","cat":"seafood","hs6":"030472","years":"2012-2025","latest":144316709,"yoy":46.6,"annual":[[2012,115108013],[2013,116278051],[2014,126017980],[2015,90103890],[2016,87109062],[2017,97414747],[2018,125664752],[2019,103549478],[2020,104454547],[2021,87745570],[2022,158276922],[2023,94642997],[2024,98465643],[2025,144316709]],"season":[1.21,1.07,1.08,0.75,0.9,0.79,0.87,0.9,0.89,1.09,1.15,1.3],"peak":[1,11,12],"sources":[{"c":"China","p":46},{"c":"Iceland","p":27},{"c":"Indonesia","p":11}],"conc":"concentrated","hhi":0.31,"rel":null,"relY":null},{"slug":"tomatillo","name":"Tomatillo","cat":"fruiting","hs6":"0810904610","years":"2021-2024","latest":136617347,"yoy":15.9,"annual":[[2021,55538427],[2022,99459981],[2023,117854613],[2024,136617347]],"season":[1.12,0.93,0.98,1.01,1.05,0.93,0.86,0.89,0.9,1.08,1.14,1.1],"peak":[1,11,12],"sources":[],"conc":null,"hhi":null,"rel":null,"relY":null},{"slug":"pear","name":"Pear","cat":"fruit","hs6":"080830","years":"2012-2025","latest":128221620,"yoy":0.6,"annual":[[2012,73806660],[2013,109908536],[2014,121116081],[2015,130975392],[2016,116325060],[2017,113554483],[2018,130299267],[2019,117389278],[2020,104743813],[2021,103320372],[2022,115031616],[2023,121570854],[2024,127485316],[2025,128221620]],"season":[0.59,1.1,2.17,2.18,1.68,0.8,0.24,0.18,0.52,0.69,0.99,0.87],"peak":[3,4,5],"sources":[{"c":"Argentina","p":54},{"c":"Korea, South","p":25},{"c":"Chile","p":12}],"conc":"concentrated","hhi":0.38,"rel":46,"relY":2025},{"slug":"jalapeno","name":"Jalapeño","cat":"fruiting","hs6":"0709602020","years":"2023-2025","latest":124230399,"yoy":-26.3,"annual":[[2023,176084075],[2024,168528252],[2025,124230399]],"season":[1.35,1.16,1.23,1.33,1.28,0.91,0.88,0.71,0.67,0.65,0.76,1.05],"peak":[1,4,5],"sources":[{"c":"Mexico","p":98},{"c":"Canada","p":2},{"c":"Dominican Republic","p":0}],"conc":"single-source","hhi":0.95,"rel":100,"relY":2025},{"slug":"branzino","name":"Branzino / sea bass","cat":"seafood","hs6":"030284","years":"2012-2025","latest":121406821,"yoy":8.2,"annual":[[2012,23396024],[2013,35486978],[2014,41537455],[2015,33388030],[2016,36493910],[2017,43120418],[2018,48142359],[2019,52315419],[2020,46478637],[2021,80148956],[2022,102538821],[2023,109254773],[2024,112247755],[2025,121406821]],"season":[0.94,0.94,1.05,0.95,1.02,0.99,0.99,1.02,1.01,1.05,0.95,1.1],"peak":[3,10,12],"sources":[{"c":"Turkey","p":43},{"c":"Spain","p":25},{"c":"Greece","p":24}],"conc":"concentrated","hhi":0.31,"rel":null,"relY":null},{"slug":"apple","name":"Apple","cat":"fruit","hs6":"080810","years":"2010-2025","latest":120429044,"yoy":-5.6,"annual":[[2010,168942421],[2011,133108489],[2012,163608010],[2013,216754385],[2014,240909098],[2015,209909881],[2016,268451847],[2017,233066023],[2018,198605895],[2019,208724196],[2020,157870865],[2021,171052413],[2022,175628562],[2023,195922468],[2024,127519683],[2025,120429044]],"season":[0.25,0.22,0.41,1.01,2.15,2.81,2.81,1.26,0.37,0.32,0.18,0.21],"peak":[5,6,7],"sources":[{"c":"Chile","p":43},{"c":"Canada","p":29},{"c":"New Zealand","p":25}],"conc":"concentrated","hhi":0.33,"rel":8,"relY":2025},{"slug":"dates","name":"Dates","cat":"fruit","hs6":"080410","years":"2010-2025","latest":119564461,"yoy":25.9,"annual":[[2010,17114743],[2011,28128479],[2012,29906492],[2013,33904387],[2014,43646352],[2015,56401756],[2016,46874210],[2017,47062825],[2018,92922729],[2019,64463935],[2020,63591061],[2021,80560217],[2022,81490206],[2023,76298035],[2024,95001762],[2025,119564461]],"season":[1.12,1.14,1.36,1.19,1.04,0.9,0.8,0.69,0.69,0.95,1.05,1.08],"peak":[2,3,4],"sources":[{"c":"Mexico","p":42},{"c":"Israel","p":12},{"c":"Turkey","p":12}],"conc":"diversified","hhi":0.23,"rel":59,"relY":2025},{"slug":"ginger","name":"Ginger root","cat":"root","hs6":"091011","years":"2012-2025","latest":118969213,"yoy":-17,"annual":[[2012,41662067],[2013,68032860],[2014,119360006],[2015,93116889],[2016,74074080],[2017,94122553],[2018,100790494],[2019,100227227],[2020,134826820],[2021,133372738],[2022,101702891],[2023,124727954],[2024,143408614],[2025,118969213]],"season":[0.99,1.03,1.14,1.05,0.95,0.89,1,0.99,0.89,1.02,1.01,1.04],"peak":[3,4,12],"sources":[{"c":"Peru","p":41},{"c":"China","p":34},{"c":"Brazil","p":12}],"conc":"concentrated","hhi":0.3,"rel":99,"relY":2025},{"slug":"mozzarella","name":"Fresh mozzarella / fresh cheese","cat":"dairy","hs6":"040610","years":"2010-2025","latest":117213430,"yoy":-18.5,"annual":[[2010,26770694],[2011,37702388],[2012,39639233],[2013,41034809],[2014,64242422],[2015,79003460],[2016,64970002],[2017,64009368],[2018,56333418],[2019,51609656],[2020,52197285],[2021,67003594],[2022,79815254],[2023,107127245],[2024,143837679],[2025,117213430]],"season":[0.79,0.8,0.98,0.99,1.09,1.09,1.16,1.12,1.04,0.98,0.97,1],"peak":[6,7,8],"sources":[{"c":"Italy","p":26},{"c":"Mexico","p":23},{"c":"Netherlands","p":9}],"conc":"diversified","hhi":0.14,"rel":null,"relY":null},{"slug":"eggs","name":"Eggs","cat":"other","hs6":"040721","years":"2012-2025","latest":115639127,"yoy":1745.1,"annual":[[2012,452204],[2013,414718],[2014,9681464],[2015,90350820],[2016,17948083],[2022,7335529],[2023,4898798],[2024,6267471],[2025,115639127]],"season":[0.77,0.72,1.12,1.19,1.29,0.88,1.13,1.14,1.1,0.99,0.96,0.71],"peak":[4,5,8],"sources":[{"c":"Brazil","p":36},{"c":"Mexico","p":28},{"c":"Turkey","p":24}],"conc":"concentrated","hhi":0.27,"rel":null,"relY":null},{"slug":"macadamia","name":"Macadamia","cat":"nut","hs6":"080262","years":"2012-2025","latest":113542760,"yoy":21,"annual":[[2012,83033099],[2013,84764653],[2014,113098234],[2015,150441308],[2016,112067091],[2017,142726777],[2018,189817650],[2019,233202740],[2020,142339396],[2021,129679072],[2022,154095469],[2023,86388553],[2024,93829074],[2025,113542760]],"season":[1.09,0.65,0.63,0.66,0.64,0.75,1.04,1.39,1.29,1.26,1.37,1.23],"peak":[8,9,11],"sources":[{"c":"South Africa","p":37},{"c":"Kenya","p":26},{"c":"Vietnam","p":17}],"conc":"concentrated","hhi":0.25,"rel":null,"relY":null},{"slug":"bacon","name":"Bacon (cured)","cat":"meat","hs6":"021012","years":"2010-2025","latest":111478400,"yoy":1.4,"annual":[[2010,65553148],[2011,77681025],[2012,57631534],[2013,56122937],[2014,38017887],[2015,50584656],[2016,59778797],[2017,67825506],[2018,59469395],[2019,81882050],[2020,100660513],[2021,136549647],[2022,126822602],[2023,106777118],[2024,109987060],[2025,111478400]],"season":[0.92,0.88,0.95,0.95,0.97,0.96,1,1.08,1.09,1.05,1.03,1.1],"peak":[8,9,12],"sources":[{"c":"Canada","p":98},{"c":"Mexico","p":1},{"c":"Italy","p":1}],"conc":"single-source","hhi":0.97,"rel":0,"relY":2025},{"slug":"pickles","name":"Pickles","cat":"pantry","hs6":"200110","years":"2010-2025","latest":109249013,"yoy":14.6,"annual":[[2010,44427891],[2011,44395878],[2012,50844664],[2013,43185570],[2014,40407850],[2015,46836510],[2016,47960941],[2017,51152116],[2018,54704158],[2019,57198281],[2020,85778777],[2021,83207844],[2022,87135943],[2023,95455727],[2024,95338563],[2025,109249013]],"season":[0.86,0.94,1.35,1.23,1.07,0.91,0.83,0.94,1.08,1.06,0.92,0.81],"peak":[3,4,9],"sources":[{"c":"India","p":50},{"c":"Canada","p":9},{"c":"Vietnam","p":9}],"conc":"concentrated","hhi":0.28,"rel":null,"relY":null},{"slug":"cauliflower","name":"Cauliflower","cat":"cruciferous","hs6":"070410","years":"2010-2025","latest":109055998,"yoy":6,"annual":[[2010,9919677],[2011,12098200],[2012,14234699],[2013,16671578],[2014,19800572],[2015,29070466],[2016,32509513],[2017,61800268],[2018,89317185],[2019,126776174],[2020,119955920],[2021,131678052],[2022,134799427],[2023,115235921],[2024,102858095],[2025,109055998]],"season":[1.02,0.86,0.95,0.77,0.7,0.64,1.16,1.22,1.3,1.42,0.92,1.05],"peak":[8,9,10],"sources":[{"c":"Mexico","p":72},{"c":"Canada","p":26},{"c":"China","p":1}],"conc":"concentrated","hhi":0.58,"rel":28,"relY":2025},{"slug":"soy-sauce","name":"Soy sauce","cat":"pantry","hs6":"210310","years":"2010-2025","latest":108444909,"yoy":-8.5,"annual":[[2010,61731517],[2011,68731403],[2012,69275311],[2013,73460803],[2014,76393422],[2015,81569719],[2016,86450073],[2017,92936857],[2018,103057160],[2019,94911547],[2020,99096124],[2021,99800833],[2022,109139818],[2023,101283355],[2024,118476478],[2025,108444909]],"season":[1.05,0.83,1.03,1.11,1.07,1,1.04,0.97,0.87,0.97,0.99,1.07],"peak":[4,5,12],"sources":[{"c":"China","p":35},{"c":"Japan","p":13},{"c":"Canada","p":12}],"conc":"diversified","hhi":0.18,"rel":null,"relY":null},{"slug":"cherry-tomato","name":"Cherry tomato","cat":"fruiting","hs6":"070200 (+6 HS10 lines)","years":"2022-2025","latest":104322158,"yoy":-7.8,"annual":[[2022,55961749],[2023,110407583],[2024,113185305],[2025,104322158]],"season":[2.01,1.66,1.03,1.05,1.03,1.01,0.64,0.62,0.62,0.67,0.75,0.9],"peak":[1,2,4],"sources":[{"c":"Mexico","p":75},{"c":"Canada","p":18},{"c":"Guatemala","p":4}],"conc":"concentrated","hhi":0.59,"rel":14,"relY":2025},{"slug":"vanilla","name":"Vanilla","cat":"spice","hs6":"090510+090520","years":"2012-2025","latest":95954924,"yoy":-25.9,"annual":[[2012,43940076],[2013,56965580],[2014,83387776],[2015,142547298],[2016,302886442],[2017,530378380],[2018,622420818],[2019,521904186],[2020,372858361],[2021,320181862],[2022,344705902],[2023,190006757],[2024,129574153],[2025,95954924]],"season":[1.06,1.07,1.31,1.37,1.31,1.18,0.93,0.78,0.52,0.64,0.88,0.96],"peak":[3,4,5],"sources":[{"c":"Madagascar","p":70},{"c":"Uganda","p":12},{"c":"Indonesia","p":11}],"conc":"concentrated","hhi":0.52,"rel":null,"relY":null},{"slug":"eggplant","name":"Eggplant","cat":"fruiting","hs6":"070930","years":"2010-2025","latest":94754836,"yoy":-20.3,"annual":[[2010,64413973],[2011,64147097],[2012,63797318],[2013,61869471],[2014,59984208],[2015,63256454],[2016,67680077],[2017,59510566],[2018,61709542],[2019,71210271],[2020,84107874],[2021,78688471],[2022,93728777],[2023,99528348],[2024,118871224],[2025,94754836]],"season":[1.53,1.51,1.69,1.46,1.02,0.53,0.37,0.34,0.34,0.45,1.26,1.51],"peak":[1,3,12],"sources":[{"c":"Mexico","p":87},{"c":"Canada","p":6},{"c":"Honduras","p":5}],"conc":"concentrated","hhi":0.77,"rel":null,"relY":null},{"slug":"habanero-pepper","name":"Habanero pepper","cat":"fruiting","hs6":"0709602070","years":"2023-2025","latest":93190843,"yoy":-8.1,"annual":[[2023,119062817],[2024,101350474],[2025,93190843]],"season":[1.12,1.07,1.15,1.23,1.21,0.98,0.94,0.8,0.8,0.86,0.83,1],"peak":[3,4,5],"sources":[{"c":"Mexico","p":94},{"c":"Dominican Republic","p":5},{"c":"Canada","p":1}],"conc":"single-source","hhi":0.88,"rel":100,"relY":2025},{"slug":"tomato-paste","name":"Tomato paste","cat":"pantry","hs6":"200290","years":"2010-2025","latest":92216588,"yoy":13.6,"annual":[[2010,12400346],[2011,12985293],[2012,13645201],[2013,13011182],[2014,15901283],[2015,26421028],[2016,24038177],[2017,29962370],[2018,28793565],[2019,32801514],[2020,37535397],[2021,39487324],[2022,74521339],[2023,86214276],[2024,81169565],[2025,92216588]],"season":[1.01,0.82,0.98,0.99,1,1.1,1.08,0.97,0.92,1.05,0.96,1.12],"peak":[6,7,12],"sources":[{"c":"Italy","p":43},{"c":"Chile","p":26},{"c":"Turkey","p":7}],"conc":"concentrated","hhi":0.27,"rel":null,"relY":null},{"slug":"spinach","name":"Spinach","cat":"greens","hs6":"070970","years":"2010-2025","latest":88409384,"yoy":-8.6,"annual":[[2010,10558362],[2011,12736041],[2012,7075109],[2013,7764048],[2014,11581717],[2015,20842887],[2016,18964522],[2017,17696826],[2018,17726024],[2019,48938514],[2020,76827042],[2021,88068890],[2022,96265800],[2023,97906078],[2024,96714253],[2025,88409384]],"season":[1.19,1.08,1.12,0.83,0.73,0.87,0.97,1.02,0.96,0.92,1.07,1.23],"peak":[1,3,12],"sources":[{"c":"Mexico","p":71},{"c":"Canada","p":29},{"c":"United Kingdom","p":0}],"conc":"concentrated","hhi":0.59,"rel":22,"relY":2025},{"slug":"brussels-sprouts","name":"Brussels sprouts","cat":"cruciferous","hs6":"070420","years":"2010-2025","latest":86224085,"yoy":-15.8,"annual":[[2010,7068734],[2011,10047495],[2012,16820512],[2013,20432299],[2014,23311784],[2015,37869198],[2016,46873955],[2017,56334218],[2018,55334204],[2019,67075540],[2020,80591504],[2021,96986520],[2022,101622835],[2023,106484988],[2024,102414056],[2025,86224085]],"season":[1.35,1.81,2.05,1.8,1.46,0.86,0.37,0.21,0.25,0.4,0.7,0.74],"peak":[2,3,4],"sources":[{"c":"Mexico","p":87},{"c":"Canada","p":9},{"c":"Guatemala","p":4}],"conc":"concentrated","hhi":0.77,"rel":100,"relY":2025},{"slug":"iceberg-lettuce","name":"Iceberg lettuce","cat":"greens","hs6":"070511","years":"2010-2025","latest":83351075,"yoy":-13.6,"annual":[[2010,75515308],[2011,100843503],[2012,86901720],[2013,89133255],[2014,117133069],[2015,132574306],[2016,134665180],[2017,121542277],[2018,85826624],[2019,98320759],[2020,93079520],[2021,101840641],[2022,146951320],[2023,108099586],[2024,96454024],[2025,83351075]],"season":[0.92,0.92,1.09,1.01,0.93,0.92,1.05,0.97,0.98,1.09,1.15,0.97],"peak":[3,10,11],"sources":[{"c":"Mexico","p":74},{"c":"Canada","p":25},{"c":"Guatemala","p":0}],"conc":"concentrated","hhi":0.61,"rel":5,"relY":2025},{"slug":"cilantro","name":"Cilantro","cat":"herbs","hs6":"0709999010","years":"2021-2025","latest":80886723,"yoy":-17.2,"annual":[[2021,18333731],[2022,52229836],[2023,88031410],[2024,97654188],[2025,80886723]],"season":[1.32,1.19,1.09,0.91,0.79,0.91,0.89,0.86,0.86,0.92,1.04,1.22],"peak":[1,2,12],"sources":[{"c":"Mexico","p":96},{"c":"Canada","p":3},{"c":"Costa Rica","p":1}],"conc":"single-source","hhi":0.91,"rel":null,"relY":null},{"slug":"celery","name":"Celery","cat":"stalks","hs6":"070940","years":"2010-2025","latest":78383776,"yoy":-10.9,"annual":[[2010,16650753],[2011,18285828],[2012,16904703],[2013,26073955],[2014,23028126],[2015,26860422],[2016,28043832],[2017,36134662],[2018,29416894],[2019,75640234],[2020,69104309],[2021,76350938],[2022,86979878],[2023,95245879],[2024,88015808],[2025,78383776]],"season":[1.55,1.45,1.61,1.11,0.96,0.63,0.58,0.58,0.66,0.72,0.9,1.23],"peak":[1,2,3],"sources":[{"c":"Mexico","p":90},{"c":"Canada","p":10},{"c":"Dominican Republic","p":1}],"conc":"concentrated","hhi":0.81,"rel":16,"relY":2025},{"slug":"yam","name":"Yam","cat":"root","hs6":"071430","years":"2012-2025","latest":76946140,"yoy":-26,"annual":[[2012,47572510],[2013,54874207],[2014,54790674],[2015,61009314],[2016,61915483],[2017,60625304],[2018,70964536],[2019,69056217],[2020,76035774],[2021,75440548],[2022,79462736],[2023,101536101],[2024,103942546],[2025,76946140]],"season":[0.89,0.96,1.03,0.92,0.93,0.87,0.92,1.08,1.09,1.19,1.09,1.05],"peak":[9,10,11],"sources":[{"c":"Jamaica","p":42},{"c":"Ghana","p":17},{"c":"Costa Rica","p":13}],"conc":"diversified","hhi":0.24,"rel":null,"relY":null},{"slug":"cabbage","name":"Cabbage","cat":"cruciferous","hs6":"0704902000","years":"2010-2025","latest":75894995,"yoy":-5.7,"annual":[[2010,27358358],[2011,28639136],[2012,20400150],[2013,36046161],[2014,32788236],[2015,38683080],[2016,50127948],[2017,38035470],[2018,62161287],[2019,67373408],[2020,89722928],[2021,96295707],[2022,101630412],[2023,97834308],[2024,80517759],[2025,75894995]],"season":[0.89,0.75,0.86,0.66,0.66,0.72,1.28,1.37,1.51,1.38,0.99,0.93],"peak":[8,9,10],"sources":[{"c":"Mexico","p":54},{"c":"Canada","p":46},{"c":"Costa Rica","p":0}],"conc":"concentrated","hhi":0.5,"rel":17,"relY":2025},{"slug":"canned-tomatoes","name":"Canned tomatoes","cat":"pantry","hs6":"200210","years":"2010-2025","latest":72596499,"yoy":-11.7,"annual":[[2010,12394039],[2011,9708196],[2012,11411627],[2013,13402914],[2014,17239195],[2015,17816022],[2016,18440429],[2017,15237717],[2018,18275523],[2019,18961306],[2020,20770103],[2021,26099317],[2022,31798421],[2023,45569826],[2024,82201052],[2025,72596499]],"season":[0.99,0.89,1.05,1.03,1,0.95,0.97,0.88,0.99,1.09,1,1.16],"peak":[3,10,12],"sources":[{"c":"Italy","p":59},{"c":"Turkey","p":20},{"c":"Canada","p":10}],"conc":"concentrated","hhi":0.4,"rel":null,"relY":null},{"slug":"corn-on-the-cob","name":"Corn on the cob","cat":"fruiting","hs6":"0709994500","years":"2012-2025","latest":67124101,"yoy":-25.3,"annual":[[2012,32335301],[2013,29185350],[2014,31333565],[2015,31052961],[2016,39525219],[2017,32980576],[2018,28993627],[2019,38818724],[2020,55738804],[2021,75897926],[2022,71660857],[2023,73897192],[2024,89868909],[2025,67124101]],"season":[2.26,2.36,2.37,0.89,0.15,0.18,0.25,0.55,0.46,0.16,0.42,1.96],"peak":[1,2,3],"sources":[{"c":"Mexico","p":87},{"c":"Canada","p":8},{"c":"Guatemala","p":5}],"conc":"concentrated","hhi":0.76,"rel":14,"relY":2025},{"slug":"cumin","name":"Cumin","cat":"spice","hs6":"090931+090932","years":"2012-2025","latest":65616124,"yoy":-17.2,"annual":[[2012,35120806],[2013,35574106],[2014,30535137],[2015,35983623],[2016,41556666],[2017,44710218],[2018,46420028],[2019,47269949],[2020,52599295],[2021,47946196],[2022,47140906],[2023,62187481],[2024,79261932],[2025,65616124]],"season":[0.92,0.83,0.85,0.92,1.06,1.07,1.15,1.09,1.16,1.04,0.97,0.91],"peak":[7,8,9],"sources":[{"c":"India","p":80},{"c":"Turkey","p":13},{"c":"Vietnam","p":4}],"conc":"concentrated","hhi":0.65,"rel":null,"relY":null},{"slug":"caviar","name":"Caviar","cat":"pantry","hs6":"160431","years":"2012-2025","latest":62986200,"yoy":26.1,"annual":[[2012,7261773],[2013,8989159],[2014,7625463],[2015,11250091],[2016,13122343],[2017,15802569],[2018,17392907],[2019,18768040],[2020,17002466],[2021,36332216],[2022,39124584],[2023,46007405],[2024,49939675],[2025,62986200]],"season":[0.64,0.53,0.76,0.66,0.71,0.77,0.73,0.55,0.85,1.78,1.91,2.1],"peak":[10,11,12],"sources":[{"c":"China","p":55},{"c":"Italy","p":9},{"c":"Poland","p":8}],"conc":"concentrated","hhi":0.33,"rel":null,"relY":null},{"slug":"grouper","name":"Grouper","cat":"seafood","hs6":"0302895061+0303890070","years":"2012-2025","latest":62002605,"yoy":-12.4,"annual":[[2012,33645931],[2013,39710125],[2014,39079534],[2015,47531501],[2016,48751184],[2017,52521497],[2018,59038127],[2019,54808794],[2020,40563230],[2021,62684845],[2022,65866300],[2023,69232987],[2024,70803033],[2025,62002605]],"season":[1.05,1.01,1.01,1.1,0.98,0.93,1.15,0.93,0.9,0.97,0.95,1.02],"peak":[1,4,7],"sources":[{"c":"Mexico","p":51},{"c":"Brazil","p":18},{"c":"Panama","p":10}],"conc":"concentrated","hhi":0.31,"rel":null,"relY":null},{"slug":"processed-cheese","name":"Processed cheese (American)","cat":"dairy","hs6":"040630","years":"2010-2025","latest":60439990,"yoy":3.8,"annual":[[2010,27657694],[2011,31558565],[2012,28403224],[2013,31359672],[2014,36210742],[2015,31718242],[2016,26863658],[2017,29017622],[2018,35171355],[2019,37310877],[2020,33318647],[2021,46140442],[2022,58120531],[2023,51305880],[2024,58230116],[2025,60439990]],"season":[0.95,1.08,1.22,0.92,0.81,0.85,0.87,0.89,0.99,1.18,1.18,1.06],"peak":[3,10,11],"sources":[{"c":"France","p":22},{"c":"Netherlands","p":15},{"c":"Morocco","p":13}],"conc":"diversified","hhi":0.12,"rel":null,"relY":null},{"slug":"pork-shoulder","name":"Pork shoulder","cat":"meat","hs6":"0203129020+0203229000","years":"2010-2025","latest":60286047,"yoy":-29.6,"annual":[[2010,75552916],[2011,79255878],[2012,71640706],[2013,72578151],[2014,94637412],[2015,70939406],[2016,74045850],[2017,85444979],[2018,76871807],[2019,51109521],[2020,72588380],[2021,104120595],[2022,81572617],[2023,84200559],[2024,85693031],[2025,60286047]],"season":[0.95,0.84,0.94,0.96,1.07,1.16,1.08,0.95,0.94,0.99,1.05,1.05],"peak":[5,6,7],"sources":[{"c":"Canada","p":76},{"c":"Brazil","p":11},{"c":"Spain","p":6}],"conc":"concentrated","hhi":0.6,"rel":0,"relY":2025},{"slug":"green-onion","name":"Green onion","cat":"allium","hs6":"0703900020","years":"2022-2025","latest":58884800,"yoy":3.4,"annual":[[2022,33517952],[2023,45910601],[2024,56933035],[2025,58884800]],"season":[0.81,0.79,1.02,0.99,1.07,0.92,0.94,1.02,1.2,1.11,0.98,1.14],"peak":[9,10,12],"sources":[{"c":"Mexico","p":95},{"c":"Canada","p":5},{"c":"China","p":0}],"conc":"single-source","hhi":0.9,"rel":4,"relY":2025},{"slug":"shiitake","name":"Specialty mushrooms (shiitake, oyster)","cat":"mushroom","hs6":"070959","years":"2010-2025","latest":56684067,"yoy":-16.5,"annual":[[2010,14992096],[2011,17824070],[2012,21043751],[2013,22967175],[2014,25053557],[2015,36871627],[2016,36517620],[2017,41817544],[2018,45727613],[2019,48598464],[2020,38770445],[2021,56325484],[2022,59237802],[2023,64183252],[2024,67846453],[2025,56684067]],"season":[1.1,0.99,0.85,0.57,0.58,0.65,0.68,0.62,0.68,1.36,1.73,2.16],"peak":[10,11,12],"sources":[{"c":"Italy","p":25},{"c":"Canada","p":22},{"c":"Korea, South","p":22}],"conc":"diversified","hhi":0.18,"rel":6,"relY":2025},{"slug":"chayote","name":"Chayote","cat":"fruiting","hs6":"0709991000","years":"2012-2025","latest":54268762,"yoy":-8.5,"annual":[[2012,17334034],[2013,19899342],[2014,19756979],[2015,21326669],[2016,22160267],[2017,24695466],[2018,27885763],[2019,31120380],[2020,36388933],[2021,38467573],[2022,40226411],[2023,48779657],[2024,59283937],[2025,54268762]],"season":[1.04,1.04,1.08,0.97,0.88,0.91,1,0.82,0.87,1.1,1.23,1.04],"peak":[3,10,11],"sources":[{"c":"Mexico","p":60},{"c":"Costa Rica","p":40},{"c":"Guatemala","p":0}],"conc":"concentrated","hhi":0.52,"rel":null,"relY":null},{"slug":"whole-trout","name":"Whole trout","cat":"seafood","hs6":"030211","years":"2010-2025","latest":52131098,"yoy":5.4,"annual":[[2010,14201267],[2011,14880195],[2012,13988965],[2013,15572745],[2014,17101546],[2015,31480321],[2016,48014428],[2017,38173088],[2018,42170811],[2019,44766146],[2020,58588610],[2021,72714009],[2022,59190062],[2023,47758988],[2024,49456781],[2025,52131098]],"season":[1,0.95,1.1,1.02,1.1,0.95,0.91,0.91,1.07,1,0.97,1.01],"peak":[3,5,9],"sources":[{"c":"Norway","p":80},{"c":"Canada","p":8},{"c":"Colombia","p":6}],"conc":"concentrated","hhi":0.65,"rel":null,"relY":null},{"slug":"turmeric","name":"Turmeric","cat":"spice","hs6":"091030","years":"2010-2025","latest":51159641,"yoy":-0.7,"annual":[[2010,12694706],[2011,18596249],[2012,10713494],[2013,13190932],[2014,18181599],[2015,22441486],[2016,29396875],[2017,33137463],[2018,35749127],[2019,30879829],[2020,41991843],[2021,54958664],[2022,43137860],[2023,45882905],[2024,51499743],[2025,51159641]],"season":[0.86,0.8,0.94,1,1.09,1.03,1.09,1.07,1.01,1.16,0.98,0.95],"peak":[5,7,10],"sources":[{"c":"India","p":70},{"c":"Fiji","p":17},{"c":"Thailand","p":2}],"conc":"concentrated","hhi":0.53,"rel":null,"relY":null},{"slug":"sweet-potato","name":"Sweet potato","cat":"tuber","hs6":"071420","years":"2010-2025","latest":45466596,"yoy":-9.3,"annual":[[2010,8880903],[2011,9498506],[2012,9186708],[2013,10396176],[2014,13615678],[2015,14538616],[2016,12929215],[2017,14221683],[2018,15432598],[2019,15170036],[2020,12354074],[2021,26468215],[2022,43183516],[2023,33224454],[2024,50122235],[2025,45466596]],"season":[1.08,1.41,0.92,0.88,0.8,0.78,1.15,1.08,0.75,1.36,0.88,0.88],"peak":[2,7,10],"sources":[{"c":"China","p":58},{"c":"Dominican Republic","p":19},{"c":"Peru","p":6}],"conc":"concentrated","hhi":0.38,"rel":7,"relY":2025},{"slug":"mahi-mahi","name":"Mahi-mahi","cat":"seafood","hs6":"0302895072","years":"2012-2025","latest":43192804,"yoy":-21.9,"annual":[[2012,39534895],[2013,37116144],[2014,38792495],[2015,44942399],[2016,45308202],[2017,47220473],[2018,50517228],[2019,50457890],[2020,28834774],[2021,45385819],[2022,54432062],[2023,49300912],[2024,55318687],[2025,43192804]],"season":[1.06,1.12,1.34,1.13,1.06,1.08,0.98,0.92,0.77,0.89,0.76,0.89],"peak":[2,3,4],"sources":[{"c":"Ecuador","p":71},{"c":"Guatemala","p":7},{"c":"Panama","p":7}],"conc":"concentrated","hhi":0.52,"rel":null,"relY":null},{"slug":"mustard","name":"Prepared mustard","cat":"pantry","hs6":"210330","years":"2010-2025","latest":43043364,"yoy":-6.1,"annual":[[2010,26147797],[2011,27133376],[2012,29155252],[2013,32041740],[2014,32619322],[2015,31280318],[2016,31238745],[2017,32060628],[2018,32764416],[2019,30027311],[2020,28677416],[2021,35269769],[2022,42155522],[2023,51477805],[2024,45861686],[2025,43043364]],"season":[0.93,0.9,1.05,0.97,1.03,1.08,1.01,1.05,0.98,1.1,0.98,0.92],"peak":[3,6,10],"sources":[{"c":"Canada","p":43},{"c":"France","p":38},{"c":"United Kingdom","p":8}],"conc":"concentrated","hhi":0.34,"rel":null,"relY":null},{"slug":"cardamom","name":"Cardamom","cat":"spice","hs6":"090831+090832","years":"2012-2025","latest":42544514,"yoy":54,"annual":[[2012,11853286],[2013,10288770],[2014,8163716],[2015,9703843],[2016,9771990],[2017,12478142],[2018,18762194],[2019,21845159],[2020,35708132],[2021,36017004],[2022,28916752],[2023,16819541],[2024,27625349],[2025,42544514]],"season":[1.06,1.09,1.12,1.13,1.38,1,0.93,0.98,0.86,0.82,0.73,0.9],"peak":[3,4,5],"sources":[{"c":"Guatemala","p":55},{"c":"India","p":37},{"c":"United Kingdom","p":2}],"conc":"concentrated","hhi":0.44,"rel":null,"relY":null},{"slug":"yellow-squash","name":"Yellow squash","cat":"fruiting","hs6":"0709932075+0709932030","years":"2022-2025","latest":41823416,"yoy":-40.4,"annual":[[2022,1065156],[2023,42367390],[2024,70170675],[2025,41823416]],"season":[1.53,1.73,2.71,1.7,0.78,0.15,0.09,0.1,0.13,1.05,0.79,1.24],"peak":[2,3,4],"sources":[{"c":"Mexico","p":100},{"c":"Guatemala","p":0},{"c":"Canada","p":0}],"conc":"single-source","hhi":0.99,"rel":17,"relY":2025},{"slug":"anchovy","name":"Anchovies","cat":"pantry","hs6":"160416","years":"2010-2025","latest":41242825,"yoy":-16,"annual":[[2010,27872306],[2011,28299030],[2012,30982756],[2013,25801067],[2014,28063211],[2015,34049952],[2016,29031773],[2017,28695054],[2018,31262969],[2019,29517951],[2020,29143103],[2021,30737116],[2022,31648266],[2023,36515110],[2024,49071635],[2025,41242825]],"season":[1.19,0.79,1.06,0.98,0.98,1.06,0.95,0.96,0.92,0.97,1.07,1.08],"peak":[1,11,12],"sources":[{"c":"Morocco","p":32},{"c":"Italy","p":22},{"c":"Peru","p":21}],"conc":"diversified","hhi":0.22,"rel":null,"relY":null},{"slug":"poblano-pepper","name":"Poblano pepper","cat":"fruiting","hs6":"0709602050","years":"2023-2025","latest":40044645,"yoy":-21.9,"annual":[[2023,40559969],[2024,51244851],[2025,40044645]],"season":[1.51,1.52,1.5,1.19,1.04,0.67,0.87,0.58,0.58,0.66,0.66,1.2],"peak":[1,2,3],"sources":[{"c":"Mexico","p":100},{"c":"Canada","p":0}],"conc":"single-source","hhi":1,"rel":100,"relY":2025},{"slug":"butternut-squash","name":"Butternut squash","cat":"fruiting","hs6":"0709932060+0709932022","years":"2023-2025","latest":38481563,"yoy":-0.3,"annual":[[2023,35733878],[2024,38580199],[2025,38481563]],"season":[1.68,1.49,0.95,1.02,1.1,0.88,0.23,0.09,0.29,0.73,1.6,1.94],"peak":[1,11,12],"sources":[{"c":"Mexico","p":95},{"c":"Canada","p":2},{"c":"Honduras","p":2}],"conc":"single-source","hhi":0.91,"rel":16,"relY":2025},{"slug":"bok-choy","name":"Bok choy","cat":"greens","hs6":"0704904015","years":"2022-2025","latest":36039047,"yoy":-9.4,"annual":[[2022,17483980],[2023,50375119],[2024,39790776],[2025,36039047]],"season":[1.29,1.04,1.08,1,0.7,0.64,1,1.1,1.11,1.01,0.92,1.1],"peak":[1,9,12],"sources":[{"c":"Mexico","p":78},{"c":"Canada","p":22}],"conc":"concentrated","hhi":0.66,"rel":null,"relY":null},{"slug":"okra","name":"Okra","cat":"fruiting","hs6":"0709991400","years":"2012-2025","latest":35603542,"yoy":-37.7,"annual":[[2012,17532092],[2013,20473223],[2014,27618804],[2015,24336929],[2016,25539226],[2017,32089310],[2018,41411341],[2019,43919179],[2020,44137812],[2021,45115788],[2022,41159896],[2023,45723100],[2024,57125716],[2025,35603542]],"season":[0.96,1.03,1.11,1.04,1.05,1.27,1.3,1.03,0.86,0.65,0.69,1.01],"peak":[3,6,7],"sources":[{"c":"Honduras","p":60},{"c":"Mexico","p":27},{"c":"Nicaragua","p":12}],"conc":"concentrated","hhi":0.45,"rel":null,"relY":null},{"slug":"red-leaf-lettuce","name":"Red leaf lettuce","cat":"greens","hs6":"0705194060+0705192060","years":"2023-2025","latest":33884000,"yoy":26.9,"annual":[[2023,8057563],[2024,26709596],[2025,33884000]],"season":[1.25,1.25,1.14,0.93,0.99,0.85,0.94,1.02,1.03,0.94,0.74,0.92],"peak":[1,2,3],"sources":[{"c":"Canada","p":53},{"c":"Mexico","p":47}],"conc":"concentrated","hhi":0.5,"rel":4,"relY":2025},{"slug":"green-leaf-lettuce","name":"Green leaf lettuce","cat":"greens","hs6":"0705194060+0705192060","years":"2023-2025","latest":33884000,"yoy":26.9,"annual":[[2023,8057563],[2024,26709596],[2025,33884000]],"season":[1.25,1.25,1.14,0.93,0.99,0.85,0.94,1.02,1.03,0.94,0.74,0.92],"peak":[1,2,3],"sources":[{"c":"Canada","p":53},{"c":"Mexico","p":47}],"conc":"concentrated","hhi":0.5,"rel":4,"relY":2025},{"slug":"blue-cheese","name":"Blue cheese","cat":"dairy","hs6":"040640","years":"2010-2025","latest":33398354,"yoy":-7.3,"annual":[[2010,34417962],[2011,35635690],[2012,36465698],[2013,40565686],[2014,44053452],[2015,39434527],[2016,36015071],[2017,32824901],[2018,35175054],[2019,34767968],[2020,29515182],[2021,32785992],[2022,35442149],[2023,34245864],[2024,36030460],[2025,33398354]],"season":[0.83,0.9,1.04,0.92,0.93,0.86,0.94,1.03,1.1,1.32,1.2,0.94],"peak":[9,10,11],"sources":[{"c":"France","p":27},{"c":"Denmark","p":25},{"c":"Germany","p":24}],"conc":"diversified","hhi":0.21,"rel":null,"relY":null},{"slug":"grapefruit","name":"Grapefruit","cat":"citrus","hs6":"080540","years":"2010-2025","latest":33115896,"yoy":-16,"annual":[[2010,2202031],[2011,1844926],[2012,1030652],[2013,6627634],[2014,5223998],[2015,5311585],[2016,11188210],[2017,12209623],[2018,10908858],[2019,15321818],[2020,13156110],[2021,27309505],[2022,22926588],[2023,29646473],[2024,39437060],[2025,33115896]],"season":[0.96,0.83,0.89,0.59,0.42,0.61,1.62,2.11,1.79,0.53,0.67,0.96],"peak":[7,8,9],"sources":[{"c":"South Africa","p":47},{"c":"Vietnam","p":21},{"c":"Mexico","p":17}],"conc":"concentrated","hhi":0.3,"rel":21,"relY":2025},{"slug":"serrano-pepper","name":"Serrano pepper","cat":"fruiting","hs6":"0709602060","years":"2023-2025","latest":30974507,"yoy":-34.6,"annual":[[2023,34256505],[2024,47349258],[2025,30974507]],"season":[1.03,1.03,1.23,1.44,1.31,1.15,0.89,0.62,0.54,0.6,1.02,1.14],"peak":[3,4,5],"sources":[{"c":"Mexico","p":100},{"c":"Canada","p":0},{"c":"Vietnam","p":0}],"conc":"single-source","hhi":1,"rel":100,"relY":2025},{"slug":"daikon","name":"Daikon radish","cat":"root","hs6":"0706902000","years":"2010-2025","latest":28227186,"yoy":-29.7,"annual":[[2010,13853844],[2011,17817408],[2012,20087881],[2013,19935356],[2014,19466821],[2015,19591819],[2016,22787808],[2017,29084519],[2018,31649424],[2019,25402310],[2020,30520137],[2021,34791542],[2022,36567676],[2023,40853150],[2024,40154879],[2025,28227186]],"season":[1.46,1.42,1.42,0.91,0.44,0.45,0.64,0.67,0.73,1,1.37,1.49],"peak":[1,2,12],"sources":[{"c":"Mexico","p":62},{"c":"Canada","p":31},{"c":"Korea, South","p":7}],"conc":"concentrated","hhi":0.48,"rel":null,"relY":null},{"slug":"snow-peas","name":"Snow peas","cat":"fruiting","hs6":"0708102020+0708104020","years":"2023-2025","latest":24325079,"yoy":-25.8,"annual":[[2023,13231008],[2024,32794036],[2025,24325079]],"season":[1.92,1.03,1.1,0.65,0.69,1.06,0.88,1.01,0.76,0.8,0.94,1.15],"peak":[1,3,12],"sources":[{"c":"Guatemala","p":51},{"c":"Mexico","p":28},{"c":"Peru","p":20}],"conc":"concentrated","hhi":0.38,"rel":41,"relY":2025},{"slug":"leek","name":"Leek","cat":"allium","hs6":"0703900040","years":"2022-2025","latest":23708144,"yoy":-33.3,"annual":[[2022,29108672],[2023,33907838],[2024,35545516],[2025,23708144]],"season":[1.51,1.38,1.32,1.15,0.92,0.73,0.68,0.76,0.83,0.71,0.76,1.22],"peak":[1,2,3],"sources":[{"c":"Mexico","p":67},{"c":"Canada","p":25},{"c":"Ecuador","p":4}],"conc":"concentrated","hhi":0.51,"rel":null,"relY":null},{"slug":"jicama","name":"Jicama","cat":"root","hs6":"0709990500","years":"2012-2025","latest":23517226,"yoy":-17.1,"annual":[[2012,21863536],[2013,15907083],[2014,18667106],[2015,22269757],[2016,20090777],[2017,16612048],[2018,18291885],[2019,21303565],[2020,18441308],[2021,21308573],[2022,25564518],[2023,26743573],[2024,28366775],[2025,23517226]],"season":[1.23,1.2,1.34,1.23,1.05,0.85,0.82,0.79,0.78,0.9,0.86,0.95],"peak":[1,3,4],"sources":[{"c":"Mexico","p":86},{"c":"Dominican Republic","p":13},{"c":"Jamaica","p":0}],"conc":"concentrated","hhi":0.76,"rel":null,"relY":null},{"slug":"scallops","name":"Scallops","cat":"shellfish","hs6":"030729","years":"2010-2025","latest":21485842,"yoy":-34,"annual":[[2010,204707848],[2011,245009533],[2012,182963004],[2013,305151632],[2014,306358551],[2015,276624917],[2016,266780194],[2017,67238940],[2018,41081781],[2019,40950454],[2020,31197763],[2021,39949445],[2022,37048324],[2023,30367602],[2024,32567358],[2025,21485842]],"season":[1.47,1.07,1.04,0.83,0.86,0.71,0.6,0.9,1.02,1.19,1.11,1.21],"peak":[1,10,12],"sources":[{"c":"Japan","p":41},{"c":"Canada","p":18},{"c":"United Kingdom","p":15}],"conc":"diversified","hhi":0.23,"rel":null,"relY":null},{"slug":"cloves","name":"Cloves","cat":"spice","hs6":"090710+090720","years":"2012-2025","latest":21314264,"yoy":-24.8,"annual":[[2012,17363923],[2013,19379404],[2014,16319446],[2015,17227298],[2016,12422979],[2017,14021794],[2018,13859574],[2019,13765769],[2020,14858926],[2021,14258893],[2022,20373801],[2023,19052611],[2024,28353917],[2025,21314264]],"season":[1.07,0.95,1.09,1.14,1.15,1.04,0.93,0.95,0.87,0.92,0.94,0.92],"peak":[3,4,5],"sources":[{"c":"Indonesia","p":46},{"c":"India","p":17},{"c":"Sri Lanka","p":13}],"conc":"concentrated","hhi":0.27,"rel":null,"relY":null},{"slug":"napa-cabbage","name":"Napa cabbage","cat":"greens","hs6":"0704904045","years":"2023-2025","latest":20123768,"yoy":-11.8,"annual":[[2023,13400059],[2024,22807858],[2025,20123768]],"season":[0.42,0.41,0.46,0.39,0.26,0.41,1.78,2.33,2.43,2.1,0.59,0.42],"peak":[8,9,10],"sources":[{"c":"Mexico","p":51},{"c":"Canada","p":49}],"conc":"concentrated","hhi":0.5,"rel":5,"relY":2025},{"slug":"dover-sole","name":"Sole (Dover/lemon)","cat":"seafood","hs6":"0302230000+0303330000","years":"2010-2025","latest":19640862,"yoy":-12.8,"annual":[[2010,13617403],[2011,12486897],[2012,15200286],[2013,14631734],[2014,10858226],[2015,7809432],[2016,8771992],[2017,8067738],[2018,10234730],[2019,12223338],[2020,7635952],[2021,11642157],[2022,17573861],[2023,20489087],[2024,22523875],[2025,19640862]],"season":[0.71,0.96,1.33,1.25,1.48,0.88,0.91,0.69,0.93,0.97,0.85,1.03],"peak":[3,4,5],"sources":[{"c":"Netherlands","p":62},{"c":"Spain","p":27},{"c":"Iceland","p":4}],"conc":"concentrated","hhi":0.46,"rel":null,"relY":null},{"slug":"beet","name":"Beet","cat":"root","hs6":"0706903000","years":"2010-2025","latest":18810421,"yoy":-15.4,"annual":[[2010,3504069],[2011,5861695],[2012,5521499],[2013,8842284],[2014,9234612],[2015,9829514],[2016,11600811],[2017,13802162],[2018,14618184],[2019,15006882],[2020,13753472],[2021,16482542],[2022,16293681],[2023,22647845],[2024,22239844],[2025,18810421]],"season":[1.17,1.26,1.45,1.47,1.08,0.66,0.55,0.68,0.66,0.74,1.09,1.18],"peak":[2,3,4],"sources":[{"c":"Canada","p":51},{"c":"Mexico","p":45},{"c":"Netherlands","p":2}],"conc":"concentrated","hhi":0.46,"rel":75,"relY":2025},{"slug":"nopales","name":"Nopales (cactus paddles)","cat":"greens","hs6":"0709999030","years":"2023-2025","latest":18386169,"yoy":-12.1,"annual":[[2023,17872386],[2024,20913260],[2025,18386169]],"season":[1.06,1.2,1.09,1.01,0.95,0.88,0.98,0.9,0.93,1.11,1,0.89],"peak":[2,3,10],"sources":[{"c":"Mexico","p":100}],"conc":"single-source","hhi":1,"rel":null,"relY":null},{"slug":"saffron","name":"Saffron","cat":"spice","hs6":"091020","years":"2010-2025","latest":17283863,"yoy":-2.3,"annual":[[2010,14362501],[2011,13642665],[2012,14346718],[2013,12213102],[2014,13407802],[2015,13118512],[2016,14597614],[2017,15953238],[2018,15995508],[2019,15300217],[2020,14371779],[2021,16445690],[2022,19144631],[2023,17637822],[2024,17698374],[2025,17283863]],"season":[0.89,0.83,0.93,0.84,0.94,1.06,1.14,1.14,0.97,1.38,0.95,0.94],"peak":[7,8,10],"sources":[{"c":"Spain","p":80},{"c":"Afghanistan","p":11},{"c":"India","p":3}],"conc":"concentrated","hhi":0.66,"rel":null,"relY":null},{"slug":"nutmeg","name":"Nutmeg","cat":"spice","hs6":"090811+090812","years":"2012-2025","latest":16004521,"yoy":-10.1,"annual":[[2012,30366666],[2013,23391741],[2014,20417685],[2015,19740862],[2016,17358860],[2017,14730115],[2018,14180318],[2019,14418444],[2020,14802481],[2021,18340434],[2022,20423973],[2023,16019405],[2024,17811193],[2025,16004521]],"season":[1.04,0.79,0.93,0.92,1.06,1.04,0.9,0.9,1.26,1.03,1.09,1.03],"peak":[5,9,11],"sources":[{"c":"Indonesia","p":65},{"c":"Vietnam","p":16},{"c":"India","p":11}],"conc":"concentrated","hhi":0.46,"rel":null,"relY":null},{"slug":"octopus","name":"Octopus","cat":"shellfish","hs6":"030759","years":"2010-2025","latest":15776654,"yoy":-29.6,"annual":[[2010,42565405],[2011,76500915],[2012,83200053],[2013,56435144],[2014,83145128],[2015,99317675],[2016,96775436],[2017,74528723],[2018,84149093],[2019,55275410],[2020,29010028],[2021,64601670],[2022,63035737],[2023,37930314],[2024,22425692],[2025,15776654]],"season":[0.83,0.84,0.96,1.03,1.01,1.04,0.97,0.95,1.02,1.16,1.13,1.06],"peak":[10,11,12],"sources":[{"c":"Spain","p":31},{"c":"Indonesia","p":17},{"c":"Mexico","p":14}],"conc":"diversified","hhi":0.17,"rel":null,"relY":null},{"slug":"coriander-seed","name":"Coriander seed","cat":"spice","hs6":"090921+090922","years":"2012-2025","latest":12180702,"yoy":-11.9,"annual":[[2012,5626036],[2013,7043351],[2014,9812807],[2015,11040176],[2016,8694729],[2017,7595017],[2018,8283034],[2019,8792339],[2020,10775431],[2021,14037493],[2022,14148226],[2023,12681775],[2024,13819459],[2025,12180702]],"season":[1.02,0.9,1.14,0.88,1.03,0.94,1.06,0.92,1.01,1.06,1.05,1],"peak":[3,7,10],"sources":[{"c":"India","p":46},{"c":"Canada","p":30},{"c":"Egypt","p":8}],"conc":"concentrated","hhi":0.31,"rel":null,"relY":null},{"slug":"kale","name":"Kale","cat":"greens","hs6":"0704904035","years":"2022-2025","latest":11968947,"yoy":-36.3,"annual":[[2022,9470230],[2023,22251035],[2024,18787692],[2025,11968947]],"season":[1.74,1.69,1.56,1.01,0.59,0.56,0.51,0.55,0.68,0.69,1.07,1.33],"peak":[1,2,3],"sources":[{"c":"Mexico","p":96},{"c":"Canada","p":4}],"conc":"single-source","hhi":0.92,"rel":null,"relY":null},{"slug":"acorn-squash","name":"Acorn squash","cat":"fruiting","hs6":"0709932085+0709932035","years":"2023-2025","latest":11228504,"yoy":-0.5,"annual":[[2023,12326164],[2024,11280040],[2025,11228504]],"season":[2.1,2.48,0.96,1.23,0.69,0.37,0.23,0.23,0.22,0.43,1.61,1.46],"peak":[1,2,11],"sources":[{"c":"Mexico","p":98},{"c":"Canada","p":2},{"c":"Honduras","p":0}],"conc":"single-source","hhi":0.95,"rel":5,"relY":2025},{"slug":"rutabaga","name":"Rutabaga","cat":"root","hs6":"0706904040","years":"2023-2025","latest":11184680,"yoy":-4.8,"annual":[[2023,7546187],[2024,11749330],[2025,11184680]],"season":[0.95,0.79,0.74,0.6,0.53,0.79,1.07,1.42,1.4,1.31,1.3,1.09],"peak":[8,9,10],"sources":[{"c":"Mexico","p":62},{"c":"Canada","p":23},{"c":"Japan","p":8}],"conc":"concentrated","hhi":0.44,"rel":null,"relY":null},{"slug":"almond","name":"Almond","cat":"nut","hs6":"080212","years":"2010-2025","latest":10000119,"yoy":-27.6,"annual":[[2010,7266225],[2011,19233044],[2012,29445597],[2013,34469860],[2014,77532160],[2015,99856891],[2016,69448617],[2017,59772630],[2018,89510098],[2019,94024968],[2020,41815408],[2021,38917083],[2022,29573747],[2023,20860946],[2024,13814612],[2025,10000119]],"season":[0.89,0.8,1.11,1.21,1.08,1.1,1.46,0.82,0.63,0.76,0.94,1.2],"peak":[4,7,12],"sources":[{"c":"Spain","p":58},{"c":"Australia","p":14},{"c":"Canada","p":14}],"conc":"concentrated","hhi":0.38,"rel":0,"relY":2025},{"slug":"butter-lettuce","name":"Butter lettuce","cat":"greens","hs6":"0705194040+0705192040","years":"2023-2025","latest":6685468,"yoy":-21.3,"annual":[[2023,1721067],[2024,8497820],[2025,6685468]],"season":[1.92,1.63,1.27,1.05,1.17,0.79,0.96,0.69,0.71,0.67,0.54,0.6],"peak":[1,2,3],"sources":[{"c":"Canada","p":92},{"c":"Mexico","p":8}],"conc":"single-source","hhi":0.86,"rel":1,"relY":2025},{"slug":"walnut","name":"Walnut","cat":"nut","hs6":"080232","years":"2010-2025","latest":6131038,"yoy":42.9,"annual":[[2010,4744422],[2011,442091],[2012,5639268],[2013,7185774],[2014,7127831],[2015,12698744],[2016,6408818],[2017,8082067],[2018,9633225],[2019,9673017],[2020,5563689],[2021,5968598],[2022,3748164],[2023,4360645],[2024,4289323],[2025,6131038]],"season":[1.25,0.88,1.4,1.09,1.11,1.17,0.95,0.61,0.83,0.83,0.68,1.21],"peak":[1,3,12],"sources":[{"c":"Canada","p":37},{"c":"Mexico","p":27},{"c":"Turkey","p":17}],"conc":"concentrated","hhi":0.25,"rel":2,"relY":2025},{"slug":"pistachio","name":"Pistachio","cat":"nut","hs6":"080252","years":"2012-2025","latest":3162585,"yoy":-58.1,"annual":[[2012,1227295],[2013,1778110],[2014,996242],[2015,2685492],[2016,3498502],[2017,4457230],[2018,5191973],[2019,4817046],[2020,4231891],[2021,6795634],[2022,5370757],[2023,2147832],[2024,7552244],[2025,3162585]],"season":[1.13,1.12,1.31,0.98,0.63,0.85,1.01,0.74,1.27,0.99,0.79,1.2],"peak":[3,9,12],"sources":[{"c":"Turkey","p":76},{"c":"Canada","p":13},{"c":"Italy","p":5}],"conc":"concentrated","hhi":0.6,"rel":0,"relY":2025},{"slug":"clams","name":"Clams","cat":"shellfish","hs6":"030779","years":"2012-2025","latest":2605174,"yoy":-32.7,"annual":[[2012,10489932],[2013,10196053],[2014,10194127],[2015,11601782],[2016,14051161],[2017,2296314],[2018,2243052],[2019,2581730],[2020,2658810],[2021,3387969],[2022,2669755],[2023,2906230],[2024,3870321],[2025,2605174]],"season":[0.85,0.93,0.88,0.71,0.92,1.33,1.2,1.24,0.99,1.12,1.05,0.78],"peak":[6,7,8],"sources":[{"c":"Canada","p":65},{"c":"China","p":19},{"c":"Vietnam","p":8}],"conc":"concentrated","hhi":0.47,"rel":null,"relY":null},{"slug":"artichoke","name":"Artichoke","cat":"stalks","hs6":"070991","years":"2012-2025","latest":2201328,"yoy":-28.1,"annual":[[2012,5299857],[2013,5149455],[2014,3533244],[2015,2277896],[2016,2766337],[2017,1056675],[2018,2197284],[2019,1760429],[2020,3596175],[2021,3293442],[2022,3575137],[2023,2916254],[2024,3062640],[2025,2201328]],"season":[3,2.78,2.48,1.17,0.24,0.05,0.05,0.06,0.06,0.12,0.39,1.59],"peak":[1,2,3],"sources":[{"c":"Mexico","p":96},{"c":"Egypt","p":3},{"c":"Costa Rica","p":0}],"conc":"single-source","hhi":0.93,"rel":3,"relY":2025},{"slug":"collard-greens","name":"Collard greens","cat":"greens","hs6":"0704904025+0704904028","years":"2022-2025","latest":176702,"yoy":-43.9,"annual":[[2022,97146],[2023,448542],[2024,314866],[2025,176702]],"season":[2.25,1.03,1.54,0.52,0.13,0.66,0.5,0.71,0.97,0.47,1.66,1.57],"peak":[1,11,12],"sources":[{"c":"Mexico","p":62},{"c":"Canada","p":38}],"conc":"concentrated","hhi":0.53,"rel":null,"relY":null}]</script>
+<script>
+(function(){
+"use strict";
+var DATA = JSON.parse(document.getElementById('data').textContent);
+var BY={}; DATA.forEach(function(d){BY[d.slug]=d;});
+var MONF=['January','February','March','April','May','June','July','August','September','October','November','December'];
+var MONA=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var WIN=[11,0,1,2]; // Dec,Jan,Feb,Mar (0-based)
+var reduceMotion = (typeof matchMedia==='function') && matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+function amp(d){return Math.max.apply(null,d.season)-Math.min.apply(null,d.season);}
+function primPeak(d){var mi=0;for(var i=1;i<12;i++)if(d.season[i]>d.season[mi])mi=i;return mi;}
+function usd(n){var a=Math.abs(n);if(a>=1e9)return '$'+(n/1e9).toFixed(2)+'B';if(a>=1e6)return '$'+Math.round(n/1e6)+'M';if(a>=1e3)return '$'+Math.round(n/1e3)+'K';return '$'+Math.round(n);}
+function usdFull(n){return '$'+Math.round(n).toLocaleString('en-US');}
+function peakNames(d){return (d.peak||[]).map(function(m){return MONF[m-1];}).join(', ');}
+function dirOf(v){return v>0.5?'up':(v<-0.5?'dn':'flat');}
+function dirGlyph(v){var d=dirOf(v);return d==='up'?'▲':(d==='dn'?'▼':'–');}
+function dirWord(v){var d=dirOf(v);return d==='up'?'up':(d==='dn'?'down':'flat');}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// ---------- fingerprint glyph (shared y-scale so the winter wave is comparable) ----------
+var GW=112, GH=34, GPAD=2;
+var YMAX=3.0; // clamp for shared scale
+function yv(v){var vv=Math.min(v,YMAX);return GH-GPAD-(vv/YMAX)*(GH-2*GPAD);}
+function xm(i){return GPAD+(i/11)*(GW-2*GPAD);}
+function glyphSVG(d,decorative){
+  var pts=d.season.map(function(v,i){return xm(i)+','+yv(v).toFixed(1);});
+  var area='M'+xm(0)+','+(GH-GPAD)+' L'+pts.join(' L')+' L'+xm(11)+','+(GH-GPAD)+' Z';
+  var line='M'+pts.join(' L');
+  var base=yv(1).toFixed(1);
+  var pk=(d.peak||[]).map(function(m){return '<circle cx="'+xm(m-1).toFixed(1)+'" cy="'+yv(d.season[m-1]).toFixed(1)+'" r="1.8" fill="var(--rust)"/>';}).join('');
+  var role = decorative? 'aria-hidden="true"' : 'role="img"';
+  return '<svg viewBox="0 0 '+GW+' '+GH+'" '+role+' preserveAspectRatio="none">'
+    +'<line x1="'+GPAD+'" y1="'+base+'" x2="'+(GW-GPAD)+'" y2="'+base+'" stroke="var(--muted)" stroke-width="0.6" stroke-dasharray="2 2"/>'
+    +'<path d="'+area+'" fill="var(--teal)" fill-opacity="0.22"/>'
+    +'<path d="'+line+'" fill="none" stroke="var(--teal)" stroke-width="1.4"/>'
+    +pk+'</svg>';
+}
+
+// ---------- state ----------
+var state={q:'',cat:'',order:'peak'};
+var live=document.getElementById('statusLine');
+var wall=document.getElementById('wall');
+var tbody=document.getElementById('tbody');
+var chipbar=document.getElementById('chipbar');
+
+function orderVal(d,order){
+  if(order==='peak'){var p=primPeak(d);return ((p+1+11)%12);} // shift so Dec first-ish -> wave
+  if(order==='amp')return -amp(d);
+  if(order==='value')return -d.latest;
+  if(order==='hhi')return -(d.hhi==null?-1:d.hhi);
+  return null;
+}
+function sortList(list,order){
+  var l=list.slice();
+  if(order==='name'){l.sort(function(a,b){return a.name.localeCompare(b.name);});return l;}
+  if(order==='peak'){
+    // order by peak month (Dec->Nov) to make the winter wave sweep, tie-break amplitude desc
+    l.sort(function(a,b){var pa=(primPeak(a)+1)%12, pb=(primPeak(b)+1)%12;
+      // rotate so December(11->0) leads
+      var ra=(primPeak(a)-11+12)%12, rb=(primPeak(b)-11+12)%12;
+      if(ra!==rb)return ra-rb; return amp(b)-amp(a);});
+    return l;
+  }
+  if(order==='amp'){l.sort(function(a,b){return amp(b)-amp(a);});return l;}
+  if(order==='value'){l.sort(function(a,b){return b.latest-a.latest;});return l;}
+  if(order==='hhi'){l.sort(function(a,b){return (b.hhi==null?-1:b.hhi)-(a.hhi==null?-1:a.hhi);});return l;}
+  return l;
+}
+function filtered(){
+  var q=state.q.trim().toLowerCase();
+  return DATA.filter(function(d){
+    if(state.cat && d.cat!==state.cat)return false;
+    if(q && d.name.toLowerCase().indexOf(q)<0 && d.slug.indexOf(q)<0)return false;
+    return true;
+  });
+}
+
+var ORDLBL={peak:'peak month',amp:'amplitude',value:'import value',hhi:'concentration',name:'name'};
+function renderOverview(){
+  var list=sortList(filtered(),state.order);
+  // wall
+  wall.innerHTML='';
+  var frag=document.createDocumentFragment();
+  list.forEach(function(d){
+    var b=document.createElement('button');
+    b.type='button'; b.className='gcell';
+    b.setAttribute('data-slug',d.slug);
+    var top=(d.sources&&d.sources[0])?d.sources[0].c+' '+d.sources[0].p+'%':'source not tracked';
+    b.setAttribute('aria-label', d.name+', '+d.cat+'. Seasonal fingerprint: peaks in '+peakNames(d)+
+      ', amplitude '+amp(d).toFixed(1)+'. Import value '+usd(d.latest)+', year over year '+dirWord(d.yoy)+' '+Math.abs(d.yoy)+' percent. Top source '+top+'. Activate to open the walk-through.');
+    b.innerHTML='<span class="gnm">'+esc(d.name)+'</span>'+glyphSVG(d,true)+
+      '<span class="gmeta"><span>'+esc(MONA[primPeak(d)])+' pk</span><span>'+usd(d.latest)+'</span></span>';
+    b.addEventListener('click',function(){openDetail(d.slug,b);});
+    frag.appendChild(b);
+  });
+  wall.appendChild(frag);
+  renderTable(list);
+  renderQuad(list);
+  renderChips();
+  var order=ORDLBL[state.order];
+  live.textContent=list.length+' of '+DATA.length+' foods shown, ordered by '+order+'.';
+}
+
+function renderChips(){
+  chipbar.innerHTML='';
+  function chip(txt,clear){
+    var c=document.createElement('span');c.className='chip';
+    c.innerHTML='<span>'+esc(txt)+'</span>';
+    var x=document.createElement('button');x.type='button';x.setAttribute('aria-label','Remove filter: '+txt);x.innerHTML='×';
+    x.addEventListener('click',clear);c.appendChild(x);chipbar.appendChild(c);
+  }
+  if(state.cat)chip('category: '+state.cat,function(){state.cat='';document.getElementById('cat').value='';renderOverview();});
+  if(state.q)chip('search: “'+state.q+'”',function(){state.q='';document.getElementById('q').value='';renderOverview();});
+}
+
+// current table sort separate from wall order
+var tblSort={k:'latest',dir:'desc'};
+function tblValue(d,k){
+  switch(k){case 'name':return d.name.toLowerCase();case 'cat':return d.cat;case 'latest':return d.latest;
+    case 'yoy':return d.yoy;case 'peak':return primPeak(d);case 'amp':return amp(d);
+    case 'src':return (d.sources&&d.sources[0])?d.sources[0].c:'~';case 'hhi':return d.hhi==null?-1:d.hhi;
+    case 'rel':return d.rel==null?-1:d.rel;}
+  return 0;
+}
+function renderTable(list){
+  var l=list.slice().sort(function(a,b){
+    var va=tblValue(a,tblSort.k),vb=tblValue(b,tblSort.k),r;
+    if(typeof va==='string')r=va.localeCompare(vb);else r=va-vb;
+    return tblSort.dir==='asc'?r:-r;
+  });
+  tbody.innerHTML='';
+  var frag=document.createDocumentFragment();
+  l.forEach(function(d){
+    var tr=document.createElement('tr');
+    if(d.slug===currentSlug)tr.setAttribute('aria-current','true');
+    var dir=dirOf(d.yoy);
+    var top=(d.sources&&d.sources[0])?esc(d.sources[0].c)+' '+d.sources[0].p+'%':'—';
+    var hhi=d.hhi==null?'not tracked':d.hhi.toFixed(2);
+    var rel=d.rel==null?'—':d.rel+'%';
+    tr.innerHTML='<th scope="row"><a href="#food/'+esc(d.slug)+'">'+esc(d.name)+'</a></th>'
+      +'<td>'+esc(d.cat)+'</td>'
+      +'<td class="mono">'+usd(d.latest)+'</td>'
+      +'<td class="mono '+dir+'"><span aria-hidden="true">'+dirGlyph(d.yoy)+'</span> '+(d.yoy>0?'+':'')+d.yoy+'% <span class="sr-only">'+dirWord(d.yoy)+'</span></td>'
+      +'<td>'+esc((d.peak||[]).map(function(m){return MONA[m-1];}).join(', '))+'</td>'
+      +'<td class="mono">'+amp(d).toFixed(2)+'</td>'
+      +'<td>'+top+'</td>'
+      +'<td class="mono">'+hhi+'</td>'
+      +'<td class="mono">'+rel+'</td>';
+    var a=tr.querySelector('a');
+    a.addEventListener('click',function(e){e.preventDefault();openDetail(d.slug,a);});
+    frag.appendChild(tr);
+  });
+  tbody.appendChild(frag);
+}
+
+// sort header buttons
+Array.prototype.forEach.call(document.querySelectorAll('#thr th'),function(th){
+  var btn=th.querySelector('button'),k=th.getAttribute('data-k');
+  btn.addEventListener('click',function(){
+    if(tblSort.k===k){tblSort.dir=tblSort.dir==='asc'?'desc':'asc';}
+    else{tblSort.k=k;tblSort.dir=(k==='name'||k==='cat'||k==='src')?'asc':'desc';}
+    Array.prototype.forEach.call(document.querySelectorAll('#thr th'),function(t){
+      var kk=t.getAttribute('data-k'),ar=t.querySelector('.sarrow');
+      if(kk===tblSort.k){t.setAttribute('aria-sort',tblSort.dir==='asc'?'ascending':'descending');ar.textContent=tblSort.dir==='asc'?'▲':'▼';}
+      else{t.setAttribute('aria-sort','none');ar.textContent='';}
+    });
+    renderTable(sortList(filtered(),state.order));
+    var vis=filtered().length;
+    live.textContent=vis+' of '+DATA.length+' foods, table sorted by '+({name:'food',cat:'category',latest:'import value',yoy:'year over year',peak:'peak month',amp:'amplitude',src:'top source',hhi:'concentration',rel:'reliance'}[tblSort.k])+', '+(tblSort.dir==='asc'?'ascending':'descending')+'.';
+  });
+});
+
+// ---------- quadrant scatter ----------
+function renderQuad(list){
+  var host=document.getElementById('quad');
+  var W=880,H=440,ml=54,mr=18,mt=18,mb=48;
+  var xs=list.map(function(d){return Math.log10(d.latest);});
+  var xmin=Math.min.apply(null,xs), xmax=Math.max.apply(null,xs);
+  var ymin=0, ymax=Math.max.apply(null,list.map(amp))||1;
+  function X(v){return ml+((Math.log10(v)-xmin)/(xmax-xmin||1))*(W-ml-mr);}
+  function Y(v){return H-mb-((v-ymin)/(ymax-ymin||1))*(H-mt-mb);}
+  var dots='';
+  list.forEach(function(d){
+    var cx=X(d.latest).toFixed(1),cy=Y(amp(d)).toFixed(1);
+    var top=(d.sources&&d.sources[0])?d.sources[0].c+' '+d.sources[0].p+'%':'source not tracked';
+    dots+='<a class="qdot" href="#food/'+esc(d.slug)+'" '
+      +'aria-label="'+esc(d.name)+': import value '+usd(d.latest)+', amplitude '+amp(d).toFixed(1)+', top source '+esc(top)+'. Open walk-through.">'
+      +'<circle cx="'+cx+'" cy="'+cy+'" r="5" fill="var(--teal)" fill-opacity="0.55" stroke="var(--teal-ink)" stroke-width="0.8"><title>'+esc(d.name)+' — '+usd(d.latest)+', amplitude '+amp(d).toFixed(1)+'</title></circle></a>';
+  });
+  // gridlines value ticks
+  var xticks=[1e7,1e8,1e9].filter(function(v){return Math.log10(v)>=xmin-0.3&&Math.log10(v)<=xmax+0.3;});
+  var gx=xticks.map(function(v){return '<line x1="'+X(v)+'" y1="'+mt+'" x2="'+X(v)+'" y2="'+(H-mb)+'" stroke="var(--line-soft)" stroke-width="1" aria-hidden="true"/><text class="axis" x="'+X(v)+'" y="'+(H-mb+16)+'" text-anchor="middle">'+usd(v)+'</text>';}).join('');
+  var yticks=[0,1,2,3].filter(function(v){return v<=ymax+0.2;});
+  var gy=yticks.map(function(v){return '<line x1="'+ml+'" y1="'+Y(v)+'" x2="'+(W-mr)+'" y2="'+Y(v)+'" stroke="var(--line-soft)" stroke-width="1" aria-hidden="true"/><text class="axis" x="'+(ml-8)+'" y="'+(Y(v)+3)+'" text-anchor="end">'+v.toFixed(0)+'</text>';}).join('');
+  host.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="group" aria-label="Scatter of '+list.length+' foods: import value on the horizontal log axis versus seasonal amplitude on the vertical. Base-load staples sit low; spiky produce sits high. Each dot links to a walk-through.">'
+    +'<title>Value versus seasonality for '+list.length+' foods</title>'
+    +'<desc>Horizontal axis is annual import value on a logarithmic scale; vertical axis is seasonal amplitude, the peak-minus-trough spread of the 12-month index. Points high on the chart are the most seasonal foods; points to the right are the highest value. The two are largely independent — a descriptive reading of the record, not a forecast.</desc>'
+    +gx+gy
+    +'<text class="axis" x="'+((ml+W-mr)/2)+'" y="'+(H-6)+'" text-anchor="middle">Annual import value (log)</text>'
+    +'<text class="axis" x="14" y="'+((mt+H-mb)/2)+'" text-anchor="middle" transform="rotate(-90 14 '+((mt+H-mb)/2)+')">Seasonal amplitude</text>'
+    +dots+'</svg>';
+}
+
+// ---------- detail walk-through ----------
+var currentSlug=null, returnFocusEl=null;
+var overview=document.getElementById('overview'), detail=document.getElementById('detail');
+
+function bars12(season,cls){
+  var mx=Math.max.apply(null,season);
+  var b='<div class="mo" role="img" aria-hidden="true">';
+  for(var i=0;i<12;i++){
+    var h=Math.max(3,Math.round(season[i]/mx*96));
+    var c='b'+((cls&&cls.indexOf(i)>=0)?' pk':'')+(WIN.indexOf(i)>=0?' win':'');
+    b+='<div class="'+c+'" style="height:'+h+'px" title="'+MONF[i]+' '+season[i].toFixed(2)+'"></div>';
+  }
+  b+='</div><div class="mo-x" aria-hidden="true">';
+  for(var j=0;j<12;j++){b+='<span class="'+(WIN.indexOf(j)>=0?'win':'')+'">'+MONA[j][0]+'</span>';}
+  b+='</div>';
+  return b;
+}
+function clockSVG(d){
+  var S=200,cx=S/2,cy=S/2,rmax=82,rmin=8;
+  var mx=Math.max.apply(null,d.season);
+  var wedges='';
+  for(var i=0;i<12;i++){
+    var a0=(i/12)*2*Math.PI-Math.PI/2, a1=((i+1)/12)*2*Math.PI-Math.PI/2;
+    var r=rmin+(d.season[i]/mx)*(rmax-rmin);
+    var x0=cx+Math.cos(a0)*r,y0=cy+Math.sin(a0)*r,x1=cx+Math.cos(a1)*r,y1=cy+Math.sin(a1)*r;
+    var xi0=cx+Math.cos(a0)*rmin,yi0=cy+Math.sin(a0)*rmin,xi1=cx+Math.cos(a1)*rmin,yi1=cy+Math.sin(a1)*rmin;
+    var win=WIN.indexOf(i)>=0;
+    var fill=win?'var(--gold)':'var(--teal)';
+    var op=(d.peak||[]).indexOf(i+1)>=0?'0.9':'0.55';
+    wedges+='<path d="M'+xi0.toFixed(1)+','+yi0.toFixed(1)+' L'+x0.toFixed(1)+','+y0.toFixed(1)+' A'+r.toFixed(1)+','+r.toFixed(1)+' 0 0 1 '+x1.toFixed(1)+','+y1.toFixed(1)+' L'+xi1.toFixed(1)+','+yi1.toFixed(1)+' Z" fill="'+fill+'" fill-opacity="'+op+'" stroke="var(--surface)" stroke-width="0.8"/>';
+  }
+  // baseline ring at index 1.0
+  var r1=rmin+(1/mx)*(rmax-rmin);
+  var labels='';
+  for(var k=0;k<12;k+=3){var am=(k/12)*2*Math.PI-Math.PI/2;var lx=cx+Math.cos(am)*(rmax+10),ly=cy+Math.sin(am)*(rmax+10);labels+='<text class="axis" x="'+lx.toFixed(1)+'" y="'+(ly+3).toFixed(1)+'" text-anchor="middle">'+MONA[k]+'</text>';}
+  return '<svg viewBox="0 0 '+S+' '+S+'" role="img" aria-label="Radial seasonal clock for '+esc(d.name)+'. Twelve spokes, one per month, longer where imports run above their yearly average. The December to March winter band is tinted.">'
+    +'<title>'+esc(d.name)+' seasonal clock</title><desc>The Dec–Mar winter quarter is shown in a warm tint; the ring marks the 1.0 own-average baseline. A redundant horizontal bar strip below carries the same numbers for keyboard and screen-reader reading.</desc>'
+    +'<circle cx="'+cx+'" cy="'+cy+'" r="'+r1.toFixed(1)+'" fill="none" stroke="var(--muted)" stroke-width="0.7" stroke-dasharray="2 2"/>'
+    +wedges+labels+'</svg>';
+}
+function trendSVG(d){
+  var W=760,H=220,ml=58,mr=16,mt=16,mb=34;
+  var a=d.annual;
+  var ys=a.map(function(p){return p[1];});
+  var ymax=Math.max.apply(null,ys),ymin=Math.min.apply(null,ys);
+  var y0=Math.min(0,ymin);
+  function X(i){return ml+(i/(a.length-1))*(W-ml-mr);}
+  function Y(v){return H-mb-((v-y0)/(ymax-y0||1))*(H-mt-mb);}
+  var line='M'+a.map(function(p,i){return X(i).toFixed(1)+','+Y(p[1]).toFixed(1);}).join(' L');
+  var area='M'+X(0).toFixed(1)+','+(H-mb)+' L'+a.map(function(p,i){return X(i).toFixed(1)+','+Y(p[1]).toFixed(1);}).join(' L')+' L'+X(a.length-1).toFixed(1)+','+(H-mb)+' Z';
+  var dots=a.map(function(p,i){
+    return '<g aria-hidden="true"><circle cx="'+X(i).toFixed(1)+'" cy="'+Y(p[1]).toFixed(1)+'" r="4" fill="var(--teal)" stroke="var(--surface)" stroke-width="1.2"><title>'+p[0]+' — '+usd(p[1])+'</title></circle></g>';
+  }).join('');
+  var xlab='';
+  a.forEach(function(p,i){if(i%2===0||i===a.length-1){xlab+='<text class="axis" x="'+X(i).toFixed(1)+'" y="'+(H-mb+16)+'" text-anchor="middle">'+("'"+String(p[0]).slice(2))+'</text>';}});
+  var yt=[ymin,(ymin+ymax)/2,ymax].map(function(v){return '<text class="axis" x="'+(ml-8)+'" y="'+(Y(v)+3).toFixed(1)+'" text-anchor="end">'+usd(v)+'</text><line x1="'+ml+'" y1="'+Y(v).toFixed(1)+'" x2="'+(W-mr)+'" y2="'+Y(v).toFixed(1)+'" stroke="var(--line-soft)" stroke-width="1" aria-hidden="true"/>';}).join('');
+  return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Import value of '+esc(d.name)+' by year, '+a[0][0]+' to '+a[a.length-1][0]+', from '+usd(a[0][1])+' to '+usd(a[a.length-1][1])+'. Nominal customs value, not adjusted for inflation.">'
+    +'<title>'+esc(d.name)+' import value by year</title><desc>A line of annual nominal import value. It is customs value — price and quantity combined — not a delivered price, and is shown only through the last observed year with no projection.</desc>'
+    +yt+'<path d="'+area+'" fill="var(--teal)" fill-opacity="0.14"/><path d="'+line+'" fill="none" stroke="var(--teal)" stroke-width="2"/>'+dots+xlab+'</svg>';
+}
+
+function detailHTML(d){
+  var p=primPeak(d);
+  var winShare=WIN.reduce(function(s,i){return s+d.season[i];},0)/4;
+  var isWinter=WIN.indexOf(p)>=0;
+  var a=d.annual, first=a[0], last=a[a.length-1];
+  // narration for the seasonal shape
+  var loIdx=0; for(var _li=1;_li<12;_li++){ if(d.season[_li]<d.season[loIdx]) loIdx=_li; }
+  var loVal=d.season[loIdx];
+  var troughPhrase = loVal<0.5
+      ? 'the '+MONF[loIdx]+' trough near '+loVal.toFixed(2)+' means the shelf nearly empties'
+      : (loVal<0.85
+          ? 'the '+MONF[loIdx]+' low near '+loVal.toFixed(2)+' thins the shelf to about '+Math.round(loVal*100)+' percent of the yearly average'
+          : 'even the '+MONF[loIdx]+' low holds near '+loVal.toFixed(2)+', so the shelf stays roughly steady all year');
+  var narr='Reading the year: '+d.season.map(function(v,i){return MONA[i]+' '+v.toFixed(2);}).join(', ')+
+    '. The 1.0 line is this food’s own yearly average, so '+d.season[p].toFixed(2)+' in '+MONF[p]+' means imports run about '+(d.season[p]).toFixed(1)+' times the typical month; '+troughPhrase+'. This describes the shape of the tracked record, not a forecast.';
+  // origin
+  var srcs=(d.sources||[]).filter(function(s){return s.p>0;});
+  var hasConc=d.hhi!=null;
+  var top=srcs[0];
+  var singleFlag=top&&top.p>=90;
+  var stack='', orgrows='';
+  var pal=['s0','s1','s2','s3'];
+  srcs.forEach(function(s,i){
+    var cls=pal[Math.min(i,3)];
+    stack+='<span class="'+cls.replace('s','s')+'" style="width:'+s.p+'%;background:'+({s0:'var(--teal)',s1:'var(--gold)',s2:'var(--rust)',s3:'var(--ink-soft)'}[cls])+'">'+(s.p>=9?esc(s.c)+' '+s.p+'%':'')+'</span>';
+    orgrows+='<div class="o'+(singleFlag&&i===0?' single':'')+'" data-share="'+s.p+'"><span class="oc">'+esc(s.c)+'</span><span class="ot"><span class="of '+cls+'" style="width:'+s.p+'%"></span></span><span class="op">'+s.p+'%</span></div>';
+  });
+  var hhiPct = hasConc? ((d.hhi-0.09)/(1-0.09))*100 : 0;
+  var concWord = d.conc||'not classified';
+  var relLine = d.rel==null? 'Import reliance isn’t tracked for this food — the record leaves it blank rather than guess.' :
+    '<b>'+d.rel+'%</b> of apparent US consumption came from imports ('+d.relY+') — the tracked reliance figure.';
+
+  // CSV
+  var csv=buildCSV(d);
+  var csvHref='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+
+  return ''
+  +'<button class="back" id="backBtn" type="button"><span aria-hidden="true">←</span> All foods</button>'
+  +'<article class="story">'
+  +' <div class="shead">'
+  +'  <div class="cat">'+esc(d.cat)+' · HS '+esc(d.hs6)+'</div>'
+  +'  <h2 id="dtitle" tabindex="-1">'+esc(d.name)+'</h2>'
+  +'  <div class="bignum"><span class="n">'+usd(d.latest)+'</span><span class="lab">imported in '+last[0]+' <span aria-hidden="true">'+dirGlyph(d.yoy)+'</span> <b class="'+dirOf(d.yoy)+'">'+(d.yoy>0?'+':'')+d.yoy+'%</b> vs '+(last[0]-1)+'. <span class="honest">Nominal customs value — price × quantity, not a delivered price.</span></span></div>'
+  +' </div>'
+
+  // BEAT 1: trend
+  +' <section class="beat" aria-labelledby="b1'+d.slug+'">'
+  +'  <p class="step">Beat 1 · The trend</p><h3 id="b1'+d.slug+'">'+a.length+' years of import value</h3>'
+  +'  <p class="read">America brought in <b>'+usd(first[1])+'</b> of '+esc(d.name.toLowerCase())+' in '+first[0]+' and <b>'+usd(last[1])+'</b> in '+last[0]+'. Value blends price and shipped quantity; the record stops at the last observed year and draws no forecast.</p>'
+  +'  <figure>'+trendSVG(d)+'<figcaption class="fine">Annual nominal import value, '+first[0]+'–'+last[0]+'. Per-year figures are listed below for screen readers.</figcaption></figure>'
+  +'  <div class="sr-only">Yearly import value: '+a.map(function(x){return x[0]+' '+usdFull(x[1]);}).join('; ')+'.</div>'
+  +' </section>'
+
+  // BEAT 2: shelf clock + calendar aha
+  +' <section class="beat" aria-labelledby="b2'+d.slug+'">'
+  +'  <p class="step">Beat 2 · The aha</p><h3 id="b2'+d.slug+'">Lay the fingerprint on the calendar</h3>'
+  +'  <p class="read">'+esc(d.name)+' peaks in <b>'+peakNames(d)+'</b>'+(isWinter?' — squarely inside the Dec–Mar winter band, tinted below. It ships in precisely when the local field is bare.':'. Its peak sits outside the winter band, so it is not a pure counter-seasonal filler.')+' The tinted band is Dec–Mar; watch it snap onto the tall spokes.</p>'
+  +'  <div class="clockgrid">'
+  +'   <figure>'+clockSVG(d)+'<figcaption class="fine">Radial seasonal clock — Dec–Mar tinted gold.</figcaption></figure>'
+  +'   <figure aria-hidden="false"><figcaption class="fine" style="margin:0 0 6px">Same shape, redundant bar strip (keyboard- and screen-reader-legible):</figcaption>'
+  +     bars12(d.season,d.peak.map(function(m){return m-1;}))
+  +'   <div class="legrow"><span class="k"><span class="sw" style="background:var(--teal)"></span>month index</span><span class="k"><span class="sw" style="background:var(--gold);outline:1px dashed var(--gold)"></span>Dec–Mar winter band</span></div></figure>'
+  +'  </div>'
+  +'  <figure class="sr-only" data-audio-alt="'+esc(narr)+'">'+esc(narr)+'</figure>'
+  +'  <p class="fine">Winter (Dec–Mar) average index '+winShare.toFixed(2)+' vs 1.0 baseline. Seasonal index describes the shape of the tracked record; it is not a forecast of any future month.</p>'
+  +' </section>'
+
+  // BEAT 3: origin + hhi
+  +' <section class="beat" aria-labelledby="b3'+d.slug+'">'
+  +'  <p class="step">Beat 3 · Where it comes from</p><h3 id="b3'+d.slug+'">Origin mix &amp; concentration</h3>'
+  +  (srcs.length? (
+       '<p class="read">In 2025, '+esc(top.c)+' supplied <b>'+top.p+'%</b> of '+esc(d.name.toLowerCase())+' imports'+(singleFlag?' — a near-single-source shelf.':'.')+' '+relLine+'</p>'
+      +'<div class="stack" role="img" aria-label="Origin shares, stacked to 100 percent: '+srcs.map(function(s){return s.c+' '+s.p+' percent';}).join(', ')+'.">'+stack+'</div>'
+      +'<div class="org">'+orgrows+'</div>'
+      +'<label class="toggle jsonly"><input type="checkbox" id="honestyTog"> Concentration-honesty view — grey any ≥90% single-source bar</label>'
+      +(hasConc? (
+          '<div class="hhi"><div class="track"><span class="mk" style="left:'+hhiPct.toFixed(1)+'%"></span></div>'
+         +'<div class="ticks"><span>0.09 · diversified</span><span>concentrated</span><span>1.0 · single-source</span></div></div>'
+         +'<p class="fine">Source HHI <b class="mono">'+d.hhi.toFixed(2)+'</b> — classed <b>'+esc(concWord)+'</b>. HHI sums squared origin shares; higher means fewer countries carry the shelf. Single-country reliance is observed co-occurrence, not a redistribution forecast.</p>'
+        ):'<p class="notrack">Source-mix concentration not tracked for this food — shown as a gap, never padded.</p>')
+      +'<div class="sr-only">Origin shares 2025: '+srcs.map(function(s){return s.c+' '+s.p+' percent';}).join('; ')+'. '+(hasConc?'Source HHI '+d.hhi.toFixed(2)+', '+concWord+'.':'Concentration not tracked.')+'</div>'
+     ) : '<p class="notrack">Source mix not tracked for this food — shown as a gap, never padded.</p>')
+  +' </section>'
+
+  // BEAT 4: placement
+  +' <section class="beat" aria-labelledby="b4'+d.slug+'">'
+  +'  <p class="step">Beat 4 · Read it</p><h3 id="b4'+d.slug+'">Base-load or spiky?</h3>'
+  +'  <p class="read">'+esc(d.name)+' has a seasonal amplitude of <b>'+amp(d).toFixed(2)+'</b> (index range '+Math.min.apply(null,d.season).toFixed(2)+'–'+Math.max.apply(null,d.season).toFixed(2)+') on <b>'+usd(d.latest)+'</b> of value. '+(amp(d)>1.5?'That is a <b>spiky</b> seasonal import — the drama of the shelf lives here.':(amp(d)<0.7?'That is a <b>base-load</b> import — steady year-round, where the dollars concentrate.':'A middling seasonal profile — neither flat nor wild.'))+' '+(hasConc&&amp(d)>1.5&&d.hhi>0.5?'It is both seasonal and origin-concentrated — two exposures stacking, honestly co-occurring.':'')+'</p>'
+  +'  <a class="dlbtn" href="'+csvHref+'" download="import-'+d.slug+'.csv">↓ Download this food (CC0 CSV)</a> '
+  +'  <a class="dlbtn" href="https://muntin.digital/data/census-imports.jsonl" download>↓ Full dataset (JSONL)</a>'
+  +' </section>'
+  +'</article>';
+}
+
+function buildCSV(d){
+  var rows=[];
+  rows.push('# '+d.name+' — US import value & seasonality. Source: US Census Bureau (CC0); derivations Muntin Cost Index (CC-BY 4.0).');
+  rows.push('metric,key,value');
+  rows.push('meta,slug,'+d.slug);
+  rows.push('meta,category,'+d.cat);
+  rows.push('meta,hs6,'+d.hs6);
+  d.annual.forEach(function(p){rows.push('import_value_usd,'+p[0]+','+p[1]);});
+  d.season.forEach(function(v,i){rows.push('seasonal_index,'+MONA[i]+','+v);});
+  (d.sources||[]).forEach(function(s){rows.push('source_share_pct,'+s.c+','+s.p);});
+  rows.push('source_hhi,,'+(d.hhi==null?'':d.hhi));
+  rows.push('import_reliance_pct,,'+(d.rel==null?'':d.rel));
+  return rows.join('\n');
+}
+
+function openDetail(slug,fromEl){
+  var d=BY[slug]; if(!d)return;
+  currentSlug=slug; returnFocusEl=fromEl||returnFocusEl;
+  if(location.hash!=='#food/'+slug){history.pushState?history.pushState(null,'','#food/'+slug):location.hash='food/'+slug;}
+  detail.innerHTML=detailHTML(d);
+  overview.hidden=true; detail.hidden=false;
+  document.getElementById('backBtn').addEventListener('click',function(){goOverview(true);});
+  var tog=document.getElementById('honestyTog');
+  if(tog)tog.addEventListener('change',function(){
+    Array.prototype.forEach.call(detail.querySelectorAll('.org .o'),function(o){
+      if(tog.checked && parseFloat(o.getAttribute('data-share'))>=90)o.classList.add('greyed');
+      else o.classList.remove('greyed');
+    });
+    live.textContent=tog.checked?'Concentration-honesty view on: single-source bars greyed.':'Concentration-honesty view off.';
+  });
+  var h=document.getElementById('dtitle');
+  if(!reduceMotion)window.scrollTo(0,0); else window.scrollTo(0,0);
+  h.focus();
+  live.textContent='Showing walk-through for '+d.name+'.';
+}
+function goOverview(fromBack){
+  currentSlug=null;
+  if(location.hash){history.pushState?history.pushState(null,'',location.pathname+location.search):(location.hash='');}
+  detail.hidden=true; overview.hidden=false; detail.innerHTML='';
+  renderTable(sortList(filtered(),state.order)); // clear aria-current
+  if(fromBack && returnFocusEl && document.contains(returnFocusEl)){returnFocusEl.focus();}
+  else{var f=document.getElementById('q');if(f)f.focus();}
+  live.textContent=filtered().length+' of '+DATA.length+' foods shown.';
+}
+
+// ---------- routing ----------
+function route(){
+  var h=location.hash.replace(/^#/,'');
+  if(h.indexOf('food/')===0){var slug=h.slice(5);if(BY[slug]){openDetail(slug,returnFocusEl);return;}}
+  if(!detail.hidden||overview.hidden){detail.hidden=true;overview.hidden=false;detail.innerHTML='';currentSlug=null;renderTable(sortList(filtered(),state.order));}
+}
+window.addEventListener('popstate',route);
+
+// ---------- controls wiring ----------
+var qEl=document.getElementById('q'),catEl=document.getElementById('cat'),ordEl=document.getElementById('reorder');
+var qt;
+qEl.addEventListener('input',function(){clearTimeout(qt);qt=setTimeout(function(){state.q=qEl.value;renderOverview();},120);});
+catEl.addEventListener('change',function(){state.cat=catEl.value;renderOverview();});
+ordEl.addEventListener('change',function(){state.order=ordEl.value;renderOverview();});
+
+// ---------- theme ----------
+var themeBtn=document.getElementById('themeBtn'),themeLbl=document.getElementById('themeLbl');
+var themes=['auto','light','dark'],ti=0;
+try{var saved=localStorage.getItem('imp-theme');if(saved){ti=themes.indexOf(saved);if(ti<0)ti=0;}}catch(e){}
+function applyTheme(){var t=themes[ti];if(t==='auto')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',t);
+  themeLbl.textContent=t.charAt(0).toUpperCase()+t.slice(1);themeBtn.setAttribute('aria-label','Switch color theme (currently '+t+')');
+  try{localStorage.setItem('imp-theme',t);}catch(e){}}
+themeBtn.addEventListener('click',function(){ti=(ti+1)%themes.length;applyTheme();});
+applyTheme();
+
+// ---------- boot ----------
+document.getElementById('quadSec').classList.remove('jsonly');
+Array.prototype.forEach.call(document.querySelectorAll('.jsonly'),function(el){el.style.display='';});
+renderOverview();
+route();
+})();
+</script>
+</body>
+</html>

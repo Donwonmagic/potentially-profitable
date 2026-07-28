@@ -1,0 +1,4579 @@
+{
+  "_doc": "Per-ingredient index of openFDA food recalls (slug → distinct-event counts by FDA class, raw notice count, latest date, 5 most recent). The honest headline is DISTINCT EVENTS (event_id), not notices. a dated documented recall on its own — never joined to a price, never a cause, never a magnitude; the slug tag is a whole-word product-text match, not a supply or price link. Source: openFDA (US FDA), public domain (CC0); this compiled analysis/taxonomy is Muntin, CC-BY 4.0. Derived by build-recalls-open-data.mjs from data/food-recalls.json.",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "framing": "a dated documented recall on its own — never joined to a price, never a cause, never a magnitude; the slug tag is a whole-word product-text match, not a supply or price link",
+  "since": "2020-01-01",
+  "summary": {
+    "recalls": 718,
+    "tagged_ingredients": 96,
+    "total_tags": 1026,
+    "distinct_events": 315,
+    "class_i_recalls": 426,
+    "ongoing": 40
+  },
+  "ingredients": 96,
+  "index": {
+    "cilantro": {
+      "slug": "cilantro",
+      "n": 4,
+      "events": 4,
+      "class_i_events": 1,
+      "class_ii_events": 2,
+      "class_iii_events": 1,
+      "latest": "2026-06-10",
+      "order_key": "2024-03-27",
+      "recent": [
+        {
+          "date": "2026-06-10",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "UPC 23070400000 SHRIMP SKEWER MEDIUM RAW CILANTRO LIME This is Albertson's store-made item and sold by random weight at point of sale with grocery store's scale label.",
+          "firm": "Albertsons Companies LLC",
+          "states": "Nationwide.",
+          "recall_number": "H-1010-2026",
+          "event_id": "98953"
+        },
+        {
+          "date": "2026-02-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Black Bean Bonanza Tamales with Black Beans NO DAIRY Ingredients: Organic Corn Flour Masa, Black Beans, Salsa (Tomatoes, Onions, Chiles, Garlic & Cilantro), Non-GMO Corn, Non-hydr…",
+          "firm": "Prima Vera Nueva, Inc.",
+          "states": "U.S. Distribution: CA, NV",
+          "recall_number": "H-0428-2026",
+          "event_id": "98152"
+        },
+        {
+          "date": "2025-07-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1. USA OG2 BNCH CILANTRO",
+          "firm": "UNFI General Corporate",
+          "states": "NJ, NY, MD, DC, PA",
+          "recall_number": "H-0239-2025",
+          "event_id": "97051"
+        },
+        {
+          "date": "2024-03-27",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "FCF Item #404967, Costco Item #1506878, Cilantro Lime Crema, 60/4oz plastic cups per case. Labeled cups only sold in bulk for Food Service Use not for individual sale. UPC 13454 3…",
+          "firm": "Reser's Fine Foods, Inc.",
+          "states": "Distributed in CA, CT, FL, ID, IL, MD, MT, NJ, NV, OR, PA, SD, TX, UT, VA, and WA.",
+          "recall_number": "F-1086-2024",
+          "event_id": "93961"
+        }
+      ]
+    },
+    "lime": {
+      "slug": "lime",
+      "n": 9,
+      "events": 7,
+      "class_i_events": 2,
+      "class_ii_events": 4,
+      "class_iii_events": 1,
+      "latest": "2026-06-10",
+      "order_key": "2024-03-27",
+      "recent": [
+        {
+          "date": "2026-06-10",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "UPC 23070400000 SHRIMP SKEWER MEDIUM RAW CILANTRO LIME This is Albertson's store-made item and sold by random weight at point of sale with grocery store's scale label.",
+          "firm": "Albertsons Companies LLC",
+          "states": "Nationwide.",
+          "recall_number": "H-1010-2026",
+          "event_id": "98953"
+        },
+        {
+          "date": "2024-03-27",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "FCF Item #404967, Costco Item #1506878, Cilantro Lime Crema, 60/4oz plastic cups per case. Labeled cups only sold in bulk for Food Service Use not for individual sale. UPC 13454 3…",
+          "firm": "Reser's Fine Foods, Inc.",
+          "states": "Distributed in CA, CT, FL, ID, IL, MD, MT, NJ, NV, OR, PA, SD, TX, UT, VA, and WA.",
+          "recall_number": "F-1086-2024",
+          "event_id": "93961"
+        },
+        {
+          "date": "2023-05-17",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Key Lime Bonbon",
+          "firm": "Windy Hill Chocolate LLC",
+          "states": "Domestic consignee only.",
+          "recall_number": "F-0850-2023",
+          "event_id": "92134"
+        },
+        {
+          "date": "2023-05-17",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Ginger Lime",
+          "firm": "Windy Hill Chocolate LLC",
+          "states": "Domestic consignee only.",
+          "recall_number": "F-0847-2023",
+          "event_id": "92134"
+        },
+        {
+          "date": "2022-06-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Thistle Watermelon Berry Cold-Pressed Organic Juice watermelon strawberry lime chia 32 FL OZ (355 mL) Keep Refrigerated Distributed By: Thistle Health, Inc., Vacaville, CA 95688",
+          "firm": "THISTLE HEALTH INC",
+          "states": "U.S. distribution to the following: CA, NV, OR, WA No foreign distribution.",
+          "recall_number": "F-1313-2022",
+          "event_id": "90347"
+        }
+      ]
+    },
+    "shrimp-head-on": {
+      "slug": "shrimp-head-on",
+      "n": 41,
+      "events": 22,
+      "class_i_events": 2,
+      "class_ii_events": 18,
+      "class_iii_events": 2,
+      "latest": "2026-06-10",
+      "order_key": "2025-07-02",
+      "recent": [
+        {
+          "date": "2026-06-10",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "UPC 23070400000 SHRIMP SKEWER MEDIUM RAW CILANTRO LIME This is Albertson's store-made item and sold by random weight at point of sale with grocery store's scale label.",
+          "firm": "Albertsons Companies LLC",
+          "states": "Nationwide.",
+          "recall_number": "H-1010-2026",
+          "event_id": "98953"
+        },
+        {
+          "date": "2026-06-10",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "UPC 23245700000 SHRIMP & SURIMI CEVICHE FRESH This is Albertson's store-made item and sold by random weight at point of sale with grocery store's scale label.",
+          "firm": "Albertsons Companies LLC",
+          "states": "Nationwide.",
+          "recall_number": "H-1000-2026",
+          "event_id": "98953"
+        },
+        {
+          "date": "2026-02-25",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Frozen Cooked Medium Shrimp Peeled & Deveined, Tail Off-White Shrimp; 1 lbs retail plastic bag. UPC: 041220333035",
+          "firm": "H & N Group Inc.",
+          "states": "Product was distributed to a single retail consignee with multiple locations (~30) in the greater Houston and Gulf Coas…",
+          "recall_number": "H-0516-2026",
+          "event_id": "98423"
+        },
+        {
+          "date": "2026-01-21",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "Jumbo RAW SHRIMP, All Natural, Chemical Free, No artificial ingredients, NET WT. 32 OZ (2 LB) 907g UPC: 1 93968 00697 6",
+          "firm": "AZ Gems, Inc.",
+          "states": "Product was shipped nationwide and distributed exclusively under the Member's Mark label.",
+          "recall_number": "H-0401-2026",
+          "event_id": "98160"
+        },
+        {
+          "date": "2026-01-14",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "waterfront BISTRO brand Frozen Raw Shrimp EZ PEEL SHELL & TAIL ON Colossal 8-12 Count per Lb. Net wt. 32oz (2LB). Product is packaged in white flexible plastic pouch with multicol…",
+          "firm": "DIRECT SOURCE SEAFOOD LLC",
+          "states": "Market 32 brand frozen raw shrimp was sold in CT, MA, NH, NY, PA, and VT. waterfront BISTRO frozen raw shrimp was sold …",
+          "recall_number": "H-0379-2026",
+          "event_id": "98182"
+        }
+      ]
+    },
+    "shrimp-pd": {
+      "slug": "shrimp-pd",
+      "n": 41,
+      "events": 22,
+      "class_i_events": 2,
+      "class_ii_events": 18,
+      "class_iii_events": 2,
+      "latest": "2026-06-10",
+      "order_key": "2025-07-02",
+      "recent": [
+        {
+          "date": "2026-06-10",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "UPC 23070400000 SHRIMP SKEWER MEDIUM RAW CILANTRO LIME This is Albertson's store-made item and sold by random weight at point of sale with grocery store's scale label.",
+          "firm": "Albertsons Companies LLC",
+          "states": "Nationwide.",
+          "recall_number": "H-1010-2026",
+          "event_id": "98953"
+        },
+        {
+          "date": "2026-06-10",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "UPC 23245700000 SHRIMP & SURIMI CEVICHE FRESH This is Albertson's store-made item and sold by random weight at point of sale with grocery store's scale label.",
+          "firm": "Albertsons Companies LLC",
+          "states": "Nationwide.",
+          "recall_number": "H-1000-2026",
+          "event_id": "98953"
+        },
+        {
+          "date": "2026-02-25",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Frozen Cooked Medium Shrimp Peeled & Deveined, Tail Off-White Shrimp; 1 lbs retail plastic bag. UPC: 041220333035",
+          "firm": "H & N Group Inc.",
+          "states": "Product was distributed to a single retail consignee with multiple locations (~30) in the greater Houston and Gulf Coas…",
+          "recall_number": "H-0516-2026",
+          "event_id": "98423"
+        },
+        {
+          "date": "2026-01-21",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "Jumbo RAW SHRIMP, All Natural, Chemical Free, No artificial ingredients, NET WT. 32 OZ (2 LB) 907g UPC: 1 93968 00697 6",
+          "firm": "AZ Gems, Inc.",
+          "states": "Product was shipped nationwide and distributed exclusively under the Member's Mark label.",
+          "recall_number": "H-0401-2026",
+          "event_id": "98160"
+        },
+        {
+          "date": "2026-01-14",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "waterfront BISTRO brand Frozen Raw Shrimp EZ PEEL SHELL & TAIL ON Colossal 8-12 Count per Lb. Net wt. 32oz (2LB). Product is packaged in white flexible plastic pouch with multicol…",
+          "firm": "DIRECT SOURCE SEAFOOD LLC",
+          "states": "Market 32 brand frozen raw shrimp was sold in CT, MA, NH, NY, PA, and VT. waterfront BISTRO frozen raw shrimp was sold …",
+          "recall_number": "H-0379-2026",
+          "event_id": "98182"
+        }
+      ]
+    },
+    "shrimp": {
+      "slug": "shrimp",
+      "n": 41,
+      "events": 22,
+      "class_i_events": 2,
+      "class_ii_events": 18,
+      "class_iii_events": 2,
+      "latest": "2026-06-10",
+      "order_key": "2025-07-02",
+      "recent": [
+        {
+          "date": "2026-06-10",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "UPC 23070400000 SHRIMP SKEWER MEDIUM RAW CILANTRO LIME This is Albertson's store-made item and sold by random weight at point of sale with grocery store's scale label.",
+          "firm": "Albertsons Companies LLC",
+          "states": "Nationwide.",
+          "recall_number": "H-1010-2026",
+          "event_id": "98953"
+        },
+        {
+          "date": "2026-06-10",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "UPC 23245700000 SHRIMP & SURIMI CEVICHE FRESH This is Albertson's store-made item and sold by random weight at point of sale with grocery store's scale label.",
+          "firm": "Albertsons Companies LLC",
+          "states": "Nationwide.",
+          "recall_number": "H-1000-2026",
+          "event_id": "98953"
+        },
+        {
+          "date": "2026-02-25",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Frozen Cooked Medium Shrimp Peeled & Deveined, Tail Off-White Shrimp; 1 lbs retail plastic bag. UPC: 041220333035",
+          "firm": "H & N Group Inc.",
+          "states": "Product was distributed to a single retail consignee with multiple locations (~30) in the greater Houston and Gulf Coas…",
+          "recall_number": "H-0516-2026",
+          "event_id": "98423"
+        },
+        {
+          "date": "2026-01-21",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "Jumbo RAW SHRIMP, All Natural, Chemical Free, No artificial ingredients, NET WT. 32 OZ (2 LB) 907g UPC: 1 93968 00697 6",
+          "firm": "AZ Gems, Inc.",
+          "states": "Product was shipped nationwide and distributed exclusively under the Member's Mark label.",
+          "recall_number": "H-0401-2026",
+          "event_id": "98160"
+        },
+        {
+          "date": "2026-01-14",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "waterfront BISTRO brand Frozen Raw Shrimp EZ PEEL SHELL & TAIL ON Colossal 8-12 Count per Lb. Net wt. 32oz (2LB). Product is packaged in white flexible plastic pouch with multicol…",
+          "firm": "DIRECT SOURCE SEAFOOD LLC",
+          "states": "Market 32 brand frozen raw shrimp was sold in CT, MA, NH, NY, PA, and VT. waterfront BISTRO frozen raw shrimp was sold …",
+          "recall_number": "H-0379-2026",
+          "event_id": "98182"
+        }
+      ]
+    },
+    "tea": {
+      "slug": "tea",
+      "n": 5,
+      "events": 4,
+      "class_i_events": 1,
+      "class_ii_events": 1,
+      "class_iii_events": 2,
+      "latest": "2026-05-20",
+      "order_key": "2026-05-20",
+      "recent": [
+        {
+          "date": "2026-05-20",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Pure Ground Ingredients-Organic Peppermint Leaf Powder. wholesale bulk; tea/food manufacturers. Closed container stored in a cool settings at ambient/room temperature, free of dir…",
+          "firm": "Pure Ground Ingredients, Inc.",
+          "states": "Distributed to CA.",
+          "recall_number": "H-0853-2026",
+          "event_id": "98836"
+        },
+        {
+          "date": "2024-11-13",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "MyChai Chai Tea Concentrate Super. Product is packaged in the same square 0.5 gallon HDPE plastic bottles and have volumes of 68 fl oz. Ingredients: Water, Sugar, Organic Black Te…",
+          "firm": "My Chai Inc",
+          "states": "Nationwide",
+          "recall_number": "F-0109-2025",
+          "event_id": "95346"
+        },
+        {
+          "date": "2024-11-13",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "MyChai Chai Tea Concentrate Double. Product is packaged in the same square 0.5 gallon HDPE plastic bottles and have volumes of 68 fl oz. Ingredients: Water, Sugar, Organic Black T…",
+          "firm": "My Chai Inc",
+          "states": "Nationwide",
+          "recall_number": "F-0108-2025",
+          "event_id": "95346"
+        },
+        {
+          "date": "2024-05-22",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Organic Yogi Echinacea Immune Support, Caffeine Herbal Supplement, Serving Size 1 tea bag, 16 tea bags per pack, 4 packs per box. UPC on box: 0 76950 45010 3. CASE GTIN: 600769504…",
+          "firm": "East West Tea Company, LLC",
+          "states": "nationwide",
+          "recall_number": "F-1237-2024",
+          "event_id": "94438"
+        },
+        {
+          "date": "2020-09-09",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "SUNDIAL PRINCESS ALMAZ Traditional ETHIOPIAN Organic SPICED TEA; \"***Improves circulation***eliminates gas stomach griping & cramps. Relieves acid reflux, coughs, flu, hay fever, …",
+          "firm": "Sundial Herbal Products",
+          "states": "NY",
+          "recall_number": "F-1441-2020",
+          "event_id": "85882"
+        }
+      ]
+    },
+    "garlic": {
+      "slug": "garlic",
+      "n": 16,
+      "events": 13,
+      "class_i_events": 6,
+      "class_ii_events": 6,
+      "class_iii_events": 1,
+      "latest": "2026-05-13",
+      "order_key": "2026-03-18",
+      "recent": [
+        {
+          "date": "2026-05-13",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Garland Fresh Peeled Garlic 6 oz. bag",
+          "firm": "Tops Markets LLC",
+          "states": "NY, VT, PA",
+          "recall_number": "H-0687-2026",
+          "event_id": "98688"
+        },
+        {
+          "date": "2026-05-13",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Christopher Ranch Peeled Garlic 6 oz.",
+          "firm": "Tops Markets LLC",
+          "states": "NY, VT, PA",
+          "recall_number": "H-0688-2026",
+          "event_id": "98688"
+        },
+        {
+          "date": "2026-03-18",
+          "classification": "Class I",
+          "status": "Ongoing",
+          "product": "Made Fresh Salads brand Garlic & Herb Cream Cheese; 5 lb white plastic tub",
+          "firm": "Made Fresh Salads Inc",
+          "states": "New York",
+          "recall_number": "H-0558-2026",
+          "event_id": "98471"
+        },
+        {
+          "date": "2026-02-11",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "spicely ORGANIC garlic salt NO ARTIFICIAL COLORING NO GLUTEN - NO MSG - NO SOY NO PRESERVATIVES - NO WHEAT NO SUGAR - NO SALT - NO IRRADIATION Net wt: 3.4oz (96g) Ingredients: Sal…",
+          "firm": "Organic Spices, Inc",
+          "states": "U.S. Distribution: CA, CO, IL, IN, MI, NC, NY, OH, OR, PA, TX, UT, WA",
+          "recall_number": "H-0463-2026",
+          "event_id": "98296"
+        },
+        {
+          "date": "2026-02-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Black Bean Bonanza Tamales with Black Beans NO DAIRY Ingredients: Organic Corn Flour Masa, Black Beans, Salsa (Tomatoes, Onions, Chiles, Garlic & Cilantro), Non-GMO Corn, Non-hydr…",
+          "firm": "Prima Vera Nueva, Inc.",
+          "states": "U.S. Distribution: CA, NV",
+          "recall_number": "H-0428-2026",
+          "event_id": "98152"
+        }
+      ]
+    },
+    "honey": {
+      "slug": "honey",
+      "n": 8,
+      "events": 5,
+      "class_i_events": 2,
+      "class_ii_events": 2,
+      "class_iii_events": 1,
+      "latest": "2026-04-22",
+      "order_key": "2023-03-22",
+      "recent": [
+        {
+          "date": "2026-04-22",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Raw & Unfiltered Bee Well Wildflower Honey NET wT. 12 OZ (340g) UPC 8 32587 00003 2, NET WT. 22 OZ (624g) UPC 8 32587 00002 5 & NET WT. 44 OZ (1.25g) UPC 8 32587 00001 8 100% Pure…",
+          "firm": "Bee Well Honey Farm & Supply Inc.",
+          "states": "Product was shipped to retailers in South Carolina.",
+          "recall_number": "H-0664-2026",
+          "event_id": "98617"
+        },
+        {
+          "date": "2024-07-31",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "Universal Bakery Organic Aussie Bites, 30 oz clamshell container USDA Organic Certified Gluten Free Rolled Oats, Dried Apricots, Flax Seeds, Sunflower Seeds, Honey, Coconut, Quino…",
+          "firm": "Best Express Foods, Inc.",
+          "states": "U.S. distribution to the following: CA, CO, AZ, WA, UT, TX, NJ, MD, IL, MI, MN, GA, FL Foreign distribution to the foll…",
+          "recall_number": "F-1490-2024",
+          "event_id": "94897"
+        },
+        {
+          "date": "2023-03-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Fresh Creative Cuisine White Label, Ham, Provolone & Honey Mustard Bialy, Net . Wt. 6.5 Oz. Single Serving, Keep refrigerated",
+          "firm": "FRESH IDEATION FOOD GROUP, LLC dba Fresh Creative Cuisine",
+          "states": "The recalled product was distributed to the following states: MD, PA, DE, NY, DC, NJ, NC, CT, SC, VA, MA .",
+          "recall_number": "F-0155-2024",
+          "event_id": "91653"
+        },
+        {
+          "date": "2023-03-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Fresh Creative Cuisine, Ham, Swiss & Honey Mustard Bialy, Net . Wt. 6.5 Oz. Single Serving, Keep refrigerated",
+          "firm": "FRESH IDEATION FOOD GROUP, LLC dba Fresh Creative Cuisine",
+          "states": "The recalled product was distributed to the following states: MD, PA, DE, NY, DC, NJ, NC, CT, SC, VA, MA .",
+          "recall_number": "F-0551-2023",
+          "event_id": "91653"
+        },
+        {
+          "date": "2023-03-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Quick & Fresh, Ham, Provolone & Honey Mustard Bialy, Net . Wt. 6.5 Oz. Single Serving, Keep refrigerated",
+          "firm": "FRESH IDEATION FOOD GROUP, LLC dba Fresh Creative Cuisine",
+          "states": "The recalled product was distributed to the following states: MD, PA, DE, NY, DC, NJ, NC, CT, SC, VA, MA .",
+          "recall_number": "F-0156-2024",
+          "event_id": "91653"
+        }
+      ]
+    },
+    "dates": {
+      "slug": "dates",
+      "n": 5,
+      "events": 4,
+      "class_i_events": 0,
+      "class_ii_events": 4,
+      "class_iii_events": 0,
+      "latest": "2026-04-22",
+      "order_key": "2026-04-22",
+      "recent": [
+        {
+          "date": "2026-04-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Label is predominantly green with white lettering in a clear plastic clamshell container. Pure Palm dates- Medjool Dates Net Wt. 16OZ UPC: 852160007005",
+          "firm": "PURE PALM C/O DVD",
+          "states": "Product was distributed to a single Direct Account with multiple locations across several East Coast states including (…",
+          "recall_number": "H-0681-2026",
+          "event_id": "98718"
+        },
+        {
+          "date": "2025-09-24",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "(Bulk) Oyster, Frozen, Raw Half Shell, 15lb(6.8kg) UPC: 10087703078342 Harvest Dates: Jan 03,2025, Jan 14,2025",
+          "firm": "Wang Globalnet",
+          "states": "12 retail locations for lot# 250114 (Northeast states such as NJ, MA, NY) 15 retail locations for lot# 250103 (Southwes…",
+          "recall_number": "H-0611-2025",
+          "event_id": "97475"
+        },
+        {
+          "date": "2024-10-30",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Dry Dates, 50 lb. bag",
+          "firm": "BlueStar Direct LLC",
+          "states": "The recall product was distributed to one Consignee, Chetak Chicago LLC 1111 Lake St, Streamwood, IL 60107 .",
+          "recall_number": "F-0069-2025",
+          "event_id": "95413"
+        },
+        {
+          "date": "2024-06-05",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1lb and 8oz bags include Apricots, Whole Dates, golden Raisins, Mangos, Currants, Blueberries, Cranberries, Prunes, Raw Sunflower Seeds, Raw Pumpkin Seeds, Pecan Medium Pieces, Bl…",
+          "firm": "Texas Pecan Co",
+          "states": "Product is sold online, in the firm's store and through a wholesaler in Texas.",
+          "recall_number": "F-1277-2024",
+          "event_id": "94469"
+        },
+        {
+          "date": "2024-06-05",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1lb and 8oz bags include Apricots, Whole Dates, golden Raisins, Mangos, Currants, Blueberries, Cranberries, Prunes, Raw Sunflower Seeds, Raw Pumpkin Seeds, Pecan Medium Pieces, Bl…",
+          "firm": "Texas Pecan Co",
+          "states": "Product is sold online, in the firm's store and through a wholesaler in Texas.",
+          "recall_number": "F-1278-2024",
+          "event_id": "94469"
+        }
+      ]
+    },
+    "cantaloupe": {
+      "slug": "cantaloupe",
+      "n": 34,
+      "events": 16,
+      "class_i_events": 15,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2026-04-15",
+      "order_key": "2026-04-15",
+      "recent": [
+        {
+          "date": "2026-04-15",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Fresh Cantaloupe (Whole, Fresh), brand name Ayco, wrapped in food safe plastic bags packed in corrugated cardboard cartons; 6-12 melons per box; individual carton count per label.…",
+          "firm": "AYCO FARMS INC",
+          "states": "Distributed to PA, FL, CA, NY. No foreign distribution and none to government agencies.",
+          "recall_number": "H-0668-2026",
+          "event_id": "98661"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cut Fresh Fruit Mix. Contains: Cantaloupe, Honeydew, Pineapple, and Red Grapes. Keep Refrigerated. Packed under the following brands and sizes: 1. Fruit Mix CHPG (MCT) 1/5 lb. 2. …",
+          "firm": "WHOLESALE PRODUCE SUPPLY LLC DBA",
+          "states": "IA, IL, ND, NE, WI",
+          "recall_number": "H-0068-2026",
+          "event_id": "97709"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cut Fresh Cantaloupe Chunks packaged into the following size containers some under brand names Fresh & Finest or Harvest Cuts: 1. CANTALOUPE CHUNKS \"PRMK\" 30/2 OZ 2. CANTALOUPE CH…",
+          "firm": "WHOLESALE PRODUCE SUPPLY LLC DBA",
+          "states": "IA, IL, ND, NE, WI",
+          "recall_number": "H-0059-2026",
+          "event_id": "97709"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cut Fresh Fruit Mix. Contains: Cantaloupe, Honeydew, and Red Grapes. Keep Refrigerated. Packed under the following brands and sizes: 1. Fruit Mix \"HC\" 6/6oz. UPC 7 90629-11821 6. …",
+          "firm": "WHOLESALE PRODUCE SUPPLY LLC DBA",
+          "states": "IA, IL, ND, NE, WI",
+          "recall_number": "H-0067-2026",
+          "event_id": "97709"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cut Fresh Luau Blend Fruit Mix \"F&F\". 4/10 oz. Fresh & Finest. Contains: Cantaloupe, Honeydew, Pineapple, Red Grapes, Strawberry, Blueberry. Keep Refrigerated. UPC 0 70253-00572 5…",
+          "firm": "WHOLESALE PRODUCE SUPPLY LLC DBA",
+          "states": "IA, IL, ND, NE, WI",
+          "recall_number": "H-0063-2026",
+          "event_id": "97709"
+        }
+      ]
+    },
+    "strawberry": {
+      "slug": "strawberry",
+      "n": 29,
+      "events": 15,
+      "class_i_events": 8,
+      "class_ii_events": 6,
+      "class_iii_events": 1,
+      "latest": "2026-03-18",
+      "order_key": "2026-03-18",
+      "recent": [
+        {
+          "date": "2026-03-18",
+          "classification": "Class I",
+          "status": "Ongoing",
+          "product": "Made Fresh Salads brand Strawberry Cream Cheese; 5 lb white plastic tub",
+          "firm": "Made Fresh Salads Inc",
+          "states": "New York",
+          "recall_number": "H-0563-2026",
+          "event_id": "98471"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cut Fresh Luau Blend Fruit Mix \"F&F\". 4/10 oz. Fresh & Finest. Contains: Cantaloupe, Honeydew, Pineapple, Red Grapes, Strawberry, Blueberry. Keep Refrigerated. UPC 0 70253-00572 5…",
+          "firm": "WHOLESALE PRODUCE SUPPLY LLC DBA",
+          "states": "IA, IL, ND, NE, WI",
+          "recall_number": "H-0063-2026",
+          "event_id": "97709"
+        },
+        {
+          "date": "2024-10-30",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Happy Moose Juice Strawberry Field packaged in a plastic 12 fl. oz. bottle. Ingredients: Organic Apple Juice, Organic Orange Juice, Organic Strawberry Puree, Organic Beet Juice, O…",
+          "firm": "Youngstown Grape Distributors, Inc.",
+          "states": "CA, TX, WA, KY, NC, NY, IL, VA, AL, GA, KS, CT, MI, MA, PA, OH, MD, WI, ND, MO, TN, NE, KS, RI, MN, FL, SC, IN, NJ, IA,…",
+          "recall_number": "F-0059-2025",
+          "event_id": "95488"
+        },
+        {
+          "date": "2024-06-26",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "New Seasons Market Strawberry Rhubarb Bakewell Tart, packaged in a plastic clamshell with scale label. Contains Milk, Wheat, Eggs.",
+          "firm": "New Seasons Market LLC",
+          "states": "Distributed in Oregon and Washington.",
+          "recall_number": "F-1388-2024",
+          "event_id": "94753"
+        },
+        {
+          "date": "2023-12-20",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "LEMON CHOICE MINI PK 34-44 CT; STRAWBERRY SLICED 4-1",
+          "firm": "Ben E Keith Foods - Fort Worth",
+          "states": "All products were shipped via truck to food services.",
+          "recall_number": "F-0574-2024",
+          "event_id": "93314"
+        }
+      ]
+    },
+    "blueberry": {
+      "slug": "blueberry",
+      "n": 9,
+      "events": 7,
+      "class_i_events": 3,
+      "class_ii_events": 4,
+      "class_iii_events": 0,
+      "latest": "2026-03-18",
+      "order_key": "2026-03-18",
+      "recent": [
+        {
+          "date": "2026-03-18",
+          "classification": "Class I",
+          "status": "Ongoing",
+          "product": "Made Fresh Salads brand Blueberry Cream Cheese; 5 lb white plastic tub",
+          "firm": "Made Fresh Salads Inc",
+          "states": "New York",
+          "recall_number": "H-0557-2026",
+          "event_id": "98471"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cut Fresh Luau Blend Fruit Mix \"F&F\". 4/10 oz. Fresh & Finest. Contains: Cantaloupe, Honeydew, Pineapple, Red Grapes, Strawberry, Blueberry. Keep Refrigerated. UPC 0 70253-00572 5…",
+          "firm": "WHOLESALE PRODUCE SUPPLY LLC DBA",
+          "states": "IA, IL, ND, NE, WI",
+          "recall_number": "H-0063-2026",
+          "event_id": "97709"
+        },
+        {
+          "date": "2025-08-20",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "FG60005 Blueberry Basil Lemonade",
+          "firm": "AND GO CONCEPTS DBA SALAD AND GO",
+          "states": "Arizona, Oklahoma, Nevada, Texas",
+          "recall_number": "H-0492-2025",
+          "event_id": "97177"
+        },
+        {
+          "date": "2025-05-21",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Blueberry Lemon Scones, bulk packaged in bakery boxes. Products are sold at retail in pastry cases and not individually labeled.",
+          "firm": "The Hot Chocolatier - St. Elmo, LLC",
+          "states": "One (1) retailer in TN.",
+          "recall_number": "F-0804-2025",
+          "event_id": "96788"
+        },
+        {
+          "date": "2022-09-28",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Four Berry Blend containing Strawberry, Blackberry, Blueberry, Raspberry. Keep Refrigerated. Item 80847. Net Wt. 12 oz. packaged in the following brands: .Crazy Fresh, quick & eas…",
+          "firm": "Russ Davis Wholesale, LLC",
+          "states": "IA, MI, MN, ND, SD, WI",
+          "recall_number": "F-1763-2022",
+          "event_id": "90694"
+        }
+      ]
+    },
+    "apple": {
+      "slug": "apple",
+      "n": 19,
+      "events": 16,
+      "class_i_events": 5,
+      "class_ii_events": 10,
+      "class_iii_events": 1,
+      "latest": "2026-03-18",
+      "order_key": "2026-03-18",
+      "recent": [
+        {
+          "date": "2026-03-18",
+          "classification": "Class I",
+          "status": "Ongoing",
+          "product": "Made Fresh Salads brand Apple Cinnamon Cream Cheese; 5 lb white plastic tub",
+          "firm": "Made Fresh Salads Inc",
+          "states": "New York",
+          "recall_number": "H-0555-2026",
+          "event_id": "98471"
+        },
+        {
+          "date": "2026-03-18",
+          "classification": "Class I",
+          "status": "Ongoing",
+          "product": "Made Fresh Salads brand Caramel Apple Cream Cheese; 5 lb white plastic tub",
+          "firm": "Made Fresh Salads Inc",
+          "states": "New York",
+          "recall_number": "H-0556-2026",
+          "event_id": "98471"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "6+ Months SPROUT ORGANICS Made With Organic Sweet Potato, Apple & Spinach NET WT. 3.5 OZ (99g) INGREDIENTS: ORGANIC SWEET POTATOES, ORGANIC APPLES, ORGANIC SPINACH, WATER, ORGANIC…",
+          "firm": "Sprout Organics Inc.",
+          "states": "U.S. States: AZ, CA, CO, CT, FL, GA, HI, ID, IN, KY, LA, MA, MD, MI, MO, MS, MT, NC, NE, NH, NJ, NM, NV, NY, OH, PA, RI…",
+          "recall_number": "H-0134-2026",
+          "event_id": "97622"
+        },
+        {
+          "date": "2024-12-11",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "No Preservatives 100% CIDER Pasteurized APPLE WEDGE CIDER 1/2 Gal. (1.89L) HENDERSONVILLE, NC 28792 Keep Refrigerated Produce of USA UPC 0 36482 64000 7",
+          "firm": "Apple Wedge LLC",
+          "states": "Products were shipped to GA, NC, SC and FL.",
+          "recall_number": "F-0251-2025",
+          "event_id": "95496"
+        },
+        {
+          "date": "2024-12-11",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "Cinnamon Pasteurized APPLE WEDGE CIDER 1/2 Gal. (1.89L) HENDERSONVILLE, NC 28792 Keep Refrigerated Produce of USA Ingredients: Apples, Natural Cinnamon Flavor. 0.1% Potassium Sorb…",
+          "firm": "Apple Wedge LLC",
+          "states": "Products were shipped to GA, NC, SC and FL.",
+          "recall_number": "F-0250-2025",
+          "event_id": "95496"
+        }
+      ]
+    },
+    "cinnamon": {
+      "slug": "cinnamon",
+      "n": 15,
+      "events": 13,
+      "class_i_events": 3,
+      "class_ii_events": 9,
+      "class_iii_events": 1,
+      "latest": "2026-03-18",
+      "order_key": "2026-03-18",
+      "recent": [
+        {
+          "date": "2026-03-18",
+          "classification": "Class I",
+          "status": "Ongoing",
+          "product": "Made Fresh Salads brand Apple Cinnamon Cream Cheese; 5 lb white plastic tub",
+          "firm": "Made Fresh Salads Inc",
+          "states": "New York",
+          "recall_number": "H-0555-2026",
+          "event_id": "98471"
+        },
+        {
+          "date": "2025-11-12",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Lucky Foods Cinnamon Powder; 40g",
+          "firm": "TBC Distribution Corporate",
+          "states": "NC, NJ, OH, NY, MD, FL, SC, PA, MI, GA, MD, IL",
+          "recall_number": "H-0169-2026",
+          "event_id": "97805"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Wise Wife Ground Cinnamon",
+          "firm": "SLR Food Distribution, Inc.",
+          "states": "NY, MN, FL, OK, OH",
+          "recall_number": "H-0070-2026",
+          "event_id": "97706"
+        },
+        {
+          "date": "2025-08-13",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Boar's Head Chevre Goat Cheese Cranberry Cinnamon, Net Wt 4 oz (113g). UPC 0 42421-15231 9. Keep Refrigerated. Distributed By: Brunckhorst Co., NY, NY 11206-3886.",
+          "firm": "Stickney Hill Dairy, LLC",
+          "states": "NY",
+          "recall_number": "H-0388-2025",
+          "event_id": "97327"
+        },
+        {
+          "date": "2025-08-06",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Reisman's Cinnamon Danishes 3 oz.",
+          "firm": "Reisman Bros Bakery",
+          "states": "NY, NJ, PA, MD, IL, CA, FL, MA, MI",
+          "recall_number": "H-0368-2025",
+          "event_id": "97247"
+        }
+      ]
+    },
+    "walnut": {
+      "slug": "walnut",
+      "n": 7,
+      "events": 7,
+      "class_i_events": 3,
+      "class_ii_events": 3,
+      "class_iii_events": 1,
+      "latest": "2026-03-18",
+      "order_key": "2026-03-18",
+      "recent": [
+        {
+          "date": "2026-03-18",
+          "classification": "Class I",
+          "status": "Ongoing",
+          "product": "Made Fresh Salads brand Walnut Raisin Cream Cheese; 5 lb white plastic tub",
+          "firm": "Made Fresh Salads Inc",
+          "states": "New York",
+          "recall_number": "H-0566-2026",
+          "event_id": "98471"
+        },
+        {
+          "date": "2023-10-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "IO Inspired Organics Organic Raw Walnuts, 5oz bag, UPC 8 63669 74200 7, 9 bags per wholesale case",
+          "firm": "Lipari Foods Operating Company, LLC.",
+          "states": "FL, IL, IN, KY, OH, WI",
+          "recall_number": "F-1618-2023",
+          "event_id": "93025"
+        },
+        {
+          "date": "2023-08-23",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "IO Inspired Organics brand Organic Raw Walnut Halves & Pieces; 7oz plastic tubs; 9 packages per wholesale case; retail UPC 863669740065, Lipari #943469",
+          "firm": "Lipari Foods Operating Company, LLC.",
+          "states": "AL, FL, IL, IN, KY, MI, NY, OH, PA, WI, and WY",
+          "recall_number": "F-1459-2023",
+          "event_id": "92801"
+        },
+        {
+          "date": "2023-08-09",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Breakfast Treats, Sliced Almonds, Walnuts & Dark Raisins packaged in 5 pound bags",
+          "firm": "Houston Pecan Company, Inc",
+          "states": "Texas and internet sales",
+          "recall_number": "F-1340-2023",
+          "event_id": "92497"
+        },
+        {
+          "date": "2022-09-28",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Maple Walnut Vegan Scones. Product distributed in bulk cases and it is sold directly to consumers. The ingredients statement is read in parts: \"***Maple Walnut Vegan Scones *** Al…",
+          "firm": "Scone Ranger Inc",
+          "states": "Distributed in WA",
+          "recall_number": "F-1737-2022",
+          "event_id": "90781"
+        }
+      ]
+    },
+    "tomato": {
+      "slug": "tomato",
+      "n": 8,
+      "events": 7,
+      "class_i_events": 3,
+      "class_ii_events": 4,
+      "class_iii_events": 0,
+      "latest": "2026-03-18",
+      "order_key": "2026-03-18",
+      "recent": [
+        {
+          "date": "2026-03-18",
+          "classification": "Class I",
+          "status": "Ongoing",
+          "product": "Made Fresh Salads brand Sundried Tomato Cream Cheese; 5 lb white plastic tub",
+          "firm": "Made Fresh Salads Inc",
+          "states": "New York",
+          "recall_number": "H-0564-2026",
+          "event_id": "98471"
+        },
+        {
+          "date": "2025-07-02",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Nature Mills Tomato Vadam, 100g",
+          "firm": "NatureMills US Incorporated",
+          "states": "Product is distributed throughout the USA via the firm's website.",
+          "recall_number": "H-0085-2025",
+          "event_id": "96878"
+        },
+        {
+          "date": "2025-06-18",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cucumber Sliced/Grape Tomato 50/2oz. Pack, 50 per case",
+          "firm": "TGD Cuts, LLC",
+          "states": "The recall product was distributed to the following States: MD, PA, NC, VA, NJ",
+          "recall_number": "H-0039-2025",
+          "event_id": "96936"
+        },
+        {
+          "date": "2025-06-18",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cucumber Sliced/Grape Tomato 50/2oz. Pack, 50 per case",
+          "firm": "TGD Cuts, LLC",
+          "states": "The recall product was distributed to the following States: MD, PA, NC, VA, NJ",
+          "recall_number": "H-0038-2025",
+          "event_id": "96936"
+        },
+        {
+          "date": "2022-09-28",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Tomato, Radish, Broccoli, Cauliflower. Net Wt. 11 oz. Item 80819 Packaged under the following brands: Crazy Fresh, quick & easy, and grocery store branded.",
+          "firm": "Russ Davis Wholesale, LLC",
+          "states": "IA, MI, MN, ND, SD, WI",
+          "recall_number": "F-1758-2022",
+          "event_id": "90694"
+        }
+      ]
+    },
+    "vegetable-oil": {
+      "slug": "vegetable-oil",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 0,
+      "class_ii_events": 0,
+      "class_iii_events": 1,
+      "latest": "2026-03-04",
+      "order_key": "2026-03-04",
+      "recent": [
+        {
+          "date": "2026-03-04",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "YO!MAN CUCUMBER (FRESH HUNAN FLAVOR); Ingredients: Cucumber, chili pepper, edible vegetable oil, salt, water, sugar, brewing vinegar, food additives (monosodium glutamate, sodium …",
+          "firm": "TENGEN USA TRADING CORP",
+          "states": "NY, PA, FL, LA, TX",
+          "recall_number": "H-0525-2026",
+          "event_id": "98357"
+        }
+      ]
+    },
+    "cucumber": {
+      "slug": "cucumber",
+      "n": 45,
+      "events": 28,
+      "class_i_events": 25,
+      "class_ii_events": 2,
+      "class_iii_events": 1,
+      "latest": "2026-03-04",
+      "order_key": "2025-10-08",
+      "recent": [
+        {
+          "date": "2026-03-04",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "YO!MAN CUCUMBER (FRESH HUNAN FLAVOR); Ingredients: Cucumber, chili pepper, edible vegetable oil, salt, water, sugar, brewing vinegar, food additives (monosodium glutamate, sodium …",
+          "firm": "TENGEN USA TRADING CORP",
+          "states": "NY, PA, FL, LA, TX",
+          "recall_number": "H-0525-2026",
+          "event_id": "98357"
+        },
+        {
+          "date": "2025-10-08",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "190 cs Cucumber Select 15ct",
+          "firm": "Chefs Warehouse",
+          "states": "The recalled product was distributed to the following states: MD, DE, VA,",
+          "recall_number": "H-0642-2025",
+          "event_id": "96995"
+        },
+        {
+          "date": "2025-10-08",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "98 cs Cucumber - Super 6 Ct",
+          "firm": "Chefs Warehouse",
+          "states": "The recalled product was distributed to the following states: MD, DE, VA,",
+          "recall_number": "H-0646-2025",
+          "event_id": "96995"
+        },
+        {
+          "date": "2025-10-08",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "15 lbs. Cucumbers Diced 1/4\"",
+          "firm": "Chefs Warehouse",
+          "states": "The recalled product was distributed to the following states: MD, DE, VA,",
+          "recall_number": "H-0645-2025",
+          "event_id": "96995"
+        },
+        {
+          "date": "2025-10-08",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "5 lbs. Cucumber Diced 1/2\"",
+          "firm": "Chefs Warehouse",
+          "states": "The recalled product was distributed to the following states: MD, DE, VA,",
+          "recall_number": "H-0644-2025",
+          "event_id": "96995"
+        }
+      ]
+    },
+    "cashew": {
+      "slug": "cashew",
+      "n": 10,
+      "events": 8,
+      "class_i_events": 3,
+      "class_ii_events": 4,
+      "class_iii_events": 1,
+      "latest": "2026-02-11",
+      "order_key": "2026-02-11",
+      "recent": [
+        {
+          "date": "2026-02-11",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "JUICE from the Raw, cashew milk",
+          "firm": "Everpress Juice",
+          "states": "The adulterated product was distributed the following states : AK,AZ CA, HI,ID,MT,NV,OR,UT,WA,AR,CO,IL,IN,LA,MN,MO,MS,N…",
+          "recall_number": "H-0455-2026",
+          "event_id": "97330"
+        },
+        {
+          "date": "2026-02-11",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "JUICE from the Raw, cashew coffee milk",
+          "firm": "Everpress Juice",
+          "states": "The adulterated product was distributed the following states : AK,AZ CA, HI,ID,MT,NV,OR,UT,WA,AR,CO,IL,IN,LA,MN,MO,MS,N…",
+          "recall_number": "H-0456-2026",
+          "event_id": "97330"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class II",
+          "status": "Completed",
+          "product": "NOW Real Food Organic Unsalted Whole Raw Cashews, 10 oz. pouch, UPC 7 33739 07066 1 Product Code 7066",
+          "firm": "Now Foods",
+          "states": "Nationwide",
+          "recall_number": "H-0034-2026",
+          "event_id": "97691"
+        },
+        {
+          "date": "2025-06-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Kraft package is labeled as Hummingbird Organic Roasted Salted Cashews, net wt. 6oz.",
+          "firm": "Honey Heaven Wholesale Inc",
+          "states": "Distributed in CA, OR, and WA",
+          "recall_number": "F-0813-2025",
+          "event_id": "96882"
+        },
+        {
+          "date": "2024-04-03",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Trader Joe's 50% Less Sodium Roasted & Salted Whole Cashews Net Wt. 15 oz (1 LB) 454g Dist. & Sold Exclusively By: Trader Joe's, Monrovia, CA 91016 Cashews Product of India and Vi…",
+          "firm": "Wenders LLC",
+          "states": "U.S. distribution: CA, WA, TX No foreign distribution.",
+          "recall_number": "F-1107-2024",
+          "event_id": "94249"
+        }
+      ]
+    },
+    "coffee": {
+      "slug": "coffee",
+      "n": 6,
+      "events": 5,
+      "class_i_events": 1,
+      "class_ii_events": 3,
+      "class_iii_events": 1,
+      "latest": "2026-02-11",
+      "order_key": "2026-02-11",
+      "recent": [
+        {
+          "date": "2026-02-11",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "JUICE from the Raw, cashew coffee milk",
+          "firm": "Everpress Juice",
+          "states": "The adulterated product was distributed the following states : AK,AZ CA, HI,ID,MT,NV,OR,UT,WA,AR,CO,IL,IN,LA,MN,MO,MS,N…",
+          "recall_number": "H-0456-2026",
+          "event_id": "97330"
+        },
+        {
+          "date": "2023-05-17",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Coffee Bonbon",
+          "firm": "Windy Hill Chocolate LLC",
+          "states": "Domestic consignee only.",
+          "recall_number": "F-0846-2023",
+          "event_id": "92134"
+        },
+        {
+          "date": "2021-12-29",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Black Rifle Coffee Mac V Whole Bean Coffee 12oz PET bags 40 bags per case",
+          "firm": "Black Rifle Coffee Company",
+          "states": "Tennessee",
+          "recall_number": "F-0318-2022",
+          "event_id": "89179"
+        },
+        {
+          "date": "2020-09-09",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Ethiopian Coffee",
+          "firm": "Sundial Herbal Products",
+          "states": "NY",
+          "recall_number": "F-1507-2020",
+          "event_id": "85882"
+        },
+        {
+          "date": "2020-01-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Organic Cold brew BUDDY BREW COFFEE BOLT Original 10.5 oz. cans and 5 and 7.5 gallon kegs",
+          "firm": "Buddy Brew Coffee",
+          "states": "Retail and wholesale distribution within the state of Florida.",
+          "recall_number": "F-0501-2020",
+          "event_id": "84513"
+        }
+      ]
+    },
+    "mint": {
+      "slug": "mint",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 1,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2026-02-11",
+      "order_key": "2026-02-11",
+      "recent": [
+        {
+          "date": "2026-02-11",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "JUICE from the Raw, pineapple mint",
+          "firm": "Everpress Juice",
+          "states": "The adulterated product was distributed the following states : AK,AZ CA, HI,ID,MT,NV,OR,UT,WA,AR,CO,IL,IN,LA,MN,MO,MS,N…",
+          "recall_number": "H-0452-2026",
+          "event_id": "97330"
+        }
+      ]
+    },
+    "pineapple": {
+      "slug": "pineapple",
+      "n": 35,
+      "events": 19,
+      "class_i_events": 12,
+      "class_ii_events": 7,
+      "class_iii_events": 0,
+      "latest": "2026-02-11",
+      "order_key": "2026-02-11",
+      "recent": [
+        {
+          "date": "2026-02-11",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "JUICE from the Raw, pineapple mint",
+          "firm": "Everpress Juice",
+          "states": "The adulterated product was distributed the following states : AK,AZ CA, HI,ID,MT,NV,OR,UT,WA,AR,CO,IL,IN,LA,MN,MO,MS,N…",
+          "recall_number": "H-0452-2026",
+          "event_id": "97330"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cut Fresh Fruit Mix. Contains: Cantaloupe, Honeydew, Pineapple, and Red Grapes. Keep Refrigerated. Packed under the following brands and sizes: 1. Fruit Mix CHPG (MCT) 1/5 lb. 2. …",
+          "firm": "WHOLESALE PRODUCE SUPPLY LLC DBA",
+          "states": "IA, IL, ND, NE, WI",
+          "recall_number": "H-0068-2026",
+          "event_id": "97709"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class II",
+          "status": "Completed",
+          "product": "Fruit Cocktail IN 100% JUICE WITH ADDED INGREDIENTS; NET WT 15 OZ (425 g); Ingredients: Diced Peaches, Diced Pears, Water, Grapes, Peach Pulp and Juice, Pineapple Sectors, Pear Ju…",
+          "firm": "Pacific Coast Producers",
+          "states": "U.S. distribution: AL, AR, AZ, CA, FL, GA, IL, IN, KY, LA, ME, MO, MS, NE, NM, NV, NY, OH, OK, PA, SC, TX, UT, VA, WA, …",
+          "recall_number": "H-0038-2026",
+          "event_id": "97563"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cut Fresh Luau Blend Fruit Mix \"F&F\". 4/10 oz. Fresh & Finest. Contains: Cantaloupe, Honeydew, Pineapple, Red Grapes, Strawberry, Blueberry. Keep Refrigerated. UPC 0 70253-00572 5…",
+          "firm": "WHOLESALE PRODUCE SUPPLY LLC DBA",
+          "states": "IA, IL, ND, NE, WI",
+          "recall_number": "H-0063-2026",
+          "event_id": "97709"
+        },
+        {
+          "date": "2024-10-30",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Happy Moose Juice Tropical Roots packaged in a plastic 12 fl. oz. bottle. Ingredients: Mandarin Orange, Organic Carrot Juice, Organic Pineapple Juice, Lemon Juice, and Organic Tur…",
+          "firm": "Youngstown Grape Distributors, Inc.",
+          "states": "CA, TX, WA, KY, NC, NY, IL, VA, AL, GA, KS, CT, MI, MA, PA, OH, MD, WI, ND, MO, TN, NE, KS, RI, MN, FL, SC, IN, NJ, IA,…",
+          "recall_number": "F-0058-2025",
+          "event_id": "95488"
+        }
+      ]
+    },
+    "celery": {
+      "slug": "celery",
+      "n": 11,
+      "events": 10,
+      "class_i_events": 5,
+      "class_ii_events": 5,
+      "class_iii_events": 0,
+      "latest": "2026-02-11",
+      "order_key": "2025-07-16",
+      "recent": [
+        {
+          "date": "2026-02-11",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "spicely ORGANIC celery salt NO ARTIFICIAL COLORING NO GLUTEN - NO MSG - NO SOY NO PRESERVATIVES - NO WHEAT NO SUGAR - NO SALT - NO IRRADIATION Net wt: 2.4oz (68g) Ingredients: Sal…",
+          "firm": "Organic Spices, Inc",
+          "states": "U.S. Distribution: CA, CO, IL, IN, MI, NC, NY, OH, OR, PA, TX, UT, WA",
+          "recall_number": "H-0464-2026",
+          "event_id": "98296"
+        },
+        {
+          "date": "2025-07-16",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Celery Seed Whole Organic, labeled, \"CELERY SEED WHL OG; Net Wt: 56.25 Lbs\"",
+          "firm": "The Whole Herb Company, Inc.",
+          "states": "Domestic: IA. Foreign: Not Applicable.",
+          "recall_number": "H-0221-2025",
+          "event_id": "96997"
+        },
+        {
+          "date": "2025-01-08",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "a.) King Kullen brand Diced Celery; UPC: 85316-10083; 12 oz plastic container b.) Wild By Nature brand Diced Celery; UPC: 85316-10083; 12 oz plastic container c.) Gracie's Kitchen…",
+          "firm": "Gracie's Kitchens Inc.",
+          "states": "CT and NY",
+          "recall_number": "F-0328-2025",
+          "event_id": "95851"
+        },
+        {
+          "date": "2024-12-25",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "WHOLE FOODS MARKET, Organic Carrots & Celery, NET WT. 15 oz (425 g), PERISHABLE KEEP REFRIGERATED, Packed For: Whole Foods Market Austin, TX 78703, Pre-washed and ready to eat",
+          "firm": "F&S Fresh Foods, Inc.",
+          "states": "AZ, CA, HI, ID, NV",
+          "recall_number": "F-0292-2025",
+          "event_id": "95812"
+        },
+        {
+          "date": "2023-11-15",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Gills Onions 8 oz cups, diced celery & onions",
+          "firm": "Gills Onions, LLC",
+          "states": "Distributors in Canada AB, BC, NB, NS, ON; and the United States AZ, CA, CO, CT, FL, GA, IA, ID, IL, IN, KY, LA, MA, MD…",
+          "recall_number": "F-0331-2024",
+          "event_id": "93290"
+        }
+      ]
+    },
+    "cheddar-cheese": {
+      "slug": "cheddar-cheese",
+      "n": 8,
+      "events": 4,
+      "class_i_events": 2,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2026-02-04",
+      "order_key": "2024-06-26",
+      "recent": [
+        {
+          "date": "2026-02-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Mushroom, Spinach & Salsa Tamales with 2 Cheeses Ingredients: Organic Corn Flour Masa, Mushrooms, Spinach, Onions, Jalapenos, Jack and White Cheddar Cheese (pasteurized milk, chee…",
+          "firm": "Prima Vera Nueva, Inc.",
+          "states": "U.S. Distribution: CA, NV",
+          "recall_number": "H-0424-2026",
+          "event_id": "98152"
+        },
+        {
+          "date": "2026-02-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Roasted Pumpkin & White Cheddar Tamales Ingredients: Organic Corn Flour Masa, Pumpkin, Green Chile, Sharp Cheddar Cheese (Pasteurized Milk, Cheese Cultures, Salt and Enzymes), But…",
+          "firm": "Prima Vera Nueva, Inc.",
+          "states": "U.S. Distribution: CA, NV",
+          "recall_number": "H-0425-2026",
+          "event_id": "98152"
+        },
+        {
+          "date": "2024-06-26",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Raw Cheddar Cheese, made from unpasteurized milk, 8 oz (1/2 lb) block, Keep Refrigerated under 40 degrees",
+          "firm": "Raw Farm LLC",
+          "states": "Products are distributed to retailers and distribution centers in the following U.S. states: TX, CA, CO, AZ. No foreign…",
+          "recall_number": "F-1373-2024",
+          "event_id": "94065"
+        },
+        {
+          "date": "2024-06-26",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Raw Cheddar Cheese, made from unpasteurized milk, 16 oz (1 lb) block, Keep Refrigerated under 40 degrees",
+          "firm": "Raw Farm LLC",
+          "states": "Products are distributed to retailers and distribution centers in the following U.S. states: TX, CA, CO, AZ. No foreign…",
+          "recall_number": "F-1372-2024",
+          "event_id": "94065"
+        },
+        {
+          "date": "2024-06-26",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Raw Cheddar Cheese, made from unpasteurized milk, 8 oz (1/2 lb), shredded, in a plastic bag, Keep Refrigerated under 40 degrees",
+          "firm": "Raw Farm LLC",
+          "states": "Products are distributed to retailers and distribution centers in the following U.S. states: TX, CA, CO, AZ. No foreign…",
+          "recall_number": "F-1374-2024",
+          "event_id": "94065"
+        }
+      ]
+    },
+    "onion": {
+      "slug": "onion",
+      "n": 143,
+      "events": 33,
+      "class_i_events": 28,
+      "class_ii_events": 5,
+      "class_iii_events": 0,
+      "latest": "2026-02-04",
+      "order_key": "2025-10-22",
+      "recent": [
+        {
+          "date": "2026-02-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Mushroom, Spinach & Salsa Tamales with 2 Cheeses Ingredients: Organic Corn Flour Masa, Mushrooms, Spinach, Onions, Jalapenos, Jack and White Cheddar Cheese (pasteurized milk, chee…",
+          "firm": "Prima Vera Nueva, Inc.",
+          "states": "U.S. Distribution: CA, NV",
+          "recall_number": "H-0424-2026",
+          "event_id": "98152"
+        },
+        {
+          "date": "2026-02-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Black Bean Bonanza Tamales with Black Beans NO DAIRY Ingredients: Organic Corn Flour Masa, Black Beans, Salsa (Tomatoes, Onions, Chiles, Garlic & Cilantro), Non-GMO Corn, Non-hydr…",
+          "firm": "Prima Vera Nueva, Inc.",
+          "states": "U.S. Distribution: CA, NV",
+          "recall_number": "H-0428-2026",
+          "event_id": "98152"
+        },
+        {
+          "date": "2026-02-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "BBQ Chipotle Bean & White Cheddar Tamales Ingredients: Organic Corn Flour Masa, Beans, Jack Cheese (Pasteurized Milk, Cheese Cultures, Salt and Enzymes), Salsa (Tomatoes, Onions, …",
+          "firm": "Prima Vera Nueva, Inc.",
+          "states": "U.S. Distribution: CA, NV",
+          "recall_number": "H-0427-2026",
+          "event_id": "98152"
+        },
+        {
+          "date": "2026-02-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Mushroom, Spinach & Salsa Tamales No Dairy Ingredients: Organic Corn Flour Masa, Mushrooms, Spinach, Tomatoes, Onions, Jalapenos, Non-hydrogenated Vegetable Shortning, Salt, Spice…",
+          "firm": "Prima Vera Nueva, Inc.",
+          "states": "U.S. Distribution: CA, NV",
+          "recall_number": "H-0426-2026",
+          "event_id": "98152"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Sliced (1/4\") green onions, refrigerated, packaged in plastic bag. Each case consist 5/6lbs. bag (net wt. 30lbs.). Garden Fresh Foods Inc. Woodinville, WA. Product is distributed …",
+          "firm": "Garden Fresh Foods, Inc.",
+          "states": "Distributed in WA only",
+          "recall_number": "H-0035-2026",
+          "event_id": "97740"
+        }
+      ]
+    },
+    "spinach": {
+      "slug": "spinach",
+      "n": 23,
+      "events": 16,
+      "class_i_events": 7,
+      "class_ii_events": 9,
+      "class_iii_events": 0,
+      "latest": "2026-02-04",
+      "order_key": "2026-02-04",
+      "recent": [
+        {
+          "date": "2026-02-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Mushroom, Spinach & Salsa Tamales with 2 Cheeses Ingredients: Organic Corn Flour Masa, Mushrooms, Spinach, Onions, Jalapenos, Jack and White Cheddar Cheese (pasteurized milk, chee…",
+          "firm": "Prima Vera Nueva, Inc.",
+          "states": "U.S. Distribution: CA, NV",
+          "recall_number": "H-0424-2026",
+          "event_id": "98152"
+        },
+        {
+          "date": "2026-02-04",
+          "classification": "Class I",
+          "status": "Completed",
+          "product": "Live it Up brand Super Greens; Chlorella, Spirulina, Wheatgrass, Kale, Broccoli, Spinach, Barley grass, Moringa, Parsley; Whole food dietary supplement powder; 30 day supply; NET …",
+          "firm": "SUPERFOODS, INC.",
+          "states": "Nationwide, including Puerto Rico, Guam, and Virgin Islands; United Kingdom",
+          "recall_number": "H-0433-2026",
+          "event_id": "98297"
+        },
+        {
+          "date": "2026-02-04",
+          "classification": "Class I",
+          "status": "Completed",
+          "product": "a.) Live it Up brand Super Greens; Natural Wild Berry Flavor; Chlorella, Spirulina, Wheatgrass, Kale, Broccoli, Spinach, Barley grass, Moringa, Parsley; Whole food dietary supplem…",
+          "firm": "SUPERFOODS, INC.",
+          "states": "Nationwide, including Puerto Rico, Guam, and Virgin Islands; United Kingdom",
+          "recall_number": "H-0434-2026",
+          "event_id": "98297"
+        },
+        {
+          "date": "2026-02-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Mushroom, Spinach & Salsa Tamales No Dairy Ingredients: Organic Corn Flour Masa, Mushrooms, Spinach, Tomatoes, Onions, Jalapenos, Non-hydrogenated Vegetable Shortning, Salt, Spice…",
+          "firm": "Prima Vera Nueva, Inc.",
+          "states": "U.S. Distribution: CA, NV",
+          "recall_number": "H-0426-2026",
+          "event_id": "98152"
+        },
+        {
+          "date": "2025-10-29",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Frozen Organic Spinach Net Wt. 10 oz (283.5g) poly bags packaged under the following brands: 1. Sno Pac Frozen Vegetables, UPC 0 24284-96910 5. Keep Frozen. Packed and Distributed…",
+          "firm": "SNO PAC FOODS INC",
+          "states": "CA, GA, IA, IN, MD, MI, MN, NM, OR, PA, TX, WI",
+          "recall_number": "H-0109-2026",
+          "event_id": "97758"
+        }
+      ]
+    },
+    "butternut-squash": {
+      "slug": "butternut-squash",
+      "n": 10,
+      "events": 8,
+      "class_i_events": 2,
+      "class_ii_events": 6,
+      "class_iii_events": 0,
+      "latest": "2026-02-04",
+      "order_key": "2023-10-04",
+      "recent": [
+        {
+          "date": "2026-02-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Butternut Squash Tamales with Roasted Green Chiles, NO DAIRY Ingredients: Organic Corn Flour Masa, Organic Butternut Squash, Roasted Green Chiles, Non-GMO Corn, Non-hydrogenated V…",
+          "firm": "Prima Vera Nueva, Inc.",
+          "states": "U.S. Distribution: CA, NV",
+          "recall_number": "H-0430-2026",
+          "event_id": "98152"
+        },
+        {
+          "date": "2026-02-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Butternut Squash Tamales With Roasted Green Chiles, Corn & Jack Cheese Ingredients: Organic Corn Flour Masa, Organic Butternut Squash, Organic Roasted Green Chiles, Non-GMO Corn, …",
+          "firm": "Prima Vera Nueva, Inc.",
+          "states": "U.S. Distribution: CA, NV",
+          "recall_number": "H-0423-2026",
+          "event_id": "98152"
+        },
+        {
+          "date": "2023-10-25",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Sunnyside Farms, diced Organic Butternut Squash , 32-oz. , plastic tray, 6 trays per case, Perishable Keep Refrigerated .",
+          "firm": "Safeway Fresh Foods LLC",
+          "states": "The product was distributed to the following states, Washington DC, Maryland, Pennsylvania, and Virgnia",
+          "recall_number": "F-0295-2024",
+          "event_id": "93119"
+        },
+        {
+          "date": "2023-10-04",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Freshway Foods - Diced Butternut Squash, packaged in 4 pound plastic bags - 4 bags per case.",
+          "firm": "Fresh Unlimited Inc",
+          "states": "US Foods Distribution locations: IN, NC, NY, SC, WV",
+          "recall_number": "F-1605-2023",
+          "event_id": "93011"
+        },
+        {
+          "date": "2023-03-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Fresh Creative Cuisine White Label - Butternut Squash Lasagna. Single Serving, Keep refrigerated",
+          "firm": "FRESH IDEATION FOOD GROUP, LLC dba Fresh Creative Cuisine",
+          "states": "The recalled product was distributed to the following states: MD, PA, DE, NY, DC, NJ, NC, CT, SC, VA, MA .",
+          "recall_number": "F-0057-2024",
+          "event_id": "91653"
+        }
+      ]
+    },
+    "parsley": {
+      "slug": "parsley",
+      "n": 11,
+      "events": 7,
+      "class_i_events": 5,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2026-02-04",
+      "order_key": "2026-02-04",
+      "recent": [
+        {
+          "date": "2026-02-04",
+          "classification": "Class I",
+          "status": "Completed",
+          "product": "Live it Up brand Super Greens; Chlorella, Spirulina, Wheatgrass, Kale, Broccoli, Spinach, Barley grass, Moringa, Parsley; Whole food dietary supplement powder; 30 day supply; NET …",
+          "firm": "SUPERFOODS, INC.",
+          "states": "Nationwide, including Puerto Rico, Guam, and Virgin Islands; United Kingdom",
+          "recall_number": "H-0433-2026",
+          "event_id": "98297"
+        },
+        {
+          "date": "2026-02-04",
+          "classification": "Class I",
+          "status": "Completed",
+          "product": "a.) Live it Up brand Super Greens; Natural Wild Berry Flavor; Chlorella, Spirulina, Wheatgrass, Kale, Broccoli, Spinach, Barley grass, Moringa, Parsley; Whole food dietary supplem…",
+          "firm": "SUPERFOODS, INC.",
+          "states": "Nationwide, including Puerto Rico, Guam, and Virgin Islands; United Kingdom",
+          "recall_number": "H-0434-2026",
+          "event_id": "98297"
+        },
+        {
+          "date": "2025-11-19",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Carton Label: PACIFIC FRESH VEGETABLES PACIFIC INTERNATIONAL MARKETING SALINAS, CA 93912 Carton Sticker Label: Conv Italian Parsley 60 Ct Ctn Pacific Product of USA Distributed By…",
+          "firm": "Pacific International Marketing",
+          "states": "AZ, CA, FL, GA, MN, MI, NV, OH",
+          "recall_number": "H-0174-2026",
+          "event_id": "97897"
+        },
+        {
+          "date": "2025-11-19",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Carton Label: PACIFIC STRAIGHT FROM THE FIELDS FRESH HERBS 4/24 BUNCH ITALIAN PARSLEY BAGS PRODUCE OF U.S.A. PACIFIC INTERNATIONAL MARKETING SALINAS, CA 93912 Carton Sticker Label…",
+          "firm": "Pacific International Marketing",
+          "states": "AZ, CA, FL, GA, MN, MI, NV, OH",
+          "recall_number": "H-0177-2026",
+          "event_id": "97897"
+        },
+        {
+          "date": "2025-11-19",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Carton Label: PACIFIC FRESH VEGETABLES PACIFIC INTERNATIONAL MARKETING SALINAS, CA 93912 PRODUCE OF U.S.A. Sticker Label: Conv Italian Parsley 30 Ct Iceless Pacific Product of USA…",
+          "firm": "Pacific International Marketing",
+          "states": "AZ, CA, FL, GA, MN, MI, NV, OH",
+          "recall_number": "H-0176-2026",
+          "event_id": "97897"
+        }
+      ]
+    },
+    "broccoli": {
+      "slug": "broccoli",
+      "n": 11,
+      "events": 5,
+      "class_i_events": 3,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2026-02-04",
+      "order_key": "2026-02-04",
+      "recent": [
+        {
+          "date": "2026-02-04",
+          "classification": "Class I",
+          "status": "Completed",
+          "product": "Live it Up brand Super Greens; Chlorella, Spirulina, Wheatgrass, Kale, Broccoli, Spinach, Barley grass, Moringa, Parsley; Whole food dietary supplement powder; 30 day supply; NET …",
+          "firm": "SUPERFOODS, INC.",
+          "states": "Nationwide, including Puerto Rico, Guam, and Virgin Islands; United Kingdom",
+          "recall_number": "H-0433-2026",
+          "event_id": "98297"
+        },
+        {
+          "date": "2026-02-04",
+          "classification": "Class I",
+          "status": "Completed",
+          "product": "a.) Live it Up brand Super Greens; Natural Wild Berry Flavor; Chlorella, Spirulina, Wheatgrass, Kale, Broccoli, Spinach, Barley grass, Moringa, Parsley; Whole food dietary supplem…",
+          "firm": "SUPERFOODS, INC.",
+          "states": "Nationwide, including Puerto Rico, Guam, and Virgin Islands; United Kingdom",
+          "recall_number": "H-0434-2026",
+          "event_id": "98297"
+        },
+        {
+          "date": "2025-07-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1. BROCCOLI OG2 BROCCOLI BUNCH 2. WLD HRVST OG2 BROCCOLI WRPP 3. USA OG2 BROCCLI CRWNS",
+          "firm": "UNFI General Corporate",
+          "states": "NJ, NY, MD, DC, PA",
+          "recall_number": "H-0232-2025",
+          "event_id": "97051"
+        },
+        {
+          "date": "2025-02-05",
+          "classification": "Class I",
+          "status": "Ongoing",
+          "product": "Simple Truth Organic, BROCCOLI FLORETS, STEAM IN BAG, 12oz, BEST IF USED BY NOV 08 2024, PRODUCT OF MEXICO",
+          "firm": "Braga Fresh Foods LLC",
+          "states": "Product distributed to two (2) distribution centers in Texas (Dallas, Houston).",
+          "recall_number": "F-0427-2025",
+          "event_id": "95989"
+        },
+        {
+          "date": "2024-12-18",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Organic Vegetable Medley; Broccoli, Carrots & Cauliflower. Washed and ready to prepare; Perishable keep refrigerated. NET WT 12 OZ (340g) (6 pack/case) DISTRIBUTED BY: Walmart Inc…",
+          "firm": "4 Earth Farms formerly Mcl Fresh Inc",
+          "states": "The firm distributed to seven (7) direct account consignees. Five(5) of those were distribution centers, two (2) were d…",
+          "recall_number": "F-0276-2025",
+          "event_id": "95803"
+        }
+      ]
+    },
+    "kale": {
+      "slug": "kale",
+      "n": 15,
+      "events": 12,
+      "class_i_events": 7,
+      "class_ii_events": 5,
+      "class_iii_events": 0,
+      "latest": "2026-02-04",
+      "order_key": "2026-02-04",
+      "recent": [
+        {
+          "date": "2026-02-04",
+          "classification": "Class I",
+          "status": "Completed",
+          "product": "Live it Up brand Super Greens; Chlorella, Spirulina, Wheatgrass, Kale, Broccoli, Spinach, Barley grass, Moringa, Parsley; Whole food dietary supplement powder; 30 day supply; NET …",
+          "firm": "SUPERFOODS, INC.",
+          "states": "Nationwide, including Puerto Rico, Guam, and Virgin Islands; United Kingdom",
+          "recall_number": "H-0433-2026",
+          "event_id": "98297"
+        },
+        {
+          "date": "2026-02-04",
+          "classification": "Class I",
+          "status": "Completed",
+          "product": "a.) Live it Up brand Super Greens; Natural Wild Berry Flavor; Chlorella, Spirulina, Wheatgrass, Kale, Broccoli, Spinach, Barley grass, Moringa, Parsley; Whole food dietary supplem…",
+          "firm": "SUPERFOODS, INC.",
+          "states": "Nationwide, including Puerto Rico, Guam, and Virgin Islands; United Kingdom",
+          "recall_number": "H-0434-2026",
+          "event_id": "98297"
+        },
+        {
+          "date": "2026-01-21",
+          "classification": "Class I",
+          "status": "Ongoing",
+          "product": "Brussel Sprouts & Kale Slaw",
+          "firm": "WFM Purchasing, LP",
+          "states": "New York, New Jersey and Virginia",
+          "recall_number": "H-0403-2026",
+          "event_id": "98249"
+        },
+        {
+          "date": "2025-12-24",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Food to Live brand ORGANIC SUPERGREENS POWDER MIX, packaged heat-sealed, resealable stand-up pouches in 8 oz, 1 lb., 1.5 lb., 3 lb., 6 lb., 12 lb.; Ingredients: ORGANIC KALE; ORGA…",
+          "firm": "Lexunder Inc",
+          "states": "AK, AL, AR, AZ, CA, CO, CT, DE, FL, GA, GU, HI, ID, IL, IN, KS, MA, MD, ME, MI, MN, MO, MT, NC, NJ, NM, NV, NY, OH, OR,…",
+          "recall_number": "H-0310-2026",
+          "event_id": "97966"
+        },
+        {
+          "date": "2025-07-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1. USA KALE BUNCH CTN 2. USA OG2 KALE 3. USA OG1 LACINATO KALE",
+          "firm": "UNFI General Corporate",
+          "states": "NJ, NY, MD, DC, PA",
+          "recall_number": "H-0229-2025",
+          "event_id": "97051"
+        }
+      ]
+    },
+    "almond": {
+      "slug": "almond",
+      "n": 18,
+      "events": 13,
+      "class_i_events": 5,
+      "class_ii_events": 6,
+      "class_iii_events": 2,
+      "latest": "2026-01-21",
+      "order_key": "2025-06-11",
+      "recent": [
+        {
+          "date": "2026-01-21",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "Frosted Almond; 20 lbs (bulk); No UPC# Bulk Product Code: 23208",
+          "firm": "Sanders Candy Factory Inc",
+          "states": "Product was distributed to one customer. Problem was identified by customer, and no affected product was distributed to…",
+          "recall_number": "H-0394-2026",
+          "event_id": "98143"
+        },
+        {
+          "date": "2025-10-08",
+          "classification": "Class III",
+          "status": "Ongoing",
+          "product": "Toasted Almond & Cherry Biscotti",
+          "firm": "Gina Marie Bakery LLC",
+          "states": "Firm notified FDA of recall initiated by state of CT on 09/10/25. A copy of CT press release was requested for posting …",
+          "recall_number": "H-0007-2026",
+          "event_id": "97587"
+        },
+        {
+          "date": "2025-06-11",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Nuts, Almonds DR Diced, LB. Diced Almonds. Bulk (Plastic bag inside corrugated box) Net Wt: 18.5lbs. UPC: 660-1300203. Firm Name & Address Listed on Label: RMCF 265 Turner Dr, Dur…",
+          "firm": "Rocky Mountain Chocolate Factory, Inc.",
+          "states": "Will be provided when available.",
+          "recall_number": "F-0927-2025",
+          "event_id": "96786"
+        },
+        {
+          "date": "2025-02-26",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Wegmans, Organic Almonds Dry Roasted Salted, 12oz clear bag, 12 bags per case.",
+          "firm": "United Natural Trading Inc. dba Woodstock Farms",
+          "states": "The recalled product was distributed to the following states : PA, VA, NY,",
+          "recall_number": "F-0571-2025",
+          "event_id": "96228"
+        },
+        {
+          "date": "2024-08-14",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Bazzini Raw Almond Butter Net Wt. 16 oz (454g) UPC Code 7506284009. Packaged in clear plastic jars with plastic white lids. 12 jars per case",
+          "firm": "Bazzini LLC",
+          "states": "Distributed to consignee in NY",
+          "recall_number": "F-1645-2024",
+          "event_id": "94972"
+        }
+      ]
+    },
+    "pecorino": {
+      "slug": "pecorino",
+      "n": 2,
+      "events": 1,
+      "class_i_events": 1,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2026-01-14",
+      "order_key": "2026-01-14",
+      "recent": [
+        {
+          "date": "2026-01-14",
+          "classification": "Class I",
+          "status": "Completed",
+          "product": "Boar's Head Pecorino Romano Grated, 5-pound plastic bag (unit)",
+          "firm": "Ambriola Co., Inc., The",
+          "states": "The recalled product was distributed to the following states: AZ, CA, CO, CT, DE, FL, GA, IL, IN, MA, ME, NJ, NY, OH, O…",
+          "recall_number": "H-0372-2026",
+          "event_id": "98053"
+        },
+        {
+          "date": "2026-01-14",
+          "classification": "Class I",
+          "status": "Completed",
+          "product": "Boar's Head Grated Pecorino Romano, 6 oz Plastic Cup & Lid, 12 units per case",
+          "firm": "Ambriola Co., Inc., The",
+          "states": "The recalled product was distributed to the following states: AZ, CA, CO, CT, DE, FL, GA, IL, IN, MA, ME, NJ, NY, OH, O…",
+          "recall_number": "H-0370-2026",
+          "event_id": "98053"
+        }
+      ]
+    },
+    "pistachio": {
+      "slug": "pistachio",
+      "n": 3,
+      "events": 3,
+      "class_i_events": 1,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2026-01-14",
+      "order_key": "2026-01-14",
+      "recent": [
+        {
+          "date": "2026-01-14",
+          "classification": "Class I",
+          "status": "Ongoing",
+          "product": "Sam Dry Fruits & Nuts PISTACHIO Meats Whole LOT #: PK00459 NET WEIGHT: 30 LBS PACK DATE: AUGUST/2025 EXPIRATION DATE: AUGUST/2027",
+          "firm": "Sam Dry Fruits and Nuts Enterprises, Inc",
+          "states": "U.S. Distribution: None Foreign Distribution: Canada",
+          "recall_number": "H-0357-2026",
+          "event_id": "98120"
+        },
+        {
+          "date": "2023-08-09",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Pistachios Halves & Pieces packaged in 5 pound bags; Pistachios Roasted & Salted packaged in 5 pound bags; Pistachios Raw packaged in 5 pound bags",
+          "firm": "Houston Pecan Company, Inc",
+          "states": "Texas and internet sales",
+          "recall_number": "F-1317-2023",
+          "event_id": "92497"
+        },
+        {
+          "date": "2023-05-17",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Pistachio",
+          "firm": "Windy Hill Chocolate LLC",
+          "states": "Domestic consignee only.",
+          "recall_number": "F-0856-2023",
+          "event_id": "92134"
+        }
+      ]
+    },
+    "ginger": {
+      "slug": "ginger",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 0,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2025-12-31",
+      "order_key": "2025-12-31",
+      "recent": [
+        {
+          "date": "2025-12-31",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "Organic Ginger Root Herbal Supplement, Natural anti-inflammatory properties, supports gut, increases circulation, 50 capsules/560 mg, packaged in a plastic bag",
+          "firm": "A New Life Herbs, LLC",
+          "states": "AL, AZ, CA, GA, IL, IN, MN, MO, MS, NC, NY, TN",
+          "recall_number": "H-0346-2026",
+          "event_id": "98037"
+        }
+      ]
+    },
+    "okra": {
+      "slug": "okra",
+      "n": 2,
+      "events": 2,
+      "class_i_events": 1,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2025-12-17",
+      "order_key": "2025-12-17",
+      "recent": [
+        {
+          "date": "2025-12-17",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Deep-brand Select Bhindi Cut Okra KEEP FROZEN a) Net Wt. 12 oz (340 g); b) Net Wt. 1 LB 8 oz. (24 oz.) (680 g); c) Net Wt. 2 LB (907 g)",
+          "firm": "CHETAK NEW YORK LLC",
+          "states": "United States",
+          "recall_number": "H-0270-2026",
+          "event_id": "97631"
+        },
+        {
+          "date": "2023-12-20",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "TATER KEG BACON CHEDDAR CHIVE; OKRA CUT HEAVILY BREADED IQF; POTATO TATER TOTS; FRENCH FRIES SC 3/8 IN; JALAPENO STUFFED W/CHDR CHS; CORN CUT; BEAN GREEN REGULAR CUT; BEAN GREEN S…",
+          "firm": "Ben E Keith Foods - Fort Worth",
+          "states": "All products were shipped via truck to food services.",
+          "recall_number": "F-0575-2024",
+          "event_id": "93314"
+        }
+      ]
+    },
+    "cassava": {
+      "slug": "cassava",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 1,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2025-12-17",
+      "order_key": "2025-12-17",
+      "recent": [
+        {
+          "date": "2025-12-17",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Deep-brand PREMIUM Select Tapioca (Cassava) Diced KEEP FROZEN Net Wt. 12 oz. (340 g)",
+          "firm": "CHETAK NEW YORK LLC",
+          "states": "United States",
+          "recall_number": "H-0292-2026",
+          "event_id": "97631"
+        }
+      ]
+    },
+    "yam": {
+      "slug": "yam",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 1,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2025-12-17",
+      "order_key": "2025-12-17",
+      "recent": [
+        {
+          "date": "2025-12-17",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Deep-brand Premium Select Ratalu Sliced Violet Indian Yams KEEP FROZEN Net Wt. 12 oz. (340 g)",
+          "firm": "CHETAK NEW YORK LLC",
+          "states": "United States",
+          "recall_number": "H-0259-2026",
+          "event_id": "97631"
+        }
+      ]
+    },
+    "carrot": {
+      "slug": "carrot",
+      "n": 43,
+      "events": 15,
+      "class_i_events": 5,
+      "class_ii_events": 9,
+      "class_iii_events": 1,
+      "latest": "2025-12-17",
+      "order_key": "2025-12-17",
+      "recent": [
+        {
+          "date": "2025-12-17",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Deep-brand Select Carrots Sliced Net Wt. 12 oz. (340 g) KEEP FROZEN",
+          "firm": "CHETAK NEW YORK LLC",
+          "states": "United States",
+          "recall_number": "H-0266-2026",
+          "event_id": "97631"
+        },
+        {
+          "date": "2025-01-08",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "--- Organic Baby Carrots --- Organic Baby Carrots 25 Grimmway Farms; Organic Baby Carrots 25 Lbs. Grimmway Farms --- Brand --- Grimmway Farms",
+          "firm": "Grimmway Enterprises, Inc. dba Grimmway Farms",
+          "states": "Distribution Centers located in U.S. States: AL, AR, AZ, CA, CO, CT, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, MI…",
+          "recall_number": "F-0359-2025",
+          "event_id": "95787"
+        },
+        {
+          "date": "2025-01-08",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "a.) Gracie's Kitchen brand Diced Carrots; UPC: 85316-10019; 10 oz plastic container",
+          "firm": "Gracie's Kitchens Inc.",
+          "states": "CT and NY",
+          "recall_number": "F-0354-2025",
+          "event_id": "95851"
+        },
+        {
+          "date": "2025-01-08",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "--- Organic Whole Carrots --- Organic Carrot 125/6 Cal-Organic Farms; Organic Carrot 150/5 Bunny Luv; Organic Carrots 10/5 Lb O-Organic; Organic Carrots 10/5 Simple Truth; Organic…",
+          "firm": "Grimmway Enterprises, Inc. dba Grimmway Farms",
+          "states": "Distribution Centers located in U.S. States: AL, AR, AZ, CA, CO, CT, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, MI…",
+          "recall_number": "F-0360-2025",
+          "event_id": "95787"
+        },
+        {
+          "date": "2025-01-08",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "--- Organic Whole Carrots --- Organic Clip Carrots 50 Lbs Cal-Organic Farm; Organic Clip Carrots 50 Lbs Cal-Organic RPC --- Brand --- Cal-Organic",
+          "firm": "Grimmway Enterprises, Inc. dba Grimmway Farms",
+          "states": "Distribution Centers located in U.S. States: AL, AR, AZ, CA, CO, CT, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, MI…",
+          "recall_number": "F-0361-2025",
+          "event_id": "95787"
+        }
+      ]
+    },
+    "mango": {
+      "slug": "mango",
+      "n": 24,
+      "events": 12,
+      "class_i_events": 5,
+      "class_ii_events": 7,
+      "class_iii_events": 0,
+      "latest": "2025-12-17",
+      "order_key": "2025-12-17",
+      "recent": [
+        {
+          "date": "2025-12-17",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Deep-brand PREMIUM Select Diced Green Mango KEEP FROZEN Net Wt. 12 oz. (340 g)",
+          "firm": "CHETAK NEW YORK LLC",
+          "states": "United States",
+          "recall_number": "H-0298-2026",
+          "event_id": "97631"
+        },
+        {
+          "date": "2025-09-03",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Organic Mango Freeze Dried Powder, Bulk, 15-kilogram boxes (2 packs of 7.5 kilograms in a carton box), 7.5kg packaged in multi-wall kraft paper boxes with inner food-grade polyeth…",
+          "firm": "NEW ACAI AMAZONAS LLC",
+          "states": "Product distributed to IA",
+          "recall_number": "H-0538-2025",
+          "event_id": "97465"
+        },
+        {
+          "date": "2025-05-21",
+          "classification": "Class II",
+          "status": "Completed",
+          "product": "National brand Kasundi PEELED MANGO PICKLE IN OIL; Net Wt.: 1 Kg (35.27 oz)/ 2.20lb; Ingredients: Kasundi (Peeled Mango), Canola Oil, Cabbage, Salt, Mixed Spices, Vinegar, Sodium …",
+          "firm": "Advance Food International Inc.",
+          "states": "NY, NJ, CT, MA, PA, MD",
+          "recall_number": "F-0777-2025",
+          "event_id": "96725"
+        },
+        {
+          "date": "2024-06-05",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1lb and 8oz bags include Apricots, Whole Dates, golden Raisins, Mangos, Currants, Blueberries, Cranberries, Prunes, Raw Sunflower Seeds, Raw Pumpkin Seeds, Pecan Medium Pieces, Bl…",
+          "firm": "Texas Pecan Co",
+          "states": "Product is sold online, in the firm's store and through a wholesaler in Texas.",
+          "recall_number": "F-1277-2024",
+          "event_id": "94469"
+        },
+        {
+          "date": "2024-06-05",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1lb and 8oz bags include Apricots, Whole Dates, golden Raisins, Mangos, Currants, Blueberries, Cranberries, Prunes, Raw Sunflower Seeds, Raw Pumpkin Seeds, Pecan Medium Pieces, Bl…",
+          "firm": "Texas Pecan Co",
+          "states": "Product is sold online, in the firm's store and through a wholesaler in Texas.",
+          "recall_number": "F-1278-2024",
+          "event_id": "94469"
+        }
+      ]
+    },
+    "basil": {
+      "slug": "basil",
+      "n": 10,
+      "events": 10,
+      "class_i_events": 3,
+      "class_ii_events": 7,
+      "class_iii_events": 0,
+      "latest": "2025-12-10",
+      "order_key": "2024-05-22",
+      "recent": [
+        {
+          "date": "2025-12-10",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Lotsa Pasta International Food Shop Fresh Basil Infused Olive Oil, Net Wt. 12 oz. (375ml), packaged in a glass bottle, UPC 736211448316, packed 12 bottles per case",
+          "firm": "Hale inc",
+          "states": "KY",
+          "recall_number": "H-0241-2026",
+          "event_id": "97901"
+        },
+        {
+          "date": "2025-08-20",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "FG60005 Blueberry Basil Lemonade",
+          "firm": "AND GO CONCEPTS DBA SALAD AND GO",
+          "states": "Arizona, Oklahoma, Nevada, Texas",
+          "recall_number": "H-0492-2025",
+          "event_id": "97177"
+        },
+        {
+          "date": "2024-05-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Infinite Herbs Organic Basil packed in a clear 2.5 oz, 2.0 oz, and 4 oz PET clamshell container.",
+          "firm": "Infinite Herbs, LLC",
+          "states": "Florida, Illinois, Missouri, Virginia, Connecticut, Pennsylvania, and Massachusetts.",
+          "recall_number": "F-1246-2024",
+          "event_id": "94459"
+        },
+        {
+          "date": "2022-11-09",
+          "classification": "Class II",
+          "status": "Completed",
+          "product": "Bella Cucina Artful Food Fresh Basil Pesto Net Wt. 3 oz (84.5g) bag, UPC 6 19193 00211 3 Manufactured by Bella Cucina Artful Food Atlanta, GA 30310",
+          "firm": "Bella Brands, LLC DBA Bella Cucina Artful Food",
+          "states": "Product was shipped to the following states: AK, AL, AR, AZ, CA, CO, CT, DE, FL, GA, IA, ID, IL, IN, KY, LA, MA, MD, ME…",
+          "recall_number": "F-0098-2023",
+          "event_id": "90617"
+        },
+        {
+          "date": "2021-08-04",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Old Souls Farm Basil 1 lb, 1 oz, 10 lbs,25 lbs, 3 -1 lbs, 4 oz, and Living clamshells - 1oz 18 per case, 5oz 6 per case bulk bags - 1lb is 3 per case, 10lbs 1 per case, 25lbs 1 pe…",
+          "firm": "Old Souls Farms LLC",
+          "states": "Distributed to Ohio and Kentucky",
+          "recall_number": "F-0862-2021",
+          "event_id": "88347"
+        }
+      ]
+    },
+    "parmesan": {
+      "slug": "parmesan",
+      "n": 2,
+      "events": 2,
+      "class_i_events": 1,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2025-12-10",
+      "order_key": "2024-03-06",
+      "recent": [
+        {
+          "date": "2025-12-10",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Good & Gather Mozzarella & Parmesan shredded cheese blend, Fine Cut, 8 oz., individually packaged in a plastic bag, UPC 8523903856, 12/case",
+          "firm": "Great Lakes Cheese Co Inc",
+          "states": "AL, AR, AZ, CA, CO, FL, GA, ID, IL, IN, KS, KY, LA, MN, MO, MS, NC, NE, NM, NV, NY, OK, OR, PA, SC, TN, TX, UT, VA, WA,…",
+          "recall_number": "H-0221-2026",
+          "event_id": "97827"
+        },
+        {
+          "date": "2024-03-06",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Parmesan cheese packaged in the following configurations: 1. Sargento Fresh Grated Parmesan Cheese Pack Size 500/0.5 oz. Material #10000278, UPC 46100348659. 2. Sargento Part #101…",
+          "firm": "Sargento Foods, Inc.",
+          "states": "AZ, CA, FL, GA, IL, IN, MD, NC, NJ, NV, OH, RI, TX, WA, WI",
+          "recall_number": "F-1010-2024",
+          "event_id": "93950"
+        }
+      ]
+    },
+    "blue-cheese": {
+      "slug": "blue-cheese",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 1,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2025-11-26",
+      "order_key": "2025-11-26",
+      "recent": [
+        {
+          "date": "2025-11-26",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Twin Sisters Creamery Whatcom Blue cheese, 2.5lb. round cheese wheel, made with raw milk and aged at minimum of 60 days. Ingredients: cultured raw cow's milk, salt, enzymes, penic…",
+          "firm": "Twin Sisters Creamery, LLC",
+          "states": "Distributed in OR and WA",
+          "recall_number": "H-0193-2026",
+          "event_id": "97880"
+        }
+      ]
+    },
+    "eggs": {
+      "slug": "eggs",
+      "n": 13,
+      "events": 7,
+      "class_i_events": 6,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2025-11-05",
+      "order_key": "2025-11-05",
+      "recent": [
+        {
+          "date": "2025-11-05",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "EchoLakeFoods MF 3067 CNFREE Cage Free Precooked IAF Scrambled Eggs Net Wt. 28 lbs. Bulk. Keep Frozen. Manufactured by: Echo Lake Foods, Inc., 2319 Raymond Ave. Franksville, WI 53…",
+          "firm": "Echo Lake Foods, Inc.",
+          "states": "CA",
+          "recall_number": "H-0168-2026",
+          "event_id": "97851"
+        },
+        {
+          "date": "2025-07-09",
+          "classification": "Class I",
+          "status": "Ongoing",
+          "product": "--- Shell Eggs; Brown; Various sizes - medium, large, and jumbo; Various pack sizes - 5, 12, 18, and Loose ---- Clover Organic Large Brown 12 eggs --- First Street Cage Free Large…",
+          "firm": "August Egg Company",
+          "states": "AZ, CA, IL, IN, NE, NM, NV, WA, WY",
+          "recall_number": "H-0210-2025",
+          "event_id": "97040"
+        },
+        {
+          "date": "2025-01-01",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Kirkland Signature ORGANIC EGGS PASTURE-RAISED 24 EGGS, GRADE A LARGE, NET WEIGHT 48OZ (3 LB) 1.36 kg, UPC 0 96619 10680 6, DISTRIBUTED BY: COSTCO WHOLESALE CORPORATION 730 LAKE D…",
+          "firm": "Handsome Brook Farms, LLC",
+          "states": "AL, GA, NC, SC, TN",
+          "recall_number": "F-0314-2025",
+          "event_id": "95844"
+        },
+        {
+          "date": "2024-10-09",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Grade A Brown Chicken Eggs, in shell, Bulk 15 dozen. For Foodservice. Keep Refrigerated. Sold with the following brands: 1. Milo's Poultry Farms, N 3873 Valley Road, Bonduel, WI 5…",
+          "firm": "Milo's Poultry Farms, LLC",
+          "states": "WI Expanded: IL, MI, WI",
+          "recall_number": "F-1837-2024",
+          "event_id": "95203"
+        },
+        {
+          "date": "2024-06-26",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "New Seasons Market Strawberry Rhubarb Bakewell Tart, packaged in a plastic clamshell with scale label. Contains Milk, Wheat, Eggs.",
+          "firm": "New Seasons Market LLC",
+          "states": "Distributed in Oregon and Washington.",
+          "recall_number": "F-1388-2024",
+          "event_id": "94753"
+        }
+      ]
+    },
+    "grapes": {
+      "slug": "grapes",
+      "n": 18,
+      "events": 7,
+      "class_i_events": 5,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2025-10-22",
+      "order_key": "2025-10-22",
+      "recent": [
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cut Fresh Fruit Mix. Contains: Cantaloupe, Honeydew, Pineapple, and Red Grapes. Keep Refrigerated. Packed under the following brands and sizes: 1. Fruit Mix CHPG (MCT) 1/5 lb. 2. …",
+          "firm": "WHOLESALE PRODUCE SUPPLY LLC DBA",
+          "states": "IA, IL, ND, NE, WI",
+          "recall_number": "H-0068-2026",
+          "event_id": "97709"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class II",
+          "status": "Completed",
+          "product": "Fruit Cocktail IN 100% JUICE WITH ADDED INGREDIENTS; NET WT 15 OZ (425 g); Ingredients: Diced Peaches, Diced Pears, Water, Grapes, Peach Pulp and Juice, Pineapple Sectors, Pear Ju…",
+          "firm": "Pacific Coast Producers",
+          "states": "U.S. distribution: AL, AR, AZ, CA, FL, GA, IL, IN, KY, LA, ME, MO, MS, NE, NM, NV, NY, OH, OK, PA, SC, TX, UT, VA, WA, …",
+          "recall_number": "H-0038-2026",
+          "event_id": "97563"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cut Fresh Fruit Mix. Contains: Cantaloupe, Honeydew, and Red Grapes. Keep Refrigerated. Packed under the following brands and sizes: 1. Fruit Mix \"HC\" 6/6oz. UPC 7 90629-11821 6. …",
+          "firm": "WHOLESALE PRODUCE SUPPLY LLC DBA",
+          "states": "IA, IL, ND, NE, WI",
+          "recall_number": "H-0067-2026",
+          "event_id": "97709"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cut Fresh Luau Blend Fruit Mix \"F&F\". 4/10 oz. Fresh & Finest. Contains: Cantaloupe, Honeydew, Pineapple, Red Grapes, Strawberry, Blueberry. Keep Refrigerated. UPC 0 70253-00572 5…",
+          "firm": "WHOLESALE PRODUCE SUPPLY LLC DBA",
+          "states": "IA, IL, ND, NE, WI",
+          "recall_number": "H-0063-2026",
+          "event_id": "97709"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cut Fresh Fruit Mix. Contains: Cantaloupe, Honeydew, Watermelon and Red Grapes. Keep Refrigerated. Packed under the following brands and sizes: 1. Fruit Mix CHWG (MCT) 1/5 lb. UPC…",
+          "firm": "WHOLESALE PRODUCE SUPPLY LLC DBA",
+          "states": "IA, IL, ND, NE, WI",
+          "recall_number": "H-0066-2026",
+          "event_id": "97709"
+        }
+      ]
+    },
+    "sweet-potato": {
+      "slug": "sweet-potato",
+      "n": 2,
+      "events": 2,
+      "class_i_events": 0,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2025-10-22",
+      "order_key": "2025-10-22",
+      "recent": [
+        {
+          "date": "2025-10-22",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "6+ Months SPROUT ORGANICS Made With Organic Sweet Potato, Apple & Spinach NET WT. 3.5 OZ (99g) INGREDIENTS: ORGANIC SWEET POTATOES, ORGANIC APPLES, ORGANIC SPINACH, WATER, ORGANIC…",
+          "firm": "Sprout Organics Inc.",
+          "states": "U.S. States: AZ, CA, CO, CT, FL, GA, HI, ID, IN, KY, LA, MA, MD, MI, MO, MS, MT, NC, NE, NH, NJ, NM, NV, NY, OH, PA, RI…",
+          "recall_number": "H-0134-2026",
+          "event_id": "97622"
+        },
+        {
+          "date": "2022-09-28",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Riced Sweet Potato & Cauliflower. Keep Refrigerated. Item 80998. Net Wt. 12 oz. Packed under brands: Crazy Fresh, quick & easy, and grocery store branded.",
+          "firm": "Russ Davis Wholesale, LLC",
+          "states": "IA, MI, MN, ND, SD, WI",
+          "recall_number": "F-1769-2022",
+          "event_id": "90694"
+        }
+      ]
+    },
+    "salmon-skin-on-fillet": {
+      "slug": "salmon-skin-on-fillet",
+      "n": 15,
+      "events": 8,
+      "class_i_events": 6,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2025-10-22",
+      "order_key": "2025-10-22",
+      "recent": [
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Haifa COLD SMOKED SALMON 8 OZ.",
+          "firm": "D & M Smoked Fish, Inc.",
+          "states": "NY, NJ, PA, WA, CA, IL, FL",
+          "recall_number": "H-0032-2026",
+          "event_id": "97633"
+        },
+        {
+          "date": "2023-04-19",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Biltmore Smoked Sockeye Salmon - 4 oz",
+          "firm": "Seven Seas International USA LLC",
+          "states": "Domestic distribution only.",
+          "recall_number": "F-0708-2023",
+          "event_id": "91962"
+        },
+        {
+          "date": "2021-12-15",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Aqua Nova - Sliced Nova Lox, Oregon Cold Smoked Salmon, net wt. 3 oz. UPC 008603001608. Aqua Nova -Sliced Nova Lox, Oregon Cold Smoked Salmon, net wt. 1 lb. UPC 008603001400. Aqua…",
+          "firm": "Oregon Lox Company",
+          "states": "distributed in AK, CA, OR, and WA.",
+          "recall_number": "F-0243-2022",
+          "event_id": "89038"
+        },
+        {
+          "date": "2021-09-29",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Banquet Cut European Style Cold Smoked Salmon, Item Number 2-92845, brand Gerard and Dominique Seafoods, packaged in pouch, net wt. per pouch is random, frozen, UPC of pouch: 2 92…",
+          "firm": "Seabear Company",
+          "states": "distributed in AZ, CA, and GA.",
+          "recall_number": "F-1009-2021",
+          "event_id": "88655"
+        },
+        {
+          "date": "2021-09-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Loki Fish Wild Keta Salmon Lox, packaged in a 4 oz. plastic pouch, sliced on a coated board, 24 packages to a case. UPC 92103 00111. The label is read in parts: LOKI FISH *** WILD…",
+          "firm": "Loki Fish Company - Office",
+          "states": "distributed in Oregon and Washington.",
+          "recall_number": "F-1005-2021",
+          "event_id": "88554"
+        }
+      ]
+    },
+    "green-onion": {
+      "slug": "green-onion",
+      "n": 4,
+      "events": 4,
+      "class_i_events": 1,
+      "class_ii_events": 3,
+      "class_iii_events": 0,
+      "latest": "2025-10-22",
+      "order_key": "2025-10-22",
+      "recent": [
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Sliced (1/4\") green onions, refrigerated, packaged in plastic bag. Each case consist 5/6lbs. bag (net wt. 30lbs.). Garden Fresh Foods Inc. Woodinville, WA. Product is distributed …",
+          "firm": "Garden Fresh Foods, Inc.",
+          "states": "Distributed in WA only",
+          "recall_number": "H-0035-2026",
+          "event_id": "97740"
+        },
+        {
+          "date": "2025-07-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1. ORGANIC OG2 GREEN ONIONS",
+          "firm": "UNFI General Corporate",
+          "states": "NJ, NY, MD, DC, PA",
+          "recall_number": "H-0244-2025",
+          "event_id": "97051"
+        },
+        {
+          "date": "2021-11-17",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "E-Z Spuds Inc. fresh cut green onion products (10 lbs) crosscut",
+          "firm": "E-Z Spuds Inc",
+          "states": "Manufacturers and Food service establishments in the Chicago, IL metro area",
+          "recall_number": "F-0124-2022",
+          "event_id": "88916"
+        },
+        {
+          "date": "2020-07-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Fresh Express Gourmet Cafe Creative Classics Chopped Asian 6.25 oz., UPC 071279407111, Red and green cabbage, romaine lettuce, carrots & green onions",
+          "firm": "Fresh Express Incorporated",
+          "states": "Domestic: Midwestern states of AR, CT, DC, DE, IA, IL, IN, KS, KY, MA, MD, ME, MI, MN, MO, MT, NC, ND, NE, NH, NJ, NY, …",
+          "recall_number": "F-1066-2020",
+          "event_id": "85918"
+        }
+      ]
+    },
+    "pear": {
+      "slug": "pear",
+      "n": 3,
+      "events": 2,
+      "class_i_events": 0,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2025-10-22",
+      "order_key": "2025-10-22",
+      "recent": [
+        {
+          "date": "2025-10-22",
+          "classification": "Class II",
+          "status": "Completed",
+          "product": "Fruit Cocktail IN 100% JUICE WITH ADDED INGREDIENTS; NET WT 15 OZ (425 g); Ingredients: Diced Peaches, Diced Pears, Water, Grapes, Peach Pulp and Juice, Pineapple Sectors, Pear Ju…",
+          "firm": "Pacific Coast Producers",
+          "states": "U.S. distribution: AL, AR, AZ, CA, FL, GA, IL, IN, KY, LA, ME, MO, MS, NE, NM, NV, NY, OH, OK, PA, SC, TX, UT, VA, WA, …",
+          "recall_number": "H-0038-2026",
+          "event_id": "97563"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class II",
+          "status": "Completed",
+          "product": "Pears SLICED in Organic Pear Juice from Concentrate; NET WT 15 OZ (425 g); Ingredients: Organic Pears, Water, Organic Pear Juice Concentrate; Distributed By: Wegmans Food Markets,…",
+          "firm": "Pacific Coast Producers",
+          "states": "U.S. distribution: AL, AR, AZ, CA, FL, GA, IL, IN, KY, LA, ME, MO, MS, NE, NM, NV, NY, OH, OK, PA, SC, TX, UT, VA, WA, …",
+          "recall_number": "H-0040-2026",
+          "event_id": "97563"
+        },
+        {
+          "date": "2023-05-17",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Pear Almond",
+          "firm": "Windy Hill Chocolate LLC",
+          "states": "Domestic consignee only.",
+          "recall_number": "F-0855-2023",
+          "event_id": "92134"
+        }
+      ]
+    },
+    "watermelon": {
+      "slug": "watermelon",
+      "n": 6,
+      "events": 4,
+      "class_i_events": 2,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2025-10-22",
+      "order_key": "2025-10-22",
+      "recent": [
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cut Fresh Melon Mix. Contains: Cantaloupe, Honeydew, Watermelon. Keep Refrigerated. Packed under the following brands and sizes: 1. Melon Mix \"HC\" 4/16 oz. Harvest Cuts UPC 7 9062…",
+          "firm": "WHOLESALE PRODUCE SUPPLY LLC DBA",
+          "states": "IA, IL, ND, NE, WI",
+          "recall_number": "H-0065-2026",
+          "event_id": "97709"
+        },
+        {
+          "date": "2025-10-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cut Fresh Fruit Mix. Contains: Cantaloupe, Honeydew, Watermelon and Red Grapes. Keep Refrigerated. Packed under the following brands and sizes: 1. Fruit Mix CHWG (MCT) 1/5 lb. UPC…",
+          "firm": "WHOLESALE PRODUCE SUPPLY LLC DBA",
+          "states": "IA, IL, ND, NE, WI",
+          "recall_number": "H-0066-2026",
+          "event_id": "97709"
+        },
+        {
+          "date": "2022-09-28",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Deluxe Fruit Bowl. Contains Pineapple, Cantaloupe, Honeydew, Watermelon, Kiwi, Strawberry. Keep Refrigerated. Item 80935. Net Wt. 3.5 lb. Packed under brands: Crazy Fresh, quick &…",
+          "firm": "Russ Davis Wholesale, LLC",
+          "states": "IA, MI, MN, ND, SD, WI",
+          "recall_number": "F-1765-2022",
+          "event_id": "90694"
+        },
+        {
+          "date": "2022-06-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Thistle Watermelon Berry Cold-Pressed Organic Juice watermelon strawberry lime chia 32 FL OZ (355 mL) Keep Refrigerated Distributed By: Thistle Health, Inc., Vacaville, CA 95688",
+          "firm": "THISTLE HEALTH INC",
+          "states": "U.S. distribution to the following: CA, NV, OR, WA No foreign distribution.",
+          "recall_number": "F-1313-2022",
+          "event_id": "90347"
+        },
+        {
+          "date": "2022-06-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Thistle Tropical Limeade Cold-Pressed Organic Juice watermelon pineapple lime strawberry papaya activated charcoal 32 FL OZ (355 mL) Keep Refrigerated Distributed By: Thistle Heal…",
+          "firm": "THISTLE HEALTH INC",
+          "states": "U.S. distribution to the following: CA, NV, OR, WA No foreign distribution.",
+          "recall_number": "F-1314-2022",
+          "event_id": "90347"
+        }
+      ]
+    },
+    "ahi-tuna": {
+      "slug": "ahi-tuna",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 1,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2025-10-15",
+      "order_key": "2025-10-15",
+      "recent": [
+        {
+          "date": "2025-10-15",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Kirkland Signature brand Ahi Tuna Wasabi Poke, Costco #17193, net wt. 1lb. Product is packaged in clear plastic clamshell container and sold to consumers.",
+          "firm": "Western United Fish Company Inc",
+          "states": "Product was sold in the following states: AK, AL, AR, CO, CT, DE, FL, GA, IA, ID, IL, IN, KY, LA, MA, MD, ME, MI, MN, M…",
+          "recall_number": "H-0023-2026",
+          "event_id": "97663"
+        }
+      ]
+    },
+    "cherry": {
+      "slug": "cherry",
+      "n": 6,
+      "events": 4,
+      "class_i_events": 0,
+      "class_ii_events": 2,
+      "class_iii_events": 2,
+      "latest": "2025-10-08",
+      "order_key": "2025-10-08",
+      "recent": [
+        {
+          "date": "2025-10-08",
+          "classification": "Class III",
+          "status": "Ongoing",
+          "product": "Toasted Cherry Biscotti",
+          "firm": "Gina Marie Bakery LLC",
+          "states": "Firm notified FDA of recall initiated by state of CT on 09/10/25. A copy of CT press release was requested for posting …",
+          "recall_number": "H-0009-2026",
+          "event_id": "97587"
+        },
+        {
+          "date": "2025-10-08",
+          "classification": "Class III",
+          "status": "Ongoing",
+          "product": "Toasted Almond & Cherry Biscotti",
+          "firm": "Gina Marie Bakery LLC",
+          "states": "Firm notified FDA of recall initiated by state of CT on 09/10/25. A copy of CT press release was requested for posting …",
+          "recall_number": "H-0007-2026",
+          "event_id": "97587"
+        },
+        {
+          "date": "2024-10-23",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Great Value Diced Peaches, Mandarin Segments, & Cherry Mixed Fruits Variety Pack, 4 oz, 12 Pack",
+          "firm": "Walmart Inc",
+          "states": "Nationwide",
+          "recall_number": "F-0032-2025",
+          "event_id": "95457"
+        },
+        {
+          "date": "2022-03-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Chicago Sweet Connections: Paczkis - Cherry Flavor packaged in a clear plastic clamshell 4 pack",
+          "firm": "Chicago Sweet Connections, Inc.",
+          "states": "Retail locations in IL and WI",
+          "recall_number": "F-0835-2022",
+          "event_id": "89679"
+        },
+        {
+          "date": "2020-07-08",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Cherry Coke 20 oz UPC 049000018011",
+          "firm": "Coca Cola",
+          "states": "Corpus Christi and San Antonio, TX Metropolitan areas",
+          "recall_number": "F-1004-2020",
+          "event_id": "85890"
+        }
+      ]
+    },
+    "coconut": {
+      "slug": "coconut",
+      "n": 9,
+      "events": 7,
+      "class_i_events": 2,
+      "class_ii_events": 4,
+      "class_iii_events": 1,
+      "latest": "2025-09-10",
+      "order_key": "2022-02-02",
+      "recent": [
+        {
+          "date": "2025-09-10",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Clean-tail Coconut Farm Raise Breaded Butterfly Shrimp Clean Tail (21/25 CT per pound) in bulk packaging, corrugated master cartons. Master carton case (4 x 3lb), KEEP FROZEN. Pro…",
+          "firm": "TAMPA MAID FOODS, LLC",
+          "states": "Product was distributed to OH, MI, WI, PA, TX, MN, SC, OK, TN, MI, IL, KY, FL, VA,",
+          "recall_number": "H-0553-2025",
+          "event_id": "97483"
+        },
+        {
+          "date": "2024-07-31",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "Universal Bakery Organic Aussie Bites, 30 oz clamshell container USDA Organic Certified Gluten Free Rolled Oats, Dried Apricots, Flax Seeds, Sunflower Seeds, Honey, Coconut, Quino…",
+          "firm": "Best Express Foods, Inc.",
+          "states": "U.S. distribution to the following: CA, CO, AZ, WA, UT, TX, NJ, MD, IL, MI, MN, GA, FL Foreign distribution to the foll…",
+          "recall_number": "F-1490-2024",
+          "event_id": "94897"
+        },
+        {
+          "date": "2022-02-02",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Medium Chain Triglyceride (MCT) Powder 50% from Coconut / CocoTrim packaged in 20 kilogram brown bags with plastic inner lining for bulk sale to supplement manufacturers. Exclusiv…",
+          "firm": "Nutralliance Inc",
+          "states": "CA, NV, NJ, NY, FL",
+          "recall_number": "F-0613-2022",
+          "event_id": "89300"
+        },
+        {
+          "date": "2021-07-28",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Medium Chain Triglyceride (MCT) Powder 50% from Coconut / CocoTrim packaged in 20 kilogram brown bags with plastic inner lining for bulk sale to supplement manufacturers. Exclusiv…",
+          "firm": "Nutralliance Inc",
+          "states": "Nationwide. Canada.",
+          "recall_number": "F-0793-2021",
+          "event_id": "87846"
+        },
+        {
+          "date": "2021-07-28",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Medium Chain Triglyceride (MCT) Powder 70% from Coconut / CocoTrim packaged in 20 kilogram brown bags with plastic inner lining for bulk sale to supplement manufacturers. Exclusiv…",
+          "firm": "Nutralliance Inc",
+          "states": "Nationwide. Canada.",
+          "recall_number": "F-0794-2021",
+          "event_id": "87846"
+        }
+      ]
+    },
+    "goat": {
+      "slug": "goat",
+      "n": 5,
+      "events": 4,
+      "class_i_events": 0,
+      "class_ii_events": 3,
+      "class_iii_events": 1,
+      "latest": "2025-08-13",
+      "order_key": "2025-08-13",
+      "recent": [
+        {
+          "date": "2025-08-13",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Boar's Head Chevre Goat Cheese Cranberry Cinnamon, Net Wt 4 oz (113g). UPC 0 42421-15231 9. Keep Refrigerated. Distributed By: Brunckhorst Co., NY, NY 11206-3886.",
+          "firm": "Stickney Hill Dairy, LLC",
+          "states": "NY",
+          "recall_number": "H-0388-2025",
+          "event_id": "97327"
+        },
+        {
+          "date": "2022-08-31",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Capriole Goat Cheese, Fresh Goat Cheese, Wasabi 5 pound and 8oz logs",
+          "firm": "Capriole, Inc.",
+          "states": "KY, IL, IN",
+          "recall_number": "F-1579-2022",
+          "event_id": "90706"
+        },
+        {
+          "date": "2022-06-01",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Wegmans Brand Fresh Goat Cheese, Classic Chevre, with Cranberries, 5.5lb; packaged in Cryovac Bags",
+          "firm": "Old Chatham Sheepherding Creamery, LLC",
+          "states": "NY",
+          "recall_number": "F-1085-2022",
+          "event_id": "90226"
+        },
+        {
+          "date": "2021-08-25",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Holle Goat Stage 1 Organic Infant Milk Formula",
+          "firm": "Able Groupe Inc",
+          "states": "All sales are direct from firm website - littlebundle.com",
+          "recall_number": "F-0919-2021",
+          "event_id": "88432"
+        },
+        {
+          "date": "2021-08-25",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Holle Goat Stage 2 Organic Follow-On Infant Milk Formula",
+          "firm": "Able Groupe Inc",
+          "states": "All sales are direct from firm website - littlebundle.com",
+          "recall_number": "F-0920-2021",
+          "event_id": "88432"
+        }
+      ]
+    },
+    "caviar": {
+      "slug": "caviar",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 1,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2025-08-13",
+      "order_key": "2025-08-13",
+      "recent": [
+        {
+          "date": "2025-08-13",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "ARAL FISH; ARAL SILVER VOBLA; WHOLE DRIED, SALTED ROACH FISH EVISCERATED; FISH ROE DRIED; Ingredients: whole eviscerated dried roach fish, caviar may be present, salt.; Distribute…",
+          "firm": "Krasnyi Oktyabr USA Inc",
+          "states": "AZ, CA, CO, FL, GA, KS, MA, MI, MN, MO, NY, OH, PA, TX, WA, WI",
+          "recall_number": "H-0391-2025",
+          "event_id": "97268"
+        }
+      ]
+    },
+    "vanilla": {
+      "slug": "vanilla",
+      "n": 10,
+      "events": 8,
+      "class_i_events": 4,
+      "class_ii_events": 3,
+      "class_iii_events": 1,
+      "latest": "2025-08-06",
+      "order_key": "2023-12-20",
+      "recent": [
+        {
+          "date": "2025-08-06",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Reisman's Vanilla Danish 3 oz.",
+          "firm": "Reisman Bros Bakery",
+          "states": "NY, NJ, PA, MD, IL, CA, FL, MA, MI",
+          "recall_number": "H-0369-2025",
+          "event_id": "97247"
+        },
+        {
+          "date": "2025-08-06",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Reisman's Vanilla Croissants 3 oz.",
+          "firm": "Reisman Bros Bakery",
+          "states": "NY, NJ, PA, MD, IL, CA, FL, MA, MI",
+          "recall_number": "H-0365-2025",
+          "event_id": "97247"
+        },
+        {
+          "date": "2024-01-24",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Rise Brewing 32oz Organic Vanilla Oatmilk",
+          "firm": "TreeHouse Foods, Inc.",
+          "states": "Product Distributed to the following states: AL, AZ, AR,CA,CO,CT,DE,FL,GA,ID,IL,IN,IA,KS,KY,LA,ME,MD,MA,MI,MN,MS,MO,NH,…",
+          "recall_number": "F-0735-2024",
+          "event_id": "93143"
+        },
+        {
+          "date": "2023-12-20",
+          "classification": "Class I",
+          "status": "Completed",
+          "product": "Wilcox Yogurt - Vanilla; Pint (UPC 04372600699)",
+          "firm": "WILCOX ICE CREAM",
+          "states": "VT, NH, MA, and NY.",
+          "recall_number": "F-0521-2024",
+          "event_id": "93452"
+        },
+        {
+          "date": "2022-09-07",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "MRE Vanilla Protein Shake. Whole Food Protein High protein shake. 11 FL OZ (325mL) Tetra Pak. UPC 8 10044-57390 9. 4-count case UPC 810044573954. Refrigerate after Opening. Distri…",
+          "firm": "Lyons Magnus, Inc",
+          "states": "Nationwide",
+          "recall_number": "F-1629-2022",
+          "event_id": "90667"
+        }
+      ]
+    },
+    "dill": {
+      "slug": "dill",
+      "n": 6,
+      "events": 5,
+      "class_i_events": 3,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2025-07-30",
+      "order_key": "2022-09-07",
+      "recent": [
+        {
+          "date": "2025-07-30",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Dill Pickles packaged under the following label: 1. Gedney Whole Pickles, item 15100, Net 32 fl oz. (1Qt)946mL. UPC 0 41660-00151 8. 2. Gedney Mini Munchers Kosher Dill, item 1710…",
+          "firm": "Gedney Foods Product, LLC",
+          "states": "MN",
+          "recall_number": "H-0328-2025",
+          "event_id": "97137"
+        },
+        {
+          "date": "2025-07-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1. OG2 BUNCH DILL",
+          "firm": "UNFI General Corporate",
+          "states": "NJ, NY, MD, DC, PA",
+          "recall_number": "H-0238-2025",
+          "event_id": "97051"
+        },
+        {
+          "date": "2022-09-07",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "IQF Fresh Frozen Dill shipped in 35 lb. cases in bulk. Supherb Farms Turlock, CA Perishable, Keep Frozen",
+          "firm": "Supherb Farms",
+          "states": "Nationwide and Canada",
+          "recall_number": "F-1585-2022",
+          "event_id": "90741"
+        },
+        {
+          "date": "2022-09-07",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Lemon Dill Butter Pucks",
+          "firm": "Raw Seafoods Inc.",
+          "states": "OH, MA",
+          "recall_number": "F-1583-2022",
+          "event_id": "90742"
+        },
+        {
+          "date": "2021-06-30",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Banner Smoked Fish Inc. brand Sliced Gravlax (Salmon (fish), Salt, Sugar, Dill, Pepper, Sodium Nitrite)",
+          "firm": "Banner Smoked Fish Inc.",
+          "states": "NY, NJ, IL, PA, CA, FL, NE, AZ, MA, MD, VA, NV, OR, WI, NC, SC, and GA area.",
+          "recall_number": "F-0714-2021",
+          "event_id": "88032"
+        }
+      ]
+    },
+    "pickles": {
+      "slug": "pickles",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 0,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2025-07-30",
+      "order_key": "2025-07-30",
+      "recent": [
+        {
+          "date": "2025-07-30",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Dill Pickles packaged under the following label: 1. Gedney Whole Pickles, item 15100, Net 32 fl oz. (1Qt)946mL. UPC 0 41660-00151 8. 2. Gedney Mini Munchers Kosher Dill, item 1710…",
+          "firm": "Gedney Foods Product, LLC",
+          "states": "MN",
+          "recall_number": "H-0328-2025",
+          "event_id": "97137"
+        }
+      ]
+    },
+    "brussels-sprouts": {
+      "slug": "brussels-sprouts",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 1,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2025-07-23",
+      "order_key": "2025-07-23",
+      "recent": [
+        {
+          "date": "2025-07-23",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "FG21004 Brussels Sprouts, Roasted 2514111 FG21004 Brussels Sprouts, Roasted 2514311 Packaged 7- 2 lb polybags per cardboard case",
+          "firm": "AND GO CONCEPTS DBA SALAD AND GO",
+          "states": "Arizona and Nevada",
+          "recall_number": "H-0270-2025",
+          "event_id": "97011"
+        }
+      ]
+    },
+    "leek": {
+      "slug": "leek",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 0,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2025-07-16",
+      "order_key": "2025-07-16",
+      "recent": [
+        {
+          "date": "2025-07-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1. USA OG2 LEEKS",
+          "firm": "UNFI General Corporate",
+          "states": "NJ, NY, MD, DC, PA",
+          "recall_number": "H-0245-2025",
+          "event_id": "97051"
+        }
+      ]
+    },
+    "kiwi": {
+      "slug": "kiwi",
+      "n": 8,
+      "events": 4,
+      "class_i_events": 1,
+      "class_ii_events": 3,
+      "class_iii_events": 0,
+      "latest": "2025-07-16",
+      "order_key": "2023-09-20",
+      "recent": [
+        {
+          "date": "2025-07-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1.MIGHTIES OG2 KIWI",
+          "firm": "UNFI General Corporate",
+          "states": "NJ, NY, MD, DC, PA",
+          "recall_number": "H-0249-2025",
+          "event_id": "97051"
+        },
+        {
+          "date": "2023-10-11",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "2 oz VIVE ORGANIC DETOX + IMMUNITY KIWI APPLE SUPERGREENS WELLNESS SHOT; Total package size: 12 bottles per case; Storage instructions: Keep Refrigerated; Date(s) of manufacture: …",
+          "firm": "Vive Organic",
+          "states": "Vive Organic did not sell directly to any consignees. Vive Organic did not sell directly to any wholesale dealers. TOTA…",
+          "recall_number": "F-0001-2024",
+          "event_id": "93117"
+        },
+        {
+          "date": "2023-09-20",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Zespri Organic Green Kiwi, product of New Zealand, one pallet of bulk loose organic green kiwifruit was shipped to one consignee in Chicago, IL. The master carton has the barcode …",
+          "firm": "David Oppenheimer & Company I LLC",
+          "states": "Distributed in FL, GA, IL, IN, KY, MI, NC, NY, OH, PA, TN, TX, VA, and WI.",
+          "recall_number": "F-1495-2023",
+          "event_id": "92830"
+        },
+        {
+          "date": "2023-09-20",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Zespri Organic Green Kiwi, product of New Zealand, perishable, packaged in plastic clamshell, net wt. 1lb. UPC 818849020093. Distributed by The Oppenheimer Group, 180 Nickerson St…",
+          "firm": "David Oppenheimer & Company I LLC",
+          "states": "Distributed in FL, GA, IL, IN, KY, MI, NC, NY, OH, PA, TN, TX, VA, and WI.",
+          "recall_number": "F-1494-2023",
+          "event_id": "92830"
+        },
+        {
+          "date": "2022-09-28",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Strawberry, Kiwi, Mango. Packaged in the following brands and sizes: 1. Item 80595. Net Wt. 14 oz. Crazy Fresh 2. Item 80866. Net Wt 20 oz. Crazy Fresh, quick & easy, and grocery …",
+          "firm": "Russ Davis Wholesale, LLC",
+          "states": "IA, MI, MN, ND, SD, WI",
+          "recall_number": "F-1753-2022",
+          "event_id": "90694"
+        }
+      ]
+    },
+    "lemon": {
+      "slug": "lemon",
+      "n": 15,
+      "events": 12,
+      "class_i_events": 4,
+      "class_ii_events": 8,
+      "class_iii_events": 0,
+      "latest": "2025-07-16",
+      "order_key": "2023-03-22",
+      "recent": [
+        {
+          "date": "2025-07-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1. WLD HRVST OG2 LEMONS",
+          "firm": "UNFI General Corporate",
+          "states": "NJ, NY, MD, DC, PA",
+          "recall_number": "H-0226-2025",
+          "event_id": "97051"
+        },
+        {
+          "date": "2025-05-21",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Blueberry Lemon Scones, bulk packaged in bakery boxes. Products are sold at retail in pastry cases and not individually labeled.",
+          "firm": "The Hot Chocolatier - St. Elmo, LLC",
+          "states": "One (1) retailer in TN.",
+          "recall_number": "F-0804-2025",
+          "event_id": "96788"
+        },
+        {
+          "date": "2024-10-30",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Happy Moose Juice Tropical Roots packaged in a plastic 12 fl. oz. bottle. Ingredients: Mandarin Orange, Organic Carrot Juice, Organic Pineapple Juice, Lemon Juice, and Organic Tur…",
+          "firm": "Youngstown Grape Distributors, Inc.",
+          "states": "CA, TX, WA, KY, NC, NY, IL, VA, AL, GA, KS, CT, MI, MA, PA, OH, MD, WI, ND, MO, TN, NE, KS, RI, MN, FL, SC, IN, NJ, IA,…",
+          "recall_number": "F-0058-2025",
+          "event_id": "95488"
+        },
+        {
+          "date": "2023-12-20",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "LEMON CHOICE MINI PK 34-44 CT; STRAWBERRY SLICED 4-1",
+          "firm": "Ben E Keith Foods - Fort Worth",
+          "states": "All products were shipped via truck to food services.",
+          "recall_number": "F-0574-2024",
+          "event_id": "93314"
+        },
+        {
+          "date": "2023-08-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Semolina Lemon Black Pepper Linguine, net wt. 14oz. Product is packaged in a clear clamshell plastic container. Label declares: Fresh & Hand Crafted Bellingham Pasta Co. Ingredien…",
+          "firm": "Bellingham Pasta Co",
+          "states": "Distributed in WA.",
+          "recall_number": "F-1367-2023",
+          "event_id": "92658"
+        }
+      ]
+    },
+    "cauliflower": {
+      "slug": "cauliflower",
+      "n": 10,
+      "events": 4,
+      "class_i_events": 1,
+      "class_ii_events": 3,
+      "class_iii_events": 0,
+      "latest": "2025-07-16",
+      "order_key": "2024-12-18",
+      "recent": [
+        {
+          "date": "2025-07-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1. WLD HRVST OG2 CAULIFLOWER",
+          "firm": "UNFI General Corporate",
+          "states": "NJ, NY, MD, DC, PA",
+          "recall_number": "H-0236-2025",
+          "event_id": "97051"
+        },
+        {
+          "date": "2025-03-05",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "5912MOD-CAU 11\" Gluten Free Friendly Cauliflower Shell; Bulk packaged in a blue poly bag, within a corrugated box. 20 units per case; Product UPC: 074542659125; Master Case GTIN: …",
+          "firm": "Deiorio Foods Inc",
+          "states": "TX, MD, WI, CA, CO, NC, AZ, ID, OR, OH, UT",
+          "recall_number": "F-0576-2025",
+          "event_id": "96190"
+        },
+        {
+          "date": "2024-12-18",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Organic Vegetable Medley; Broccoli, Carrots & Cauliflower. Washed and ready to prepare; Perishable keep refrigerated. NET WT 12 OZ (340g) (6 pack/case) DISTRIBUTED BY: Walmart Inc…",
+          "firm": "4 Earth Farms formerly Mcl Fresh Inc",
+          "states": "The firm distributed to seven (7) direct account consignees. Five(5) of those were distribution centers, two (2) were d…",
+          "recall_number": "F-0276-2025",
+          "event_id": "95803"
+        },
+        {
+          "date": "2024-12-18",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Organic Vegetable Medley; Broccoli, Cauliflower, & Carrots. Washed and ready to prepare; Perishable keep refrigerated. NET WT 12 OZ (340g) (6 pack/case) DISTRIBUTED BY: UNFI, Prov…",
+          "firm": "4 Earth Farms formerly Mcl Fresh Inc",
+          "states": "The firm distributed to seven (7) direct account consignees. Five(5) of those were distribution centers, two (2) were d…",
+          "recall_number": "F-0277-2025",
+          "event_id": "95803"
+        },
+        {
+          "date": "2022-09-28",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Roasting Vegetables. With Olive Oil and Herbs. Contains: . Keep Refrigerated. Item 89350. Butternut Squash, Brussel Sprouts, Cauliflower, Carrot, Parsnip, Olive Oil, Salt, Black P…",
+          "firm": "Russ Davis Wholesale, LLC",
+          "states": "IA, MI, MN, ND, SD, WI",
+          "recall_number": "F-1786-2022",
+          "event_id": "90694"
+        }
+      ]
+    },
+    "asparagus": {
+      "slug": "asparagus",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 0,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2025-07-16",
+      "order_key": "2025-07-16",
+      "recent": [
+        {
+          "date": "2025-07-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1. MEXICO OG2 ASPARAGUS",
+          "firm": "UNFI General Corporate",
+          "states": "NJ, NY, MD, DC, PA",
+          "recall_number": "H-0231-2025",
+          "event_id": "97051"
+        }
+      ]
+    },
+    "artichoke": {
+      "slug": "artichoke",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 0,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2025-07-16",
+      "order_key": "2025-07-16",
+      "recent": [
+        {
+          "date": "2025-07-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1. PRODUCE ORGC ARTICHOKES",
+          "firm": "UNFI General Corporate",
+          "states": "NJ, NY, MD, DC, PA",
+          "recall_number": "H-0230-2025",
+          "event_id": "97051"
+        }
+      ]
+    },
+    "cabbage": {
+      "slug": "cabbage",
+      "n": 26,
+      "events": 5,
+      "class_i_events": 1,
+      "class_ii_events": 3,
+      "class_iii_events": 1,
+      "latest": "2025-05-21",
+      "order_key": "2024-02-07",
+      "recent": [
+        {
+          "date": "2025-05-21",
+          "classification": "Class II",
+          "status": "Completed",
+          "product": "National brand Kasundi PEELED MANGO PICKLE IN OIL; Net Wt.: 1 Kg (35.27 oz)/ 2.20lb; Ingredients: Kasundi (Peeled Mango), Canola Oil, Cabbage, Salt, Mixed Spices, Vinegar, Sodium …",
+          "firm": "Advance Food International Inc.",
+          "states": "NY, NJ, CT, MA, PA, MD",
+          "recall_number": "F-0777-2025",
+          "event_id": "96725"
+        },
+        {
+          "date": "2024-02-07",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Melissa's Hot Kimchi Pickled Napa Cabbage NET WT. 14 oz (397g) Ingredients: Napa Cabbage, Radish, Water, Garlic, Red Pepper, Organic Sugar Cane, Sea Salt, Calcium Lactate, Ginger,…",
+          "firm": "World Variety Produce Inc dba Melissa's",
+          "states": "U.S. distribution to the following: CA, TX, FL No foreign distribution.",
+          "recall_number": "F-0817-2024",
+          "event_id": "93705"
+        },
+        {
+          "date": "2023-01-18",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Dole Diced Southern Slaw Green Cabbage, Carrots Preservative Free Thoroughly Washed Perishable/Keep Refrigerated NET WT 14 OZ (397 g) UPC 7143001036 Also Classic Coleslaw under Li…",
+          "firm": "Dole Fresh Vegetables Inc",
+          "states": "U.S. distribution to the following: AL, CT, FL, GA, LA, MA, MD, NC, NY, PA, SC, VA No foreign distribution.",
+          "recall_number": "F-0234-2023",
+          "event_id": "91230"
+        },
+        {
+          "date": "2021-08-18",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "5000 Years Foods NO MSG SLICED CABBAGE KIMCHI in 5GAL plastic tubs, and 128 oz, 64 oz, 32 oz, & 16 oz glass jars",
+          "firm": "5000 Years Foods, Inc.",
+          "states": "The recalled product was distributed in ILLINOIS where the product was further distributed and it reached customers thr…",
+          "recall_number": "F-0853-2021",
+          "event_id": "88262"
+        },
+        {
+          "date": "2021-08-18",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "5000 Years Foods NO MSG JULRADO WHOLE CABBAGE KIMCHI in 128 oz and 64 oz glass jars",
+          "firm": "5000 Years Foods, Inc.",
+          "states": "The recalled product was distributed in ILLINOIS where the product was further distributed and it reached customers thr…",
+          "recall_number": "F-0854-2021",
+          "event_id": "88262"
+        }
+      ]
+    },
+    "green-beans": {
+      "slug": "green-beans",
+      "n": 3,
+      "events": 3,
+      "class_i_events": 1,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2025-03-19",
+      "order_key": "2020-11-25",
+      "recent": [
+        {
+          "date": "2025-03-19",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Good & Gather Cut Green Beans. Net Wt. 14.5 oz (411g). UPC 0 85239-11628 9. Dist. By Target Corporation, Minneapolis, MN 55403.",
+          "firm": "Del Monte Foods, Inc",
+          "states": "AL, AZ, CA, CO, GA, IA, IL, IN, KS, MI, MN, NC, NJ, NY, OH, OR, PA, SC, TX, VA, WI",
+          "recall_number": "F-0627-2025",
+          "event_id": "96336"
+        },
+        {
+          "date": "2024-07-24",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Wegmans brand Frozen Cut Green Beans; 16oz bags",
+          "firm": "NORTERA FOODS USA",
+          "states": "NY and PA",
+          "recall_number": "F-1484-2024",
+          "event_id": "94307"
+        },
+        {
+          "date": "2020-11-25",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Frozen French Cut Green Beans. Packaged in 20.5 lb boxes. Expiration date 11/25/2022",
+          "firm": "National Food Trading Corporation",
+          "states": "Distributed to one consignee located in Jonesboro, AR",
+          "recall_number": "F-0124-2021",
+          "event_id": "86675"
+        }
+      ]
+    },
+    "orange": {
+      "slug": "orange",
+      "n": 8,
+      "events": 7,
+      "class_i_events": 3,
+      "class_ii_events": 3,
+      "class_iii_events": 1,
+      "latest": "2025-03-05",
+      "order_key": "2021-09-15",
+      "recent": [
+        {
+          "date": "2025-03-05",
+          "classification": "Class II",
+          "status": "Completed",
+          "product": "Rajbhog Sweets Jelebi Orange, 9.5 oz packages and sold by weight from bulk trays.",
+          "firm": "Rajbhog Distributors TX Inc.",
+          "states": "Texas",
+          "recall_number": "F-0581-2025",
+          "event_id": "96038"
+        },
+        {
+          "date": "2024-10-30",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Happy Moose Juice Strawberry Field packaged in a plastic 12 fl. oz. bottle. Ingredients: Organic Apple Juice, Organic Orange Juice, Organic Strawberry Puree, Organic Beet Juice, O…",
+          "firm": "Youngstown Grape Distributors, Inc.",
+          "states": "CA, TX, WA, KY, NC, NY, IL, VA, AL, GA, KS, CT, MI, MA, PA, OH, MD, WI, ND, MO, TN, NE, KS, RI, MN, FL, SC, IN, NJ, IA,…",
+          "recall_number": "F-0059-2025",
+          "event_id": "95488"
+        },
+        {
+          "date": "2024-10-30",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Happy Moose Juice Tropical Roots packaged in a plastic 12 fl. oz. bottle. Ingredients: Mandarin Orange, Organic Carrot Juice, Organic Pineapple Juice, Lemon Juice, and Organic Tur…",
+          "firm": "Youngstown Grape Distributors, Inc.",
+          "states": "CA, TX, WA, KY, NC, NY, IL, VA, AL, GA, KS, CT, MI, MA, PA, OH, MD, WI, ND, MO, TN, NE, KS, RI, MN, FL, SC, IN, NJ, IA,…",
+          "recall_number": "F-0058-2025",
+          "event_id": "95488"
+        },
+        {
+          "date": "2023-08-23",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Dilettante Mocha Cafe brand L'Orange Dark Bulk Truffles, perishable, sold individual pieces out of retail display cases. The display placard declares milk in the ingredients state…",
+          "firm": "Dilettante Chocolates Inc",
+          "states": "Distributed to firm's retail store locations in WA",
+          "recall_number": "F-1409-2023",
+          "event_id": "92676"
+        },
+        {
+          "date": "2023-05-03",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Rajbhog Sweets Orange Jalebi Net Weight: 10 oz. UPC 3542647018 packaged in a plastic container and in bulk sold by weight",
+          "firm": "Rajbhog Distributors, Inc",
+          "states": "Dallas, Plano, Frisco, Irving, Sugarland and Austin Texas areas.",
+          "recall_number": "F-0762-2023",
+          "event_id": "91779"
+        }
+      ]
+    },
+    "pecan": {
+      "slug": "pecan",
+      "n": 8,
+      "events": 4,
+      "class_i_events": 0,
+      "class_ii_events": 2,
+      "class_iii_events": 2,
+      "latest": "2025-02-12",
+      "order_key": "2025-02-12",
+      "recent": [
+        {
+          "date": "2025-02-12",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Greenwise Organic Pecan Halves 8 ounce, plastic printed package marked with lot # 18228 and with a best by date of April.23.2025 stamped on front UPC: 041415212336",
+          "firm": "Pecan Star & Nut Corp.",
+          "states": "US States AL, FL, GA, KY, NC, SC, TN, VA.",
+          "recall_number": "F-0465-2025",
+          "event_id": "96084"
+        },
+        {
+          "date": "2024-06-05",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1lb and 8oz bags include Apricots, Whole Dates, golden Raisins, Mangos, Currants, Blueberries, Cranberries, Prunes, Raw Sunflower Seeds, Raw Pumpkin Seeds, Pecan Medium Pieces, Bl…",
+          "firm": "Texas Pecan Co",
+          "states": "Product is sold online, in the firm's store and through a wholesaler in Texas.",
+          "recall_number": "F-1277-2024",
+          "event_id": "94469"
+        },
+        {
+          "date": "2024-06-05",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "1lb and 8oz bags include Apricots, Whole Dates, golden Raisins, Mangos, Currants, Blueberries, Cranberries, Prunes, Raw Sunflower Seeds, Raw Pumpkin Seeds, Pecan Medium Pieces, Bl…",
+          "firm": "Texas Pecan Co",
+          "states": "Product is sold online, in the firm's store and through a wholesaler in Texas.",
+          "recall_number": "F-1278-2024",
+          "event_id": "94469"
+        },
+        {
+          "date": "2023-08-23",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Dilettante Mocha Cafe brand Praline Bulk Truffles, perishable, sold individual pieces out of retail display cases. The display placard declares milk, pecans, and almonds in the in…",
+          "firm": "Dilettante Chocolates Inc",
+          "states": "Distributed to firm's retail store locations in WA",
+          "recall_number": "F-1412-2023",
+          "event_id": "92676"
+        },
+        {
+          "date": "2023-08-23",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Dilettante Mocha Cafe brand Rheingold Milk Bulk Toffee, perishable, sold individual pieces out of retail display cases. The display placard declares milk, pecans, and almonds in t…",
+          "firm": "Dilettante Chocolates Inc",
+          "states": "Distributed to firm's retail store locations in WA",
+          "recall_number": "F-1415-2023",
+          "event_id": "92676"
+        }
+      ]
+    },
+    "red-onion": {
+      "slug": "red-onion",
+      "n": 31,
+      "events": 11,
+      "class_i_events": 10,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2025-01-08",
+      "order_key": "2023-11-15",
+      "recent": [
+        {
+          "date": "2025-01-08",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "a.) King Kullen brand Diced Red Onion; UPC: 85316-10086; 12 oz plastic container b.) Wild By Nature brand Diced Red Onion; UPC: 85316-10086; 12 oz plastic container c.) Gracie's K…",
+          "firm": "Gracie's Kitchens Inc.",
+          "states": "CT and NY",
+          "recall_number": "F-0330-2025",
+          "event_id": "95851"
+        },
+        {
+          "date": "2023-11-15",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Gills Onions 4/5 LB CTN FRESH 3/8\" DICED RED ONIONS WITH ZIPPER",
+          "firm": "Gills Onions, LLC",
+          "states": "Distributors in Canada AB, BC, NB, NS, ON; and the United States AZ, CA, CO, CT, FL, GA, IA, ID, IL, IN, KY, LA, MA, MD…",
+          "recall_number": "F-0350-2024",
+          "event_id": "93290"
+        },
+        {
+          "date": "2023-11-15",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cross Valley Farms 1/5LB CTN FRESH 1/4\" DICED RED ONIONS W/ZIP",
+          "firm": "Gills Onions, LLC",
+          "states": "Distributors in Canada AB, BC, NB, NS, ON; and the United States AZ, CA, CO, CT, FL, GA, IA, ID, IL, IN, KY, LA, MA, MD…",
+          "recall_number": "F-0334-2024",
+          "event_id": "93290"
+        },
+        {
+          "date": "2023-11-15",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Gills Onions 4/5 LB CTN FRESH 1/4\" DICED RED ONIONS W/ZIPPER",
+          "firm": "Gills Onions, LLC",
+          "states": "Distributors in Canada AB, BC, NB, NS, ON; and the United States AZ, CA, CO, CT, FL, GA, IA, ID, IL, IN, KY, LA, MA, MD…",
+          "recall_number": "F-0348-2024",
+          "event_id": "93290"
+        },
+        {
+          "date": "2023-11-15",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Imperial Fresh 2/5 LB CTN FRSH 3/8\" DICED RED ONIONS W/ZIPPER",
+          "firm": "Gills Onions, LLC",
+          "states": "Distributors in Canada AB, BC, NB, NS, ON; and the United States AZ, CA, CO, CT, FL, GA, IA, ID, IL, IN, KY, LA, MA, MD…",
+          "recall_number": "F-0367-2024",
+          "event_id": "93290"
+        }
+      ]
+    },
+    "yellow-squash": {
+      "slug": "yellow-squash",
+      "n": 3,
+      "events": 3,
+      "class_i_events": 2,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2024-12-04",
+      "order_key": "2024-08-14",
+      "recent": [
+        {
+          "date": "2024-12-04",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Pero Family Farms Squash Sliced Zucchinni & Yellow Squash, Net Wt. 11oz (311g) Plastic Tray, 4 trays per carton, Microwavable Tray, Keep Refrigerated. UPC 874896009764",
+          "firm": "Pero Family Farms Food Company LLC",
+          "states": "Domestic distribution only: FL, MO, IL, VA",
+          "recall_number": "F-0149-2025",
+          "event_id": "95723"
+        },
+        {
+          "date": "2024-08-14",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Wiers Farm - Organic Yellow Squash packaged into 2 count trays - cases dependent on customer",
+          "firm": "Wiers Farm Inc",
+          "states": "CT, DE, IL, IN, KY, ME, MD, MI, MO, NJ, NY, NC, OH, PA, RI, TN, VA, WV",
+          "recall_number": "F-1683-2024",
+          "event_id": "94998"
+        },
+        {
+          "date": "2022-10-05",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Yellow Squash sold as Bulk, Diced, Half Moon Sliced, Julienne and Planks (Product codes 168-173)",
+          "firm": "Southeast Processing Ltd",
+          "states": "Product was shipped to GA & SC.",
+          "recall_number": "F-1793-2022",
+          "event_id": "90575"
+        }
+      ]
+    },
+    "beet": {
+      "slug": "beet",
+      "n": 3,
+      "events": 3,
+      "class_i_events": 0,
+      "class_ii_events": 2,
+      "class_iii_events": 1,
+      "latest": "2024-10-30",
+      "order_key": "2024-10-30",
+      "recent": [
+        {
+          "date": "2024-10-30",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Happy Moose Juice Strawberry Field packaged in a plastic 12 fl. oz. bottle. Ingredients: Organic Apple Juice, Organic Orange Juice, Organic Strawberry Puree, Organic Beet Juice, O…",
+          "firm": "Youngstown Grape Distributors, Inc.",
+          "states": "CA, TX, WA, KY, NC, NY, IL, VA, AL, GA, KS, CT, MI, MA, PA, OH, MD, WI, ND, MO, TN, NE, KS, RI, MN, FL, SC, IN, NJ, IA,…",
+          "recall_number": "F-0059-2025",
+          "event_id": "95488"
+        },
+        {
+          "date": "2021-11-24",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Sliced Pickled Beets, Net Wt 16oz. (1lb) 454g, packaged under the following brands: 1. Aunt Nellie's, UPC 44300-05463, Distributed by Seneca Foods Corp, Marion, NY 14505-0997 2. H…",
+          "firm": "Seneca Foods Corporation",
+          "states": "AL, CO, FL, GA, IA, IL, IN, LA, MA, ME, MI, MN, MO, NC, NV, NY, OH, PA, SC, TX, VA, WI",
+          "recall_number": "F-0166-2022",
+          "event_id": "88978"
+        },
+        {
+          "date": "2021-08-04",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Now Real Food Organic Steel Cut Oats, 2 lb bag, code 6295, UPC 733739062956, packed 8 bags per case; case packaging is for Now Real Food Organic Beet Sugar 3lbs bags",
+          "firm": "NOW Health Group Inc.",
+          "states": "AK, AL, AR, AZ, CA, CO, CT, DE, FL, GA, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MT, NC, ND, NE, NJ, NM, NV,…",
+          "recall_number": "F-0869-2021",
+          "event_id": "88264"
+        }
+      ]
+    },
+    "octopus": {
+      "slug": "octopus",
+      "n": 2,
+      "events": 2,
+      "class_i_events": 2,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2024-10-23",
+      "order_key": "2024-10-23",
+      "recent": [
+        {
+          "date": "2024-10-23",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Item FLD2011, Salted and Seasoned Small Octopus, distributed in plastic clamshell containers, net wt. 0.267lb. The H-Mart label declares: Octopus, Salt, Garlic, Ginger, Red Pepper…",
+          "firm": "Lemonland Food Corp",
+          "states": "Distributed in WA",
+          "recall_number": "F-0046-2025",
+          "event_id": "95379"
+        },
+        {
+          "date": "2023-10-04",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Central Seafoods 30# case of IQF whole octopus. Three item codes / GTIN numbers depending on size of individual octopus: Item 10400: 2-4 pound whole octopus, GTIN 1 00 70041 20007…",
+          "firm": "CenSea Inc",
+          "states": "OH, FL, GA, IL",
+          "recall_number": "F-1606-2023",
+          "event_id": "92995"
+        }
+      ]
+    },
+    "bell-pepper": {
+      "slug": "bell-pepper",
+      "n": 2,
+      "events": 2,
+      "class_i_events": 2,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2024-08-14",
+      "order_key": "2024-08-14",
+      "recent": [
+        {
+          "date": "2024-08-14",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Wiers Farm - Organic Bell Peppers packaged into 2 count trays - cases dependent on customer",
+          "firm": "Wiers Farm Inc",
+          "states": "CT, DE, IL, IN, KY, ME, MD, MI, MO, NJ, NY, NC, OH, PA, RI, TN, VA, WV",
+          "recall_number": "F-1681-2024",
+          "event_id": "94998"
+        },
+        {
+          "date": "2022-10-12",
+          "classification": "Class I",
+          "status": "Completed",
+          "product": "Diced Bell Pepper & White Onion, NET WT, 7 OZ (198g), Dist. By: Renaissance Food Group LLC 4322 Moreland Ave. Conley, GA 30288, UPC, 8 26766 19004",
+          "firm": "Renaissance Food Group",
+          "states": "Products were shipped to the following states: Alabama, Georgia & South Carolina.",
+          "recall_number": "F-0007-2023",
+          "event_id": "90883"
+        }
+      ]
+    },
+    "zucchini": {
+      "slug": "zucchini",
+      "n": 4,
+      "events": 4,
+      "class_i_events": 2,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2024-08-14",
+      "order_key": "2024-08-14",
+      "recent": [
+        {
+          "date": "2024-08-14",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Wiers Farm - Organic Zucchini Squash packaged into 2 count trays - cases dependent on customer",
+          "firm": "Wiers Farm Inc",
+          "states": "CT, DE, IL, IN, KY, ME, MD, MI, MO, NJ, NY, NC, OH, PA, RI, TN, VA, WV",
+          "recall_number": "F-1684-2024",
+          "event_id": "94998"
+        },
+        {
+          "date": "2022-05-04",
+          "classification": "Class I",
+          "status": "Completed",
+          "product": "Organic Marketside Zucchini 2 Count packages/8 per case Ingredients: Organic Zucchini New WT. 6 oz. (170g) UPC: 6-81131-22105-4 Perishable Keep Refrigerated Clear plastic overwrap…",
+          "firm": "World Variety Produce Inc dba Melissa's",
+          "states": "Product shipped to Walmart DC's in Arizona, Arkansas, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana, Michigan, M…",
+          "recall_number": "F-1047-2022",
+          "event_id": "90030"
+        },
+        {
+          "date": "2021-11-17",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "E-Z Spuds Inc. 30# Zucchini Diced 3/8\"",
+          "firm": "E-Z Spuds Inc",
+          "states": "Manufacturers and Food service establishments in the Chicago, IL metro area",
+          "recall_number": "F-0130-2022",
+          "event_id": "88916"
+        },
+        {
+          "date": "2020-02-26",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "3/8\" diced IQF zucchini in 45 pound poly lined carton",
+          "firm": "Hart Freeze Pack, LLC",
+          "states": "CA, OH",
+          "recall_number": "F-0710-2020",
+          "event_id": "84449"
+        }
+      ]
+    },
+    "macadamia": {
+      "slug": "macadamia",
+      "n": 2,
+      "events": 2,
+      "class_i_events": 2,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2024-07-24",
+      "order_key": "2024-07-24",
+      "recent": [
+        {
+          "date": "2024-07-24",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Terrafina, Macadamia in the Raw , Net Wt. 6oz , (170 g)",
+          "firm": "SUNCO & FRENCHIE LLC.",
+          "states": "The recalled product was distributed to NJ, NY",
+          "recall_number": "F-1485-2024",
+          "event_id": "94906"
+        },
+        {
+          "date": "2020-07-01",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "NOW Real Food Raw Macadamia Nuts Unsalted 8 oz retail bag UPC 733739071194 Item number 7119",
+          "firm": "NOW Health Group Inc.",
+          "states": "Online and in retail stores nationwide.",
+          "recall_number": "F-1002-2020",
+          "event_id": "85846"
+        }
+      ]
+    },
+    "tuna-loin": {
+      "slug": "tuna-loin",
+      "n": 2,
+      "events": 2,
+      "class_i_events": 0,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2024-07-03",
+      "order_key": "2024-07-03",
+      "recent": [
+        {
+          "date": "2024-07-03",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Fresh Catch Inc. Yellowfin Tuna, 1 loin per case packaged in carboard boxes with keep refrigerated label",
+          "firm": "Fresh Catch Inc",
+          "states": "CA only, no foreign distribution",
+          "recall_number": "F-1423-2024",
+          "event_id": "94826"
+        },
+        {
+          "date": "2020-01-29",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Sea Mart Frozen Yellowfin Tuna Loin, CO treated, skinless, boneless, bloodline removed, center cut 5-8 lbs, 30 lb package",
+          "firm": "AQUABEST SEAFOOD LLC",
+          "states": "Domestic and Foreign distribution",
+          "recall_number": "F-0524-2020",
+          "event_id": "84494"
+        }
+      ]
+    },
+    "yogurt": {
+      "slug": "yogurt",
+      "n": 5,
+      "events": 4,
+      "class_i_events": 2,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2024-02-21",
+      "order_key": "2023-12-20",
+      "recent": [
+        {
+          "date": "2024-02-21",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Al Amir Fresh Foods Tzatziki Cucumber Yogurt, packaged in round plastic clear container, net wt. 8oz. There are 12 containers per case. UPC on 8oz container: 8 55134 12351 3. The …",
+          "firm": "Lydia Pack 3 Inc",
+          "states": "Distributed in OR and WA.",
+          "recall_number": "F-0870-2024",
+          "event_id": "93850"
+        },
+        {
+          "date": "2023-12-20",
+          "classification": "Class I",
+          "status": "Completed",
+          "product": "Wilcox Yogurt - Vanilla; Pint (UPC 04372600699)",
+          "firm": "WILCOX ICE CREAM",
+          "states": "VT, NH, MA, and NY.",
+          "recall_number": "F-0521-2024",
+          "event_id": "93452"
+        },
+        {
+          "date": "2021-09-08",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Your Way Fresh, Sliced Banana + Strawberry Yogurt Parfait; Net wt. 6.25 oz (177 g); UPC 8 54426 00807 8; Distributed by Your Way Fresh, Newport Beach, CA, 12 cups per case;",
+          "firm": "Loffredo Fresh Gardens Inc. DBA Produce Innovations",
+          "states": "Distributed to retail stores in IA, IN, MO, MN, NE, OK, and TX.",
+          "recall_number": "F-0904-2021",
+          "event_id": "88538"
+        },
+        {
+          "date": "2021-09-08",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Your Way Fresh, Greek Yogurt + Peach Parfait; Net wt. 6.25 oz (177 g); UPC 8 54426 00809 2; Distributed by Your Way Fresh, Newport Beach, CA, 12 cups per case;",
+          "firm": "Loffredo Fresh Gardens Inc. DBA Produce Innovations",
+          "states": "Distributed to retail stores in IA, IN, MO, MN, NE, OK, and TX.",
+          "recall_number": "F-0905-2021",
+          "event_id": "88538"
+        },
+        {
+          "date": "2021-03-31",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Gelson's Yogurt Raisins, Plastic Clamshell Container NET WT 14 oz. (397g) UPC: 7 97565 20470 6 Contains: Milk, Soy. Packed in a facility that handles Peanuts, Tree Nuts, Wheat, So…",
+          "firm": "Western Mixers Produce & Nuts, Inc.",
+          "states": "CA Only",
+          "recall_number": "F-0353-2021",
+          "event_id": "87554"
+        }
+      ]
+    },
+    "eggplant": {
+      "slug": "eggplant",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 1,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2024-02-21",
+      "order_key": "2024-02-21",
+      "recent": [
+        {
+          "date": "2024-02-21",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Al Amir Fresh Foods Baba Ghannooj Grilled Eggplant, packaged in round plastic clear container, net wt. 8oz. There are 12 containers per case. UPC on 8oz container: 7 55134 12342 1…",
+          "firm": "Lydia Pack 3 Inc",
+          "states": "Distributed in OR and WA.",
+          "recall_number": "F-0869-2024",
+          "event_id": "93850"
+        }
+      ]
+    },
+    "napa-cabbage": {
+      "slug": "napa-cabbage",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 1,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2024-02-07",
+      "order_key": "2024-02-07",
+      "recent": [
+        {
+          "date": "2024-02-07",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Melissa's Hot Kimchi Pickled Napa Cabbage NET WT. 14 oz (397g) Ingredients: Napa Cabbage, Radish, Water, Garlic, Red Pepper, Organic Sugar Cane, Sea Salt, Calcium Lactate, Ginger,…",
+          "firm": "World Variety Produce Inc dba Melissa's",
+          "states": "U.S. distribution to the following: CA, TX, FL No foreign distribution.",
+          "recall_number": "F-0817-2024",
+          "event_id": "93705"
+        }
+      ]
+    },
+    "bacon": {
+      "slug": "bacon",
+      "n": 3,
+      "events": 3,
+      "class_i_events": 0,
+      "class_ii_events": 2,
+      "class_iii_events": 1,
+      "latest": "2023-12-20",
+      "order_key": "2023-12-20",
+      "recent": [
+        {
+          "date": "2023-12-20",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "TATER KEG BACON CHEDDAR CHIVE; OKRA CUT HEAVILY BREADED IQF; POTATO TATER TOTS; FRENCH FRIES SC 3/8 IN; JALAPENO STUFFED W/CHDR CHS; CORN CUT; BEAN GREEN REGULAR CUT; BEAN GREEN S…",
+          "firm": "Ben E Keith Foods - Fort Worth",
+          "states": "All products were shipped via truck to food services.",
+          "recall_number": "F-0575-2024",
+          "event_id": "93314"
+        },
+        {
+          "date": "2023-02-22",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Peanut Brittle, Cashew Brittle, Pecan Brittle, Bacon Brittle, Nashville Hot Brittle 5 oz, 8 oz, 16oz and bulk packaging",
+          "firm": "Brittle Brothers LLC",
+          "states": "TN",
+          "recall_number": "F-0353-2023",
+          "event_id": "91615"
+        },
+        {
+          "date": "2020-07-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Fresh Express Gourmet Cafe Creative Classics Turkey & Bacon Chef 5.75 oz.,UPC 071279407081, Iceberg & romaine lettuce, carrots & red cabbage",
+          "firm": "Fresh Express Incorporated",
+          "states": "Domestic: Midwestern states of AR, CT, DC, DE, IA, IL, IN, KS, KY, MA, MD, ME, MI, MN, MO, MT, NC, ND, NE, NH, NJ, NY, …",
+          "recall_number": "F-1068-2020",
+          "event_id": "85918"
+        }
+      ]
+    },
+    "raspberry": {
+      "slug": "raspberry",
+      "n": 7,
+      "events": 7,
+      "class_i_events": 1,
+      "class_ii_events": 4,
+      "class_iii_events": 2,
+      "latest": "2023-08-23",
+      "order_key": "2023-07-19",
+      "recent": [
+        {
+          "date": "2023-08-23",
+          "classification": "Class III",
+          "status": "Terminated",
+          "product": "Dilettante Mocha Cafe brand Dark Raspberry Bulk Truffles, perishable, sold individual pieces out of retail display cases. The display placard declares cream and butter in the ingr…",
+          "firm": "Dilettante Chocolates Inc",
+          "states": "Distributed to firm's retail store locations in WA",
+          "recall_number": "F-1407-2023",
+          "event_id": "92676"
+        },
+        {
+          "date": "2023-07-19",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Rader Farms Organic Berry Trio Strawberry, Blackberry, Raspberry. Item # 105872. Frozen, packed into flexible plastic bags. Net wt. 3lbs. UPC on retail bag: 8 84038 85143 4. A tot…",
+          "firm": "Oregon Potato Company",
+          "states": "All products distributed in AR, AZ, CA, CO, HI, IA, ID, IL, IN, KS, KY, LA, MD, MI, MN, MO, MT, ND, NE, NV, NY, OH, OK,…",
+          "recall_number": "F-1235-2023",
+          "event_id": "92487"
+        },
+        {
+          "date": "2023-05-17",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Raspberry",
+          "firm": "Windy Hill Chocolate LLC",
+          "states": "Domestic consignee only.",
+          "recall_number": "F-0857-2023",
+          "event_id": "92134"
+        },
+        {
+          "date": "2022-11-09",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "BRIE EN CROUTE WITH RASPBERRY",
+          "firm": "Kabobs Acquisition Inc.",
+          "states": "Product was shipped to one distributor in Georgia",
+          "recall_number": "F-0081-2023",
+          "event_id": "90951"
+        },
+        {
+          "date": "2022-09-28",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Four Berry Blend containing Strawberry, Blackberry, Blueberry, Raspberry. Keep Refrigerated. Item 80847. Net Wt. 12 oz. packaged in the following brands: .Crazy Fresh, quick & eas…",
+          "firm": "Russ Davis Wholesale, LLC",
+          "states": "IA, MI, MN, ND, SD, WI",
+          "recall_number": "F-1763-2022",
+          "event_id": "90694"
+        }
+      ]
+    },
+    "romaine-lettuce": {
+      "slug": "romaine-lettuce",
+      "n": 18,
+      "events": 8,
+      "class_i_events": 3,
+      "class_ii_events": 5,
+      "class_iii_events": 0,
+      "latest": "2023-08-23",
+      "order_key": "2023-05-17",
+      "recent": [
+        {
+          "date": "2023-08-23",
+          "classification": "Class II",
+          "status": "Ongoing",
+          "product": "Romaine lettuce packaged into the following configurations and sizes: 1. Lettuce Romaine Shred, Produce Code 720325, 4-2.5lb. bags per shipping case, Customer UPC 9120457. 2. Roma…",
+          "firm": "G.O. Corporation",
+          "states": "IA, MN, ND, WI",
+          "recall_number": "F-1423-2023",
+          "event_id": "92828"
+        },
+        {
+          "date": "2023-08-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Romaine lettuce packed in bulk 45-lb mini-bins",
+          "firm": "C&E Farms, Inc.",
+          "states": "U.S. distribution to: MI, MA, UT, CA, TX, IL, MD. No foreign distribution.",
+          "recall_number": "F-1398-2023",
+          "event_id": "92803"
+        },
+        {
+          "date": "2023-07-26",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Romaine lettuce packed in bulk 45 pound mini-bins",
+          "firm": "C&E Farms, Inc.",
+          "states": "Product was distributed to MA and MN",
+          "recall_number": "F-1289-2023",
+          "event_id": "92677"
+        },
+        {
+          "date": "2023-07-12",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Romaine lettuce, packaged into the following configurations and sizes: 1. Medium, Produce Code 720832, 6-2lb per shipping case. 2. Medium, Produce Code 720840, 10-2lb per shipping…",
+          "firm": "G.O. Corporation",
+          "states": "IA, MN, ND, WI",
+          "recall_number": "F-1013-2023",
+          "event_id": "92571"
+        },
+        {
+          "date": "2023-05-17",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Revolution Farms Robust Romaine plastic 5oz Retail container UPC 856791008035 and 3lb bulk clear poly bag UPC 856791008127 Revolution Farms Romaine Lettuce Boats plastic 5oz Retai…",
+          "firm": "Caledonia Facility of Revolution Farms LLC",
+          "states": "MI, OH, WI",
+          "recall_number": "F-0824-2023",
+          "event_id": "92065"
+        }
+      ]
+    },
+    "black-pepper": {
+      "slug": "black-pepper",
+      "n": 2,
+      "events": 2,
+      "class_i_events": 1,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2023-08-16",
+      "order_key": "2021-06-30",
+      "recent": [
+        {
+          "date": "2023-08-16",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Semolina Lemon Black Pepper Linguine, net wt. 14oz. Product is packaged in a clear clamshell plastic container. Label declares: Fresh & Hand Crafted Bellingham Pasta Co. Ingredien…",
+          "firm": "Bellingham Pasta Co",
+          "states": "Distributed in WA.",
+          "recall_number": "F-1367-2023",
+          "event_id": "92658"
+        },
+        {
+          "date": "2021-06-30",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Raskin s brand Smoked Fish Pepper Crusted Sliced Nova (Farm raised Atlantic Salmon, black pepper, salt, sugar, sodium nitrite, natural hardwood smokead",
+          "firm": "Banner Smoked Fish Inc.",
+          "states": "NY, NJ, IL, PA, CA, FL, NE, AZ, MA, MD, VA, NV, OR, WI, NC, SC, and GA area.",
+          "recall_number": "F-0716-2021",
+          "event_id": "88032"
+        }
+      ]
+    },
+    "banana": {
+      "slug": "banana",
+      "n": 6,
+      "events": 5,
+      "class_i_events": 2,
+      "class_ii_events": 3,
+      "class_iii_events": 0,
+      "latest": "2023-07-26",
+      "order_key": "2023-07-26",
+      "recent": [
+        {
+          "date": "2023-07-26",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Trader Joe s Organic Tropical Fruit Blend Pineapple, Banana, Strawberry, Mango, SKU #051191, packaged in pillow bags. Each case consists of 24 bags and each bag is 16 oz. UPC on r…",
+          "firm": "Scenic Fruit Company, LLC",
+          "states": "Trader Joe s Organic Tropical Fruit Blend 16 oz. bags were distributed nationwide. Cadia Organic Pineapple 10oz. bags w…",
+          "recall_number": "F-1254-2023",
+          "event_id": "92587"
+        },
+        {
+          "date": "2023-07-26",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Trader Joe's Organic Tropical Fruit Blend, Pineapple, Bananas, Strawberries & Mango. Net Wt. 16 oz (1 lb) 454g. UPC Keep Frozen.",
+          "firm": "SunOpta Grains and Foods Inc.",
+          "states": "Nationwide",
+          "recall_number": "F-1268-2023",
+          "event_id": "92573"
+        },
+        {
+          "date": "2023-07-26",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "365 Whole Foods Market Organic Sliced Strawberries & Bananas. Net Wt 32 oz (2 lb) 907g, UPC 0 99482-51908 7, Keep Frozen until ready to use. Distributed By: Whole Foods Market, Au…",
+          "firm": "SunOpta Grains and Foods Inc.",
+          "states": "Nationwide",
+          "recall_number": "F-1264-2023",
+          "event_id": "92573"
+        },
+        {
+          "date": "2022-07-20",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Nature s Promise Organic Mango, Banana, Kale, Rice & Pineapple Baby Food, 3.5 oz (99 g), Pouch, Case pack of 12 (12 inners of 6 each). Store in a dry ventilated area. Do not expos…",
+          "firm": "Fruselva America SPA",
+          "states": "The firm only distribute only to their stores; MA, ME, NH, NY, VT, MD, PA, WV",
+          "recall_number": "F-1415-2022",
+          "event_id": "90388"
+        },
+        {
+          "date": "2022-01-26",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Fresh Banana Pickle is packaged in clear plastic pouch, net wt. 500 gm (1/2 KG). No UPC. Product is imported from Jampani SRT 252, Opp to Tata Motors, Sanath Nagar, Hyderabad, 500…",
+          "firm": "Aroma Meats LLC",
+          "states": "Distributed in Oregon.",
+          "recall_number": "F-0513-2022",
+          "event_id": "89287"
+        }
+      ]
+    },
+    "green-leaf-lettuce": {
+      "slug": "green-leaf-lettuce",
+      "n": 2,
+      "events": 2,
+      "class_i_events": 0,
+      "class_ii_events": 2,
+      "class_iii_events": 0,
+      "latest": "2023-07-05",
+      "order_key": "2023-07-05",
+      "recent": [
+        {
+          "date": "2023-07-05",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Springworks Organic single cut green leaf lettuce, 4 oz.",
+          "firm": "Springworks Farm Inc.",
+          "states": "Connecticut, Maine, New York",
+          "recall_number": "F-1008-2023",
+          "event_id": "92378"
+        },
+        {
+          "date": "2020-07-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Fresh Express Lettuce Trio / Lechuga Trio 9 oz., UPC 071279108094, Iceberg, romaine lettuce & green leaf lettuce",
+          "firm": "Fresh Express Incorporated",
+          "states": "Domestic: Midwestern states of AR, CT, DC, DE, IA, IL, IN, KS, KY, MA, MD, ME, MI, MN, MO, MT, NC, ND, NE, NH, NJ, NY, …",
+          "recall_number": "F-1074-2020",
+          "event_id": "85918"
+        }
+      ]
+    },
+    "collard-greens": {
+      "slug": "collard-greens",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 1,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2023-05-31",
+      "order_key": "2023-05-31",
+      "recent": [
+        {
+          "date": "2023-05-31",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "ROBINSON FRESH COLLARD GREENS, 16 OZ, UPC:0-95829-60006-7. Packaged in sealed plastic bags, 8 in a case. GIANT COLLARD GREENS, 16 OZ, UPC: 6-88267-05311-5. Packaged in sealed plas…",
+          "firm": "Lancaster Foods LLC",
+          "states": "Distributors and retailers in MA, MD, PA, NY, NJ, and VA.",
+          "recall_number": "F-0923-2023",
+          "event_id": "92285"
+        }
+      ]
+    },
+    "rosemary": {
+      "slug": "rosemary",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 1,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2023-03-22",
+      "order_key": "2023-03-22",
+      "recent": [
+        {
+          "date": "2023-03-22",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Quick & Fresh, Rosemary Ham, Brie & Fig Ficelle, Net . Wt. 6.5 Oz. Single Serving, Keep refrigerated",
+          "firm": "FRESH IDEATION FOOD GROUP, LLC dba Fresh Creative Cuisine",
+          "states": "The recalled product was distributed to the following states: MD, PA, DE, NY, DC, NJ, NC, CT, SC, VA, MA .",
+          "recall_number": "F-0214-2024",
+          "event_id": "91653"
+        }
+      ]
+    },
+    "butter-lettuce": {
+      "slug": "butter-lettuce",
+      "n": 3,
+      "events": 2,
+      "class_i_events": 1,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2023-01-25",
+      "order_key": "2022-11-30",
+      "recent": [
+        {
+          "date": "2023-01-25",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Superior Fresh Lettuce Blend Ingredients May Contain Red Leaf, Green Leaf, Green Romaine, Red Romaine, Red Oak Leaf, Green Oak Leaf, Butter lettuce, Arugula, spinach. Keep Refrige…",
+          "firm": "Superior Fresh, LLC",
+          "states": "IN, PA, VA, WI",
+          "recall_number": "F-0304-2023",
+          "event_id": "91496"
+        },
+        {
+          "date": "2023-01-25",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Superior Fresh Lettuce Blend Ingredients May Contain Red Leaf, Green Leaf, Green Romaine, Red Romaine, Red Oak Leaf, Green Oak Leaf, Butter lettuce, Arugula, Kale, Spinach, Mustar…",
+          "firm": "Superior Fresh, LLC",
+          "states": "IN, PA, VA, WI",
+          "recall_number": "F-0302-2023",
+          "event_id": "91496"
+        },
+        {
+          "date": "2022-11-30",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Kalera, The cleanest lettuce in the world., Butter lettuce, Whole head with living roots, Distributed by Kalera, Inc, Orlando FL 32822",
+          "firm": "Kalera Public Limited Company",
+          "states": "Domestic distribution only.",
+          "recall_number": "F-0170-2023",
+          "event_id": "91111"
+        }
+      ]
+    },
+    "jicama": {
+      "slug": "jicama",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 0,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2022-12-14",
+      "order_key": "2022-12-14",
+      "recent": [
+        {
+          "date": "2022-12-14",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Taylor Farms Jicama Sticks, Refrigerated & Ready To Eat product, packaged in a clear plastic clamshell container, net wt. 14 oz. Distributed by Taylor Farms NW Kent, WA 98032. UPC…",
+          "firm": "Taylor Farms Northwest, LLC",
+          "states": "Distributed in Washington only.",
+          "recall_number": "F-0187-2023",
+          "event_id": "91168"
+        }
+      ]
+    },
+    "thyme": {
+      "slug": "thyme",
+      "n": 4,
+      "events": 4,
+      "class_i_events": 3,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2022-11-09",
+      "order_key": "2022-11-09",
+      "recent": [
+        {
+          "date": "2022-11-09",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "FREDERICKS 8 oz Brie - triple cr¿me, rounds UPC 708820301214 FRESH THYME 8 oz Brie - triple cr¿me, rounds UPC 841330111987 HEINEN 8 oz Brie - triple cr¿me, rounds UPC 020601418028…",
+          "firm": "Old Europe Cheese, Inc.",
+          "states": "AR AZ CA CO FL GA IL IN LA MA MD MI MN MO NC NJ NY OH OR PA TX UT VA WA WI and Mexico",
+          "recall_number": "F-0116-2023",
+          "event_id": "90944"
+        },
+        {
+          "date": "2020-12-02",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "HQO High Quality Organics Organic Thyme Leaves, Whole Net Weight 30 lbs., 500 lbs. High Quality Organics 1201 Moya Boulevard Reno, Nevada 89506 Certified Organic by QAI",
+          "firm": "High Quality Organics",
+          "states": "U.S distribution to the following: CA, WA, OR, PA, FL, and WI. No foreign distribution.",
+          "recall_number": "F-0128-2021",
+          "event_id": "86743"
+        },
+        {
+          "date": "2020-09-02",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Seasoned Whole Bronzini; by the lb.; whole bronzini with lemon, parsley, and thyme; packaged in an oven ready tray; package size varies; keep refrigerated",
+          "firm": "Wegmans Food Markets, Inc.",
+          "states": "VA, NJ, MD, PA, NC, NY",
+          "recall_number": "F-1310-2020",
+          "event_id": "86208"
+        },
+        {
+          "date": "2020-02-12",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Cage Free Hard-Cooked Eggs sold under the following brand names: Almark, Fresh Thyme, Giant Eagle, Kroger, Lucerne, Members Mark, Naturally Better, Rembrandt Foods & Shop Rite.",
+          "firm": "Almark Foods, LLC",
+          "states": "Product was shipped to the following states: AL, AR, AZ, CA, CO, CT, DC, FL, GA, IA, IL, IN, KS, KY, LA, MA, MD, ME, MI…",
+          "recall_number": "F-0608-2020",
+          "event_id": "84543"
+        }
+      ]
+    },
+    "oregano": {
+      "slug": "oregano",
+      "n": 2,
+      "events": 2,
+      "class_i_events": 2,
+      "class_ii_events": 0,
+      "class_iii_events": 0,
+      "latest": "2022-07-13",
+      "order_key": "2022-07-13",
+      "recent": [
+        {
+          "date": "2022-07-13",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Organic Oregano Ground is packed in bulk 35 lbs. cases with food-grade poly bag that is labeled in parts: \"OREGONSPICE COMPANY***OG Oregano Ground***Net Wt 35 lb (15.89 kg)***1332…",
+          "firm": "OS Holding Inc",
+          "states": "Distributed in AZ, MN, and WI.",
+          "recall_number": "F-1388-2022",
+          "event_id": "90510"
+        },
+        {
+          "date": "2022-07-13",
+          "classification": "Class I",
+          "status": "Terminated",
+          "product": "Pure Ground Ingredients Organic Oregano Leaf Powder Item#: OREO-PW Weight: 35 LBS/15.89 kgs Processed and Packaged at Pure Ground Ingredients 2535 Business Parkway Minden, NV 8942…",
+          "firm": "Pure Ground Ingredients",
+          "states": "U.S. distribution to the following: OR, WI, MD, CO. No foreign distribution.",
+          "recall_number": "F-1403-2022",
+          "event_id": "90513"
+        }
+      ]
+    },
+    "papaya": {
+      "slug": "papaya",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 0,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2022-06-22",
+      "order_key": "2022-06-22",
+      "recent": [
+        {
+          "date": "2022-06-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Thistle Tropical Limeade Cold-Pressed Organic Juice watermelon pineapple lime strawberry papaya activated charcoal 32 FL OZ (355 mL) Keep Refrigerated Distributed By: Thistle Heal…",
+          "firm": "THISTLE HEALTH INC",
+          "states": "U.S. distribution to the following: CA, NV, OR, WA No foreign distribution.",
+          "recall_number": "F-1314-2022",
+          "event_id": "90347"
+        }
+      ]
+    },
+    "yeast": {
+      "slug": "yeast",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 0,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2021-09-29",
+      "order_key": "2021-09-29",
+      "recent": [
+        {
+          "date": "2021-09-29",
+          "classification": "Class II",
+          "status": "Completed",
+          "product": "FLEISCHMANN'S YEAST COMPRESSED FRESH ESL 24/1lbs Paper/Foil overwrap",
+          "firm": "Sysco Atlanta, LLC",
+          "states": "Product was shipped to the following states: GA, NC & TN.",
+          "recall_number": "F-0993-2021",
+          "event_id": "88509"
+        }
+      ]
+    },
+    "snapper": {
+      "slug": "snapper",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 0,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2020-09-02",
+      "order_key": "2020-09-02",
+      "recent": [
+        {
+          "date": "2020-09-02",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Whole Seasoned Snapper; by the lb.; whole seasoned snapper with lemon and oil; packaged in an oven ready tray; total package size varies; keep refrigerated",
+          "firm": "Wegmans Food Markets, Inc.",
+          "states": "VA, NJ, MD, PA, NC, NY",
+          "recall_number": "F-1312-2020",
+          "event_id": "86208"
+        }
+      ]
+    },
+    "iceberg-lettuce": {
+      "slug": "iceberg-lettuce",
+      "n": 5,
+      "events": 1,
+      "class_i_events": 0,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2020-07-22",
+      "order_key": "2020-07-22",
+      "recent": [
+        {
+          "date": "2020-07-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Fresh Express Iceberg Garden / Lechuga Repollo 3 lbs., UPC 071279104119, Iceberg lettuce, carrots & red cabbage",
+          "firm": "Fresh Express Incorporated",
+          "states": "Domestic: Midwestern states of AR, CT, DC, DE, IA, IL, IN, KS, KY, MA, MD, ME, MI, MN, MO, MT, NC, ND, NE, NH, NJ, NY, …",
+          "recall_number": "F-1072-2020",
+          "event_id": "85918"
+        },
+        {
+          "date": "2020-07-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Fresh Express SHREDS 8 oz., UPC 071279151014, (Canada UPC) 0 71279 15101 4, Shredded iceberg lettuce",
+          "firm": "Fresh Express Incorporated",
+          "states": "Domestic: Midwestern states of AR, CT, DC, DE, IA, IL, IN, KS, KY, MA, MD, ME, MI, MN, MO, MT, NC, ND, NE, NH, NJ, NY, …",
+          "recall_number": "F-1080-2020",
+          "event_id": "85918"
+        },
+        {
+          "date": "2020-07-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Fresh Express SHREDS Iceberg 14 oz., UPC 071279152004, Shredded iceberg lettuce",
+          "firm": "Fresh Express Incorporated",
+          "states": "Domestic: Midwestern states of AR, CT, DC, DE, IA, IL, IN, KS, KY, MA, MD, ME, MI, MN, MO, MT, NC, ND, NE, NH, NJ, NY, …",
+          "recall_number": "F-1079-2020",
+          "event_id": "85918"
+        },
+        {
+          "date": "2020-07-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Giant Eagle Life s Getting Fresher Fresh Shredded Iceberg Lettuce 8 oz., UPC 030034923150, Iceberg lettuce",
+          "firm": "Fresh Express Incorporated",
+          "states": "Domestic: Midwestern states of AR, CT, DC, DE, IA, IL, IN, KS, KY, MA, MD, ME, MI, MN, MO, MT, NC, ND, NE, NH, NJ, NY, …",
+          "recall_number": "F-1095-2020",
+          "event_id": "85918"
+        },
+        {
+          "date": "2020-07-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Fresh Express Iceberg Garden / Lechuga Repollo 24 oz., UPC 071279104119, iceberg lettuce, carrots & red cabbage",
+          "firm": "Fresh Express Incorporated",
+          "states": "Domestic: Midwestern states of AR, CT, DC, DE, IA, IL, IN, KS, KY, MA, MD, ME, MI, MN, MO, MT, NC, ND, NE, NH, NJ, NY, …",
+          "recall_number": "F-1050-2020",
+          "event_id": "85918"
+        }
+      ]
+    },
+    "red-leaf-lettuce": {
+      "slug": "red-leaf-lettuce",
+      "n": 1,
+      "events": 1,
+      "class_i_events": 0,
+      "class_ii_events": 1,
+      "class_iii_events": 0,
+      "latest": "2020-07-22",
+      "order_key": "2020-07-22",
+      "recent": [
+        {
+          "date": "2020-07-22",
+          "classification": "Class II",
+          "status": "Terminated",
+          "product": "Fresh Express Farmer's Garden 9 oz., UPC 071279281025, Butter & red leaf lettuce, grape tomatoes, carrots & radishes",
+          "firm": "Fresh Express Incorporated",
+          "states": "Domestic: Midwestern states of AR, CT, DC, DE, IA, IL, IN, KS, KY, MA, MD, ME, MI, MN, MO, MT, NC, ND, NE, NH, NJ, NY, …",
+          "recall_number": "F-1065-2020",
+          "event_id": "85918"
+        }
+      ]
+    }
+  }
+}

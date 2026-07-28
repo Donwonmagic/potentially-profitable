@@ -1,0 +1,96 @@
+{
+  "_doc": "DataCite 4.x metadata for the Menu-Pricing field report — PREPARED, NOT MINTED. doi is a null placeholder and the ORCID is TO-FILL; both are set when the operator mints the DOI on the Mac. Never fabricate a DOI or ORCID.",
+  "data": {
+    "type": "dois",
+    "attributes": {
+      "doi": null,
+      "titles": [
+        {
+          "title": "The Menu-Pricing Playbook — Muntin"
+        }
+      ],
+      "creators": [
+        {
+          "name": "The Muntin Desk",
+          "nameType": "Organizational"
+        },
+        {
+          "name": "Goldstein, Don",
+          "nameType": "Personal",
+          "givenName": "Don",
+          "familyName": "Goldstein",
+          "nameIdentifiers": [
+            {
+              "nameIdentifier": "TO-FILL",
+              "nameIdentifierScheme": "ORCID"
+            }
+          ]
+        }
+      ],
+      "publisher": "Muntin Cost Index",
+      "publicationYear": 2026,
+      "types": {
+        "resourceTypeGeneral": "Text",
+        "resourceType": "Working paper (practitioner field report; not peer-reviewed)"
+      },
+      "version": "2026.07.11",
+      "rightsList": [
+        {
+          "rights": "Creative Commons Attribution 4.0 International",
+          "rightsIdentifier": "cc-by-4.0",
+          "rightsIdentifierScheme": "SPDX",
+          "rightsUri": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ],
+      "relatedIdentifiers": [
+        {
+          "relationType": "IsSupplementTo",
+          "relatedIdentifier": "https://muntin.digital/cost-index/menu-pricing/study/",
+          "relatedIdentifierType": "URL"
+        },
+        {
+          "relationType": "IsDerivedFrom",
+          "relatedIdentifier": "https://muntin.digital/open/",
+          "relatedIdentifierType": "URL"
+        },
+        {
+          "relationType": "IsDocumentedBy",
+          "relatedIdentifier": "https://muntin.digital/methods/",
+          "relatedIdentifierType": "URL"
+        }
+      ],
+      "subjects": [
+        {
+          "subject": "menu pricing"
+        },
+        {
+          "subject": "edible yield"
+        },
+        {
+          "subject": "price stickiness"
+        },
+        {
+          "subject": "seasonal price gate"
+        },
+        {
+          "subject": "commodity co-movement"
+        },
+        {
+          "subject": "cross-price elasticity"
+        },
+        {
+          "subject": "food-waste return"
+        },
+        {
+          "subject": "restaurant cost control"
+        }
+      ],
+      "descriptions": [
+        {
+          "description": "An independent restaurant prices its menu against inputs that never sit still. This practitioner field report documents Muntin's per-ingredient pricing instrument — 100 ingredients read into four postures — and grounds each analytical layer in published research: menu-cost and price-stickiness theory, farm-to-retail price transmission, edible-yield and meat-science literature, seasonal price-variation research, cross-price and commodity co-movement economics, and food-waste return studies. The document has paper form (abstract, cited sections, methods, limitations). It is not peer-reviewed, it is not a controlled experiment, and it makes no claim of statistical significance. The headline reads are descriptive and drawn from public wholesale references, not any operator's delivered price. Of 100 ingredients, 37 lock, 19 cushion, 7 float, and 37 withhold. The worst trim tax is citrus at 2.16x and the gentlest is mushroom at 1.14x. Fifty-four ingredients carry a seasonal window that cleared a noise gate; the rest show only scatter. Across 432 large-move episodes, 94% traveled with at least one other ingredient — so a backup must be checked pair by pair, since most named substitutes still hedge and only a minority mirror; and the median episode cleared in 77 days, which is the case against reprinting a menu on a spike.",
+          "descriptionType": "Abstract"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "_doc": "USDA NASS farmed-seafood fundamentals (catfish + trout): production / sales / grower-price by year. A WORLD-SUPPLY / production FUNDAMENTAL for species that are overwhelmingly US aquaculture — never the measured tier, never the Vendor Benchmark reference, never a delivered/retail price, never a forecast (ADR-013 honest subset). Source: USDA NASS Quickstats, public domain. Built by scripts/fetch-nass-aquaculture.mjs --live on the operator Mac.",
+  "source": "USDA NASS Quickstats — https://quickstats.nass.usda.gov/",
+  "license": "public-domain-usgov",
+  "lane": "world-supply (production fundamental; never a price, never in the index/VB)",
+  "fetchedAt": "2026-07-24T14:18:41.276Z",
+  "series_count": 2,
+  "series": [
+    {
+      "species": "CATFISH",
+      "statistic": "SALES",
+      "unit": "$",
+      "series": [
+        {
+          "year": 2015,
+          "value": 363610000
+        },
+        {
+          "year": 2016,
+          "value": 385985000
+        },
+        {
+          "year": 2017,
+          "value": 379713000
+        },
+        {
+          "year": 2018,
+          "value": 360401000
+        },
+        {
+          "year": 2019,
+          "value": 379861000
+        },
+        {
+          "year": 2020,
+          "value": 376948000
+        },
+        {
+          "year": 2021,
+          "value": 427361000
+        },
+        {
+          "year": 2022,
+          "value": 447039000
+        },
+        {
+          "year": 2023,
+          "value": 453891000
+        },
+        {
+          "year": 2024,
+          "value": 389508000
+        },
+        {
+          "year": 2025,
+          "value": 393776000
+        }
+      ]
+    },
+    {
+      "species": "TROUT",
+      "statistic": "SALES",
+      "unit": "$",
+      "series": [
+        {
+          "year": 2015,
+          "value": 113099000
+        },
+        {
+          "year": 2016,
+          "value": 113904000
+        },
+        {
+          "year": 2017,
+          "value": 120302000
+        },
+        {
+          "year": 2018,
+          "value": 111879000
+        },
+        {
+          "year": 2019,
+          "value": 118528000
+        },
+        {
+          "year": 2020,
+          "value": 104284000
+        },
+        {
+          "year": 2021,
+          "value": 110997000
+        },
+        {
+          "year": 2022,
+          "value": 119093000
+        },
+        {
+          "year": 2023,
+          "value": 112736000
+        },
+        {
+          "year": 2024,
+          "value": 123921000
+        },
+        {
+          "year": 2025,
+          "value": 118193000
+        }
+      ]
+    }
+  ]
+}

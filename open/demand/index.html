@@ -1,0 +1,406 @@
+<title>The Sector Demand Backdrop — US Food-Services Monthly Sales (Census MARTS)</title>
+<meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="description" content="US Food Services &amp; Drinking Places monthly sales, US$ millions (Census MARTS via FRED, NAICS 722). Observed sales, never a demand forecast." />
+<meta name="theme-color" content="#2A50C8" />
+<link rel="canonical" href="https://muntin.digital/open/demand/" />
+<link rel="alternate" hreflang="en" href="https://muntin.digital/open/demand/" />
+<link rel="alternate" hreflang="es" href="https://muntin.digital/es/open/demand/" />
+<link rel="alternate" hreflang="x-default" href="https://muntin.digital/open/demand/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="The Sector Demand Backdrop — US Food-Services Monthly Sales (Census MARTS)" />
+<meta property="og:description" content="US Food Services &amp; Drinking Places monthly sales, US$ millions (Census MARTS via FRED, NAICS 722). Observed sales, never a demand forecast." />
+<meta property="og:url" content="https://muntin.digital/open/demand/" />
+<meta property="og:site_name" content="Muntin Digital" />
+<meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The Sector Demand Backdrop — US Food-Services Monthly Sales (Census MARTS)" />
+<meta name="twitter:description" content="US Food Services &amp; Drinking Places monthly sales, US$ millions (Census MARTS via FRED, NAICS 722). Observed sales, never a demand forecast." />
+<meta name="twitter:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
+<link rel="icon" type="image/svg+xml" sizes="any" href="/brand/mark/mark-square-ink.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
+<link rel="manifest" href="/brand/favicons/site.webmanifest" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Open data","item":"https://muntin.digital/open/"},{"@type":"ListItem","position":3,"name":"The Sector Demand Backdrop","item":"https://muntin.digital/open/demand/"}]}</script>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site-core.css" />
+<style>
+/* === MUNTIN OPEN-DATA EXPLORER · shared token block === */
+:root{
+  --paper:#f7f4ee; --surface:#fffdf9; --surface-2:#f1ece2;
+  --ink:#1b1f24; --ink-soft:#4a525a; --muted:#676b66;
+  --line:#e5ddce; --line-soft:#efe9dc;
+  --teal:#2f7d78; --teal-ink:#215a56; --teal-wash:#e4efed;
+  --gold:#8a6216; --rust:#a8442d;
+  --up:var(--rust); --dn:var(--teal-ink); --flat:var(--muted);
+  --focus:#1b6be0; --focus-ring:0 0 0 3px rgba(27,107,224,.55);
+  --ok-badge-bd:var(--teal); --ok-badge-ink:var(--teal-ink);
+  --font-display:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+  --font-sans:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-mono:ui-monospace,'SF Mono','Cascadia Code',Menlo,Consolas,monospace;
+  --sh:0 1px 2px rgba(20,24,29,.05),0 8px 24px rgba(20,24,29,.07);
+  --tap:44px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#13161a; --surface:#1a1e23; --surface-2:#222831;
+  --ink:#eef1f0; --ink-soft:#b7bec3; --muted:#8b949c;
+  --line:#2b3138; --line-soft:#242a30;
+  --teal:#57b7af; --teal-ink:#7fcfc7; --teal-wash:#16302e;
+  --gold:#d3a44c; --rust:#e08a72;
+  --focus:#7ab6ff; --focus-ring:0 0 0 3px rgba(122,182,255,.6);
+  --sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);
+}}
+:root[data-theme="dark"]{ --paper:#13161a;--surface:#1a1e23;--surface-2:#222831;--ink:#eef1f0;--ink-soft:#b7bec3;--muted:#8b949c;--line:#2b3138;--line-soft:#242a30;--teal:#57b7af;--teal-ink:#7fcfc7;--teal-wash:#16302e;--gold:#d3a44c;--rust:#e08a72;--focus:#7ab6ff;--focus-ring:0 0 0 3px rgba(122,182,255,.6);--sh:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4); }
+:root[data-theme="light"]{ --paper:#f7f4ee;--surface:#fffdf9;--surface-2:#f1ece2;--ink:#1b1f24;--ink-soft:#4a525a;--muted:#676b66;--line:#e5ddce;--line-soft:#efe9dc;--teal:#2f7d78;--teal-ink:#215a56;--teal-wash:#e4efed;--gold:#8a6216;--rust:#a8442d;--focus:#1b6be0;--focus-ring:0 0 0 3px rgba(27,107,224,.55); }
+*{box-sizing:border-box}
+html{color-scheme:light dark}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:clamp(18px,3.5vw,44px) clamp(14px,4vw,30px) 90px}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+h1{font-family:var(--font-display);font-weight:600;line-height:1.03;letter-spacing:-.01em;text-wrap:balance}
+h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.01em}
+a{color:var(--teal-ink)} a:hover{text-decoration:underline}
+svg{display:block;max-width:100%;height:auto}
+figure{margin:0}
+:where(a,button,select,input,summary,[tabindex]):focus-visible{outline:2px solid var(--focus);outline-offset:2px;box-shadow:var(--focus-ring);border-radius:6px}
+button,select,input{min-height:var(--tap);font:inherit}
+button,[role=button]{min-width:var(--tap)}
+input,select{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.lic{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--ok-badge-bd);color:var(--ok-badge-ink);border-radius:5px;padding:1px 7px;font:600 10.5px/1.4 var(--font-mono);letter-spacing:.06em}
+.lic::before{content:'\2713'}
+.honest{display:block;font:400 11.5px/1.4 var(--font-sans);color:var(--muted);font-style:italic}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+@media (forced-colors:active){.lic{border:1px solid CanvasText}.dm-line-sa,.dm-line-nsa{forced-color-adjust:none}}
+
+/* === page-specific (.dm-*) === */
+header.mast{border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:8px}
+.kick{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-ink);margin:0 0 12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.mast-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+h1{font-size:clamp(28px,5.4vw,50px);margin:0 0 12px}
+.lede{font-size:clamp(15px,2.1vw,18px);color:var(--ink-soft);max-width:64ch;margin:0}
+.lede b{color:var(--ink);font-weight:600}
+.themebtn{background:var(--surface);border:1px solid var(--line);border-radius:10px;width:var(--tap);height:var(--tap);display:inline-grid;place-items:center;cursor:pointer;font-size:17px;flex:none}
+h2{font-size:clamp(20px,3.2vw,27px);margin:36px 0 4px}
+h2:first-of-type{margin-top:24px}
+.beat-sub{color:var(--ink-soft);margin:2px 0 16px;max-width:66ch}
+.panel{border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--sh);padding:clamp(12px,2.4vw,20px);margin:14px 0}
+.dm-lane{border-left:3px solid var(--gold)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--ink-soft);margin:0 0 10px}
+.legend .sw{display:inline-flex;align-items:center;gap:6px}
+.dm-box{width:22px;height:4px;border-radius:2px;display:inline-block}
+.dm-box.dm-sa{background:var(--teal-ink)} .dm-box.dm-nsa{background:var(--gold)}
+.dm-dot-prov{width:11px;height:11px;border-radius:50%;border:1.5px dashed var(--rust);display:inline-block}
+.nojs-note{background:var(--surface-2);border:1px dashed var(--line);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--ink-soft);margin:10px 0}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--sh);max-height:520px}
+table.data{border-collapse:collapse;width:100%;font-size:13.5px}
+table.data caption{text-align:left;padding:12px 14px 4px;color:var(--ink-soft);font-size:13px}
+table.data th,table.data td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+table.data th[scope=col]{position:sticky;top:0;background:var(--surface-2);z-index:1}
+table.data th.l,table.data td.l{text-align:left}
+.dm-prov-row{background:var(--teal-wash)}
+.dm-prov{color:var(--rust);font-weight:600}
+.dm-scroll{overflow-x:auto}
+.dm-grid{stroke:var(--line);stroke-width:1}
+.dm-tk{fill:var(--muted);font:11px var(--font-mono)}
+.dm-line-sa{stroke:var(--teal-ink);stroke-width:2.2;fill:none}
+.dm-line-nsa{stroke:var(--gold);stroke-width:1;fill:none;opacity:.7}
+.dm-line-prov{stroke:var(--rust);stroke-width:1.8;stroke-dasharray:4 3;fill:none}
+.dm-dot-prov-svg{fill:var(--surface);stroke:var(--rust);stroke-width:1.8}
+.provgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+footer.prov{margin-top:40px;border-top:1px solid var(--line);padding-top:20px;color:var(--ink-soft);font-size:13.5px}
+footer.prov h2{font-size:17px;margin:0 0 8px}
+footer.prov a{word-break:break-word}
+.aha{border-left:3px solid var(--gold);padding:6px 0 6px 16px;margin:22px 0;font-family:var(--font-display);font-size:clamp(17px,2.6vw,22px);line-height:1.3;color:var(--ink)}
+.aha b{font-weight:700}
+@media (max-width:560px){ h2{margin-top:28px} }
+</style>
+
+
+<div class="wrap">
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- batch-banner:start --><!-- batch-banner:end -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo" aria-label="Muntin Digital">
+      <img class="logo-mark" src="/brand/mark/mark-square-ink.svg" alt="" width="36" height="36" />
+      <span class="logo-text">Muntin Digital</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary"><a href="/open/">Open data</a><a href="/cost-index/">Cost Index</a></nav>
+  </div>
+</header>
+<header class="mast">
+  <div class="mast-top">
+    <div>
+      <p class="kick">
+        <span>Muntin Open Data · Explorer</span>
+        <span class="lic" data-lic="cc0" role="img" aria-label="This dataset is Creative Commons Zero, public domain">CC0</span>
+      </p>
+      <h1>The Sector Demand Backdrop</h1>
+    </div>
+    <button class="themebtn" id="themeBtn" aria-label="Switch color theme" title="Switch light / dark theme">◐</button>
+    <span id="themeLive" class="sr-only" role="status" aria-live="polite"></span>
+  </div>
+  <p class="lede">US Food Services &amp; Drinking Places monthly sales, in US$ millions (Census MARTS via FRED, NAICS 722). <b>observed sales, never a forecast</b>. The most recent month is a <b>provisional advance estimate</b>, subject to revision. <b>never blended into the food index, the pressure math, or the Vendor Benchmark</b> reference.<span class="honest" style="margin-top:8px">The sell-side backdrop: what the sector takes in, set beside the cost data — never a demand forecast, and never inside any Muntin price index.</span></p>
+</header>
+
+<main id="main">
+
+  <section class="panel dm-lane" aria-label="How to read this page">
+    <p style="margin:0"><b>A separate descriptive lane (ADR-013).</b> These are observed sector sales — <b>observed sales, never a forecast</b> — set beside the cost data, never an input to any Muntin price index, pressure reading, or Vendor Benchmark reference. The newest month is always a <b>provisional advance estimate</b>.</p>
+  </section>
+
+  <h2>Monthly food-service sales · Jan 2015 → Jun 2026</h2>
+  <p class="beat-sub"><b>SA</b> is the seasonally adjusted trend; <b>NSA</b> is the raw seasonal shape (the same demand, before the seasonal pattern is removed). The most recent month renders hollow — a <b>provisional advance estimate</b>, not a settled point, never drawn as final.</p>
+  <figure class="panel">
+    <div class="legend" aria-hidden="true">
+      <span class="sw"><span class="dm-box dm-sa"></span> SA — trend (seasonally adjusted)</span>
+      <span class="sw"><span class="dm-box dm-nsa"></span> NSA — seasonal shape</span>
+      <span class="sw"><span class="dm-dot-prov"></span> provisional advance estimate</span>
+    </div>
+    <div class="dm-scroll">
+      <svg id="sales" role="img" width="960" height="360" aria-labelledby="sales-t sales-d">
+        <title id="sales-t">US food-services monthly sales, seasonally adjusted and not, Jan 2015 to Jun 2026.</title>
+        <desc id="sales-d">A line chart of US Food Services and Drinking Places monthly sales in US dollars millions, from Jan 2015 to Jun 2026. The seasonally adjusted trend rises over the decade, drops sharply in spring 2020, then recovers. The not-seasonally-adjusted line oscillates around it with the yearly seasonal shape. The most recent month is a provisional advance estimate, drawn hollow. Observed sales, never a forecast, and never blended into any price index or the Vendor Benchmark.</desc>
+      </svg>
+    </div>
+    <figcaption class="honest" data-audio-alt="US food-services monthly sales, seasonally adjusted trend and the raw not-seasonally-adjusted seasonal shape, in US dollars millions — observed sales, never a forecast, the newest month a provisional advance estimate, never blended into any price index or the Vendor Benchmark.">Monthly sales, SA trend and NSA seasonal shape — <b>observed sales, never a forecast</b>; the newest month is a <b>provisional advance estimate</b>.</figcaption>
+  </figure>
+
+  <p class="aha" id="aha">The documented COVID shock is the sharpest move on record: seasonally adjusted sales fell from <span class="mono">67,358</span> in <span class="mono">Feb 2020</span> to <span class="mono">30,732</span> in <span class="mono">Apr 2020</span> — a documented past drop, both endpoints settled months.
+    <span class="honest" style="display:block;margin-top:6px">Observed context, never a forecast. US$ millions, seasonally adjusted. The recovery since is real but nominal — dollars, not inflation-adjusted volume.</span>
+  </p>
+
+  <h2>Every month, as data</h2>
+  <p class="nojs-note">This table is the source of record — it works with no JavaScript, and the chart above is an enhancement of it. The newest month is flagged a provisional advance estimate.</p>
+  <div class="tablewrap">
+    <table class="data" id="tbl">
+      <caption>Census MARTS monthly sales for Food Services &amp; Drinking Places (NAICS 722), US$ millions, Jan 2015–Jun 2026. <b>SA</b> = seasonally adjusted; <b>NSA</b> = not adjusted. The most recent month (Jun 2026) is a provisional advance estimate, subject to revision. Observed sales, never a forecast.</caption>
+      <thead>
+        <tr>
+          <th scope="col" class="l">Month</th>
+          <th scope="col">Sales, SA ($M)</th>
+          <th scope="col">Sales, NSA ($M)</th>
+          <th scope="col" class="l">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr><td class="l mono">2015-01-01</td><td class="mono">49,690</td><td class="mono">47,106</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2015-02-01</td><td class="mono">49,525</td><td class="mono">45,761</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2015-03-01</td><td class="mono">49,966</td><td class="mono">52,164</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2015-04-01</td><td class="mono">50,577</td><td class="mono">51,285</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2015-05-01</td><td class="mono">50,710</td><td class="mono">54,310</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2015-06-01</td><td class="mono">50,752</td><td class="mono">51,006</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2015-07-01</td><td class="mono">50,989</td><td class="mono">52,060</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2015-08-01</td><td class="mono">51,279</td><td class="mono">52,048</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2015-09-01</td><td class="mono">51,316</td><td class="mono">49,623</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2015-10-01</td><td class="mono">51,627</td><td class="mono">52,814</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2015-11-01</td><td class="mono">51,773</td><td class="mono">49,133</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2015-12-01</td><td class="mono">52,598</td><td class="mono">53,387</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2016-01-01</td><td class="mono">51,983</td><td class="mono">49,072</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2016-02-01</td><td class="mono">53,088</td><td class="mono">50,487</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2016-03-01</td><td class="mono">52,858</td><td class="mono">54,814</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2016-04-01</td><td class="mono">53,142</td><td class="mono">55,215</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2016-05-01</td><td class="mono">53,191</td><td class="mono">55,851</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2016-06-01</td><td class="mono">53,124</td><td class="mono">53,496</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2016-07-01</td><td class="mono">53,244</td><td class="mono">54,895</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2016-08-01</td><td class="mono">53,653</td><td class="mono">54,082</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2016-09-01</td><td class="mono">54,259</td><td class="mono">53,174</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2016-10-01</td><td class="mono">54,210</td><td class="mono">54,589</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2016-11-01</td><td class="mono">55,212</td><td class="mono">52,231</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2016-12-01</td><td class="mono">54,191</td><td class="mono">56,304</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2017-01-01</td><td class="mono">56,143</td><td class="mono">51,876</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2017-02-01</td><td class="mono">56,129</td><td class="mono">51,695</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2017-03-01</td><td class="mono">56,044</td><td class="mono">58,902</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2017-04-01</td><td class="mono">56,142</td><td class="mono">57,321</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2017-05-01</td><td class="mono">56,145</td><td class="mono">58,840</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2017-06-01</td><td class="mono">56,063</td><td class="mono">57,408</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2017-07-01</td><td class="mono">55,976</td><td class="mono">57,263</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2017-08-01</td><td class="mono">56,414</td><td class="mono">57,317</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2017-09-01</td><td class="mono">56,703</td><td class="mono">55,909</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2017-10-01</td><td class="mono">57,108</td><td class="mono">56,994</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2017-11-01</td><td class="mono">57,725</td><td class="mono">54,608</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2017-12-01</td><td class="mono">58,041</td><td class="mono">60,014</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2018-01-01</td><td class="mono">58,212</td><td class="mono">53,555</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2018-02-01</td><td class="mono">58,524</td><td class="mono">53,784</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2018-03-01</td><td class="mono">59,023</td><td class="mono">62,328</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2018-04-01</td><td class="mono">58,255</td><td class="mono">59,071</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2018-05-01</td><td class="mono">59,620</td><td class="mono">62,780</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2018-06-01</td><td class="mono">60,220</td><td class="mono">62,267</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2018-07-01</td><td class="mono">61,072</td><td class="mono">62,232</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2018-08-01</td><td class="mono">61,414</td><td class="mono">63,195</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2018-09-01</td><td class="mono">60,069</td><td class="mono">58,567</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2018-10-01</td><td class="mono">60,522</td><td class="mono">60,159</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2018-11-01</td><td class="mono">60,242</td><td class="mono">57,591</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2018-12-01</td><td class="mono">60,181</td><td class="mono">61,385</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2019-01-01</td><td class="mono">60,194</td><td class="mono">55,499</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2019-02-01</td><td class="mono">60,557</td><td class="mono">55,591</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2019-03-01</td><td class="mono">61,096</td><td class="mono">64,640</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2019-04-01</td><td class="mono">61,608</td><td class="mono">62,039</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2019-05-01</td><td class="mono">62,227</td><td class="mono">66,210</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2019-06-01</td><td class="mono">63,135</td><td class="mono">64,776</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2019-07-01</td><td class="mono">63,787</td><td class="mono">65,063</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2019-08-01</td><td class="mono">64,042</td><td class="mono">66,988</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2019-09-01</td><td class="mono">64,727</td><td class="mono">62,397</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2019-10-01</td><td class="mono">65,021</td><td class="mono">64,891</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2019-11-01</td><td class="mono">65,175</td><td class="mono">62,959</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2019-12-01</td><td class="mono">66,223</td><td class="mono">66,289</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2020-01-01</td><td class="mono">67,345</td><td class="mono">62,496</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2020-02-01</td><td class="mono">67,358</td><td class="mono">64,394</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2020-03-01</td><td class="mono">47,370</td><td class="mono">49,123</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2020-04-01</td><td class="mono">30,732</td><td class="mono">30,916</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2020-05-01</td><td class="mono">40,492</td><td class="mono">43,569</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2020-06-01</td><td class="mono">52,238</td><td class="mono">53,231</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2020-07-01</td><td class="mono">54,431</td><td class="mono">56,445</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2020-08-01</td><td class="mono">57,039</td><td class="mono">58,522</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2020-09-01</td><td class="mono">58,600</td><td class="mono">56,901</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2020-10-01</td><td class="mono">58,351</td><td class="mono">59,518</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2020-11-01</td><td class="mono">55,862</td><td class="mono">52,622</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2020-12-01</td><td class="mono">52,599</td><td class="mono">52,757</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2021-01-01</td><td class="mono">57,626</td><td class="mono">53,823</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2021-02-01</td><td class="mono">56,086</td><td class="mono">51,431</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2021-03-01</td><td class="mono">63,974</td><td class="mono">66,085</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2021-04-01</td><td class="mono">66,762</td><td class="mono">68,030</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2021-05-01</td><td class="mono">68,693</td><td class="mono">73,158</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2021-06-01</td><td class="mono">71,798</td><td class="mono">73,090</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2021-07-01</td><td class="mono">73,217</td><td class="mono">76,951</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2021-08-01</td><td class="mono">73,056</td><td class="mono">74,517</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2021-09-01</td><td class="mono">73,020</td><td class="mono">71,048</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2021-10-01</td><td class="mono">73,212</td><td class="mono">74,457</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2021-11-01</td><td class="mono">73,792</td><td class="mono">69,512</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2021-12-01</td><td class="mono">72,661</td><td class="mono">73,606</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2022-01-01</td><td class="mono">71,252</td><td class="mono">65,623</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2022-02-01</td><td class="mono">74,324</td><td class="mono">68,155</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2022-03-01</td><td class="mono">76,542</td><td class="mono">79,374</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2022-04-01</td><td class="mono">79,251</td><td class="mono">81,153</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2022-05-01</td><td class="mono">80,003</td><td class="mono">84,563</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2022-06-01</td><td class="mono">80,557</td><td class="mono">82,088</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2022-07-01</td><td class="mono">80,283</td><td class="mono">84,056</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2022-08-01</td><td class="mono">82,370</td><td class="mono">83,853</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2022-09-01</td><td class="mono">82,408</td><td class="mono">81,337</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2022-10-01</td><td class="mono">83,665</td><td class="mono">84,251</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2022-11-01</td><td class="mono">83,102</td><td class="mono">78,116</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2022-12-01</td><td class="mono">82,644</td><td class="mono">84,875</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2023-01-01</td><td class="mono">88,289</td><td class="mono">80,520</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2023-02-01</td><td class="mono">85,987</td><td class="mono">78,850</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2023-03-01</td><td class="mono">86,259</td><td class="mono">90,141</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2023-04-01</td><td class="mono">86,620</td><td class="mono">87,659</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2023-05-01</td><td class="mono">87,616</td><td class="mono">92,260</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2023-06-01</td><td class="mono">88,447</td><td class="mono">91,277</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2023-07-01</td><td class="mono">89,167</td><td class="mono">92,199</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2023-08-01</td><td class="mono">89,564</td><td class="mono">91,624</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2023-09-01</td><td class="mono">90,447</td><td class="mono">89,814</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2023-10-01</td><td class="mono">90,631</td><td class="mono">90,812</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2023-11-01</td><td class="mono">91,761</td><td class="mono">86,531</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2023-12-01</td><td class="mono">92,021</td><td class="mono">94,414</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2024-01-01</td><td class="mono">91,512</td><td class="mono">83,093</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2024-02-01</td><td class="mono">92,074</td><td class="mono">87,470</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2024-03-01</td><td class="mono">91,672</td><td class="mono">96,164</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2024-04-01</td><td class="mono">91,926</td><td class="mono">92,937</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2024-05-01</td><td class="mono">92,402</td><td class="mono">98,500</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2024-06-01</td><td class="mono">92,470</td><td class="mono">95,152</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2024-07-01</td><td class="mono">93,021</td><td class="mono">94,974</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2024-08-01</td><td class="mono">93,438</td><td class="mono">97,830</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2024-09-01</td><td class="mono">94,281</td><td class="mono">91,735</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2024-10-01</td><td class="mono">95,518</td><td class="mono">95,518</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2024-11-01</td><td class="mono">95,509</td><td class="mono">92,548</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2024-12-01</td><td class="mono">95,552</td><td class="mono">95,361</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2025-01-01</td><td class="mono">96,115</td><td class="mono">87,849</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2025-02-01</td><td class="mono">94,939</td><td class="mono">86,774</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2025-03-01</td><td class="mono">97,919</td><td class="mono">101,934</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2025-04-01</td><td class="mono">98,170</td><td class="mono">98,563</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2025-05-01</td><td class="mono">97,973</td><td class="mono">106,007</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2025-06-01</td><td class="mono">98,790</td><td class="mono">100,667</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2025-07-01</td><td class="mono">98,980</td><td class="mono">101,158</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2025-08-01</td><td class="mono">99,551</td><td class="mono">104,429</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2025-09-01</td><td class="mono">99,797</td><td class="mono">97,102</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2025-10-01</td><td class="mono">99,705</td><td class="mono">100,802</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2025-11-01</td><td class="mono">100,241</td><td class="mono">96,332</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2025-12-01</td><td class="mono">99,887</td><td class="mono">99,487</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2026-01-01</td><td class="mono">99,554</td><td class="mono">92,087</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2026-02-01</td><td class="mono">100,240</td><td class="mono">91,419</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2026-03-01</td><td class="mono">100,241</td><td class="mono">103,549</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2026-04-01</td><td class="mono">101,267</td><td class="mono">101,672</td><td class="l">settled</td></tr>
+          <tr><td class="l mono">2026-05-01</td><td class="mono">102,437</td><td class="mono">110,632</td><td class="l">settled</td></tr>
+          <tr class="dm-prov-row"><td class="l mono">2026-06-01</td><td class="mono">102,497</td><td class="mono">104,547</td><td class="l"><span class="dm-prov">provisional advance estimate</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>What this can't tell you</h2>
+  <section class="panel">
+    <ul style="margin:0;padding-left:20px;line-height:1.7">
+      <li><b>National, whole-sector.</b> This is all of US NAICS 722 — not the DMV, not fine dining, not one segment. A top-line, not your line.</li>
+      <li><b>Nominal dollars.</b> Inflation is not removed; growth in the number mixes real volume with higher prices. It is not a real-demand index.</li>
+      <li><b>The newest month is provisional.</b> The most recent month is a <b>provisional advance estimate</b>, revised in later releases — read it as a first draft.</li>
+      <li><b>Observed, not predicted.</b> Every point is a documented past month; <b>observed sales, never a forecast</b>.</li>
+      <li><b>A backdrop, fenced off.</b> It is <b>never blended into the food index, the pressure math, or the Vendor Benchmark</b> reference — set beside the cost data, never inside it.</li>
+    </ul>
+  </section>
+
+  <footer class="prov">
+    <h2>Provenance &amp; license</h2>
+    <div class="provgrid">
+      <div><b>Raw feed · CC0</b><br>Census MARTS via FRED (US Census Bureau), public domain. <a href="/data/marts-sales.json">data/marts-sales.json</a></div>
+      <div><b>Published series · CC0</b><br>A straight reshape; the newest month flagged provisional. <a href="/cost-index/marts-sales.csv">marts-sales.csv</a> · <a href="/cost-index/marts-sales.json">marts-sales.json</a></div>
+      <div><b>What this is</b><br>A descriptive demand backdrop — observed sales, never a forecast, never blended into the food index, the pressure math, or the Vendor Benchmark reference. The newest month is a provisional advance estimate.</div>
+      <div><b>Catalog</b><br><a href="/open/">Full open-data catalog →</a></div>
+    </div>
+  </footer>
+
+</main>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"US food-services monthly retail sales (Census MARTS)","description":"Monthly retail sales for Food Services & Drinking Places (NAICS 722), US$ millions, seasonally adjusted and not, via FRED. Observed sales, never a forecast; the most recent month is a provisional advance estimate. A descriptive demand backdrop, never in the food index.","url":"https://muntin.digital/open/demand/","creator":{"@type":"Organization","name":"Muntin Cost Index","url":"https://muntin.digital/"},"isBasedOn":{"@type":"Dataset","name":"US Census Bureau Monthly Retail Trade Survey (MARTS)","creator":{"@type":"GovernmentOrganization","name":"US Census Bureau"}},"license":"https://creativecommons.org/publicdomain/zero/1.0/","temporalCoverage":"2015/2026","spatialCoverage":{"@type":"Place","name":"United States"},"keywords":["food services sales","MARTS","retail trade","NAICS 722","demand backdrop","FRED"],"variableMeasured":[{"@type":"PropertyValue","name":"sales_sa_musd","description":"Seasonally adjusted monthly food-services sales, US$ millions — observed sales, never a forecast; the latest month is a provisional advance estimate."},{"@type":"PropertyValue","name":"sales_nsa_musd","description":"Not-seasonally-adjusted monthly food-services sales, US$ millions — the raw seasonal shape; never blended into any price index or the Vendor Benchmark."}],"distribution":[{"@type":"DataDownload","name":"MARTS sales CSV (CC0)","encodingFormat":"text/csv","contentUrl":"https://muntin.digital/cost-index/marts-sales.csv","license":"https://creativecommons.org/publicdomain/zero/1.0/"},{"@type":"DataDownload","name":"MARTS sales JSON (CC0)","encodingFormat":"application/json","contentUrl":"https://muntin.digital/cost-index/marts-sales.json","license":"https://creativecommons.org/publicdomain/zero/1.0/"}]}</script>
+<script type="application/json" id="demand-data">{"meta":{"dataset":"Census MARTS — US food-services monthly sales (NAICS 722)","unit":"US$ millions","license":"CC0 1.0","raw_url":"https://muntin.digital/data/marts-sales.json","csv_url":"https://muntin.digital/cost-index/marts-sales.csv","json_url":"https://muntin.digital/cost-index/marts-sales.json","catalog_url":"https://muntin.digital/open/","provisional_month":"2026-06-01","fence":"observed sales, never a forecast; never blended into the food index, the pressure math, or the Vendor Benchmark","span":{"from":"2015-01-01","to":"2026-06-01","y0":"2015","yN":"2026"}},"months":[{"date":"2015-01-01","sa":49690,"nsa":47106,"provisional":false},{"date":"2015-02-01","sa":49525,"nsa":45761,"provisional":false},{"date":"2015-03-01","sa":49966,"nsa":52164,"provisional":false},{"date":"2015-04-01","sa":50577,"nsa":51285,"provisional":false},{"date":"2015-05-01","sa":50710,"nsa":54310,"provisional":false},{"date":"2015-06-01","sa":50752,"nsa":51006,"provisional":false},{"date":"2015-07-01","sa":50989,"nsa":52060,"provisional":false},{"date":"2015-08-01","sa":51279,"nsa":52048,"provisional":false},{"date":"2015-09-01","sa":51316,"nsa":49623,"provisional":false},{"date":"2015-10-01","sa":51627,"nsa":52814,"provisional":false},{"date":"2015-11-01","sa":51773,"nsa":49133,"provisional":false},{"date":"2015-12-01","sa":52598,"nsa":53387,"provisional":false},{"date":"2016-01-01","sa":51983,"nsa":49072,"provisional":false},{"date":"2016-02-01","sa":53088,"nsa":50487,"provisional":false},{"date":"2016-03-01","sa":52858,"nsa":54814,"provisional":false},{"date":"2016-04-01","sa":53142,"nsa":55215,"provisional":false},{"date":"2016-05-01","sa":53191,"nsa":55851,"provisional":false},{"date":"2016-06-01","sa":53124,"nsa":53496,"provisional":false},{"date":"2016-07-01","sa":53244,"nsa":54895,"provisional":false},{"date":"2016-08-01","sa":53653,"nsa":54082,"provisional":false},{"date":"2016-09-01","sa":54259,"nsa":53174,"provisional":false},{"date":"2016-10-01","sa":54210,"nsa":54589,"provisional":false},{"date":"2016-11-01","sa":55212,"nsa":52231,"provisional":false},{"date":"2016-12-01","sa":54191,"nsa":56304,"provisional":false},{"date":"2017-01-01","sa":56143,"nsa":51876,"provisional":false},{"date":"2017-02-01","sa":56129,"nsa":51695,"provisional":false},{"date":"2017-03-01","sa":56044,"nsa":58902,"provisional":false},{"date":"2017-04-01","sa":56142,"nsa":57321,"provisional":false},{"date":"2017-05-01","sa":56145,"nsa":58840,"provisional":false},{"date":"2017-06-01","sa":56063,"nsa":57408,"provisional":false},{"date":"2017-07-01","sa":55976,"nsa":57263,"provisional":false},{"date":"2017-08-01","sa":56414,"nsa":57317,"provisional":false},{"date":"2017-09-01","sa":56703,"nsa":55909,"provisional":false},{"date":"2017-10-01","sa":57108,"nsa":56994,"provisional":false},{"date":"2017-11-01","sa":57725,"nsa":54608,"provisional":false},{"date":"2017-12-01","sa":58041,"nsa":60014,"provisional":false},{"date":"2018-01-01","sa":58212,"nsa":53555,"provisional":false},{"date":"2018-02-01","sa":58524,"nsa":53784,"provisional":false},{"date":"2018-03-01","sa":59023,"nsa":62328,"provisional":false},{"date":"2018-04-01","sa":58255,"nsa":59071,"provisional":false},{"date":"2018-05-01","sa":59620,"nsa":62780,"provisional":false},{"date":"2018-06-01","sa":60220,"nsa":62267,"provisional":false},{"date":"2018-07-01","sa":61072,"nsa":62232,"provisional":false},{"date":"2018-08-01","sa":61414,"nsa":63195,"provisional":false},{"date":"2018-09-01","sa":60069,"nsa":58567,"provisional":false},{"date":"2018-10-01","sa":60522,"nsa":60159,"provisional":false},{"date":"2018-11-01","sa":60242,"nsa":57591,"provisional":false},{"date":"2018-12-01","sa":60181,"nsa":61385,"provisional":false},{"date":"2019-01-01","sa":60194,"nsa":55499,"provisional":false},{"date":"2019-02-01","sa":60557,"nsa":55591,"provisional":false},{"date":"2019-03-01","sa":61096,"nsa":64640,"provisional":false},{"date":"2019-04-01","sa":61608,"nsa":62039,"provisional":false},{"date":"2019-05-01","sa":62227,"nsa":66210,"provisional":false},{"date":"2019-06-01","sa":63135,"nsa":64776,"provisional":false},{"date":"2019-07-01","sa":63787,"nsa":65063,"provisional":false},{"date":"2019-08-01","sa":64042,"nsa":66988,"provisional":false},{"date":"2019-09-01","sa":64727,"nsa":62397,"provisional":false},{"date":"2019-10-01","sa":65021,"nsa":64891,"provisional":false},{"date":"2019-11-01","sa":65175,"nsa":62959,"provisional":false},{"date":"2019-12-01","sa":66223,"nsa":66289,"provisional":false},{"date":"2020-01-01","sa":67345,"nsa":62496,"provisional":false},{"date":"2020-02-01","sa":67358,"nsa":64394,"provisional":false},{"date":"2020-03-01","sa":47370,"nsa":49123,"provisional":false},{"date":"2020-04-01","sa":30732,"nsa":30916,"provisional":false},{"date":"2020-05-01","sa":40492,"nsa":43569,"provisional":false},{"date":"2020-06-01","sa":52238,"nsa":53231,"provisional":false},{"date":"2020-07-01","sa":54431,"nsa":56445,"provisional":false},{"date":"2020-08-01","sa":57039,"nsa":58522,"provisional":false},{"date":"2020-09-01","sa":58600,"nsa":56901,"provisional":false},{"date":"2020-10-01","sa":58351,"nsa":59518,"provisional":false},{"date":"2020-11-01","sa":55862,"nsa":52622,"provisional":false},{"date":"2020-12-01","sa":52599,"nsa":52757,"provisional":false},{"date":"2021-01-01","sa":57626,"nsa":53823,"provisional":false},{"date":"2021-02-01","sa":56086,"nsa":51431,"provisional":false},{"date":"2021-03-01","sa":63974,"nsa":66085,"provisional":false},{"date":"2021-04-01","sa":66762,"nsa":68030,"provisional":false},{"date":"2021-05-01","sa":68693,"nsa":73158,"provisional":false},{"date":"2021-06-01","sa":71798,"nsa":73090,"provisional":false},{"date":"2021-07-01","sa":73217,"nsa":76951,"provisional":false},{"date":"2021-08-01","sa":73056,"nsa":74517,"provisional":false},{"date":"2021-09-01","sa":73020,"nsa":71048,"provisional":false},{"date":"2021-10-01","sa":73212,"nsa":74457,"provisional":false},{"date":"2021-11-01","sa":73792,"nsa":69512,"provisional":false},{"date":"2021-12-01","sa":72661,"nsa":73606,"provisional":false},{"date":"2022-01-01","sa":71252,"nsa":65623,"provisional":false},{"date":"2022-02-01","sa":74324,"nsa":68155,"provisional":false},{"date":"2022-03-01","sa":76542,"nsa":79374,"provisional":false},{"date":"2022-04-01","sa":79251,"nsa":81153,"provisional":false},{"date":"2022-05-01","sa":80003,"nsa":84563,"provisional":false},{"date":"2022-06-01","sa":80557,"nsa":82088,"provisional":false},{"date":"2022-07-01","sa":80283,"nsa":84056,"provisional":false},{"date":"2022-08-01","sa":82370,"nsa":83853,"provisional":false},{"date":"2022-09-01","sa":82408,"nsa":81337,"provisional":false},{"date":"2022-10-01","sa":83665,"nsa":84251,"provisional":false},{"date":"2022-11-01","sa":83102,"nsa":78116,"provisional":false},{"date":"2022-12-01","sa":82644,"nsa":84875,"provisional":false},{"date":"2023-01-01","sa":88289,"nsa":80520,"provisional":false},{"date":"2023-02-01","sa":85987,"nsa":78850,"provisional":false},{"date":"2023-03-01","sa":86259,"nsa":90141,"provisional":false},{"date":"2023-04-01","sa":86620,"nsa":87659,"provisional":false},{"date":"2023-05-01","sa":87616,"nsa":92260,"provisional":false},{"date":"2023-06-01","sa":88447,"nsa":91277,"provisional":false},{"date":"2023-07-01","sa":89167,"nsa":92199,"provisional":false},{"date":"2023-08-01","sa":89564,"nsa":91624,"provisional":false},{"date":"2023-09-01","sa":90447,"nsa":89814,"provisional":false},{"date":"2023-10-01","sa":90631,"nsa":90812,"provisional":false},{"date":"2023-11-01","sa":91761,"nsa":86531,"provisional":false},{"date":"2023-12-01","sa":92021,"nsa":94414,"provisional":false},{"date":"2024-01-01","sa":91512,"nsa":83093,"provisional":false},{"date":"2024-02-01","sa":92074,"nsa":87470,"provisional":false},{"date":"2024-03-01","sa":91672,"nsa":96164,"provisional":false},{"date":"2024-04-01","sa":91926,"nsa":92937,"provisional":false},{"date":"2024-05-01","sa":92402,"nsa":98500,"provisional":false},{"date":"2024-06-01","sa":92470,"nsa":95152,"provisional":false},{"date":"2024-07-01","sa":93021,"nsa":94974,"provisional":false},{"date":"2024-08-01","sa":93438,"nsa":97830,"provisional":false},{"date":"2024-09-01","sa":94281,"nsa":91735,"provisional":false},{"date":"2024-10-01","sa":95518,"nsa":95518,"provisional":false},{"date":"2024-11-01","sa":95509,"nsa":92548,"provisional":false},{"date":"2024-12-01","sa":95552,"nsa":95361,"provisional":false},{"date":"2025-01-01","sa":96115,"nsa":87849,"provisional":false},{"date":"2025-02-01","sa":94939,"nsa":86774,"provisional":false},{"date":"2025-03-01","sa":97919,"nsa":101934,"provisional":false},{"date":"2025-04-01","sa":98170,"nsa":98563,"provisional":false},{"date":"2025-05-01","sa":97973,"nsa":106007,"provisional":false},{"date":"2025-06-01","sa":98790,"nsa":100667,"provisional":false},{"date":"2025-07-01","sa":98980,"nsa":101158,"provisional":false},{"date":"2025-08-01","sa":99551,"nsa":104429,"provisional":false},{"date":"2025-09-01","sa":99797,"nsa":97102,"provisional":false},{"date":"2025-10-01","sa":99705,"nsa":100802,"provisional":false},{"date":"2025-11-01","sa":100241,"nsa":96332,"provisional":false},{"date":"2025-12-01","sa":99887,"nsa":99487,"provisional":false},{"date":"2026-01-01","sa":99554,"nsa":92087,"provisional":false},{"date":"2026-02-01","sa":100240,"nsa":91419,"provisional":false},{"date":"2026-03-01","sa":100241,"nsa":103549,"provisional":false},{"date":"2026-04-01","sa":101267,"nsa":101672,"provisional":false},{"date":"2026-05-01","sa":102437,"nsa":110632,"provisional":false},{"date":"2026-06-01","sa":102497,"nsa":104547,"provisional":true}]}</script>
+<script>
+(function(){
+  "use strict";
+  var DATA = JSON.parse(document.getElementById("demand-data").textContent);
+  var M = DATA.months;
+  function el(tag,attrs,txt){ var e=document.createElementNS("http://www.w3.org/2000/svg",tag); if(attrs) for(var k in attrs) e.setAttribute(k,attrs[k]); if(txt!=null) e.textContent=txt; return e; }
+  function clearDraw(svg){ var k=[].slice.call(svg.childNodes); for(var i=0;i<k.length;i++){ var t=k[i].tagName; if(t!=="title"&&t!=="desc") svg.removeChild(k[i]); } }
+  function mkey(d){ var p=d.split("-"); return (+p[0])+(+p[1]-1)/12; }
+
+  function draw(){
+    var svg=document.getElementById("sales"); clearDraw(svg);
+    var W=960,H=360,padL=58,padR=18,padT=16,padB=30;
+    var xs=M.map(function(r){return mkey(r.date);}), x0=Math.min.apply(null,xs), x1=Math.max.apply(null,xs);
+    var vals=[]; M.forEach(function(r){ if(r.sa!=null)vals.push(r.sa); if(r.nsa!=null)vals.push(r.nsa); });
+    var minV=0, maxV=Math.ceil(Math.max.apply(null,vals)/10000)*10000;
+    var X=function(k){ return padL+(k-x0)/(x1-x0)*(W-padL-padR); };
+    var Y=function(v){ return padT+(1-(v-minV)/(maxV-minV))*(H-padT-padB); };
+    for(var g=0; g<=maxV; g+=20000){ svg.appendChild(el("line",{x1:padL,y1:Y(g),x2:W-padR,y2:Y(g),class:"dm-grid"})); svg.appendChild(el("text",{x:padL-8,y:Y(g)+4,"text-anchor":"end",class:"dm-tk"}, (g/1000)+"k")); }
+    var seenY={}; M.forEach(function(r){ var y=r.date.slice(0,4); if(r.date.slice(5,7)==="01"&&!seenY[y]&&(+y)%2===1){ seenY[y]=1; svg.appendChild(el("text",{x:X(mkey(r.date)),y:H-10,"text-anchor":"middle",class:"dm-tk"}, y)); } });
+    // NSA first (behind), then SA
+    function linePath(key,settledOnly){ var dd=""; var started=false; M.forEach(function(r){ if(settledOnly&&r.provisional) return; var v=r[key]; if(v==null) return; dd+=(started?"L":"M")+X(mkey(r.date)).toFixed(1)+" "+Y(v).toFixed(1)+" "; started=true; }); return dd; }
+    svg.appendChild(el("path",{d:linePath("nsa",true),class:"dm-line-nsa"}));
+    svg.appendChild(el("path",{d:linePath("sa",true),class:"dm-line-sa"}));
+    // provisional last point drawn hollow + dashed connector from the prior settled SA point
+    var prov=M.filter(function(r){return r.provisional;});
+    if(prov.length){ var last=prov[prov.length-1];
+      var idx=M.indexOf(last); var prev=null; for(var i=idx-1;i>=0;i--){ if(M[i].sa!=null){ prev=M[i]; break; } }
+      if(prev){ svg.appendChild(el("path",{d:"M"+X(mkey(prev.date))+" "+Y(prev.sa)+" L"+X(mkey(last.date))+" "+Y(last.sa),class:"dm-line-prov"})); }
+      if(last.sa!=null){ var c=el("circle",{cx:X(mkey(last.date)),cy:Y(last.sa),r:4,class:"dm-dot-prov-svg"}); c.appendChild(el("title",null,"Provisional advance estimate — "+last.date)); svg.appendChild(c); }
+    }
+  }
+
+  var tb=document.getElementById("themeBtn");
+  function curTheme(){ return document.documentElement.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light"); }
+  tb.addEventListener("click",function(){
+    var next=curTheme()==="dark"?"light":"dark";
+    document.documentElement.setAttribute("data-theme",next);
+    tb.setAttribute("aria-label","Switch to "+(next==="dark"?"light":"dark")+" theme");
+    try{ localStorage.setItem("muntin-theme",next); }catch(e){}
+    var live=document.getElementById("themeLive"); if(live) live.textContent=(next==="dark"?"Dark":"Light")+" theme on.";
+    draw();
+  });
+  try{ var st=localStorage.getItem("muntin-theme"); if(st==="dark"||st==="light"){ document.documentElement.setAttribute("data-theme",st); tb.setAttribute("aria-label","Switch to "+(st==="dark"?"light":"dark")+" theme"); } }catch(e){}
+  draw();
+})();
+</script>
