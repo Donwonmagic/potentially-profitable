@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    
+  <pattern id="muntin" x="0" y="0" width="140" height="140" patternUnits="userSpaceOnUse">
+    <g transform="translate(18,18)" fill="none" stroke="#16181D" stroke-width="1.5" stroke-linecap="square">
+      <rect x="0" y="0" width="104" height="104"/>
+      <line x1="52" y1="0" x2="52" y2="104"/>
+      <line x1="0" y1="36" x2="104" y2="36"/>
+    </g>
+  </pattern>
+    <radialGradient id="dawn" cx="88%" cy="6%" r="80%">
+      <stop offset="0%" stop-color="#E08A00" stop-opacity="0.16"/>
+      <stop offset="30%" stop-color="#FF6B5C" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#FF6B5C" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="paneShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="6" stdDeviation="11" flood-color="#16181D" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="#F6F7F8"/>
+  <rect width="1200" height="630" fill="url(#muntin)" opacity="0.05"/>
+  <rect width="1200" height="630" fill="url(#dawn)"/>
+  <rect x="0" y="0" width="10" height="630" fill="#2A50C8"/>
+
+  <!-- left column -->
+  <text x="80" y="120" font-family="Inter, sans-serif" font-size="17" font-weight="600" letter-spacing="2.6" fill="#4A4F59">THE COST INDEX &#183; DISPATCH</text>
+
+  <text x="78" y="232" font-family="Fraunces, Georgia, serif" font-size="43" font-weight="600" fill="#16181D" letter-spacing="-0.5">The menu looks calm.</text>
+  <text x="78" y="294" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="43" font-weight="600" fill="#2A50C8" letter-spacing="-0.5">Five fronts are pushing.</text>
+
+  <text x="80" y="356" font-family="Inter, sans-serif" font-size="19" font-weight="500" fill="#4A4F59">One tame average. Five clocks.</text>
+  <text x="80" y="388" font-family="Inter, sans-serif" font-size="19" font-weight="600" fill="#16181D">42% of operators didn&#8217;t profit.</text>
+
+  <!-- pentagon frame -->
+  <polygon points="942.0,182.0 1075.1,278.7 1024.3,435.3 859.7,435.3 808.9,278.7" fill="none" stroke="#C9CCD3" stroke-width="1.5" opacity="0.5" stroke-linejoin="round"/>
+
+  <!-- the calm pane at the center -->
+  <g filter="url(#paneShadow)">
+    <circle cx="942" cy="322" r="92" fill="#F6F7F8" stroke="#C9CCD3" stroke-width="2"/>
+  </g>
+  <text x="942" y="286" font-family="Inter, sans-serif" font-size="13" font-weight="600" letter-spacing="1.5" fill="#4A4F59" text-anchor="middle">MENU &#183; 2026</text>
+  <text x="942" y="340" font-family="Fraunces, Georgia, serif" font-size="54" font-weight="600" fill="#2A50C8" text-anchor="middle">+3.4%</text>
+  <text x="942" y="380" font-family="Inter, sans-serif" font-size="14" fill="#4A4F59" text-anchor="middle">the calm average</text>
+
+  <!-- five fronts pressing inward -->
+  <line x1="942" y1="182" x2="942.0" y2="204.0" stroke="#C42E2E" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="942,224 929.6,204.0 954.4,204.0" fill="#C42E2E"/>
+  <text x="942.0" y="158.0" font-family="Inter, sans-serif" font-size="19" font-weight="700" fill="#C42E2E" text-anchor="middle">BEEF</text>
+  <line x1="1075.1479122813214" y1="278.73762078750735" x2="1054.2" y2="285.5" stroke="#FF6B5C" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="1035.203538596925,291.71633455125516 1050.4,273.7 1058.1,297.3" fill="#FF6B5C"/>
+  <text x="1094.2" y="268.6" font-family="Inter, sans-serif" font-size="19" font-weight="700" fill="#C7452F" text-anchor="start">COFFEE</text>
+  <line x1="1024.2899353209461" y1="435.26237921249265" x2="1011.4" y2="417.5" stroke="#2A50C8" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="999.6029547246624,401.28366544874484 1021.4,410.2 1001.3,424.8" fill="#2A50C8"/>
+  <text x="1036.0" y="469.4" font-family="Inter, sans-serif" font-size="19" font-weight="700" fill="#2A50C8" text-anchor="start">CARDS</text>
+  <line x1="859.7100646790537" y1="435.26237921249265" x2="872.6" y2="417.5" stroke="#4A4F59" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="884.3970452753376,401.28366544874484 882.7,424.8 862.6,410.2" fill="#4A4F59"/>
+  <text x="848.0" y="469.4" font-family="Inter, sans-serif" font-size="19" font-weight="700" fill="#4A4F59" text-anchor="end">LABOR</text>
+  <line x1="808.8520877186785" y1="278.7376207875073" x2="829.8" y2="285.5" stroke="#E08A00" stroke-width="8" stroke-linecap="round"/>
+  <polygon points="848.796461403075,291.7163345512551 825.9,297.3 833.6,273.7" fill="#E08A00"/>
+  <text x="789.8" y="268.6" font-family="Inter, sans-serif" font-size="19" font-weight="700" fill="#B26B00" text-anchor="end">TARIFFS</text>
+
+  <!-- footer -->
+  <line x1="80" y1="545" x2="1120" y2="545" stroke="#E3E5E9" stroke-width="1.5"/>
+  <text x="80" y="578" font-family="Inter, sans-serif" font-size="16" font-weight="500" fill="#4A4F59">By Don Goldstein</text>
+  <text x="1120" y="578" font-family="Inter, sans-serif" font-size="16" font-weight="600" letter-spacing="0.4" fill="#16181D" text-anchor="end">muntin.digital</text>
+</svg>

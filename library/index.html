@@ -59,31 +59,48 @@
 
 <style>
 .breadcrumb{padding-top:100px}
+@media (max-width:780px){.breadcrumb{margin-top:0 !important;padding-top:48px}}
+@media (max-width:600px){.breadcrumb{padding-top:28px}}
+/* Scoped mono "data voice" stack — defined once, inherited by numbers,
+   dates, and uppercase micro-labels across the library hub. */
+#main{--lib-mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,monospace}
 .lib-three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:32px 0 0}
-@media (max-width:780px){.lib-three{grid-template-columns:1fr}}
-.lib-door{position:relative;display:block;padding:28px 28px 24px;background:var(--cream-2);border:1px solid var(--line);border-radius:14px;color:inherit;transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+@media (max-width:900px){.lib-three{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.lib-three{grid-template-columns:1fr}}
+/* centre the orphaned 3rd door at column width instead of leaving a dead half-column (gap 18px → half-track = 50% - 9px) */
+@media (min-width:561px) and (max-width:900px){.lib-three > .lib-door:last-child{grid-column:1 / -1;max-width:calc(50% - 9px);margin-inline:auto}}
+.lib-door{position:relative;overflow:hidden;display:block;padding:28px 28px 24px;background:var(--white);border:1px solid var(--line);border-radius:6px;color:inherit;transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease)}
+.lib-door::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform var(--t-med) var(--ease-out)}
 .lib-door:hover,.lib-door:focus-within{border-color:var(--teal);transform:translateY(-2px)}
-.lib-door__verb{font-family:var(--font-display);font-size:14px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.lib-door:hover::before,.lib-door:focus-within::before{transform:scaleX(1)}
+.lib-door__verb{font-family:var(--lib-mono);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
 .lib-door h2{font-family:var(--font-display);font-size:28px;font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 12px}
 .lib-door p.lead{font-size:15px;line-height:1.6;color:var(--ink-soft);margin:0 0 18px}
 .lib-door__list{list-style:none;padding:0;margin:0;font-size:14.5px;line-height:1.65}
-.lib-door__list li{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line);color:var(--ink)}
+.lib-door__list li{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px;row-gap:2px;padding:8px 0;border-top:1px solid var(--line);color:var(--ink)}
 .lib-door__list li:first-child{border-top:0}
-.lib-door__list li strong{font-weight:500}
-.lib-door__list li small{color:var(--stone);font-size:12.5px;flex-shrink:0;white-space:nowrap}
+.lib-door__list li strong{font-weight:500;flex:1 1 auto}
+.lib-door__list li small{font-family:var(--lib-mono);font-variant-numeric:tabular-nums;color:var(--stone);font-size:12.5px;flex-shrink:0;white-space:nowrap;margin-left:auto}
 .lib-door__cta{display:inline-block;margin-top:18px;font-size:14px;font-weight:600;color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none}
-.lib-door__cta::after{content:"";position:absolute;inset:0;z-index:1;border-radius:14px}
+.lib-door__cta::after{content:"";position:absolute;inset:0;z-index:1;border-radius:6px}
 .lib-door .lead a{position:relative;z-index:2}
 .lib-strip{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 0;padding:0;list-style:none;font-size:13px}
 .lib-strip li{padding:6px 14px;background:var(--cream-2);border:1px solid var(--line);border-radius:999px;color:var(--ink-soft)}
-.lib-strip strong{color:var(--ink);font-weight:600}
+.lib-strip strong{font-family:var(--lib-mono);font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
 .lib-section{margin:64px 0 0;padding-top:32px;border-top:1px solid var(--line)}
 .lib-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0;padding:0;list-style:none}
 @media (max-width:780px){.lib-pillars{grid-template-columns:1fr 1fr}}
 @media (max-width:480px){.lib-pillars{grid-template-columns:1fr}}
-.lib-pillars li a{display:block;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);font-size:14.5px;font-weight:500;transition:border-color var(--t-fast) var(--ease)}
+.lib-pillars li a{display:block;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:6px;text-decoration:none;color:var(--ink);font-size:14.5px;font-weight:500;transition:border-color var(--t-fast) var(--ease)}
 .lib-pillars li a:hover{border-color:var(--teal);color:var(--teal)}
 .lib-pillars span{display:block;font-size:12.5px;color:var(--stone);font-weight:400;margin-top:4px}
+/* Cap the article-list description measure at the ~66-78ch editorial sweet spot; inert on phones (column already < 74ch) */
+#articles li p{max-width:74ch}
+/* Elevation dream — lay each topic group's article list into a 2-column
+   back-of-book index at laptop+ so the library reads as a publication index
+   filling the band, not one tall column. Cells (~450px) stay under the 74ch
+   measure. Below 1024 unchanged. */
+@media (min-width:1024px){#articles ul{display:grid;grid-template-columns:1fr 1fr;column-gap:44px}#articles ul li{padding:14px 0}}
 </style>
 <style>
 /* Critical CSS — prevents flash of unstyled content while the main
@@ -183,9 +200,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
 
 <!-- lazy-load:p --><script>(window.requestIdleCallback||function(c){return setTimeout(c,500);})(function(){var s=document.createElement("script");s.src="/assets/p.js?v=20260503";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:p -->
 <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({ endpoint: '/api/event', logging: false })</script>
@@ -197,18 +214,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
-<!-- batch-banner:start -->
-<aside class="batch-marquee" data-batch="fathers-day-2026" role="complementary" aria-label="New dispatch · Get found for Father’s Day weekend" style="background:#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#2A50C8;color:#F6F7F8;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">New dispatch</span>
-      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">It’s Father’s Day weekend. Can a searching family find you?</span>
-    </div>
-    <a href="/blog/get-found-fathers-day-weekend-2026/" style="display:inline-flex;align-items:center;gap:6px;color:#16181D;background:#F6F7F8;text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">Read the dispatch <span aria-hidden="true">&rarr;</span></a>
-  </div>
-</aside>
-<script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>
-<!-- batch-banner:end -->
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -296,20 +302,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
-      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
-           window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Reach Don" remains the accessible affordance. -->
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
-      Reach Don
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contact CTA retired from the primary nav (2026-07): the filled pill was
+         the widest right-side item, so justify-content:space-between dumped the
+         row's overflow onto it and pushed it past the right padding — the nav
+         read as leaning right. The direct line still lives in the footer, the
+         mobile menu (below), and the mobile sticky CTA bar. -->
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
   <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
-       switcher, and the Reach Don CTA. The auth-state JS below
+       switcher, and the Contact CTA. The auth-state JS below
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
@@ -343,7 +346,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       <span class="theme-toggle__label js-theme-label">Light mode</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">Contact</a>
     <a href="/es/library/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -411,6 +414,32 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         .catch(function () { show(signin); });
     });
   </script>
+  <!-- Active-tab detection. Marks the top-level nav link whose href is the
+       best (longest) prefix match for the current path with
+       aria-current="page"; the tab styling renders that as the active
+       (underlined) tab. Runs synchronously — the .nav-links are already
+       parsed above. Progressive enhancement: no-JS visitors see no active
+       tab, which is acceptable. The home link is not a tab, so "/" never
+       matches on every page. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
   <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
        partial so the .js-theme-toggle button is in the DOM. -->
   <script src="/assets/theme-toggle.js?v=phase8"></script>
@@ -435,7 +464,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         The library is the part of the studio that&rsquo;s free to anyone, free of email gates, and free of trackers on the article body. Three entry verbs, named the way owners actually speak. Pick the one that matches what you came for.
       </p>
       <ul class="lib-strip" aria-label="Library at a glance">
-        <li><strong><!-- count:articles.library -->36<!-- /count --></strong> articles</li>
+        <li><strong><!-- count:articles.library -->38<!-- /count --></strong> articles</li>
         <li><strong><!-- count:glossary.terms -->171<!-- /count --></strong> glossary terms</li>
         <li><strong><!-- count:tools.live -->5<!-- /count --></strong> free tools</li>
         <li><strong><!-- count:topics -->9<!-- /count --></strong> topic pillars</li>
@@ -444,7 +473,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     </header>
 
     <!-- cost-index-hero:start -->
-<a class="ci-hero" href="/blog/cost-index-week-2026-07-06/" style="display:block;margin:0 0 40px;padding:28px 32px;border-radius:16px;background:radial-gradient(140% 180% at 92% 50%,rgba(42,80,200,0.18) 0%,rgba(22,24,29,0) 62%),#16181D;color:#F6F7F8;text-decoration:none;border:1px solid rgba(246,247,248,0.12);box-shadow:0 18px 40px -28px rgba(0,0,0,0.5)">
+<a class="ci-hero" href="/blog/cost-index-week-2026-07-06/" style="display:block;margin:0 0 40px;padding:28px 32px;border-radius:8px;background:radial-gradient(140% 180% at 92% 50%,rgba(42,80,200,0.18) 0%,rgba(22,24,29,0) 62%),#16181D;color:#F6F7F8;text-decoration:none;border:1px solid rgba(246,247,248,0.12);box-shadow:0 18px 40px -28px rgba(0,0,0,0.5)">
   <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;color:#9DB4FF;margin-bottom:10px">The latest Cost Index read · July 6, 2026</span>
   <h2 style="font-family:var(--font-display),Georgia,serif;font-size:clamp(23px,2.8vw,31px);font-weight:500;line-height:1.12;margin:0 0 10px;color:#F6F7F8;letter-spacing:-0.01em">Restaurant Cost Index: where the basket stands</h2>
   <p style="font-family:Inter,system-ui,sans-serif;font-size:16px;line-height:1.55;color:rgba(246,247,248,0.80);margin:0 0 16px;max-width:680px">The weekly read on wholesale ingredient costs: the basket sits at -5.0% against baseline, 24 of 81 ingredients above their tracked window.</p>
@@ -458,7 +487,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <h2>The library.</h2>
         <p class="lead">Evergreen reference &mdash; the answer to a question, written once, organized by topic, no expiration date. The op-eds and weekly commentary live in <a href="/blog/" style="color:inherit;border-bottom:1px dashed currentColor;text-decoration:none">the blog</a>.</p>
         <ul class="lib-door__list">
-          <li><strong>Library articles</strong><small><!-- count:articles.library -->36<!-- /count --> &middot; reference</small></li>
+          <li><strong>Library articles</strong><small><!-- count:articles.library -->38<!-- /count --> &middot; reference</small></li>
           <li><strong>Research notes</strong><small>4 &middot; quarterly</small></li>
           <li><strong>Topics</strong><small><!-- count:topics -->9<!-- /count --> pillars</small></li>
         </ul>
@@ -501,15 +530,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
     <section class="lib-section" aria-labelledby="topics-h">
       <p class="eyebrow">Browse by what you&rsquo;re fixing</p>
-      <h2 id="topics-h" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,40px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 18px">Seven topic pillars.</h2>
+      <h2 id="topics-h" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,40px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 18px"><!-- count:topics -->9<!-- /count --> topic pillars.</h2>
       <ul class="lib-pillars">
-        <li><a href="/learn/topics/restaurant-websites/">Restaurant websites<span>The whole-stack overview</span></a></li>
-        <li><a href="/learn/topics/menus-and-pricing/">Menus &amp; pricing<span>Engineering, design, copy</span></a></li>
-        <li><a href="/learn/topics/local-seo/">Local SEO<span>Google Business Profile, schema, citations</span></a></li>
-        <li><a href="/learn/topics/conversion-and-reservations/">Conversion &amp; reservations<span>Where dinners leak, and the fix</span></a></li>
-        <li><a href="/learn/topics/margin-and-aggregators/">Margin &amp; aggregators<span>The DoorDash math, prime cost</span></a></li>
-        <li><a href="/learn/topics/information-security/">Information security<span>Tools, data, vendors</span></a></li>
-        <li><a href="/learn/topics/photography-and-brand/">Photography &amp; brand<span>Spec sheets, identity, social</span></a></li>
+        <li><a href="/learn/topics/local-seo/">Local SEO &amp; discovery<span>Google Business Profile, schema, reviews</span></a></li>
+        <li><a href="/learn/topics/conversions/">Conversions &amp; reservations<span>Where dinners leak, and the fix</span></a></li>
+        <li><a href="/learn/topics/operations-margin/">Operations &amp; margin<span>Delivery, pricing, prime cost</span></a></li>
+        <li><a href="/learn/topics/trust-reviews/">Trust &amp; reviews<span>Reviews, photos, response systems</span></a></li>
+        <li><a href="/learn/topics/brand-design/">Brand &amp; design<span>Tone, type, palette, photography</span></a></li>
+        <li><a href="/learn/topics/speed-mobile/">Speed &amp; mobile<span>Load time, mobile, Core Web Vitals</span></a></li>
+        <li><a href="/learn/topics/information-security/">Information security<span>Tools, data tiers, vendors</span></a></li>
+        <li><a href="/learn/topics/ai-search/">AI search &amp; citation<span>ChatGPT, Perplexity, AI Overviews</span></a></li>
+        <li><a href="/learn/topics/cost-data/">Cost data &amp; sources<span>The public agencies behind the Index</span></a></li>
       </ul>
     </section>
 
@@ -518,7 +549,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <h2 id="articles-h" style="font-family:var(--font-display);font-size:clamp(28px,3.6vw,40px);font-weight:500;line-height:1.15;letter-spacing:-0.3px;color:var(--ink);margin:0 0 18px">Browse the library.</h2>
       <p style="font-size:17px;line-height:1.6;color:var(--ink-soft);margin:0 0 18px;max-width:720px">Evergreen reference, organized by topic. Each piece answers a real operator question and is updated when the answer changes &mdash; not when the calendar flips.</p>
       <!-- LIBRARY-ARTICLE-LIST: populated by Wave 6 + refreshed by tone-edit. 25 articles grouped by topic pillar. -->
-      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line)">Local SEO &amp; discovery <small style="color:var(--stone);font-weight:400;font-size:14px">(5)</small></h3>
+      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line)">Local SEO &amp; discovery <small style="font-family:var(--lib-mono);font-variant-numeric:tabular-nums;color:var(--stone);font-weight:400;font-size:14px">(5)</small></h3>
       <ul style="list-style:none;padding:0;margin:0">
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/how-to-read-restaurant-google-search-console/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">How to Read Your Restaurant's Google Search Console (in Plain English)</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">The four reports that matter, what each number means, and the three weekly habits that actually move bookings.</p></li>
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/how-to-set-up-google-business-profile-for-your-restaurant/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">How to Set Up Google Business Profile for Your Restaurant</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">A step-by-step guide to claiming, verifying, and optimizing Google Business Profile for your restaurant — categories, photos, menu links, and the settings mo…</p></li>
@@ -526,7 +557,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/restaurant-schema-markup-guide/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">Restaurant Schema Markup: The 6 Types Google Actually Uses</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">The six schema.org types that actually matter for restaurant search results in 2026, with copy-paste JSON-LD examples for each.</p></li>
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/restaurant-website-technical-seo-checklist/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">Restaurant Website Technical SEO Checklist (2026): The Operator&rsquo;s Audit</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">The technical SEO checklist for restaurant websites in 2026: page speed, mobile, schema, robots, sitemap &mdash; the audit you can run yourself.</p></li>
       </ul>
-      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line)">Operations &amp; margin <small style="color:var(--stone);font-weight:400;font-size:14px">(11)</small></h3>
+      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line)">Operations &amp; margin <small style="font-family:var(--lib-mono);font-variant-numeric:tabular-nums;color:var(--stone);font-weight:400;font-size:14px">(11)</small></h3>
       <ul style="list-style:none;padding:0;margin:0">
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/third-party-delivery-economics/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">An honest DoorDash math for independent restaurants</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">The actual math behind a DoorDash order at an independent DMV restaurant in 2026 &mdash; commission, payment processing, packaging, food cost, labor, the mar…</p></li>
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/does-my-restaurant-need-a-website/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">Does My Restaurant Need a Website? The Honest Answer</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">The honest answer to whether your restaurant needs its own website in 2026 — from someone who is a restaurant operator and builds websites for others. When a…</p></li>
@@ -541,19 +572,19 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/when-to-rebuild-your-restaurant-website/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">When to Rebuild Your Restaurant Website: A Decision Framework</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">A seven-question decision framework for the rebuild question, with three case threads showing what each answer actually changes.</p></li>
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/restaurant-menu-engineering/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">Restaurant Menu Engineering (2026): The Math Behind Which Dishes Make Money</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">Restaurant menu engineering, plainly: plate cost, edible portion, yield, mix, and the elasticity tests that fix margin without raising headline prices.</p></li>
       </ul>
-      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line)">Conversions &amp; reservations <small style="color:var(--stone);font-weight:400;font-size:14px">(3)</small></h3>
+      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line)">Conversions &amp; reservations <small style="font-family:var(--lib-mono);font-variant-numeric:tabular-nums;color:var(--stone);font-weight:400;font-size:14px">(3)</small></h3>
       <ul style="list-style:none;padding:0;margin:0">
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/restaurant-photo-spec-sheet/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">The Restaurant Photo Spec Sheet: Every Image Size for Every Surface</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">Every image size, aspect ratio, and resolution your restaurant actually needs across GBP, Yelp, OG, and menu thumbnails — in one spec sheet.</p></li>
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/what-should-be-on-a-restaurant-website/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">What should be on a restaurant website? The 7 pages that matter.</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">The seven pages every restaurant website actually needs — and what belongs on each one. No filler, no blog-about-blogs. A structural guide for owners plannin…</p></li>
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/reservation-conversion-guide/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">Why Your Restaurant Loses Reservations Every Night</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">A real reservation-loss funnel — the six places your site is quietly leaking intent-driven diners, what each leak costs in dollars, and the fix for every one.</p></li>
       </ul>
-      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line)">Trust &amp; reviews <small style="color:var(--stone);font-weight:400;font-size:14px">(3)</small></h3>
+      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line)">Trust &amp; reviews <small style="font-family:var(--lib-mono);font-variant-numeric:tabular-nums;color:var(--stone);font-weight:400;font-size:14px">(3)</small></h3>
       <ul style="list-style:none;padding:0;margin:0">
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/how-to-get-more-google-reviews-for-your-restaurant/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">How to Get More Google Reviews for Your Restaurant</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">A proven system for getting more Google reviews — QR postcards, timing, staff scripts, and the one thing most owners skip.</p></li>
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/google-review-response-playbook/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">How to Respond to Google Reviews: A Restaurant Operator’s Playbook</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">Four review archetypes, four response shapes. What to write, what to never write, and how AI Overviews now lift review responses into the cited paragraph. Te…</p></li>
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/restaurant-website-legal-essentials/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">Restaurant Website Legal &amp; Trust Essentials (2026): ToS, Privacy, Cookies, SSL</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">The legal + trust layer of a restaurant website in 2026: ToS, privacy policy, cookie banner, SSL, footer-year, and the breach plan to keep ready.</p></li>
       </ul>
-      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line)">AI search &amp; visibility <small style="color:var(--stone);font-weight:400;font-size:14px">(3)</small></h3>
+      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line)">AI search &amp; visibility <small style="font-family:var(--lib-mono);font-variant-numeric:tabular-nums;color:var(--stone);font-weight:400;font-size:14px">(3)</small></h3>
       <ul style="list-style:none;padding:0;margin:0">
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/can-chatgpt-write-your-restaurant-website/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">Can ChatGPT write
         your restaurant website?
@@ -561,12 +592,12 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/ai-mode-reservation-strategy/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">Diners can book inside Google's AI answer now — make sure it's your table</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">Google's AI Mode can now complete a reservation through OpenTable, Resy, or Tock. How to get into the agentic flow — and why 65% of diners still prefer to bo…</p></li>
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/how-to-get-cited-in-google-ai-overviews-restaurant/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">How to Get Your Restaurant Cited in Google’s AI Overviews</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">Search results are now a paragraph Google wrote, citing two or three sources. Five paragraph-level moves that get a restaurant lifted into the answer box — a…</p></li>
       </ul>
-      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line)">Brand &amp; design <small style="color:var(--stone);font-weight:400;font-size:14px">(2)</small></h3>
+      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line)">Brand &amp; design <small style="font-family:var(--lib-mono);font-variant-numeric:tabular-nums;color:var(--stone);font-weight:400;font-size:14px">(2)</small></h3>
       <ul style="list-style:none;padding:0;margin:0">
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/wix-vs-custom-for-restaurants/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">Wix vs Custom for Restaurants</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">An honest comparison of Wix and a custom-built restaurant website. Six places Wix runs out of room, the ROI math that makes the switch worth it, and when Wix…</p></li>
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/restaurant-brand-system-colors-type-logo/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">Restaurant Brand System (2026): Colors, Typography &amp; the Logo That Travels</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">The restaurant brand system that travels from menu to awning to Instagram &mdash; colors, typography, logo lockups, and what&rsquo;s worth paying a designer for.</p></li>
       </ul>
-      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line)">Information security <small style="color:var(--stone);font-weight:400;font-size:14px">(2)</small></h3>
+      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:500;color:var(--ink);margin:28px 0 10px;padding-top:18px;border-top:1px solid var(--line)">Information security <small style="font-family:var(--lib-mono);font-variant-numeric:tabular-nums;color:var(--stone);font-weight:400;font-size:14px">(2)</small></h3>
       <ul style="list-style:none;padding:0;margin:0">
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/how-to-tell-if-a-restaurant-tool-is-safe/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">How to Tell If a Restaurant Tool Is Safe</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">A 5-test framework + 4-tier data model + a worked example. Verifiable in your own browser, under a minute per test.</p></li>
         <li style="padding:12px 0;border-top:1px solid var(--line)"><a href="/library/privacy-forward-restaurant-bookkeeping/" style="font-family:var(--font-display);font-size:17px;font-weight:500;color:var(--ink);text-decoration:none">Privacy-Forward Restaurant Bookkeeping: What a Digital Ledger Should Never Do</a><p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">The five things a restaurant&rsquo;s digital ledger should never do with your numbers &mdash; and how to verify each one yourself.</p></li>
@@ -580,27 +611,27 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       <ul style="list-style:none;padding:0;margin:0">
         <li style="padding:18px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:18px;align-items:baseline">
           <div>
-            <p style="margin:0 0 4px;font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal)">Overview &middot; May 11, 2026</p>
+            <p style="margin:0 0 4px;font-family:var(--lib-mono);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal)">Overview &middot; May 11, 2026</p>
             <a href="/blog/may-2026-wave-publishing-for-citation/" style="font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);text-decoration:none">The May 2026 Wave: nine pieces, one operating thesis</a>
             <p style="margin:6px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">An overview of this week&rsquo;s batch &mdash; AI Overview citation, schema markup, Google Maps invisibility, review responses, Instagram-as-SEO, three-platform delivery math, the 30-day playbook, loyalty programs, and service charges. Start here.</p>
           </div>
-          <small style="color:var(--stone);font-size:13px;white-space:nowrap">6 min</small>
+          <small style="font-family:var(--lib-mono);font-variant-numeric:tabular-nums;color:var(--stone);font-size:13px;white-space:nowrap">6 min</small>
         </li>
         <li style="padding:18px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:18px;align-items:baseline">
           <div>
-            <p style="margin:0 0 4px;font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal)">Op-ed &middot; May 2, 2026</p>
+            <p style="margin:0 0 4px;font-family:var(--lib-mono);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal)">Op-ed &middot; May 2, 2026</p>
             <a href="/library/third-party-delivery-economics/" style="font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);text-decoration:none">An honest DoorDash math for independent restaurants</a>
             <p style="margin:6px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">Two side-by-side margin walks on a $42 ticket. The $4.42-per-order marginal lift, and the three-change website fix.</p>
           </div>
-          <small style="color:var(--stone);font-size:13px;white-space:nowrap">7 min</small>
+          <small style="font-family:var(--lib-mono);font-variant-numeric:tabular-nums;color:var(--stone);font-size:13px;white-space:nowrap">7 min</small>
         </li>
         <li style="padding:18px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:18px;align-items:baseline">
           <div>
-            <p style="margin:0 0 4px;font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--teal)">Research &middot; May 2, 2026</p>
+            <p style="margin:0 0 4px;font-family:var(--lib-mono);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal)">Research &middot; May 2, 2026</p>
             <a href="/learn/research/dmv-restaurant-gbp-audit-2026/" style="font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--ink);text-decoration:none">DMV restaurant GBP audit, 2026 &mdash; the 100 highest-rated restaurants graded</a>
             <p style="margin:6px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.55">Eight scoring dimensions. Median 5.4/8. The most-skipped field is the cheapest mistake to prevent.</p>
           </div>
-          <small style="color:var(--stone);font-size:13px;white-space:nowrap">9 min</small>
+          <small style="font-family:var(--lib-mono);font-variant-numeric:tabular-nums;color:var(--stone);font-size:13px;white-space:nowrap">9 min</small>
         </li>
       </ul>
       <p style="margin:24px 0 0"><a href="/blog/" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">All commentary &rarr;</a> &middot; <a href="#articles" style="color:var(--teal);border-bottom:1px dashed currentColor;text-decoration:none">All library articles &rarr;</a></p>
@@ -630,7 +661,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <a class="btn btn-primary" href="/ledger/">See Muntin Ledger
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
-        <a class="btn btn-ghost js-window" href="/window/" title="A direct line to Don. I read every one." style="color:var(--cream)"><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>Reach Don</a>
+        <a class="btn btn-ghost js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read." style="color:var(--cream)"><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true"></span>Contact</a>
       </div>
     </div>
 
@@ -644,7 +675,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->38<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -705,7 +736,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/window/">Reach Don</a></li>
+          <li><a href="/window/">Contact</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Reply:</strong> within 4 hours Mon&ndash;Fri; weekends by Monday.</p>
@@ -715,7 +746,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <!-- newsletter-capture:start -->
     <div class="foot-newsletter">
       <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en">
-        <p class="foot-newsletter-pitch">I send a short note when I publish something &mdash; four notes a quarter, no funnels.</p>
+        <p class="foot-newsletter-pitch">We send a short note when we publish something &mdash; four notes a quarter, no funnels.</p>
         <label class="foot-newsletter-label" for="foot-news-email">Your email</label>
         <input id="foot-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
         <input type="hidden" name="locale" value="en" />
@@ -759,14 +790,18 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
               headers: { 'content-type': 'application/x-www-form-urlencoded' },
               body: params.toString(),
               credentials: 'same-origin',
-            }).then(function () {
-              form.dataset.state = 'ok';
-              if (typeof window.plausible === 'function') {
-                var evName = form.dataset.event || 'Newsletter Signup';
-                var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
-                try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+            }).then(function (res) {
+              if (res && res.ok) {
+                form.dataset.state = 'ok';
+                if (typeof window.plausible === 'function') {
+                  var evName = form.dataset.event || 'Newsletter Signup';
+                  var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
+                  try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+                }
+              } else {
+                form.dataset.state = 'error';
               }
-            }).catch(function () { /* fire-and-forget; no error UI by design */ });
+            }).catch(function () { form.dataset.state = 'error'; /* fire-and-forget; no error UI by design */ });
           });
         }
         function init() {
@@ -803,9 +838,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       Check prices
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
-      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don is around"></span>
+      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true"></span>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Reach Don
+      Contact
     </a>
   </aside>
   <script>
@@ -819,6 +854,14 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       }
     })();
   </script>
+  <!-- On-device warmth (warmth.js): the Golden-Hour whisper — a hero's light leans a
+       hair warmer at the edges of the reader's local day, computed on their machine
+       from the local clock and sent nowhere. Only surfaces with a .hero/.window pane
+       show it; everywhere else it is inert. Fail-silent; with JS off (or motion
+       reduced) the page is the certified v3. Placed INSIDE <footer> so sync-includes
+       (FOOTER_RE) replaces it atomically and never double-stamps. The homepage loads
+       its own copy (bespoke footer). See docs/handoff/warmth-cohesion-plan.md. -->
+  <script src="/assets/js/warmth.js?v=20260717-warmth1" defer></script>
 </footer>
 <!-- Phase 3D-perf — lazy-load non-critical JS after `load` + idle.
      Previously, the 4 footer scripts (first-touch, save-next-time,
@@ -896,6 +939,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 })();
 </script>
 
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260501-engagement";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

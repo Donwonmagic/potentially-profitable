@@ -1,235 +1,613 @@
-<!-- Orchestrator resume point. Committed so any future session (yours or mine)
-     can pick up the queue without the founder re-explaining anything. -->
+<!-- Orchestrator resume point. Committed so any future session (yours or mine) can pick
+     up the queue without the founder re-explaining anything. The environment is ephemeral;
+     only what's in the repo survives. Keep THIS file loadable in one read — append current
+     state + open threads here; when a thread is fully shipped and superseded, summarize it
+     to a line and let the detail live in the archive. -->
 
 # Strategic-council board — resume here
 
-**What this is:** the running state of the "strategic council / orchestrator" work,
-externalized so a fresh session can resume in one read. The environment is
-ephemeral and a new session does not remember the prior chat — only what's in the
-repo survives. Update this file as threads move.
+**What this is:** the running state of the "strategic council / orchestrator" work across
+both repos, externalized so a fresh session resumes in one read. Update this file as threads
+move. Full pre-2026-07-16 history (every shipped-pass log, resolved reds, the P0 Actions
+outage, the /try demo, the 06-27 audits, prior branch states) is frozen verbatim in
+**`docs/handoff/board-archive.md`** — read it only for the detail behind a summarized line.
 
 **Branches:** both repos develop on `claude/muntin-strategic-council-exsghc`
 (storefront `potentially-profitable`, product `Muntin-Invoice-Decoder`). Prior
 council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 #234–#239 product) are merged to main and closed.
 
-## ⮕ CURRENT STATE — Cost Index data-company expansion (updated 2026-07-18)
+## ⮕ CURRENT STATE — UX/UI ELEVATION PROGRAM (updated 2026-07-18)
+
+**Branch:** `claude/strategic-council-board-docs-m3w6dy` (a distinct thread from the redesign
+run below). **Directive:** make every surface feel native at every viewport, build → audit →
+iterate; no horizontal scroll; "the very best we can make it."
+
+**Merge of record (2026-07-18):** merged `origin/main` (the "warmth" thread — 50 commits: on-device
+Golden-Hour whisper via `warmth.js` + `.hero::after --gh-eve`, theme cross-fade, cost-index fresh
+2026-07-17 read + reconciliation, cost-watch operator loop, breadcrumbs, copy-link reassurance beat)
+into this branch for PR #526. **1199 conflicts, all mechanical or reconciled — no work lost either side:**
+`site.css` was a clean union (9041 = base 8758 + our 263 + their 20; golden-hour gradient rebalance now
+layers *under* main's `--gh-eve` warmth wash — both intents live); 3 CSS shells regenerated from it;
+1191 pure cache-bust/count/sentinel conflicts collapsed to `theirs` then re-canonicalized by
+`inject-css-cache-bust` (new hashes: site c878eb6bc574 / core f8b6c001b1bb / tool 1f57a490e24f /
+article 8787ec2df8b4); 5 hand-resolved (**404 EN+ES** kept our site.js double-load fix + took main's
+`20260717-reassure` bump + warmth.js parity; **cost-index EN+ES** took main's fresh-data render, our
+nav tabs survived via auto-merge; **board** kept ours). Sheets took `theirs` head (drops the duplicate
+batch-banner sentinel main relocated) with `sheets.css` restored to `20260717b` (merged content = our
+sheets.css exactly). Caught + fixed one regression the collapse introduced: main's `sheets/index.html`
+was **missing `site-tool.css`** (main also fails that idem check) — `inject-css-shells` restored it, so
+the merge is cleaner than main there. **Gate: 255/258** — the 3 remaining are pre-existing baseline
+idem-drift (Critical-CSS fonts, Glossary article schema, Glossary verified stamp); **0 new failures**,
+and the merge *resolved* 18 of the 21 idem-drifts our pre-merge branch carried.
+
+**Depth & immersion dream (2026-07-23):** founder idea — "make the user feel *inside* the data;
+a little visual depth; on the cutting edge of tech = empowered = comes back." Founder also stated,
+for the record, **openness to a genuinely new look**, not only additive depth. Ran a 62-agent
+coordinated dreaming workflow (ground → 7 divergent lenses → 6 adversarial critics each → 3 competing
+syntheses → merge → completeness). **Plan of record: `docs/design/depth-immersion-dream-backlog.md`.**
+All 7 lenses converged independently on ONE metaphor — *a precision instrument on a worktop*; the merge
+resolved the flash-vs-restraint tension to **restraint-as-craft** ("depth must MEAN a data fact or it
+does not ship"; honesty carried by WORDS first, visual depth a gate-enforced redundant second channel;
+the number is sacred/static). The north star unifies the three Cost-Index dialects (`ci-*`/`evh-*`/`viz-*`)
+into one "Glass Well" instrument down the whole funnel, **first shipped standalone on `/about/`** at the
+sentence that pledges "the same numbers I check on my own floor." **Completeness critic returned
+`readyToBuild:false`** and caught the headline risk: a confidence-as-*solidity* ramp (low→high) would
+encode a certainty ordering the project's OWN `cost-confidence-calibration.json` contradicts (realized
+low-tier hit-rate is negative/non-monotonic) → an honesty feature that ships an honesty breach. Resolution
+baked into the doc: ship a **calibration-monotone 2-state** now, register chip labels in `sourced-claims.json`,
+gate label-present + low<high + per-tier AA/3:1 in both themes + EN↔ES parity. Open forks for the founder:
+confidence-tier fidelity, the return-cadence privacy stance (client-only visit memory vs. of-record purity),
+dusk-warmth on the /about/ instrument (needs an ADR amendment if yes), View-Transitions ROI, events-fusion
+distance.
+
+**Depth *feel* LOCKED (2026-07-23, founder-approved after 3 live prototypes):** depth = **layer
+separation + parallax by translation, NOT rotation** (the plane stays square; a rotate tilt was rejected
+as "screen motion, not depth"). Certified basket floats nearest; measured movers recede as separate,
+dimmer/blurrier strata behind it (distance = provenance). Gentle pointer parallax (front slides across the
+strata → you look *around* the read), ~3° resting recline, dark-mode-forward, and a first-class flat
+fallback (`Depth off` ≡ reduced-motion / low-end / no-JS → fully-composed flat read, number/label/"Not your
+prices" intact). Feel spec + reference prototype: `docs/design/depth-immersion-dream-backlog.md` §Locked +
+`docs/design/prototypes/depth-instrument.html`.
+
+**SHIPPED — the `/about/` depth read (2026-07-23):** `scripts/inject-about-cost-read.mjs` stamps a
+sentinel-bracketed instrument at the pledge ("the numbers I check on my shifts"), EN + ES, from the LIVE
+`data/cost-index.json` basket — the same read the hub now features (so they agree). The locked depth feel
+realized: the composite floats in front, its 3 biggest real movers (eggs +72% / romaine −67% seasonal /
+chicken −25%) recede as separate strata behind it; parallax by translation, no rotation; **flat-first**
+(reduced-motion / no-JS / low-end → a fully-composed flat stack, verified `is-3d:false`), 3D as
+progressive enhancement with the height locked to the flat height so **CLS = 0** (flat 526px == 3D 526px).
+Honesty holds: number static, "medium confidence" word leads, "Not your prices" + `as of 2026-07-21` +
+"3 of 16 holding last-good since 2026-06-01" all present. Audited on the headless render (0 h-overflow at
+1280/390, both themes) + full gate **253/258, zero new failures**. Wired into `cost-index-refresh.yml`
+(build + `--check`) so it refreshes daily with the data. Movers read against their own baseline; romaine
+tagged seasonal.
+
+**SHIPPED — hub composite depth (2026-07-23):** carried the Glass Well material onto the Cost Index hub's
+"Where the basket sits" composite band (`compositeBand()` in `build-cost-index-pages.mjs`). The reading now
+sits recessed in a lit Glass Well inside an elevated instrument frame (`--elev-feature`), with a dark-theme
+inset-shadow override — unifying the hub hero's material with `/about/`. Scoped, additive (wrapped the
+existing read+spread in `.ci-composite__well`, elevated `.ci-composite`); NO strata/parallax on the hub yet
+(restraint-forward first step; the table below carries the per-ingredient depth). Applied to the build
+script AND directly to the committed EN+ES hubs (deterministic string edit — no regen, so no nav-strip
+drift; exactly 3 files). Audited on the render: 0 h-overflow at 1280/390, both themes legible, well recessed
+in dark. **SHIPPED — ingredient-pages depth (2026-07-23):** carried the Glass Well material onto the ~94×2
+per-ingredient "Market read" blocks (`.ci-read`, `marketReadBlock()`). Each read is now an elevated
+instrument card (`--elev-feature`) with its key price sentence (`.ci-read__line`) recessed in a lit well
+(dark-shadow override); the sparkline/verdict/provenance stay outside the well (content-rich block kept
+clean). Applied to the build script AND directly to 192 committed pages (deterministic string+regex edit,
+idempotent, no regen → no nav drift). Rendered clean light+dark, 0 h-overflow at 1280/390. Gate 253/258,
+zero new failures. **The whole Cost Index funnel — /about/, hub composite, 94 ingredient reads — now speaks
+one instrument material.**
+
+**SHIPPED — the honesty gate (2026-07-23):** `scripts/check-cost-index-confidence.mjs` (wired into
+`check-all.mjs` + the refresh workflow's check block) locks the framing across all three instrument
+surfaces so a future generator/injector edit can't silently drop it: every `.ci-read` carries wholesale
+framing + a confidence label; the hub composite carries confidence + "against baseline" + "not a
+week-over-week" ; the `/about/` read carries the "Not your prices"/"no es tu precio" negation + wholesale
+reference + confidence — EN and ES. It guards presence only (never invents/grades confidence). Verified:
+passes on the tree (162 reads + hub + /about/), fails the negative test (broken negation caught), gate
+count 258→259. **NEXT (optional):** receding-strata+parallax on the hub composite (only if it should
+*move* like /about/); the pre-existing revisions-log roll (founder go needed — publishes a public record).
+
+**Plan of record:** `docs/design/elevation-dream-backlog.md` — the reconciled output of two
+adversarial "dreaming" workflows (top-down design-language + bottom-up per-surface), with the
+north star, principles, the phased build sequence, per-surface top tier, and the completeness-
+critic's 11 coverage gaps. **Read it first to resume.**
+
+**Method:** Phase 1 = pure-additive token foundation in the CORE `:root`, seeded to current
+values, referenced by nothing (provably inert — verify with a repo-wide `var(--token)` collision
+scan before shipping; the `--accent` role is DEFERRED because cost-pulse/plate-cost/seasonality
+reference an undefined `var(--accent)`). Then adopt-as-you-touch, SCOPED per surface (never move
+global `--max`/`--pad-x`; the coherence rule is *prose stays narrow ~68ch, data breaks wide* to
+the new `--measure-*` tokens). Every visible change verified on the headless render across the
+7-viewport native matrix + dark + ES, gated, committed per increment (push is the only durable
+artifact — the container restarts).
+
+**Shipped so far (all pushed):**
+- `b23fba57a`, `3e2853cd5` — margin-math: calculator fits 360px + in-box "read more" links wrap (no leak).
+- `91fe5d081` — **design-system token foundation** (semantic role layer + `--measure-*` + `--sp-*` +
+  motion + `--r-pill` + `--elev-feature`), inert, in core `:root`.
+- `83d6509f1` — home: stances → 3-up principles masthead at ≥1024 (adopts `--measure-wide`).
+- `3f1a0b199` — home: recently-added ledger widens to `--measure-wide`; orphaned 3rd service card spans full-width at tablet.
+- `d7f6f9279` — home: FAQ → 2 columns at ≥1024.
+- `11a985e71` — **articles** (all ~100): H2 section-start hairlines + see-also 2-up band at tablet.
+- `1daf2a39b` — CI ingredient (99 EN + 99 ES + generator): center the reading column on wide bands (kills the right void).
+- `d47276398` — CI ingredient: events → card grid, sparkline stays on one row, price sentence anchored (17px/600).
+- `85cddd2fa` — CI hub (+ES + generator): catalog grid density (3-up tablet / 4-5 wide) + editorial category dividers.
+- `b7b8133ae` — CI events (+ES + generator): zone width release + `.evh-card` 2-col ledger rows at ≥880 (date/magnitude gutter + narrative).
+- `acc20a8ad` — CI weekly dispatch: `.ci-dispatch>.viz-figure` breaks onto a min(960px,92vw) stage at ≥1024 (scoped; print-neutralized; EN-only).
+- `90d5d7ac4` — Library hub: 2-column back-of-book article index at ≥1024.
+- `e2631eb42` — Vendor-benchmark (+ES): framed fluid shell (no edge-to-edge tablet / stranded ribbon).
+- `642f46802` — Plate-cost (+ES): 44px tap targets on calculator inputs (touch a11y).
+- `c5614d621` — **adversarial-review follow-up:** backfilled `.ci-dispatch` onto ALL dispatch editions (the current *monthly* was untagged) + corrected the "weekly-only" comment.
+- `51c8f862e` — **viz-spark phone overflow fix** (found via the adversarial pass): long nowrap annotations forced h-scroll on the monthly dispatch at 360/390; annos wrap ≤520px + minmax(0,1fr) grid hardening. Shared — hardens every viz-spark.
+
+**Adversarial-pass discipline (per founder directive):** each risky increment gets an independent
+reviewer that refutes scope/overflow/print/dark/regression before or right after commit. The dispatch
+review verified the breakout clean AND caught the monthly-untagged rollout gap → led to the real
+viz-spark h-scroll bug fix. This is the loop working: adversarial review → real defect found → fixed.
+
+- `a88782790` — Glossary term (~149 pages): center the reading column on wide bands.
+- `b74e25b53` — **founder feedback:** retire the expired Father's Day dispatch banner (inject-batch-banner
+  had not been re-run since batch expired 2026-06-22; collapsed to empty sentinels site-wide, 0 drift).
+- `6983d5897` — **founder feedback ("leaning right"):** rebalance the golden-hour hero wash off the
+  top-right corner (peak 88%→68% center-top, alpha 0.26→0.20) + `-soft` variant; verified balanced on the
+  1280 render. Container is centered; the lean was purely the asymmetric warm wash stacking on the card side.
+- `d81c1a204` — **founder feedback (nav "more space left of logo than right of Contact"):** remove the
+  Contact pill from the primary nav (EN). Root cause: the filled pill was the widest right-side item, so
+  `justify-content:space-between` dumped the row's overflow onto it (logo 84px from left, Contact 17px from
+  right). Contact stays in footer + mobile menu + mobile sticky bar. `.js-window` hard-coded (no JS hook);
+  `#navWindowPulse` referenced by no JS. Also normalized 42 glossary pages missing the platform-kbd script.
+- `d5648837a` — **founder feedback ("nav looks plain… make them tabs"):** nav-links → **uppercase tab bar**
+  (12.5px, tracked, 600-wt) with an **auto-detected active tab** (best href-prefix match → `aria-current=page`
+  → teal label + persistent underline; hover fades the same underline in). Detection is a synchronous script
+  in the nav partial (runs everywhere incl. cost-index pages). Completed the ES Contact removal (was EN-only;
+  610 /es/ pages still carried it). Made the nav width-discipline **unconditional** (icon-only search + 22/16
+  gaps at every width) now that the overflowing Contact CTA is gone → **symmetric at ALL widths** (diff 0 at
+  1200/1280/1440/1512/1680/1920; was ~100px right-lean on wide monitors). Tabs are EN-desktop; ES desktop is
+  hamburger-only (pre-existing `:root:lang(es)` rule — Spanish labels don't fit the row).
+  · **Active-tab detection adversarially verified across 14 page types (14/14):** Library hub+article,
+    Cost-Index hub+ingredient, Open-data, Tools hub+tool, Company(/studio/), Ledger all light the right tab;
+    home/glossary/about/methods/blog correctly light none. Feature is robust.
+  · **ES desktop tabs — first rejected at 12.5px, then SHIPPED smaller.** At the EN 12.5px/.085em the ES
+    row is ~778px and leaned; but at **12px / .02em / gap 18** (scoped `:lang(es)`, labels untouched) it fits
+    balanced (diff 0 at 1280). Since ES already showed the full nav >1400, the win was to apply the smaller
+    type + lower the hamburger threshold 1400→1200 → ES gets the real desktop tab bar (with active underline)
+    from 1200px up; <1200 still hamburgers. `feat(nav): ES desktop tab bar` below.
+- `3a3d17f97` — **ES desktop tab-bar parity** (12px/.02em/gap18 scoped, threshold 1400→1200). Verified
+  balanced at 1280, active tab "Índice de costos" lit, 0 overflow, ES phone still hamburgers, EN untouched.
+- **Systemic tier — led with the real-bug hunt, not the invisible refactor.** The deferred `--accent`
+  "collision" turned out to hide a **real user-facing bug**, which generalized to a whole bug class:
+  · `6378f9d06` (cost-pulse --accent) — the lockfloat/line-finder `.lf-*` styles reference
+    `var(--accent)` with NO fallback, but `--accent` was undefined on the page (only scoped to
+    `.theme-social/.theme-brand` site-wide) → drawer toggle / stars / starters / **focus outlines** rendered
+    inherited black-gray instead of teal-green (`.lf-drawer-sum` computed #16181D not #1f6f6a). Defined
+    `--accent:#1f6f6a` at page root (EN+ES). The `.cp-*` accent elements only escaped it via inline `,#1f6f6a`.
+  · `1c0d838b5` (undefined-token sweep) — built a **site-wide scanner** for the same
+    class (`var(--X)` no-fallback where `--X` defined nowhere). Found `--amber` on 404 (should be
+    `--light-amber` — the "/" slash was inheriting teal) + `--cream-1` on plate-cost EN+ES (should be
+    `--cream-2` — advice-option was transparent). **Rescan after fixes: 0 files** (was 4 files / 32 refs).
+  · **Remaining systemic items (semantic-role token migration off raw --teal/--rust; dark-mode --mtn-*/--refresh-*
+    consolidation) are genuinely INVISIBLE refactoring** — the undefined-token bugs were the only user-facing
+    defects hiding in the tier. Scanner (theme-agnostic) confirms no undefined dark tokens either. Recommend
+    against autonomous churn: regression risk across ~1200 pages for zero visible change. Reviewed session only.
+- **Runtime/console-error sweep** (26 representative page types): 25 clean; caught 1 real bug.
+  · `edfd0a2b3` — 404.html + es/404.html loaded site.js TWICE (stray eager `<script src>` + the
+    standard lazy-loader every other page uses alone) → `const i18n` re-declared → "SyntaxError: Identifier
+    'i18n' has already been declared" aborted site.js init on the 404 page. Removed the eager tag. Re-swept: 26/26 clean.
+- **Broken-internal-link sweep (redirect-worker-aware).** Naive scan found 93; the site has TWO Cloudflare
+  Worker redirect maps (`src/lib/tool-redirects.js` 8 tool slugs, `src/lib/blog-library-redirects.js` 91→93
+  keys) that `_redirects` is too capped (100-rule cap, error 100324) to hold — accounting for both collapses
+  93 → **15 truly broken**. So the retired-tool + moved-blog links are ALREADY handled; nothing to add to the
+  capped `_redirects`. Founder approved fixing the unambiguous groups B/C/D:
+  · **B** (`2ffca30dc`) — 2 library articles the blog index links at `/blog/<slug>/` were missing from
+    the blog→library Worker map (keep-plate-cost-honest, what-beef-prices-mean). Added to the map.
+  · **C** — 3 EN + 3 ES library "Keep reading" blocks linked `/blog/drafts/<slug>/` for posts published at
+    `/library/<slug>/` (`/es/library/<es-slug>/`). Repointed.
+  · **D** (`00164c9a4`) — ES pages linked ES library articles by their ENGLISH slug (404). Fixed at
+    the SOURCE (pages would drift): `inject-tool-knit.mjs` articleUrl() now translates EN→ES via the i18n map
+    (regen 5 ES tool rails); `data/topic-essays.json` 12 inline links remapped (regen 6 ES topic pages).
+  · **DEFERRED per founder ("you decide per-group, I'll list") — the remaining ~15:** (A) library-hub links to
+    5 dead `/learn/topics/` slugs (restaurant-websites, menus-and-pricing, conversion-and-reservations,
+    margin-and-aggregators, photography-and-brand — the live topics are ai-search/brand-design/conversions/
+    cost-data/information-security/local-seo/operations-margin/speed-mobile/trust-reviews; needs old→new map);
+    (E) ES blog cross-language gaps; (F) `/blog/how-to-tell-if-your-restaurant-has-a-data-leak/` (no library
+    version), `/es/glossary/care-plan/`; (G) `/audio/assets/course/` (~40 refs, course frozen). Re-run
+    `scratchpad/scan-true.mjs` (worker-map-aware) to resume. **Scanner caveat:** a naive files+_redirects scan
+    gives false positives — MUST load both `src/lib/*redirects*.js` maps (scan-true does).
+  · **A** (`b2f92a90a`) — library hub's "Browse by what you're fixing" was hand-coded against the OLD
+    7-pillar taxonomy (5 dead `/learn/topics/` links). Rebuilt from canonical `data/topics.json` (9 pillars);
+    heading now uses the `count:topics` sentinel so it can't drift. 15 → 10.
+  · **E** (`3cafef425`) — 4 ES pages linked ES posts by their English slug (404); repointed to the
+    Spanish slug / ES library home via the i18n map (href-only, hardcoded, gate byte-identical to baseline). 10 → 6.
+  · **F/content-gaps** (`828c8e5ea`, founder-approved) — the 4 genuine gaps: removed the dead data-leak
+    "Keep reading" card; repointed the honest-doordash-math references (never existed in any namespace) to the
+    live `/es/library/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/` via topic-essays regen +
+    prose, and **unwrapped the 2 self-references** inside that same article (its own margin-walk content);
+    dropped the retired `care-plan` override in `inject-smart-next-cta.mjs` so the CTA auto-detects a live term
+    (→ lighthouse) + re-ran mentions/topic-page-schema so JSON-LD no longer names the dead term. Injector drift
+    on unrelated cost-index/el-niño articles reverted; gate back to 237/258 baseline. 6 → 2.
+  · **THREAD COMPLETE — 0 real broken links.** The final 2 are false positives: `/audio/assets/course/` and
+    `/blog/'+escHtml(item.articleSlug)+'/` are JS-constructed URLs inside `<script>` (scan-true matches `src="…"`
+    prefixes in JS; TODO improve the scanner to skip script blocks). **Session arc: 93 raw → 30 worker-aware →
+    0 real (15 fixed across A–F; 2 JS false positives).** NOT touched (not broken links, data-quality only):
+    the `used_in` metadata for the removed honest-doordash post lingers in `data/sourced-claims.json` (fact-gate
+    registry) — a separate hygiene item, left for a fact-gate-aware pass.
+
+**Done surfaces:** homepage, article shell, CI ingredient, CI hub, CI events, **CI weekly+monthly
+dispatch** (funnel spine complete), library hub, vendor-benchmark, plate-cost a11y, viz-spark (shared),
+glossary term.
+
+**Assessed & deliberately NOT changed (adversarial rigor — verified already-good or not-an-improvement):**
+footer (5 explicit responsive breakpoints, well-handled); 404 (already a composed centered masthead);
+glossary hub / about / tools-hub / methods heroes (already centered/composed, no void); **sheets-hub
+3-col catalog — TESTED on the render and REJECTED** (the elevated content-rich 2-col cards go ragged/
+cramped at 3-col; the dream's "bold" call predated the card elevation). Not every dream survives contact
+with the real render — that's the point of verifying.
+
+**Remaining work is now either checkpoint-gated or JS-dependent — surface-elevation pass is
+substantially complete:**
+- RISKY-SHARED — **INVESTIGATED 2026-07-18 (founder said "take it on"); finding: NO genuine user-facing
+  defect here worth the ~1,200-page blast radius. It is code-hygiene refactoring + already-done items.**
+  Evidence:
+  · `:focus-visible` — ALREADY a mature unified system: global recipe `a/button/.btn:focus-visible`
+    {2px teal outline + offset + `--ring-focus`} at site.css:1659, inverse-surface override
+    (`.final/.process/footer` → cream) at :1661, form-input focus at :1466. 88 focus rules. Not a gap.
+  · `--elev-feature` "invisible-shadow-in-dark" — `.intake-form` is on NO served page (moot); `.edu-result`
+    (tool results) keeps separation in dark via its re-tokenizing `--line` border + teal left-accent — the
+    faded shadow is imperceptible depth loss, not a defect. Dark mode already reads correctly (verified
+    repeatedly all session).
+  · Dark-mode consolidation (retire `--mtn-*`/`--refresh-*` into the token-flip) — the three mechanisms
+    are redundant but WORKING; the divergences are imperceptible (#1a1d22 vs #1B1E24). Pure maintainability
+    refactor with real regression risk on every dark surface. Poor risk/reward for autonomous execution.
+  · Semantic-role adoption / body-size / radius — inert refactoring or the red-team's cut-from-rollout set.
+  **Recommendation: do the systemic tier only in a dedicated, reviewed session (not autonomously). The
+  user-facing elevation program is complete.**
+- JS-DEPENDENT / lower-leverage: mobile-drawer polish + search-overlay cap (need interaction to verify);
+  tool empty/loading/validation states (per-tool inline JS work); tools-hub tier-badge/hover polish.
+- The full semantic-role adoption (migrate surfaces off raw `--teal`/`--rust` onto the Phase-1 role
+  tokens, incl. resolving the deferred `--accent` collision on cost-pulse/plate-cost/seasonality). **Generator discipline confirmed working:**
+surgical inline-CSS edits across the committed cost-index pages + mirror into `build-cost-index-pages.mjs`
+(never run it — it carries a half-finished template rollout); every ci patch verified `0 drift lines`.
+
+**Next (queued):** CI hub remaining (full-width composite/scorecard masthead — bold; orient about-strip;
+basket display-figure; movers board — judge pushed back on the 2-col, do carefully); CI events surface +
+CI weekly dispatch (figure-breakout, scoped `.ci-dispatch > .viz-figure`); remaining article wins
+(`.smart-next` card, scoped figure-breakout); then the critic's coverage gaps (global chrome + mobile
+drawer, tool empty/validation states, print neutralization, Ledger page, legal template, 404,
+`:focus-visible` token, ES end-to-end). Deferred to explicit checkpoints (red-team risky set): fluid
+body-size reflow, dark-mode mechanism consolidation, radius value bumps. Harness:
+`python3 -m http.server 8099` + headless_shell on a fresh port;
+scratchpad has `shot.mjs`/`clip-sec.mjs`/`clip-cv.mjs`/`leak-detect.mjs`. Chrome HTTP-cache can serve
+stale renders — use a fresh port or a `?x=` query buster when verifying edits.
+
+## ⮕ CURRENT STATE — AUTONOMOUS REDESIGN RUN (updated 2026-07-11)
+
+**⚠ OPS NOTE (2026-07-11) — container reverted TWICE; both recovered.** It has now happened twice in this
+run (same signature both times: HEAD drops to the stale demo checkpoint `e6afa2258`, remote-tracking ref
+stale, "Reach Don" reappears in the working tree). **Second occurrence:** mid-turn, AFTER a good push —
+detected when a headless glossary screenshot showed "Reach Don" though origin was correct. Recovery is the
+same and reliable: `git fetch origin claude/muntin-strategic-council-exsghc && git reset --hard origin/…`.
+**Hardened rule:** commit + push every increment BEFORE running the (slower) headless audit — the push is the
+only durable artifact; anything uncommitted when the container rolls is gone. The glossary sweep below was
+pushed first (`597bc5f23`) precisely for this reason, and survived. Original first-occurrence note follows.
+
+**⚠ OPS NOTE (2026-07-11) — container reverted; recovered.** A worker restart reverted this container's
+working tree to a STALE demo-thread checkout (HEAD `e6afa2258` "wip(demo): single-frame no-scroll redesign",
+remote-tracking ref stale at `2401bf103`) — 192 commits behind, my entire redesign cascade absent locally,
+`index.html` showing pre-de-solo "Reach Don"/"Email Don". **All work was safe on origin** (pushed). Recovery:
+`git fetch` then `git reset --hard origin/claude/muntin-strategic-council-exsghc` (working tree was clean).
+The orphan demo-wip is preserved as tag `orphan-demo-wip-e6afa2258` if ever needed. **Runbook for a future
+session:** if HEAD looks wrong (demo commits, missing redesign, "Reach Don" on the home), you're on a stale
+checkout — `git fetch origin claude/muntin-strategic-council-exsghc && git reset --hard origin/…` to restore.
+Push every increment (the only thing that survives a restart). Post-recovery: clean, synced at `1ca49932d`,
+gates green (fabrications 0, newsletter-copy ✓, css-drift 504); restored cost-index nav correctly shows "Contact".
+
+**Founder directive:** "Fold both plans together. Execute the entirety of the redesign as I sleep,
+build → audit → iterate, frequently, all the way through." Macro-first. → **`docs/handoff/redesign-execution-plan.md`
+is the execution spine** (folds the reinvention master plan + the locked macro design direction from
+the flagship prototype). Autonomous run: one increment → adversarial/expert audit → iterate → commit+push →
+update this block → continue.
+
+**✅ COMPLETE — SITE-WIDE v3 PROPAGATION (founder picked ALL 4 levers + de-solo newsletter + keep human seat, 2026-07-11).**
+ALL SHIPPED + pushed: newsletter de-solo `d9dd78900`; type `31f4013a5`; radius `84273de79`; hubs cost-index
+`2b567e382` / ledger `c434c77d5` / tools `987aeb3a7` / library `8a391210c`; tool-card layout `63f6cb55f`.
+/about/ + /window/ kept personal (no change). All EN+ES, both themes headless-verified; css-drift 502 (improved
+from 504); gates green (fabrications 0, newsletter-copy ✓ enforcing company voice, locale-parity). Hub polish
+ran via workflow w71suln37 (polish+adversarial-verify per hub); the tools raw-6px radii were tokenized to
+var(--r-md) post-verify to hold drift; the library cost-index-hero was made durable by bumping its injector
+template (inject-library-cost-index-hero.mjs 16→8px) + re-running. Blueprint from workflow wbr35q2x7. **CERTIFIED 2026-07-11** — full 258-gate `check-all.mjs` run (task
+ba3butwm6, exit 0): 233/258 passed; all 25 failures are deploy-healed `(idem)` builders (sitemap, OG cards,
+CSS cache-bust, site-counts, glossary/hub schema, RSS, H2 anchor IDs, theme/cuisine build pages) — matching
+the pre-redesign idem baseline exactly, ZERO non-idem regressions from the levers / mono-token / newsletter
+work. CSS shells verified in sync (rebuild = 0 changes). HEAD `8dc1788ee` == origin. Original plan:
+
+**✅ LONG-TAIL SWEEP (founder picked it, 2026-07-11) — `597bc5f23`.** Glossary index app-chrome brought onto
+the v3 tokens: search box / filter bar / empty states off raw 10·14·22px radii → `--r-input`/`--r-md`/`--r-lg`;
+the recently-added link cards dropped the old focus-ring box-shadow for the muntin top-accent hover-reveal +
+2px lift, dates now tabular-mono. EN+ES; verified headless both themes AND by computed-style assertions
+(mono/tabular/overflow:hidden/accent scaleX 0→1/translateY-2px all PASS). **Sheets index needed nothing** —
+it reuses the already-swept `.tool-card--compact`. **Tool-page section `<h2>`s = deliberate keep** (not a gap):
+section-level heads stay Fraunces by the system's own rule, and they're mixed-register even within one panel
+(cost-pulse `.cp-card` has data-title "Drift this week" beside framing "What this dashboard isn't."), so there's
+no clean scope and a blanket demote would flatten warmth. Full reasoning in `docs/handoff/redesign-v3-system.md`
+(Deliberate keeps). The v3 storefront redesign is complete.
+
+**➡ PIVOT TO PRODUCT REPO (founder, 2026-07-11).** After storefront v3 was certified + long-tail-swept, the
+founder chose to carry the v3 language onto the paid **Ledger product** (`Muntin-Invoice-Decoder`, app
+`apps/web`, same branch). **Key finding on arrival:** the product does NOT need v3 applied — it IS the CANONICAL
+SOURCE of the v3 language and MORE mature than the storefront. `packages/ui/tokens.css` is a financial-grade
+token system (Linear/Mercury/Ramp), WCAG baked into token comments, gated by `check-contrast` /
+`check-focus-discipline` / `check-editorial-accent-boundary` / `check-keyframes-allowlist`, dark-canon,
+chrome/editorial/expressive tiers. It DELIBERATELY diverges on two axes: (1) accent — product `--mun-accent`
+#3b68f5 light / #5b82ff dark vs storefront `--teal` #2A50C8 / #7AA7FF (same blue family; product's #2A50C8 is
+its `--mun-accent-text`); (2) display face — product RETIRED the serif from chrome (Inter-only; Fraunces only
+as `--mun-font-editorial`, gated), storefront KEEPS Fraunces display. Applying storefront tokens wholesale
+would REGRESS the product. **Founder chose "full parity audit first"** → workflow `wzy4egv8m` (6 dimension
+auditors × both repos → synthesized reconciliation plan → adversarial verify). No token edits until reviewed.
+⚠ The product repo has NO CLAUDE.md yet — add continuity there once the reconciliation direction is set.
+⚠ Container reverted a THIRD time this session (storefront only; product repo stable) — same runbook, recovered.
+**FOUNDER STEER (2026-07-11): "I really like the current design language of the Ledger — the app itself."**
+→ The product's design language is the KEEPER; nothing regresses it (no Fraunces into app chrome, no swapping
+its a11y-tuned #3b68f5 accent). This removes "converge product→storefront" from the table. Reconciliation, IF
+any, is storefront-side only (the storefront optionally moves toward the product's accent); the deliberate
+Fraunces-storefront / Inter-product divergence otherwise STANDS. The parity audit now serves as a map of what a
+storefront-side nudge would entail + a clean-bill on the product side, not a to-do list against the product.
+
+**✅ PARITY AUDIT COMPLETE (workflow `wzy4egv8m`, 6 dims + synth + adversarial-verify, 2026-07-11).** Result:
+**the product gets a CLEAN BILL — zero changes.** The light-mode token spine is already pigment-identical across
+both repos (verified exact: storefront `--teal` #2A50C8 == product `--mun-accent-text`; `--teal-tint` #EAF0FE ==
+`--mun-accent-soft`; `--rust` #C42E2E == `--mun-danger`; `--gold` #B7791F == `--mun-warning`; `--line-input`
+#868D9A == `--mun-border-strong`; full neutral ramp). The two headline divergences (accent FILL #2A50C8 vs
+#3b68f5 — same hue ~226°, value/chroma split for AA-on-cream vs bright-on-dark; Fraunces display kept vs serif
+retired from product chrome) are DELIBERATE, documented on both sides, and gated — KEEP. So are the warm-cream
+vs cool-slate dark text, the 6px vs 8px card radius register, and the muntin-hover vs inset-ring interaction
+grammar (the two properties are meant to feel different; shared brand-DNA — muntin/pane vocab, 120/180ms
+durations, the cubic-bezier(.16,1,.3,1) emphasis easing — is intact).
+  - **Adversarial verify overturned one item (holdsUp=false):** the synthesis proposed nudging storefront
+    `--stone` #6B7280→#5f6670 and called it "ungated" — WRONG. `--stone` is one of 15 tokens locked by
+    `check-tokens-sync.mjs` (fail-CI); changing it breaks CI, and the spine-hash pin blocks the JSON path too.
+    DROPPED. The plan also cited a phantom `build-tokens.mjs` color-lock (real enforcer is check-tokens-sync).
+  - **Survivors = small, storefront-only, verified-ungated hygiene:** (1) **focus-glow mis-pigment** — site.css
+    `--ring-focus` glow is hardcoded rgba(59,104,245,.3)=#3b68f5 (the PRODUCT's accent) while the focus OUTLINE
+    is --teal #2A50C8, so one focused control shows two blues. Recommended pilot fix (one-liner, ungated).
+    (2) stale radius comments/fallback (site.css L95-98 says --r-sm 8/--r-md 14; real = 6/6/8; also a stale set
+    in check-css-drift.mjs's own comment). (3) off-scale raw radii sweep (storefront onto 6/8; INTRA-repo only).
+  - **✅ SHIPPED `03d8ebe00` (survivors 1+2):** `--ring-focus` now **derives from --teal via color-mix** (not a
+    hardcoded teal) so the glow tracks the accent in EVERY scope — storefront resolves #2A50C8 (matches outline);
+    the `.ld-wrap` Ledger demo, which deliberately re-skins --teal to the app's #3b68f5, gets a matching glow for
+    free (a hardcoded teal would have created a NEW two-blue mismatch inside the demo — caught in verification).
+    color-mix already used 22× in site.css. Regenerated the 3 CSS shells (build-css-shells.mjs); check-css-shells
+    clean; tokens-sync clean. (check-all exits 1 with 233/258 — but the 25 misses are all "(idem)" build-freshness
+    reporters — site-counts/sitemap/glossary-schema/cache-bust "would update N files" — that fail IDENTICALLY at
+    the parent commit; container build-drift the operator's pipeline regenerates, NOT a regression from this change,
+    verified parent-vs-HEAD on cache-bust.) Also refreshed stale radius docs to the v3 6/6/8 scale. NOTE: the
+    demo's `#3b68f5` is CORRECT/deliberate (the storefront's mini-mirror of the product app) — do NOT "fix" it.
+  - **HELD for founder (survivor 3 + editorial):** off-scale raw-radii sweep is cosmetic churn with real visible
+    corner changes across many components — not shipped without a look. Plus the two editorial calls below.
+  - **DEFER / maintenance notes:** dark-accent seam #7AA7FF vs #5b82ff (only accent slot no gate cross-checks)
+    + dark status pigments diverge independently (storefront ships a full dark theme the shared spec says doesn't
+    exist — stale spec). Dark --stone-2 #99A0AB is under-flipped but it's DECORATIVE (dividers/ring-tracks), not
+    disabled text — don't dim it toward #5a5f68 blindly. All generated (build-dark-mode.mjs) — regen, don't hand-patch.
+  - **Genuine EDITORIAL open questions for founder (NOT token edits):** (a) Cost-Index money direction — storefront
+    shows elevated cost in --rust / calm in neutral, never a green "prices fell/good"; deliberate one-directional
+    honesty stance, or an unadopted-spine gap? (b) does the storefront want a dedicated --info hue (today info-blue
+    folds onto --teal) and should it match product #3b68f5 or stay deeper editorial teal?
+
+- **[DONE `d9dd78900`] Newsletter de-solo** — "We send…"; G.10 gate updated to require company framing (teeth kept).
+- **[1] Type unification** (site.css, LOW risk): do NOT split the global `h1,h2,h3,h4{font-family:var(--font-display)}`
+  (:743) — that would demote every article h3-h4. Instead add scoped `font-family:var(--font-body)` on the
+  product-UI selectors: `.score-card-title/.score-card-value` (:428-429), `.mtn-card__title/.mtn-modal__title/.mtn-empty__title`
+  (:7837/:7929/:7892). Reconcile `.logo` (:868, inline blocks hardcode Georgia) → var(--font-display). DEFER viz-* numerals.
+  Regenerate 3 shells. Hero/masthead/.serif-italic/.foot-cta-text/home stances KEEP Fraunces.
+- **[2] Radius→6px** (site.css tokens, HIGH risk/blast): FIRST give `.portrait` (:1218, reads --r-lg) an explicit radius
+  or images square. THEN retokenize `--r-sm`(8)/`--r-md`(14)/`--r-lg`(22)/`--r-input`(12) toward 6px (:1,:99) — sweeps
+  ~200 card call-sites in one edit. Bump `.ci-inst` 8→6 (:1114). Leave 999px pills / 50% circles. Regenerate shells.
+  Visually once-over FROZEN surfaces (/studio/, /course/, .plan) since the sweep hits them.
+- **[3-6] Hub polish** cost-index → ledger → tools → library (each inline-CSS, one EN+ES commit): scoped mono stack
+  (--ci-mono/--lg-mono/--tc-mono/--lib-mono) for the DATA voice (numbers/dates/tier-labels → tabular-mono), app
+  titles/heads → Inter, uppercase labels → mono, hardcoded radii → 6px, and REPLACE the static `border-top:3px ink`
+  slab with the home hover-reveal muntin top-accent. Use color-mix (css-drift 504). PRESERVE (documented warmth):
+  ledger `.lg-pricing` ink band + its intentional hexes, cost-index semantic left-rails (signal), `.ledger-asym`
+  ordinals, library autolink sentinels + its hairline article-row dividers (rows NOT cards).
+- **[7] Tool-card layout fix** (home `.tool-card-flagship` :2770+): blueprint's spec agent failed — spec it inline;
+  land AFTER tools so it inherits the unified grammar.
+- **FORKS proceeding with defaults (reversible, flag in commits):** (a) unify hub "3px ink slab" → home's
+  hover-reveal accent — overrides the recent "bolder passes" but IS what "unify treatment" means; (b) keep the ONE
+  ledger $19 pricing lockup as an editorial moment (mono only the date). Founder can veto either.
+
+**Macro direction LOCKED — flagship prototype v3** (`docs/handoff/redesign-flagship-prototype.html`,
+artifact "flagship-macro-v3"): one unified app-grade language (slate + electric-blue #3b68f5/#5b82ff,
+tabular-mono data voice, dark-first both themes, the **muntin grille AS structure** — flush hairline
+panes, not gapped cards), one-window-many-panes registers, the emotional arc, trust stated ONCE
+(ambient). Iterated through 2 adversarial/expert panels (design-craft + brand/operator) — fixed
+grille-as-decoration, type weight range, accent identity, AA contrast, one boot sequence, believable
+real-data read, honest pricing, no-JS degrade; headless-clean both themes at 360/390/1280.
+
+**⚠ POSITIONING PIVOT (founder, mid-build) — recorded in `founder-vision.md`:** "No face; be a big
+CAPABLE company; I worry 'just me' gets the product discounted." → removed the founder-face/kinship
+centerpiece; lead with **product capability + company voice**; operator-grounding reframed as
+capability, not smallness. **HARD HONESTY BOUNDARY:** project capability + use company "we" + don't
+advertise headcount — but NEVER fabricate a team/scale (that lie breaks the honesty brand + is
+discoverable). Capability is shown, never invented.
+
+**LIVE CASCADE — shipped:**
+- **`ffabeeadf` — home hero de-solo (EN+ES).** Positioning pivot on the flagship: dropped the first-person
+  "numbers I check on my own shifts" + removed the hero-meta-note (Don byline + "Reply within 4 hours").
+  Removal only, honesty boundary held. Gates green; headless clean.
+- **`37c70aac4` (+`00e596345` missed shell) — home hero window → live Cost Index instrument (EN+ES).**
+  Decorative empty muntin window → functional sample cost read: tabular-mono headline (+14.6% count-up),
+  flagged mover chip, hairline rows (grille AS structure), verdict. Real 07-06 DIRECTIONS, labelled
+  SAMPLE/ILLUSTRATIVE/"Not your prices" (fact gate 0 hits). Scoped `.ci-inst` CSS (tokens only, css-drift
+  unchanged 504), auto-themes, scan boot, degrade-safe. Screenshots sent. **Strong, app-grade both themes.**
+- **`fe1e76808` — de-solo the nav + footer + home CTAs, company voice, SITE-WIDE (EN+ES).** "Reach Don" →
+  "Contact" / "Contacta a Don" → "Contacto" across nav CTA + footer CTA + footer link + mobile sticky bar;
+  first-person "A direct line to Don. I read every one." → "A direct line to Muntin — every message is
+  read."; neutralized the "Don is around" presence-pulse titles. Canonical `_includes/{,es/}{nav,footer}.html`
+  → sync-includes (1235 nav + 727 footer, sync --check clean, no count drift). Home body final-CTA also
+  de-solo'd (first-person → company voice). Honesty boundary held (company voice only, nothing fabricated).
+  Verified: gates + headless both themes EN/ES. **Deferred:** body-content solo residuals on ~13 other pages
+  (/window/ itself, ledger, studio, for/restaurants, course) + the generator-owned cost-index/open pages
+  (regen picks up the synced chrome). NOTE: h1 still Fraunces serif — type unification is a considered
+  SITE-WIDE decision (don't do piecemeal). The /window/ page is inherently "the line to Don" — its
+  personal-access framing may be a deliberate FEATURE, not a bug: **founder-fork to surface** (keep the
+  human-access differentiator vs full company-voice?).
+- **`9b47e6763` — finish body-content de-solo (product/company pages, EN+ES).** Reframed first-person
+  narration + CTAs to company voice on ledger, for/restaurants, studio, trust, es/404 (+ ES): "I run
+  front-of-house… numbers I check on my own shifts" → universal, "straight to me / I read every one" →
+  "straight to us / every one gets read", body "Reach Don" → "Contact". **Deliberately KEPT** (appropriate):
+  /about/+es (Don's story = the human seat), the library articles (voice canon permits first-person
+  operator voice), the frozen course, /window/ (the fork). **→ Positioning-pivot de-solo is now
+  substantially COMPLETE** (chrome site-wide + home + product/company; only intentional keeps + the
+  generator-owned cost-index/open pages remain, which regen with the synced chrome on deploy).
+
+- **`efc151449` — app-grade re-skin of the flagship free-tools section (Workbench pane, EN+ES).** Scoped
+  CSS-only (cards are home-only): soft 14px cards + big lift → sharper 6px hairline cards, tighter
+  hairline-depth hover, muntin top-accent on hover; pill teal chips → mono uppercase hairline labels;
+  glyph-notes → tabular mono (the DATA VOICE). Kept the honest illustrative viz glyphs + live tool links;
+  titles stay Fraunces (type unification deferred). Tokens-only (css-drift unchanged 504), shells regen'd,
+  headless both themes clean. Screenshots sent.
+
+**✓ ADVERSARIAL HOME REVIEW complete** (agent a3cf6e82…) — **verdict: ADJUST** (direction right, the top
+third proves it works; finish the cascade + tighten, not a rethink). Its 3 highest-leverage moves — all now SHIPPED:
+- **Move #1 (solo tail) — `c902109c4` + `92238ce51`.** The review's #1 seam + brief-violation was the About
+  teaser (founder photo + "I'm Don"). `c902109c4`: retired the portrait → a literal **muntin window** (cool
+  glass, six panes, sash — the metaphor in the adjacent headline; scoped .about-window CSS, token-only, both
+  themes, css-drift 504), rewrote About to company "we", CTA "The story behind Muntin →" (still → /about/,
+  where Don's story lives), + swept FAQ eyebrow "Questions I get"→"we get" and founding error "I'll add
+  you"→"we'll". `92238ce51`: last chrome solo tell — footer newsletter "I send a short note"→"We send"
+  (EN+ES templates, surgical string-propagate across 728 pages, **zero count-sentinel touch** — no idem
+  drift chased). EN+ES.
+- **Move #2 (hero instrument believability) — `a64bf8662`.** The load-bearing fix: the big +14.6% was the
+  ONION move under a "sample basket" label (contradicted caption/verdict/math). Reconciled to "basket steady,
+  onions the mover": big → **+0.6% basket net**, chip "onions leading", protein rows tamed to a genuine ease
+  (ribeye 3.1→2.4, chicken 14.4→3.8), caption rewritten, the flagged Onion +14.6% row keeps the drama;
+  count-up boot retargeted. Still illustrative; EN+ES; both themes + count-up verified.
+- **Move #3 (data voice past the fold), surface 1 — `5a4514738` (+`e88a8f8bf` shell sync).** Trust-strip
+  recast as a **mono system-readout** (scoped --ts-mono, teal status-LED per fact, tabular "43", middots
+  dropped) → reads as capable infrastructure; + reframed the residual solo fact "Built by a working
+  front-of-house manager"→"Grounded in a working restaurant floor — Tacombi" (honest, no fabricated scale).
+  Token-only, css-drift 504, both themes.
+- Review also flagged for later: type unification is **#2, a site-wide call, NOT the #1 fix** (deferring is
+  defensible; if touched, neutralize the serif titling on product-UI surfaces locally). Flagship tool-cards'
+  wide single column + small left glyph is the least-resolved layout (composition, not chrome). Desktop pins
+  ~104px of chrome above the fold (banner+nav) — revisit whether the dispatch marquee must stay pinned on desktop.
+
+**CASCADE CONTINUED (momentum surfaces + a fork):**
+- **`b33fe119d` — recently-added rail → dense mono app-index.** Mono tabular dates + mono uppercase section
+  tags + mono column headers (scoped --li-mono), hairline rows, subtle teal row-hover. Also fixed a latent
+  overflow bug: `table-layout:auto` + long titles blew the table to 1661px inside a 994px scroll container,
+  hiding the Last-updated + Contributor columns → `table-layout:fixed` (820px, all 4 columns, titles wrap).
+- **`0b3fb7b96` — recents contributor by byline canon.** The rail hardcoded every contributor to "Don
+  Goldstein" — a byline-canon violation (library = "The Muntin Desk") AND, once the table tightened, a
+  column of 8× "Don Goldstein" that read as a one-person shop. Now derived from the URL namespace
+  (library/tools → "The Muntin Desk", blog → "Don Goldstein"); regenerated EN+ES home + /learn/ rails; matches
+  the live article bylines. Fixes correctness + de-solos in one move.
+- **`21d677c84` — founding band → product enrollment.** CSS-only (form machinery untouched): mono field
+  labels (scoped --fd-mono), hairline inputs (--line-dark) + 6px radii, and the GA countdown wrapped in a
+  mono teal readout ("19 weeks out" — sentinel intact inside the span). Enrolling in a product, not a newsletter.
+- **`dd841e383` — library-island cards → flagship hairline pattern.** learn-tool cards get 6px hairline,
+  muntin top-accent on hover, −2px lift, mono uppercase kickers (rust body-font → mono stone). `.service`
+  product 3-card DEFERRED (shared with /studio/ pricing tiers → cross-page risk).
+- **⚠ FORK — footer newsletter reverted to Don's gated voice (`01d13d038`, reverts `92238ce51`).** The
+  full-gate audit (`check-all` 232/258; the 25 other misses are all `(idem)` deploy-healed drift) caught the
+  ONE real regression: `check-newsletter-copy.mjs` (Phase G.10) REQUIRES "when I publish something" / "cuando
+  publique algo" — Don's humble first-person newsletter framing, an explicit anti-corporate-SaaS guard. The
+  de-solo pass overreached into that gated, intentional keep. Resolved toward the gate ("never loosen gates";
+  a warm first-person footer note doesn't dent the capability positioning). **Open founder decision:** de-solo
+  the newsletter too (→ update the G.10 gate) or keep it personal (current). The rest of the solo-tail de-solo stands.
+
+**AUDIT CHECKPOINT (`check-all`, post-cascade):** 232/258. Every miss is `(idem)` deploy-regeneration drift
+(sitemap, OG cards, CSS cache-bust, site-counts 359-file drift, glossary schema, RSS, etc. — the standing
+deploy-healed set, NOT chased per board rule) EXCEPT the newsletter-copy gate, now fixed (`01d13d038`).
+Per-increment gates were green throughout (fabrications 0, css-drift 504, locale-parity, footer-payload, sync).
+
+**✅ HOME v3 CASCADE COMPLETE.** All review moves + momentum surfaces shipped (`c902109c4`→`528368966`).
+The `.service` 3-card is DONE (`528368966`). The stances section is intentionally LEFT (review: lowest
+priority; its `cal:band.*` sentinels are SENSITIVE/heartbeat-tied — not worth touching unattended for low reward).
+
+**OFF-HOME ASSESSMENT (2026-07-11, autonomous):** the funnel pages were **already given prior v3 passes** and
+are substantially aligned — NOT soft-card pages needing transformation:
+- **/tools/** — inline "Bolder pass 2026-07" (3px ink top-frame cards, teal "You leave with:" walkaways, tier
+  badges, muntin dark-closer lines) "matching the homepage closer." Already capability-forward.
+- **/cost-index/**, **/library/** — heavy mono/hairline/tabular signal (25 / 46 hits); library has 0 soft cards.
+- **/ledger/** — its "soft" signals are deliberate instrument panes (`.lg-pane`/`.studio-card` = 1px line +
+  3px ink top-frame), an illustrative rotated sheet graphic, and callout boxes — not generic soft cards.
+- **/about/** — least mono, no bolder pass, BY DESIGN: it's the founder's human seat (personal voice KEPT per
+  the pivot). Re-skinning it cold would fight its role.
+→ **Conclusion: the visible v3 redesign is SUBSTANTIALLY COMPLETE across the funnel.** The home was the one
+untransformed flagship; it's now done + audited. No clear high-value off-home transformation remains.
+
+**REMAINING = FOUNDER-LEVEL, SITE-WIDE DECISIONS (surface, don't do unattended):**
+- (a) **Footer newsletter** — keep Don's gated first-person voice (current) or de-solo it too (→ update the
+  G.10 `check-newsletter-copy` gate).
+- (b) **Type unification** (Fraunces→Inter on product-UI surfaces — review's #2, a site-wide call).
+- (c) **Radius/treatment unification** — home uses 6px hairline; off-home funnel uses 10–12px softer radii from
+  earlier passes. Unifying to 6px site-wide would make it read as ONE app-grade system (site-wide call, may
+  conflict with prior deliberate passes — founder's call).
+- (d) The **/window/** personal-access founder-fork; the **flagship tool-card composition** (2-up / full-width glyph).
+
+**OPTIONAL internal cleanup (non-visible, low-priority):** 6 duplicated scoped mono stacks (`--ci-mono`,
+`--ts-mono`, `--li-mono`, `--fd-mono`, `--lt-mono`, `--sv-mono`, all identical) → one global `--font-mono`
+token. Deferred: needs the token-sync gate + data/muntin.tokens.json editorial-register updated; gate risk not
+worth taking unattended for a non-visible DRY win.
+
+**NEXT (autonomous, ordered) — SUPERSEDED** by the review-driven NEXT above (item 1 instrument shipped as
+`37c70aac4`+`a64bf8662`; item 2 stances now deferred behind the momentum surfaces). Retained context: the
+pane archetypes + token re-pigment (accent already blue #2A50C8/#7AA7FF — nudge to electric #3b68f5/#5b82ff
+only if AA holds; the v3 feel is mostly composition + mono voice); Phase 0 remainder (cost-index cadence,
+/security/, generator-owned footer handler) in parallel where independent.
+
+**Thread (prior):** executing the fully-mapped storefront reinvention (`docs/handoff/reinvention-master-plan.md`)
+in the founder's build → audit → iterate cadence, expert-verified per increment. Strategy docs on
+this branch: `founder-vision.md`, `retention-strategy.md`, `tools-strategy.md`, `site-coverage-ledger.md`,
+`every-surface-map.md`, `library-audit-full.md`, `site-reinvention-blueprint.md`. Strategy = PRUNE →
+REFOCUS → ELEVATE; 7 phases (0 correctness → 1 prune → 2 re-pigment → 3 retention engine → 4 trust/human
+→ 5 content refocus → 6 signature craft). Demo work + #501 already merged to main; this branch had been
+docs-only until Phase 0 build started.
+
+**Phase 0 (correctness/staleness) — SHIPPED so far (each committed + pushed + gate-verified):**
+- **Increment 1 (`3be5e1d82`) — retired-tool dead-navs + OCR privacy violation.** Removed, EN+ES:
+  (a) Menu Engineering's "Open N in Menu Converter" card — the P0 menu-wipe (menu-converter 301-loops
+  back to menu-engineering → reloaded the page with an empty grid, destroying the typed menu); plus the
+  menu-copy/photo-brief quadrant handoffs + dead briefLinkFor/priorityForQ + stale edu link. (b) Plate
+  Cost's Tesseract-CDN OCR (CSS+HTML+JS) — it lazy-loaded ~3MB from cdn.jsdelivr.net, breaking the page's
+  own "no upload… Zero requests fire" promise (P0 honesty); + the retired photo-brief "Brief your
+  photographer" button. (c) Margin Math's menu-copy cross-suggest. (d) Pruned `next-tool-map.json`
+  24→3 live→live rules (killed the recommender's retired-tool cards). Verified: all inline scripts parse,
+  zero orphans, check-all 236/258 with a **byte-identical failing set to the pre-edit baseline** (all 22
+  are deploy-regen idempotency drift), tool-no-fetch/retired-links(chrome)/locale-parity(239)/banned-words green.
+- **Adversarial review** (general-purpose agent, 32 tool-uses): verdict FIX-FIRST — findings 1/2/5/6 CLEAN,
+  honesty materially fixed; caught ONE completeness gap (4 sibling escalate CTAs still → retired audit).
+- **Increment 1b (`29343de52`) — closed that gap.** Repointed margin-math's 4 result-flow escalate CTAs
+  off retired `/tools/audits/restaurant/` to topic-matched live reads (channel→delivery-economics,
+  prime-cost→pricing guide, break-even→menu-engineering read, raise→Menu Engineering tool); link+copy only,
+  JS toggles untouched; correct ES library slugs. Reworded menu-eng's "same architecture as Brand Suite"
+  data-posture line off the retired brand-suite tool. Gates green.
+
+**Phase 0 — STILL OPEN (next increments, ordered):**
+1. **Fire-and-forget forms that fabricate success** (founding-list + newsletter) — honesty defect, HIGH.
+2. **Cost-index stale-anchor + cadence contradiction → monthly everywhere** — trust-debt ("teaches people
+   not to return"); site says monthly/quarterly/weekly simultaneously. HIGH.
+3. Audit-found fact defects; `/security/` claim-count + schema bugs.
+
+**Deferred by design (logged so not lost):**
+- **Increment 2 — chrome-freshness sweep:** the bottom "Where to go next" (mm-next) blocks + the stale
+  "Free tools" footer nav on margin-math (7 retired links) + menu-engineering (1) still list retired tools;
+  the clean `_includes/footer.html` dropped the Free-tools column entirely (plate-cost/cost-pulse/vendor-
+  benchmark already synced). Bring the two stale footers in line; verify `check-footer-payload`. Homepage
+  `index.html:654` prose also still names retired tools.
+- **plate-cost "Zero requests fire" honesty reconciliation:** plausible IS loaded (`/api/event`) and fires
+  on Compute, so that exact line is a (pre-existing) overstatement; it's synchronized across prose +
+  JSON-LD FAQ + audio script + the "5 verifiable claims" artifact (both locales) + likely security-claims —
+  fix all instances together, or it desyncs / trips the audio-fabrication + security-claims gates.
+- **plate-cost Invoice-Decoder integration** (`pcPullInvoice`/`pcStaleBanner`/stale error string) — a whole
+  retired-tool FEATURE, not a stray link; Phase-3 tools-loop rebuild decision.
+
+## ⮕ CURRENT STATE — Cost Index data-company expansion (updated 2026-07-11)
 
 **Session on branch `claude/vendor-benchmark-redesign-yn273q`** (storefront `potentially-profitable`). Thread: turn the Cost Index into a genuine **data company + open library** — surface the deep price history, add the "events that moved the market" layer, and wire the HONEST use of new public data (NASS/Census/EIA). Cadence: plan → build → audit → iterate, with **expert panels at the forks**. `check-all` baseline unchanged (232–233/252; the ~19 failures are the deploy-regenerated site-wide idempotency drift, NOT ours — see Gotchas). Every cost-index/events/context gate GREEN.
-
-### ⮕ LATEST THREAD (2026-07-24b): research surface Phase 1 — the field report → citable/answerable/recomputable object (ADR-019)
-
-Turning the menu-pricing field report (`/cost-index/menu-pricing/study/`) into a CC-BY surface where every claim resolves three ways (a move, a source-to-DOI, a machine-safe answer). Build-ready audited spec: `/tmp/.../scratchpad/spec-research-surface.md` (Phase 1 = §A/§B/§C/§G/§H/§4; ClaimReview CUT; Phases 2–3 optional). **The study BODY is now engine-owned** (see below); the `<head>` (nav/CSS/JSON-LD) stays engine-behind, so body edits propagate by **region-swap + head-CSS inject**, JSON-LD lives in the **body**.
-
-- **§A engine-parity (`d322972ea`)** — the committed page shipped a confidence ("How sure we are") + data-availability block that `emitStudy()` didn't render (a regen would have DROPPED them). New exported `studyMlBlocks()` renders Methods(id)/confidence/Limitations(4-para array)/data-availability; `data/cost-research-study.json` gained `limitations[]` + `dataAvailability` (raw HTML w/ the CC-BY links + `#methods`). Gate **`check-study-engine-parity.mjs`** (self-test + live, wired): engine render == committed body (normalized for whitespace + named-entity encoding).
-- **§G-1 machine bundle (`530305a07`)** — `study.csv` 10→**13 lossless RFC4180 cols** (+finding/grounds_how/myth); new **`datapackage.json`** (Frictionless, typed fields + posture enum + per-resource CC-BY + **sha256/bytes pinned** to both study.csv & menu-pricing.csv). `build-study-dataset.mjs` main-guarded + exports `parseCsv`; gate **`check-study-datapackage.mjs`** proves the descriptor never lies (self-test 8, live green).
-- **§B "Ask this paper" (`155f7050b`)** — `answers[]` (EN+ES, 7 atoms) with number+type welded in (trim-tax atom reconciles 2.16×/1.14× CATEGORY vs lime 2.86×/lemon 2.22×); shared `studyAnswersBlock()` renders jump-list + `id="ans-*"` cards + **FAQPage JSON-LD in the body**; `STUDY_ANSWERS_CSS` head block. Parity gate extended (answers render + FAQPage + head CSS + parity; self-test 8/8). `llms.txt` EN+ES register the 7 owned questions.
-- **§C "The evidence, on the page" (`dbf890d14`)** — shared `studyEvidenceData()`/`studyEvidenceBlock()` render a **36-source evidence table** (`id="claim-ref<n>"`: source→DOI, layer, finding, grounds, myth, confidence) + a posture-distribution figure (37/19/7/37; withholds 27 no-series / 10 too-volatile 30.1–62.4%) + the **"Category trim multipliers"** figure (citrus 2.16×→mushroom 1.14×, from the 134-row yield reference — NOT the per-ingredient means; caption reconciles lime 2.86×/lemon 2.22×; "range" is a banned label). All derived (no hardcoded numbers); page-native accessible markup (study page is NOT article-gated — `SCAN_ROOTS` excludes it); ES table labels its finding/myth cells "English-language synthesis." Parity gate extended (evidence render-parity + 36 rows + title + no-"range" + lime-reconcile + head CSS).
-
-**Build mechanic for §B/§C:** `cost-research.mjs` imports `buildEvidence`/`parseCsv` from the (main-guarded, import-safe) `build-study-dataset.mjs`; body blocks propagate to committed EN/ES via **body region-swap** (`/tmp/propagate-*.mjs`: regen → transplant `<div class="ci-body rs-body pb-study">…</main>` → restore engine-behind head → inject the sentinel head-CSS). Re-run the propagate step after any yield/instrument data refresh (the gate's evidence render-parity will flag a stale committed page).
-
-- **§4b machine-citation artifacts (`61d23e758`)** — `build-study-dataset.mjs` now also emits **`CITATION.cff`** 1.2.0 (title/authors/version/CC-BY + all 36 upstream refs with real DOIs), **`datacite.json`** (DataCite 4.x, PREPARED not minted — `doi:null`, ORCID `TO-FILL`, IsSupplementTo/IsDerivedFrom/IsDocumentedBy), **`CHANGELOG.md`** (Keep-a-Changelog, WP-001). Honesty pinned by `--self-test` (30/30): the paper's own DOI is never fabricated. `--check` keeps all 6 bundle files in sync.
-- **§4c cite formats + recompute badge (`6207e8119`)** — shared `studyCiteBlock()` gains **RIS + CSL-JSON** (alongside APA+BibTeX) + the machine-bundle downloads, and a deterministic **"Recomputed from open data · verified 2026-07-11"** badge pointing at `build-study-dataset.mjs --check` (version DATE, never a live git-sha — a live sha would break byte-reproducibility). Ceiling stated: recomputation, NOT replication. Propagated via `inject-study-cite` (byte-identical engine⇄injector).
-
-**Remaining Phase 1 (2 pieces, both delicate engine-behind — do with focused care):**
-- **§4a ScholarlyArticle head upgrade + Dataset JSON-LD** — the schema centerpiece (Google Dataset Search). Build a shared `studyJsonLd()` (`@graph`: upgraded ScholarlyArticle with typed `citation[]`+`sameAs` DOIs, `speakable`+`.rs-answer`, `isBasedOn`→the Dataset `@id`, `subjectOf`→/open/, `temporalCoverage`, `version`, `creativeWorkStatus`; + a `Dataset` node with `variableMeasured[]` per column, `distribution[]` per format carrying the datapackage sha256, `measurementTechnique`, `isBasedOn` upstream). Then a **head injector** (like inject-study-cite's JSON-LD patch, but replacing the whole `<script type="application/ld+json">` whose JSON has `"@type":"ScholarlyArticle"` — NOT the body FAQPage script) + emitStudy mirror. The head is engine-behind, so this is a head-script replace, not a regen. Gate: extend check-study-engine-parity with a JSON-LD shape check (`check-study-schema.mjs` if needed).
-- **§H `/open/` study card** — fixes the dangling `isBasedOn: /open/` by giving /open/ a real `od-card` for the field report + its datasets (surgical add + engine mirror; the /open hub is engine-behind). Pairs with §4a's `subjectOf`.
-
-Phases 2–3 (Line Card, Evidence Explorer, `/research/` hub) remain optional follow-ons.
-
-### ⮕ CORPUS EXPANSION SCOUT (2026-07-24) — returned, ship-with-fixes (integration pending)
-
-Large coordinated scout/verify **workflow** swept federal/research/higher-ed for new public data (result cached: `/tmp/.../tasks/w4skr4kuh.output` + `/tmp/corpus-result.json`). **17 sources cataloged, 6 shortlisted**; audit corrected 4 mislabels (FDA Import Refusals needs an OII key — NOT keyless; FAS PSD key is email-issued via `API_KEY` header; SEC EDGAR numeric facts OK but MD&A narrative NOT public-domain; FoodData Central use Foundation+SR Legacy CC0, not Branded). **Recommended sequence:** (1) keyless recall event feeds **openFDA Food Enforcement + FSIS Recall/PHA** → ADR-011 events surface as co-occurrence (one `fetch-*.mjs` each, zero new UI); (2) Import Refusals (keyed, a beat later); (3) fenced descriptive lanes — QCEW labor / Census MARTS demand / BLS PPI packaging+refrigerated-trucking (kept OUT of the food index, pressure math, VB); (4) FoodData Central → $/g-protein CC-BY derived layer; (5) FAS PSD/GATS/ESR (email key) → context-only WASDE/EDGAR/USITC. Live fetch runs on the operator Mac (ADR-013); container builds adapters+gates.
-
-**Fetch list + live fetch session DONE (2026-07-24):** the vetted catalog is a durable, actionable **fetch list** — `data/corpus-fetch-list.json` (17 sources × {endpoint, key_env, license, lane, wave 1–6, status, honesty_guard, adapter}; the 4 audit fixes applied inline). A live pairing session with the operator (fetches run on the operator Mac per ADR-013; each adapter has an offline `--demo`/`--self-test` + a `--live`) shipped **5 clean committed datasets** — all adapter/dataset self-tests green + wired into check-all:
-
-  - **openFDA recalls** — `scripts/fetch-food-recalls.mjs` → `data/food-recalls.json` (718 of 10,082 recalls since 2020, whole-word ingredient-matched + slug-tagged; 96 ingredients, onion's 133 Class-I = the 2024 salmonella wave). The matcher was tuned live over 4 passes to isolate FRESH-COMMODITY recalls (product-only match; fresh/short cues; reject processed forms rings/pudding/chips/salad/burger/cheesecake/sherbet/…). Published as **CC0 open data** by `scripts/build-recalls-open-data.mjs` → `cost-index/food-recalls.csv` + `cost-index/food-recalls-by-ingredient.json` (the index the events block will render). Framing: co-occurrence, never cause.
-  - **BLS QCEW county wages** — `scripts/fetch-qcew-wages.mjs` → `data/qcew-wages.json` (56 quarters, private food-services NAICS 722/7225, Montgomery County MD FIPS 24031, keyless CSV). LABOR lane, descriptive.
-  - **Census MARTS demand** — `scripts/fetch-marts-sales.mjs` → `data/marts-sales.json` (138 months, Food-Services sales $M, via FRED's **keyless** CSV mirror RSFSDP/RSFSDPN — no CENSUS_KEY needed). DEMAND lane; latest month provisional.
-  - **NASS aquaculture** — `scripts/fetch-nass-aquaculture.mjs` → `data/nass-aquaculture.json` (catfish $394M + trout $118M annual SALES, 11 yrs). Params discovered live: catfish/trout are `class_desc` under `commodity_desc=FOOD FISH`, `source_desc=SURVEY`, national; series keyed by unit; FOODSIZE fan-out dropped. WORLD-SUPPLY lane, production fundamental.
-
-**Parked / pending (outside the session):** FSIS recalls (Akamai WAF 403 — needs a data.gov/RSS alternate); FDA Import Refusals (OII Unified Logon key); **FoodData Central** (operator's pending free data.gov key — the $/g-protein adapter is a ~20-min build when it lands); **BLS OEWS + PPI packaging + trucking** (obscure series IDs — need a live code-confirmation round like NASS got, never a guessed code). WASDE/EDGAR/USITC/RISE/MD-min-wage stay context-only (sourced-claims prose).
-
-**NEXT — SURFACES, not fetches:** the `corpus-explorers-design` **workflow** (dream × 4 lenses → synthesize → adversarial audit × 3 → build-ready spec; run `wf_1ca5395d-e66`) designed the bespoke `/open` explorer surfaces for the 5 datasets. Build-ready spec saved: `/tmp/.../scratchpad/spec-corpus-explorers.md`. Then the wave-3..6 sources land into that same architecture as their keys/codes come in.
-
-**§1.1 DATA BUILDERS — DONE (2026-07-24c, `2e79837e9`):** the explorer data layer, ahead of the pages. `build-recalls-open-data.mjs` rewritten so the by-ingredient index leads with the **HONEST count — distinct events (`event_id`), not raw notices** (one firm × 70 lots in one event = 1 event, not 70): per slug, notices grouped by event, dominant/most-severe FDA class per event, `class_i/ii/iii_events` summing to `events`; `n` (raw notices) kept as secondary; `order_key` (latest Class-I event else latest event); `firm`/`states` on `recent[]`; top-level `summary` deduped by `recall_number`. The by-ingredient index moved **CC0 → CC-BY** (it's Muntin's compiled taxonomy); the flat CSV **stays CC0**. Live: 718 recalls / 96 ingredients / 315 events; onion 33 events / 143 notices / 28 Class-I events (self-test 24/24). New `build-qcew-open-data.mjs` → `cost-index/qcew-wages.{json,csv}` (CC0 passthrough, 56 quarters, labor lane; 10/10) and `build-marts-open-data.mjs` → `cost-index/marts-sales.{json,csv}` (CC0 passthrough, 138 months, max-date `provisional:true`; 12/12). All three builders' `--self-test`+`--check` wired into check-all (green). Both CC0 builders self-assert their `_doc` never claims a Muntin compilation.
-
-**§1.7 CATALOG — DONE (2026-07-24c, `2d14cc6e2`):** 4 `DATASETS` entries in `build-open-data-catalog.mjs` per the ADR-015 split — `food-recalls` (raw CSV, CC0 gov), `qcew-wages` (CC0 gov), `marts-sales` (CC0 gov), `food-recalls-by-ingredient` (**CC-BY derived**, same posture as `ers-food-availability-mapped`). `cost-index/open-data-catalog.json` rebuilt → **23 datasets (15 CC0, 8 CC-BY)**; `check-open-data-catalog.mjs` green (split honored, downloads resolve, counts in sync). The rebuild also cleared the pre-existing ISR-byte catalog staleness.
-
-**§1.2–1.7 EXPLORER SURFACES — SHIPPED (2026-07-24c).** All three corpus explorers are live, gated, catalogued, reachable, and registered. Commits: recalls page `e3d8f1f25`, labor+demand `fbf97706c`, honesty gate + lib `eea8e8b94`, hub cards `f15f5fc71`, llms/sitemap/ADR `45cbcc249`.
-  - **Pages** — `open/recalls/`, `open/labor/`, `open/demand/`, each a standalone generator (`build-open-{recalls,labor,demand}-page.mjs`) + committed HTML + `--check` drift + `--self-test`, authored against the `open/landings` shell, bespoke `.rc-`/`.lb-`/`.dm-` classes. Recalls = dual CC0+CC-BY chip, **no `$` token anywhere** (asserted), distinct-event severity ledger led by Class-I, detail view (recent[5] each "Documented around this time — co-occurrence, never a cause"), onion aha dated from data (event 93290, 2023-11-15, ~70 notices). Labor = CC0, fenced (no `pressure_*`), 2020 Q2 drop from data (31,419→18,690). Demand = CC0, fenced, provisional latest month, COVID trough from data (SA 67,358→30,732, NOT the provisional 102,497). All verified headless (0 real JS errors).
-  - **Honesty gate** (`eea8e8b94`) — `check-open-lane-honesty.mjs` (registry-driven, exempt-zone + negation aware) on the shared `scripts/lib/co-occurrence-patterns.mjs` (FORECAST_RE/CAUSAL_RE extracted from `check-cost-index-events.mjs`, which now imports them; its self-test unchanged 17/17).
-  - **Catalog** (`2d14cc6e2`) — 4 datasets (recalls CSV=CC0 + index=CC-BY, QCEW=CC0, MARTS=CC0); catalog gate green (23 datasets).
-  - **Hub cards** (`f15f5fc71`) — `inject-open-cards.mjs` sentinel block into `open/index.html` (Thirteen→Sixteen) + `es/open/index.html` (Siete→Diez, ES cards → EN pages), count reconciled by counting cards, live stats from the artifacts, built-in block honesty guard.
-  - **Registration** (`45cbcc249`) — llms.txt EN+ES (+3, count bumped), sitemap (+3 EN pages, additive), ADR-015 addendum (recall-index CC-BY rationale).
-  - **All ~11 new checks wired into check-all; the 3 EN-only pages ship with the standard hreflang triple (locale-parity warn-only during rollout).**
-
-**REMAINING (small, optional):**
-- **§1.5b — the hub `@graph` `Dataset[]` JSON-LD** (SEO-only; each page already carries its own `Dataset` JSON-LD in head). Add 3 `Dataset` nodes to `emitOpenHub()` `@graph` (L3927) and `CI_ONLY_PATH=open/index` regen BOTH locales on a scratch checkout; ship only if the diff touches nothing but `@graph`, else node-inject. Engine-behind — the one deferred piece.
-- **ES explorer pages** (task P4) — the three ship EN-only for now, matching the existing 14; `*_es` caveat strings can be threaded when ES parity is taken up.
-
-**Phase 2 — per-ingredient recall roster: inc 1 + 2 SHIPPED (2026-07-24c).** The "Food-safety recall history" section is live on all ingredient pages.
-  - **inc 1 — `scripts/lib/recall-roster.mjs`** (`a8494573a`): the section generator (EN+ES) from the CC-BY index — distinct-events-led, co-occurrence marker verbatim, "Documented around this time" tags, product verbatim, NO cause/reason field, no price, graceful absence with FDA-only incompleteness. Self-test 17/17.
-  - **inc 2 — `scripts/inject-ingredient-recalls.mjs`** (`6ddce617f`): additive+idempotent inject into 198 pages (99 EN + 99 ES), 59 EN with a real record. Reuses `ci-events__ctx` so **check-cost-index-events stays green** across all ingredient pages (verified). Two idempotency fixes: strip-as-a-unit (fixed-point `--check`); recall CSS inserted BEFORE the supply-picture CSS block so supply-picture's own `--check` order holds (both injector `--check`s green). Full check-all back to the 29-item baseline. `--check` wired into check-all.
-  - **inc 3 — ENGINE MIRROR (next):** mirror the roster into the ingredient-page emit helper in `build-cost-index-pages.mjs` (the S2.4 supply-picture precedent) so a full regen re-emits the sections byte-identically. Until then the injector is the load-bearing committed state (recalls data only refreshes on operator-Mac fetch, so no silent drift). Optionally add a per-ingredient recall block on `/cost-index/events/` too.
-
-  **Waves 3–6** (spec §3) slot by lane as keys/codes land.
-
-<details><summary>Original §1.2–1.6 build plan (now shipped — kept for reference)</summary>
-
-Build order from spec §1.8 steps 4–7:
-  1. **Author the 3 explorer pages** (spec §1.2–1.4) — `open/recalls/index.html`, `open/labor/index.html`, `open/demand/index.html`. **Shell:** copy the full `<head>` + the shared token block (`open/landings/index.html` L1–173: `.lic`/`.honest`/`.panel`/`.statgrid`/`table.data`/`footer.prov`) — head + tokens fully captured in this thread's context. Bespoke `.rc-`/`.lb-`/`.dm-` classes, **never `viz-*`**. **RECOMMENDED MECHANIC:** a generator per page (`build-open-<name>-page.mjs`, pattern = the `build-*-open-data.mjs` + `--check` drift convention) that reads the CC-BY/CC0 artifact and emits the committed standalone HTML with a server-rendered no-JS `table.data` (recalls = 96 rows — too many to hand-author) + inlined `<script type="application/json">` + narrated SVGs + JS island + `Dataset`/`BreadcrumbList` JSON-LD. Recalls = **dual CC0+CC-BY chip, NO price token anywhere, distinct-event severity ledger led by `class_i_events`, onion event dated 2023-11-15 FROM DATA**; labor/demand = single CC0 chip, fenced descriptive (no `pressure_dir*`), demand marks the provisional latest month. All required honesty literals per spec §1.2–1.4 + the tripwire checklist §2.
-  2. **Gate** (spec §1.6) — extract `CAUSAL_RE`/`FORECAST_RE` from `check-cost-index-events.mjs` L31–49 into `scripts/lib/co-occurrence-patterns.mjs` (and re-point `check-cost-index-events.mjs` at it + re-run its self-test in the SAME change), then `scripts/check-open-lane-honesty.mjs` (registry-driven: per-surface requiredCaveats/bannedAffirmative, exempt zones = cite/honest/head/script/data-audio-alt, recalls no-`$` + no-slug-link-beside-Class-I, labor/demand pressure-token ban, license-chip byte-match). Wire `--self-test` + scan into `check-all.mjs` + `cost-index-refresh.yml`.
-  3. **Hub** (spec §1.5) — `scripts/inject-open-cards.mjs` writes a sentinel block into `open/index.html` (after "Explore the public series") AND `es/open/index.html` (after "Los conjuntos de datos", ES cards linking EN pages); reconcile the "Thirteen"/"Siete" count words against the real enumeration (do NOT blind-bump — llms/hub already omit `seasonality`). Then the ONE engine edit: add 3 `Dataset` nodes to `emitOpenHub()` `@graph` (L3927) and `CI_ONLY_PATH=open/index` regen BOTH locales (L4421-22) on a scratch checkout — ship only if the diff touches nothing but `@graph`, else node-inject the 3 nodes into the committed script. **Never a full regen; never the engine `cards` array.**
-  4. **Register** (spec §1.7) — `build-llms-txt.mjs` L208 EN / L254 ES (reconcile the count word, append the 3 explorers, decide on the missing `seasonality` line); `build-sitemap.mjs --check`; ship EN-only with the identical en/es/x-default hreflang triple the 14 emit; `*_es` caveat strings in data now (unrendered) for future parity; full `check-all.mjs`.
-  5. **ADR-015 line** recording why the recall-slug-mapping is CC-BY (creative selection onto the tracked taxonomy).
-
-Then **Phase 2** (spec §4): per-ingredient recall roster on `cost-index/<slug>/` + `/cost-index/events/` (additive `inject-ingredient-recalls.mjs`, reuse `ci-events__ctx` so `check-cost-index-events` enforces co-occurrence for free; 73/169 ingredients have zero recalls → graceful "no recall in the openFDA window" + FDA-only incompleteness). **Waves 3–6** (spec §3) slot by lane as keys/codes land.
-
-</details>
-
-### ⮕ LATEST THREAD (2026-07-24): seasonality + events corpus fusion (ADR-019)
-
-**Decision of record: ADR-019** (fusing the corpus into the CC-BY reference surfaces — the open-data leg of the CHAIN). A large coordinated dream-and-audit **workflow** (4 lenses × 2 surfaces → judge/synthesize → adversarial audit) produced a build-ready, honesty-audited spec per surface (saved: `/tmp/.../scratchpad/spec-{seasonality,events}.md`). The audit caught + corrected real traps: import-VALUE ≠ supply-volume (banned "backfill"/"supplies"/"volume" in import labels), the percent-discount-cancels-yield error, causal "driving" in co-movement, hardcoded drifting numbers, and build-breaking field-name mismatches. Both surfaces built as verifiable increments, each verified headless (EN+ES, 0 real JS errors) + gated + committed.
-
-- **Seasonality `/open/seasonality/` (`d270fb6cb`)** — engine-IN-sync surface: edited `emitSeasonalityHub()` + regenerated only via `CI_ONLY_PATH=open/seasonality`. §0 build-derived headline range + classification funnel + CC0/CC-BY split; §4 "Why the low lands" value-only **mechanism labels** (counter-phase / domestic-season-low / domestically-sourced) from import-value seasonality × HHI × reliance + a dual-calendar figure; §6 **Swap Validator** island (real hedge / partial offset / mirror / shared calendar, circular month-distance). New lib `scripts/lib/seasonality-fusion.mjs` (58/58) + gate `scripts/check-seasonality-fusion.mjs` (9/9), both wired into check-all.
-- **Events `/cost-index/events/` (`0ab2d4d2b`)** — engine-BEHIND surface (committed ahead in nav/JSON-LD): **additive** per the supply-picture pattern. Per-event **"Why exposed"** block on all 39 detail pages (+ES) via `scripts/lib/event-exposure.mjs` (37/37) + `inject-event-exposure.mjs` (idempotent) + `emitEventPage()` mirror. Reliance-branched: import-origin+HHI for the 12 import-exposed items, domestic-structure (NO import-HHI gauge — audit fix) for the 31 domestic, catchpair for the 7 seafood; adaptive caveat; co-occurrence-safe (`check-cost-index-events` green across 78 pages).
-
-**Coverage ceiling (surfaced honestly):** both surfaces are gated by DEEP price history (102 ingredients); ISR is 169, so ~67 newer ingredients have structure but no series deep enough for a seasonal normal / event baseline — closes only when the operator-Mac fetch backfills them.
-
-**Sequenced next (both under ADR-019):** seasonality depth (Now-Board decision cards, bankability scatter + `viz-scatter` family, plate translation, protein/events bridges, FAQ-in-DOM, Dataset/HowTo schema); events depth (hub base-rate permutation-null replacing the "94%" headline, severity percentile, QAPage caveat-welded capsules, flat/measured detail variants, the 11-rule gate extension). Optionally surface the ~67 structure-only ingredients as "price-history pending."
-
-### ⮕ LATEST THREAD (2026-07-23): the CHAIN render — making the fused corpus visible
-
-**Decision of record: ADR-018** (the CHAIN — Source→Market→Your-Plate — as info-architecture + honesty device). The corpus was complete (19 datasets) but the menu-pricing island rendered none of the seams; this thread renders them, in bounded increments, each mirrored across the committed EN page + ES page + the `ISR_ISLAND`/`ISR_CSS` engine strings in `scripts/lib/cost-research.mjs`, each verified via HTTP-served headless Chromium.
-
-- **inc 1 (`1c144c6c`)** — commodity-scoped reliance denominator: slugs sharing a `nass_commodity` get ONE reliance from the broadest member's import over shared production (tomato+cherry-tomato both 81%); `reliance_scope` = `commodity`|`item`.
-- **inc 2 (`a641dfb2e`)** — reliance seam render: the SOURCE-rung "Domestic supply & trade" slot shows production/farm-price/exports + a big `import_reliance_pct` tile (scope-aware label) + ERS per-capita + the apparent-consumption caveat.
-- **inc 3 (`301216724`)** — catchpair seam: for seafood (`us_landings_value_usd`, no NASS), shared-scale paired bars — teal wild landings vs rust **same-year** imports (`import_annual_usd[landings_year]`, not the latest) — never a share; `wild_minimal` caveat variant (octopus/dover-sole).
-- **inc 4 (`25fe5130e`)** — the frame: `render()` restructured into three sealed `<section>` rungs (SOURCE→MARKET→YOUR PLATE), each drawn only if non-empty (shrimp skips MARKET); teal eyebrow + italic sub + hairline; hedge decoupled into YOUR PLATE; reduced-motion-safe stagger.
-- **inc 5 (this commit)** — `scripts/check-menu-pricing-render.mjs` (wired into check-all): byte-parity engine↔both pages + render-contract tokens (reliance caveat/year/scope, catchpair year-aligned & never-a-share, seam null-guards, rung order) + EN/ES T-key parity; `--self-test` seeds 5 violation classes. Makes the engine-behind-pages hazard CI-safe.
-
-**Two `.replace()` gotchas burned here (for the next editor):** the ISR island is a **double-quoted** engine string — escape `\` then `"` then `\n` to mirror into it (single quotes stay literal); and mirror with **`split().join()`, never `String.replace(a,b)`** — the island's calculator code contains `$'`, which `.replace()`'s replacement string reads as a special pattern and corrupts the file.
-
-- **inc 6a (`d1b7d3080`) + 6b — adversarial improvement loop.** Ran a 4-lens refute-default panel (honesty · a11y/WCAG · dataviz/data-science · operator-clarity) on the shipped island; applied every confirmed finding. **6a (data):** `import_mostly_farmed` flag (the catchpair caveat had FALSELY claimed "farmed abroad" on all 24 seafood — octopus/lobster/squid/cod/etc. are wild; now only shrimp×3/salmon×3/trout carry the clause); reliance un-clamped from 100% (brussels-sprouts 112%, papaya/asparagus/banana ~101% were masked re-export). **6b (render):** catchpair paired bars → two independent stat tiles (the shared axis implied the forbidden supply-share); ES commodity map (killed "del grupo **tomatoes**" English-leak across 35 tiles); >100% re-export note; plain-language relCaveat (dropped "cross-point ratio" jargon); slot-4 import header year-stamped; dropped peak-quarter (a non-signal); farm-gate $/CWT now shows the ≈$/lb; MARKET-rung stub when empty (seafood no longer jumps SOURCE→PLATE silently); dark-mode rust contrast fix. All verified headless + the render-contract gate updated (catchpair stat-tile + farmed-conditional + >100 tokens).
-
-**Surface 2 — the citable per-ingredient "Supply picture" (SHIPPED 2026-07-23, commits `f73f4507c` · `6b756d0f2` · `d178a8820`).** ADR-018's answer-engine surface. `scripts/lib/supply-picture.mjs` (single source of truth) renders the audited SOURCE seams — import stream, domestic production/farm-price/exports, value-reliance, seafood catchpair — as **prose that survives verbatim extraction with its caveat intact** (not tiles). Live on **172 committed `/cost-index/<slug>/` pages** (full + scaffold, EN+ES) via `scripts/inject-supply-picture.mjs` — idempotent, sentinel-based, in-container (never the full builder, which runs 280 files ahead). A supply Q&A lands in each page's **FAQPage JSON-LD** (caveat inside the answer; a FAQPage is synthesized for scaffold seafood that lack one). Builder mirror wired (`build-cost-index-pages.mjs` → `supplyPicture`); CI gate `inject-supply-picture --check` in check-all. A 4-lens adversarial audit found + fixed 6 issues (false liveweight $/lb on ribeye, ES English-leaks, English name in ES FAQ, scaffold-FAQ gap, group labels, null guards) + an idempotency bug.
-
-**Surface 3 — the 13 open-data explorers (SHIPPED 2026-07-23, commits `ca01e61f0` · `7edc797be`).** ADR-018's data-immersion surface. The 13 self-contained explorers (inline data + bespoke viz + a rich provenance footer, one per raw public dataset: imports · exports · origins · nass-domestic · landings · availability · meat-chain · food-dollar · crop-condition · energy · weather · oni · record) are site-integrated at **`/open/<slug>/`** by `scripts/publish-explorers.mjs` (injects head meta/canonical/hreflang/og/BreadcrumbList + site-core.css + the body-top skip-link/banner/nav before each explorer's own `<style>`; anchors on the first content element since several omit `<body>`/`</head>`). The `/open` hub gained an "Explore the public series" 13-card section; the sitemap now lists all 13 (build-sitemap, no unrelated drift). **EN-only** for now (es hreflang points at the future ES page; locale-parity is warn-only in rollout). Fixed a pre-existing ONI crash (theme IIFE called renderRibbon() before the `yR` scale var was assigned). All 13 verified headless: nav + viz render, 0 JS errors even after interaction; hreflang-orphans/og-locale/image gates green. **The scratchpad `explorers/` source is ephemeral — the committed `open/<slug>/index.html` files are now the source of truth; re-running publish-explorers needs the source re-supplied.**
-
-**CHAIN polish (SHIPPED 2026-07-23):** P1 co-mover "shared timing, not cause" caveat on the island (`ac5d894ea`, gate-pinned); P3 the 13 explorer UIs listed in `llms.txt` EN+ES (`57f99181c`); P2 `import_note_es` — a curated `data/import-notes-es.json` (76 notes) so the ES supply prose carries the HS-scope note (`83135f9d3`, 64 ES pages).
-
-**Still ahead:** **P4 — ES twins of the 13 /open explorers.** This is a genuine HUMAN-translation job (each explorer is a 67–236KB data-rich page: chrome + hero + section labels + tooltips + the provenance footer), NOT a mechanical pass — the site's policy is explicit human translation, no MT fallback. They sit on the warn-only locale-parity punch-list until translated. Suggested approach when picked up: translate the chrome + hero + section headers + caveats first (highest value, snippet-facing), then the interactive labels; do one explorer end-to-end as the reviewed template before the rest. Also open (lower priority): the S3.4 explorer honesty-audit findings (agent still running at handoff — fold in any confirmed fixes); the research paper (the founder's deferred capstone, now unblocked). **All three CHAIN surfaces (island · per-ingredient supply · open-data explorers) are live.**
-
-### ⮕ LATEST THREAD (2026-07-18): the fused corpus — Ingredient State Record + source harmony
-
-**Resume-here:** `docs/handoff/2026-07-18-corpus-expansion-overnight.md` (state · morning fetches · roadmap · presentation/harmony spec). **Decisions of record: ADR-017** (the fused multi-source Ingredient State Record; the scoped ADR-013 relaxation letting NASS farm price feed a *descriptive* domestic-supply tier, never the measured/pressure band). **This corpus work is SEPARATE from the research paper** (founder: resume the paper once the corpus picture is full).
-
-The thread aggregates many public-domain sources into **one present-state record per ingredient** (`cost-index/ingredient-state-record.json`, built by `build-ingredient-state-record.mjs`, gated by `check-ingredient-state-record.mjs`), read at runtime by the deep-linkable explorer at **`/cost-index/menu-pricing/`** (the `isrSection` island — combobox → self-assembling dossier). Founder's north star for it: the sources should **work in harmony** — combine into reads no single field gives — presented **accessibly + empoweringly** to anyone who works with food.
-
-- **Census imports — mined to completion + audited.** 113 records, 99 with a US import stream at the finest HS granularity (beef/pork by primal cut, produce by variety, seafood, cheeses, cured ham; value never volume; multi-code + HS8-prefix + wildcard-subtree aggregation, per-row `I_COMMODITY` keyed). A full food-chapter audit confirmed coverage and surfaced ~56 more restaurant-invoice ingredients.
-- **Invoice expansion — registered, pull pending.** `ingredient-specialty.json` + the HS crosswalk carry 56 new items (fruit/nuts/fish/meat/dairy/spices/pantry/beverage). The builder skips a specialty ingredient until its data lands (inert registration), so the record holds at 113 until the **invoice pull** (79 HS6 codes, ran overnight in the founder's terminal) is pushed → then ~169.
-- **NASS domestic-supply layer — built ahead, forward-compatible** (`c00b179a5`). `ingredient-nass-codes.json` (~90 ingredients) + a builder layer inert until `data/nass-domestic.jsonl` lands, then every mapped ingredient gains production volume + $ value, **farm-gate price**, area, yield, and the flagship cross-source read **import reliance** (customs value ÷ (import + farm-gate) — a descriptive value-share proxy).
-- **Honesty gate + ADR shipped** (`3bd2aa882`, `4b38bb3a5`). Every field bounded; specialty carry no wholesale layer; reliance only cross-source; forecast/causation/delivered-price language banned; `--self-test` seeds 7 violation classes.
-- **Overnight autonomous work (this session):** built the **`harmony` synthesis field** ahead (structured cross-source params, gated), then ran a **4-lens adversarial audit** over it (fact-gate · ag-economist · accessibility · operator-empowerment, default-refute) and applied every surviving finding — **dropped `buyclock`** (labeled an import-value peak a supply peak; added nothing to the buy) + **`served`** (crossed trim bases; mispriced raw-portioned cuts), **kept + fixed `supplyshape`** (single-source now needs ≥90% top share, not the self-contradictory HHI≥0.5), **`persistence`** (co-mover named only on a real majority, killing n=6 noise pairs), **`reliance`** (reframed as a cross-point ratio, NOT a supply share; year-aligned). Filled the handoff's **roadmap** (+ the audit's apparent-consumption denominator fix: Census exports + ERS Food Availability) and **presentation/harmony spec** (the recovered `muntin-harmony-presentation` workflow's **CHAIN** — Source→Market→Your-Plate — as the render architecture; `muntin-source-roadmap` failed on the synth-schema stall, hand-synthesized). Corpus builder + honesty gate (13-seed self-test) green in-container.
-- **SHIPPED TODAY (2026-07-18, founder ran the pulls, assistant built + verified):** the record is now **169 ingredients**.
-  - **Census fully mined** — imports (155 with a stream) + **exports** (`census-exports.jsonl`, DF=1 domestic, HS6, 2010-2025) + 2025 origins. The invoice specialty tier lit up (69 specialty records: prosciutto, parmesan, snapper…).
-  - **NASS fully mined** — `nass-domestic.jsonl` (197 lines, 50 commodities). **Verified the built-ahead heuristics against real rows and fixed real bugs:** the class qualifier lives in `short_desc` not `class_desc` (a class-preference cascade recovered all 26 class-qualified crops — fresh-market tomato over the processing-dragged all-class series); a top-up recovered the dropped commodities (pork $30.4B, eggs, lettuce, grapes, garlic, citrus); citrus $ value is unit `"$, PHD EQUIV"` not plain `"$"`. Aquaculture (catfish/tilapia/trout) + fresh herbs are documented NASS absences (0 national rows). **83 production values, farm-gate prices (7-yr staleness guard), yields.**
-  - **Reliance upgraded to apparent consumption** — `import ÷ (production + import − export)`, year-aligned. **73 honest reliance reads** (ribeye 1%, pork ~1%, strawberry 21%, garlic 53%, raspberry 74%, tomato 79%, avocado 88%; grapes 61→72% once exports netted). Withheld where a broad-HS6 export exceeds a narrow NASS commodity (4 leafy greens) — degrade by absence. New `us_export_value_usd` on 155; CC-BY CSV now carries the full trade block. ADR-017 updated.
-  - **EIA energy backdrop shipped** — `eia-energy.jsonl` (diesel/gas/electricity, 30+ yr) → `cost-index/eia-energy-backdrop.json` + `build-eia-energy-backdrop.mjs` + `check-eia-energy-backdrop.mjs` (both wired into check-all). A **coincident site-wide backdrop, never a per-ingredient driver** (ADR-013 diesel demotion preserved by construction — no ingredient reference; gate enforces it). Diesel 98th pct of its own range (+39.6% YoY), electricity 98th, gas mid-range.
-  - `check-ingredient-state-record.mjs` self-test now 14 seeds; `test-ingredient-state-record.mjs` pins the harmony thresholds; all corpus gates green in-container.
-  - **NOAA weather + ONI shipped** — `weather-observations.jsonl` (GHCN-Daily TMIN/TMAX/PRCP at growing-region stations, Michoacán live through 2026 — proved the foreign-origin thesis) + `cpc-oni.txt` (ENSO regime, 918 rows). OBSERVED, never forecast; **held-until-calibrated** (regional proxy). Crosswalk `ingredient-weather-codes.json` (7 regions). Not yet fused into a pressure read — the careful integration (double-count guard) is still ahead.
-  - **Open-data CC0/CC-BY surface shipped** — `build-open-data-catalog.mjs` + `check-open-data-catalog.mjs` → `cost-index/open-data-catalog.json` (ADR-015/017 split: raw US-gov = CC0, Muntin value-add = CC-BY). `_headers` serves every `data/*.jsonl` with a `Link: rel=license` header + CORS. Confirmed `data/` deploys via the wrangler tar. **11 datasets** catalogued.
-  - **NASS crop-condition shipped** — `nass-crop-condition.jsonl` (corn + soybean weekly condition, 1986-present, 7,815 rows, CC0) → **`cost-index/crop-condition-backdrop.json`** + `build-crop-condition-backdrop.mjs` + `check-crop-condition-backdrop.mjs` (13-seed self-test, both wired into check-all). Each feed crop's good-to-excellent share read against its OWN same-week history (percentile + band) — a **coincident feed-complex backdrop, never a per-ingredient driver, never a forecast**, structured exactly like the Energy Backdrop (two-crop whitelist by construction, no ingredient reference). Corn 2026 W28: 68% G/E (+3.5pts vs 38-yr norm, 61st pctile); soy 65% (+5.2pts, 66th).
-  - **Dataset explorers workflow running** — `muntin-dataset-explorers` (Dream→Build→Audit→Fix pipeline, WCAG-AA, one bespoke walk-through explorer per dataset, from the `imports-explorer.html` reference). Was 8 datasets; **crop-condition appended as the 9th** (resume from the run's ID replays the 8 from cache, builds crop-condition live).
-- **SHIPPED (later 2026-07-18, continued):** the data corpus is now **complete** — every roadmap Tier-1/1½ source landed + fused.
-  - **NOAA Fisheries landings** — FOSS came back up; verified ORDS shape (`collection=Commercial`, species=`ts_afs_name`, by-state→national). `data/noaa-landings.jsonl` (40,029 rows, 1950-2024, CC0) → `cost-index/noaa-landings-domestic.json` + `build-noaa-landings.mjs` + gate (11-seed). Verified crosswalk (`ingredient-noaa-codes.json`): Atlantic salmon excluded ($0/farmed), dover-sole matched alone, ahi=yellowfin+bigeye. **Fused into the ISR** as `us_landings_value_usd` + the **`catchpair`** harmony seam (wild-vs-farmed, `wild_minimal` flag; 24 records). Caught + fixed a real cross-year bug (import aligned to landings year).
-  - **NASS crop condition** — `data/nass-crop-condition.jsonl` (corn+soy weekly, 1986-2026, CC0) → `cost-index/crop-condition-backdrop.json` (good-to-excellent vs same-week envelope; a feed-complex BACKDROP, never a per-ingredient driver) + gate.
-  - **ERS Food Availability** — `data/ers-food-availability.jsonl` (120,790 rows, 12 groups, CC0) → verified 71-slug crosswalk (`ingredient-ers-codes.json`) → `cost-index/ers-food-availability.json` (per-capita lbs, the VOLUME cross-check) + gate. **Fused into the ISR** as `us_percap_lbs`; the **reliance seam now carries value AND volume** (59 records). Completes Tier 1½.
-  - **ERS Meat Price Spreads** — `data/ers-meat-price-spreads.jsonl` (beef/pork/broiler farm→wholesale→retail + spreads, monthly 1970-2025, CC0) → `cost-index/meat-price-chain.json` + gate. The literal per-protein CHAIN; `downstream_markup_share` (beef 94%, pork 82% of the spread is wholesale→retail — downstream of the buy). Retail = national-average grocery retail, NEVER a delivered/menu price.
-  - **ERS Food Dollar** — `data/ers-food-dollar.jsonl` (8,512 rows, 1993-2023, CC0) → `cost-index/food-dollar.json` + gate. Farm share 15.9¢ + the 12-component marketing-chain split (sum 100). The MACRO bookend — national, never a per-ingredient claim.
-  - **Open-data catalog: 19 datasets** (12 CC0 gov / 7 CC-BY Muntin); every `data/*.jsonl` served with a `Link: rel=license` header. **THE DATA CORPUS IS COMPLETE** — every roadmap Tier-1/1½ source + the two ERS chain datasets, all fused/gated.
-- **DECISION OF RECORD: ADR-018 (the CHAIN presentation architecture).** Source→Market→Your-Plate as the spine + honesty device; three surfaces with distinct jobs (menu-pricing island = primary dossier; per-ingredient pages = citable/AEO-SEO; open-data explorers = data-immersion); visual-depth ("inside the data") + AEO/SEO cross-cutting; engine-behind-pages; reviewed EN/ES seam templates. Founder directions folded in: **make readers feel *inside* the data / cutting-edge** (empowerment→retention) and **maximize AEO/SEO on every surface**.
-- **STILL OPEN (the build, now planned):** **The menu-pricing CHAIN render** — the honesty-critical culmination; the island (`cost-index/menu-pricing/index.html`, `render(r)` + `el/usd/magbar/slot` helpers + the `T` EN/ES table) renders NONE of the 4 harmony seams today. Build a `harmonySlot(r)` (SOURCE/MARKET/YOUR-PLATE bands) + CSS + EN/ES templates, mirrored into `build-cost-index-pages.mjs`; build FROM the improvement-loop's adversarially-verified plan (`muntin-isr-improvement-loop`, task w4rti0m0u) once it lands. Then the **citable per-ingredient "Supply picture" block + schema.org**, the **dataset-explorers** publish (workflow wdk0whgpn, 10 datasets incl. crop-condition + landings — resume to build those two), **weather/ONI pressure integration**, and the **research paper**.
-- **IMPROVEMENT LOOP LANDED (verified plan)** — `muntin-isr-improvement-loop` (w4rti0m0u) completed; 12 findings survived the adversarial-verify pass across 4 surfaces (events-explorer re-dreamt separately: 8 findings incl. a timeline ribbon + window-overlap strip + caveat-baked FAQPage). **Full plan + sequence: `/tmp/.../tasks/w4rti0m0u.output`** (copy into an ADR when building). Key verified points: (1) **the island's real engine is `cost-research.mjs` `ISR_ISLAND` (emitted via `emitPlaybook` L1471-72), NOT `build-cost-index-pages.mjs`** — ADR-018 must be corrected before coding; (2) confirmed the catchpair cross-year fix; (3) recommends reserving harmony for **reliance + catchpair** and reorganizing the already-rendered origins/co-movers INTO the CHAIN rungs (origins→SOURCE, co-movers→MARKET) rather than duplicate seams; (4) render-scoped gate `check-menu-pricing-render.mjs` to add AFTER the seams render; (5) island renders BOTH locales, VB "Supply picture" is EN-only. OPERATOR DECISIONS made: per-variety reliance denominator → FIX (commodity-level scope); surface farm→wholesale + spread for the meat chain, retail as labeled national-average context.
-- **`muntin-dataset-explorers` (wdk0whgpn)** still building 10 explorers; resume adds crop-condition + landings from cache; publish outputs as Artifacts when done.
-- **NEXT: build the menu-pricing CHAIN** (the honesty-critical render) from the verified plan — `harmonySlot(r)` SOURCE/MARKET/YOUR-PLATE bands (reliance stat-tile w/ value+volume+caveat, catchpair named wild-vs-farmed pair, meat-chain in MARKET, food-dollar as macro context), mirrored into `cost-research.mjs ISR_ISLAND` + EN/ES + `es/` mirror. Then VB Supply-picture + schema.org, seasonality visuals, explorer publishes.
-
-### ⮕ PRIOR THREAD (2026-07-17): menu-pricing perfection + cost-pressure — see the full roadmap
-
-**`docs/handoff/2026-07-17-menu-pricing-pressure-roadmap.md`** is the resume-here plan for this thread. It captures **four expert-panel workflows** (visual/"greatness", scholarly audit, corpus-datasource dreaming, pressure-weather), a **shipped honesty pass** (4 commits, pushed; origin `31573c0f3`), two **grounding corrections** (do NOT "unify the yield spine" — `yields.json` is CIA-gated; the container engine is BEHIND the committed pages, so full page rebuilds belong on the Mac), and the sequenced next steps (in-container: freshness-clock fix → Dataset JSON-LD → gate scoping; Mac: the unified public-API fetch program + calibration backtest + DOI). Done: the cost-pressure **freshness-clock fix** (`tools/_shared/cost-pressure.js` — the dead staleness governor now ages the oldest input against wall-clock `now` in the live Lab; builder/gate stay deterministic; 12/12 panels decay on the 6-wk-stale snapshot; +1 regression test).
-
-### ⮕ MENU-PRICING DISPATCH — PUBLISHED (2026-07-16)
-
-Founder: "seems deserving of an expert focused dispatch" → then "I don't want any shop floor reference." Both done and pushed.
-
-- **Shop-floor removal (`104734493`).** Stripped every working-the-line reference from the Don Goldstein dispatch in `data/pending-dispatch.json` — lunch push, pre-shift, four o'clock, "protein line", "back door", "on a Tuesday" (EN + ES, 0 hits on a broad re-scan). Findings + every sourced number unchanged.
-- **Dispatch SHIPPED (`41da6f225`).** Assembled the gate-passing blog HTML from `data/pending-dispatch.json` via the canonical `new-article-skeleton.mjs` + a body renderer:
-  - `blog/menu-pricing-grounded-100-ingredients-2026/` (EN) + `es/blog/fijar-precios-con-datos-100-ingredientes-2026/` (ES). Slugs final-forever; EN↔ES in `i18n-slug-map.json`.
-  - 5 sections, 3 figures (2 viz-bars + 1 viz-flow, teal/rust balanced, audio-alts 284–346 chars, per-figure `<figcaption>`), TL;DR + key-takeaways rails, per-section `<details class="cite">` drawers mapping every number to `research-references.json` or the field report. Pullquote is a verbatim body line (no new facts).
-  - Registered: `library-tags.json` (blog_posts), `article-audio.json` (pending, EN listen-btn), rebuilt blog index + sitemap + RSS + `llms.txt` (EN+ES). Per-post OG cards rendered (gold/margin template, "37 / 100" stat) via `build-og-cards.mjs` resvg-js fallback (`/tmp/og-render-deps`; container has no rsvg-convert).
-  - **Latent fabrication fix (same commit):** the NRA citation used the blocklisted `restaurant.org/research-and-media/…` deep-link (was already red at HEAD in the study pages EN+ES, `research-references.json`, `pending-dispatch.json`). Swapped to TLD-only `https://restaurant.org/`, kept full bibliographic detail. `check-fabrications` now 0 hits.
-  - Gates green for the new posts: article-graphics (0 viol.), fabrications, banned-words, OG images/coverage/locale-parity/accents, hreflang, locale-parity, RSS coverage, TL;DR, cost-research honesty, image dims/formats/lazy.
-  - **Commit hygiene:** injectors re-stamp the whole site (feed-discovery 650, batch-banner removing expired Father's-Day marquee on 725, site-counts 360, h2-anchor 80+ glossary) — all PRE-EXISTING drift, none reference the new post (verified el-niño diff). Reconciled per runbook: staged only the 21 intended files, `git checkout -- .` the rest. Deploy build sweeps the drift.
-  - **Adversarial review + corrections (`fd011804c`) — SHIPPED.** Founder: "make sure this isn't filler — genuinely unique + empowering." Ran a 4-lens panel (skeptical-operator, methodologist, differentiation, empowerment) reading the dispatch + study + instrument cold. Verdict: real moat, under-merchandised, plus a **factual error** the honesty gate can't see. Fixes (verified by running `companyStat`/`pricingCards`): (1) **the 94% co-movement stat was INVERTED** — dispatch + study said "94% idiosyncratic"; engine says 407/432 = 94% moved WITH a cohort, 6% alone. Corrected everywhere (EN+ES, dispatch + study); the research hub was already right. (2) Study over-claimed a "seasonal-trend decomposition" it doesn't run (it's a within-month dispersion gate) → reworded; Cleveland STL stays as the standard it approximates. (3) "elevated-price episodes" → "large-move episodes" (39/432 are down-moves). (4) Protein framing was spun ("meat order not the special case", 9/27 lock only) → now both sides: 9 lock AND 16/27 withhold, so price proteins off your own invoices.
-  - **`iterate-menu-pricing` workflow (19 agents, ground→build→verify + design panel) — 3 areas SHIPPED.** Founder: "launch a focused workflow to keep everything moving." Each improvement grounded in the engine, drafted, then run past 3 independent skeptics (numbers re-run vs engine / fact gate / consistency), default-refute. Results:
-    - **Make-numbers-act (`<prev>`) already shipped separately.** Then:
-    - **Per-ingredient duration + ecosystem wiring (`~b53…`) — SHIPPED.** Per-ingredient clearance time is NOT publishable (n≤6, selection-biased) — so instead fixed a real overreach in the dispatch ("the median ingredient"→"the median move") and added a caveat that 77 is a pooled per-episode median (IQR 50-105; 2 of 432 ran past a year, verified 4243+426d). Ecosystem: 7 first-mention glossary autolinks per locale (edible-portion/wholesale/food-cost/margin/contribution-margin/menu-engineering/elasticity), a "check my math" CC-BY dataset callout (menu-pricing.json/.csv), a Data-availability block on the study, id="methods" on both study Methods headings.
-    - **Study-honesty deepening (`~this`) — SHIPPED after failing verification twice.** Deepened Limitations (small per-ingredient n, chosen-not-validated cutoffs 8/20/30/60/15%, in-sample, survivorship) + a "How sure we are" confidence block (trim-tax + duration = solid arithmetic; seasonal/mirror = directional; lit = context not validation). The workflow caught 5 traps the fix avoids: 100-vs-102 denominator conflation, 22⊂37 shown-as-parallel, withhold-isn't-a-posture, a fabricated "77d matches Bils-Klenow" method-match, and forecast-keyword tokens ("predicts"/"next year") that trip the automated gate despite anti-forecast meaning.
-    - **DESIGN — invoice personalization (the highest-ceiling lever), TEED UP not built.** Panel recommends **Approach 1**: one delivered-price override per card, computed live in-browser, that NEVER renders a Muntin wholesale dollar — so the honesty posture holds by construction (the operator's number is the only number). Approach 3 (multi-point "your own band") = optional later opt-in on the same drawer; REJECT Approach 2 (invoice data layer). Sketch: stamp data-trim-tax/band/coverage/bucket/cheap-month onto each card in `build-cost-index-pages.mjs` (all already on the pricingCards row) + a collapsed `<details class="ci-yours">` with a "$ delivered per as-purchased lb" input; compute true cost/edible-pound client-side. Biggest risk: scope-creep back toward "how does mine compare to market?" (= the rejected wholesale-on-page path). Awaiting founder go to scope/build.
-  - **`iterate-menu-pricing-experts` workflow — a 6-expert panel (controller, menu consultant, statistician, ag-economist, chef, editor) → judge → build → 3-lens adversarial verify, looping "until the product is perfect."** Founder: "continue in the cadence, iterate until perfect, grounded in expert insights." Each expert reads the piece cold + verifies vs the engine; content-safe picks get built + verified; only survivors applied.
-    - **Round 2 (`wf_82dfbcd3`, 27 agents) — 4 of 5 SHIPPED.** (a) **Withhold decomposition** (statistician, top honesty win): the 37 withholds are 27 "no public wholesale series exists" (band 0) vs 10 "series clear but swings 30.1–62.4%, too wide to anchor" — split the posture figure's withhold bar, rewrote audio-alt/figcaption + study methods/limitations; verifier killed a false "every herb" universal (only 5/9 herbs) → "most herbs". (b) **Section-1 compression** (editor): 3 textbook paras → 1; food-dollar point + sources relocated to section 5 (none lost). (c) **Two independent clocks** (economist): posture prices the menu, cheapest month times the buy; 22/37 locks carry both, band width ≠ season size (red potato 0.8% band / ~26% seasonal). (d) **"What a band costs the plate"** callout (controller): translates the band to cents on an illustrative $6/$32 plate (lock ~±21¢ vs float ~±$1.20 = the lock/float line); verifier softened an unmeasured "invoice moves less than wholesale" claim.
-    - **PENDING from round 2 — the "reprice-first" Monday list** (menu consultant, lock × high-trim-tax = one-time margin). Prior draft mis-ranked (omitted whole turkey ×2.00; put lime, a withhold, on a lock list). Deferred for a corrected, re-verified rebuild rather than a hasty hand-fix; round 3's SHIPPED context carries the correct ranking (heaviest lock tier ×2.00 = grapefruit/leek/pineapple/whole turkey, then whole chicken ×1.67). The chef's **"cooked-out pound"** (compound cooking shrink onto trim tax, cookedYield present for 37 ingredients) = engine spec, teed up.
-    - **Round 3 (`wf_76643307`, 27 agents) — hit a SESSION LIMIT mid-run (7 verify agents failed; resets ~4:20am UTC). 2 SHIPPED (the two with complete verification, numbers re-confirmed by hand vs the engine).** (a) **Freeze play in dollars** (controller, v9): a callout sizing one ribeye trough-buy — August ~26% under (only hard number, verified) → illustrative $800 off the buy, net of ~$2,300 cash tied up ~2 months + freezer space/energy ("banks only once it clears the carry cost"). Adds the carry-cost honesty the lead lacked. (b) **Trim-table posture hazard fix** (menu consultant): the shipped trim table had no posture column, so an operator would chase lime (×2.86) / whole crab (×4) — both WITHHOLDS you can't reprice. Added a caution gating trim by posture: steepest-trim LOCK is **lemon ×2.22** (the clean permanent fix; corrects my earlier ×2.00-tier ranking which missed lemon), then whole chicken ×1.67; lime/crab go on a market line. This also delivers the corrected "reprice-first" insight in compact form (supersedes the deferred BUILD 1 + skipped round-2 list).
-    - **Round 3b (`264e66901`) — the chef's "second haircut" SHIPPED after hand-verification against the engine.** The trim table costs the knife only (1/edible-yield); cooking is a second, usually-larger multiplier it omits. Added a **served-pound layer** — cost/served ounce = 1/(edible×cooked) — with a compact edible×cooked table (beef tenderloin ×1.57, ribeye ×1.78, pork shoulder ×2.05, whole chicken ×2.22, cremini ×2.47, short rib ×2.56) + the **grain inversion** (rice/quinoa ~×0.33, dry black beans ~×0.42; the fire gives weight back). All 8 multipliers re-verified 1/(edible×cooked) from `data/ingredient-depth.json`; protein cooking yields cite Roseland 2017 (USDA), grain/bean yields the USDA Food Buying Guide (both already in the cite drawer). **Three honesty defects caught + fixed pre-ship:** (1) **"plate pound" collision** — the card walkthrough already called the edible-only ×1.18 the "plate pound"; renamed the new unit **"served pound"**, changed the card to "edible pound", and bridged edible ×1.18 → served ×1.57 for the same cut; (2) **"lock-tier grain" dropped** — grains are NOT in the 100-card scored set so no bucket is assigned; described by cooked yield only; (3) **figure data-audio-alt corrected** — 1.14× is the knife only (trim, not cooking), the fire is now the separate layer. EN+ES mirrored, body-only diff, content gates green (23 remaining check-all fails are pre-existing site-wide injector-drift/idem baseline, identical on HEAD).
-    - **Round 3c (`5117219bd`) — the economist's own-data ratchet SHIPPED after hand-verification.** Section 5 already cited Peltzman (rockets-and-feathers) as borrowed literature; this adds the measured-in-our-own-record version, one tight paragraph after the 77-day opener: of the 432 big moves, **393 point up and only 39 down (~10:1)**, and the up-moves are bigger (**median 85% above normal vs 33% below**); relief rarely arrives as a matching downward spike — it is the slow drift the 77-day clearing measures, so the trap is reprinting up with no symmetric signal to come back down. **Adversarial check cleared:** the event detector is direction-symmetric (`Math.abs(dev) >= FLOOR_PCT`, picks biggest departures regardless of sign in `build-cost-index-events.mjs`), so 10:1 is a real price-history asymmetry, not a detection artifact. All numbers engine-native (`companyStat` → total 432/up 393/down 39; medians from `flatEvents`). Descriptive, no forecast, wholesale-reference-not-delivered. EN+ES, content gates green.
-    - **Round 3d (`~this`) — the statistician's cohort-depth SHIPPED, clearing the last held build.** The swap-doesn't-hedge section said 94% of big moves traveled with ≥1 other ingredient; this adds the depth: **median co-moving move traveled with 4 others at once, nearly half (49%, 199/407) with 5+**, only 47/407 had a single neighbor — wide clusters, which is why a mirror-swap is no hedge. **Corrects the held build's "pack-size artifacts" mischaracterization:** cohort membership is same-direction within ±6 weeks and **magnitude-independent** (`addCohorts` filters on `dir` + time only, never `pctFromNormal`), so magnitude outliers can't inflate cohort counts — the breadth is real. Stays on co-occurrence breadth; no causation (Pindyck-Rotemberg "co-movement ≠ economic link" preserved). Numbers engine-native (`flatEvents` cohort sizes). EN+ES, all gates green incl. cost-research.
-    - **✅ ROUND 3 PANEL COMPLETE — all builds shipped, none held.** The `wf_76643307` session-limit casualties were all recovered by hand-verification against the engine: 3b (cooked-pound/second-haircut), 3c (own-data ratchet/rockets-and-feathers), 3d (cohort-depth). Returns narrowed to deepening existing sections.
-    - **✅ TWO-PANEL GREATNESS + VISUAL REVIEW (founder: "doctorate-level… visually impressive").** Ran two multi-agent workflows over the dispatch. **Visual panel** (`wf_bb8737cf`, 27 agents, 20 survivors) → SHIPPED full slate: (A) reconciled mushroom trim tax **1.14→1.11** (ungrounded; engine=1/0.90) + unified Fig-1 proteins to teal + named Fig-2's four-postures-over-five-bars split; (B) three engine-grounded figures took the post from **4 figs/2 kinds → 7 figs/3 kinds** — a **viz-waterfall centerpiece** (served-pound reversal: tenderloin 0.64/0.15/0.21→×1.57 vs cremini 0.40/0.10/0.50→×2.47), a cohort-depth histogram, a rockets-and-feathers 393-vs-39 pair. **Content/rigor panel** (`wf_2831d8ec`, 7 lenses incl. doctoral referee; 36 agents — synth agent died on schema cap, survivors recovered from journal + hand-synthesized). Convergence (6/7 lenses each) surfaced **two real correctness errors, both engine-verified + fixed:** (1) **the swap section stated the INVERSE of the site's own data** — `substitutes[].hedge` shows **75 of 91 named swaps HEDGE, only 16 mirror**, not "usually a mirror"; rewrote both paragraphs to the true/more-empowering arc (check the pair; most hold; catch the ~1-in-6) and replaced the cohort figure with the on-point **75-vs-16 hedge/mirror** payoff figure; (2) **"produce cannot be frozen" was false** and spoken in the audio-alt (blueberry 12mo/57%, green-beans 12mo/51%) — narrowed to the true delicate-lettuce case. Then two more verified value-adds: **trim-recovery callout** (verbatim `trimToValue` for the served-pound cuts, 84/100) and **buy-clock breadth** (worthTiming 54/100 across every posture, not just 22 locks). All EN+ES, all gates green (article-graphics 0 / 34 parser tests, fabrications, banned-words, locale-parity).
-    - **✅ QUEUE CLEARED + a self-caught error fixed + correctness propagated to the study.** (a) **Flagship generalized** — verified 27 of the 41 ingredients with both a cheap month + harvest window have the cheap month fall OUTSIDE the window (onion Dec, acorn squash Dec, eggplant Jan, pear Mar); added a paragraph moving the H2's claim onto that 27/41 base. (b) **Accessibility** — pullquote `aria-hidden` (it repeats the withhold closer verbatim); broke the ~200-word withhold block into three scannable paragraphs (no wording change). Skipped the posture definition-key `<dl>` (no content dl style exists; the terms are already defined inline). (c) **SELF-CAUGHT ERROR REVERTED — mushroom trim tax back to 1.14.** The visual pass had "reconciled" it 1.14→1.11 off the per-ingredient `pricingCards` (button-mushroom 90%→1.11), but the trim figure is CATEGORY-level (`researchInputs.trimTaxCats`: mushroom n=5, meanYield 88.0%→1.14, paired with citrus 2.16) — so 1.14 was grounded and correct all along. Reverted all 16 spots EN+ES; the served-pound waterfall is unaffected (plots CREMINI specifically, 90%×45%→×2.47, prints no knife multiplier). **Lesson: the dispatch's trim-tax figure/prose read from `trimTaxCats` (category), NOT `pricingCards` (per-ingredient) — check the right engine function.** (d) **STUDY swap claim fixed** — the citable field report carried the same backwards "usually a mirror" claim in its abstract + section 4; corrected in the JSON source + both HTML renders (JSON-LD + body), EN+ES, phrased qualitatively (most hedge / minority mirror, no ungrounded counts) so `check-cost-research` still passes. Study has NO produce-freeze binary (checked). (Lemon "seam" ×2.22 vs juiceYield ×2.38 CHECKED + left — ×2.22 = card yieldPct 45, grounded; juiceYield is a different metric.)
-    - **Next genuine lever = the invoice-personalization instrument** (Approach 1, teed up at line 37) — a build, not a prose pass; awaits founder go. Optional: mirror served-pound + ratchet + cohort-depth + the hedge/mirror correction into the field-report study for paper/dispatch parity.
-  - **Value pass (`3653a6d55`) — SHIPPED.** Founder chose the targeted pass. (1) **Lead with the crown jewel** — new opening section "The meat order has a buying season, and it runs against the calendar" + viz-bars of engine-verified troughs (chicken May −47%, striploin Sep −40%, ribeye Aug −26%, tenderloin Jul −20%) + freeze-play (proteins freeze, produce doesn't → buy-and-hold lever). (2) **Worked-card handoff** — beef tenderloin card (lock, ±3.5%, 85% edible / ×1.18, cheapest Jul −20%) + "run your five scariest" into the instrument. (3) **CTA fix** — registered in `data/post-end-cta.json` so smart-next Try (EN) + both end-CTAs point at `/cost-index/menu-pricing/`, not margin-math (ES smart-next Try still falls back site-wide — injector doesn't map ES slugs, pre-existing). (4) **61→research base**, field report cites 36. Dispatch now 6 sections / 4 figures, EN+ES, all content gates green.
-
-### ⮕ COVERAGE EXPANSION + RESEARCH-STUDY ELEVATION (2026-07-11, in flight)
-
-Founder direction: make the playbook read like a **research study** (not just a tool), expand ingredient **breadth + depth**, ground it in **real published research** (food science + economics), translate the science for the operator, and **integrate across the whole learning ecosystem** (glossary, library, ingredient pages, tools, open data), all from **one source of truth**. Hard boundary: **no fabricated prices** (new ingredients ship "no wholesale band yet" until the operator's fetch); **no fabricated citations** (every reference adversarially verified or cut).
-
-- **Review panel (`0b40a85f9`) — SHIPPED.** 8-agent panel (6 operator archetypes + 2 adversarial) over the playbook. Computation independently re-verified correct. Fixed confirmed defects the regex gate can't see: a FALSE superlative ("three steadiest bands are proteins" — false; banana/red-potato are steadier), the lock-vs-cushion method text (true rule = tight band AND proven coverageLo≥.60), cross-category "swap" nonsense (now category-aware: same-cat="swap that isn't", cross-cat="companion not substitute"), freeze-buy imperative → descriptive, trim-tax caveat (raw/cooking/purge/juice), float printable-cushion, WCAG float-pill contrast (gold→ink-soft), hero count coherence, season fig alt.
-- **Verified research spine (`4e0fdefeb`) — SHIPPED (data foundation, rendering follows).** Four source→adversarial-verify workflows (~4.4M tokens, numbers DROPPED if uncorroboratable):
-  - `data/ingredient-depth.json` — **134 ingredients** (118 tracked + 16 new staples: corn-tortilla, masa-harina, dried-pinto/black-beans, white/brown-rice, quinoa, farro, skirt/flank-steak, cotija, queso-fresco, mozzarella, parmesan, spring-mix, olive-oil). Fields: edibleYield(128)+cutSpec(126)+yieldSource, cookedYield(37 — leafy/method-dependent REJECTED), juiceYield(4 citrus), freezeMonths(100); substitutes(296)+**price-hedge verdict computed from our co-movement** (94: 16 mirror/78 hedge, 71 on n≥3 — e.g. lime→lemon=real hedge, romaine→iceberg=mirror), trimToValue(118), shelfLifeDays(131)+storageMethod(133), peakSeason+inSeasonMonths(79).
-  - `data/research-references.json` — **61 verified studies** (29 econ + 32 food-science, each w/ kitchen translation + DOI), **23 myth-corrections** (90%-fail-yr1→~26% Parsa; dollar-sign not sig; decoy=Huber-Payne-Puto not Ariely; waste ROI ~7:1 not 14:1), **1 rejected** (FAO misattribution refuted by quoting it). Proxy 403s crossref/doi.org from main loop → verify via WebSearch; Tornberg 2005 + Yang/Kimes/Sessarego 2009 independently confirmed exact.
-  - Compact source data staged in scratchpad (`yield-depth.json`, `depth-layers.json`, `lit-econ.json`, `lit-foodscience.json`) + `build-spine.mjs`. Full run outputs in `/tmp/.../tasks/{wcmgactx2,wj9adlr9s,wosycif5g,wzi81meh0}.output`.
-- **RENDERING — SHIPPED so far:** (1) **playbook depth drawers (`0a5649932`)** — each priced card gains a "Full profile" drawer from `ingredient-depth.json` (cooked/juice yield, storage+shelf-life, freeze, best season, the substitute-that-HELPS vs the co-mover mirror, trim-to-value), reference-labeled + cited; JS island still createElement/textContent-only. (2) **39 kitchen profiles (`198ec0a11`)** — the unpriced ingredients (16 new staples + 23 yield-only) as a static "no price band yet" table (edible/cooked/keeps/swap-that-helps/season); also fixed the spine's null names (from yields data + a 16-staple bilingual map). (3) **the research study (`4bd948e5b`)** — `/cost-index/menu-pricing/study/` EN+ES, a practitioner FIELD REPORT: abstract, our-contribution, 7 cited sections, methods, limitations, a 36-work References list each with its DOI, ScholarlyArticle JSON-LD; wraps (links) the tool. Authored by a write→verify→revise→translate workflow; all 36 citeStrings map to `research-references.json` (0 unmatched); framing states plainly it is NOT peer-reviewed. New gate `runStudy()` in `check-cost-research.mjs` (citeString→ref mapping + forecast/causation/wholesale-as-price/OVERCLAIM scan; tightened "retail price" so "farm-to-retail price transmission" isn't a false positive).
-- **RENDERING — STILL REMAINING:** (a) the ~94 **ingredient pages** get the per-item profile (join `ingredient-depth.json` in `build-cost-index-pages.mjs`); (b) **glossary** vocabulary (WHC, thaw purge, ethylene/climacteric, gelatinization, Maillard, AP/EP, menu costs, cross-price elasticity) + a FEW deep **library** articles (each standing on the verified literature, translated for the operator); (c) **tools** consume enriched yields (plate-cost cooked-yield); **open-data** publishes `ingredient-depth`/`research-references` as CC-BY sets; autolink cross-linking. Data hygiene: new staples want `apCents:null` in yields + lamb `cat:beef`→lamb. Tasks #44-45.
-
-### ⮕ MENU-PRICING PLAYBOOK — the "1 quality piece" consolidation (2026-07-11) — decisions in ADR-016
-
-Founder judged the 7 Workstream-F research pages "slim and surface level — I'd rather do 1 quality piece than 7 halfway pieces." Retired all 7 (+ hub, EN+ES) into a single interactive **menu-pricing playbook** at `/cost-index/menu-pricing/` that joins four data layers per ingredient (posture+band · trim tax · seasonal window · futile swap): a per-ingredient card picker + a deep 6-section teaching guide + a 100-row table, all from `pricingCards()`/`researchInputs()`, grounded by `check-cost-research.mjs`.
-
-- **Seasonality noise gate (founder caught "turkey cheapest in Feb").** `timingFor()` now names a cheapest-month window only when the trough is robust: cheap-month median beats the **peak** month's p25 AND the swing ≥ median within-month IQR. Fail → "price it year-round" (`noisy`), distinct from `thin`/`flat`. Suppresses 20 noise windows (incl. turkey), keeps 54 real ones; surviving windows framed descriptively, never a forecast.
-- **Protein seasonality taught (founder's ask):** guide §4 "the hidden season of meat" — cuts bottom out *after* the demand peak (ribeye Aug −26%, striploin Sep −40%), the freeze angle, turkey as myth-buster (steadiest band ±0.8%, no window).
-- **Redirects:** `/cost-index/research/*` (+ ES, hub, sub-paths) 301 → `/cost-index/menu-pricing/` via `src/worker.js` (`_redirects` is at the 100-rule cap). Sitemap regenerated; `/open` callout repointed.
-- **Guide built by a write→adversarial-verify→revise→translate workflow** — the verify pass killed a driver→price causal sentence + a spelled-out invented span the digit-only gate misses.
-- **Data-forward redesign SHIPPED (2nd commit).** Founder: "wall of text… make the figs bespoke… break calcs into dropdowns… the point is CC-BY content." Built **6 bespoke figures** (not the rs-* templates): a 100-unit posture grid, centered "how far it wanders" bands, invoice→plate trim-shrink bars, a 12-month backward-meat-season calendar, co-mover mirror pairs, a shock-duration range — all single-teal, length-only, grounded in the same engine as the prose. Added **inspectable calc dropdowns** (band, trim tax = 1÷yield, the noise gate, k-of-n swap — formula + live worked example each) and a **CC-BY cite + download block** emitting the joined 100-row dataset as `cost-index/menu-pricing.{json,csv}` (CC BY 4.0, deterministic/no-timestamp). article-graphics gate doesn't scan `cost-index/` so the bespoke `viz-figure`s are fine; honesty gate + banned-words + hreflang + parity all green.
-- **OPEN (in flight):** §6 worked-examples + the "This week" callout are still the densest prose blocks — could trim/visualize further if founder wants. Events 39 read-me pages → registry-only de-emphasis still pending.
-
-### ⮕ OPEN-DATA EXPLORE SURFACES + PRODUCT LINE (2026-07-11) — decisions in ADR-015
-
-Turned the JSON-only `/open` sets into real explore surfaces + a licensed open-data product line. **Master plan:** `docs/plans/open-data-explore-surfaces-plan.md`. **Decisions of record:** **ADR-015** (co-movement honesty + CC0/CC-BY split + detail-page date semantics + gate coverage).
-
-**SHIPPED (each committed + pushed to `-yn273q`, gates green, EN/ES parity):**
-- **Events explorer + 39×2 per-event detail pages (`9730d4a79`).** `/cost-index/events/<id>/` — documented account, affected ingredients, the detected moves that overlapped, anchored co-movement bars, CC0 downloads, cite block, `Article`+`speakable` JSON-LD. Explorer hub: 94% (407/432) hero, directed co-movement, permalink anchors. Renamed slug `…black-sea-grain-2022` (retired "disrupt" banned word).
-- **Open-data foundation (`2bd128454`, `86a05d323`) + yields v2 depth (`bbdc516b9`).** 5 tested generators → `cost-index/{events-detected,co-movement,seasonality,lockfloat,anomaly-log,yields}.{json,csv}`. Yields hub: in-row yield meters, sortable **trim-tax** column (×1/yield, unit-agnostic cost multiplier — fixed a "you buy N lb" bug that was false for the 34 head/each/ear/bunch items), category-compare bars, live EP-cost foregrounded on leaves.
-- **Events honesty gate → 78 detail pages (`aff3170a9`).** `check-cost-index-events` was blind to `cost-index/events/*/` (one-level walk); now scans all 78 for causation/forecast in the site's own voice + asserts each carries its co-occurrence caveat. Proven with a planted-causal negative test. Self-test 12→17.
-- **datePublished fix (`ae696b283`).** 78 detail pages: `datePublished` = surface date (2026-07-11), event window → `temporalCoverage` (was misdating pages as years-old).
-- **`/open` = six datasets + CC0/CC-BY split (`ef928523b`).** Added Lock-or-float + Anomaly cards, seasonality downloads; resolved the events-card license ambiguity (downloads CC0, self-labeled "Cited registry — CC-BY"); `DataCatalog` = 7 Datasets w/ per-file `DataDownload` licenses; **`llms.txt` (EN+ES)** blanket-CC0 → honest split. Cross-checked: every claimed license matches the file's own `license` field.
-- **Governance (`e8e1cf02d`).** 5 open-data reshapes `--check`-gated in `check-all` + re-run in `cost-index-refresh.yml` (they're NOT in the deploy chain, so `--check` is the only drift guard; refresh already stages `cost-index/`).
-
-**Adversarial audit (39-agent-class, read-only):** no blocker; the 2 majors it found (gate blind to 78 pages; llms.txt CC0 blanket) are FIXED above; datePublished (minor) FIXED. **Remaining from its report:** speakable `.ci-answer` carries a co-occurrence count (nit, low-risk); ES detail `whatHappened` stays EN (consistent w/ EN-only registry posture).
-
-- **Research surface `/cost-index/research/` (`6e8b3df68` + protein page) — Workstream F, SHIPPED.** **7** original-analysis pages EN+ES (what-moves-together, trim-tax-across-the-pantry, steady-vs-wild, how-long-do-food-price-shocks-last, cheapest-month-buying-calendar, reading-your-invoice-against-wholesale, **protein-volatility-map**) + hub. The protein page closes the portfolio critic's gap (produce-forward slate) with the counterintuitive read: the operator's biggest cost line is the most printable — 9 of 27 tracked proteins lock onto a menu (the pricey cuts among them), 2 cushion, none float, and the wild swings live in produce. Built by the same read→write→verify→revise→translate mini-workflow (the verify caught + fixed a ranking-endpoint + verdict-terminology slip); `proteinMap` engine analysis cross-joins lock-or-float × co-movement. **Architecture:** every number computed deterministically in `scripts/lib/cost-research.mjs` from the committed datasets → rendered into figures; editorial prose (EN+ES) in `data/cost-research-content.json`. Built by a **33-agent workflow** (expert-read → Muntin Desk writer → adversarial honesty+voice verify → revise → ES translate → design-lead → UX/a11y audit → portfolio critic; 1.37M tokens) with numbers held fixed by the engine. Honesty gate `check-cost-research.mjs` (in check-all): grounds every prose number against the engine, blocks forecast/causation/wholesale-as-price EN+ES. Theme-aware, contrast-safe `rs-*` design system (single-hue teal data marks, accent=chrome-only, 40px targets), adversarially UX-audited. Discoverable from `/open`. **Portfolio critic's open gap:** no protein/center-of-plate cut (produce-forward slate) — candidate for a 7th page.
-
-**NEXT:** Phase 5 finish — CTA-canon entries if needed; a final full adversarial audit is running. **DOI (Zenodo)** minting is operator-side (on-site `DataCatalog`+CC-BY+cite are in place). **Queued:** the complete site reinvigoration (build surfaces to fit it; house tokens only).
 
 ### ⮕ VB WHOLE-PRODUCT AUDIT LOOP (2026-07-10) — recurring improvement loop, founder directive
 
@@ -310,471 +688,188 @@ Ran the recurring-loop re-audit after Passes A–E + seasonality (6 lenses → p
 
 ---
 
-## ⮕ CURRENT STATE — read this first (updated 2026-07-09)
+## ⮕ CURRENT STATE (updated 2026-07-16)
 
-### 🔴 TWO LIVE REDS ON MAIN — **both have fixes on `-exsghc`, UNMERGED (updated 2026-07-10)**
+### This session — "loops"-inspired loop-gap closes (founder directive)
+The founder saw the viral "AI loops" explainers and asked what we could apply. Muntin is
+already loop-native (CLAUDE.md + this board = Memory; the `check-*.mjs` gates + adversarial
+sub-agent panels = Verifier; build→audit→iterate = the loop). The gaps were the half-open
+loops — the "nobody tells you" boxes: Verifier, Stop-condition, Memory. Closing all four
+(founder picked all):
+- **[DONE] Product: re-vendor the market-prior snapshot** (`ba2e49a`, product repo). The
+  vendored `apps/api/src/data/cost-index-snapshot.json` fails closed at 30d/point and was 2
+  days from going dark. Re-ran `apps/api/scripts/vendor-cost-index.mjs` against the storefront's
+  fresh fact-gated Cost Index (asOf 06-13..06-18 → 07-04..07-14; 24 slugs; every value verified
+  a real transcription). Clock reset to ~2026-08-03.
+- **[DONE] Product: gate the snapshot against silent staleness** (`cfca1f9`, product repo).
+  New `scripts/check-cost-index-snapshot-fresh.mjs` (mirrors `check-subprocessor-freshness`) reds
+  10 days before the cliff (STALE SOON) and hard-fails past it (DORMANT); 12-assertion self-test;
+  wired into `ci.yml`. Turns a silent lapse loud. Full auto-refresh (cross-repo cron) is the
+  follow-up fork (needs a storefront-read token — founder call).
+- **[DONE] Storefront: truthful `check-all` verdict** — see the deploy-regen runbook below.
+- **[Phase-1 BUILT to tsc/gate — staging-gated] Product: operator watch→flag→act loop.** Founder
+  greenlit 2026-07-16: operator recipient · moderate ~$25/wk floor · implicit whole-catalog · weekly ·
+  rate-of-change · email-only · opt-in default-off. **Decision of record: product ADR-010**
+  (`Muntin-Invoice-Decoder/docs/ux/decisions/ADR-010-operator-cost-watch-digest.md`). Spec
+  (`docs/plans/operator-watch-act-loop-spec.md`, `b3c4041`) + adversarially-verified impl blueprint
+  (`docs/plans/costwatch-phase1-blueprint.md`, `6bc5bab`). **BUILT + verified (tsc/gates/tests):**
+  `cost-watch-digest.ts` assemble + materiality (`9e01535`/`a0b0a81`/`f179e27`, 22-case suite);
+  `cost-watch-impact.ts` the only new number, INCREMENTAL spend×Δ/(1+Δ), null=held (`cf0bad5`,
+  6 tests); `cost-watch-scan.ts` I/O feeder, typechecks vs every real store sig (`5dbfea0`);
+  `email.ts` render+send, copy-gates green, prints NO $ (`417a825`). **Impl adversarially audited
+  (3-skeptic workflow) → 3 defects FIXED (`d7a7b1f`):** materiality now per-ITEM not per-row (dup-
+  itemId hikes can't double-count a held move or show an item as both fired+held); the email splits
+  `belowFloor` (measured, "under the $X line") vs `unmeasuredHeld` ("not measured yet") so it never
+  asserts a magnitude for an unmeasured move; a measured $0 never fires. Scan's serial vendor-ask +
+  dup-canonical refetch = LOW efficiency, deferred (correctness unaffected). **WIRING NOW BUILT
+  end-to-end (tsc/gate/stub-tests; NOT runtime-verified — mechanical accountant-digest mirrors):**
+  D1 subscription store + migration 0031 default-off + 7 stub tests (`f19dd43`); weekly cron
+  `scheduled/cost-watch-digest.ts` (re-resolves the current owner) + index/wrangler `"0 15 * * 2"`
+  10th slot (`8dac1d4`); opt-in route `/v1/cost-watch` GET/PUT (`8a9bae3`); scheduled file added to
+  both copy gates. Whole cron→scan→digest→email→store→owner-resolver→audit path typechecks.
+  **apps/web settings toggle BUILT** — `settings/notifications/cost-watch-client.tsx` (optimistic
+  PUT + aria-live) + `page.tsx` section + `costWatchSettings` copy in EN+ES; opt-in default-off.
+  **WIRING ADVERSARIALLY AUDITED (workflow) → 5 findings, all FIXED (`170b5f6`, product repo):**
+  [MED] cron fail-soft gap — `resolveActiveOwnerEmail` was the one unguarded per-org await, so one
+  org's D1 failure rejected `ctx.waitUntil` and aborted the batch; now try/catch → `failed`+continue,
+  plus a `.catch` backstop on the outer run. [MED] route floor-wipe — an enabled-only PUT overwrote a
+  custom floor to NULL; now an enabled-only toggle routes through `setEnabled` (preserves floor +
+  owner_email), floor persisted only when present. [LOW] null/array/scalar body → 400 not 500. [LOW]
+  opt-out on a non-subscriber is now a no-op (no disabled row). [LOW] web "saved→idle" timer held in a
+  ref, cleared on re-toggle + unmount. Added a store test pinning setEnabled-preserves-floor.
+  **REMAINING = staging + one optional launch item (need the founder/staging):** the 5 ADR-010 staging
+  checks before enabling (impact end-to-end + floor calibration, null/held frequency, confirm 10th
+  Workers cron slot, recipient re-resolve, Resend delivery + unsub toggle); + a signed one-click
+  unsubscribe endpoint (the email currently links to the settings page, which works). Then Phase 0
+  auto-refresh cron (needs the storefront-read token).
 
-A fresh storefront session (branch `-rqdehe`, reset onto main) reconstructed state and
-verified two independent reds on main. **Both are real, NOT the self-healing "(idem)"
-deploy-regeneration class.** As of 2026-07-10 both fixes sit on the
-`claude/muntin-strategic-council-exsghc` dev branch, pushed and gate-verified — **merging
-that branch clears both reds.** RED #1's fix = the calibration re-stamp as the refresh
-build's final action (found independently by the `-exsghc` lane on 07-09, same diagnosis).
-RED #2's fix = the "companion tools" line (Cost Pulse + plate-cost) added to the frozen
-07-06 weekly's Go-deeper list AND to both generator templates (weekly `goDeeperBlock` +
-monthly methodology block in `build-cost-index-dispatch.mjs`) so no future emit can
-reproduce it — guardrails now 98/98. Original findings kept below for the record.
+### This session (cont.) — next surface: Ledger cost-intelligence bricks
+With cost-watch parked on the founder/staging, moved to the next autonomous surface: the grounded
+**`Muntin-Invoice-Decoder/docs/ledger-cost-intelligence-upgrade-plan.md`** (items A–K, the sibling of
+the E1–E15 catalog). State: the NOW bricks A/B/C are all at first-brick-done — **A confirmed already
+shipped** (`22415549`, `reference()` carries `epCents`+`trend`+`verdict`; the plan just lacked the DONE
+marker), B (`contract_price.py`) + C (`price_trend_pct`) done-unwired earlier.
+- **[DONE — first brick, `4ccbf32`] Item D: fold buy-or-ride into `/reorder`.** The market-aware
+  "buy ahead vs. ride it out" read lived one screen over under `/insights`; put it on the exact rows
+  where the order is committed. `GET /v1/inventory/reorder` now fetches `recentPriceHikes` (7d) and
+  attaches the E7 card (`buildBuyOrRideFromContext` + `resolveCostIndexTrend`) **only when a hike meets
+  known days-of-cover** — every other row `buyOrRide: null`, never a guess. Honest degrade (no hike / no
+  cover / null-or-stale trend → cover-only or nothing). Reuses the parity-locked pure engine + the
+  `testCostIndexOverride` snapshot seam. Web `ReorderRow` gains an optional read-subset type (no render
+  yet). Route test mirrors `buy-or-ride-route` (watch/buy-now by cover + 3 honesty holds); tsc (2
+  baseline) + prettier clean; runs in CI. **Web render shipped (`310fbf5`) — item D is now end-to-end:**
+  a calm one-line market read on the `/reorder` card, keyed by `tier` through EN+ES copy (the API
+  headline is EN-only, so tier-keyed copy keeps the gated parity honest). Copy-grade + verboten +
+  prettier clean; web tsc/build:cf/vitest run in CI, not the container. Optional later: thread the web
+  user's locale into the reorder request to render the richer calibrated server headline directly.
+- **[DONE — item A first consumer lit, `b0f0f286`] Plate Cost verdict hint.** Lit the first consumer of
+  A's widened `reference()`: `plate-cost/cost-index-hint.js` now renders the calibrated buy/hold/watch
+  verb next to the wholesale reference (attached to the Cost Index read, never the operator's price).
+  Additive + fail-silent; verbs from `cost-verdict.js` (no new copy/fact); neutral styling (no green
+  "prices fell" — one-directional honesty); cache-bust bumped EN+ES; lookup test pins the EN+ES verb
+  contract (10/10). DOM render is browser-verified in the real env, not this container.
+- **[DONE — item A second consumer, engine layer, `2c988fe3`] fair-price-gap marketTrend.**
+  `fair-price-gap.assess()` now carries `marketTrend` ({pct,dir}|null) on every matched path (comparable,
+  unit-mismatch, index-basis-no-level — direction is honest without a $-level), so a price gap reads WITH
+  market context (above a rising vs falling reference). Node-verified: 3 new vectors, 13/13; cache-bust
+  bumped EN+ES. Render in the Vendor Benchmark is the follow-on (its intricate localized verdict/focus/
+  motion chrome wants a browser). **The node-verifiable ENGINE layer of "widen → consume" is now complete
+  across both storefront consumers; every remaining stroke is a render (browser-verified).**
+- **Next candidate bricks — each with a container caveat (a real fork, not an obvious default):** E
+  (demo→Vendor Benchmark URL-fragment prefill; the "lands as comparable" acceptance is a browser hand-test
+  we can't run here) · the B/C **Python wiring** (`off_contract`/`price_creep` capture + SOFT registration;
+  needs `pytest` — installable — but the core-pipeline stakes + the corpus-calibration the plan itself
+  requires make this better done on a full dev machine) · item F (`above_market`, gated on a Python
+  hit-rate probe that needs a real line corpus) · more A consumers (`fair-price-gap.js`, the trend arrow,
+  the no-dollar verdict path). **The cleanly-in-container-verifiable well is thinning — the remaining
+  value increasingly needs a browser / pytest+DB / real corpus. Surface the fork; don't force a
+  low-confidence brick.**
 
-**RED #3 — the REAL Cloudflare deploy blocker (found 2026-07-10 from PR #513's Workers
-build log, fixed same session).** The Workers "muntin-digital" check was red — NOT a
-build-infra glitch (initial hypothesis, wrong). The deploy runs the full build chain then
-`check-all.mjs`, which exited 1 on its single non-idem failure: **`claims.json` out of
-sync with `data/sourced-claims.json`**. The per-location pricing edit to the
-`ledger_founding_offer_2026` claim never regenerated the public `claims.json`, and the
-deploy build chain does NOT run `build-claims-json.mjs` (same non-self-healing class as
-RED #2). Fixed: rebuilt `claims.json` (as_of 07-02→07-09, "$19 a month per location",
-used_in += demo paths), committed `d04cf4f44`. `build-claims-json.mjs --check` in sync;
-full suite now 0 non-idem reds. **Lesson for a fresh session:** whenever you edit
-`data/sourced-claims.json`, also run `node scripts/build-claims-json.mjs` and commit
-`claims.json` — the deploy won't do it for you.
+### Storefront (`potentially-profitable`) — v3 redesign COMPLETE + CERTIFIED
+The app-grade v3 language (slate + electric-blue, tabular-mono data voice, muntin-grille-as-
+structure, 6px hairline) is shipped site-wide and certified (full 258-gate run, 0 non-idem
+regressions). All 4 founder-picked levers landed (type unification, radius→6px, hub polish,
+tool-card layout) + newsletter de-solo + focus-glow fix (`03d8ebe00`, `--ring-focus` derives
+from `--teal` via color-mix). The visible redesign is done. **Remaining = FOUNDER-LEVEL, SITE-
+WIDE decisions (surface, don't do unattended):**
+- (a) **Footer newsletter** — keep Don's gated first-person voice (current; `check-newsletter-copy`
+  G.10 requires "when I publish something") or de-solo it too (→ update the gate).
+- (b) **Off-scale raw-radii sweep** — remaining components on 10–14px vs the v3 6/8 scale;
+  cosmetic churn with visible corner changes across many components (HELD for a look).
+- (c) **Cost-Index money direction** (editorial) — elevated cost renders `--rust`, calm neutral,
+  never a green "prices fell/good": deliberate one-directional honesty, or an unadopted gap?
+- (d) A dedicated `--info` hue (today info-blue folds onto `--teal`) — match product `#3b68f5`
+  or stay deeper editorial teal?
+- (e) The **/window/** personal-access founder-fork (keep the human-access differentiator vs
+  full company voice?).
+- **Product/storefront token parity: CLEAN BILL** — the product Ledger's design language is the
+  keeper (nothing regresses it); the deliberate divergences (accent fill `#2A50C8` vs `#3b68f5`;
+  Fraunces display kept vs retired from product chrome) are documented + gated. KEEP.
 
-**RED #1 — the MWF Cost Index heartbeat is FROZEN at the 2026-07-06 read.**
-The 07-08 Wed refresh (`cost-index-refresh.yml` run #34, 2026-07-08T15:08Z, `schedule`)
-**failed and committed nothing** — last data commit is still `9239d1ac` (07-06). Cause (from
-run #34's job logs): the fresh read moved the calibration numbers, and
-`inject-cost-index-calibration.mjs --check` found the methodology-page sentinels stale
-(`✗ cost-index/methodology/index.html calibration sentinels are stale`, EN+ES → exit 1). The
-workflow runs that injector in write mode (`cost-index-refresh.yml:141`) before the `--check`
-(`:175`), so this is an **ordering bug** — a step between L141 and L175 re-emits the methodology
-pages and drops the fresh sentinels. RECURRENCE of the #504 "calibration sentinels can't
-self-heal" class. **Fix:** move/duplicate the calibration inject to run AFTER the final
-methodology page-gen and before the `--check`, and stage `cost-index/methodology/index.html` +
-`es/…`. Verify by reproducing the refresh's rebuild order locally. Until fixed, every MWF run
-re-freezes.
+### Cost Index as a data company — roadmap COMPLETE, loop CONVERGED
+ADR-011 (events surface) · ADR-012 (Vendor Benchmark market-context) · ADR-013 (NASS/Census/EIA
+policy) · ADR-014 (cold-storage deseasonalization) all shipped + gated. The Vendor Benchmark
+"world-class" roadmap (15 items) and two recurring adversarial re-audits converged to nits.
+Notable fix: the **seasonal nominal-drag** bug (live ingredient pages showed false level signals
+off a 25yr-dragged median) → `WINDOW_YEARS=5` trailing-window normals (`build-seasonality.mjs`).
+**Open (founder / operator-Mac):** re-validate `cold-storage-pork` calibration on the deseasonalized
+path; NASS/EIA live-fetch sub-items (need the operator's Mac keys+network — the container has
+neither); vanilla publish-threshold. Freight double-count RESOLVED (one live series = FRED GASDESW).
 
-**RED #2 — the next Workers deploy will fail on `check-content-guardrails`.**
-`blog/cost-index-week-2026-07-06/index.html` has exactly **1** `/tools/<slug>/` link
-(`/tools/cost-pulse/`); the gate (`check-content-guardrails.mjs:87`) requires **≥2**. Every
-other link is `/cost-index/*`, which the matcher doesn't count. **Verified non-self-healing:**
-the deploy build's CTA injectors (post-end-cta, smart-next, ledger-cta) leave it at 1. On main's
-frozen tree this is the ONLY non-idem red, so a `wrangler` build of the next merge fails here
-(same failure mode as #489). **Fix:** durably in the dispatch generator (so the first Aug monthly
-edition can't reproduce it) AND a direct 2nd honest `/tools/` link on the frozen 07-06 weekly
-(historical — cadence is monthly now — so a direct edit won't be clobbered). **RISK TO CONFIRM:**
-if #2 has been red since ~07-06, Cloudflare Workers deploys may have been failing that whole time
-→ the ledger-demo work (#505–508) may NOT be live. Cloudflare deploy status isn't visible from
-the session; confirm.
-
-**Recommended order:** fix #1 (unfreeze the heartbeat) → fix #2 (unblock the deploy) → resume the
-July Monthly Dispatch edition build. Open PR **#501** (yn273q, Open-data `/open/`) still needs
-triage. The 07-09 storefront catch-up itself was read-only (this board note is its only commit,
-via PR #511 → superseded by this integrated version); develop on `-rqdehe`, author config
-`Claude <noreply@anthropic.com>`.
-
-### 🟣 SESSION 2026-07-09 (product repo, branch `claude/muntin-strategic-council-fzdd1j`) — `/try` demo finished + reliability roadmap closed
-
-**⚠ Branch note:** this session was pinned to `-fzdd1j` (per its task config); its
-product work merged to main via **PR #239** (Ledger) and the branch now sits at
-latest main. The board's "active branch is `-exsghc`" line above predates this —
-these two council branches ran concurrently. Nothing is lost; `-fzdd1j`'s work is
-on main. Reconcile the branch name next session if the founder wants one lane.
-
-**The arc (all on main via #239):** completed the first-try reliability roadmap AND
-built + hardened + visually elevated the anonymous `/try` demo. Recorded as
-**product ADR-007** (`docs/ux/decisions/ADR-007-try-anonymous-demo-and-gating.md`).
-
-  - **Reliability roadmap COMPLETE** (`docs/plans/first-try-reliability-roadmap.md`):
-    community column-rule pool Slices 1–6 (row-invariant `column_v2`, community
-    confidence band, column-fan apply, held-out lift gate, pool-aware drift +
-    supersession + distinct-org demote-back trigger), the first-try lift corpus, and
-    the **OCR-noise measurement layer**. All adversarially verified.
-  - **`/try` BUILT + hardened + ELEVATED:** deterministic live read (no LLM, no
-    persistence — both CI-gated), animated read pipeline, ReadReceiptRail, "$X off"
-    catch-as-hero, honest cause inference (`catch-cause.ts`), founding-list capture on
-    every branch, phone-photo downscale, reactive Turnstile. Then a 9-agent design
-    workflow re-skinned it to the **precision-instrument** language (mono tabular
-    numerics, hairline grid, one blue accent, triple-encoded confidence, count-up
-    total) — verified via Playwright across idle/reading/clean/catch in light+dark.
-    Gate-green: tsc, next build, 111 vitest, focus-discipline, demo-no-persistence,
-    locale-parity.
-
-**⮕ WHAT'S LEFT before the demo can take a real invoice and reliably produce results
-(i.e. flip `DEMO_ANONYMOUS_EXTRACT` on):** exactly ONE accuracy gate, plus ops.
-  - **Gate (a) — real-invoice coverage.** The pool match is robust to value /
-    positional / header case+whitespace noise but **breaks on header GLYPH
-    corruption**. So un-gating requires (i) the actual top-~10 broadliner layouts
-    (Sysco, US Foods, PFG, GFS…) as real reference-A + held-out-B pairs run through
-    production docling, and (ii) **seeding header glyph-variants per column** (not one
-    spelling), then a re-measured blended first-try F1 (Tier-1 PDF ≥ 0.90 held-out).
-    The synthetic corpus proves the mechanism + names this requirement; it does not
-    supply real invoices. **This is the single blocker.** Until it clears, `/try`
-    degrades safely to the guided `/demo` sample (503 `fallback:"static"`), so the
-    surface is already shippable at full craft.
-  - **Ops (independent of gate a):** provision Turnstile keys
-    (`NEXT_PUBLIC_TURNSTILE_SITE_KEY` + server secret); NCMEC enrolment before public
-    promotion of an anonymous upload endpoint; decide the demo↔pool fork (roadmap
-    §5.10 / Q7 — recommended: read-only pool exception for `demo:anon`).
-
-**Bold-launch opener (founder asked "get people excited in a unique, bold way"):** the
-precision-instrument surface is the vehicle; the missing spark is the LIVE own-invoice
-read, which is exactly what gate (a) unlocks. Recommended sequence to a confident public
-launch: author 2–3 real Tier-1 A/B pairs first (Sysco + US Foods cover the largest
-first-upload slice) → re-measure F1 → flip the flag for those layouts → THEN promote.
-Everything else (design, honesty architecture, capture, hardening) is done.
-
-### 🟢 ACTIVE BUILD — updated 2026-07-09 (read ADRs 011/012/013 — all founder-signed)
-
-**Governing decisions now in `docs/editorial/decisions/`:** ADR-011 (monthly first-Tuesday
-dispatch + Mon/Wed/Fri refresh, edition slug `cost-index-YYYY-MM`), ADR-012 (**manual
-authorship** — no cron, no generated posts; hand-written editions; dispatch workflow is
-the manual EMAIL button only; refresh catch-up = red reminder at 38d; full publish
-runbook inside), ADR-013 ($19/mo **per location**; **enterprise parked** post-GA, gated
-on founding-list demand). ADR-010 carries the ratified one-print extension (site only).
-
-**Merged to main (PRs #505/#507/#508):** cadence pivot + promise sweep; email P0 honesty
-fixes + trust rails (golden render `data/email-preview/` + `check-cost-index-email.mjs`);
-the ledger demo transformation (rule-true numbers ON BOTH the demo AND the /ledger/ hero
-— the old $3.55 flag never fired `computePriceHike`; now $24.10/$24.35/$29.45 = +$5.23/
-+21.6% over the $24.22 median everywhere, byte-verified); 3 review rounds + certification.
-
-**On the dev branch, pushed, UNMERGED (founder: merge to resume the heartbeat):**
-  - **Refresh fix (URGENT):** first MWF cron (07-08) vendored fresh data then failed the
-    gates on stale calibration sentinels (fresh-data-only ordering; frozen-data testing
-    can't reproduce). Fix = re-stamp `inject-cost-index-calibration` as the build's last
-    action. **Heartbeat is stalled at the 2026-07-06 read until merged** — next cron
-    Fri 07-10 13:00 UTC, or founder runs the workflow manually post-merge.
-  - Per-location pricing on all surfaces + registered claim (ADR-013).
-  - Monthly edition machinery (generator monthly-default, `.viz-spark` family + canon
-    §8 + test fixtures, dispatch-fresh recognizes both slug families) — kept as dormant
-    tooling per ADR-012; the generated July draft itself was deleted.
-  - Manual-authorship pivot (both workflows per ADR-012).
-  - **Demo app frame** (founder design direction: fixed stage, in-frame cross-fade,
-    page height headless-verified constant): chrome strip + stage + control bar; step 3
-    two-column; step 4 full-ink ask; per-location terms; EN+ES.
-  - **RED #2 fix** (guardrails ≥2 tools links): companion-tools line on the frozen
-    07-06 weekly + both generator templates. **July edition full-suite fixes:** TL;DR
-    window (jump nav moved below In-short), intent=watch param dropped (plate-cost
-    doesn't consume intents), viz-spark moved INTO the site.css partition (site-article
-    .css is a GENERATED shell — never append to it directly) + shells rebuilt. Full
-    check-all on the branch: 225/249, every remaining red is the (idem) baseline.
-
-**FINAL DEMO CERTIFICATION — 2026-07-10 (run wf_cd93a13f-162, 5 fresh seats, honest record):**
-All 5 seats `wouldShipToFortune500: true`. Verdicts: interaction-design **WORLD_CLASS**
-(8.5/9/9); motion-design STRONG (8/8.5/9); copy-voice STRONG (9/8.5/8); frontend-eng
-STRONG (9/8.5/9); chef-owner STRONG (9/8.5/9). The founder's page-height law verified
-constant at every viewport/locale/scheme; deep-link, no-JS, PRM, quick-path all measured
-correct. Post-cert fixes applied same day (commit ce629a5d7): banned-word + royal-we
-canon violations (EN+ES), dark-mode ink moment restored (#0F1116 band vs #1B1E24
-panels — the override had made them identical), desktop stage min 480→430 (short-laptop
-control-bar clip 688.7→649.7 at 650svh; ≥690px unchanged). Headless re-verified ×6.
-
-**Certification findings PARKED (recorded honestly, none blocks ship):**
-  - **The one real design tension (founder fork):** at 1280×800 every step scrolls
-    internally (52–127px hidden; stage 592 vs panels ≤719) and on phones >half of each
-    step sits below the in-panel fold incl. the flag chart (step 3 hides 528px). This
-    is inherent to fixed-stage + current content volume: the forks are (a) accept
-    in-panel scroll as the app idiom (cues are honest and working), (b) trim step copy,
-    or (c) shorten the marquee figures. Do NOT silently trim certified copy.
-  - Smaller parked items: 3px frame-under-nav on desktop deep-link (nav renders 103px
-    vs 100px offset budget — fixing it cascades through the pixel-exact reservation
-    math in 2 files ×2 locales; left alone deliberately); keyboard-only users can't
-    scroll overflowing panels (WCAG 2.1.1 edge — panels tabIndex −1); overflow cue not
-    recomputed on resize/orientation; ~80ms stage dim on triple-click Next; 35px rail
-    touch targets on mobile; mobile fade cue dims the flagged Jun 26 payoff row;
-    step-4 left-column dead zone at desktop; aria-current on li not the link; ES step-4
-    60px overflow at 1280×800 where EN fits; em-dash pairs vs sentence-shape rule 3.
-  - **CTA canon fork (founder):** demo uses 'Run your own line' + 'Join the founding
-    list' — both absent from the locked CTA canon (/methods/ #voice-contract). Seats
-    rate the labels better than the canon's 'Try it free' for these jobs. Either add a
-    canon v1.2 entry sanctioning them or conform the labels — founder's call, the canon
-    is his governing doc. Related: '/ledger/' itself still says 'without us' (same
-    royal-we idiom fixed on the demo); one-line fix pending the same call.
-  - Stale '19 weeks out' count (formula says 18) — self-heals on next deploy build.
-
-**Completed workflows (payloads in session transcripts):** `july-edition-product`
-(wf_56eb545c-4ca — the July edition, built + audited + full-suite green);
-`demo-world-class-pass` (wf_a2da5e7b-bcc — rounds 1–2 + closing pass);
-`demo-final-certification` (wf_cd93a13f-162 — the record above).
-
-**Parked / follow-ups:** demo OG card; `Demo Exit` analytics registry entry (product
-repo `tools/_shared/analytics.js`); `.ld-wrap` 880px cap overridden by `.container`
-(pre-existing, founder call); /ledger/ meta "six-month history" mentions; product repo:
-3 failing nightlies (real failures, untriaged) + the 4 CI fixes still unmerged on its
-dev branch (no PR without ask); ES edition decision for monthly dispatches; email P1
-body due before 2026-08-04.
-
-**Cadence truths a fresh session must know:** refresh = Mon/Wed/Fri 13:00 UTC from
-main; dispatch cron REMOVED (ADR-012); the 38d dispatch-fresh gate is the publication
-reminder; subscriber promise = "one email a month — the first Tuesday" (the editorial
-deadline for hand-publishing).
-
-### ✅ P0 OUTAGE RESOLVED 2026-07-06 — was: GitHub Actions dead ACCOUNT-WIDE since 2026-06-20
-
-**Finding (session 2026-07-06, fully verified via the Actions API):** every GitHub
-Actions job across BOTH repos has been refused a runner since 2026-06-20. Jobs
-die in 2–4 s with `runner_id: 0`, no logs (404), no annotations — the signature
-of a **billing lock** ("recent account payments have failed or your spending
-limit needs to be increased"), NOT a code problem. All workflow YAML in both
-repos validated clean (incl. duplicate-key check). Only the founder can fix it:
-**GitHub → Settings → Billing and plans → check payment method / spending
-limit.** Evidence:
-
-  - `cost-index-refresh.yml`: last success run #13 **2026-06-19**; runs #14–#30
-    (06-20 → 07-06) ALL failed pre-execution. Cost Pressure refresh: same.
-  - `cost-index-dispatch.yml` (weekly subscriber email): run #1 (06-16) is the
-    ONLY email ever delivered; #2 (06-23) and #3 (06-30) refused runners.
-  - Storefront PR checks (Playwright / Lighthouse / axe) also get no runner —
-    job-level failure in ~3 s even where the run-level rollup shows "success".
-  - Product repo (private): `ci.yml` last executed **2026-06-19**. Every
-    push/schedule run since 06-20 is a `startup_failure` attributed to a phantom
-    deleted workflow (id 299264922, path "BuildFailed", created 06-20 04:37 ET).
-
-**Impact (compounds daily):**
-  1. **Live Cost Index data is frozen at the 2026-06-19 read** (last data commit
-     `d2b598e88`). The daily-heartbeat promise ("level ≤1 day old") has been
-     broken for 17 days. The 06-27 poblano and 07-03 pumpkin commits were HAND
-     -fixes aging out points that the frozen data pushed past the stale gates —
-     each passing calendar day risks another ingredient aging out and blocking
-     Workers deploys of ANY merge.
-  2. Weekly dispatch subscribers have received exactly one email, three weeks ago.
-  3. Product PRs #234–#239 (fraud detectors, PII scrub, community pool, /try)
-     merged with ZERO GitHub CI executed — the no-llm gate, privacy gates,
-     vitest/golden suites ran only inside dev sessions. The "enforced in CI"
-     trust claim on /ai + /never has not actually executed since 06-19.
-
-**Recovery status (2026-07-06 ~17:05 UTC): billing UNBLOCKED** — founder paid;
-runners returned instantly (probe: product CI run #1969 executed, first real CI
-since 06-19). Founder's first refresh dispatch was cancelled cleanly (nothing
-committed) pending ingredient-coverage confirmation. Grounded answer: the
-roster (`data/cost-index-sources.json`) is unchanged since 06-16 — the batch-1
-12 high-traffic ingredients are in it, the fetch iterates the roster on the
-run's own ref, and below-bar newcomers graduate to the seed/pages automatically
-via the shippable-bar gate. **But the pause caught a real wiring gap:** PR #490/
-#500 added five committed live-data-derived artifacts + sync gates while the
-heartbeat was dead (`cost-lockfloat.json/.js`, `cost-index-audit.json`,
-`cost-index-calibration-report.json` + methodology sentinels,
-`cost-forecast-backtest.json`, provenance `cost-index/sources.json`) — none
-rebuilt/staged by the refresh workflow, so the FIRST post-freeze refresh would
-have left every one drifted → red `--check` gates on all subsequent sessions.
-**Patched on this branch** (cost-index-refresh.yml): rebuild steps in dependency
-order, pre-commit `--check` re-derivation, the new honesty gates (basis-leak,
-shippable-bar, seasonal-band, band-coverage, trend-skill) run before commit, and
-the artifacts added to the scoped `git add`. Validated on frozen data: all six
-write-mode runs byte-identical, all 11 gates pass.
-
-**MERGED 2026-07-06 ~18:35 UTC as PR #504 (`c0e8e417d`) — Workers deploy green
-(check-all 246/246).** The evening's additional findings, all fixed in the PR:
-  - **Second artifact family** was also un-wired (embeds, `cost-index/feed.json`,
-    revisions log, reproduce stamp, both confidence reports, speakable stamps) —
-    now rebuilt + `--check`-gated + staged by the refresh workflow.
-  - **Run #33's silent catch-up skip root-caused:** one unmatched pathspec
-    (`es/blog/cost-index-week-*/`, generator writes EN only) voids the entire
-    `git add`; `2>/dev/null || true` swallowed it. Both refresh + dispatch
-    workflows now stage per-pathspec. Catch-up week 2026-07-06 published
-    (basket −5.0%, 24/81 above baseline; dispatch lag 0d).
-  - **`build-blog-index.mjs` ran in NO workflow** (dispatch's comment claimed it
-    did) — weekly posts were invisible on /blog/ without a manual rerun. Added
-    to both workflows.
-  - **Footer-count landmine:** `_includes/footer.html` still said 13 tools/150
-    terms (truth 5/171); the injector skipped `_includes`, so every
-    sync-includes re-smeared stale counts sitewide. Injector now stamps the
-    partials too (gate tightened); partial healed same commit.
-  - **lhci had NEVER actually run since `44d64cc74`** (three deleted retired-
-    tool scripts still in its build chain killed it at step 3; then its URL
-    list gated retired pages → 404 crash). Dead calls removed, URLs swapped to
-    living funnel equivalents (/tools/margin-math/, /cost-index/ + ES). It now
-    measures real surfaces — first honest numbers may be red (advisory-only,
-    `continue-on-error`).
-  - **Rebase-staleness lesson:** artifacts stamped pre-rebase (calibration
-    sentinels on the methodology pages) went stale when the bot's daily-read
-    commit moved the report JSON — reproduced 245/246 locally via the deploy
-    chain, restamped. The deploy chain does NOT re-run
-    `inject-cost-index-calibration.mjs`, so this class can't self-heal.
-
-Branch restarted from main post-merge (same name, merged-PR rule). Remaining
-watch items: **07-07 13:00 UTC refresh cron** (first cron on the patched
-workflow) and **07-07 ~16:20 UTC dispatch cron** (first subscriber email since
-06-16 — post already current, so it should just send); confirm phantom
-"BuildFailed" runs stopped on the product repo's next main push; then the
-/status/ freshness-note honesty call (founder's if publicly visible).
-
-### Delta — glossary + audio lane (branch `claude/compassionate-dirac-rdkw22`, work 2026-06-26/27, recorded 2026-07-09)
-
-A **parallel lane** (separate from the council branch family) shipped + merged to main. Recording it here so the council lane and any fresh session know it happened and don't re-do or contradict it. All verified live on main `a0577ca3`.
-
-- **Cost Data & Sources glossary class — SHIPPED (PR #488, merged).** A **9th glossary topic** (`learn/topics/cost-data/` + ES) tying the glossary to the Cost Index's own sources + methodology: **19 bespoke terms, EN+ES** — 9 source agencies (BLS, USDA Market News, USDA-LMR, USDA-Dairy/NDPSR, FRED, EIA, NOAA Fisheries **+ FDA and CME as honest negatives** — "safety not price", "futures not your invoice") and 10 methodology concepts (measured/derived/absent, price-confidence, shippable-bar, prediction-band, calibration, ratio-bridge, freshness, pressure-overlay, revisions, assessed-benchmark). Each term: a **bespoke page built by a per-term specialist (NOT a template)**, DefinedTerm+Article+FAQPage schema, a FAQ (+ a People-Also-Ask 4th question on each methodology term), a bespoke OG card (added a `source` glyph + AKA auto-fit to `build-og-cards.mjs`/`seed-glossary-og.mjs`), a Cost Pulse tie. SEO/AEO pass over all 19 (`data/glossary-seo.json`); 90-second explainers for 4 methodology terms (`data/glossary-explainers/`); the methodology-source sentence, the Cost Pulse lede, and **164 ingredient-page source lines** now link the term pages. Grounded to `methodology.json`/`sources.json`/`calibration.json` (band 80%→84%, calibration 48/51/58); zero inventions. This is the source of the **171 glossary terms / 9 topics** count referenced above.
-
-- **Topic-page-schema idempotency fix — SHIPPED (PR #488, merged).** `check-all`'s "Topic page schema (idem)" went red the day the Father's-Day batch banner expired. Root cause: `listTopicArticles` (`inject-topic-page-schema.mjs`) scraped **every** `/blog/` href on the topic page — including the rotating batch-banner promo link — so the permanent JSON-LD `ItemList` was seeded from ephemeral content; because `inject-batch-banner.mjs` runs **after** the schema writer in the deploy chain and hid the expired banner, the end-of-build `--check` recomputed a shorter list → 14-page drift, blocking Workers deploys of any merge. **Fix (live at `inject-topic-page-schema.mjs:40`):** strip the `<!-- batch-banner:start -->…end -->` region before scraping, so the ItemList reflects the article cluster only. Same class of bug as the theme/cuisine-generator normalizer miss (PR #504) — see the new gotcha below.
-
-- **Audio render batch — MERGED (PR #491).** The Colab's accumulated per-article blog+library listen-along `audio.json` + MP3 siblings (64 files).
-
-- **Poblano hand-fix in PR #491 was REDUNDANT — superseded, correctly discarded.** This lane independently prepared a full *removal* of poblano when the 120-day level-staleness gate tripped (06-26). On rebase we found the council lane had already landed the **canonical fix** (`9239e0fe5` — age out to *expanding-coverage*: drop the 5 stale points, KEEP the 26-entry history + page) **plus the durable root-cause guard** (`buildCompositeInput` `levelEligible` at `tools/_shared/cost-index-sources.js:287` — a dead terminal feeds trend but never anchors/date-stamps the level). Adopted main's version wholesale; PR #491 reduced to the audio batch only. **No poblano action outstanding** — and note for the record: the heartbeat stall behind it was the **GitHub-Actions billing lock** (§"P0 OUTAGE RESOLVED 2026-07-06"), NOT a source-API-key issue.
-
-### Delta 2026-06-28 → 07-06 (merged to main; board was stale for this window)
-
-Storefront (PRs #490, #493–#500, #502–#503):
-  - **Naming fork #5 partially RESOLVED:** "Cost Pulse" folded into the **Cost
-    Index** brand (`78c8654a1`); "Muntin Bench" renamed **Vendor Benchmark**
-    (`51d1e2edb`); OG cards re-arted. (Ledger split still off-site by design.)
-  - **Ingredient card redesigned answer-first** + then-vs-now two-invoice-dates
-    comparator on a new multi-year deep-history seed (PR #493).
-  - **Bolder/premium design pass** sitewide EN+ES (PR #495; brief in
-    `docs/handoff-bolder-pass.md`): /ledger/ goldenhour hero + ink pricing band,
-    homepage "Receipts, not promises" stances, tools-hub "instruments at rest",
-    footer trust column, founding-capture band.
-  - **Own-invoice demo route CLOSED sitewide** → `/ledger/demo/` guided mockup
-    walkthrough (EN+ES) ending in "run your own line" → live Vendor Benchmark.
-  - **Vendor Benchmark rebuilt ground-up** Phases 1–2 (PRs #497/#498): market-
-    window engine + honest chart layer; Price Journal (device-local compounding
-    log), forecast + regime-break layer, whole-book worklist.
-  - **Honesty-remediation wave** (PR #490 + #500): new fail-CI gates
-    `check-cost-index-basis-leak.mjs` + `check-lockfloat-copy.mjs`; conformal
-    coverage de-circularized; per-item null gate w/ Benjamini–Yekutieli; per-item
-    provenance receipts; cross-repo conformal golden-vector parity lock.
-  - **Lock-or-float reframe** on the live tool (PR #500): Lock Sheet (committed
-    artifact + drift gate), Lock Book, Menu Cushion, contract checker, Backtest
-    Replay, Ledger bridge.
-  - **New library article** end-to-end in a day: beef-prices EN + native ES +
-    EN audio (PRs #499/#502/#503). Ledger SoftwareApplication+Offer ($19/mo)
-    JSON-LD EN+ES — first structured-data claim of the paid product.
-
-Product (PRs #234–#239):
-  - **cost-alerts comparability gate** — never accuse a vendor on a category
-    error; proxy-quality registry (PR #234).
-  - **PII-scrub donation disclosure** (5 adversarial rounds) + anonymous-demo
-    no-persistence covenant promoted to a CI gate (PR #235).
-  - **5 fraud/integrity detectors** wired into extract() w/ EN+es-MX reason
-    copy + reason→safety-chip CI exhaustiveness gate (PR #235).
-  - **Read Receipt trust rail** Phase 3 (cost + "safe to pay?" segments; binding
-    cognitive-load canon) (PR #235).
-  - **Community column-rule pool Slices 1–6 complete** (held-out lift gate,
-    supersession + distinct-org demote-back, migrations 0056/0057). OCR-noise
-    corpus isolated the one remaining un-park gate for /try: header glyph-variant
-    seeding + real top-~10 broadliner layouts, then re-measure first-try F1.
-  - **/try anonymous demo BUILT + hardened, PARKED behind `DEMO_ANONYMOUS_EXTRACT`**
-    (founder: "not until it's the very best we can"). Plans:
-    `docs/plans/try-anonymous-demo-plan.md`, `first-try-reliability-roadmap.md`.
-  - Vendor-benchmark math parity-ported into the Ledger (golden vectors);
-    `ledger-spec/cost-index/IS-IT-YOU-OR-THE-MARKET.md` specs the own-series
-    overlay. **POS-SPEC.md** (07-05) carries its own tiered insight catalog §6 —
-    reconcile with `docs/plans/muntin-plate-insight-catalog.md` before building
-    Plate entries.
-
-**Gate baseline re-verified 2026-07-06:** check-all = 226/246, 20 failures, ALL
-"(idem)" deploy-regenerated drifts (warm-palette + cost-index sync now GREEN —
-baseline improved from ~21). Hard gates all green; fabrications 0 hits.
-
-**Open-PR triage (2026-07-06):** storefront #501 (residual diff on the merged
-vendor-benchmark branch — CI failures are outage artifacts, but its Workers
-Build failure needs real triage), #448 (stale audio PR), #374 (stale cursor
-draft); product #237 (stale). None block main.
-
-**Queue state:** A — Plate insight catalog **EXISTS**
-(`docs/plans/muntin-plate-insight-catalog.md`, E1–E15 ranked, flagship = E1+E2
-pair; ADR-010 + E14 already shipped) → thread A is now "pick the next entry to
-BUILD", not "write the catalog". B — vertical generality **NOT STARTED**, and
-the claim is already live in marketing (`/vs/marginedge` "vertical-agnostic";
-homepage "for small business") while every code path is restaurant-hardcoded
-(`seedDefaultsForOrg` → `RESTAURANT_DEFAULTS`, NRA-chart GL seed, all-restaurant
-golden suite) — an honesty gap to either EARN (fixtures + vertical selector) or
-SOFTEN (copy). C — social pre-launch still blocked on the founder IG decision.
+### Product Ledger (`Muntin-Invoice-Decoder`) — inventory landed; front door parked
+- **Inventory Tier 0→3 landed** (PR #222, on `main`): `Beginning + Purchases − Ending = Usage`
+  → real food cost; WAC + Cost-Index market-prior fallback (ADR-009); Tier-2 variance; Tier-3
+  pars + days-of-cover; multi-location picker. Honesty spine: measured-beats-estimated, every
+  estimate labeled + confidence-docked. **Merged ≠ shipped** (a prod OpenNext+Worker deploy is
+  separate, unconfirmed from the container).
+- **`/try` anonymous demo** BUILT + hardened + certified (product ADR-007), PARKED behind
+  `DEMO_ANONYMOUS_EXTRACT`. **Single blocker to un-gate:** real top-~10 broadliner A/B layout
+  pairs + header-glyph-variant seeding, then re-measure first-try F1 (Tier-1 PDF ≥ 0.90 held-out).
+  Ops: Turnstile keys, NCMEC enrolment. Degrades safely to `/demo` until then.
 
 ---
 
-### Prior state (updated 2026-06-27, superseded by the section above)
+## Runbooks (a fresh session needs these)
 
-**Session on branch `claude/muntin-strategic-council-fzdd1j`** (PR #489 — the prior `-rqdehe` heartbeat/prune/anti-Factura work + the Worker-build fix — is **merged to main**, commit `3b3bb6cb0`). Caught up with main; `check-all` re-verified green (215/236 = the documented deploy-regenerated idempotency baseline; all hard gates + every cost-index gate GREEN even after calendar aging).
+- **Container reverts mid-session (seen ≥3×).** Signature: HEAD drops to a stale checkout
+  (demo commits, "Reach Don" back on the home, redesign cascade missing). **All pushed work is
+  safe on origin.** Recover: `git fetch origin <branch> && git reset --hard origin/<branch>`
+  (working tree is usually clean). **Rule: commit + push every increment BEFORE any slower audit
+  — the push is the only durable artifact.**
+- **`check-all` deploy-regen baseline — the "(idem)" set.** A partial container run of
+  `node scripts/check-all.mjs` reds on ~25 of ~258 checks; **all are deploy-healed idempotency
+  builders** (sitemap, OG cards, CSS cache-bust, site-counts, glossary/hub schema, RSS, H2
+  anchors, theme/cuisine pages). They are NOT regressions — the real deploy runs the full build
+  chain, which regenerates them, so its `check-all` exits 0. **Only count NEW reds.** As of
+  2026-07-16 there's a truthful verdict tool: **`node scripts/check-all.mjs --baseline
+  scripts/check-all-baseline.json`** partitions results and exits 0 on "zero NEW regressions"
+  (reds only on an unexpected fail). The plain `check-all.mjs` (no flag) stays STRICT — that is
+  the Cloudflare deploy gate; never weaken it. Add a new idem check to the baseline (dated reason)
+  only if it's a deploy-healed builder; hard gates are denylisted and the tool refuses them.
+  **As of 2026-07-16 the baseline'd run exits 1 on TWO items on purpose** — `Cost-index picker`
+  (a stale `dollarRef` flag) + `Cost-index revisions sync` (readings moved on the 07-13/07-15
+  reads): both are healed by the `cost-index-refresh` workflow (which rebuilds the picker + the
+  revisions log), NOT by the standard deploy, and both flag SEMANTIC data drift, so they are
+  deliberately kept OUT of the baseline (the tool surfacing them is the point). They clear on the
+  next refresh run; do not hand-rebuild (calendar-sensitive).
+- **Cost-Index pages: commit the SOURCE, not the generated pages.** `build-cost-index-pages.mjs`
+  / `build-library.mjs` are NOT in the deploy chain; the `cost-index-refresh` workflow regenerates
+  the 58/196 pages. Hand-regenerating a single page strips injected furniture — edit the committed
+  page directly for a small change.
+- **Edit `data/sourced-claims.json` → also `node scripts/build-claims-json.mjs` + commit
+  `claims.json`.** The deploy build does NOT run it; a drift there is a real (non-idem) deploy red.
+- **Cost-index refresh flows: do NOT run `sync-includes`** — the `_includes` footer template drifts
+  vs live count sentinels and would regress them.
+- **Product snapshot cadence:** re-run `node apps/api/scripts/vendor-cost-index.mjs` + commit on the
+  storefront's weekly cost-index cadence; `check-cost-index-snapshot-fresh` now reds if you forget.
 
-**Shipped this session:**
-- **Durable cost-index fix (standing-queue #1) — DONE.** The 2026-06-26 poblano fix (commit `9239e0fe5`) only *dropped* the stale points by hand; the dead `usda-ams-los-angeles` terminal would re-poison the level on the next live refresh. Root cause: `composeIngredient` computed `levelEligible` per source (`fetch-cost-index-sources.mjs:270`) but `buildCompositeInput` (`tools/_shared/cost-index-sources.js`) ignored it — every non-index source's latest read was pushed into `levelObs`, so a stale terminal anchored the level AND left a >120d date in `level.provenance`, which is exactly what the `stale-level` gate (`check-cost-index-sync.mjs` `pointIssues`) checks. **Cure:** one guard in `buildCompositeInput` — a source contributes to the level only if `o.levelEligible !== false`; a stale terminal still feeds the **trend** (`sourceSeries`, per the line-265 design comment) but never anchors/date-stamps the level. Opt-in flag → existing callers unchanged. Pinned by a new self-test in `cost-index-sources.test.mjs` + verified end-to-end through the real engine against a poblano-style multi-terminal input (dead terminal aged out of level, gate no longer trips, both terminals still in trend). 0 new check-all failures.
+## ADR index
 
-- **Anti-Factura execution (standing-queue #2) — DONE** (`a8f4ebbe3`). Strengthened OUR provable commitments on `/ai`, `/never`, `/security` (EN+ES), no competitor named. **Verified each claim against the product repo** (`muntin-invoice-decoder`): `verify-explainers.ts` (`no-llm-ci` gate — "no language model ever reads the content of your invoice"; CI greps openai/anthropic/transformers/langchain, exit 1, no override), `lens-10` ("Docling runs on our infrastructure; the inference is local; no OpenAI/Anthropic/Google call in the extraction path"), the public `/promises` + `/verify/[slug]` surfaces. So "no language model in the customer-data path, runs on our own infrastructure, never trained on your data, verifiable" is true + earned-in-code — no fact fork. `/ai` "Train on your data" bullet + providers note re-anchored from studio-era "engagement letter" framing to the product path; `/never` guarantee two likewise; `/security` got a non-gated bridge sentence in the intro dek (no change to the gated claim/test/tier counts — security-claims + locale-parity stay green). Linked the proof at `ledger.muntin.digital/promises`. `dateModified` bumped honestly on `/ai` `/never` `/changelog`. Fact gate: 0 hits.
-- **`/changelog` real entry (standing-queue #3) — DONE** (in `a8f4ebbe3`). A dated 2026-06-27 June entry (EN+ES) recording the trust-surface change — makes the `dateModified` bump honest (real new content, never a bare date bump).
-- **ES driver-mechanism translation (standing-queue #3) — DONE** (`fbcec76d9`). Added `label_es`/`mechanism_es` to all 5 drivers in `data/cost-index-drivers.json` (faithful, preserves "association, not cause" + sourced meaning); wired `hubDriverInsight` in `build-cost-index-pages.mjs` to read them on `/es/` ("A menudo sigue a … (asociación, no causa)", "Evidencia/recuperado/fuente" drawer) with a missing-ES omission guard so a half-translated catalog can never leak English. EN output byte-identical. The 354 regenerated pages are emitted by the scheduled `cost-index-refresh` workflow (the established pattern — poblano fix didn't hand-commit pages either); only the durable source is committed.
-- **Glossary-hub `dateModified` (standing-queue #3) — DONE** (`84fc54367`). Wired the glossary hub's truthful `article:modified_time` (2026-06-07) from the real `data/glossary-added.json` (newest term-added date) via `inject-hub-modified-time.mjs`; stamped `glossary/` + `es/glossary/`; regenerated `sitemap.xml`. `tools/` still skipped (no dated source).
-
-- **`tools/start` prune (standing-queue #3) — DONE** (founder chose noindex-shelf). Applied the `method/` treatment: `<meta name="robots" content="noindex, nofollow">` on `tools/start/` + `es/tools/start/`, dropped both from the sitemap (1204→1202 URLs), page kept live, no redirect/link work, reversible. `nofollow` exempts it from locale-parity; hreflang-orphans + locale-parity stay green. (Retire+301 remains available later if the visible listing should go too — would need the Worker redirect map since `_redirects` is at CF's 100-rule cap, + repoint the ~6 inbound links.)
-
-- **Thread D — remaining website prune — DONE (the genuine leftovers).** On grounding, most of D was already shipped: the 8 off-funnel tools were retired+301'd in `44d64cc74`, and `/method/` is already out of nav/footer/tools-hub. The real remaining debt was two things, both fixed (`2e6a0bbc7`): (1) the **primary nav still linked the retired `/start/`** on every page (a sitewide 301 hop) while the flagship **Cost Index had no nav entry** — repointed + relabelled the item to the Cost Index (`_includes/nav.html` "Start"→"Cost Index" `/cost-index/`; `_includes/es/nav.html` "Comienza"→"Índice de costos" `/es/cost-index/`), swept sitewide via sync-includes, then `inject-site-counts` to restore footer count sentinels (the documented build-chain order; net per-page diff is the nav link only); (2) removed orphaned `data/start-here-journeys.json` (referenced retired slugs, fed only the deleted `/start/`, no consumer). 0 new check-all failures.
-  - **D follow-up — DONE** (`31b1a8c04`). The `library/index.html` (EN+ES) "Not sure where to start" hero advertised the retired `/start/` triage ("Three questions, one plan…"). Rewrote it to lead with the live, indexed guided tour at `/learn/start-here/` (which it already linked secondarily) and dropped the redundant secondary link; eyebrow + `#start-h` anchor unchanged. CTA canon clean; fact gate 0 hits. (The ~126 plain in-content body links to retired tools across articles still 301 by design — board-sanctioned, no broken-link gate; not worth a 126-file repoint sweep.)
-
-## ⮕ AUDIT-EXECUTION (founder-commissioned full-site audit, 2026-06-27)
-
-A 7-auditor panel canvassed every touchpoint; synthesis = "world-class house, weak front doors" (strong craft/content/trust, gaps in funnel wiring + lingering studio-era ghosts). Founder said execute the whole roadmap (build → adversarial audit → commit). **P0 (integrity) COMPLETE + the top P1 fix — all shipped, pushed, each verified 216/237 (baseline, 0 new fails), fact gate 0 hits:**
-- `275b37b67` P0a/P0e — retired-audit CTAs killed sitewide (hero, flagship card → Muntin Bench, footer mobile bar → Cost Pulse); **new gate `check-retired-links.mjs`** (fail-CI on retired links in chrome/funnel; warns the ~237 in-content long tail); ES homepage re-synced to EN (moat line, CTAs, Muntin Bench, dropped ServSafe).
-- `4da39928b` P0b — `/receipts/` de-studio'd to product-only "What's here now".
-- `84fcc7bc0` P0c — tools hub: count reconciled (sentinel), dead roadmap + phantom Quick filter removed (made `build-tools-index.mjs` data-driven), SEO-era hero reframed.
-- `146908216` P0d — `/security/` paid-clients → product-only Muntin Ledger billing.
-- `331bd2420` P0f — founding date + offer published consistently (homepage + /ledger/, EN+ES): "Nov 13, 2026 · 3 months free, then $19/mo" (founder-approved publishing the specifics).
-- `fa0b996ff` P1 — nav "Ledger" → on-site `/ledger/` explainer (was cold external subdomain).
-
-**P1 FUNNEL WIRING — DONE (shipped after the P0 block):**
-- `fa0b996ff` nav "Ledger" → on-site `/ledger/` explainer (was cold external subdomain).
-- `adc5c91da` homepage trust-strip names the authorities ("Every number sourced — USDA · BLS · FRED") + links `/trust/`; footer foot-CTA product-forward ("See Muntin Ledger" primary, "Reach Don" → ghost). Swept sitewide.
-- `8119ac199` Cost Index ingredient pages escalate to Ledger ("…that's Muntin Ledger — your data, no language model" → /ledger/), via `build-cost-index-pages.mjs` (source committed; refresh workflow regenerates the 162 pages).
-- **Found already-built:** the article→Ledger rung exists (`inject-ledger-cta.mjs` + `data/ledger-cta.json`, 12 high-intent finance/cost articles, idempotency-gated in check-all). Funnel now escalates to the product from nav, footer, trust strip, Cost Index, and the key articles.
-
-**P1d — Cost Index as a DATA PRODUCT (founder steer 2026-06-27: "make depth + actual usefulness as impressive as the app"). Ran a 5-expert depth panel (operator / data-journalist / ag-economist / adversarial fact-gate auditor / IA-stickiness). Meta-finding ALL FIVE reached independently: the depth is already computed and SHELVED — the work is surfacing + guarding, not inventing. Ranked roadmap (value × honesty-safety × data-readiness):**
-- **#1 Seasonal "typical for this month" band — SHIPPED** (`6e8a60642`). `data/seasonality.json` (multi-year monthly median+p25/p75, ≥2-distinct-years gate, 41/101 ready) was rendered nowhere though the methodology promised it. `seasonalBand()` in `build-cost-index-pages.mjs` now renders it per ingredient (39×EN+ES): places the current read inside/above/below its own month's multi-year band (e.g. "$20.50 is below its typical June — seasonally cheap"). Bands carry `data-season-*` attrs; **new gate `check-cost-index-seasonal.mjs`** re-derives every band from seasonality.json + fails on drift / not-ready / <2-years (the recompute-and-diff net the regex gate can't give — the adversarial auditor's binding condition). Wired into check-all (gate + self-test 11/11). Also relabeled the trailing-window capsule "Normally"→"Recent range" (econ flagged: 26wk window ≠ a "normal" for seasonal items). Source-only; refresh workflow regens.
-- **Composite basket band — SHIPPED earlier** (`241c2240e`). `CI.basket` (computed, rendered nowhere) now the hub's headline reading-against-baseline (breadth 8/6/2, confidence, as-of, provenance). Fixed false "refreshed daily" freshness line. No live cents.
-- **#2 Ship the real multi-year history — SHIPPED** (`9346d078d`). `mergedSeries()` stitches the deep backfill (`cost-index-history.json`, 53 ing. back to 2023, was internal-only) with the live daily window into public `series.json/csv` — ribeye 26→62 rows, 2023-05-01→2026-06-18. Backfill points carry `reconstructed:true` (+ a reconstructedNote + coverage block); CSV gets a `reconstructed` column. Dataset `temporalCoverage` now spans the full series and `datePublished`=series start (was collapsing onto latest read, erasing history). On-page charts stay on the recent window (download carries all). Feed/reproduce/embed checks green.
-- **#3 Basket transparency — SHIPPED** (`cc837b0ea`). Linked the hub-orphaned `/cost-index/basket/` (weights) from the composite drawer; fixed `+3.2%` false precision — band now says "nearly evenly split (agreement 52%), soft signal not a precise figure" when agreement<0.6. (No baseline-window DATES exist in the data — did not invent them.)
-- **#4 Hub "all readings" comparison table — SHIPPED** (`bde28a8e7`). `allReadingsTable()` renders all 81 shippable readings as a scannable grid (ingredient · direction · verdict · indexed-spark · as-of), movers first. Price-free (hub contract); pure surfacing of per-page values (no new statistic). In the `.table-scroll` wrapper. Static (no client sort in v1 — server-ordered by urgency; sort is a safe later add).
-- **#5 "What changed since last week" — DESCOPED.** `cost-index-readings.prev.json` holds only raw per-date PRICES (cents), not prior verdicts. The clean "N moved into Watch" needs prior computed tones (not stored) or puts cents on the hub (forbidden); a price-diff version needs a commensurability gate (the dispatch's week-over-week guards). Not a clean win from available data — revisit only if prior-verdict snapshots get persisted. (Surfacing the existing `cost-index/weekly/` archive + `/feed.xml` near the signup is still a cheap, safe return-loop win if wanted.)
-- **#6 Portion-cost bridge** ($/unit → $/plated portion) — `data/ingredient-yields.json` + `build-ingredient-yield-pages.mjs` EXIST; operator's #1. NOT YET DONE. AUDITOR RED LINE: keep user-input/illustrative, NEVER a narrated plate-dollar margin (the May-2026 fabrication shape). Highest-care item — confirm approach before building.
-- **Auditor red lines (binding for ALL further depth):** no forward *prices* (direction-with-track-record is the ceiling, per `pressureBlock`); no synthesized regional figures; no cross-basis composites; every new number = deterministic re-derivation with its enforcing recompute-and-diff check IN THE SAME COMMIT; narration (EN+ES audio) safety holds.
-- **Optional P1 marginal:** expand `data/ledger-cta.json` to a few more clearly-relevant cost articles; a Ledger rung on cost/margin glossary terms (don't spam definitional terms). The nav primary-button "Reach Don" → product-CTA is a surfaced FORK (the Window is a deliberate brand signature — founder steer).
-- **P1**: (a) product rung in the generated end-rails — article `smart-next`, glossary end-rail, Cost Index ingredient pages — add "Track this automatically → Muntin Ledger /ledger/" as the escalation after the free-tool CTA (edit the SOURCES: `data/post-end-cta.json`/`cross-surface-map`, smart-next + glossary-knit generators, `build-cost-index-pages.mjs` `hubDriverInsight`/ingredient footer; re-run injectors). (b) CTA hierarchy — demote "Reach Don"/Window to ghost everywhere except `/window/` + `/ledger/#contact` (canon + nav/footer/mobile-bar/smart-next). (c) Footer foot-CTA + mobile bar product-forward. (d) **Cost Index as a data product** — sortable index table w/ value+sparkline+trend%+verdict, KPI hero band (tracked count · last refresh · # moving), composite index line (no live cents on hub — relative-to-100 only); enrich sparklines (80% band, dates). (e) Trust on funnel — homepage "Sourced from USDA·BLS·FRED" authority row + a trust-strip link to `/trust/`.
-- **P2 polish — STARTED 2026-06-27:**
-  - **Warm-palette purge root fix — DONE** (`e2709809f`). The gate's 44 persistent failures were generator-root, not output: `build-library.mjs` + `build-people-pages.mjs` emitted `<meta theme-color #1F4E5B>` (retired warm teal), so migrating the output alone was non-durable churn. Fixed both generators → #2A50C8, ran migrate-warm-palette on the committed output (40 glossary EN+ES + learn/topics theme-color + tools-hub inline --ink/--ink-soft var fallbacks). Gate green across 2059 files, durable. **Baseline ✗ 21 → 20.**
-  - **SearchAction JSON-LD — N/A (do not build).** No search endpoint/page exists (nav search button is display:none). Adding sitelinks-searchbox schema would advertise a capability that doesn't exist — against the honesty ethos.
-  - **`/status/` "Refreshed every day" — NOT a bug.** Verified `cost-index-refresh.yml` runs `cron: 0 13 * * *` (daily; moved off weekly because LMR updates business-daily). The page's "pulls on a daily schedule, publishes when sources support it" is true. (Note: hub freshness line was separately changed to "refreshed as the sources publish · last reviewed {_lastReviewed}" — accurate, distinguishes the daily PULL from the manual review stamp + source-cadence publishing. No contradiction.)
-  - **Waterfall gold dark-mode contrast — DONE** (`93d1c6d55`). `.viz-waterfall__seg[data-tone="gold"]` paired a FIXED gold bg with theme-flipping `var(--ink)` text → illegible light-on-gold in dark mode. Pinned text to `#16181D` (light mode unchanged). **Adversarial catch:** the board's "kill #C5A059 → rust" idea was WRONG — gold is the deliberate *watch/caution* tone (distinct from rust = re-price/alarm, mirrors the verdict chips). Left the tone intact; fixed only the broken bg/text pairing. Edited `site.css` (source) + the served `site-article.css` identically (a clean `build-css-shells` regen would DELETE `.viz-table` CSS / ADR-006 — the real cause of the "CSS shells" baseline ✗ — so a full rebuild is unsafe; the surgical edit avoids adopting that drift).
-  - **"Proof you can check" cluster — ALREADY PRESENT (no work).** `/trust/` already states the data ships CC0, the method + per-ingredient sources + verified track record are open, and the claims ledger is machine-readable + checkable. Comprehensive (10 sections); adding more = redundant churn.
-  - **REMAINING P2 — all are substantial standalones, NOT quick polish** (the cheap wins are now harvested): window/muntin motif on interior pages + mobile (port `muntinField()` SVG; needs visual verification); earn the golden-hour warm layer in 2-3 live moments (design/subjective); `#C5A059`→token tokenization (cosmetic only — the gold is intentional & the one real bug is fixed; low value, sits in the entangled CSS-shell zone); dark-mode hero gradient parity (CSS-shell zone); OG AVIF/WebP + flip format gate (binary asset generation + new gate); ES audio backfill (warn-only; audio pipeline). Each warrants its own focused pass.
-- **Caveat**: sitewide sweeps (nav/footer) re-stamp via `sync-includes` + `inject-site-counts` (run BOTH, in that order) and dump full files into context — heavy; do them deliberately. The Cost-Index data-product build is calendar-sensitive (commit SOURCE; the refresh workflow regenerates pages).
-
-### ⮕ EXPERIENTIAL AUDIT (founder-commissioned, 2026-06-27) — 6 target-user personas walked the live site
-Ran 6 personas (first-impression, owner-operator, mobile chef, Spanish operator, skeptical CFO, accessibility) end-to-end; each fix grounded then adversarially re-reviewed (the skeptic overturned 3 of my initial reads + caught a regression I'd introduced).
-**SHIPPED (all gate-green, fact gate 0):**
-- Find-an-ingredient **search** on the hub table (`50da9a431`) — two personas bounced for lack of it.
-- **Weekly-email capture on every ingredient page** (`358fd29a7`) — top conversion leak (was buried below the hub's longest scroll).
-- **Father's Day blog CTA** repaired — orphaned "free audit" stamp re-added to post-end-cta.json with honest Margin Math copy (`265698cfb`).
-- **Stale retired-audit tool meta** + "Halucinated" typo (`afec631f2`); **JSON-LD + body audit sweep** finished (`ca17a1359`).
-- **ES `from=` attribution** fixed across all 27 ES posts — `inject-post-end-cta.mjs` dropped localSlug (`65cc8605d`).
-- **ES "recently added" rail** — real ES titles/slugs, no English; also fixed `/blog/`→`/library/` 404s on the EN homepage (`f5af87d25`); latent edge-cases hardened (`0ca1a196e`).
-- **Cost Pulse a11y** — real `<noscript>` fallback + `role=status` (`1908fa600`). (Live SR a11y was already JS-handled via `cost-index-ui.js:348`; the `<noscript>` is the real JS-off win.)
-- **Hub "what's moving" curated** (`5d9ff6c6b`) — Maria #4: was ~20 movers repeating the same "elevated N weeks" note + re-listing ingredients already in the table/grid (my own "all readings" table worsened it). Now shows every act-now re-price + fills to a cap of 8 with watches + "+N more → the readings table." HUB IA is now coherent: composite band → orientation → curated movers (8) → searchable "all readings" table → category grid. **Note: the category grid is LOAD-BEARING and must NOT be removed** — every ingredient page's eyebrow links to `/cost-index/#<category>` (build-cost-index-pages.mjs:1823/1916), so the grid's `id=#beef` etc. section headings are the scroll targets for ~100 pages.
-**VERIFIED NON-ISSUES (stale committed output, self-heals on regen — NOT bugs):** ES cost-index `inLanguage` (generator already emits es-US); footer counts (built pages correct, only the un-injected partial shows old numbers); the 5 library "free audit" hits (legacy body prose, not CTAs — those idem-pass).
-**REMAINING EXPERIENTIAL (all in entangled/sitewide zones — deliberate scoped passes, not tail-of-session):**
-  - **#10 ES see-also locale leak — DONE** (`cc099206a`). NOT the build-library regen the diagnosis feared: `injectSeeAlso` only writes blog/ + es/blog/ (never library), so the library see-also blocks are FROZEN hand-authored content from the blog→library migration — never regenerated. Hand-fixed 6 ES pages: localized the clean title-matched leaks (guia-conversion-reservas, doordash ES slug, /es/ research mirror, ingenieria-de-menu), removed a retired-tool dead card (/tools/menu-converter/ 404), and removed 2 migration-corrupted cards (title described a different EN-only article than the href). Every ES see-also card now resolves locale-correct + title-matched. (Original deferred diagnosis kept below for reference — it was wrong about the mechanism.)
-  - ~~#10 deferred diagnosis (SUPERSEDED — the see-also is frozen, not generated):~~ `relatedItemsFor` (build-library.mjs:1486-1503) hardcodes `pathFor(locale, '/blog/${slug}/')` with the EN slug — so on ES pages see-also links resolve to EN posts (locale leak, not 404), AND for library-namespace posts the EN link is itself a 404 (`/blog/<lib-slug>/` doesn't exist — same `/blog/` bug the rail had). A correct fix needs BOTH: (a) namespace + ES-slug resolution in `relatedItemsFor` (via i18n-slug-map, skip no-mirror — mirror the rail fix), AND (b) `getMeta()` gains a `library` case (today its switch is blog/research/tools/checklists only, so a library post's ES title scrapes the wrong `es/blog/<slug>` path). Then a full `build-library` run regenerates — that mutates ~389 files (see-also + glossary-autolink + citation counts across all library/blog/glossary), the baseline idem-churn zone. So: fix the two source functions, run build-library, verify ES see-also hrefs, revert generated + commit SOURCE-ONLY (deploy regenerates), OR commit the full regen deliberately. Lowest-severity remaining ES item (links work, just cross-locale).
-  - **#11b ES field-notes English form — DONE** (`69b2d45ea`). Root cause was `inject-article-fieldnote-form.mjs`: `localeFromPath` matched only `/es/blog/` (ES library → English form), and `articleSlugFromPath`/sign-in URL were blog-hardcoded (`/blog//` empty-slug sign-in return on ALL library pages, EN included). Fixed locale/slug/namespace; 50 library pages corrected (25 EN sign-in URLs + 25 ES form+URL).
-  - **#13 calibration disclosure (CFO) — DONE** (`a6769a10b` + adversarial correction). Added a published-LABEL trend disclosure to the methodology track-record paragraph (EN+ES), data-driven via new `cal:label.*` sentinels (inject-cost-index-calibration.mjs reads cost-confidence-calibration.json): low 49% (UNDER its 52% baseline — no edge yet), medium 60% vs 53% baseline, top label 0 ingredients; band coverage holds "on every label with enough history to score." Adversarial review caught the first cut laundering the negative lift + an over-broad "every label" claim — both fixed. All figures injected + gate-checked (drift-safe).
-  - **#15 footer-newsletter `aria-live`** — submit-into-silence (no announced confirmation; the founding form does it right). Fix is in `_includes/footer.html` → needs the heavy sitewide `sync-includes` + `inject-site-counts` propagation.
-  - **Product-name soup (#5, founder call)** — Cost Index vs Cost Pulse vs Muntin Bench (URL /vendor-benchmark/) vs "Check prices"; the Ledger price+proofs living off-site at ledger.muntin.digital (deliberate split). Both need founder direction before sitewide renames.
-
-**Standing queue is now CLEAR (A–D all addressed).** Next-thread candidates: A — Muntin Plate emergent-insight catalog (design doc); B — vertical-generality build (product, separate repo); C — social pre-launch (needs founder IG decision); the D follow-up above (library hero CTA). Recommend confirming direction before the next build.
-
----
-
-### Prior state (branch `claude/muntin-strategic-council-rqdehe`, now merged via #489)
-
-Branch `claude/muntin-strategic-council-rqdehe`: **22 commits ahead of main, all pushed, working tree clean.** No PR (none requested). Product repo untouched.
-
-**Shipped this session (all independently audited + pushed):**
-- **Phase 0 — freshness foundation:** sitewide `<head>` feed-discovery links; sitemap `lastmod` derives ONLY from real `dateModified` (git-mtime removed — it was re-flattening the signal); 6 collection hubs gained truthful `lastmod` (`inject-hub-modified-time.mjs`).
-- **Phase 1 — the Cost Index made genuinely useful (ADR-010):** hub "What's moving now" is now empowering + evidence-backed (sourced driver association + Evidence drawer) + **price-free** (cents stay in the per-ingredient cited Market-read block) + a **price-free indexed movement chart** (`indexedMovement()`, hub mini + per-ingredient large). Fact-gate-reviewed 3× (caught + fixed a down/"up-and-holding" contradiction and an eggplant "rose"-while-falling).
-- **Phase 2 — prune COMPLETE:** `method/` + 19 widgets noindex-shelved; 31 off-funnel sheets legacy-shelved; course nav-dot de-wired; **8 tools + `start/` retired+301** (full migration — Worker map `src/lib/tool-redirects.js`, regression-tested `scripts/test-tool-redirects.mjs`).
-- **Strategy:** Factura competitive audit → `docs/strategy-anti-factura-positioning.md` (honesty-labelled, NOT publish-ready).
-
-**Gate baseline (CRITICAL for counting regressions):** `check-all` = **~22 failing**, ALL deploy-regenerated idempotency drifts (CSS shells/cache-bust, glossary knit/OG/script/stamp/schema/sidecar, sheet/topic/tool rails, sheet OG cards, themes/theme-story/cuisine builders, warm-palette, RSS, llms.txt, hub schema, H2-anchors, lazy-loader, cost-index sync). These are NOT failures — the deploy regenerates them. **Only count NEW ones.** The hard gates are GREEN: locale-parity, hreflang-orphans, **check-fabrications**, check-intent-param-targets, check-audit-fetch-timeouts.
-
-**NEXT QUEUE (recommended order):**
-1. **Act on Factura** — strengthen `/never` `/security` `/ai` with the no-training / deterministic / "your data is yours" commitments (state OUR commitments; do NOT name Factura; ToS wording needs egress-verified before any public reference). Fact-gated prose.
-2. **Prune leftovers** — `tools/start/` (survivor "pick a tool" page), tools/glossary hub `dateModified` source (need a real one — don't invent), ES driver-mechanism translation for the hub insight, a real `/changelog` entry (its 2026-05-02 date is HONEST — don't bump without new content).
-
-Full detail + the tools-migration replacement map + gotchas are in the sections below. Cross-refs: `ADR-010` (insight grammar), `docs/plans/website-heartbeat-and-prune.md` (audit synthesis), `docs/strategy-anti-factura-positioning.md`.
+Storefront (`docs/editorial/decisions/`): ADR-010 (insight grammar) · ADR-011 (events surface) ·
+ADR-012 (VB market-context) · ADR-013 (NASS/Census/EIA data-sources) · ADR-014 (cold-storage
+deseasonalization). Product (`docs/ux/decisions/` + `docs/security/decisions/`): ADR-006 (count
+sheet) · ADR-007 (/try anonymous demo) · ADR-008 (ingest status surface) · ADR-009 (valuation &
+market prior).
 
 ## The singular vision (the thing everything ladders to)
 
@@ -793,63 +888,6 @@ Record decisions as ADRs (open decision logs). Commit increments to the dev bran
 (reviewable); **no PR without an explicit ask**. Surface only genuine forks.
 Don't loosen gates. Fact gate is absolute (it's spoken aloud in EN+ES).
 
-## Shipped (this session — all committed + pushed)
-
-| Thread | Result |
-|---|---|
-| Article enrichment | ADRs 005–009; `check-article-graphics` gate now counts `table`/`data-figure-kind` toward variety (backward-compatible, tested); pilot post `service-charge-vs-tipping-model` (EN+ES) uses a `viz-table` |
-| Visual-system foundation | design ADR-001 + `docs/brand/visual-system.md` (the spine duality = the positioning); 2 CI guards (`check-og-accents` wired, `check-stone-2-usage` report-mode); craft tokens |
-| OG-card rebrand | `home`/`learn`/`about` (EN) + `home-es`/`about-es` (ES) → "Modern tools. Old-fashioned honest." / cost-intelligence; orphaned retired-services cards removed (770→768) |
-| Honest landing-claim fix | product `page.tsx` reworded (claim the universal core, drop untested verticals) |
-| Cost Index "of record" | last gap closed — per-ingredient driver attribution for flagged movers (standing context, not causation) |
-| **Landed** | storefront **#482** + product **#227** — reviewed and **merged to main** |
-
-## The queue (remaining threads)
-
-### A. Muntin Plate — emergent-insight catalog  *(design deliverable)*
-- **Ground:** `docs/plans/muntin-plate.md` (build-ready costing plan) + `docs/plans/muntin-insight-layer.md`. Dedupe against the MVP/V2/V3 phasing.
-- **Build:** draft the catalog of insights only possible from the *unity* of datasets (invoices × recipes × Cost Index × inventory × yields × dormant cohort). Flagship example: **vendor-vs-market discrimination** (your vendor raised romaine but the market index is flat → markup, here's the lever). Each insight: inputs, owner-facing one-liner (EN+ES), trigger/cadence, single action, confidence/honesty handling, privacy class, phase.
-- **Constraints:** deterministic/no-LLM, show-your-work, empowerment ship-test, privacy (cohort insights dormant until opt-in + k≥10 + ratios-only + antitrust counsel), costing ≠ inventory.
-- **Output:** a design doc/ADR.
-
-### B. Vertical-generality build — *earn* the "any small business" claim  *(product feature)*
-- **Why:** PR #227 made the claim honest by softening it; this makes it *true*.
-- **Ground:** decoder onboarding/seed — `apps/api/src/lib/categories-store.ts` (`seedDefaultsForOrg` seeds `RESTAURANT_DEFAULTS` for every org; no vertical selector), `gl-seed.ts`, the extraction golden suite `services/extract/tests/golden/cases.py`.
-- **Build (evidence-first, smallest increment):** add non-restaurant fixtures (retail/services/professional invoices) to the golden suite and verify the deterministic core extracts vendor/date/total/line-items. Then the real feature: a **vertical selector at onboarding** + **non-restaurant category taxonomies**.
-- **Audit:** product CI — `check-verboten-phrases`, `check-voice-boundary`, `check-copy-grade`, vitest, the extraction golden tests.
-
-### C. Social pre-launch  *(strategy + execution)*
-- Prompt already delivered. **Founder decision needed:** Instagram revive-vs-fresh-start; Bluesky activation.
-- Tie to the new brand line + the content engine (weekly Cost Index dispatch, rebranded cards). Next concrete: the IG decision, then the pre-launch anticipation arc + first posts.
-
-### D. Website refresh — heartbeat + prune  *(audit done → awaiting founder go)*
-- **Plan:** `docs/plans/website-heartbeat-and-prune.md` (synthesis of a 4-specialist read-only audit).
-- **Core finding:** cost-intelligence core is clean; over-extension = studio/course-era survivors (`method/workshop/` 19 widgets, off-funnel `/tools/` clusters, `course-*`/`brand-design`/`local-seo`/`conversions` sheet packs, `start/`, frozen-course nav plumbing). Freshness engine already half-built but a **P0 sitemap `lastmod` bug** (bulk-stamped → crawlers distrust it) is the literal cause of the post-refresh trail-off.
-- **Phase 0 — SHIPPED + pushed** (`claude/muntin-strategic-council-rqdehe`, commits `098f3de1`→`83023f46`→`f6e1791a`): `<head>` feed-discovery `<link>` tags sitewide (1328 pages, anchored ABOVE the i18n:hreflang region); sitemap `lastmod` now derives ONLY from real `dateModified` (git-mtime fallback DELETED — adversarial review caught that it would re-flatten ~1030 URLs on every sitewide pass; honest-absent is the fix). 298 URLs truthful-dated, 1030 omit lastmod (spec-valid). Phase 0c regen-on-deploy already covered by the weekly dispatch workflow. 0 new check-all failures vs main (baseline = 20–21 deploy-regenerated drifts on main itself, not ours). Adversarially reviewed twice → SHIP.
-- **Posture LOCKED (founder):** prune = retire+301 Tier 1, legacy-shelf Tier 2, de-wire course nav dot. Start point = Phase 0 (done).
-- **Phase 1 (heartbeat harvest) — IN PROGRESS.**
-  - **SHIPPED** (`b99e1b1b`+`b4d216b7`, ADR-010): the Cost Index hub "What's moving now" is now an *empowering, evidence-backed* insight per mover — magnitude + as-of + measured persistence (elevated N weeks) + the verdict engine's note + a **sourced driver association** (mechanism + Evidence cite drawer, labelled "association, not cause", up-read-only) + action + full-read link. Grammar recorded in **ADR-010** (= first entry of the Plate insight catalog, queue A). Twice adversarially fact-gate-reviewed (caught + fixed a down/"up-and-holding" contradiction). The cost-index hub also gained a truthful `dateModified` lastmod. ES gets the structural enrichment minus the EN-only driver mechanism (catalog has no ES prose → **follow-up: translate `data/cost-index-drivers.json` mechanisms/labels or add `mechanism_es`**).
-  - **SHIPPED** (`009bbce2`): hub is now **price-free** — live cents stay in the per-ingredient cited Market-read block only (founder confirmed; ADR-010 updated).
-  - **SHIPPED** (`e0a15d9f`): **price-free indexed movement chart** (`indexedMovement()`) — hub mini sparkline + per-ingredient large chart, normalized to 100 at the window's first read, true-to-scale, caption labels the REAL date window (never claims a span we lack), direction word derives from the index endpoint so it can't contradict the curve. Fact-gate reviewed (caught + fixed eggplant "rose" while index fell to 57). Reuses `MuntinSparkline`.
-  - **SHIPPED** (`f6f1275c`): truthful `article:modified_time` on 6 collection hubs (homepage/blog/library EN+ES) via `inject-hub-modified-time.mjs` (newest-child date) → they now carry a sitemap `lastmod`.
-  - **Remaining:** `tools/` + `glossary/` hubs still lastmod-less (their children carry no `dateModified` — need a real date source, e.g. `data/glossary-added.json` / a tool-release date — do NOT invent). `/changelog/` is **honestly dated** (2026-05-02 matches its newest May entry — the earlier "stale" claim was a misread); to freshen it, WRITE a real new entry (content task), never bump the date alone. Weekly dispatch automation = already DONE (verify `COST_INDEX_BROADCAST_SECRET`). ES driver-mechanism translation for the hub insight still pending.
-- **Phase 2 (the prune) — IN PROGRESS.** Redirect mechanism = `/_redirects` (CF Pages, `SOURCE DEST 301`; existing precedent lines for retired services/tools). Gate notes: removing an EN page needs its ES twin too (locale-parity); noindex+**nofollow** exempts a page from parity; only `tools.live` count (13→5) changes; sheets aren't counted.
-  - **SHIPPED** (`cf8c2c0e3`): `method/` + 19 workshop widgets noindex-shelved (EN+ES, 40 pages dropped from sitemap). **ADAPTATION:** these were Tier-1 (retire+301) but the frozen-but-live course links into `method/workshop/rhythm-calendar`, so 301 would break a kept-live surface → noindex-shelf instead. Follow-up: drop `/method/` from `_includes/nav.html` + `tools/index.html` (needs the sync-includes sweep).
-  - **Remaining Tier 1 (retire+301) — RE-SCOPED: this is a MIGRATION, not a prune. Attempted 2026-06-26, executed in full, then DISCARDED uncommitted** because it shipped breakage. **Finding:** the 8 off-funnel tools (`gbp-grader, store-hours, storefront-health, menu-copy, photo-brief, menu-converter, brand-suite, restaurant-audit`@`tools/audits/restaurant/`) are first-class data-model entities, not lightweight pages — they're referenced across `data/cross-surface-map.json` (~70), `data/post-end-cta.json` (~42), `kind-registry`, `og-coverage`, `glossary-tool-anchors`, AND have ~12 dedicated test files + scorers (`test-gbp-scorer`, `test-menu-copy`, `test-photo-brief`, `test-brand-suite`…). Deleting the pages broke 2 fail-CI gates: **`check-intent-param-targets`** (128 injector-emitted `intent=` deep-links across ~30 articles point at the removed tools — they come from `data/post-end-cta.json`/`cross-surface-map.json`, fix the SOURCE not the outputs) and **`check-audit-fetch-timeouts`** (hardcodes `tools/audits/restaurant/index.html`). Also stale: a hand-maintained `ItemList` JSON-LD (`numberOfItems:14`) in `tools/index.html` + ES still advertising the 8 retired tool URLs. **DO THIS AS A DEDICATED, SCOPED MIGRATION:** decide each retired tool's replacement target (live tool vs `/tools/` hub vs `/cost-index/`), retarget the CTA/cross-surface configs + re-run injectors, fix the 2 gates' target lists, update the ItemList, retire the scorers/tests, THEN delete pages + add 301s. The redirect chain-repointing (store-hours/restaurant-audit are 301 targets of open-hours/holiday-hours/audit/wellness) was worked out and is in this session's discarded diff if needed. The chain repoints + tools.json 13→5 mechanics are sound — it's the cross-surface/test/CTA unwinding that makes it a migration.
-  - **Cleaner low-entanglement prune still available (do these as a focused pass, NOT entangled with the tools):** Tier-2 sheets legacy-shelf + Tier-3 course nav-dot de-wire (below). Or apply the **method/ treatment (noindex-shelf, keep live)** to the 8 tools as a lighter interim — drops them from search without the data-model unwind — if the visible `/tools/` listing reduction can wait.
-  - **Tier 2 (legacy-shelf) — SHIPPED** (`a07628e8d`): `data/sheets.json` 6→2 packs / 46→15 sheets; 31 off-funnel sheets noindex+nofollow'd EN+ES (66 pages, dropped from sitemap, kept live). Also fixed a latent crash in `sync-sheet-og-cards.mjs` (`preserved`→`filtered`).
-  - **Tier 3 (de-wire) — SHIPPED** (`a07628e8d`): course nav-dot block removed from `_includes/nav.html`, propagated sitewide.
-  - **Tools migration — SHIPPED** (`44d64cc74`): 8 off-funnel tools + top-level `start/` retired+301 (full migration: refs retargeted before deletion so gates stayed green; 301s via new Worker map `src/lib/tool-redirects.js` since `_redirects` was at CF's 100-rule cap; regression-tested `scripts/test-tool-redirects.mjs` 14/14). `tools.json` 13→5 (operations-margin only). 0 new check-all failures; 2 baseline resolved. **Prune follow-ups (off-funnel survivors, not blockers):** `tools/start/` (the "pick the right tool" page, distinct from the removed top-level `start/`) still has plain links that 301 cleanly — a reasonable next prune; `data/start-here-journeys.json` references retired slugs but feeds only the deleted `start/` (no gate consumes it). Hundreds of plain in-content body links to retired tools 301 via the Worker map by design (no broken-link gate exists).
-  - **Tools-migration REPLACEMENT-TARGET MAP (used; intent=watch went to `margin-math` not cost-pulse — cost-pulse isn't watchable):**
-    - `menu-copy`, `menu-converter` → `/tools/menu-engineering/` (live, menu-related)
-    - `gbp-grader`, `storefront-health`, `photo-brief`, `brand-suite`, `restaurant-audit`, `store-hours` → `/tools/` hub (plain links)
-    - ANY `intent=watch` deep-link (gate needs a live *watchable* tool) → `/tools/cost-pulse/`
-    - Then: retarget `data/post-end-cta.json` (~42) + `data/cross-surface-map.json` (~70) + glossary-tool-anchors etc. → re-run injectors; fix `check-intent-param-targets` (source-level) + `check-audit-fetch-timeouts` (drop the removed audit page from its TARGETS list); update the hand-maintained `ItemList` JSON-LD in `tools/index.html` + ES (numberOfItems 14→5); retire the ~12 scorers/test files; THEN `git rm` the 9 dirs + add 301s (chain-repoints worked out, in the 2026-06-26 discarded diff). Sheet-shelf left 5 deploy-regenerated idempotency drifts (sheet sidecar/OG-cards/tool-rail/topic-rail/site-counts) — regenerate-on-deploy class, not failures.
-  - **Sitewide-sweep caveat:** nav/footer/count-sentinel edits trigger a `sync-includes`/`inject-site-counts` re-stamp entangled with main's pre-existing drift; scope each commit like the dispatch workflow (`git add <targets>; git checkout -- .`) or commit the full intended sitewide sweep deliberately.
-
-### (Note) Cost Index convergence — *coordinate, don't duplicate*
-`main` is building the convergence plan's "Fair-Price Audit" (market-prior invoice auto-audit, lighting up `verdict_compute.py`). Stay clear of that lane.
-
 ## Parked decisions / locked lockups
 
 - **EN lockup (locked):** "Modern tools. Old-fashioned honest." / subhead "The cost sense the big players have — sourced, private, and on your side." Lives on the OG cards. **Deliberately NOT forced into the homepage H1** — that H1 is already a strong specific-value hero ("Know what every plate costs before the week eats the margin.").
@@ -858,9 +896,23 @@ Don't loosen gates. Fact gate is absolute (it's spoken aloud in EN+ES).
 - **Enrichment ADRs 005–009:** PROPOSAL status. Shipped: gate amendment + pilot. Remaining: image kinds (photo/scan/render) + ADR-008 provenance gate + more pilots; then ratify.
 - **Visual Tier-3 aesthetic** (Golden Hour / focus modules): **recommended SKIP** — the system is already gold-standard; restraint.
 
+## Older open threads (detail in the archive)
+
+- **A — Muntin Plate emergent-insight catalog** (`docs/plans/muntin-plate-insight-catalog.md`,
+  E1–E15 ranked; ADR-010 + E14 shipped). Thread is "pick the next entry to BUILD." Its grounded
+  product-side sibling is `Muntin-Invoice-Decoder/docs/ledger-cost-intelligence-upgrade-plan.md`
+  (items A–K; A/B/C first-brick done, **D shipped this session** — see CURRENT STATE above).
+- **B — vertical generality** (product): the "any small business" claim is live in marketing while
+  every code path is restaurant-hardcoded — an honesty gap to either EARN (non-restaurant fixtures
+  + a vertical selector) or SOFTEN (copy).
+- **C — social pre-launch** — blocked on the founder's Instagram revive-vs-fresh decision.
+
 ## Gotchas (save a future session the rediscovery)
 
-- **`check-all` baseline:** ~230/237, **7 known idempotency failures** the deploy regenerates (CSS shells, CSS cache-bust, glossary verified-stamp, glossary article-schema, themes review-board, theme story pages, cuisine landing pages). These are **not** your failures — only count NEW ones.
+- **`check-all` baseline (current):** ~25 of ~258 checks fail on a partial container run — ALL
+  deploy-regenerated idempotency builders (sitemap, OG cards, CSS cache-bust, site-counts,
+  glossary/hub schema, RSS, H2 anchors, theme/cuisine pages). NOT your failures — only count NEW
+  ones, or run `check-all.mjs --baseline scripts/check-all-baseline.json` for the truthful verdict.
 - **OG cards render locally** via `@resvg/resvg-js` at `/tmp/og-render-deps` (no `rsvg-convert`); committed PNGs can be `Read` to see/verify a card. Build one: `node scripts/build-og-cards.mjs <slug>`.
 - **es-MX voice gates (product)** are strict: no `inteligencia artificial`, `sin esfuerzo`, regressive tone, or "no AI" — describe the *mechanism* ("never a language model") instead.
 - "The window in." is **sanctioned brand equity** (the muntin/window metaphor), not stale — keep it.

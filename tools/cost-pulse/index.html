@@ -134,12 +134,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=1f57a490e24f" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-tool.css?v=1f57a490e24f"></noscript>
 <style>
-.cp-shell{max-width:880px;margin:0 auto;padding:48px 16px 80px}
-.cp-hero h1{font-family:var(--font-display);font-size:36px;font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.15}
+/* Accent token (2026-07 fix). The lockfloat/line-finder (.lf-*) styles below
+   reference var(--accent) with NO fallback, but --accent was never defined on
+   this page — so those elements (drawer toggle, starter chips, stars, focus
+   outlines) rendered as inherited black/gray instead of the intended teal-green.
+   The .cp-* accent elements only escaped it because they carry a ,#1f6f6a
+   fallback inline. Define it once here so every accent usage resolves to the
+   same teal-green. */
+:root{--accent:#1f6f6a}
+.cp-shell{max-width:1080px;margin:0 auto;padding:48px 16px 80px}
+.cp-hero h1{font-family:var(--font-display);font-size:clamp(28px, 3.9vw + 6px, 40px);font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.15}
 .cp-hero p.cp-lede{font-size:17px;color:var(--ink-soft);line-height:1.55;margin:0 0 32px;max-width:620px}
 .cp-lede-legacy{display:block;margin-top:8px;font-size:14px;color:var(--stone)}
 .cp-card{background:var(--surface-1,#fff);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:0 0 18px;box-shadow:var(--elev-1)}
@@ -147,6 +155,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .cp-market-dek{font-size:14px;color:var(--ink-soft);line-height:1.5;margin:2px 0 14px;max-width:60ch}
 .cp-market-asof{font-size:12.5px;color:var(--ink-soft);margin:-8px 0 16px}
 .cp-market-asof strong{color:var(--ink);font-weight:600}
+.cp-market-continuity{font-size:13px;color:var(--ink-soft);background:var(--cream-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:0 0 14px}
+.cp-market-continuity strong{color:var(--ink);font-weight:600}
 .cp-stale-chip{display:inline-flex;align-items:center;gap:4px;padding:1px 9px;font-size:11px;font-weight:700;letter-spacing:.02em;border-radius:999px;background:var(--status-bad-tint,#F7E7DC);color:var(--status-warn-deep,#8A3E16);white-space:nowrap;vertical-align:baseline}
 .cp-market-preview{font-size:12.5px;color:var(--status-warn-deep,#8A3E16);background:var(--status-bad-tint,#F7E7DC);border-radius:8px;padding:8px 12px;margin:0 0 16px}
 .cp-market-item{position:relative;margin:0;padding:16px 0 16px 15px;border-top:1px solid var(--line)}
@@ -358,7 +368,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .cp-diff-strip{margin-top:18px;padding:10px 14px;background:linear-gradient(90deg,#0f3a37 0%,#1f6f6a 100%);color:#fff;border-radius:8px;font-size:13px;line-height:1.45}
 .cp-diff-strip strong{color:#fff;font-weight:600}
 @media(max-width:540px){
-  .cp-hero h1{font-size:28px}
   .cp-card{padding:18px}
   .cp-drift-row{flex-direction:column;gap:4px}
   .cp-drift-cat,.cp-drift-delta{min-width:0}
@@ -512,23 +521,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .lf-proof-cap{font-size:11.5px;color:var(--stone);line-height:1.45;margin:8px 0 0;max-width:64ch}
 .lf-ledger-cta{display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:var(--surface-1);font-weight:600;font-size:14.5px;padding:11px 18px;border-radius:9px;text-decoration:none}
 .lf-ledger-cta:focus-visible{outline:2px solid var(--rust);outline-offset:2px}
-@media (max-width:560px){.lf-lanes{grid-template-columns:repeat(2,1fr)}.lf-scale{margin-left:104px}.lf-lrow{grid-template-columns:104px 1fr}}
+@media (min-width:900px){.lf-lane-n{font-size:clamp(26px, 3vw, 34px)}.lf-lanes{gap:clamp(8px, 1.2vw, 14px)}}
+@media (max-width:560px){.lf-lanes{grid-template-columns:repeat(2,1fr)}.lf-scale{margin-left:104px}.lf-lrow{grid-template-columns:104px 1fr}.lf-lunit{display:none}.lf-hbtn{min-height:44px}.lf-starter,.lf-cterm,.lf-rchip{min-height:44px;display:inline-flex;align-items:center}}
 @media (prefers-reduced-motion:reduce){.lf-hbtn{transition:none}}
 </style>
 </head>
 <body>
-<!-- batch-banner:start -->
-<aside class="batch-marquee" data-batch="fathers-day-2026" role="complementary" aria-label="New dispatch · Get found for Father’s Day weekend" style="background:#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#2A50C8;color:#F6F7F8;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">New dispatch</span>
-      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">It’s Father’s Day weekend. Can a searching family find you?</span>
-    </div>
-    <a href="/blog/get-found-fathers-day-weekend-2026/" style="display:inline-flex;align-items:center;gap:6px;color:#16181D;background:#F6F7F8;text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">Read the dispatch <span aria-hidden="true">&rarr;</span></a>
-  </div>
-</aside>
-<script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>
-<!-- batch-banner:end -->
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -616,20 +615,17 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
-      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
-           window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Reach Don" remains the accessible affordance. -->
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
-      Reach Don
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contact CTA retired from the primary nav (2026-07): the filled pill was
+         the widest right-side item, so justify-content:space-between dumped the
+         row's overflow onto it and pushed it past the right padding — the nav
+         read as leaning right. The direct line still lives in the footer, the
+         mobile menu (below), and the mobile sticky CTA bar. -->
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
   <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
-       switcher, and the Reach Don CTA. The auth-state JS below
+       switcher, and the Contact CTA. The auth-state JS below
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
@@ -663,7 +659,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
       </svg>
       <span class="theme-toggle__label js-theme-label">Light mode</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">Contact</a>
     <a href="/es/tools/cost-pulse/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -731,10 +727,37 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         .catch(function () { show(signin); });
     });
   </script>
+  <!-- Active-tab detection. Marks the top-level nav link whose href is the
+       best (longest) prefix match for the current path with
+       aria-current="page"; the tab styling renders that as the active
+       (underlined) tab. Runs synchronously — the .nav-links are already
+       parsed above. Progressive enhancement: no-JS visitors see no active
+       tab, which is acceptable. The home link is not a tab, so "/" never
+       matches on every page. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
   <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
        partial so the .js-theme-toggle button is in the DOM. -->
   <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
+<nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/">Home</a><span class="breadcrumb-sep" aria-hidden="true">›</span><a href="/tools/">Tools</a><span class="breadcrumb-sep" aria-hidden="true">›</span><span aria-current="page">The Cost Index, live</span></nav>
 
 <main>
 <section class="cp-shell">
@@ -742,7 +765,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
     <span class="eyebrow">Free tool · Which prices you can lock</span>
     <h1>Which prices you can lock. Which you have to float.</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Last verified: <time datetime="2026-07-05">July 5, 2026</time></p>
+            <p class="tool-verified">Last verified: <time datetime="2026-07-18">July 18, 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Data promise">
@@ -987,7 +1010,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 <footer class="site-footer" id="footer"></footer>
 
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/context-bus.js?v=20260504-w10-3"></script>
 <script src="/tools/_shared/next-tool.js?v=phase4"></script>
 <script src="/tools/_shared/handoff.js?v=phase4"></script>
@@ -995,14 +1018,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 <script src="/tools/_shared/sparkline.js?v=20260501-w4-9"></script>
 <script src="/tools/_shared/composite-price.js?v=20260606-w15-1"></script>
 <script src="/tools/_shared/cost-verdict.js?v=20260608-w16-1"></script>
-<script src="/data/cost-index.js?v=20260607-live4"></script>
+<script src="/data/cost-index.js?v=20260717-refpage1"></script>
 <script src="/data/cost-index-history.js?v=20260629-hist1"></script>
 <script src="/tools/_shared/stem.js?v=20260504-w10-0a"></script>
 <script src="/tools/_shared/portion-bridge.js?v=20260504-w10-2"></script>
 <script src="/tools/_shared/dish-drift.js?v=20260504-w10-11"></script>
 <script src="/tools/_shared/whats-new.js?v=20260504-w14-8" defer></script>
-<script src="/tools/_shared/cost-index-format.js?v=20260629-fmt4"></script>
-<script src="/tools/_shared/cost-index-ui.js?v=20260630-design2"></script>
+<script src="/tools/_shared/cost-index-format.js?v=20260717-fmt5"></script>
+<script src="/tools/_shared/from-continuity.js?v=20260717-from1"></script>
+<script src="/tools/_shared/cost-index-ui.js?v=20260717-from1"></script>
 <script src="/data/cost-lockfloat.js?v=20260705-lf2"></script>
 <script src="/tools/_shared/cost-lockfloat-ui.js?v=20260705-lf13"></script>
 <script>

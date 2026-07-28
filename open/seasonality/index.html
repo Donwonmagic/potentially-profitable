@@ -62,23 +62,13 @@ main{padding-top:64px}
 .ci-eyebrow a{color:var(--teal);text-decoration:none}
 .ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
 .ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.ci-asof-rel{color:var(--ink-soft);font-weight:400}
 .ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
 .ci-body{margin:8px auto 0;max-width:760px}
 .ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
 .ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
 .ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
 .ci-body li{margin:0 0 8px}
-.ci-profile{margin:34px 0 0;padding:20px 22px;background:var(--cream);border:1px solid var(--line);border-radius:14px}
-.ci-profile h2{margin:0 0 4px;font-size:20px}
-.ci-prof__note{margin:0 0 14px;font-size:13px;line-height:1.5;color:var(--ink-soft)}
-.ci-prof__note a{color:var(--teal);font-weight:600}
-.ci-prof__grid{margin:0;display:grid;gap:0}
-.ci-prof__row{display:grid;grid-template-columns:170px 1fr;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
-.ci-prof__row:first-child{border-top:none}
-.ci-prof__row dt{margin:0;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--teal)}
-.ci-prof__row dd{margin:0;font-size:14.5px;line-height:1.5;color:var(--ink)}
-.ci-prof__src{margin:14px 0 0;font-size:11.5px;line-height:1.5;color:var(--stone)}
-@media(max-width:560px){.ci-prof__row{grid-template-columns:1fr;gap:2px}}
 .ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
 .ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
@@ -319,16 +309,10 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
-/* supply-picture-css:start */
-.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
-.ci-supply__rel strong{font-weight:700}
-.ci-supply__caveat{color:var(--ink-soft)}
-.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
-/* supply-picture-css:end */
 </style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=5d99713cf1c2" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=25763285dde3" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=5d99713cf1c2"><link rel="stylesheet" href="/assets/site-article.css?v=25763285dde3"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
 <style>
 .od-wrap{max-width:min(1080px,92vw);margin:0 auto}
 .od-eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
@@ -402,93 +386,239 @@ main{padding-top:64px}
 .od-note{background:var(--cream-2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:8px 0}
 .od-note p{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px}
 .od-note p:last-child{margin:0}
-.sea-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-/* §0 honesty capsule + funnel + license */
-.sea-hero2{margin:6px 0 4px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:14px}
-.sea-capsule{font-size:16px;line-height:1.6;color:var(--ink);margin:0 0 14px;max-width:70ch}
-.sea-capsule strong{color:var(--teal);font-weight:700}
-.sea-funnel{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 0 12px}
-.sea-funnel__step{font-size:13px;color:var(--ink-soft);background:var(--white);border:1px solid var(--line);border-radius:999px;padding:5px 12px}
-.sea-funnel__step b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:700}
-.sea-funnel__arr{color:var(--stone);font-weight:700}
-.sea-lic{font-size:12px;color:var(--stone);margin:0}
-.sea-lic__t{font-weight:700;letter-spacing:.03em;color:var(--ink-soft)}
-/* §4 mechanism grid + chips */
-.sea-mechgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:12px;margin:14px 0 0}
-.sea-mechcard{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
-.sea-mechcard__hd{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 8px}
-.sea-mechcard__hd a{color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;border-bottom:1px solid transparent}
-.sea-mechcard__hd a:hover{border-bottom-color:var(--teal)}
-.sea-mechcard__mo{font-size:11.5px;color:var(--stone);white-space:nowrap}
-.sea-mechcard__tag{font-size:12.5px;line-height:1.5;color:var(--ink-soft);margin:8px 0 0}
-.sea-mchip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.02em;padding:3px 9px;border-radius:999px;border:1px solid var(--line);margin:0 5px 4px 0}
-.sea-mchip--counter-phase{color:#0d6b6b;background:rgba(13,107,107,.08);border-color:rgba(13,107,107,.25)}
-.sea-mchip--domestic-low{color:#8a4b2a;background:rgba(138,75,42,.08);border-color:rgba(138,75,42,.25)}
-.sea-mchip--domestic-only{color:var(--ink-soft);background:var(--cream-2)}
-.sea-mchip--conc{color:var(--stone);background:transparent}
-/* dual-calendar figure */
-.sea-dual{margin:16px 0;padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:14px}
-.sea-dual__grid{display:grid;grid-template-columns:130px 1fr;gap:8px 12px;align-items:center}
-.sea-dual__rowlab{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft)}
-.sea-dual__row{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;align-items:end;height:64px}
-.sea-dual__cell{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:2px;border-radius:4px}
-.sea-dual__cell--cheap{background:rgba(13,107,107,.10)}
-.sea-dual__bar{display:block;width:70%;height:var(--h);border-radius:3px 3px 0 0;min-height:4px}
-.sea-dual__bar--dom{background:var(--teal)}
-.sea-dual__bar--imp{background:#b98a4b}
-.sea-dual__bar--na{background:repeating-linear-gradient(45deg,var(--line),var(--line) 2px,transparent 2px,transparent 4px)}
-.sea-dual__mo{font-size:8px;color:var(--stone);font-weight:600}
-.sea-dual figcaption{font-size:13px;color:var(--ink-soft);margin:12px 0 0;line-height:1.5}
-.sea-dual .cite,.sea-swap .cite{margin:8px 0 0;font-size:12px}
-.sea-dual .cite summary,.sea-caveat .cite summary{cursor:pointer;color:var(--stone);font-weight:600}
-.sea-dual .cite p{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:6px 0 0}
-/* §6 Swap Validator */
-.sea-swap{display:grid;gap:14px;margin:8px 0 0}
-.sea-swap__pick{display:flex;flex-direction:column;gap:5px;max-width:340px}
-.sea-swap__pick span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft)}
-.sea-swap__pick select{font:inherit;font-size:15px;padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:var(--white);color:var(--ink)}
-.sea-swap__pick select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
-.sea-swap__out{padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px}
-.sea-swap__badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.02em;padding:4px 11px;border-radius:999px;margin:0 0 8px;border:1px solid var(--line)}
-.sea-swap__badge--real-hedge{color:#0d6b6b;background:rgba(13,107,107,.10);border-color:rgba(13,107,107,.3)}
-.sea-swap__badge--offset{color:#8a6a2a;background:rgba(138,106,42,.10);border-color:rgba(138,106,42,.3)}
-.sea-swap__badge--mirror{color:#8a2a2a;background:rgba(138,42,42,.10);border-color:rgba(138,42,42,.3)}
-.sea-swap__badge--shared-calendar{color:var(--ink-soft);background:var(--white)}
-.sea-swap__line{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
-/* §3 bankability scatter */
-.sea-scatter{margin:16px 0;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-radius:14px}
-.sea-scatter__svg{width:100%;height:auto;display:block;overflow:visible}
-.scat-grid{stroke:var(--line);stroke-width:1;opacity:.6}
-.scat-tick{font-size:10px;fill:var(--stone)}
-.scat-axlab{font-size:11px;fill:var(--ink-soft);font-weight:600}
-.scat-floor{stroke:var(--rust,#b5623f);stroke-width:1.5;stroke-dasharray:5 4}
-.scat-floorlab{font-size:10.5px;fill:var(--rust,#b5623f);font-weight:700}
-.scat-dot{stroke:var(--white);stroke-width:1}
-.scat-dot--bank{fill:var(--teal)}
-.scat-dot--swamp{fill:var(--rust,#b5623f)}
-.sea-scatter figcaption{font-size:13px;color:var(--ink-soft);margin:10px 0 0;line-height:1.5}
-.sea-scattbl{margin:12px 0 0}
-.sea-scattbl>summary{cursor:pointer;color:var(--teal);font-weight:600;font-size:14px;padding:6px 0}
-.sea-scattbl__wrap{overflow-x:auto}
-.sea-scattbl table{border-collapse:collapse;width:100%;font-size:13.5px;margin:6px 0 0}
-.sea-scattbl th,.sea-scattbl td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
-.sea-scattbl thead th{font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--ink-soft)}
-.sea-scattbl th[scope=row] a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px solid transparent}
-.sea-scattbl th[scope=row] a:hover{border-bottom-color:var(--teal)}
-.sea-scattbl .scat-r--swamp td:last-child{color:var(--rust,#b5623f);font-weight:700}
-.sea-scattbl .scat-r--bank td:last-child{color:var(--teal);font-weight:700}
-@media (max-width:640px){.sea-clock{grid-template-columns:1fr}.sea-row{grid-template-columns:104px 1fr 46px}.sea-dual__grid{grid-template-columns:1fr}.sea-dual__rowlab{margin-top:6px}}
+@media (max-width:640px){.sea-clock{grid-template-columns:1fr}.sea-row{grid-template-columns:104px 1fr 46px}}
 </style></head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <!-- batch-banner:start --><!-- batch-banner:end -->
+<script>
+  /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
+     Apple devices. Runs early in <body> so the swap is essentially
+     invisible — script tags execute synchronously when the parser hits
+     them, before .nav-search-kbd renders below. CSS in site-core.css
+     conditions on <html data-platform="mac">. */
+  if (/Mac|iPhone|iPad|iPod/i.test(navigator.userAgent || navigator.platform || '')) {
+    document.documentElement.dataset.platform = 'mac';
+  }
+</script>
 <header class="nav" id="nav">
   <div class="container nav-inner">
-    <a href="/" class="logo" aria-label="Muntin Digital">
-      <img class="logo-mark" src="/brand/mark/mark-square-ink.svg" alt="" width="36" height="36" />
-      <span class="logo-text">Muntin Digital</span>
+    <a href="/" class="logo" aria-label="Muntin Digital home">
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M32 8 H58 V46 H8 V32 A24 24 0 0 1 32 8 Z"/>
+          <path d="M70 8 H96 A24 24 0 0 1 120 32 V46 H70 V8 Z"/>
+          <path d="M8 58 H58 V120 H32 A24 24 0 0 1 8 96 V58 Z"/>
+          <path d="M70 58 H120 V96 A24 24 0 0 1 96 120 H70 V58 Z"/>
+        </g>
+      </svg>
+      Muntin Digital<sup class="tm" aria-hidden="true">&#8482;</sup>
     </a>
+    <!-- Phase 7: 5-item nav, per launch plan Part II.
+         Library / Tools / Studio / Sign in.
+         Library points at the canonical /library/ hub (the
+         three-doors page). Tools is promoted from the old Library
+         mega-menu to a top-level item. Studio replaces Services +
+         Restaurants + About — they all live under /studio/ now,
+         as sections of the company page (Phase 9, 2026-06-11: the
+         services-era child pages and anchored offer sections are
+         retired; old paths 301 via the _redirects table). /about/ is unchanged. The mega-menu is
+         retired (the hub IS the menu now); the controller script
+         is gone too.
+
+         /work/ was retired with the Phase 8 portfolio-sunset pass:
+         the company-as-resume framing made the personal-portfolio
+         showcase redundant. Legacy /work/* URLs 301 to /studio/
+         via _redirects so old backlinks land softly. -->
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/library/">Library</a>
+      <a href="/cost-index/">Cost Index</a>
+      <a href="/open/">Open data</a>
+      <a href="/tools/">Tools</a>
+      <a href="/studio/">Company</a>
+      <!-- Ledger — the paid product. Nav points at the on-site /ledger/
+           explainer (what it is, why a platform can't copy it, the founding
+           offer) rather than dumping cold nav traffic straight onto the
+           subdomain; /ledger/ owns the outbound "See Muntin Ledger" CTA. -->
+      <a href="/ledger/">Ledger</a>
+      <!-- Both sign-in / workshop ship hidden by default; the
+           auth-state JS at the bottom of this file calls
+           /api/auth/me and reveals exactly one. No-JS visitors see
+           neither, which is acceptable: the library and tools work
+           fully without sign-in (Workshop is the only auth surface). -->
+      <a class="js-nav-signin nav-link-auth" href="/sign-in/" hidden>Sign in</a>
+      <a class="js-nav-workshop nav-link-auth" href="/workbench/" hidden>Workshop</a>
+    </nav>
+    <button type="button" class="nav-search-btn js-open-search" aria-label="Open search (Cmd+K)" title="Search — Cmd K">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+      </svg>
+      <span class="nav-search-label">Search</span>
+      <kbd class="nav-search-kbd" aria-hidden="true"><span class="nav-search-kbd-mac"><span class="nav-search-kbd-mod">⌘</span>K</span><span class="nav-search-kbd-pc">Ctrl+K</span></kbd>
+    </button>
+    <nav class="lang-switch" aria-label="Language">
+      <a href="/es/open/seasonality/" hreflang="es" lang="es" class="js-lang-switch" data-set-locale="es">Español</a>
+      <span class="lang-switch-current" aria-current="true">EN</span>
+    </nav>
+    <!-- Phase 7 — dark-mode toggle. The icon SVG flips between sun
+         and moon via CSS based on the [data-theme] state set by
+         theme-toggle.js. With JS off the button stays in its
+         default state (sun) and clicks do nothing; the OS
+         preference still drives dark-mode tokens via media query. -->
+    <button type="button" class="theme-toggle js-theme-toggle" aria-label="Toggle dark mode" aria-pressed="false" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <!-- Contact CTA retired from the primary nav (2026-07): the filled pill was
+         the widest right-side item, so justify-content:space-between dumped the
+         row's overflow onto it and pushed it past the right padding — the nav
+         read as leaning right. The direct line still lives in the footer, the
+         mobile menu (below), and the mobile sticky CTA bar. -->
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
+  <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
+       switcher, and the Contact CTA. The auth-state JS below
+       toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+    <a href="/library/">Library</a>
+    <a href="/cost-index/">Cost Index</a>
+    <a href="/open/">Open data</a>
+    <a href="/tools/">Tools</a>
+    <a href="/studio/">Company</a>
+    <a href="/ledger/">Ledger</a>
+    <a class="js-nav-signin mobile-auth" href="/sign-in/" hidden>Sign in</a>
+    <a class="js-nav-workshop mobile-auth" href="/workbench/" hidden>Workshop</a>
+    <button type="button" class="mobile-search js-open-search">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <span>Search the library</span>
+    </button>
+    <!-- Mobile dark-mode toggle. The desktop .theme-toggle is hidden on
+         phones (≤640px), so this surfaces the same control inside the
+         menu. Same .js-theme-toggle hook — theme-toggle.js wires every
+         instance and keeps them in sync. Shows a text label (the desktop
+         one is icon-only). Un-hidden by the script so no-JS users don't
+         see a dead control. -->
+    <button type="button" class="theme-toggle mobile-theme js-theme-toggle" aria-pressed="false" aria-label="Toggle dark mode" data-label-dark="Dark mode" data-label-light="Light mode" hidden>
+      <svg class="theme-toggle__icon theme-toggle__icon--sun" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+        <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/><line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+      </svg>
+      <svg class="theme-toggle__icon theme-toggle__icon--moon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <span class="theme-toggle__label js-theme-label">Light mode</span>
+    </button>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">Contact</a>
+    <a href="/es/open/seasonality/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
+  </nav>
+
+  <!-- Opt-in Spanish banner. Rendered hidden by default; site.js
+       removes the hidden attribute only when (a) the reader's browser
+       lists Spanish in navigator.languages, (b) no md_locale cookie
+       has been set yet, and (c) the banner hasn't been dismissed.
+       Speaks directly in Spanish because its audience, by definition,
+       is a Spanish-speaking visitor. Link target is the page's own
+       hreflang="es" alternate from <head>, read at runtime. -->
+  <aside class="lang-hint" id="langHint" role="complementary" aria-label="Sugerencia de idioma" lang="es" hidden>
+    <div class="container lang-hint-inner">
+      <span class="lang-hint-text"><strong>¿Prefieres este sitio en español?</strong> Tenemos una versión completa.</span>
+      <a href="/es/open/seasonality/" class="lang-hint-accept js-lang-switch" data-set-locale="es" hreflang="es" lang="es">Ver en español &rarr;</a>
+      <button type="button" class="lang-hint-dismiss" id="langHintDismiss" aria-label="Cerrar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Mega-menu controller retired in Phase 7: Library is a single
+       link to /library/ now (the canonical three-doors hub IS the
+       menu). The CSS rules in site.css for .nav-library-* remain in
+       place defensively so any future mega-menu reuses the pattern. -->
+
+  <!-- Phase 2 (Workshop) — auth-state toggle for the nav.
+       Calls /api/auth/me and reveals either the "Sign in" or
+       "Workshop" link based on the response. Both links ship hidden
+       so anonymous visitors with JS disabled see neither (the
+       library + tools work fully without sign-in, so the missing
+       affordance is acceptable). The script runs once, fire-and-
+       forget; no observable side effects on a 401. -->
+  <script>
+    /* Phase 3C-perf — deferred via requestIdleCallback so the
+       /api/auth/me round-trip stays off the critical path. Both
+       .js-nav-signin / .js-nav-workshop ship hidden, so a one-frame
+       delay before the correct affordance reveals is invisible. */
+    (window.requestIdleCallback || function (cb) { return setTimeout(cb, 200); })(function () {
+      var signin   = document.querySelectorAll('.js-nav-signin');
+      var workshop = document.querySelectorAll('.js-nav-workshop');
+      if (!signin.length && !workshop.length) return;
+      var show = function (nodes) { nodes.forEach(function (n) { n.hidden = false; }); };
+      fetch('/api/auth/me', { credentials: 'same-origin' })
+        .then(function (r) {
+          if (r.status === 200) {
+            show(workshop);
+            // Phase G.10 — append (N) badge with the user's save count.
+            fetch('/api/workbench/count', { credentials: 'same-origin' })
+              .then(function (r2) { return r2.ok ? r2.json() : null; })
+              .then(function (j) {
+                if (!j || typeof j.count !== 'number' || j.count <= 0) return;
+                workshop.forEach(function (n) {
+                  if (n.querySelector('.nav-workshop-count')) return;
+                  var b = document.createElement('span');
+                  b.className = 'nav-workshop-count';
+                  b.textContent = ' (' + j.count + ')';
+                  n.appendChild(b);
+                });
+              })
+              .catch(function () { /* silent */ });
+            return;
+          }
+          show(signin);
+        })
+        .catch(function () { show(signin); });
+    });
+  </script>
+  <!-- Active-tab detection. Marks the top-level nav link whose href is the
+       best (longest) prefix match for the current path with
+       aria-current="page"; the tab styling renders that as the active
+       (underlined) tab. Runs synchronously — the .nav-links are already
+       parsed above. Progressive enhancement: no-JS visitors see no active
+       tab, which is acceptable. The home link is not a tab, so "/" never
+       matches on every page. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
+  <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
+       partial so the .js-theme-toggle button is in the DOM. -->
+  <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
 <main id="main" role="main">
 <div class="container">
@@ -498,19 +628,6 @@ main{padding-top:64px}
     <p class="od-eyebrow"><a href="/open/">Muntin Open Data</a> → Seasonality</p>
     <h1>What actually moves produce prices?</h1>
     <p class="od-hero__lede">Seasonality is the yearly rhythm in what an ingredient costs — set by harvest, storage, imports and weather. The honest headline: a handful of fresh field crops reward timing, and most storage crops, year-round imports, and proteins do not.</p>
-  </section>
-  
-  <section class="sea-hero2" aria-labelledby="sea-hero2-h">
-    <h2 class="sea-sr" id="sea-hero2-h">The honest headline</h2>
-    <p class="sea-capsule">For a handful of fresh field crops, buying in the right month cuts the wholesale reference <strong>22–45%</strong> against that item's own 5-year monthly normal. For most storage crops, year-round imports, and proteins, the calendar barely moves the number. These are reference levels vs each item's own season — not a delivered price, and never a forecast.</p>
-    <div class="sea-funnel" role="img" aria-label="Classification funnel: 84 ingredients with a 5-year normal, 74 earn a named cheap and dear month, 57 carry a clear seasonal window.">
-      <span class="sea-funnel__step"><b>84</b> 5-yr normal</span>
-      <span class="sea-funnel__arr" aria-hidden="true">→</span>
-      <span class="sea-funnel__step"><b>74</b> named cheap/dear month</span>
-      <span class="sea-funnel__arr" aria-hidden="true">→</span>
-      <span class="sea-funnel__step"><b>57</b> clear seasonal window</span>
-    </div>
-    <p class="sea-lic">Raw normals: <span class="sea-lic__t">CC0</span> · Derived classifications: <span class="sea-lic__t">CC-BY 4.0</span></p>
   </section>
   <section class="sea-clock" aria-labelledby="sea-clock-h">
     <svg viewBox="0 0 300 300" width="300" height="300" role="group" aria-label="Interactive seasonal clock: how many of 74 ingredients hit their lowest price in each month. Choose a month to see which." preserveAspectRatio="xMidYMid meet">
@@ -564,96 +681,6 @@ main{padding-top:64px}
     <div class="od-note" style="margin-top:16px"><p>Deliberately excluded: Green onion, Lime show even larger raw swings that are almost certainly a pack or unit change between summer and winter fruit, not a real price move. The direction is reliable; the exact multiple is not.</p></div>
   </section>
   <hr class="od-rule">
-  
-  <section aria-labelledby="sea-why">
-    <h2 class="od-h2" id="sea-why">Why the low lands when it does</h2>
-    <p class="od-sub">Each seasonal window now carries a structural descriptor derived from that item's import-value calendar — where import value sits relative to the domestic low. It's the shape of the curve, never a price cause or a supply flow.</p>
-    
-  <figure class="sea-dual" data-audio-alt="Two 12-month calendars for Russet potatoes, side by side: on top, the domestic wholesale-reference curve normalized to its own mean; below, the import-value index. The domestic cheapest month (April) is shaded. Import value rises in March and November, when the domestic wholesale reference dips — two calendars in counter-phase. Import value is nominal, never volume or supply share; neither curve causes the other.">
-    <div class="sea-dual__grid">
-      <span class="sea-dual__rowlab">Domestic reference</span>
-      <div class="sea-dual__row"><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:53%"></span><span class="sea-dual__mo">J</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:47%"></span><span class="sea-dual__mo">F</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:46%"></span><span class="sea-dual__mo">M</span></span><span class="sea-dual__cell sea-dual__cell--cheap"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:45%"></span><span class="sea-dual__mo">A</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:48%"></span><span class="sea-dual__mo">M</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:48%"></span><span class="sea-dual__mo">J</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:50%"></span><span class="sea-dual__mo">J</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:100%"></span><span class="sea-dual__mo">A</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:57%"></span><span class="sea-dual__mo">S</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:50%"></span><span class="sea-dual__mo">O</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:51%"></span><span class="sea-dual__mo">N</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--dom" style="--h:47%"></span><span class="sea-dual__mo">D</span></span></div>
-      <span class="sea-dual__rowlab">Import value</span>
-      <div class="sea-dual__row"><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:91%"></span><span class="sea-dual__mo">J</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:80%"></span><span class="sea-dual__mo">F</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:98%"></span><span class="sea-dual__mo">M</span></span><span class="sea-dual__cell sea-dual__cell--cheap"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:83%"></span><span class="sea-dual__mo">A</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:70%"></span><span class="sea-dual__mo">M</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:61%"></span><span class="sea-dual__mo">J</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:45%"></span><span class="sea-dual__mo">J</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:47%"></span><span class="sea-dual__mo">A</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:64%"></span><span class="sea-dual__mo">S</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:81%"></span><span class="sea-dual__mo">O</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:100%"></span><span class="sea-dual__mo">N</span></span><span class="sea-dual__cell"><span class="sea-dual__bar sea-dual__bar--imp" style="--h:88%"></span><span class="sea-dual__mo">D</span></span></div>
-    </div>
-    <figcaption>Russet potatoes: two calendars, import-value counter-phase — shown together, neither causing the other.</figcaption>
-    <details class="cite"><summary>Source</summary><p>Domestic curve: 5-year monthly normals (USDA/BLS/FRED, CC0). Import-value index: U.S. customs value (Census, public domain) — nominal value, never tonnage.</p></details>
-  </figure>
-    <div class="sea-mechgrid"><div class="sea-mechcard">
-      <div class="sea-mechcard__hd"><a href="/cost-index/iceberg-lettuce/#cheapest">Iceberg lettuce</a><span class="sea-mechcard__mo">cheapest January</span></div>
-      <span class="sea-mchip sea-mchip--domestic-low">▽ Domestic-season low (not import-aligned)</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Mexico, HHI 0.61, a value share) with reliance-by-value 12% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
-      <p class="sea-mechcard__tag">Inferred from the domestic reference troughing while import value is not peaking — not a measured harvest calendar.</p>
-    </div><div class="sea-mechcard">
-      <div class="sea-mechcard__hd"><a href="/cost-index/blueberry/#cheapest">Blueberries</a><span class="sea-mechcard__mo">cheapest August</span></div>
-      <span class="sea-mchip sea-mchip--domestic-low">▽ Domestic-season low (not import-aligned)</span>
-      <p class="sea-mechcard__tag">Inferred from the domestic reference troughing while import value is not peaking — not a measured harvest calendar.</p>
-    </div><div class="sea-mechcard">
-      <div class="sea-mechcard__hd"><a href="/cost-index/russet-potato/#cheapest">Russet potatoes</a><span class="sea-mechcard__mo">cheapest April</span></div>
-      <span class="sea-mchip sea-mchip--counter-phase">⇄ Import-value counter-phase</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Canada, HHI 1.00, a value share) with reliance-by-value 7% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
-      <p class="sea-mechcard__tag">Import value rises in March and November, when the domestic wholesale reference dips — two calendars in counter-phase.</p>
-    </div><div class="sea-mechcard">
-      <div class="sea-mechcard__hd"><a href="/cost-index/celery/#cheapest">Celery</a><span class="sea-mechcard__mo">cheapest September</span></div>
-      <span class="sea-mchip sea-mchip--domestic-low">▽ Domestic-season low (not import-aligned)</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Mexico, HHI 0.81, a value share) with reliance-by-value 16% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
-      <p class="sea-mechcard__tag">Inferred from the domestic reference troughing while import value is not peaking — not a measured harvest calendar.</p>
-    </div><div class="sea-mechcard">
-      <div class="sea-mechcard__hd"><a href="/cost-index/green-leaf-lettuce/#cheapest">Green leaf lettuce</a><span class="sea-mechcard__mo">cheapest January</span></div>
-      <span class="sea-mchip sea-mchip--counter-phase">⇄ Import-value counter-phase</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Canada, HHI 0.50, a value share) with reliance-by-value 12% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
-      <p class="sea-mechcard__tag">Import value rises in January and February, when the domestic wholesale reference dips — two calendars in counter-phase.</p>
-    </div><div class="sea-mechcard">
-      <div class="sea-mechcard__hd"><a href="/cost-index/green-beans/#cheapest">Green beans</a><span class="sea-mechcard__mo">cheapest March</span></div>
-      <span class="sea-mchip sea-mchip--counter-phase">⇄ Import-value counter-phase</span>
-      <p class="sea-mechcard__tag">Import value rises in December, when the domestic wholesale reference dips — two calendars in counter-phase.</p>
-    </div><div class="sea-mechcard">
-      <div class="sea-mechcard__hd"><a href="/cost-index/raspberry/#cheapest">Raspberries</a><span class="sea-mechcard__mo">cheapest June</span></div>
-      <span class="sea-mchip sea-mchip--domestic-low">▽ Domestic-season low (not import-aligned)</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Mexico, HHI 1.00, a value share) with reliance-by-value 83% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
-      <p class="sea-mechcard__tag">Inferred from the domestic reference troughing while import value is not peaking — not a measured harvest calendar.</p>
-    </div><div class="sea-mechcard">
-      <div class="sea-mechcard__hd"><a href="/cost-index/whole-chicken/#cheapest">Whole chicken</a><span class="sea-mechcard__mo">cheapest May</span></div>
-      <span class="sea-mchip sea-mchip--domestic-only">▪ Domestically sourced (no import calendar)</span>
-      <p class="sea-mechcard__tag">Carries no import-value calendar; its shape is set by the domestic market.</p>
-    </div><div class="sea-mechcard">
-      <div class="sea-mechcard__hd"><a href="/cost-index/romaine-lettuce/#cheapest">Romaine lettuce</a><span class="sea-mechcard__mo">cheapest January</span></div>
-      <span class="sea-mchip sea-mchip--counter-phase">⇄ Import-value counter-phase</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Mexico, HHI 0.80, a value share) with reliance-by-value 12% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
-      <p class="sea-mechcard__tag">Import value rises in January, when the domestic wholesale reference dips — two calendars in counter-phase.</p>
-    </div><div class="sea-mechcard">
-      <div class="sea-mechcard__hd"><a href="/cost-index/tomato/#cheapest">Tomatoes (round)</a><span class="sea-mechcard__mo">cheapest March</span></div>
-      <span class="sea-mchip sea-mchip--counter-phase">⇄ Import-value counter-phase</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Mexico, HHI 0.68, a value share) with reliance-by-value 81% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
-      <p class="sea-mechcard__tag">Import value rises in January, when the domestic wholesale reference dips — two calendars in counter-phase.</p>
-    </div><div class="sea-mechcard">
-      <div class="sea-mechcard__hd"><a href="/cost-index/snow-peas/#cheapest">Snow peas</a><span class="sea-mechcard__mo">cheapest March</span></div>
-      <span class="sea-mchip sea-mchip--counter-phase">⇄ Import-value counter-phase</span>
-      <p class="sea-mechcard__tag">Import value rises in January, when the domestic wholesale reference dips — two calendars in counter-phase.</p>
-    </div><div class="sea-mechcard">
-      <div class="sea-mechcard__hd"><a href="/cost-index/artichoke/#cheapest">Artichoke</a><span class="sea-mechcard__mo">cheapest August</span></div>
-      <span class="sea-mchip sea-mchip--domestic-low">▽ Domestic-season low (not import-aligned)</span><span class="sea-mchip sea-mchip--conc" title="Import value concentrated in one origin (Mexico, HHI 0.93, a value share) with reliance-by-value 3% — where year-round import value sits.">◧ Concentrated single-origin import value</span>
-      <p class="sea-mechcard__tag">Inferred from the domestic reference troughing while import value is not peaking — not a measured harvest calendar.</p>
-    </div></div>
-    <div class="od-note sea-caveat" style="margin-top:16px"><p>Two calendars shown beside each other — one is not causing the other. The import figure is nominal import-value seasonality, never volume, tonnage, or supply share; HHI is concentration of import value, not of total supply; reliance is a value proxy, not a supply-security score. This describes the curve&#39;s shape via import-value structure — never a price cause, never a supply flow, and never a forecast.</p></div>
-  </section>
-  <hr class="od-rule">
-  
-  <section aria-labelledby="sea-bank">
-    <h2 class="od-h2" id="sea-bank">Big gap isn't the same as a good buy</h2>
-    <p class="od-sub">Amplitude alone misleads. Here each window is placed by how much it saves (x) against how much it swings anyway all year (y = saving ÷ its own band). Below the noise floor, the season is swamped by the item's routine jitter.</p>
-    <figure class="sea-scatter" data-audio-alt="Scatter of 67 classified ingredients: x-axis, the seasonal saving (% cheaper); y-axis on a log scale, the signal-to-noise (saving ÷ the item&#39;s own band). A &quot;noise floor&quot; line at 1×: above it the seasonal saving beats the item&#39;s routine swing (bankable); below it the saving is real but smaller than its own week-to-week noise (swamped). 6 fall below the floor.">
-      <svg viewBox="0 0 640 340" role="img" aria-label="Scatter of 67 classified ingredients: x-axis, the seasonal saving (% cheaper); y-axis on a log scale, the signal-to-noise (saving ÷ the item&#39;s own band). A &quot;noise floor&quot; line at 1×: above it the seasonal saving beats the item&#39;s routine swin" class="sea-scatter__svg">
-        <line class="scat-grid" x1="52" y1="265.5" x2="624" y2="265.5"/><text class="scat-tick" x="46" y="268.5" text-anchor="end">0.5×</text><line class="scat-grid" x1="52" y1="226.9" x2="624" y2="226.9"/><text class="scat-tick" x="46" y="229.9" text-anchor="end">1×</text><line class="scat-grid" x1="52" y1="188.3" x2="624" y2="188.3"/><text class="scat-tick" x="46" y="191.3" text-anchor="end">2×</text><line class="scat-grid" x1="52" y1="137.2" x2="624" y2="137.2"/><text class="scat-tick" x="46" y="140.2" text-anchor="end">5×</text><line class="scat-grid" x1="52" y1="98.6" x2="624" y2="98.6"/><text class="scat-tick" x="46" y="101.6" text-anchor="end">10×</text><line class="scat-grid" x1="52" y1="59.9" x2="624" y2="59.9"/><text class="scat-tick" x="46" y="62.9" text-anchor="end">20×</text>
-        <line class="scat-floor" x1="52" y1="226.9" x2="624" y2="226.9"/>
-        <text class="scat-floorlab" x="624" y="221.9" text-anchor="end">noise floor (1×)</text>
-        <text class="scat-tick" x="52.0" y="312" text-anchor="middle">0%</text><text class="scat-tick" x="338.0" y="312" text-anchor="middle">35%</text><text class="scat-tick" x="624.0" y="312" text-anchor="middle">70%</text>
-        <text class="scat-axlab" x="338.0" y="334" text-anchor="middle">% cheaper (seasonal saving)</text>
-        <text class="scat-axlab" transform="translate(13,155.0) rotate(-90)" text-anchor="middle">signal-to-noise (log)</text>
-        <circle class="scat-dot scat-dot--bank" cx="338.0" cy="16.3" r="4.5"><title>Whole turkey: 35% cheaper, band 0.8%, S/N 43.75 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="264.5" cy="32.9" r="4.5"><title>Red potato: 26% cheaper, band 0.8%, S/N 32.5 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="150.1" cy="59.9" r="5.5"><title>Bananas: 12% cheaper, band 0.6%, S/N 20 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="378.9" cy="80.7" r="3.5"><title>Chicken thigh: 40% cheaper, band 2.9%, S/N 13.79 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="378.9" cy="82.6" r="4.5"><title>striploin: 40% cheaper, band 3%, S/N 13.33 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="215.4" cy="82.6" r="4.5"><title>Leek: 20% cheaper, band 1.5%, S/N 13.33 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="190.9" cy="83.6" r="5.5"><title>Pears: 17% cheaper, band 1.3%, S/N 13.08 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="501.4" cy="87.4" r="4.5"><title>Russet potatoes: 55% cheaper, band 4.5%, S/N 12.22 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="199.1" cy="92.0" r="4.5"><title>Pork loin: 18% cheaper, band 1.6%, S/N 11.25 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="436.1" cy="109.3" r="4.5"><title>Whole chicken: 47% cheaper, band 5.7%, S/N 8.25 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="411.5" cy="110.0" r="4.5"><title>Onions: 44% cheaper, band 5.4%, S/N 8.15 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="403.4" cy="110.2" r="4.5"><title>Chicken breast (boneless): 43% cheaper, band 5.3%, S/N 8.11 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="346.2" cy="120.1" r="4.5"><title>Pineapple: 36% cheaper, band 5.3%, S/N 6.79 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="141.9" cy="126.0" r="4.5"><title>Short rib: 11% cheaper, band 1.8%, S/N 6.11 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="239.9" cy="128.0" r="4.5"><title>Habanero pepper: 23% cheaper, band 3.9%, S/N 5.9 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="215.4" cy="129.8" r="4.5"><title>Beef tenderloin: 20% cheaper, band 3.5%, S/N 5.71 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="378.9" cy="130.6" r="4.5"><title>Lemon: 40% cheaper, band 7.1%, S/N 5.63 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="231.8" cy="137.2" r="4.5"><title>Butter (AA, bulk): 22% cheaper, band 4.4%, S/N 5 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="207.3" cy="137.2" r="4.5"><title>Butternut squash: 19% cheaper, band 3.8%, S/N 5 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="190.9" cy="140.4" r="4.5"><title>Garlic: 17% cheaper, band 3.6%, S/N 4.72 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="321.7" cy="141.2" r="4.5"><title>Eggplant: 33% cheaper, band 7.1%, S/N 4.65 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="264.5" cy="143.3" r="4.5"><title>Ribeye: 26% cheaper, band 5.8%, S/N 4.48 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="264.5" cy="145.2" r="4.5"><title>Acorn squash: 26% cheaper, band 6%, S/N 4.33 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="223.6" cy="145.7" r="4.5"><title>Pork shoulder: 21% cheaper, band 4.9%, S/N 4.29 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="133.7" cy="149.6" r="4.5"><title>Cheddar cheese: 10% cheaper, band 2.5%, S/N 4 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="419.7" cy="150.9" r="4.5"><title>Artichoke: 45% cheaper, band 11.5%, S/N 3.91 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="248.1" cy="154.9" r="4.5"><title>Cabbage: 24% cheaper, band 6.6%, S/N 3.64 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="297.1" cy="155.4" r="4.5"><title>Parsley: 30% cheaper, band 8.3%, S/N 3.61 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="150.1" cy="156.6" r="4.5"><title>Grapefruit: 12% cheaper, band 3.4%, S/N 3.53 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="223.6" cy="158.0" r="4.5"><title>Beet: 21% cheaper, band 6.1%, S/N 3.44 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="141.9" cy="158.0" r="4.5"><title>pork-belly: 11% cheaper, band 3.2%, S/N 3.44 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="427.9" cy="159.4" r="4.5"><title>Snow peas: 46% cheaper, band 13.7%, S/N 3.36 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="207.3" cy="160.7" r="4.5"><title>Red onion: 19% cheaper, band 5.8%, S/N 3.28 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="166.4" cy="162.4" r="3.5"><title>Daikon radish: 14% cheaper, band 4.4%, S/N 3.18 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="378.9" cy="162.6" r="4.5"><title>Cucumber: 40% cheaper, band 12.6%, S/N 3.17 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="117.4" cy="170.3" r="4.5"><title>Poblano pepper: 8% cheaper, band 2.9%, S/N 2.76 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="468.7" cy="171.5" r="4.5"><title>Green beans: 51% cheaper, band 18.9%, S/N 2.7 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="174.6" cy="173.9" r="4.5"><title>Butter lettuce: 15% cheaper, band 5.8%, S/N 2.59 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="411.5" cy="177.6" r="4.5"><title>Red leaf lettuce: 44% cheaper, band 18.2%, S/N 2.42 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="468.7" cy="180.7" r="4.5"><title>Green leaf lettuce: 51% cheaper, band 22.3%, S/N 2.29 (float)</title></circle><circle class="scat-dot scat-dot--bank" cx="321.7" cy="181.5" r="5.5"><title>Napa cabbage: 33% cheaper, band 14.6%, S/N 2.26 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="264.5" cy="181.5" r="4.5"><title>Cantaloupe: 26% cheaper, band 11.5%, S/N 2.26 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="419.7" cy="182.0" r="4.5"><title>Serrano pepper: 45% cheaper, band 20.1%, S/N 2.24 (float)</title></circle><circle class="scat-dot scat-dot--bank" cx="280.8" cy="183.0" r="4.5"><title>Cherry tomatoes: 28% cheaper, band 12.7%, S/N 2.2 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="436.1" cy="184.0" r="4.5"><title>Romaine lettuce: 47% cheaper, band 21.8%, S/N 2.16 (float)</title></circle><circle class="scat-dot scat-dot--bank" cx="370.7" cy="186.9" r="4.5"><title>Spinach: 39% cheaper, band 19%, S/N 2.05 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="460.6" cy="187.4" r="5.5"><title>Raspberries: 50% cheaper, band 24.6%, S/N 2.03 (float)</title></circle><circle class="scat-dot scat-dot--bank" cx="313.5" cy="190.5" r="4.5"><title>Asparagus: 32% cheaper, band 16.7%, S/N 1.92 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="313.5" cy="191.1" r="4.5"><title>Avocado: 32% cheaper, band 16.8%, S/N 1.9 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="517.8" cy="191.4" r="4.5"><title>Blueberries: 57% cheaper, band 30.1%, S/N 1.89 (withhold)</title></circle><circle class="scat-dot scat-dot--bank" cx="346.2" cy="191.7" r="4.5"><title>Okra: 36% cheaper, band 19.2%, S/N 1.88 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="264.5" cy="193.8" r="4.5"><title>Bell pepper: 26% cheaper, band 14.4%, S/N 1.81 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="362.5" cy="194.5" r="3.5"><title>Brussels sprouts: 38% cheaper, band 21.2%, S/N 1.79 (float)</title></circle><circle class="scat-dot scat-dot--bank" cx="411.5" cy="195.4" r="4.5"><title>Yellow squash: 44% cheaper, band 25%, S/N 1.76 (float)</title></circle><circle class="scat-dot scat-dot--bank" cx="575.0" cy="198.0" r="4.5"><title>Lime: 64% cheaper, band 38%, S/N 1.68 (withhold)</title></circle><circle class="scat-dot scat-dot--bank" cx="289.0" cy="204.7" r="4.5"><title>Watermelon: 29% cheaper, band 19.4%, S/N 1.49 (cushion)</title></circle><circle class="scat-dot scat-dot--bank" cx="566.8" cy="211.9" r="4.5"><title>Iceberg lettuce: 63% cheaper, band 48%, S/N 1.31 (withhold)</title></circle><circle class="scat-dot scat-dot--bank" cx="476.9" cy="217.2" r="4.5"><title>Celery: 52% cheaper, band 43.6%, S/N 1.19 (withhold)</title></circle><circle class="scat-dot scat-dot--bank" cx="101.0" cy="217.7" r="4.5"><title>Vegetable oil: 6% cheaper, band 5.1%, S/N 1.18 (lock)</title></circle><circle class="scat-dot scat-dot--bank" cx="607.7" cy="222.1" r="4.5"><title>Green onion: 68% cheaper, band 62.4%, S/N 1.09 (withhold)</title></circle><circle class="scat-dot scat-dot--bank" cx="436.1" cy="226.9" r="4.5"><title>Tomatoes (round): 47% cheaper, band 46.8%, S/N 1 (withhold)</title></circle><circle class="scat-dot scat-dot--swamp" cx="182.7" cy="227.5" r="4.5"><title>Corn on the cob: 16% cheaper, band 16.1%, S/N 0.99 (cushion)</title></circle><circle class="scat-dot scat-dot--swamp" cx="395.2" cy="228.0" r="5.5"><title>Zucchini: 42% cheaper, band 43%, S/N 0.98 (withhold)</title></circle><circle class="scat-dot scat-dot--swamp" cx="231.8" cy="237.3" r="5.5"><title>Broccoli: 22% cheaper, band 26.4%, S/N 0.83 (float)</title></circle><circle class="scat-dot scat-dot--swamp" cx="305.3" cy="240.7" r="4.5"><title>Cauliflower: 31% cheaper, band 40%, S/N 0.78 (withhold)</title></circle><circle class="scat-dot scat-dot--swamp" cx="166.4" cy="246.0" r="4.5"><title>Apples: 14% cheaper, band 19.6%, S/N 0.71 (cushion)</title></circle><circle class="scat-dot scat-dot--swamp" cx="182.7" cy="269.0" r="4.5"><title>Jalapeño: 16% cheaper, band 34%, S/N 0.47 (withhold)</title></circle>
-      </svg>
-      <figcaption>Above the floor = bankable; below = the season is swamped by the item's own noise. 6 of 67 fall below.</figcaption>
-      <details class="cite"><summary>Data & method</summary><p>Seasonal saving from the 5-year monthly median (CC0); own band from the ingredient state record. Signal-to-noise = saving ÷ band, a heuristic ratio of two percentages, not a formal statistic. 7 classified items without a band do not appear.</p></details>
-    </figure>
-    <details class="sea-scattbl"><summary>See the ranked table</summary>
-      <div class="sea-scattbl__wrap"><table><thead><tr><th scope="col">Ingredient</th><th scope="col">Cheapest</th><th scope="col">% cheaper</th><th scope="col">Band</th><th scope="col">S/N</th><th scope="col">Posture</th><th scope="col">Verdict</th></tr></thead><tbody><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/whole-turkey/#cheapest">Whole turkey</a></th><td>February</td><td>35%</td><td>0.8%</td><td>43.75×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/red-potato/#cheapest">Red potato</a></th><td>June</td><td>26%</td><td>0.8%</td><td>32.5×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/banana/#cheapest">Bananas</a></th><td>July</td><td>12%</td><td>0.6%</td><td>20×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/chicken-thigh/#cheapest">Chicken thigh</a></th><td>January</td><td>40%</td><td>2.9%</td><td>13.79×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/striploin/#cheapest">striploin</a></th><td>September</td><td>40%</td><td>3%</td><td>13.33×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/leek/#cheapest">Leek</a></th><td>April</td><td>20%</td><td>1.5%</td><td>13.33×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/pear/#cheapest">Pears</a></th><td>March</td><td>17%</td><td>1.3%</td><td>13.08×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/russet-potato/#cheapest">Russet potatoes</a></th><td>April</td><td>55%</td><td>4.5%</td><td>12.22×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/pork-loin/#cheapest">Pork loin</a></th><td>December</td><td>18%</td><td>1.6%</td><td>11.25×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/whole-chicken/#cheapest">Whole chicken</a></th><td>May</td><td>47%</td><td>5.7%</td><td>8.25×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/onion/#cheapest">Onions</a></th><td>December</td><td>44%</td><td>5.4%</td><td>8.15×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/chicken-breast/#cheapest">Chicken breast (boneless)</a></th><td>November</td><td>43%</td><td>5.3%</td><td>8.11×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/pineapple/#cheapest">Pineapple</a></th><td>November</td><td>36%</td><td>5.3%</td><td>6.79×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/short-rib/#cheapest">Short rib</a></th><td>November</td><td>11%</td><td>1.8%</td><td>6.11×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/habanero-pepper/#cheapest">Habanero pepper</a></th><td>July</td><td>23%</td><td>3.9%</td><td>5.9×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/beef-tenderloin/#cheapest">Beef tenderloin</a></th><td>July</td><td>20%</td><td>3.5%</td><td>5.71×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/lemon/#cheapest">Lemon</a></th><td>March</td><td>40%</td><td>7.1%</td><td>5.63×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/butter/#cheapest">Butter (AA, bulk)</a></th><td>May</td><td>22%</td><td>4.4%</td><td>5×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/butternut-squash/#cheapest">Butternut squash</a></th><td>January</td><td>19%</td><td>3.8%</td><td>5×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/garlic/#cheapest">Garlic</a></th><td>June</td><td>17%</td><td>3.6%</td><td>4.72×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/eggplant/#cheapest">Eggplant</a></th><td>January</td><td>33%</td><td>7.1%</td><td>4.65×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/ribeye/#cheapest">Ribeye</a></th><td>August</td><td>26%</td><td>5.8%</td><td>4.48×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/acorn-squash/#cheapest">Acorn squash</a></th><td>December</td><td>26%</td><td>6%</td><td>4.33×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/pork-shoulder/#cheapest">Pork shoulder</a></th><td>October</td><td>21%</td><td>4.9%</td><td>4.29×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/cheddar-cheese/#cheapest">Cheddar cheese</a></th><td>May</td><td>10%</td><td>2.5%</td><td>4×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/artichoke/#cheapest">Artichoke</a></th><td>August</td><td>45%</td><td>11.5%</td><td>3.91×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/cabbage/#cheapest">Cabbage</a></th><td>April</td><td>24%</td><td>6.6%</td><td>3.64×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/parsley/#cheapest">Parsley</a></th><td>March</td><td>30%</td><td>8.3%</td><td>3.61×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/grapefruit/#cheapest">Grapefruit</a></th><td>May</td><td>12%</td><td>3.4%</td><td>3.53×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/beet/#cheapest">Beet</a></th><td>August</td><td>21%</td><td>6.1%</td><td>3.44×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/pork-belly/#cheapest">pork-belly</a></th><td>May</td><td>11%</td><td>3.2%</td><td>3.44×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/snow-peas/#cheapest">Snow peas</a></th><td>March</td><td>46%</td><td>13.7%</td><td>3.36×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/red-onion/#cheapest">Red onion</a></th><td>April</td><td>19%</td><td>5.8%</td><td>3.28×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/daikon/#cheapest">Daikon radish</a></th><td>January</td><td>14%</td><td>4.4%</td><td>3.18×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/cucumber/#cheapest">Cucumber</a></th><td>July</td><td>40%</td><td>12.6%</td><td>3.17×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/poblano-pepper/#cheapest">Poblano pepper</a></th><td>November</td><td>8%</td><td>2.9%</td><td>2.76×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/green-beans/#cheapest">Green beans</a></th><td>March</td><td>51%</td><td>18.9%</td><td>2.7×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/butter-lettuce/#cheapest">Butter lettuce</a></th><td>March</td><td>15%</td><td>5.8%</td><td>2.59×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/red-leaf-lettuce/#cheapest">Red leaf lettuce</a></th><td>January</td><td>44%</td><td>18.2%</td><td>2.42×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/green-leaf-lettuce/#cheapest">Green leaf lettuce</a></th><td>January</td><td>51%</td><td>22.3%</td><td>2.29×</td><td>float</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/napa-cabbage/#cheapest">Napa cabbage</a></th><td>June</td><td>33%</td><td>14.6%</td><td>2.26×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/cantaloupe/#cheapest">Cantaloupe</a></th><td>August</td><td>26%</td><td>11.5%</td><td>2.26×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/serrano-pepper/#cheapest">Serrano pepper</a></th><td>February</td><td>45%</td><td>20.1%</td><td>2.24×</td><td>float</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/cherry-tomato/#cheapest">Cherry tomatoes</a></th><td>October</td><td>28%</td><td>12.7%</td><td>2.2×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/romaine-lettuce/#cheapest">Romaine lettuce</a></th><td>January</td><td>47%</td><td>21.8%</td><td>2.16×</td><td>float</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/spinach/#cheapest">Spinach</a></th><td>June</td><td>39%</td><td>19%</td><td>2.05×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/raspberry/#cheapest">Raspberries</a></th><td>June</td><td>50%</td><td>24.6%</td><td>2.03×</td><td>float</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/asparagus/#cheapest">Asparagus</a></th><td>March</td><td>32%</td><td>16.7%</td><td>1.92×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/avocado/#cheapest">Avocado</a></th><td>November</td><td>32%</td><td>16.8%</td><td>1.9×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/blueberry/#cheapest">Blueberries</a></th><td>August</td><td>57%</td><td>30.1%</td><td>1.89×</td><td>withhold</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/okra/#cheapest">Okra</a></th><td>August</td><td>36%</td><td>19.2%</td><td>1.88×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/bell-pepper/#cheapest">Bell pepper</a></th><td>May</td><td>26%</td><td>14.4%</td><td>1.81×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/brussels-sprouts/#cheapest">Brussels sprouts</a></th><td>March</td><td>38%</td><td>21.2%</td><td>1.79×</td><td>float</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/yellow-squash/#cheapest">Yellow squash</a></th><td>July</td><td>44%</td><td>25%</td><td>1.76×</td><td>float</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/lime/#cheapest">Lime</a></th><td>November</td><td>64%</td><td>38%</td><td>1.68×</td><td>withhold</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/watermelon/#cheapest">Watermelon</a></th><td>October</td><td>29%</td><td>19.4%</td><td>1.49×</td><td>cushion</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/iceberg-lettuce/#cheapest">Iceberg lettuce</a></th><td>January</td><td>63%</td><td>48%</td><td>1.31×</td><td>withhold</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/celery/#cheapest">Celery</a></th><td>September</td><td>52%</td><td>43.6%</td><td>1.19×</td><td>withhold</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/vegetable-oil/#cheapest">Vegetable oil</a></th><td>January</td><td>6%</td><td>5.1%</td><td>1.18×</td><td>lock</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/green-onion/#cheapest">Green onion</a></th><td>June</td><td>68%</td><td>62.4%</td><td>1.09×</td><td>withhold</td><td>Bankable</td></tr><tr class="scat-r--bank"><th scope="row"><a href="/cost-index/tomato/#cheapest">Tomatoes (round)</a></th><td>March</td><td>47%</td><td>46.8%</td><td>1×</td><td>withhold</td><td>Bankable</td></tr><tr class="scat-r--swamp"><th scope="row"><a href="/cost-index/corn-on-the-cob/#cheapest">Corn on the cob</a></th><td>May</td><td>16%</td><td>16.1%</td><td>0.99×</td><td>cushion</td><td>Swamped</td></tr><tr class="scat-r--swamp"><th scope="row"><a href="/cost-index/zucchini/#cheapest">Zucchini</a></th><td>April</td><td>42%</td><td>43%</td><td>0.98×</td><td>withhold</td><td>Swamped</td></tr><tr class="scat-r--swamp"><th scope="row"><a href="/cost-index/broccoli/#cheapest">Broccoli</a></th><td>June</td><td>22%</td><td>26.4%</td><td>0.83×</td><td>float</td><td>Swamped</td></tr><tr class="scat-r--swamp"><th scope="row"><a href="/cost-index/cauliflower/#cheapest">Cauliflower</a></th><td>September</td><td>31%</td><td>40%</td><td>0.78×</td><td>withhold</td><td>Swamped</td></tr><tr class="scat-r--swamp"><th scope="row"><a href="/cost-index/apple/#cheapest">Apples</a></th><td>May</td><td>14%</td><td>19.6%</td><td>0.71×</td><td>cushion</td><td>Swamped</td></tr><tr class="scat-r--swamp"><th scope="row"><a href="/cost-index/jalapeno/#cheapest">Jalapeño</a></th><td>June</td><td>16%</td><td>34%</td><td>0.47×</td><td>withhold</td><td>Swamped</td></tr></tbody></table></div>
-    </details>
-    <div class="od-note sea-caveat" style="margin-top:14px"><p>Band width is how far this item's price routinely swings — a predictability descriptor, not a price forecast or a direction call. Signal-to-noise is a heuristic ratio of two percentages, not a formal statistic. A point below the line means the seasonal gap is real but smaller than the item's own week-to-week noise — the season can be swamped in any given week.</p></div>
-  </section>
-  <hr class="od-rule">
   <section class="od-prose" aria-labelledby="sea-read">
     <h2 class="od-h2" id="sea-read">How to read the 12-month curve</h2>
     <p>Every ingredient page carries a 12-month curve built from multi-year medians. The <strong>line</strong> is each month’s median (typical) price — the middle of the historical range, so one freak year doesn’t distort the shape. The shaded <strong>band</strong> is the spread: how much that month has varied year to year. A tight band means dependable; a wide band means volatile.</p>
@@ -663,29 +690,6 @@ main{padding-top:64px}
   <section aria-labelledby="sea-play-h">
     <h2 class="od-h2" id="sea-play-h">The operator’s playbook</h2>
     <ol class="sea-play"><li>Read the <strong>cheapest month</strong> as your feature-and-buy window and the <strong>priciest month</strong> as your trim-or-substitute window.</li><li>When the amplitude is large, the calendar is worth building the menu around: feature the item at its low, substitute or pre-buy ahead of its high.</li><li>When the amplitude is small — under about 15-20% — the curve is mostly noise: buy to need and shop the current spot deal instead.</li><li>Check the spread band before you commit spec: a cheap month with a wide band can still spike.</li><li>Remember the line is a median, not a forecast. It tells you the usual rhythm, not what next week’s truck will cost.</li></ol>
-  </section>
-  <hr class="od-rule">
-  
-  <section aria-labelledby="sea-swap-h">
-    <h2 class="od-h2" id="sea-swap-h">When your item peaks, what's actually cheap instead?</h2>
-    <p class="od-sub">For 31 items with a candidate swap on record, the validator uses seasonality as referee: it certifies calendar offset — it does not promise a price outcome.</p>
-    <div class="sea-swap">
-      <label class="sea-swap__pick"><span>Your item</span>
-        <select id="seaSwapSel"><option value="apple">Apples</option><option value="artichoke">Artichoke</option><option value="banana">Bananas</option><option value="broccoli">Broccoli</option><option value="butter-lettuce">Butter lettuce</option><option value="butternut-squash">Butternut squash</option><option value="cabbage">Cabbage</option><option value="carrot">Carrot</option><option value="cauliflower">Cauliflower</option><option value="cherry-tomato">Cherry tomatoes</option><option value="chicken-breast">Chicken breast (boneless)</option><option value="chicken-thigh">Chicken thigh</option><option value="collard-greens">Collard greens</option><option value="cucumber">Cucumber</option><option value="eggplant">Eggplant</option><option value="grapefruit">Grapefruit</option><option value="green-beans">Green beans</option><option value="green-leaf-lettuce">Green leaf lettuce</option><option value="iceberg-lettuce">Iceberg lettuce</option><option value="kale">Kale</option><option value="leek">Leek</option><option value="onion">Onions</option><option value="raspberry">Raspberries</option><option value="red-leaf-lettuce">Red leaf lettuce</option><option value="red-onion">Red onion</option><option value="romaine-lettuce">Romaine lettuce</option><option value="rutabaga">Rutabaga</option><option value="short-rib">Short rib</option><option value="tomato">Tomatoes (round)</option><option value="yellow-squash">Yellow squash</option><option value="zucchini">Zucchini</option></select>
-      </label>
-      <div class="sea-swap__out" id="seaSwapOut" aria-live="polite"><span class="sea-swap__badge sea-swap__badge--shared-calendar">Shared calendar</span><p class="sea-swap__line">Grapefruit and Apples share a cheap month and co-move — a plausibly shared calendar, not a hedge.</p></div>
-    </div>
-    <div class="od-note sea-caveat" style="margin-top:14px"><p>Co-movement is a fraction of one item&#39;s own moves — co-occurrence, not cause, with no coefficient, lead, or lag. A shared cheap month names a plausibly shared calendar; this certifies calendar offset, it does not promise a price outcome and asserts no shared cause.</p></div>
-    <script type="application/json" id="seaSwapData">{"apple":{"anchor":"Apples","swap":"Grapefruit","key":"shared-calendar","label":"Shared calendar","line":"Grapefruit and Apples share a cheap month and co-move — a plausibly shared calendar, not a hedge.","cheap":"May","dear":"October"},"artichoke":{"anchor":"Artichoke","swap":"Leek","key":"real-hedge","label":"Real hedge","line":"Leek is cheapest in April, roughly opposite Artichoke's cheap month (August) — so it tends to sit at its own low when Artichoke is dearer. Offset calendars.","cheap":"August","dear":"December"},"banana":{"anchor":"Bananas","swap":"Apple","key":"offset","label":"Partial offset","line":"Apple doesn't share Bananas's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"July","dear":"February"},"broccoli":{"anchor":"Broccoli","swap":"Cauliflower","key":"offset","label":"Partial offset","line":"Cauliflower doesn't share Broccoli's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"June","dear":"April"},"butter-lettuce":{"anchor":"Butter lettuce","swap":"Green leaf lettuce","key":"offset","label":"Partial offset","line":"Green leaf lettuce doesn't share Butter lettuce's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"March","dear":"December"},"butternut-squash":{"anchor":"Butternut squash","swap":"Red onion","key":"offset","label":"Partial offset","line":"Red onion doesn't share Butternut squash's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"January","dear":"July"},"cabbage":{"anchor":"Cabbage","swap":"Kale","key":"offset","label":"Partial offset","line":"Kale doesn't share Cabbage's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"April","dear":"July"},"carrot":{"anchor":"Carrot","swap":"Rutabaga","key":"offset","label":"Partial offset","line":"Rutabaga doesn't share Carrot's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"December","dear":"May"},"cauliflower":{"anchor":"Cauliflower","swap":"Broccoli","key":"offset","label":"Partial offset","line":"Broccoli doesn't share Cauliflower's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"September","dear":"December"},"cherry-tomato":{"anchor":"Cherry tomatoes","swap":"Yellow squash","key":"offset","label":"Partial offset","line":"Yellow squash doesn't share Cherry tomatoes's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"October","dear":"November"},"chicken-breast":{"anchor":"Chicken breast (boneless)","swap":"Chicken thigh","key":"offset","label":"Partial offset","line":"Chicken thigh doesn't share Chicken breast (boneless)'s cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"November","dear":"August"},"chicken-thigh":{"anchor":"Chicken thigh","swap":"Chicken breast","key":"offset","label":"Partial offset","line":"Chicken breast doesn't share Chicken thigh's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"January","dear":"July"},"collard-greens":{"anchor":"Collard greens","swap":"Leek","key":"offset","label":"Partial offset","line":"Leek doesn't share Collard greens's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"February","dear":"August"},"cucumber":{"anchor":"Cucumber","swap":"Zucchini","key":"offset","label":"Partial offset","line":"Zucchini doesn't share Cucumber's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"July","dear":"February"},"eggplant":{"anchor":"Eggplant","swap":"Red onion","key":"offset","label":"Partial offset","line":"Red onion doesn't share Eggplant's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"January","dear":"July"},"grapefruit":{"anchor":"Grapefruit","swap":"Apple","key":"shared-calendar","label":"Shared calendar","line":"Apple and Grapefruit share a cheap month and co-move — a plausibly shared calendar, not a hedge.","cheap":"May","dear":"November"},"green-beans":{"anchor":"Green beans","swap":"Cherry tomato","key":"real-hedge","label":"Real hedge","line":"Cherry tomato is cheapest in October, roughly opposite Green beans's cheap month (March) — so it tends to sit at its own low when Green beans is dearer. Offset calendars.","cheap":"March","dear":"November"},"green-leaf-lettuce":{"anchor":"Green leaf lettuce","swap":"Iceberg lettuce","key":"shared-calendar","label":"Shared calendar","line":"Iceberg lettuce and Green leaf lettuce share a cheap month and co-move — a plausibly shared calendar, not a hedge.","cheap":"January","dear":"November"},"iceberg-lettuce":{"anchor":"Iceberg lettuce","swap":"Red leaf lettuce","key":"shared-calendar","label":"Shared calendar","line":"Red leaf lettuce and Iceberg lettuce share a cheap month and co-move — a plausibly shared calendar, not a hedge.","cheap":"January","dear":"November"},"kale":{"anchor":"Kale","swap":"Cabbage","key":"offset","label":"Partial offset","line":"Cabbage doesn't share Kale's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"May","dear":"March"},"leek":{"anchor":"Leek","swap":"Artichoke","key":"real-hedge","label":"Real hedge","line":"Artichoke is cheapest in August, roughly opposite Leek's cheap month (April) — so it tends to sit at its own low when Leek is dearer. Offset calendars.","cheap":"April","dear":"November"},"onion":{"anchor":"Onions","swap":"Short rib","key":"offset","label":"Partial offset","line":"Short rib doesn't share Onions's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"December","dear":"August"},"raspberry":{"anchor":"Raspberries","swap":"Romaine lettuce","key":"real-hedge","label":"Real hedge","line":"Romaine lettuce is cheapest in January, roughly opposite Raspberries's cheap month (June) — so it tends to sit at its own low when Raspberries is dearer. Offset calendars.","cheap":"June","dear":"February"},"red-leaf-lettuce":{"anchor":"Red leaf lettuce","swap":"Iceberg lettuce","key":"shared-calendar","label":"Shared calendar","line":"Iceberg lettuce and Red leaf lettuce share a cheap month and co-move — a plausibly shared calendar, not a hedge.","cheap":"January","dear":"November"},"red-onion":{"anchor":"Red onion","swap":"Butternut squash","key":"offset","label":"Partial offset","line":"Butternut squash doesn't share Red onion's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"April","dear":"August"},"romaine-lettuce":{"anchor":"Romaine lettuce","swap":"Red leaf lettuce","key":"shared-calendar","label":"Shared calendar","line":"Red leaf lettuce and Romaine lettuce share a cheap month and co-move — a plausibly shared calendar, not a hedge.","cheap":"January","dear":"November"},"rutabaga":{"anchor":"Rutabaga","swap":"Carrot","key":"offset","label":"Partial offset","line":"Carrot doesn't share Rutabaga's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"September","dear":"January"},"short-rib":{"anchor":"Short rib","swap":"Onion","key":"offset","label":"Partial offset","line":"Onion doesn't share Short rib's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"November","dear":"August"},"tomato":{"anchor":"Tomatoes (round)","swap":"Cherry tomato","key":"real-hedge","label":"Real hedge","line":"Cherry tomato is cheapest in October, roughly opposite Tomatoes (round)'s cheap month (March) — so it tends to sit at its own low when Tomatoes (round) is dearer. Offset calendars.","cheap":"March","dear":"December"},"yellow-squash":{"anchor":"Yellow squash","swap":"Cherry tomato","key":"offset","label":"Partial offset","line":"Cherry tomato doesn't share Yellow squash's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"July","dear":"February"},"zucchini":{"anchor":"Zucchini","swap":"Cucumber","key":"offset","label":"Partial offset","line":"Cucumber doesn't share Zucchini's cheap month, but its low is only a few months off — a partial offset, not opposite.","cheap":"April","dear":"January"}}</script>
-    <script>
-    (function(){
-      var el=document.getElementById('seaSwapData'),sel=document.getElementById('seaSwapSel'),out=document.getElementById('seaSwapOut');
-      if(!el||!sel||!out)return;var d;try{d=JSON.parse(el.textContent)}catch(e){return}
-      function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-      function render(k){var x=d[k];if(!x)return;out.innerHTML='<span class="sea-swap__badge sea-swap__badge--'+x.key+'">'+esc(x.label)+'</span><p class="sea-swap__line">'+esc(x.line)+'</p>'}
-      sel.addEventListener('change',function(){render(sel.value)});
-    })();
-    </script>
   </section>
   <hr class="od-rule">
   <section aria-labelledby="sea-honest">
@@ -779,6 +783,42 @@ main{padding-top:64px}
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
 })();
 </script>
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- On-device as-of age gloss (Move 12): re-renders the AGE of an already-printed,
+     certified date on the reader's own clock — appends " · 3 days ago" / " · hace 3
+     días" after a static "as of <date>". Appends only: JS-off (or a stale/CSP-blocked
+     module) leaves the certified static date untouched. Reuses the tested, parity-
+     locked relativeDay() from MuntinCostFormat — never invents a date or a number. -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  var nodes = document.querySelectorAll('.ci-asof[data-asof]');
+  if (!nodes.length) return;
+  var es = (document.documentElement.lang || 'en').slice(0, 2) === 'es';
+  function paint(F) {
+    if (!F || typeof F.relativeDay !== 'function') return;   // stale/old cached module → leave static date
+    var now = Date.now();
+    Array.prototype.forEach.call(nodes, function (n) {
+      if (n.getAttribute('data-rel-wired') === '1') return;
+      var rel = F.relativeDay(n.getAttribute('data-asof'), now);
+      if (!rel) return;                                      // future / bad / no-clock → silent
+      n.setAttribute('data-rel-wired', '1');
+      var sep = document.createElement('span');
+      sep.className = 'ci-asof-rel';
+      sep.textContent = ' · ' + rel;                         // textContent only, never innerHTML
+      n.appendChild(sep);
+    });
+  }
+  function boot() { if (typeof MuntinCostFormat !== 'undefined') paint(MuntinCostFormat(es)); }
+  (window.requestIdleCallback || function (c) { return setTimeout(c, 200); })(function () {
+    if (typeof MuntinCostFormat !== 'undefined') { boot(); return; }
+    var s = document.createElement('script');
+    s.src = '/tools/_shared/cost-index-format.js?v=20260717-fmt5';
+    s.async = true; s.onload = boot;
+    document.head.appendChild(s);
+  });
+})();
+</script>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

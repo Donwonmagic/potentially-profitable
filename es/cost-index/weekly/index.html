@@ -65,10 +65,10 @@ main{padding-top:64px}
 .ci-eyebrow a{color:var(--teal);text-decoration:none}
 .ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
 .ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
-.ci-body{margin:8px auto 0;max-width:760px}
+.ci-body{margin:8px 0 0;max-width:760px}@media(min-width:1024px){.breadcrumb,.ci-hero,.ci-body{max-width:840px;margin-inline:auto}}
 .ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:38px 0 10px;line-height:1.2}
 .ci-body h3{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink);margin:24px 0 8px;line-height:1.25}
-.ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
+.ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}.ci-body>p:not([class]),.ci-body>ol,.ci-body>ul{max-width:68ch}
 .ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
 .ci-body li{margin:0 0 8px}
 .ci-body strong{font-weight:700}
@@ -102,24 +102,13 @@ main{padding-top:64px}
 .ci-rel__val{flex:0 0 42px;font-size:13px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
 .ci-rel figcaption{font-size:13px;color:var(--ink-soft);margin-top:8px}
 </style>
-<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=158a407ca00a" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-article.css?v=158a407ca00a"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
 </head>
 <body>
 <a class="skip-link" href="#main">Saltar al contenido</a>
-<!-- batch-banner:start -->
-<aside class="batch-marquee" data-batch="fathers-day-2026" role="complementary" aria-label="Nuevo informe · Que te encuentren para el Día del Padre" style="background:#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#2A50C8;color:#F6F7F8;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">Nuevo informe</span>
-      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">Es el fin de semana del Día del Padre. ¿Una familia que busca puede encontrarte?</span>
-    </div>
-    <a href="/es/blog/dia-del-padre-que-te-encuentren-2026/" style="display:inline-flex;align-items:center;gap:6px;color:#16181D;background:#F6F7F8;text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">Leer el informe <span aria-hidden="true">&rarr;</span></a>
-  </div>
-</aside>
-<script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>
-<!-- batch-banner:end -->
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -136,7 +125,7 @@ main{padding-top:64px}
              along with the rest of the nav block on every build, keeping
              the partial strictly idempotent. Valid HTML5: <script> may
              appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","audio.byline_studio":"Narrado para The Muntin Desk","audio.byline_browser":"Leído por tu navegador","audio.preview":"Escucha 30 segundos primero →","audio.resume_chip_aria":"Reanudar desde la posición guardada","audio.share_aria":"Copiar enlace en este momento","audio.dismiss":"Descartar","audio.kicker":"Edición en audio","audio.headline":"¿Prefieres escucharlo?","audio.sub":"Pulsa reproducir y leeremos el artículo entero — gráficos incluidos.","audio.meta_handsfree":"manos libres","audio.meta_min":"min","audio.now_reading":"Reproduciendo","audio.resume_continue":"Continuar desde","audio.help_aria":"Ver atajos de teclado e información del reproductor","audio.help_title":"Consejos para escuchar","audio.help_chapters_eyebrow":"Capítulos","audio.finished_done":"Listo.","audio.finished_browse":"Explora la biblioteca →","audio.share_toast_ok":"Enlace copiado en {time}","audio.share_toast_fail":"No se pudo copiar — portapapeles bloqueado","audio.language_label":"Idioma","lesson.widget_wait":"Don está esperando — usa el widget","lesson.widget_wait_labeled":"Don está esperando — {label}","lesson.opener_recorded":"Don abre esta lección","lesson.wrap_recorded":"Don cierra esta lección","audio.help_kbd_eyebrow":"Teclado","audio.kbd_space":"Espacio","audio.kbd_space_help":"Reproducir o pausar","audio.kbd_jk_help":"Retroceder 15 segundos / avanzar 15 segundos","audio.kbd_arrows_help":"Párrafo anterior / siguiente párrafo","audio.help_about_eyebrow":"Sobre la voz","audio.help_about_body":"The Muntin Desk usa una voz generada por computadora ajustada para una lectura clara. Usamos la misma voz en cada artículo para que te resulte familiar. Cada grabación se produce una sola vez y se guarda como un archivo de audio que puedes descargar.","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","search.voice_start":"Buscar por voz","search.voice_stop":"Detener la escucha","search.voice_hint":"Escuchando… habla ahora","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","audio.byline_studio":"Narrado para The Muntin Desk","audio.byline_browser":"Leído por tu navegador","audio.preview":"Escucha 30 segundos primero →","audio.resume_chip_aria":"Reanudar desde la posición guardada","audio.share_aria":"Copiar enlace en este momento","audio.dismiss":"Descartar","audio.kicker":"Edición en audio","audio.headline":"¿Prefieres escucharlo?","audio.sub":"Pulsa reproducir y leeremos el artículo entero — gráficos incluidos.","audio.meta_handsfree":"manos libres","audio.meta_min":"min","audio.now_reading":"Reproduciendo","audio.resume_continue":"Continuar desde","audio.help_aria":"Ver atajos de teclado e información del reproductor","audio.help_title":"Consejos para escuchar","audio.help_chapters_eyebrow":"Capítulos","audio.finished_done":"Listo.","audio.finished_browse":"Explora la biblioteca →","audio.share_toast_ok":"Enlace copiado en {time}","audio.share_toast_fail":"No se pudo copiar — portapapeles bloqueado","audio.language_label":"Idioma","share.copied":"Enlace copiado","share.copy_failed":"No se pudo copiar — selecciona la URL a mano","lesson.widget_wait":"Don está esperando — usa el widget","lesson.widget_wait_labeled":"Don está esperando — {label}","lesson.opener_recorded":"Don abre esta lección","lesson.wrap_recorded":"Don cierra esta lección","audio.help_kbd_eyebrow":"Teclado","audio.kbd_space":"Espacio","audio.kbd_space_help":"Reproducir o pausar","audio.kbd_jk_help":"Retroceder 15 segundos / avanzar 15 segundos","audio.kbd_arrows_help":"Párrafo anterior / siguiente párrafo","audio.help_about_eyebrow":"Sobre la voz","audio.help_about_body":"The Muntin Desk usa una voz generada por computadora ajustada para una lectura clara. Usamos la misma voz en cada artículo para que te resulte familiar. Cada grabación se produce una sola vez y se guarda como un archivo de audio que puedes descargar.","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","search.voice_start":"Buscar por voz","search.voice_stop":"Detener la escucha","search.voice_hint":"Escuchando… habla ahora","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
     <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
@@ -183,11 +172,10 @@ main{padding-top:64px}
       <a href="/cost-index/weekly/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-      Contacta a Don
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contacto retirado de la navegación principal (2026-07): el botón
+         relleno era el elemento más ancho de la derecha y desequilibraba la
+         barra. La línea directa sigue en el pie, el menú móvil y la barra fija
+         móvil. -->
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -220,7 +208,7 @@ main{padding-top:64px}
       </svg>
       <span class="theme-toggle__label js-theme-label">Modo claro</span>
     </button>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don</a>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">Contacto</a>
     <a href="/cost-index/weekly/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
@@ -269,6 +257,29 @@ main{padding-top:64px}
        para que el botón .js-theme-toggle ya esté en el DOM. (Faltaba
        en el nav en español, así que el interruptor no funcionaba en
        las páginas /es/.) -->
+  <!-- Detección de pestaña activa. Marca con aria-current="page" el enlace
+       de navegación cuyo href coincide mejor (prefijo más largo) con la ruta
+       actual; el estilo lo muestra como la pestaña activa (subrayada).
+       Mejora progresiva: sin JS no hay pestaña activa. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/' || h === '/es/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
   <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
 <main id="main" role="main">
@@ -283,59 +294,61 @@ main{padding-top:64px}
     <h1>Todas las ediciones</h1>
     <p class="ci-lede">El Índice de costos de restaurantes publica un despacho fechado — mensual el primer martes desde agosto de 2026, semanal antes de eso: dónde se ubica la canasta ponderada, qué activa una señal de reprecio o de vigilancia, y el contexto de los factores detrás. Esta es la serie completa, de la más reciente a la más antigua. Cada edición es un registro permanente y citable; las ediciones nativas incluyen un conjunto de datos abierto por edición junto a la lectura.</p>
   </section>
-  <div class="ci-body">
-    <table class="ci-archive" style="width:100%;border-collapse:collapse;margin:8px 0 24px;font-size:15.5px">
+  <div class="ci-body" style="margin-inline:0">
+    <div class="ci-archive-wrap" style="margin:8px 0 24px">
+    <table class="ci-archive" style="width:100%;border-collapse:collapse;font-size:15.5px">
       <thead>
         <tr style="text-align:left;border-bottom:2px solid var(--line)">
           <th style="padding:10px 12px">Semana del</th>
           <th style="padding:10px 12px">Canasta vs. base</th>
           <th style="padding:10px 12px">Confianza</th>
           <th style="padding:10px 12px">Por encima de la base</th>
-          <th style="padding:10px 12px">Leer</th>
-          <th style="padding:10px 12px">Datos</th>
+          <th style="padding:10px 12px;white-space:nowrap">Leer</th>
+          <th style="padding:10px 12px;white-space:nowrap">Datos</th>
         </tr>
       </thead>
       <tbody>
           <tr>
-            <td><strong>2026-07-06</strong></td>
-            <td>−5.0%</td>
-            <td>high</td>
-            <td>24 / 81</td>
-            <td><a href="/blog/cost-index-week-2026-07-06/">Abrir despacho</a></td>
-            <td><a href="/cost-index/week-2026-07-06.json">JSON</a></td>
+            <td data-label="Semana del"><strong>2026-07-06</strong></td>
+            <td data-label="Canasta vs. base">−5.0%</td>
+            <td data-label="Confianza">high</td>
+            <td data-label="Por encima de la base">24 / 81</td>
+            <td data-label="Leer" style="white-space:nowrap"><a href="/blog/cost-index-week-2026-07-06/">Abrir despacho</a></td>
+            <td data-label="Datos" style="white-space:nowrap"><a href="/cost-index/week-2026-07-06.json">JSON</a></td>
           </tr>
           <tr>
-            <td><strong>2026-06-18</strong></td>
-            <td>+3.2%</td>
-            <td>medium</td>
-            <td>36 / 82</td>
-            <td><a href="/blog/cost-index-week-2026-06-18/">Abrir despacho</a></td>
-            <td><a href="/cost-index/week-2026-06-18.json">JSON</a></td>
+            <td data-label="Semana del"><strong>2026-06-18</strong></td>
+            <td data-label="Canasta vs. base">+3.2%</td>
+            <td data-label="Confianza">medium</td>
+            <td data-label="Por encima de la base">36 / 82</td>
+            <td data-label="Leer" style="white-space:nowrap"><a href="/blog/cost-index-week-2026-06-18/">Abrir despacho</a></td>
+            <td data-label="Datos" style="white-space:nowrap"><a href="/cost-index/week-2026-06-18.json">JSON</a></td>
           </tr>
           <tr>
-            <td><strong>2026-06-16</strong> <span style="opacity:.55;font-size:.85em">(reconstruida)</span></td>
-            <td>+3.2%</td>
-            <td>medium</td>
-            <td>32 / 82</td>
-            <td><a href="/blog/cost-index-week-2026-06-16/">Abrir despacho</a></td>
-            <td>—</td>
+            <td data-label="Semana del"><strong>2026-06-16</strong> <span style="opacity:.55;font-size:.85em">(reconstruida)</span></td>
+            <td data-label="Canasta vs. base">+3.2%</td>
+            <td data-label="Confianza">medium</td>
+            <td data-label="Por encima de la base">32 / 82</td>
+            <td data-label="Leer" style="white-space:nowrap"><a href="/blog/cost-index-week-2026-06-16/">Abrir despacho</a></td>
+            <td data-label="Datos" style="white-space:nowrap">—</td>
           </tr>
           <tr>
-            <td><strong>2026-06-05</strong> <span style="opacity:.55;font-size:.85em">(reconstruida)</span></td>
-            <td>+9.1%</td>
-            <td>high</td>
-            <td>9 / 13</td>
-            <td><a href="/blog/cost-index-week-2026-06-05/">Abrir despacho</a></td>
-            <td>—</td>
+            <td data-label="Semana del"><strong>2026-06-05</strong> <span style="opacity:.55;font-size:.85em">(reconstruida)</span></td>
+            <td data-label="Canasta vs. base">+9.1%</td>
+            <td data-label="Confianza">high</td>
+            <td data-label="Por encima de la base">9 / 13</td>
+            <td data-label="Leer" style="white-space:nowrap"><a href="/blog/cost-index-week-2026-06-05/">Abrir despacho</a></td>
+            <td data-label="Datos" style="white-space:nowrap">—</td>
           </tr>
       </tbody>
     </table>
+    </div>
     <p style="font-size:13.5px;color:var(--ink-soft);line-height:1.55">Las ediciones marcadas como “reconstruidas” se rellenaron a nivel de canasta a partir del despacho publicado antes de que existiera el conjunto de datos por semana; no incluyen archivo de datos abierto y nunca anclan una comparación semana a semana por ingrediente. Las ediciones nativas incluyen una instantánea abierta (CC0) en /cost-index/week-&lt;fecha&gt;.json.</p>
     <p><a href="/cost-index/methodology/">Cómo se construyen estos números →</a></p>
   </div>
 </div>
 </main>
 <footer class="site-footer" id="footer"></footer>
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

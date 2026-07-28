@@ -58,7 +58,7 @@ function card(locale) {
   const cta = locale === 'es' ? 'Leer la lectura más reciente &rarr;' : 'Read the latest read &rarr;';
   return [
     '<!-- cost-index-hero:start -->',
-    `<a class="ci-hero" href="${href}" style="display:block;margin:0 0 40px;padding:28px 32px;border-radius:16px;background:radial-gradient(140% 180% at 92% 50%,rgba(42,80,200,0.18) 0%,rgba(22,24,29,0) 62%),#16181D;color:#F6F7F8;text-decoration:none;border:1px solid rgba(246,247,248,0.12);box-shadow:0 18px 40px -28px rgba(0,0,0,0.5)">`,
+    `<a class="ci-hero" href="${href}" style="display:block;margin:0 0 40px;padding:28px 32px;border-radius:8px;background:radial-gradient(140% 180% at 92% 50%,rgba(42,80,200,0.18) 0%,rgba(22,24,29,0) 62%),#16181D;color:#F6F7F8;text-decoration:none;border:1px solid rgba(246,247,248,0.12);box-shadow:0 18px 40px -28px rgba(0,0,0,0.5)">`,
     `  <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;color:#9DB4FF;margin-bottom:10px">${eyebrow}</span>`,
     `  <h2 style="font-family:var(--font-display),Georgia,serif;font-size:clamp(23px,2.8vw,31px);font-weight:500;line-height:1.12;margin:0 0 10px;color:#F6F7F8;letter-spacing:-0.01em">${title}</h2>`,
     `  <p style="font-family:Inter,system-ui,sans-serif;font-size:16px;line-height:1.55;color:rgba(246,247,248,0.80);margin:0 0 16px;max-width:680px">${dek}</p>`,

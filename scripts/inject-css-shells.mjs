@@ -74,6 +74,13 @@ const LINK_BLOCK_RE_VARIANTS = [
 
 function isToolPath(rel) {
   const p = rel.split(path.sep).join('/');
+  // The /sheets/ HUB index reuses the tool-cluster card system
+  // (.tool-cluster/.tool-card--compact/.tool-grid/.tool-chipnav/.tool-goals),
+  // all of which live in site-tool.css — so the hub needs the tool shell or
+  // its entire card catalog ships unstyled. The 46 sheet DETAIL pages use
+  // their own /assets/sheets.css and carry no tool-* classes, so they stay
+  // core-only (see isCoreOnlyPath). Scope this to the two hub indexes only.
+  if (p === 'sheets/index.html' || p === 'es/sheets/index.html') return true;
   return /^(?:es\/)?tools\//.test(p);
 }
 
@@ -211,6 +218,21 @@ for (const file of listHtml(repoRoot)) {
       next = next.replace(re, newBlock);
       replaced = true;
       break;
+    }
+  }
+
+  // Re-shell case: a page previously assigned the core-only block whose
+  // path now needs a supplemental shell — e.g. the /sheets/ hub moving
+  // to the tool shell once it adopted the tool-cluster card system. Its
+  // block is already site-core.css (not the monolithic site.css the
+  // variants above match), so match the standalone core preload+noscript
+  // pair (any cache-bust) and upgrade it. Idempotent: a core+supplemental
+  // block never matches this (the noscript carries a second <link>).
+  if (!replaced && supplementalShell) {
+    const CORE_ONLY_RE = /<link\s+rel="preload"\s+as="style"\s+href="\/assets\/site-core\.css\?v=[^"]+"\s+onload="[^"]+">\s*\n?<noscript><link\s+rel="stylesheet"\s+href="\/assets\/site-core\.css\?v=[^"]+"><\/noscript>/;
+    if (CORE_ONLY_RE.test(next)) {
+      next = next.replace(CORE_ONLY_RE, newBlock);
+      replaced = true;
     }
   }
 

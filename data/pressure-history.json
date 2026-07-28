@@ -9,6 +9,36 @@
         "direction": "easing",
         "score": -5,
         "realized": "down"
+      },
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-06",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "broiler-placements": -0.004912531742512798
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-06",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "broiler-placements": -0.013255150298984561
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-13",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "broiler-placements": -0.01818858024536239
+        }
       }
     ],
     "whole-chicken": [
@@ -18,6 +48,36 @@
         "direction": "easing",
         "score": -5,
         "realized": "down"
+      },
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-06",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "broiler-placements": -0.004912531742512798
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-06",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "broiler-placements": -0.013255150298984561
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-13",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "broiler-placements": -0.01818858024536239
+        }
       }
     ],
     "ribeye": [
@@ -27,6 +87,36 @@
         "direction": "building",
         "score": 4,
         "realized": "up"
+      },
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "easing",
+        "score": -2,
+        "realized": "down",
+        "obs": {
+          "cattle-on-feed-placements": 0.05772811918063315
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "easing",
+        "score": -2,
+        "realized": "down",
+        "obs": {
+          "cattle-on-feed-placements": 0.05772811918063315
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "building",
+        "score": 2,
+        "realized": null,
+        "obs": {
+          "cattle-on-feed-placements": -0.18234950321449445
+        }
       }
     ],
     "beef-tenderloin": [
@@ -36,6 +126,36 @@
         "direction": "building",
         "score": 3,
         "realized": "down"
+      },
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "easing",
+        "score": -2,
+        "realized": "down",
+        "obs": {
+          "cattle-on-feed-placements": 0.05772811918063315
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "easing",
+        "score": -2,
+        "realized": "down",
+        "obs": {
+          "cattle-on-feed-placements": 0.05772811918063315
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "building",
+        "score": 2,
+        "realized": null,
+        "obs": {
+          "cattle-on-feed-placements": -0.18234950321449445
+        }
       }
     ],
     "pork-loin": [
@@ -45,6 +165,39 @@
         "direction": "easing",
         "score": -4,
         "realized": "up"
+      },
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "hogs-market-supply": -0.024720116370584487,
+          "cold-storage-pork": -0.09811519070823395
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "hogs-market-supply": -0.024720116370584487,
+          "cold-storage-pork": -0.09811519070823395
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "building",
+        "score": 3,
+        "realized": null,
+        "obs": {
+          "hogs-market-supply": -0.024720116370584487,
+          "cold-storage-pork": -0.06299570106126358
+        }
       }
     ],
     "pork-shoulder": [
@@ -54,6 +207,39 @@
         "direction": "easing",
         "score": -4,
         "realized": "up"
+      },
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "hogs-market-supply": -0.024720116370584487,
+          "cold-storage-pork": -0.09811519070823395
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "hogs-market-supply": -0.024720116370584487,
+          "cold-storage-pork": -0.09811519070823395
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "building",
+        "score": 3,
+        "realized": null,
+        "obs": {
+          "hogs-market-supply": -0.024720116370584487,
+          "cold-storage-pork": -0.06299570106126358
+        }
       }
     ],
     "romaine-lettuce": [
@@ -63,6 +249,48 @@
         "direction": "building",
         "score": 6,
         "realized": "up"
+      },
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "lettuce-shipments": -0.8059168984854506,
+          "lettuce-pace": -0.07292189392295301,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.0004641807210274043,
+          "lettuce-transition": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "lettuce-shipments": -0.7957979678697075,
+          "lettuce-pace": -0.10996150404006488,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216,
+          "lettuce-transition": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "building",
+        "score": 3,
+        "realized": null,
+        "obs": {
+          "lettuce-shipments": -0.8392583948875039,
+          "lettuce-pace": -0.11062940741512706,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216,
+          "lettuce-transition": 0
+        }
       }
     ],
     "tomato": [
@@ -72,6 +300,45 @@
         "direction": "steady",
         "score": -1,
         "realized": "down"
+      },
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "tomato-shipments": -0.9165191857263154,
+          "tomato-pace": -0.33920378155743824,
+          "freeze-alert": 0,
+          "tomato-transition": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "tomato-shipments": -0.9096326628473361,
+          "tomato-pace": -0.4239669367837877,
+          "freeze-alert": 0,
+          "tomato-transition": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "building",
+        "score": 3,
+        "realized": null,
+        "obs": {
+          "tomato-shipments": -0.8899640007728001,
+          "tomato-pace": -0.35060593816362307,
+          "freeze-alert": 0,
+          "tomato-transition": 0
+        }
       }
     ],
     "onion": [
@@ -81,6 +348,45 @@
         "direction": "building",
         "score": 6,
         "realized": "down"
+      },
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "building",
+        "score": 2,
+        "realized": "up",
+        "obs": {
+          "onion-shipments": -0.8194013617066022,
+          "onion-pace": -0.04883148267160953,
+          "drought-ca-az": 0.0004641807210274043,
+          "onion-transition": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "building",
+        "score": 2,
+        "realized": "up",
+        "obs": {
+          "onion-shipments": -0.8610328154963124,
+          "onion-pace": -0.08486367238263459,
+          "drought-ca-az": 0.013638501332497216,
+          "onion-transition": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "building",
+        "score": 2,
+        "realized": null,
+        "obs": {
+          "onion-shipments": -0.8436812797439315,
+          "onion-pace": -0.11843957871718669,
+          "drought-ca-az": 0.013638501332497216,
+          "onion-transition": 0
+        }
       }
     ],
     "russet-potato": [
@@ -90,6 +396,42 @@
         "direction": "easing",
         "score": -5,
         "realized": "up"
+      },
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "building",
+        "score": 2,
+        "realized": "up",
+        "obs": {
+          "potato-shipments": -0.8500235507662616,
+          "potato-pace": -0.17461773572862116,
+          "potato-transition": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "building",
+        "score": 2,
+        "realized": "up",
+        "obs": {
+          "potato-shipments": -0.8466587460935217,
+          "potato-pace": -0.1750896564184692,
+          "potato-transition": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "building",
+        "score": 2,
+        "realized": null,
+        "obs": {
+          "potato-shipments": -0.8778975144463017,
+          "potato-pace": -0.18896852733010217,
+          "potato-transition": 0
+        }
       }
     ],
     "butter": [
@@ -99,6 +441,36 @@
         "direction": "easing",
         "score": -4,
         "realized": "down"
+      },
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-04",
+        "direction": "steady",
+        "score": 1,
+        "realized": null,
+        "obs": {
+          "cold-storage-butter": -0.08076718793403283
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-04",
+        "direction": "steady",
+        "score": 1,
+        "realized": "down",
+        "obs": {
+          "cold-storage-butter": -0.08076718793403283
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-18",
+        "direction": "steady",
+        "score": 1,
+        "realized": null,
+        "obs": {
+          "cold-storage-butter": -0.08024840766541326
+        }
       }
     ],
     "cheddar-cheese": [
@@ -108,6 +480,1944 @@
         "direction": "building",
         "score": 5,
         "realized": "up"
+      }
+    ],
+    "bell-pepper": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "broccoli": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "cauliflower": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "spinach": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "asparagus": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "garlic": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "carrot": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "kale": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "basil": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "cilantro": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "cucumber": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "celery": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "cabbage": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "eggplant": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "zucchini": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "beet": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "leek": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "yellow-squash": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "jalapeno": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "green-onion": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "green-beans": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "parsley": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "brussels-sprouts": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "butternut-squash": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "iceberg-lettuce": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "bok-choy": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "artichoke": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "okra": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "snow-peas": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "avocado": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "lemon": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "lime": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "chicken-thigh": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-06",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "broiler-placements": -0.004912531742512798
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-06",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "broiler-placements": -0.013255150298984561
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-13",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "broiler-placements": -0.01818858024536239
+        }
+      }
+    ],
+    "short-rib": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "easing",
+        "score": -2,
+        "realized": "down",
+        "obs": {
+          "cattle-on-feed-placements": 0.05772811918063315
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "easing",
+        "score": -2,
+        "realized": "up",
+        "obs": {
+          "cattle-on-feed-placements": 0.05772811918063315
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "building",
+        "score": 2,
+        "realized": null,
+        "obs": {
+          "cattle-on-feed-placements": -0.18234950321449445
+        }
+      }
+    ],
+    "ground-beef": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-06-10",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "cattle-on-feed-placements": 0.05772811918063315
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-06-10",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "cattle-on-feed-placements": 0.05772811918063315
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-06-10",
+        "direction": "building",
+        "score": 2,
+        "realized": null,
+        "obs": {
+          "cattle-on-feed-placements": -0.18234950321449445
+        }
+      }
+    ],
+    "butter-lettuce": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "lettuce-shipments": -0.8059168984854506,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.0004641807210274043
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "building",
+        "score": 3,
+        "realized": "up",
+        "obs": {
+          "lettuce-shipments": -0.7957979678697075,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "building",
+        "score": 3,
+        "realized": null,
+        "obs": {
+          "lettuce-shipments": -0.8392583948875039,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      }
+    ],
+    "green-leaf-lettuce": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "lettuce-shipments": -0.8059168984854506,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.0004641807210274043
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "lettuce-shipments": -0.7957979678697075,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "building",
+        "score": 3,
+        "realized": null,
+        "obs": {
+          "lettuce-shipments": -0.8392583948875039,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      }
+    ],
+    "red-leaf-lettuce": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "lettuce-shipments": -0.8059168984854506,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.0004641807210274043
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "lettuce-shipments": -0.7957979678697075,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "building",
+        "score": 3,
+        "realized": null,
+        "obs": {
+          "lettuce-shipments": -0.8392583948875039,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      }
+    ],
+    "collard-greens": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "mint": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "rosemary": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "thyme": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "oregano": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "tarragon": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "dill": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-14",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-14",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "corn-on-the-cob": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": 0.0004641807210274043
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      }
+    ],
+    "sweet-potato": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216
+        }
+      }
+    ],
+    "rutabaga": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "acorn-squash": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-06",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "cherry-tomato": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "building",
+        "score": 3,
+        "realized": "up",
+        "obs": {
+          "tomato-shipments": -0.9165191857263154,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.0004641807210274043
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "tomato-shipments": -0.9096326628473361,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "building",
+        "score": 3,
+        "realized": null,
+        "obs": {
+          "tomato-shipments": -0.8899640007728001,
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      }
+    ],
+    "grapefruit": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": 0.0004641807210274043
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      }
+    ],
+    "apple": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "pear": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "drought-ca-az": 0.0004641807210274043,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "flat",
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
+      }
+    ],
+    "blueberry": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": 0.0004641807210274043
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "down",
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      }
+    ],
+    "raspberry": [
+      {
+        "asOf": "2026-07-13",
+        "anchor": "2026-07-10",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": 0.0004641807210274043
+        }
+      },
+      {
+        "asOf": "2026-07-20",
+        "anchor": "2026-07-16",
+        "direction": "steady",
+        "score": 0,
+        "realized": "up",
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      },
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": 0.013638501332497216
+        }
+      }
+    ],
+    "watermelon": [
+      {
+        "asOf": "2026-07-27",
+        "anchor": "2026-07-23",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": 0.013638501332497216,
+          "freeze-alert": 0
+        }
       }
     ]
   }

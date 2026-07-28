@@ -57,6 +57,18 @@
     }
   }
 
+  // Ease the appearance change instead of snapping it — the way the OS does.
+  // A transient class the CSS keys a short color/background cross-fade off of;
+  // it is gated behind (prefers-reduced-motion: no-preference), so anyone who
+  // asks for less motion gets the instant swap. Fired ONLY on a user toggle,
+  // never on the initial load (where the page should already be themed).
+  function animateThemeSwap() {
+    try {
+      html.classList.add('theme-animating');
+      window.setTimeout(function () { html.classList.remove('theme-animating'); }, 340);
+    } catch (_) { /* the swap still works without the ease */ }
+  }
+
   function readResolved() {
     // What's actually being shown right now (after OS prefs + override)?
     var stored = safeRead();
@@ -101,6 +113,7 @@
       else /* dark */           next = null;
       if (next == null) safeWrite(null);
       else              safeWrite(next);
+      animateThemeSwap();
       applyTheme(next);
       syncButtons();
       if (window.plausible) {

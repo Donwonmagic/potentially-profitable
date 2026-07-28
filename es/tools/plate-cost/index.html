@@ -137,9 +137,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=2830bb0a913c" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-tool.css?v=aee67503f378" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=2830bb0a913c"><link rel="stylesheet" href="/assets/site-tool.css?v=aee67503f378"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-tool.css?v=1f57a490e24f" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-tool.css?v=1f57a490e24f"></noscript>
 <style>.breadcrumb{padding-top:100px}
 /* === Plate Cost Calculator tool-scoped styles. Page-prefix .pc-*. === */
 .pc-form{display:flex;flex-direction:column;gap:18px}
@@ -150,13 +150,13 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .pc-meta input:focus{outline:2px solid var(--teal);outline-offset:1px}
 
 .pc-grid{border:1px solid var(--line);border-radius:var(--r-md);background:var(--white)}
-@media(min-width:640px){.pc-grid{overflow-x:auto;-webkit-overflow-scrolling:touch}}
-@media(max-width:639px){
+@media(min-width:860px){.pc-grid{overflow-x:auto;-webkit-overflow-scrolling:touch}}
+@media(max-width:859px){
   .pc-grid{padding:8px;background:transparent;border:0}
   .pc-grid table,.pc-grid thead,.pc-grid tbody,.pc-grid tr,.pc-grid td{display:block;width:100%}
   .pc-grid thead{position:absolute;left:-9999px;top:auto}
   .pc-grid tr{padding:14px 14px 8px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--white);margin-bottom:10px;position:relative}
-  .pc-grid td{padding:6px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}
+  .pc-grid td{padding:6px 0;border-bottom:1px dashed var(--line);display:grid;grid-template-columns:120px minmax(0,280px);gap:10px;align-items:center}
   .pc-grid td:last-of-type{border-bottom:0}
   .pc-grid td:not([data-label]){display:block}
   .pc-grid td::before{content:attr(data-label);font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--stone);text-transform:uppercase;align-self:center}
@@ -171,11 +171,15 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .pc-grid tr.pc-math-row td::before{content:none}
 }
 .pc-grid table{width:100%;border-collapse:collapse;font-size:13px}
-@media(min-width:640px){.pc-grid table{min-width:780px}}
+@media(min-width:860px){.pc-grid table{min-width:780px}}
 .pc-grid th{padding:10px 8px;text-align:left;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);background:var(--cream-2);border-bottom:1px solid var(--line);white-space:nowrap}
 .pc-grid td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+/* ES: los encabezados en español son más largos, así que la tabla mide ~854px.
+   Ajustamos el relleno horizontal en la vista de tabla (>=860px) para que quepa
+   en su columna (~820px) sin desplazamiento lateral. */
+@media(min-width:860px){.pc-grid th,.pc-grid td{padding-left:4px;padding-right:4px}}
 .pc-grid tr:last-child td{border-bottom:0}
-.pc-grid input,.pc-grid select{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font:inherit;font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}
+.pc-grid input,.pc-grid select{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--white);font:inherit;font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}@media(max-width:859px){.pc-grid input,.pc-grid select{min-height:44px}}
 .pc-grid input:focus,.pc-grid select:focus{outline:2px solid var(--teal);outline-offset:1px}
 .pc-grid input[type="number"]{text-align:right}
 .pc-grid .pc-num{width:84px;text-align:right;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink-soft)}
@@ -189,26 +193,6 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .pc-pull-invoice:hover{filter:brightness(1.06)}
 .pc-pull-invoice[disabled]{opacity:.55;cursor:wait}
 .pc-pull-invoice-msg{font-size:12.5px;margin:6px 12px 0;color:var(--ink-soft)}
-.pc-ocr{margin:0;padding:14px 16px;background:var(--cream-2);border-top:1px solid var(--line)}
-.pc-ocr[open]{padding-bottom:18px}
-.pc-ocr-summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink);list-style:none;display:flex;align-items:center;gap:8px}
-.pc-ocr-summary::-webkit-details-marker{display:none}
-.pc-ocr-summary::before{content:'+ ';color:var(--ink-soft);font-weight:700}
-.pc-ocr[open] .pc-ocr-summary::before{content:'− '}
-.pc-ocr-beta{display:inline-block;padding:1px 8px;font-size:10.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--cream);background:var(--teal);border-radius:999px}
-.pc-ocr-body{margin-top:12px}
-.pc-ocr-help{font-size:13px;color:var(--ink-soft);margin:0 0 10px;line-height:1.5}
-.pc-ocr-fileLabel{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid var(--ink);border-radius:999px;background:var(--white);color:var(--ink);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
-.pc-ocr-fileLabel:hover{background:var(--ink);color:var(--cream)}
-.pc-ocr-fileLabel input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
-.pc-ocr-progress{margin-top:12px}
-.pc-ocr-progress-bar{height:6px;background:var(--white);border:1px solid var(--line);border-radius:999px;overflow:hidden}
-.pc-ocr-progress-fill{height:100%;background:var(--teal);width:0;transition:width 200ms ease}
-.pc-ocr-progress-msg{margin:6px 0 0;font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
-.pc-ocr-status{margin-top:10px;padding:8px 12px;background:var(--white);border:1px solid var(--line);border-radius:6px;font-size:12.5px;color:var(--ink);line-height:1.5}
-.pc-ocr-status.error{border-color:var(--rust);color:var(--rust)}
-.pc-ocr-status.success{border-color:var(--teal);color:var(--teal)}
-.pc-ocr-disclaimer{margin-top:12px;font-size:11.5px;color:var(--stone);line-height:1.5;font-style:italic}
 .pc-sample-btn{padding:6px 14px;border:1px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
 .pc-sample-btn:hover{background:var(--teal);color:var(--cream)}
 .pc-clear-btn{padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--white);color:var(--stone);font:inherit;font-size:12px;font-weight:600;cursor:pointer;margin-left:auto}
@@ -239,7 +223,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 .pc-advice-hint{font-size:11.5px;color:var(--stone);margin:6px 0 12px}
 .pc-advice-headline{font-size:15px;line-height:1.5;color:var(--ink);margin:0 0 12px;font-weight:500}
 .pc-advice-options{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.pc-advice-option{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--cream-1)}
+.pc-advice-option{padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--cream-2)}
 .pc-advice-option.is-primary{border-color:var(--rust);background:var(--cream-2)}
 .pc-advice-do{display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--rust);margin-bottom:3px}
 .pc-advice-label{display:block;font-weight:500;color:var(--ink);font-size:13.5px}
@@ -300,6 +284,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
 body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
 .pc-recost-banner{display:none;align-items:flex-start;gap:14px;padding:14px 18px;margin:0 0 14px;border:1px solid var(--teal);border-left-width:4px;border-radius:var(--r-md);background:var(--cream-2)}
+.pc-from-note{font-size:13px;color:var(--ink-soft);background:var(--cream-2);border:1px solid var(--line);border-radius:var(--r-md);padding:8px 12px;margin:0 0 14px}
+.pc-from-note strong{color:var(--ink);font-weight:600}
 .pc-recost-banner-body{flex:1;font-size:13.5px;line-height:1.55;color:var(--ink)}
 .pc-recost-banner-eyebrow{display:block;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin-bottom:2px}
 .pc-recost-banner strong{color:var(--ink)}
@@ -449,18 +435,7 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
-<!-- batch-banner:start -->
-<aside class="batch-marquee" data-batch="fathers-day-2026" role="complementary" aria-label="Nuevo informe · Que te encuentren para el Día del Padre" style="background:#16181D;color:#F6F7F8;font-size:14px;line-height:1.4;padding:8px 0;border-bottom:1px solid rgba(246,247,248,0.16);box-shadow:inset 0 1px 0 rgba(255,255,255,0.05)">
-  <div style="max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,64px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0;flex:1 1 auto">
-      <span style="display:inline-block;font-family:Inter,system-ui,sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;background:#2A50C8;color:#F6F7F8;padding:3px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0">Nuevo informe</span>
-      <span style="font-family:'Fraunces',Georgia,'Times New Roman',serif;font-size:14px;font-style:italic;line-height:1.35;min-width:0;color:#F6F7F8">Es el fin de semana del Día del Padre. ¿Una familia que busca puede encontrarte?</span>
-    </div>
-    <a href="/es/blog/dia-del-padre-que-te-encuentren-2026/" style="display:inline-flex;align-items:center;gap:6px;color:#16181D;background:#F6F7F8;text-decoration:none;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,0.18);transition:transform .15s ease,box-shadow .15s ease">Leer el informe <span aria-hidden="true">&rarr;</span></a>
-  </div>
-</aside>
-<script>(function(){var d=document.documentElement;function s(){var b=document.querySelector('.batch-marquee');if(b){d.style.setProperty('--banner-h',b.offsetHeight+'px');}}s();addEventListener('resize',s,{passive:true});addEventListener('orientationchange',s);if(document.fonts&&document.fonts.ready){document.fonts.ready.then(s);}})();</script>
-<!-- batch-banner:end -->
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -477,7 +452,7 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
              along with the rest of the nav block on every build, keeping
              the partial strictly idempotent. Valid HTML5: <script> may
              appear in any flow-content context. */
-  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","audio.byline_studio":"Narrado para The Muntin Desk","audio.byline_browser":"Leído por tu navegador","audio.preview":"Escucha 30 segundos primero →","audio.resume_chip_aria":"Reanudar desde la posición guardada","audio.share_aria":"Copiar enlace en este momento","audio.dismiss":"Descartar","audio.kicker":"Edición en audio","audio.headline":"¿Prefieres escucharlo?","audio.sub":"Pulsa reproducir y leeremos el artículo entero — gráficos incluidos.","audio.meta_handsfree":"manos libres","audio.meta_min":"min","audio.now_reading":"Reproduciendo","audio.resume_continue":"Continuar desde","audio.help_aria":"Ver atajos de teclado e información del reproductor","audio.help_title":"Consejos para escuchar","audio.help_chapters_eyebrow":"Capítulos","audio.finished_done":"Listo.","audio.finished_browse":"Explora la biblioteca →","audio.share_toast_ok":"Enlace copiado en {time}","audio.share_toast_fail":"No se pudo copiar — portapapeles bloqueado","audio.language_label":"Idioma","lesson.widget_wait":"Don está esperando — usa el widget","lesson.widget_wait_labeled":"Don está esperando — {label}","lesson.opener_recorded":"Don abre esta lección","lesson.wrap_recorded":"Don cierra esta lección","audio.help_kbd_eyebrow":"Teclado","audio.kbd_space":"Espacio","audio.kbd_space_help":"Reproducir o pausar","audio.kbd_jk_help":"Retroceder 15 segundos / avanzar 15 segundos","audio.kbd_arrows_help":"Párrafo anterior / siguiente párrafo","audio.help_about_eyebrow":"Sobre la voz","audio.help_about_body":"The Muntin Desk usa una voz generada por computadora ajustada para una lectura clara. Usamos la misma voz en cada artículo para que te resulte familiar. Cada grabación se produce una sola vez y se guarda como un archivo de audio que puedes descargar.","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","search.voice_start":"Buscar por voz","search.voice_stop":"Detener la escucha","search.voice_hint":"Escuchando… habla ahora","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
+  window.__i18n=Object.assign(window.__i18n||{},{"nav.open_menu":"Abrir menú","nav.close_menu":"Cerrar menú","form.field_required":"Este campo es obligatorio.","form.invalid_email":"Ingresa un correo electrónico válido.","form.services_min_one":"Selecciona al menos una opción.","form.submit_fallback":"Algo falló. Inténtalo de nuevo o escribe directamente a don@muntin.digital.","audio.resume":"Reanudar audio","audio.pause":"Pausar","audio.play":"Reproducir versión en audio","audio.stop":"Detener y cerrar audio","audio.minimize":"Minimizar controles de audio","audio.expand":"Ampliar controles de audio","audio.prev":"Párrafo anterior","audio.next":"Párrafo siguiente","audio.back15":"Retroceder 15 segundos","audio.fwd15":"Adelantar 15 segundos","audio.progress":"Progreso del audio","audio.controls":"Controles del reproductor de audio","audio.article_label":"Versión en audio de este artículo","audio.speed":"Velocidad de reproducción","audio.voice":"Voz del narrador","audio.byline_studio":"Narrado para The Muntin Desk","audio.byline_browser":"Leído por tu navegador","audio.preview":"Escucha 30 segundos primero →","audio.resume_chip_aria":"Reanudar desde la posición guardada","audio.share_aria":"Copiar enlace en este momento","audio.dismiss":"Descartar","audio.kicker":"Edición en audio","audio.headline":"¿Prefieres escucharlo?","audio.sub":"Pulsa reproducir y leeremos el artículo entero — gráficos incluidos.","audio.meta_handsfree":"manos libres","audio.meta_min":"min","audio.now_reading":"Reproduciendo","audio.resume_continue":"Continuar desde","audio.help_aria":"Ver atajos de teclado e información del reproductor","audio.help_title":"Consejos para escuchar","audio.help_chapters_eyebrow":"Capítulos","audio.finished_done":"Listo.","audio.finished_browse":"Explora la biblioteca →","audio.share_toast_ok":"Enlace copiado en {time}","audio.share_toast_fail":"No se pudo copiar — portapapeles bloqueado","audio.language_label":"Idioma","share.copied":"Enlace copiado","share.copy_failed":"No se pudo copiar — selecciona la URL a mano","lesson.widget_wait":"Don está esperando — usa el widget","lesson.widget_wait_labeled":"Don está esperando — {label}","lesson.opener_recorded":"Don abre esta lección","lesson.wrap_recorded":"Don cierra esta lección","audio.help_kbd_eyebrow":"Teclado","audio.kbd_space":"Espacio","audio.kbd_space_help":"Reproducir o pausar","audio.kbd_jk_help":"Retroceder 15 segundos / avanzar 15 segundos","audio.kbd_arrows_help":"Párrafo anterior / siguiente párrafo","audio.help_about_eyebrow":"Sobre la voz","audio.help_about_body":"The Muntin Desk usa una voz generada por computadora ajustada para una lectura clara. Usamos la misma voz en cada artículo para que te resulte familiar. Cada grabación se produce una sola vez y se guarda como un archivo de audio que puedes descargar.","search.placeholder":"Busca artículos, herramientas, términos del glosario…","search.close":"Cerrar","search.hint_title":"¿Qué estás buscando?","search.hint_body":"Prueba con \"DoorDash\", \"Core Web Vitals\" o \"precios del menú\". Los resultados vienen de cada artículo, herramienta y término del glosario.","search.empty":"Sin resultados para","search.empty_hint":"Prueba una consulta más corta o una palabra distinta.","search.loading":"Buscando…","search.nav_hint":"para moverte","search.open_hint":"para abrir","search.close_hint":"para cerrar","search.kind_article":"Artículo","search.kind_tool":"Herramienta","search.kind_term":"Glosario","search.kind_resource":"Guía","search.kind_library":"Biblioteca","search.kind_case":"Caso de estudio","search.kind_service":"Servicios","search.kind_industry":"Para ti","search.kind_page":"Página","search.voice_start":"Buscar por voz","search.voice_stop":"Detener la escucha","search.voice_hint":"Escuchando… habla ahora","drawer.kicker":"Nota de investigación","drawer.close":"Cerrar","drawer.loading":"Cargando el resumen…","drawer.err_title":"No pudimos cargar el resumen","drawer.err_body":"Abre la nota completa en una pestaña nueva — es el mismo contenido, solo que más completo.","drawer.findings_label":"Hallazgos clave","drawer.note_label":"La nota de Don","drawer.read_full":"Leer la nota completa","drawer.read_original":"Ver la fuente original","drawer.open_new_tab":"se abre en una pestaña nueva"});</script>
   <div class="container nav-inner">
     <a href="/es/" class="logo" aria-label="Muntin Digital — inicio">
       <svg class="logo-mark" width="28" height="28" viewBox="0 0 128 128" fill="none" aria-hidden="true">
@@ -524,11 +499,10 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
       <a href="/tools/plate-cost/" hreflang="en" lang="en" class="js-lang-switch" data-set-locale="en">English</a>
       <span class="lang-switch-current" aria-current="true">ES</span>
     </nav>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don está cerca"></span>
-      Contacta a Don
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contacto retirado de la navegación principal (2026-07): el botón
+         relleno era el elemento más ancho de la derecha y desequilibraba la
+         barra. La línea directa sigue en el pie, el menú móvil y la barra fija
+         móvil. -->
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -561,7 +535,7 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
       </svg>
       <span class="theme-toggle__label js-theme-label">Modo claro</span>
     </button>
-    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Don. Leo cada mensaje.">Contacta a Don</a>
+    <a class="btn btn-primary js-window" href="/es/window/" title="Una línea directa con Muntin &mdash; leemos cada mensaje.">Contacto</a>
     <a href="/tools/plate-cost/" hreflang="en" lang="en" class="mobile-lang js-lang-switch" data-set-locale="en">View in English</a>
   </nav>
 
@@ -610,6 +584,29 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
        para que el botón .js-theme-toggle ya esté en el DOM. (Faltaba
        en el nav en español, así que el interruptor no funcionaba en
        las páginas /es/.) -->
+  <!-- Detección de pestaña activa. Marca con aria-current="page" el enlace
+       de navegación cuyo href coincide mejor (prefijo más largo) con la ruta
+       actual; el estilo lo muestra como la pestaña activa (subrayada).
+       Mejora progresiva: sin JS no hay pestaña activa. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/' || h === '/es/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
   <script src="/assets/theme-toggle.js?v=phase8"></script>
 </header>
 <nav class="breadcrumb container" aria-label="Breadcrumb"><a href="/es/">Inicio</a><span class="breadcrumb-sep" aria-hidden="true">›</span><a href="/es/tools/">Herramientas</a><span class="breadcrumb-sep" aria-hidden="true">›</span><span aria-current="page">Costo del Plato</span></nav>
@@ -622,7 +619,7 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
     <span class="eyebrow">Herramienta gratis · se queda en tu navegador</span>
     <h1 style="font-family:var(--font-display);font-size:clamp(34px,4.5vw,52px);font-weight:500;color:var(--ink);margin:14px 0 14px;line-height:1.1;">¿Cuánto cuesta de verdad cada plato?</h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-06-18">18 de junio de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-07-18">18 de julio de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">
@@ -717,22 +714,6 @@ body[data-pc-mode="recost"] .pc-recost-banner{display:flex}
       </div>
       <p class="pc-pull-invoice-msg" id="pcPullInvoiceMsg" role="status" aria-live="polite"></p>
 
-      <details class="pc-ocr">
-        <summary class="pc-ocr-summary">📷 Sácale foto a tu factura mejor <span class="pc-ocr-beta">beta</span></summary>
-        <div class="pc-ocr-body">
-          <p class="pc-ocr-help">Tómale una foto clara a tu factura del proveedor — la leemos en este dispositivo (la foto nunca sale del teléfono) y pre-llenamos las filas. Edita lo que se lea mal.</p>
-          <label class="pc-ocr-fileLabel" for="pcOcrFile">
-            <span>Elegir foto o tomar una nueva</span>
-            <input type="file" id="pcOcrFile" accept="image/*" capture="environment" />
-          </label>
-          <div class="pc-ocr-progress" id="pcOcrProgress" hidden>
-            <div class="pc-ocr-progress-bar"><div class="pc-ocr-progress-fill" id="pcOcrProgressFill"></div></div>
-            <p class="pc-ocr-progress-msg" id="pcOcrProgressMsg">Cargando el lector (~3 MB, una sola vez)…</p>
-          </div>
-          <p class="pc-ocr-status" id="pcOcrStatus" aria-live="polite" hidden></p>
-          <p class="pc-ocr-disclaimer">El OCR corre completo en tu navegador con Tesseract.js. Sin subida ni llamadas a APIs. La precisión depende de la luz y el contraste — funcionan mejor las fotos brillantes, planas y enfocadas.</p>
-        </div>
-      </details>
     </div>
 
     <ul class="pc-warnings" id="pcWarnings" aria-live="polite" style="display:none;"></ul>
@@ -816,7 +797,6 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
       <button type="button" class="pc-action-btn" id="pcDownloadJson">Descargar <span class="pc-action-fmt">.json</span></button>
       <button type="button" class="pc-action-btn" id="pcPushMe">Agregar a Ingeniería de Menú &rarr;</button>
       <button type="button" class="pc-action-btn" id="pcPushMm">Usar en Margen Math &rarr;</button>
-      <button type="button" class="pc-action-btn" id="pcPushPb">Brief para tu fotógrafo &rarr;</button>
       <span class="sr-only" role="status" aria-live="polite" aria-atomic="true" id="pcActionStatus"></span>
     </div>
 
@@ -834,7 +814,7 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
     </article>
 
     <div class="pc-empty" id="pcEmpty">
-      Llena una fila arriba &mdash; o <button type="button" class="pc-sample-btn" id="pcSample2" style="margin:0 6px;">carga la receta de muestra</button> &mdash; para ver la matemática.
+      Agrega una fila arriba, luego Calcular &mdash; la matemática corre aquí en tu dispositivo, sin enviar nada. O <button type="button" class="pc-sample-btn" id="pcSample2" style="margin:0 6px;">carga la receta de muestra</button>.
     </div>
   </div>
 </div></section>
@@ -938,8 +918,8 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
       <div class="tool-knit__col">
         <h3>Lee</h3>
         <ul>
-          <li><a href="/es/library/how-to-raise-restaurant-menu-prices-without-losing-reservations/">Subir precios sin perder reservas</a></li>
-          <li><a href="/es/library/third-party-delivery-economics/">¿Vale la pena DoorDash en 2026?</a></li>
+          <li><a href="/es/library/como-subir-precios-de-menu-sin-perder-reservas/">Subir precios sin perder reservas</a></li>
+          <li><a href="/es/library/como-salir-de-doordash-mi-restaurante/">¿Vale la pena DoorDash en 2026?</a></li>
         </ul>
       </div>
       <div class="tool-knit__col">
@@ -1013,18 +993,38 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
   <div class="foot-bottom"><p class="foot-copy">&copy; 2026 Muntin Digital<span aria-hidden="true">&#8482;</span> &middot; Maryland LLC &middot; Silver Spring, MD</p><nav class="foot-legal" aria-label="Legal"><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="/accessibility.html">Accessibility</a><a href="/cookies.html">Cookies</a></nav></div>
 </footer>
 
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 <script src="/tools/_shared/parse-number.js?v=20260428-shared1"></script>
 <script src="/tools/_shared/context-bus.js?v=20260501-w4-7"></script>
 <script src="/tools/_shared/next-tool.js?v=phase4"></script>
 <script src="/tools/_shared/handoff.js?v=phase4"></script>
 <script src="/tools/_shared/device-key.js?v=20260501-w3-4"></script>
-<script src="/data/cost-index.js?v=20260607-live4"></script>
+<script src="/data/cost-index.js?v=20260717-refpage1"></script>
 <script src="/tools/_shared/cost-index-lookup.js?v=20260608-w16-1"></script>
-<script src="/tools/plate-cost/cost-index-hint.js?v=20260608-w16-1" defer></script>
+<script src="/tools/plate-cost/cost-index-hint.js?v=20260717-verdict1" defer></script>
 <script src="/tools/_shared/plate-advice.js?v=20260606-w15-1"></script>
 <script src="/tools/plate-cost/plate-cost.js?v=20260428-pcF"></script>
 <script src="/tools/plate-cost/card-render.js?v=20260426-pc2"></script>
+<script src="/tools/_shared/cost-index-from-titles.js?v=20260717-from1"></script>
+<script src="/tools/_shared/from-continuity.js?v=20260717-from1"></script>
+<script>
+/* Move 9 — continuidad ?from. Si el lector llegó desde una página de ingrediente
+   del Índice de Costos (…/tools/plate-cost/?from=<slug>), la nombra sobre el aviso
+   de recosteo. El título viene SOLO del mapa cerrado y comprometido
+   (window.MUNTIN_FROM_TITLES) vía MuntinFromContinuity (textContent, no-op silencioso
+   en cualquier fallo). Sin fetch, sin almacenamiento. */
+(function () {
+  'use strict';
+  if (typeof MuntinFromContinuity === 'undefined' || !window.MUNTIN_FROM_TITLES) return;
+  var banner = document.getElementById('pcRecostBanner');
+  if (!banner) return;
+  MuntinFromContinuity.mount({
+    map: window.MUNTIN_FROM_TITLES, mountEl: banner, position: 'before', className: 'pc-from-note',
+    leadEn: 'Costing a dish with', tailEn: '— its live market read is in the Cost Index.',
+    leadES: 'Costeando un platillo con', tailES: '— su lectura de mercado en vivo está en el Índice de Costos.'
+  });
+})();
+</script>
 <script>
 /* Plate Cost — panel de recomendación (el gancho gratis→Ledger). Define
    window.MuntinPlateAdviceUI = { render(summary), clear() }, llamado desde
@@ -1652,141 +1652,6 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
   if (sampleBtn)  sampleBtn.addEventListener('click', loadSample);
   if (sampleBtn2) sampleBtn2.addEventListener('click', loadSample);
 
-  // -------------------- OCR de factura --------------------
-  var TESSERACT_CDN = 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
-  var tesseractLoadPromise = null;
-  function loadTesseract() {
-    if (tesseractLoadPromise) return tesseractLoadPromise;
-    tesseractLoadPromise = new Promise(function (resolve, reject) {
-      if (window.Tesseract) return resolve(window.Tesseract);
-      var s = document.createElement('script');
-      s.src = TESSERACT_CDN;
-      s.async = true;
-      s.crossOrigin = 'anonymous';
-      s.onload = function () {
-        if (window.Tesseract) resolve(window.Tesseract);
-        else reject(new Error('Tesseract loaded but global is missing'));
-      };
-      s.onerror = function () { reject(new Error('No se pudo cargar la biblioteca OCR')); };
-      document.head.appendChild(s);
-    });
-    return tesseractLoadPromise;
-  }
-
-  function parseInvoiceText(text) {
-    if (!text) return [];
-    var lines = String(text).split(/\r?\n/);
-    var UNITS = /^(lb|lbs|oz|ozs|kg|g|gal|qt|pt|fl\s*oz|ml|l|case|cs|ea|each|count|ct|dozen|doz|bag|bx|box)$/i;
-    var rows = [];
-    lines.forEach(function (raw) {
-      var line = (raw || '').replace(/[’‘]/g, "'").replace(/[“”]/g, '"').trim();
-      if (line.length < 6) return;
-      if (/^(factura|total|subtotal|impuesto|iva|adeudo|cliente|p[áa]gina|fecha|cuenta|t[ée]rminos)/i.test(line)) return;
-      var m = line.match(/^(\d+(?:[.,]\d+)?)\s+([a-zA-Z]+)\s+(.+?)\s+\$?(\d+(?:[.,]\d{2}))\s*$/);
-      if (m && UNITS.test(m[2])) {
-        rows.push({
-          ingredient: m[3].replace(/\s{2,}/g, ' '),
-          apQty: m[1].replace(',', '.'),
-          apUnit: m[2].toLowerCase().replace(/^lbs$/, 'lb').replace(/^ozs$/, 'oz').replace(/^each$/, 'ea'),
-          apPrice: m[4].replace(',', '.'),
-          yieldPercent: '',
-          usedQty: '',
-          usedUnit: 'oz'
-        });
-        return;
-      }
-      m = line.match(/^(.+?)\s+(\d+(?:[.,]\d+)?)\s*([a-zA-Z]+)?\s+\$?(\d+(?:[.,]\d{2}))\s*$/);
-      if (m && (!m[3] || UNITS.test(m[3]))) {
-        rows.push({
-          ingredient: m[1].replace(/\s{2,}/g, ' '),
-          apQty: m[2].replace(',', '.'),
-          apUnit: (m[3] || 'lb').toLowerCase().replace(/^lbs$/, 'lb').replace(/^ozs$/, 'oz'),
-          apPrice: m[4].replace(',', '.'),
-          yieldPercent: '',
-          usedQty: '',
-          usedUnit: 'oz'
-        });
-        return;
-      }
-      m = line.match(/^(.+?)\s+\$?(\d+\.\d{2})\s*$/);
-      if (m) {
-        rows.push({
-          ingredient: m[1].replace(/\s{2,}/g, ' '),
-          apQty: '1',
-          apUnit: 'lb',
-          apPrice: m[2],
-          yieldPercent: '',
-          usedQty: '',
-          usedUnit: 'oz'
-        });
-        return;
-      }
-    });
-    return rows.slice(0, 30);
-  }
-
-  (function setupInvoiceOcr() {
-    var fileInput  = document.getElementById('pcOcrFile');
-    var progress   = document.getElementById('pcOcrProgress');
-    var fill       = document.getElementById('pcOcrProgressFill');
-    var msg        = document.getElementById('pcOcrProgressMsg');
-    var status     = document.getElementById('pcOcrStatus');
-    if (!fileInput) return;
-
-    function setStatus(text, kind) {
-      if (!status) return;
-      status.textContent = text || '';
-      status.classList.remove('error', 'success');
-      if (kind) status.classList.add(kind);
-      status.hidden = !text;
-    }
-    function setProgress(pct, text) {
-      if (progress) progress.hidden = (pct == null);
-      if (fill && pct != null) fill.style.width = Math.max(0, Math.min(100, pct)) + '%';
-      if (msg && text) msg.textContent = text;
-    }
-
-    fileInput.addEventListener('change', function (ev) {
-      var file = ev.target.files && ev.target.files[0];
-      if (!file) return;
-      setStatus('');
-      setProgress(2, 'Cargando el lector (~3 MB, una sola vez)…');
-      // Tesseract con paquete de español + inglés (las facturas de
-      // distribuidores latinos suelen venir bilingües).
-      loadTesseract().then(function (T) {
-        setProgress(15, 'Leyendo la imagen…');
-        return T.recognize(file, 'spa+eng', {
-          logger: function (m) {
-            if (m && m.status === 'recognizing text' && typeof m.progress === 'number') {
-              setProgress(15 + Math.round(m.progress * 80), 'Leyendo la imagen — ' + Math.round(m.progress * 100) + '%');
-            }
-          }
-        });
-      }).then(function (result) {
-        var text = result && result.data && result.data.text || '';
-        var parsed = parseInvoiceText(text);
-        setProgress(null);
-        if (!parsed.length) {
-          setStatus('No se encontraron filas de ingredientes en esta foto. Prueba con una foto más brillante y plana — o teclea las filas abajo.', 'error');
-          return;
-        }
-        var current = readRows();
-        var nonEmpty = current.filter(function (r) {
-          return (r.ingredient || '').trim() || (r.apPrice || '').trim();
-        });
-        var merged = nonEmpty.length ? nonEmpty.concat(parsed) : parsed;
-        rerenderRows(merged);
-        renderResults();
-        setStatus('Se leyeron ' + parsed.length + ' fila' + (parsed.length === 1 ? '' : 's') + ' de tu foto. Edita lo que se haya leído mal abajo.', 'success');
-        if (window.plausible) window.plausible('Plate Cost OCR', { props: { rows: String(parsed.length), locale: 'es' } });
-      }).catch(function (err) {
-        setProgress(null);
-        setStatus('OCR falló: ' + (err && err.message || 'error desconocido') + '. Aún puedes teclear las filas abajo.', 'error');
-      }).finally(function () {
-        fileInput.value = '';
-      });
-    });
-  })();
 
   // -------------------- Exportaciones (CSV + JSON) --------------------
   function buildCsv() {
@@ -2056,20 +1921,6 @@ Margen de contribución por plato = precio menú &minus; costo del plato</pre>
     window.location.assign('/es/tools/margin-math/#calc-primecost');
   });
 
-  // -------------------- Brief para el fotógrafo --------------------
-  var pushPbBtn = document.getElementById('pcPushPb');
-  if (pushPbBtn) pushPbBtn.addEventListener('click', function(){
-    if (!latestSummary || !latestRecipe) return;
-    var name = (latestRecipe.name || 'Plato sin nombre').replace(/\|/g, '');
-    var prices = PC.suggestMenuPrices(latestSummary.plateCost);
-    var seedPrice = prices.length ? prices[1].price : 0;
-    var starsLine    = [name, 'main', 'hero'].join('|');
-    var marginsLine  = [name, latestSummary.plateCost.toFixed(2), seedPrice.toFixed(2)].join('|');
-    var url = '/es/tools/photo-brief/#stars=' + encodeURIComponent(starsLine) +
-              '&margins=' + encodeURIComponent(marginsLine);
-    if (window.plausible) window.plausible('Plate Cost Push', { props: { target: 'photo-brief' } });
-    window.location.assign(url);
-  });
 
   // Pegar desde hoja de cálculo. Reemplaza la grilla con las filas
   // procesadas. Los encabezados en inglés y en español se mapean

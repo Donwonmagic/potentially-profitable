@@ -43,7 +43,9 @@
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
 
 <style>.breadcrumb{padding-top:100px}</style>
-<link rel="stylesheet" href="/assets/site.css?v=20260425-mobile-library-fix">
+<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -169,7 +171,7 @@
         "@id": "https://muntin.digital/#business"
       },
       "image": "https://muntin.digital/brand/og/glossary-revisions.png",
-      "datePublished": "2026-06-23T05:52:59.749Z",
+      "datePublished": "2026-07-11T05:59:36+00:00",
       "isPartOf": {
         "@id": "https://muntin.digital/glossary/#muntin-glossary"
       }
@@ -183,6 +185,8 @@
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
+<!-- batch-banner:start --><!-- batch-banner:end -->
+<!-- batch-banner:start --><!-- batch-banner:end -->
 <script>
   /* Platform-aware kbd hint. Default markup is Ctrl+K (PC); flip to ⌘K on
      Apple devices. Runs early in <body> so the swap is essentially
@@ -270,20 +274,17 @@
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">
-      <!-- Phase 5+ — site-wide pulse propagation. Hidden by default;
-           window-state.js reveals when lastSeen <4h. Decorative; the
-           label "Reach Don" remains the accessible affordance. -->
-      <span class="nav-window-pulse" id="navWindowPulse" hidden aria-hidden="true" title="Don is around"></span>
-      Reach Don
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-    </a>
+    <!-- Contact CTA retired from the primary nav (2026-07): the filled pill was
+         the widest right-side item, so justify-content:space-between dumped the
+         row's overflow onto it and pushed it past the right padding — the nav
+         read as leaning right. The direct line still lives in the footer, the
+         mobile menu (below), and the mobile sticky CTA bar. -->
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
   <!-- Mobile menu mirrors the 5-item desktop nav, plus search, lang
-       switcher, and the Reach Don CTA. The auth-state JS below
+       switcher, and the Contact CTA. The auth-state JS below
        toggles js-nav-signin vs js-nav-workshop in both surfaces. -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
     <a href="/library/">Library</a>
@@ -317,7 +318,7 @@
       </svg>
       <span class="theme-toggle__label js-theme-label">Light mode</span>
     </button>
-    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Don. I read every one.">Reach Don</a>
+    <a class="btn btn-primary js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read.">Contact</a>
     <a href="/es/glossary/revisions/" hreflang="es" lang="es" class="mobile-lang js-lang-switch" data-set-locale="es">Ver en español</a>
   </nav>
 
@@ -385,6 +386,32 @@
         .catch(function () { show(signin); });
     });
   </script>
+  <!-- Active-tab detection. Marks the top-level nav link whose href is the
+       best (longest) prefix match for the current path with
+       aria-current="page"; the tab styling renders that as the active
+       (underlined) tab. Runs synchronously — the .nav-links are already
+       parsed above. Progressive enhancement: no-JS visitors see no active
+       tab, which is acceptable. The home link is not a tab, so "/" never
+       matches on every page. -->
+  <script>
+    (function () {
+      try {
+        var path = location.pathname.replace(/\/index\.html$/, '/');
+        if (path.charAt(path.length - 1) !== '/') path += '/';
+        var links = document.querySelectorAll('.nav-links a[href^="/"]');
+        var best = null, bestLen = -1;
+        for (var i = 0; i < links.length; i++) {
+          var h = links[i].getAttribute('href').replace(/\/index\.html$/, '/');
+          if (h.charAt(h.length - 1) !== '/') h += '/';
+          if (h === '/') continue;
+          if (path === h || path.indexOf(h) === 0) {
+            if (h.length > bestLen) { best = links[i]; bestLen = h.length; }
+          }
+        }
+        if (best) best.setAttribute('aria-current', 'page');
+      } catch (e) { /* no-op */ }
+    })();
+  </script>
   <!-- Phase 7 — dark-mode toggle handler. Loaded after the nav
        partial so the .js-theme-toggle button is in the DOM. -->
   <script src="/assets/theme-toggle.js?v=phase8"></script>
@@ -418,7 +445,7 @@
 
     <div class="term-body">
       <p class="term-def">Published numbers are versioned. A source agency releases a preliminary figure and later revises it to a final one, so any honest index built on them must revise with them — logging what changed and when, never silently overwriting history. Vintage is which version of a number you are looking at: the release it came from and the date it carried.</p>
-      <h2 class="term-why-h">Why it matters</h2>
+      <h2 class="term-why-h" id="why-it-matters">Why it matters</h2>
       <p class="term-why">If a number can change after you read it, you need to know which version you acted on. Treating every figure as a value plus a vintage is just good data practice — it keeps a past decision judgeable against what was actually known. The Cost Index follows a stated revision-and-correction policy: when an upstream series is revised, it re-vendors the new value with a fresh vintage and records the change rather than pretending the first number was always right.</p>
       
       <!-- glossary-explainer-cue:start -->
@@ -471,7 +498,7 @@
   <div class="container">
     <div class="section-header reveal section-center">
       <span class="eyebrow">Glossary</span>
-      <h2>Browse all<br><span class="serif-italic"><!-- count:glossary.terms -->171<!-- /count --> terms.</span></h2>
+      <h2 id="browse-all171-terms">Browse all<br><span class="serif-italic"><!-- count:glossary.terms -->171<!-- /count --> terms.</span></h2>
       <p class="final-sub">Plain-English definitions for every term in your audit, organized by category.</p>
     </div>
     <div class="hero-ctas reveal hero-ctas-center">
@@ -528,7 +555,7 @@
         <a class="btn btn-primary" href="/ledger/">See Muntin Ledger
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
-        <a class="btn btn-ghost js-window" href="/window/" title="A direct line to Don. I read every one." style="color:var(--cream)"><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>Reach Don</a>
+        <a class="btn btn-ghost js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read." style="color:var(--cream)"><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true"></span>Contact</a>
       </div>
     </div>
 
@@ -542,7 +569,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->38<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -603,7 +630,7 @@
         <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/window/">Reach Don</a></li>
+          <li><a href="/window/">Contact</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Reply:</strong> within 4 hours Mon&ndash;Fri; weekends by Monday.</p>
@@ -613,7 +640,7 @@
     <!-- newsletter-capture:start -->
     <div class="foot-newsletter">
       <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en">
-        <p class="foot-newsletter-pitch">I send a short note when I publish something &mdash; four notes a quarter, no funnels.</p>
+        <p class="foot-newsletter-pitch">We send a short note when we publish something &mdash; four notes a quarter, no funnels.</p>
         <label class="foot-newsletter-label" for="foot-news-email">Your email</label>
         <input id="foot-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
         <input type="hidden" name="locale" value="en" />
@@ -657,14 +684,18 @@
               headers: { 'content-type': 'application/x-www-form-urlencoded' },
               body: params.toString(),
               credentials: 'same-origin',
-            }).then(function () {
-              form.dataset.state = 'ok';
-              if (typeof window.plausible === 'function') {
-                var evName = form.dataset.event || 'Newsletter Signup';
-                var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
-                try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+            }).then(function (res) {
+              if (res && res.ok) {
+                form.dataset.state = 'ok';
+                if (typeof window.plausible === 'function') {
+                  var evName = form.dataset.event || 'Newsletter Signup';
+                  var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
+                  try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+                }
+              } else {
+                form.dataset.state = 'error';
               }
-            }).catch(function () { /* fire-and-forget; no error UI by design */ });
+            }).catch(function () { form.dataset.state = 'error'; /* fire-and-forget; no error UI by design */ });
           });
         }
         function init() {
@@ -701,9 +732,9 @@
       Check prices
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
-      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don is around"></span>
+      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true"></span>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Reach Don
+      Contact
     </a>
   </aside>
   <script>
@@ -717,6 +748,14 @@
       }
     })();
   </script>
+  <!-- On-device warmth (warmth.js): the Golden-Hour whisper — a hero's light leans a
+       hair warmer at the edges of the reader's local day, computed on their machine
+       from the local clock and sent nowhere. Only surfaces with a .hero/.window pane
+       show it; everywhere else it is inert. Fail-silent; with JS off (or motion
+       reduced) the page is the certified v3. Placed INSIDE <footer> so sync-includes
+       (FOOTER_RE) replaces it atomically and never double-stamps. The homepage loads
+       its own copy (bespoke footer). See docs/handoff/warmth-cohesion-plan.md. -->
+  <script src="/assets/js/warmth.js?v=20260717-warmth1" defer></script>
 </footer>
 <!-- Phase 3D-perf — lazy-load non-critical JS after `load` + idle.
      Previously, the 4 footer scripts (first-touch, save-next-time,
@@ -794,6 +833,6 @@
 })();
 </script>
 
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260422-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>

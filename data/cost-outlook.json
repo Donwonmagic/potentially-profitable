@@ -7,8 +7,8 @@
     "seasonality": "data/seasonality.json",
     "basket": "data/cost-basket-weights.json"
   },
-  "asOf": "2026-06-08",
-  "month": 6,
+  "asOf": "2026-07-27",
+  "month": 7,
   "horizonHonest": 1,
   "basket": [
     "beef-tenderloin",
@@ -28,34 +28,27 @@
     "vegetable-oil",
     "whole-chicken"
   ],
-  "weightedTilt": -0.145,
-  "outlook": "mixed",
+  "weightedTilt": 0.33,
+  "outlook": "building",
   "counts": {
-    "building": 5,
-    "easing": 7,
-    "steady": 0,
-    "n": 12
+    "building": 8,
+    "easing": 0,
+    "steady": 3,
+    "n": 11
   },
   "lockCandidates": [],
   "watchCandidates": [
-    "beef-tenderloin",
+    "russet-potato",
     "onion",
-    "romaine-lettuce",
-    "cheddar-cheese",
-    "ribeye"
-  ],
-  "featureCandidates": [
-    "chicken-breast",
-    "whole-chicken",
-    "butter",
     "pork-loin",
     "pork-shoulder",
-    "russet-potato",
+    "romaine-lettuce",
     "tomato"
   ],
+  "featureCandidates": [],
   "movers": [
     {
-      "slug": "beef-tenderloin",
+      "slug": "russet-potato",
       "direction": "building",
       "confidence": "high",
       "storable": false,
@@ -63,17 +56,25 @@
       "seasonalNote": null
     },
     {
-      "slug": "chicken-breast",
-      "direction": "easing",
-      "confidence": "high",
+      "slug": "onion",
+      "direction": "building",
+      "confidence": "moderate",
       "storable": false,
-      "action": "feature-now",
+      "action": "watch-negotiate",
       "seasonalNote": null
     },
     {
-      "slug": "onion",
+      "slug": "pork-loin",
       "direction": "building",
-      "confidence": "high",
+      "confidence": "moderate",
+      "storable": false,
+      "action": "watch-negotiate",
+      "seasonalNote": null
+    },
+    {
+      "slug": "pork-shoulder",
+      "direction": "building",
+      "confidence": "moderate",
       "storable": false,
       "action": "watch-negotiate",
       "seasonalNote": null
@@ -81,25 +82,17 @@
     {
       "slug": "romaine-lettuce",
       "direction": "building",
-      "confidence": "high",
+      "confidence": "moderate",
       "storable": false,
       "action": "watch-negotiate",
       "seasonalNote": null
     },
     {
-      "slug": "whole-chicken",
-      "direction": "easing",
-      "confidence": "high",
-      "storable": false,
-      "action": "feature-now",
-      "seasonalNote": null
-    },
-    {
-      "slug": "butter",
-      "direction": "easing",
+      "slug": "tomato",
+      "direction": "building",
       "confidence": "moderate",
       "storable": false,
-      "action": "feature-now",
+      "action": "watch-negotiate",
       "seasonalNote": null
     }
   ],

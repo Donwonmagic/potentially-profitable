@@ -8,11 +8,11 @@
   "reconstructedNote": "Observations marked reconstructed:true are a monthly backfill reconstructed from public sources after the fact — not figures published live on that date. Live points (reconstructed:false) were captured at publication.",
   "coverage": {
     "start": "2001-04-18",
-    "end": "2026-07-10",
-    "points": 1330,
-    "reconstructed": 1304
+    "end": "2026-07-24",
+    "points": 1332,
+    "reconstructed": 1306
   },
-  "asOf": "2026-07-10",
+  "asOf": "2026-07-24",
   "observations": [
     {
       "date": "2001-04-18",
@@ -7839,64 +7839,16 @@
       "reconstructed": true
     },
     {
-      "date": "2026-06-04",
-      "priceUsd": 14.76,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-05",
-      "priceUsd": 15.27,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-08",
-      "priceUsd": 14.76,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-09",
-      "priceUsd": 14.98,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
       "date": "2026-06-10",
-      "priceUsd": 15.08,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-11",
-      "priceUsd": 15,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-12",
-      "priceUsd": 14.67,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-15",
-      "priceUsd": 15.65,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-06-16",
-      "priceUsd": 15.17,
-      "source": "usda-lmr",
-      "reconstructed": false
+      "priceUsd": 14.97,
+      "source": null,
+      "reconstructed": true
     },
     {
       "date": "2026-06-17",
-      "priceUsd": 15.04,
-      "source": "usda-lmr",
-      "reconstructed": false
+      "priceUsd": 15.11,
+      "source": null,
+      "reconstructed": true
     },
     {
       "date": "2026-06-18",
@@ -7991,6 +7943,66 @@
     {
       "date": "2026-07-10",
       "priceUsd": 14.54,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-13",
+      "priceUsd": 15.27,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-14",
+      "priceUsd": 14.07,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-15",
+      "priceUsd": 14.9,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-16",
+      "priceUsd": 14.52,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-17",
+      "priceUsd": 14.3,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-20",
+      "priceUsd": 15.03,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-21",
+      "priceUsd": 13.93,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-22",
+      "priceUsd": 13.9,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-23",
+      "priceUsd": 14.16,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-07-24",
+      "priceUsd": 13.88,
       "source": "usda-lmr",
       "reconstructed": false
     }

@@ -8,7 +8,7 @@
         <a class="btn btn-primary" href="/ledger/">See Muntin Ledger
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/></svg>
         </a>
-        <a class="btn btn-ghost js-window" href="/window/" title="A direct line to Don. I read every one." style="color:var(--cream)"><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true" title="Don is around"></span>Reach Don</a>
+        <a class="btn btn-ghost js-window" href="/window/" title="A direct line to Muntin &mdash; every message is read." style="color:var(--cream)"><span class="foot-cta-pulse" id="footCtaPulse" hidden aria-hidden="true"></span>Contact</a>
       </div>
     </div>
 
@@ -22,7 +22,7 @@
           <sup class="tm" aria-hidden="true">&#8482;</sup>
         </a>
         <p class="foot-tagline">The window in.</p>
-        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->36<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
+        <p class="foot-blurb">A free restaurant library &mdash; <!-- count:articles.library -->38<!-- /count --> articles, <!-- count:tools.live -->5<!-- /count --> tools, <!-- count:glossary.terms -->171<!-- /count --> glossary terms &mdash; from Muntin Digital in Silver Spring, MD.</p>
       </div>
 
       <!-- Column order mirrors the 4-item primary nav
@@ -83,7 +83,7 @@
         <p class="foot-heading" id="foot-contact">Contact</p>
         <ul class="foot-links">
           <li><a href="mailto:don@muntin.digital">don@muntin.digital</a></li>
-          <li><a href="/window/">Reach Don</a></li>
+          <li><a href="/window/">Contact</a></li>
           <li><a href="https://www.instagram.com/muntin.digital/" target="_blank" rel="noopener">Instagram<span class="sr-only"> (opens in new tab)</span></a></li>
         </ul>
         <p class="foot-trust"><strong>Reply:</strong> within 4 hours Mon&ndash;Fri; weekends by Monday.</p>
@@ -93,7 +93,7 @@
     <!-- newsletter-capture:start -->
     <div class="foot-newsletter">
       <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en">
-        <p class="foot-newsletter-pitch">I send a short note when I publish something &mdash; four notes a quarter, no funnels.</p>
+        <p class="foot-newsletter-pitch">We send a short note when we publish something &mdash; four notes a quarter, no funnels.</p>
         <label class="foot-newsletter-label" for="foot-news-email">Your email</label>
         <input id="foot-news-email" name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="send" autocapitalize="off" spellcheck="false" placeholder="you@yourrestaurant.com" />
         <input type="hidden" name="locale" value="en" />
@@ -137,14 +137,18 @@
               headers: { 'content-type': 'application/x-www-form-urlencoded' },
               body: params.toString(),
               credentials: 'same-origin',
-            }).then(function () {
-              form.dataset.state = 'ok';
-              if (typeof window.plausible === 'function') {
-                var evName = form.dataset.event || 'Newsletter Signup';
-                var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
-                try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+            }).then(function (res) {
+              if (res && res.ok) {
+                form.dataset.state = 'ok';
+                if (typeof window.plausible === 'function') {
+                  var evName = form.dataset.event || 'Newsletter Signup';
+                  var surface = form.dataset.surface || (form.dataset.locale === 'es' ? 'footer-es' : 'footer-en');
+                  try { window.plausible(evName, { props: { surface: surface } }); } catch (_) {}
+                }
+              } else {
+                form.dataset.state = 'error';
               }
-            }).catch(function () { /* fire-and-forget; no error UI by design */ });
+            }).catch(function () { form.dataset.state = 'error'; /* fire-and-forget; no error UI by design */ });
           });
         }
         function init() {
@@ -181,9 +185,9 @@
       Check prices
     </a>
     <a class="mobile-cta-bar__btn mobile-cta-bar__btn--ghost js-window" href="/window/" data-event="sticky-cta-window">
-      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true" title="Don is around"></span>
+      <span class="mobile-cta-bar__pulse" id="mobileCtaBarPulse" hidden aria-hidden="true"></span>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6 h16 v12 H4 Z M4 6 l8 7 l8-7"/></svg>
-      Reach Don
+      Contact
     </a>
   </aside>
   <script>
@@ -197,6 +201,14 @@
       }
     })();
   </script>
+  <!-- On-device warmth (warmth.js): the Golden-Hour whisper — a hero's light leans a
+       hair warmer at the edges of the reader's local day, computed on their machine
+       from the local clock and sent nowhere. Only surfaces with a .hero/.window pane
+       show it; everywhere else it is inert. Fail-silent; with JS off (or motion
+       reduced) the page is the certified v3. Placed INSIDE <footer> so sync-includes
+       (FOOTER_RE) replaces it atomically and never double-stamps. The homepage loads
+       its own copy (bespoke footer). See docs/handoff/warmth-cohesion-plan.md. -->
+  <script src="/assets/js/warmth.js?v=20260717-warmth1" defer></script>
 </footer>
 <!-- Phase 3D-perf — lazy-load non-critical JS after `load` + idle.
      Previously, the 4 footer scripts (first-touch, save-next-time,

@@ -2,19 +2,22 @@
 /**
  * Phase G.10 (Growth) — guard the newsletter capture copy.
  *
- * The brand frame is "I send a short note when I publish something" —
- * Don's voice, not corporate-SaaS. This check fails CI if:
+ * The brand frame is "We send a short note when we publish something" —
+ * Muntin's plain company voice, deliberately NOT corporate-SaaS. (Updated
+ * 2026-07-11 from the founder's first-person "I send…" to the company "we"
+ * per the positioning pivot; the anti-corporate-SaaS teeth below are
+ * unchanged.) This check fails CI if:
  *
  *   1. The required framing string is missing from either footer
- *      ("when I publish something" / "cuando publique algo").
+ *      ("when we publish something" / "cuando publiquemos algo").
  *   2. The forbidden corporate-SaaS register appears anywhere
  *      ("subscribe to our newsletter", "join our community",
  *      "join our list", "exclusive content", "members-only",
  *      "súmate a nuestra comunidad", etc.).
  *
  * Scope: every footer + page-content HTML file. The check is
- * intentionally loud — if a future Don-doesn't-write-this drift
- * lands the CI fails before merge.
+ * intentionally loud — if a future off-voice drift lands the CI
+ * fails before merge.
  *
  *   node scripts/check-newsletter-copy.mjs --check
  */
@@ -27,8 +30,8 @@ const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
 
 const REQUIRED = [
-  { file: '_includes/footer.html',     phrase: 'when I publish something' },
-  { file: '_includes/es/footer.html',  phrase: 'cuando publique algo' },
+  { file: '_includes/footer.html',     phrase: 'when we publish something' },
+  { file: '_includes/es/footer.html',  phrase: 'cuando publiquemos algo' },
 ];
 
 const FORBIDDEN_PHRASES = [

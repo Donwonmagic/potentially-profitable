@@ -37,7 +37,8 @@
         '.pc-ci-hint{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-top:5px;font-size:11.5px;line-height:1.35;color:#4A4F59}' +
         '.pc-ci-hint a{color:#2A50C8;text-decoration:none;border-bottom:1px dashed currentColor}' +
         '.pc-ci-hint__use{font:inherit;cursor:pointer;border:1px solid #2A50C8;color:#2A50C8;background:#fff;border-radius:999px;padding:1px 8px}' +
-        '.pc-ci-hint__use:hover{background:#2A50C8;color:#fff}';
+        '.pc-ci-hint__use:hover{background:#2A50C8;color:#fff}' +
+        '.pc-ci-hint__verdict{font-weight:600;color:#3A3F49}';
       document.head.appendChild(style);
 
       function money(c) { return '$' + (Math.round(c) / 100).toFixed(2); }
@@ -77,6 +78,21 @@
         txt.appendChild(document.createTextNode(lead));
         txt.appendChild(a);
         txt.appendChild(document.createTextNode(tail));
+        // The calibrated buy/hold/watch read now travels with the reference
+        // (cost-index-lookup widen, item A). Surface its verb on the same line,
+        // attached to the Cost Index wholesale read — never the operator's own
+        // price. cost-verdict.js self-governs honesty (thin data → "Watch"), so
+        // there is no new copy here; a missing verdict just renders nothing.
+        if (ref.verdict && (ref.verdict.verb_en || ref.verdict.verb_es)) {
+          var verb = es ? ref.verdict.verb_es : ref.verdict.verb_en;
+          if (verb) {
+            var vstrong = document.createElement('strong');
+            vstrong.className = 'pc-ci-hint__verdict';
+            vstrong.textContent = verb;
+            txt.appendChild(document.createTextNode('  ·  '));
+            txt.appendChild(vstrong);
+          }
+        }
         hint.appendChild(txt);
 
         var btn = document.createElement('button');

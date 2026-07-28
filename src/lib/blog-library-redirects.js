@@ -81,6 +81,11 @@ export const BLOG_LIBRARY_REDIRECTS = new Map([
   ['/blog/restaurant-brand-system-colors-type-logo/',                        '/library/restaurant-brand-system-colors-type-logo/'],
   ['/blog/restaurant-menu-engineering/',                                     '/library/restaurant-menu-engineering/'],
   ['/blog/restaurant-website-legal-essentials/',                             '/library/restaurant-website-legal-essentials/'],
+  // EN kept-slug gap-close (2026-07-18): two more library articles the blog
+  // index still links at /blog/<slug>/ with no matching 301 (found by a
+  // redirect-worker-aware broken-link sweep). /library/<slug>/ verified on disk.
+  ['/blog/keep-plate-cost-honest-when-prices-change/',                       '/library/keep-plate-cost-honest-when-prices-change/'],
+  ['/blog/what-beef-prices-mean-for-your-restaurant/',                       '/library/what-beef-prices-mean-for-your-restaurant/'],
 
   // EN rename moves (de-timed)
   ['/blog/how-much-does-a-custom-restaurant-website-cost-in-2026/',          '/library/custom-restaurant-website-pricing/'],

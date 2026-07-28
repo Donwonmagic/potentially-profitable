@@ -183,15 +183,26 @@ function sectionFor(eyebrow) {
   return SECTION_FROM_EYEBROW[eyebrow] || eyebrow || '—';
 }
 
+// Contributor follows the byline canon (CLAUDE.md): library articles ship
+// under "The Muntin Desk" (the editorial identity — Don is the human under
+// the hood in JSON-LD, but the visible byline is the desk); blog dispatches
+// ship under "Don Goldstein". Tools are a product, so they carry the desk
+// too. Derived from the URL namespace so the recents column matches the byline
+// on the destination page — and so the column reads as a company index, not a
+// one-person roll. An explicit `item.contributor` still wins (guest bylines).
+function contributorFor(url) {
+  if (/^\/(es\/)?(library|tools)\//.test(url || '')) return 'The Muntin Desk';
+  return 'Don Goldstein';
+}
+
 function renderRow(item, locale) {
   const eyebrow = locale === 'en' ? item.eyebrow_en : item.eyebrow_es;
   const title   = locale === 'en' ? item.title_en   : item.title_es;
   const url     = locale === 'en' ? item.url_en     : item.url_es;
   const section = sectionFor(eyebrow);
-  // Contributor stays as-is until a real byline ships. Hardcoded to
-  // "Don Goldstein" today; future entries can carry a `contributor`
-  // field on the source data and replace this fallback inline.
-  const contributor = item.contributor || 'Don Goldstein';
+  // Contributor by byline canon (see contributorFor): library/tools → "The
+  // Muntin Desk", blog → "Don Goldstein". An explicit source-data override wins.
+  const contributor = item.contributor || contributorFor(url);
   return `      <tr>
         <td class="lib-idx-title"><a href="${escAttr(url)}">${escText(title)}</a></td>
         <td class="lib-idx-section">${escText(section)}</td>

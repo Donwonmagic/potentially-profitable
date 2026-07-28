@@ -20,6 +20,23 @@
     if (txt != null) e.textContent = txt;
     return e;
   }
+
+  // Move 9 — ?from continuity. If the reader arrived from a Cost Index ingredient
+  // page (…/tools/cost-pulse/?from=<slug>), name where they came from at the top of
+  // the market card. The map is built from the SAME fact-gated seed the card already
+  // reads; the guard + render live in MuntinFromContinuity (injection-proof: closed
+  // committed map, textContent only, silent no-op on any miss). No fetch, no storage.
+  if (typeof MuntinFromContinuity !== 'undefined') {
+    var fromMap = {};
+    (DATA.ingredients || []).forEach(function (ing) {
+      if (ing && ing.key) fromMap[ing.key] = { en: ing.label_en, es: ing.label_es };
+    });
+    MuntinFromContinuity.mount({
+      map: fromMap, mountEl: card, position: 'prepend', className: 'cp-market-continuity',
+      leadEn: 'You came here from', tailEn: 'in the Cost Index.',
+      leadES: 'Llegaste aquí desde', tailES: 'en el Índice de Costos.'
+    });
+  }
   // Whole days between an ISO/seed date string and now, or null if unparseable.
   // Used to age the freshness line honestly (a stale artifact must not read fresh).
   function ageInDays(isoStr) {
@@ -35,13 +52,17 @@
   // (v=1; row = ingredient|apPrice|apQty|apUnit|yield|usedQty|usedUnit). If
   // Plate Cost ever bumps its fragment version, decodeRecipe returns null and the
   // link degrades gracefully to an empty calculator — no hard break.
-  function plateCostHref(name) {
+  function plateCostHref(name, key) {
     function enc(s) {
       return encodeURIComponent(String(s == null ? '' : s))
         .replace(/\|/g, '%7C').replace(/;/g, '%3B').replace(/&/g, '%26').replace(/=/g, '%3D');
     }
     var row = [name, '', '', '', '', '', ''].map(enc).join('|');
-    return (es ? '/es' : '') + '/tools/plate-cost/#v=1&p=1&i=' + row;
+    // Move 9 — carry the ingredient slug as ?from so plate-cost can name where the
+    // reader came from. Slug-shaped only (the plate-cost reader re-validates against
+    // its closed map); ?from is a search param, the recipe stays in the # fragment.
+    var qs = (typeof key === 'string' && /^[a-z0-9-]{1,40}$/.test(key)) ? ('?from=' + key) : '';
+    return (es ? '/es' : '') + '/tools/plate-cost/' + qs + '#v=1&p=1&i=' + row;
   }
   // Privacy-respecting analytics: only ingredient keys + categorical labels
   // (verdict, action) ever leave — never the operator's typed price. Best-effort
@@ -996,13 +1017,26 @@
       fig.appendChild(yl);
     }
 
+    // Dashboard → the ingredient's own Cost Index page (events, drivers, full
+    // sources, siblings) — the dashboard→reference half of the loop, so the live
+    // tool stops stranding a reader away from the richer citable page. Only when
+    // the seed marked a live page for this key (build-time existsSync), never a 404.
+    if (ing.page && ing.key) {
+      var rl = el('p', 'cp-market-refpage');
+      var ra = el('a', null, L('Open the Cost Index page', 'Abrir la página del Índice'));
+      ra.href = (es ? '/es' : '') + '/cost-index/' + ing.key + '/';
+      ra.appendChild(document.createTextNode(' →'));
+      rl.appendChild(ra);
+      fig.appendChild(rl);
+    }
+
     // Dashboard → Plate Cost deep link: land in the calculator with this ingredient
     // prefilled (one tap from a market move to "what this does to my dish"). Only
     // for dollar-priced reads, where costing into a plate is meaningful.
     if (lvl && name) {
       var pcl = el('p', 'cp-market-platecost');
       var pca = el('a', null, L('Cost this into a dish', 'Cuesta esto en un platillo'));
-      pca.href = plateCostHref(name);
+      pca.href = plateCostHref(name, ing.key);
       pca.appendChild(document.createTextNode(' →'));
       pcl.appendChild(pca);
       fig.appendChild(pcl);

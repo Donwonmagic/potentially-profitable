@@ -55,16 +55,6 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
-// The single honest computation over the detected price-events dataset (co-movement +
-// the "shocks had company" stat). Shared with the CC0 downloads + the research page so
-// no two surfaces can drift. Co-occurrence, never cause — bounded, directed counts only.
-import { coMovement, companyStat, coMovementBaseRate } from './lib/cost-events-analysis.mjs';
-import { researchTargets } from './lib/cost-research.mjs';
-import { supplyPicture, SUPPLY_CSS } from './lib/supply-picture.mjs';
-import { mechanismFor, concentrationFor, MECHANISM_STRINGS, concentrationString, mechanismCaveat,
-  swapVerdict, SWAP_STRINGS, swapCaveat, headlineRange, slugifyName } from './lib/seasonality-fusion.mjs';
-import { exposureSection as eventExposureSection, EXPOSURE_CSS as EVENT_EXPOSURE_CSS } from './lib/event-exposure.mjs';
-import { injectRecall } from './lib/recall-roster.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
@@ -131,23 +121,6 @@ const EVENT_REGISTRY = (() => {
     return m;
   } catch { return {}; }
 })();
-// The full curated registry array (id, label, whatHappened, sources, affectedSlugs,
-// startDate/endDate) — 39 documented events. Source of truth for the per-event detail
-// pages and the hub. Read once here; every render joins against it.
-const REGISTRY_EVENTS = (() => {
-  try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'cost-index/events.json'), 'utf8')).events || []; }
-  catch { return []; }
-})();
-// Directed, bounded co-movement + the "shocks had company" stat, computed ONCE over the
-// detection dataset (EVENTS is already its .items map). Co-occurrence, never cause: the
-// measure is "in K of X's own N notable moves, Y co-moved the same direction."
-const CO_MOVEMENT = coMovement({ items: EVENTS });
-const COMPANY_STAT = companyStat({ items: EVENTS });
-// The permutation-null base rate for the "had company" stat (ADR-019): shuffle which
-// ingredient each move belongs to and recompute the shared-week fraction. Seeded +
-// deterministic so the rendered number is stable across builds. If the null ≈ the
-// observed, "had company" is the norm, not a signal — the signal is WHICH ingredient.
-const COMPANY_BASE = coMovementBaseRate({ items: EVENTS, params: { cohortWeeks: 6 } }, { seed: 1234567, iters: 500 });
 // Prefer the deep backfill (enough points to backtest coverage); fall back to the
 // vendored capped history.
 function bandSeries(slug, entry) {
@@ -747,8 +720,29 @@ function compositeBand(locale) {
     ? { high: 'confianza alta', medium: 'confianza media', moderate: 'confianza media', low: 'confianza baja' }
     : { high: 'high confidence', medium: 'medium confidence', moderate: 'moderate confidence', low: 'low confidence' };
   const confChip = confMap[b.confidence] || (es ? 'confianza sin declarar' : 'confidence unstated');
-  const asOf = b.asOf || '—';
+  // Freshness: lead the headline with the NEWEST contributing read so a current
+  // basket isn't buried behind one lagging staple, and disclose the laggards
+  // honestly (never claim the whole basket is fresher than it truly is). The
+  // machine/citation value b.asOf — the oldest-contributor floor — is untouched.
+  const cDates = contribs
+    .map((c) => { const it = (CI.ingredients || {})[c.ingredient] || {}; const p = (it.points || [])[0] || {}; return p.asOf || it.asOf || null; })
+    .filter(Boolean).sort();
+  const newestAsOf = cDates.length ? cDates[cDates.length - 1] : (b.asOf || '—');
+  const oldestAsOf = cDates.length ? cDates[0] : (b.asOf || '—');
+  const LAG_DAYS = 21;
+  const nMs = Date.parse(newestAsOf);
+  const nLag = contribs.reduce((s, c) => {
+    const it = (CI.ingredients || {})[c.ingredient] || {}; const p = (it.points || [])[0] || {};
+    const a = p.asOf || it.asOf || null;
+    return (a && isFinite(nMs) && (nMs - Date.parse(a)) > LAG_DAYS * 864e5) ? s + 1 : s;
+  }, 0);
+  const asOf = newestAsOf;
   const asOfChip = es ? `al ${asOf}` : `as of ${asOf}`;
+  const holdNote = nLag
+    ? (es
+      ? ` <strong>${nLag}</strong> de ${n} insumos mantienen su último dato desde el ${oldestAsOf}.`
+      : ` <strong>${nLag}</strong> of ${n} staples are holding last-good since ${oldestAsOf}.`)
+    : '';
   const head = es ? 'Dónde está la canasta' : 'Where the basket sits';
   const say = es
     ? `la canasta ponderada de ${n} insumos de restaurante, frente a su ventana base`
@@ -763,8 +757,8 @@ function compositeBand(locale) {
       : ` The staples are nearly evenly split (agreement ${Math.round(agree * 100)}%), so read it as a soft signal, not a precise figure.`)
     : '';
   const spread = es
-    ? `<strong>${up}</strong> de ${n} por encima de su línea base · <strong>${down}</strong> por debajo · <strong>${flat}</strong> sin cambio. Es una lectura de estado, no un movimiento respecto a la semana pasada.${splitNote}`
-    : `<strong>${up}</strong> of ${n} reading above their baseline · <strong>${down}</strong> below · <strong>${flat}</strong> flat. A state-of-play reading, not a week-over-week move.${splitNote}`;
+    ? `<strong>${up}</strong> de ${n} por encima de su línea base · <strong>${down}</strong> por debajo · <strong>${flat}</strong> sin cambio. Es una lectura de estado, no un movimiento respecto a la semana pasada.${splitNote}${holdNote}`
+    : `<strong>${up}</strong> of ${n} reading above their baseline · <strong>${down}</strong> below · <strong>${flat}</strong> flat. A state-of-play reading, not a week-over-week move.${splitNote}${holdNote}`;
   const base = es ? '/es' : '';
   const srcSummary = es ? 'Cómo se construye esta cifra' : 'How this figure is built';
   const srcBody = es
@@ -772,15 +766,17 @@ function compositeBand(locale) {
     : `Weighted composite of ${n} tracked staples, each read against its own baseline window from public U.S. market data (USDA, BLS, FRED, EIA, NOAA). A reading against baseline — not a price, and not a change since last week. See all ${n} weights and how the composite is assembled in <a href="${base}/cost-index/basket/">The Muntin Restaurant Basket</a>, or <a href="${base}/cost-index/methodology/">how the index is built</a>.`;
   return `<section class="ci-composite" data-band="${band}" aria-label="${es ? 'Lectura de la canasta' : 'Basket reading'}">
     <p class="ci-composite__head">${head}</p>
-    <div class="ci-composite__read">
-      <span class="ci-composite__num">${pctStr}</span>
-      <span class="ci-composite__say">${say}</span>
+    <div class="ci-composite__well">
+      <div class="ci-composite__read">
+        <span class="ci-composite__num">${pctStr}</span>
+        <span class="ci-composite__say">${say}</span>
+      </div>
+      <p class="ci-composite__spread">${spread}</p>
     </div>
     <div class="ci-composite__meta">
       <span class="ci-composite__chip">${confChip}</span>
-      <span class="ci-composite__chip">${asOfChip}</span>
+      <span class="ci-composite__chip ci-asof" data-asof="${asOf}">${asOfChip}</span>
     </div>
-    <p class="ci-composite__spread">${spread}</p>
     <details class="ci-composite__src"><summary>${srcSummary}</summary><div>${srcBody}</div></details>
   </section>`;
 }
@@ -815,12 +811,14 @@ function allReadingsTable(slugs, locale) {
     const spark = indexedMovement(r.entry, locale, {});
     // data-name (display name + slug) is the filter key for the search box below.
     const key = `${nm} ${s}`.toLowerCase();
-    return `<tr data-name="${escHtml(key)}">`
-      + `<td><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a></td>`
-      + `<td class="ci-t-dir" data-dir="${dir}">${escHtml(dw)}</td>`
-      + `<td>${verdictChip(v, locale)}</td>`
-      + `<td>${spark || '<span class="ci-t-na">—</span>'}</td>`
-      + `<td>${escHtml(r.asOf || '—')}</td>`
+    // Per-cell classes + data-tone drive the phone reflow (see the <=680px block
+    // in the inline <style>): each row stacks into a 2-line card, no h-scroll.
+    return `<tr data-name="${escHtml(key)}" data-tone="${v.tone}">`
+      + `<td class="ci-c-name"><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a></td>`
+      + `<td class="ci-c-dir ci-t-dir" data-dir="${dir}">${escHtml(dw)}</td>`
+      + `<td class="ci-c-sig">${verdictChip(v, locale)}</td>`
+      + `<td class="ci-c-spark">${spark || '<span class="ci-t-na">—</span>'}</td>`
+      + `<td class="ci-c-asof" data-label="${escHtml(cols[4])}">${escHtml(r.asOf || '—')}</td>`
       + `</tr>`;
   }).join('');
   // The find-an-ingredient box (the #1 experiential miss — two operators bounced
@@ -1101,7 +1099,7 @@ function answerBanner(slug, locale) {
   // committability verdict chip (Hold/Watch) is volatility, not a price call.
   const asOf = r.asOf || '—';
   const chip = verdictChip(ingVerdict(slug), locale);
-  return `<p class="ci-answer">~${range}${unitSfx} · ${es ? 'al' : 'as of'} ${asOf} ${chip}</p>`;
+  return `<p class="ci-answer">~${range}${unitSfx} · <span class="ci-asof" data-asof="${asOf}">${es ? 'al' : 'as of'} ${asOf}</span> ${chip}</p>`;
 }
 
 // ---- Price-free INDEXED movement chart ----------------------------
@@ -1226,12 +1224,12 @@ function marketReadBlock(slug, locale) {
   return `
   <aside class="ci-read" data-layer="measured" aria-label="${es ? 'Lectura de mercado' : 'Market read'}">
     <p class="ci-read__head">${head}<span class="ci-read__badge">${badge}</span></p>
-    <p class="ci-read__line">${line}</p>${trendLine}${verdict}${spark}${season}${idxChart}
+    <div class="ci-read__well"><p class="ci-read__line">${line}</p></div>${trendLine}${verdict}${spark}${season}${idxChart}
     <details class="ci-read__src"><summary>${es ? 'Fuentes' : 'Sources'} · ${(shortList.length || agencies.length)}</summary><div>${srcBody}</div></details>
     ${verified}
     <p class="ci-read__method"><a href="${es ? '/es' : ''}/cost-index/methodology/#track-record">${es ? 'Cómo verificamos este número' : 'How we verify this number'} <span aria-hidden="true">→</span></a></p>
     <p class="ci-read__data">${es ? 'Descarga los datos' : 'Download this series'}: <a href="/cost-index/${slug}/series.csv" download>CSV</a> · <a href="/cost-index/${slug}/series.json">JSON</a></p>
-    <p class="ci-read__live"><a href="${es ? '/es' : ''}/tools/cost-pulse/#ci-${slug}">${liveLabel} <span aria-hidden="true">→</span></a></p>
+    <p class="ci-read__live"><a href="${es ? '/es' : ''}/tools/cost-pulse/?from=${slug}#ci-${slug}">${liveLabel} <span aria-hidden="true">→</span></a></p>
   </aside>`;
 }
 
@@ -1594,34 +1592,29 @@ main{padding-top:64px}
 .ci-eyebrow a{color:var(--teal);text-decoration:none}
 .ci-hero h1{font-family:var(--font-display);font-size:clamp(30px,5vw,46px);font-weight:500;line-height:1.12;color:var(--ink);margin:0 0 14px}
 .ci-answer{font-size:clamp(18px,3vw,22px);font-weight:600;color:var(--ink);margin:0 0 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.ci-asof-rel{color:var(--ink-soft);font-weight:400}
 .ci-lede{font-size:18px;line-height:1.6;color:var(--ink);margin:0;max-width:720px}
-.ci-body{margin:8px auto 0;max-width:760px}
+.ci-body{margin:8px 0 0;max-width:760px}@media(min-width:1024px){.breadcrumb,.ci-hero,.ci-body{max-width:840px;margin-inline:auto}}
 .ci-body h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:34px 0 10px;line-height:1.2}
 .ci-body p{margin:0 0 16px;font-size:16px;line-height:1.7}
+.ci-body>p:not([class]),.ci-body>ol,.ci-body>ul{max-width:68ch}
 .ci-body ol,.ci-body ul{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.7}
 .ci-body li{margin:0 0 8px}
-.ci-profile{margin:34px 0 0;padding:20px 22px;background:var(--cream);border:1px solid var(--line);border-radius:14px}
-.ci-profile h2{margin:0 0 4px;font-size:20px}
-.ci-prof__note{margin:0 0 14px;font-size:13px;line-height:1.5;color:var(--ink-soft)}
-.ci-prof__note a{color:var(--teal);font-weight:600}
-.ci-prof__grid{margin:0;display:grid;gap:0}
-.ci-prof__row{display:grid;grid-template-columns:170px 1fr;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
-.ci-prof__row:first-child{border-top:none}
-.ci-prof__row dt{margin:0;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--teal)}
-.ci-prof__row dd{margin:0;font-size:14.5px;line-height:1.5;color:var(--ink)}
-.ci-prof__src{margin:14px 0 0;font-size:11.5px;line-height:1.5;color:var(--stone)}
-@media(max-width:560px){.ci-prof__row{grid-template-columns:1fr;gap:2px}}
-.ci-read{margin:22px 0 8px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-read{position:relative;margin:22px 0 8px;padding:18px 20px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px;font-variant-numeric:tabular-nums;box-shadow:var(--elev-feature)}
+.ci-read__well{margin:2px 0 0;padding:13px 15px;background:var(--surface-inset);border-radius:8px;box-shadow:inset 0 1px 1px rgba(20,22,26,.09),inset 0 0 0 1px var(--line)}
+.ci-read__well .ci-read__line{margin:0}
+:root[data-theme="dark"] .ci-read__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .ci-read__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}}
 .ci-read__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
 .ci-read__badge{font-weight:600;text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink-soft);margin-left:8px}
-.ci-read__line{font-size:16px;line-height:1.55;color:var(--ink);margin:0}
+.ci-read__line{font-size:17px;font-weight:600;line-height:1.55;color:var(--ink);margin:0}
 .ci-read__trend{margin:6px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-read__verdict{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--ink)}
 .ci-read__verb{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-right:8px;vertical-align:1px;background:var(--cream);border:1px solid var(--line);color:var(--ink-soft)}
 .ci-read__verb[data-bias="hold"]{color:#2A50C8;border-color:#2A50C8}
 .ci-read__verb[data-bias="watch"]{color:#6b540f;border-color:#9a7d2e}
 .ci-read__verb[data-bias="re-price"]{color:#A23B2D;border-color:#A23B2D}
-.ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}@media(min-width:600px){.ci-read__spark{flex-wrap:nowrap;align-items:flex-start}.ci-read__spark .ci-read__capsule{flex:1 1 auto}}
 .ci-read__spark .mtn-spark{flex:0 0 auto;overflow:visible}
 .ci-read__capsule{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink)}
 .ci-read__capsule-note{color:var(--ink-soft);font-size:12.5px}
@@ -1675,9 +1668,12 @@ main{padding-top:64px}
 .ci-sibs-label{display:inline-block;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:11px;margin-right:8px}
 .ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
-.ci-composite{margin:22px 0 6px;padding:20px 22px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums}
+.ci-composite{position:relative;margin:22px 0 6px;padding:18px 20px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums;box-shadow:var(--elev-feature)}
 .ci-composite[data-band="up"]{border-left-color:#A23B2D}
 .ci-composite[data-band="down"]{border-left-color:var(--teal)}
+.ci-composite__well{margin:2px 0 0;padding:15px 16px;background:var(--surface-inset);border-radius:8px;box-shadow:inset 0 1px 1px rgba(20,22,26,.09),inset 0 0 0 1px var(--line)}
+:root[data-theme="dark"] .ci-composite__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .ci-composite__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}}
 .ci-composite__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
 .ci-composite__read{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0}
 .ci-composite__num{font-family:var(--font-display);font-size:clamp(30px,6vw,44px);font-weight:500;line-height:1;color:var(--ink)}
@@ -1702,12 +1698,12 @@ main{padding-top:64px}
 .ci-signup-sep{color:var(--stone,#9aa0aa);margin:0 4px}
 .ci-source{font-size:12.5px;color:var(--ink-soft);margin:24px 0 40px}
 .ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
-.ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));margin:14px 0 0}
+.ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));margin:14px 0 0}
 .ci-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:10px}
 .ci-card a{font-family:var(--font-display);font-size:17px;color:var(--ink);text-decoration:none}
 .ci-card a:hover{color:var(--teal)}
 .ci-card-note{display:block;font-size:13px;color:var(--ink-soft);margin-top:4px}
-.ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+.ci-cat-h{font-family:var(--font-display);font-size:16px;color:var(--ink-soft);margin:30px 0 0;text-transform:uppercase;letter-spacing:.04em;font-weight:600}.ci-body>.ci-cat-h{border-top:1px solid var(--line);padding-top:18px;margin-top:40px}
 .ci-card-action{margin-top:10px}
 .ci-moving{margin:20px 0 8px;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
 .ci-moving .ci-cat-h{margin:0 0 10px}
@@ -1734,7 +1730,7 @@ main{padding-top:64px}
 .ci-index--mini{display:inline-block;vertical-align:middle;margin:4px 0 2px;opacity:.9}
 .ci-index{margin:10px 0 4px}
 .ci-index__cap{margin:0 0 4px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
-.ci-index .mtn-spark{max-width:100%;height:auto}
+.ci-index .mtn-spark{max-width:100%;height:auto}figure.ci-index>svg.mtn-spark{width:100%}
 .ci-card--pending{opacity:.72;background:var(--cream-2)}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
@@ -1757,6 +1753,90 @@ main{padding-top:64px}
 .ci-table .ci-t-dir[data-dir="down"]{color:var(--teal)}
 .ci-table .ci-t-na{color:var(--stone,#9aa0aa)}
 .ci-table .ci-index--mini{margin:0}
+/* ─── Phone / small-tablet reflow: "All readings" → compact stacked rows ──────
+   The 5-col nowrap table's min-content is ~638px, so under ~680px .table-scroll
+   forces horizontal scroll (Signal/Movement/As-of clipped off-screen). At
+   <=680px each data <tr> becomes a 2-line grid over the SAME <tr>/<td> DOM, so
+   the live #ci-ingredient-search filter (toggles tr[hidden] by data-name) keeps
+   working untouched. Everything is scoped under .ci-readings so it is safe even
+   if hoisted to assets/site.css (.ci-table is emitted inline on other pages too).
+   Append after the existing .ci-table rules (~line 1723) in the generator's
+   inline <style>. Desktop (>680px) is byte-for-byte unchanged. */
+@media (max-width:680px){
+  /* 1 ─ neutralize the scroll shell; nothing left to scroll */
+  .ci-readings .table-scroll{overflow-x:visible;margin:12px 0}
+
+  /* 2 ─ collapse table internals to normal flow so each <tr> can be a grid.
+     thead is dropped: display:block strips the table role regardless, and every
+     cell is self-labeling (link text, up/down word, pill word, the sparkline's
+     full-sentence aria-label, and a visible "As of" prefix), so a floating
+     header row would only add screen-reader noise. */
+  .ci-readings .ci-table,
+  .ci-readings .ci-table tbody{display:block;width:100%}
+  .ci-readings .ci-table{min-width:0}
+  .ci-readings .ci-table thead{display:none}
+  .ci-readings .ci-table td{padding:0;border:0;white-space:normal}
+
+  /* 3 ─ the card-without-the-box: two lines, sparkline pinned right across both.
+     name↔signal on the left, direction↔as-of mirrored on the right. */
+  .ci-readings .ci-table tbody tr[data-name]{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto auto;
+    column-gap:8px;row-gap:2px;
+    align-items:center;
+    padding:10px 2px;
+    border-bottom:1px solid var(--line);
+  }
+  .ci-readings .ci-table tbody tr[data-name]:hover{background:transparent} /* no touch-hover flash */
+
+  /* line 1 — the scan unit */
+  .ci-readings .ci-c-name{grid-row:1;grid-column:1;min-width:0}
+  .ci-readings .ci-c-name a{display:inline-block;font-size:15px;line-height:1.25;padding:1px 0}
+  .ci-readings .ci-c-dir{grid-row:1;grid-column:2;font-size:13px;white-space:nowrap}
+  .ci-readings .ci-c-spark{grid-row:1 / span 2;grid-column:3;justify-self:end;align-self:center;line-height:0}
+  .ci-readings .ci-c-spark .mtn-spark{width:104px;height:auto}
+  .ci-readings .ci-c-spark .ci-t-na{color:var(--stone,#9aa0aa)}
+
+  /* line 2 — quiet provenance */
+  .ci-readings .ci-c-sig{grid-row:2;grid-column:1;justify-self:start}
+  .ci-readings .ci-c-sig .ci-read__verb{font-size:10.5px;margin:0}
+  .ci-readings .ci-c-asof{grid-row:2;grid-column:2;justify-self:end;white-space:nowrap;font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .ci-readings .ci-c-asof::before{content:attr(data-label) " ";color:var(--ink-soft)}
+
+  /* 4 ─ DE-NOISE (grafted from Approach 2, contrast-safe): verdictChip() emits a
+     pill on EVERY row and ~60 are "Hold". On mobile, strip the Hold pill's chrome
+     to muted full-contrast text so real movers keep the only visible badge.
+     Watch / re-price pills are untouched. */
+  .ci-readings .ci-c-sig .ci-read__verb[data-bias="hold"]{
+    background:transparent;border-color:transparent;padding:0;color:var(--ink-soft)
+  }
+
+  /* 5 ─ MOVERS RAIL (grafted from Approach 4, phone-only, zero data dropped):
+     rows already sort reprice→watch→hold, so a left rail on the movers turns the
+     top of the list into a quiet market board. Keyed off data-tone on the <tr>. */
+  .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left:3px solid #A23B2D;padding-left:9px}
+  .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left:3px solid #9a7d2e;padding-left:9px}
+
+  /* 6 ─ the no-match row stays a plain full-width line, not a broken 1-col grid */
+  .ci-readings .ci-table tbody tr.ci-table-empty{display:block;padding:14px 2px}
+  .ci-readings .ci-table tbody tr.ci-table-empty td{display:block;padding:0;border:0}
+
+  /* 7 ─ FILTER CONTRACT — display:grid on <tr> is an author rule that outranks
+     the UA [hidden]{display:none}, which would un-hide filtered-out rows. Restore
+     it. Equal specificity to the grid rule, so it MUST stay after it in source. */
+  .ci-readings .ci-table tbody tr[hidden]{display:none}
+}
+
+/* dark-mode movers rail (site uses BOTH the explicit toggle and the media default) */
+@media (max-width:680px){
+  :root[data-theme="dark"] .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left-color:#ed9a8e}
+  :root[data-theme="dark"] .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left-color:#d8bd6a}
+}
+@media (max-width:680px) and (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]) .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left-color:#d8bd6a}
+}
+
 :root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
@@ -1781,11 +1861,11 @@ main{padding-top:64px}
 .ci-events__take-b{font-size:15px;line-height:1.6;color:var(--ink);margin:0 0 8px;max-width:68ch}
 .ci-events__take-b strong{color:var(--ink)}
 .ci-events__take-mv{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:68ch}
-.ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}@media(min-width:680px){.ci-events__list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}}
 .ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px;font-variant-numeric:tabular-nums}
 .ci-events__ev[data-dir="up"]{border-left-color:#A23B2D}
 .ci-events__ev[data-dir="down"]{border-left-color:var(--teal)}
-.ci-events__hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.ci-events__hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;justify-content:space-between}
 .ci-events__date{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink);min-width:76px}
 .ci-events__mag{font-size:14px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
 .ci-events__mag[data-dir="up"]{color:#A23B2D}
@@ -1812,6 +1892,8 @@ main{padding-top:64px}
 .ci-card a:focus-visible,.ci-read a:focus-visible,.ci-sibs a:focus-visible,.breadcrumb a:focus-visible,.ci-source a:focus-visible,.ci-events a:focus-visible,summary:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:2px}
 /* touch: lift the drawer summaries to a real tap target (WCAG 2.5.8). */
 .ci-read__src summary,.ci-outlook__how summary{display:inline-block;padding:6px 0;min-height:24px}
+/* touch: on phones, lift the provenance drawer toggles to a full 44px tap target (WCAG 2.5.5). */
+@media (max-width:560px){.ci-read__src summary,.ci-season__src summary,.ci-composite__src summary,.ci-events__cite summary,.ci-outlook__how summary{min-height:44px;padding:10px 0}}
 /* the pre-rendered sparkline must never clip in a narrower container. */
 .mtn-spark{max-width:100%;height:auto}
 /* print: the controller-PDFs-a-reading-for-a-vendor workflow. Drop the chrome, force the
@@ -1851,7 +1933,6 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
-${SUPPLY_CSS}
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=${SHELL_HASH.article}" onload="this.onload=null;this.rel='stylesheet'">
@@ -1954,7 +2035,43 @@ const pageTail = `</div>
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
 })();
 </script>
-<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260430-cohesion";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
+<!-- On-device as-of age gloss (Move 12): re-renders the AGE of an already-printed,
+     certified date on the reader's own clock — appends " · 3 days ago" / " · hace 3
+     días" after a static "as of <date>". Appends only: JS-off (or a stale/CSP-blocked
+     module) leaves the certified static date untouched. Reuses the tested, parity-
+     locked relativeDay() from MuntinCostFormat — never invents a date or a number. -->
+<script>
+(function () {
+  'use strict';
+  if (typeof document === 'undefined') return;
+  var nodes = document.querySelectorAll('.ci-asof[data-asof]');
+  if (!nodes.length) return;
+  var es = (document.documentElement.lang || 'en').slice(0, 2) === 'es';
+  function paint(F) {
+    if (!F || typeof F.relativeDay !== 'function') return;   // stale/old cached module → leave static date
+    var now = Date.now();
+    Array.prototype.forEach.call(nodes, function (n) {
+      if (n.getAttribute('data-rel-wired') === '1') return;
+      var rel = F.relativeDay(n.getAttribute('data-asof'), now);
+      if (!rel) return;                                      // future / bad / no-clock → silent
+      n.setAttribute('data-rel-wired', '1');
+      var sep = document.createElement('span');
+      sep.className = 'ci-asof-rel';
+      sep.textContent = ' · ' + rel;                         // textContent only, never innerHTML
+      n.appendChild(sep);
+    });
+  }
+  function boot() { if (typeof MuntinCostFormat !== 'undefined') paint(MuntinCostFormat(es)); }
+  (window.requestIdleCallback || function (c) { return setTimeout(c, 200); })(function () {
+    if (typeof MuntinCostFormat !== 'undefined') { boot(); return; }
+    var s = document.createElement('script');
+    s.src = '/tools/_shared/cost-index-format.js?v=20260717-fmt5';
+    s.async = true; s.onload = boot;
+    document.head.appendChild(s);
+  });
+})();
+</script>
+<!-- lazy-load:site --><script>(window.requestIdleCallback||function(c){return setTimeout(c,200);})(function(){var s=document.createElement("script");s.src="/assets/site.js?v=20260717-reassure";s.async=true;document.head.appendChild(s);});</script><!-- /lazy-load:site -->
 </body>
 </html>
 `;
@@ -2261,14 +2378,14 @@ function howToUse(slug, locale) {
   <li>Debajo del rango = buen trato; dentro = normal; muy por encima = conversación con el proveedor.</li>
   <li>Observa la dirección unas semanas antes de re-cotizar un platillo — una sola semana es ruido.</li>
 </ol>
-<p>¿Vas a costear un platillo que lleva ${lc}? Usa la <a href="${base}/tools/plate-cost/">Calculadora de Costo por Platillo</a>.</p>`
+<p>¿Vas a costear un platillo que lleva ${lc}? Usa la <a href="${base}/tools/plate-cost/?from=${slug}">Calculadora de Costo por Platillo</a>.</p>`
     : `<ol>
   <li>Open the reading above and note the typical range and the date.</li>
   <li>Pull your last ${lc} invoice, in the same unit.</li>
   <li>Below the range is a good deal; inside is normal; well above is a vendor conversation.</li>
   <li>Watch the direction over a few weeks before re-pricing a dish — one week is noise.</li>
 </ol>
-<p>Costing a dish that uses ${lc}? Use the <a href="${base}/tools/plate-cost/">Plate Cost Calculator</a>.</p>`;
+<p>Costing a dish that uses ${lc}? Use the <a href="${base}/tools/plate-cost/?from=${slug}">Plate Cost Calculator</a>.</p>`;
   return `<h2 id="how-to-use">${h}</h2>${steps}`;
 }
 
@@ -2423,8 +2540,7 @@ function emitExpandingPage(slug, locale) {
     <p>La regla es simple: un precio se publica solo cuando podemos obtenerlo de datos públicos (USDA, BLS, FRED) con una calidad sobre la que actuaríamos nosotros mismos. Para ${lc}, la serie mayorista gratuita que necesitamos aún no está conectada. Una estimación de una sola fuente sería peor que nada.</p>
     ${yieldBlock(slug, locale)}
     <h2>Qué puedes hacer ahora</h2>
-    <p>Compara tu última factura de ${lc} con tus facturas recientes, o abre <a href="${base}/tools/cost-pulse/">la herramienta en vivo</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
-    ${importContextBlock(slug, locale)}
+    <p>Compara tu última factura de ${lc} con tus facturas recientes, o abre <a href="${base}/tools/cost-pulse/?from=${slug}">la herramienta en vivo</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">Ver todas las lecturas</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">Qué es un índice de costos</a>
@@ -2439,8 +2555,7 @@ function emitExpandingPage(slug, locale) {
     <p>The rule is simple: a price ships only when we can source it from public USDA, BLS or FRED data at a quality we'd act on ourselves. For ${lc}, the free wholesale series we need isn't wired up yet — and a thin, single-source guess would be worse than nothing.</p>
     ${yieldBlock(slug, locale)}
     <h2>What you can do now</h2>
-    <p>Check your last ${lc} invoice against your own recent ones, or open <a href="${base}/tools/cost-pulse/">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
-    ${importContextBlock(slug, locale)}
+    <p>Check your last ${lc} invoice against your own recent ones, or open <a href="${base}/tools/cost-pulse/?from=${slug}">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">Browse all readings</a>
       <a class="btn btn-ghost" href="${base}/glossary/cost-index/">What is a cost index?</a>
@@ -2495,58 +2610,6 @@ function weeklySignup(locale, opts) {
         </form>
       </div>${alt}
     </div>`;
-}
-
-// The per-ingredient KITCHEN PROFILE — the verified depth spine (data/ingredient-depth.json) on the
-// ingredient page: sourced yields, storage/shelf-life, best season, the substitute that also hedges
-// the price, and waste-to-value. Reference/book values labeled "verify your own," source shown. Only
-// rows with data render (a null field was dropped as uncorroboratable, so it simply doesn't appear).
-const INGREDIENT_DEPTH = (() => { try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/ingredient-depth.json'), 'utf8')).ingredients || {}; } catch { return {}; } })();
-// The Ingredient State Record, keyed by slug — feeds the per-ingredient import-context block so
-// the Census import layer (value, sources, seasonality) is plugged into the cost-index corpus.
-const ISR_RECORD = (() => { try { const a = JSON.parse(fs.readFileSync(path.join(repoRoot, 'cost-index/ingredient-state-record.json'), 'utf8')).ingredients || []; const m = {}; for (const r of a) m[r.slug] = r; return m; } catch { return {}; } })();
-// Per-ingredient recall index (Phase 2) — mirrored onto every ingredient page via injectRecall, the
-// SAME code path inject-ingredient-recalls.mjs uses, so a regenerate matches the committed page byte-for-byte.
-const RECALL_INDEX = (() => { try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'cost-index/food-recalls-by-ingredient.json'), 'utf8')).index || {}; } catch { return {}; } })();
-function kitchenProfileBlock(slug, locale) {
-  const D = INGREDIENT_DEPTH[slug]; if (!D) return '';
-  const es = locale === 'es';
-  const rows = [];
-  if (D.edibleYield != null) {
-    const tt = Math.round((1 / D.edibleYield) * 100) / 100;
-    rows.push([es ? 'Rendimiento comestible' : 'Edible yield', `${Math.round(D.edibleYield * 100)}% ${es ? `(merma ×${tt})` : `(trim tax ×${tt})`}`]);
-  }
-  if (D.cookedYield != null) rows.push([es ? 'Rendimiento cocido' : 'Cooked yield', D.cookedYield < 1 ? `${Math.round(D.cookedYield * 100)}%` : `×${D.cookedYield}`]);
-  if (D.juiceYield != null) rows.push([es ? 'Jugo' : 'Juice yield', `${Math.round(D.juiceYield * 100)}%`]);
-  const keeps = [];
-  if (D.shelfLifeDays != null) keeps.push(es ? `~${D.shelfLifeDays} días refrigerado` : `~${D.shelfLifeDays} days refrigerated`);
-  if (D.freezeMonths != null) keeps.push(es ? `congelador ~${D.freezeMonths} meses` : `freezer ~${D.freezeMonths} months`);
-  if (keeps.length) rows.push([es ? 'Dura' : 'Keeps', keeps.join(' · ')]);
-  if (D.storageMethod) rows.push([es ? 'Conservación' : 'Storage', D.storageMethod]);
-  if (D.peakSeason) rows.push([es ? 'Mejor temporada' : 'Best season', D.peakSeason]);
-  const helps = (D.substitutes || []).find((s) => s.hedge && s.hedge.verdict === 'hedge' && !s.hedge.thin);
-  const anySub = (D.substitutes || [])[0];
-  if (helps) rows.push([es ? 'Un cambio que ayuda' : 'A swap that helps', es ? `${helps.name} — se mueve por su cuenta, así que también cubre el precio` : `${helps.name} — moves on its own, so it also hedges the price`]);
-  else if (anySub) rows.push([es ? 'Sustituto' : 'Substitute', `${anySub.name} (${anySub.ratio})`]);
-  if (D.trimToValue) rows.push([es ? 'De la merma al valor' : 'Waste to value', D.trimToValue]);
-  if (!rows.length) return '';
-  const src = String(D.yieldSource || D.depthSource || '').trim();
-  const dl = rows.map(([k, v]) => `<div class="ci-prof__row"><dt>${escHtml(k)}</dt><dd>${escHtml(v)}</dd></div>`).join('');
-  return `<section class="ci-profile" aria-labelledby="ci-prof-h">
-    <h2 id="ci-prof-h">${es ? 'Perfil de cocina' : 'Kitchen profile'}</h2>
-    <p class="ci-prof__note">${es ? 'Valores de referencia verificados — comprueba con tu propio despiece. También en el ' : 'Sourced reference values — verify against your own fabrication. Also in the '}<a href="${es ? '/es' : ''}/cost-index/menu-pricing/">${es ? 'manual de precios' : 'menu-pricing playbook'}</a>.</p>
-    <dl class="ci-prof__grid">${dl}</dl>
-    ${src ? `<p class="ci-prof__src">${es ? 'Fuente' : 'Source'}: ${escHtml(src)}</p>` : ''}
-  </section>`;
-}
-
-// Supply-picture block (ADR-018 surface 2): the audited Ingredient-State-Record SOURCE seams —
-// import stream, domestic production/farm-price/exports, value-reliance, and the seafood catchpair —
-// as prose that survives verbatim extraction with its caveat intact. The generator is shared with
-// inject-supply-picture.mjs (scripts/lib/supply-picture.mjs) so the built page and the injected
-// committed page are byte-identical. Descriptive supply context — never a delivered price or a forecast.
-function importContextBlock(slug, locale) {
-  return supplyPicture(ISR_RECORD[slug], locale === 'es' ? 'es' : 'en').html;
 }
 
 function emitIngredientPage(slug, locale) {
@@ -2614,15 +2677,13 @@ function emitIngredientPage(slug, locale) {
     ${whyItMatters(slug, locale)}
     ${notableEventsBlock(slug, locale)}
     ${howToUse(slug, locale)}
-    ${kitchenProfileBlock(slug, locale)}
-    ${importContextBlock(slug, locale)}
     ${weeklySignup(locale, { id: 'ci-news-email-ing', source: 'cost-index-ingredient', compact: true, pitch: (locale === 'es'
       ? '¿No quieres revisar esto a mano? Recibe la lectura mensual — el primer martes de cada mes, lo que se movió y qué hacer. Sin relleno.'
       : 'Don’t want to check this by hand? Get the monthly read — the first Tuesday of each month, what moved and what to do. No filler, no funnels.') })}
     ${faqHtml}
     ${siblings(slug, locale)}
     <div class="ci-cta-row">
-      <a class="btn btn-primary" href="${base}/tools/cost-pulse/#ci-${slug}">${es ? 'Abrir la herramienta en vivo' : 'Open the live tool'}</a>
+      <a class="btn btn-primary" href="${base}/tools/cost-pulse/?from=${slug}#ci-${slug}">${es ? 'Abrir la herramienta en vivo' : 'Open the live tool'}</a>
       <a class="btn btn-ghost" href="${base}/cost-index/">${es ? 'Ver todas las lecturas' : 'Browse all readings'}</a>
     </div>
     <p class="ci-ledger-bridge" style="margin:16px 0 0;font-size:14.5px;line-height:1.6;color:var(--ink-soft)">${es
@@ -2939,7 +3000,7 @@ const EVENTS_HUB_CSS = `<style>
 .evh-chip:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
 .evh-count{font-size:13px;color:var(--ink-soft);margin-left:auto;font-variant-numeric:tabular-nums}
 .evh-list{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:14px}
-.evh-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
+.evh-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}@media(min-width:880px){.evh-card{display:grid;grid-template-columns:154px minmax(0,1fr);column-gap:30px;align-items:start;padding:20px 26px}.evh-card__head{grid-column:1;flex-direction:column;align-items:flex-start;gap:8px;margin:0}.evh-card__label,.evh-card__what,.evh-card__items,.evh-card__src{grid-column:2}}
 .evh-card[data-move="up"]{border-left-color:#A23B2D}
 .evh-card[data-move="down"]{border-left-color:var(--teal)}
 .evh-card__head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:0 0 4px}
@@ -2965,377 +3026,6 @@ const EVENTS_HUB_CSS = `<style>
 
 // Client filter — category chips toggle card visibility; count updates. No innerHTML.
 const EVENTS_HUB_JS = "(function(){var chips=document.querySelectorAll('.evh-chip');var cards=document.querySelectorAll('.evh-card');var count=document.getElementById('evhCount');if(!chips.length||!cards.length)return;var tmpl=count?count.getAttribute('data-tmpl')||'{n} shown':'';function apply(cat){var n=0;cards.forEach(function(c){var ok=cat==='all'||(' '+c.getAttribute('data-cats')+' ').indexOf(' '+cat+' ')!==-1;c.hidden=!ok;if(ok)n++;});chips.forEach(function(ch){ch.setAttribute('aria-pressed',ch.getAttribute('data-cat')===cat?'true':'false');});if(count)count.textContent=tmpl.replace('{n}',n);}chips.forEach(function(ch){ch.addEventListener('click',function(){apply(ch.getAttribute('data-cat'));});});})();";
-
-// ====================================================================
-// /cost-index/events/<id>/ — the per-event detail pages + the hub co-movement explorer.
-// Everything here is CO-OCCURRENCE, never cause: a documented event sits beside the price
-// windows it overlapped; a magnitude is always "a wholesale reference vs its own ±26-week
-// normal," never a delivered price; nothing forecasts.
-// ====================================================================
-
-// The voice contract's retired words (mirror of check-banned-words.mjs). Registry prose is
-// exempted at scan time via data-quoted-source, but a page TITLE / META can't be wrapped —
-// so when a documented label carries a retired word (e.g. "disruption"), the title/meta use
-// a trimmed form while the visible <h1> keeps the verbatim, quoted-source label.
-const RETIRED_WORD_RE = [
-  /\bsynergize[ds]?\b/i, /\bbest[- ]in[- ]class\b/i, /\bgrowth[- ]hack(?:s|er|ers|ed|ing)?\b/i,
-  /\bworld[- ]class\b/i, /\bgame[- ]chang(?:er|ing)\b/i, /\bdisrupt(?:s|ed|ing|ive|ion)?\b/i,
-  /\bparadigm(?:s)?\b/i, /\blow[- ]hanging fruit\b/i, /\bmove the needle\b/i,
-];
-function titleSafeLabel(label) {
-  let s = String(label || '');
-  for (const re of RETIRED_WORD_RE) s = s.replace(new RegExp(re.source, 'gi'), '');
-  return s.replace(/\s{2,}/g, ' ').replace(/\s+([)\],:;])/g, '$1').replace(/\(\s*\)/g, '').replace(/\s{2,}/g, ' ').trim();
-}
-// Display name for a slug in event context: the curated label (parenthetical trimmed), or a
-// humanized fallback for a detected-only slug that never earned a published page.
-function evSlugName(slug, es) {
-  const l = LABELS[slug];
-  if (l) return evProse(es ? (l.es || l.en) : l.en);
-  return String(slug).split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-}
-function evSlugLink(slug, es, base) {
-  const nm = escHtml(evSlugName(slug, es));
-  return shippable(slug) ? `<a href="${base}/cost-index/${slug}/">${nm}</a>` : `<span>${nm}</span>`;
-}
-// Normalize a YYYY / YYYY-MM / YYYY-MM-DD registry date to a full ISO date.
-function evIsoDate(s) {
-  const a = String(s || '').split('-');
-  if (a.length >= 3) return `${a[0]}-${a[1]}-${a[2]}`;
-  if (a.length === 2) return `${a[0]}-${a[1]}-01`;
-  return `${a[0] || '2001'}-01-01`;
-}
-// The per-event detail pages first shipped on this date; datePublished is that stable surface
-// date, NOT the event's own start date — the article is ABOUT a past event, it was not published
-// back then. Fixed constant so the build stays deterministic (no wall-clock in a --check build).
-const EVENTS_SURFACE_PUBLISHED = '2026-07-11';
-// ISO 8601 interval for the documented event window — the correct home for the event's dates
-// (temporalCoverage = what the article is about), so nothing is lost by fixing datePublished.
-function evTemporalCoverage(ev) {
-  const s = evIsoDate(ev.startDate), e = evIsoDate(ev.endDate || ev.startDate);
-  return s === e ? s : `${s}/${e}`;
-}
-// Loose [startMs,endMs] for an event: a bare year spans Jan-Dec; a bare month spans the month.
-function evWindowMs(ev) {
-  const p = (s, end) => {
-    const a = String(s).split('-').map(Number);
-    if (a.length === 1) return Date.UTC(a[0], end ? 11 : 0, end ? 31 : 1);
-    if (a.length === 2) return end ? Date.UTC(a[0], a[1], 0) : Date.UTC(a[0], a[1] - 1, 1);
-    return Date.UTC(a[0], a[1] - 1, a[2]);
-  };
-  return [p(ev.startDate, false), p(ev.endDate || ev.startDate, true)];
-}
-function evExcerpt(text, n) {
-  const s = String(text || '').replace(/\s+/g, ' ').trim();
-  if (s.length <= n) return s;
-  const cut = s.slice(0, n), i = cut.lastIndexOf(' ');
-  return (i > 0 ? cut.slice(0, i) : cut).replace(/[\s,;:.\-]+$/, '') + '…';
-}
-// One anchor's co-movement view (line + single-hue teal bars, or an honest "moved alone").
-// K/N = the share of the anchor's OWN notable moves in which the peer co-moved the same way.
-function renderCmvView(slug, es, base, limit) {
-  const a = CO_MOVEMENT[slug];
-  const name = escHtml(evSlugName(slug, es));
-  if (!a || !a.neighbors.length) {
-    return { line: '', bars: '', empty: es
-      ? `En este conjunto, los movimientos notables de ${name} no compartieron dirección con ningún otro ingrediente rastreado — se movió por su cuenta.`
-      : `In this dataset, ${name}'s notable moves didn't share a direction with any other tracked ingredient — it moved on its own.` };
-  }
-  const n = a.n;
-  const line = (es
-    ? `En los ${n} movimientos notables de ${name}, estos ingredientes corrieron la misma dirección en las mismas semanas:`
-    : `In ${name}'s ${n} notable moves, these ingredients ran the same direction in the same weeks:`);
-  const bars = a.neighbors.slice(0, limit || 8).map(([y, k]) => {
-    const pct = Math.max(4, Math.round(k / n * 100));
-    const ynm = escHtml(evSlugName(y, es));
-    const lab = shippable(y) ? `<a href="${base}/cost-index/${y}/">${ynm}</a>` : ynm;
-    const num = es ? `${k} de ${n} mov.` : `${k} of ${n} moves`;
-    return `<li class="cmv-bar-row"><span class="cmv-bar-lab">${lab}</span><span class="cmv-bar-track"><span class="cmv-bar-fill" style="--w:${pct}%"></span></span><span class="cmv-bar-num">${num}</span></li>`;
-  }).join('');
-  return { line, bars, empty: '' };
-}
-// The default anchor for the server-rendered (no-JS) co-movement view: the ingredient with the
-// most notable moves that also has at least one co-mover (deterministic; slug tie-break).
-function defaultCmvAnchor() {
-  let best = null, bestN = -1;
-  for (const slug of Object.keys(CO_MOVEMENT).sort()) {
-    const a = CO_MOVEMENT[slug];
-    if (!a.neighbors.length) continue;
-    if (a.n > bestN) { bestN = a.n; best = slug; }
-  }
-  return best;
-}
-// The inline JSON island feeding the anchored explorer (no fetch; the whole dataset ships in
-// the page). Per anchor: display name, N, and top-8 movers [name, K, slug, shippable?].
-function cmvIslandData(es, base) {
-  const a = {};
-  for (const slug of Object.keys(CO_MOVEMENT)) {
-    const rec = CO_MOVEMENT[slug];
-    a[slug] = { name: evSlugName(slug, es), n: rec.n,
-      m: rec.neighbors.slice(0, 8).map(([y, k]) => [evSlugName(y, es), k, y, shippable(y) ? 1 : 0]) };
-  }
-  return { base, t: {
-    line: es ? 'En los {n} movimientos notables de {name}, estos ingredientes corrieron la misma dirección en las mismas semanas:'
-             : "In {name}'s {n} notable moves, these ingredients ran the same direction in the same weeks:",
-    alone: es ? 'En este conjunto, los movimientos notables de {name} no compartieron dirección con ningún otro ingrediente rastreado — se movió por su cuenta.'
-              : "In this dataset, {name}'s notable moves didn't share a direction with any other tracked ingredient — it moved on its own.",
-    num: es ? '{k} de {n} mov.' : '{k} of {n} moves',
-  }, a };
-}
-
-// Co-movement bar/view rules — shared by the hub explorer and the per-event detail pages so the
-// two surfaces render one visual language. Single-hue teal (all bars share a direction).
-const CMV_BARS_RULES = `
-.cmv-line{font-size:15px;line-height:1.55;color:var(--ink);margin:0 0 12px;max-width:68ch}
-.cmv-bars{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.cmv-bar-row{display:grid;grid-template-columns:minmax(110px,1.4fr) minmax(80px,3fr) auto;align-items:center;gap:8px 12px;font-variant-numeric:tabular-nums}
-.cmv-bar-lab{font-size:14px;color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cmv-bar-lab a{color:var(--ink);text-decoration:none;border-bottom:1px dashed var(--line)}
-.cmv-bar-lab a:hover{color:var(--teal)}
-.cmv-bar-track{height:14px;background:var(--cream-2);border-radius:999px;overflow:hidden}
-.cmv-bar-fill{display:block;height:100%;width:var(--w,0%);background:#2A50C8;border-radius:999px}
-.cmv-bar-num{font-size:12.5px;color:var(--ink-soft);white-space:nowrap}
-.cmv-empty{font-size:14px;line-height:1.55;color:var(--ink-soft);font-style:italic;margin:8px 0 0;padding:10px 12px;background:var(--cream-2);border-radius:8px}
-:root[data-theme="dark"] .cmv-bar-fill{background:#6d8bf2}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cmv-bar-fill{background:#6d8bf2}}`;
-
-// Anchored co-movement explorer — rebuilds the bar list on <select> change via createElement
-// (NO innerHTML), reads the inline island (no fetch), and honors a #comove=<slug> deep link.
-const CMV_HUB_JS = "(function(){var el=document.getElementById('cmvData');if(!el)return;var cfg;try{cfg=JSON.parse(el.textContent)}catch(e){return}var sel=document.getElementById('cmvAnchor'),line=document.getElementById('cmvLine'),list=document.getElementById('cmvList'),empty=document.getElementById('cmvEmpty');if(!sel||!line||!list)return;function clr(n){while(n.firstChild)n.removeChild(n.firstChild)}function mk(t,c){var e=document.createElement(t);if(c)e.className=c;return e}function fill(s,name,n){return s.replace('{name}',name).replace('{n}',n)}function render(slug){var a=cfg.a[slug];if(!a)return;clr(list);if(!a.m||!a.m.length){line.textContent='';if(empty){empty.hidden=false;empty.textContent=fill(cfg.t.alone,a.name,a.n)}return}if(empty)empty.hidden=true;line.textContent=fill(cfg.t.line,a.name,a.n);for(var i=0;i<a.m.length;i++){var m=a.m[i],name=m[0],k=m[1],mslug=m[2],ship=m[3],pct=Math.max(4,Math.round(k/a.n*100));var li=mk('li','cmv-bar-row'),lab=mk('span','cmv-bar-lab');if(ship){var lk=mk('a');lk.href=cfg.base+'/cost-index/'+mslug+'/';lk.textContent=name;lab.appendChild(lk)}else{lab.textContent=name}var track=mk('span','cmv-bar-track'),f=mk('span','cmv-bar-fill');f.style.setProperty('--w',pct+'%');track.appendChild(f);var num=mk('span','cmv-bar-num');num.textContent=cfg.t.num.replace('{k}',k).replace('{n}',a.n);li.appendChild(lab);li.appendChild(track);li.appendChild(num);list.appendChild(li)}}sel.addEventListener('change',function(){render(sel.value);if(window.history&&history.replaceState){history.replaceState(null,'','#comove='+sel.value)}});var hm=/comove=([a-z0-9-]+)/.exec(location.hash||'');if(hm&&cfg.a[hm[1]]){sel.value=hm[1];render(hm[1])}})();";
-
-const EVENT_DETAIL_CSS = `<style>
-.evd-section{margin:30px 0 8px}
-.evd-section h2{font-family:var(--font-display);font-size:clamp(20px,3vw,26px);font-weight:500;color:var(--ink);margin:0 0 10px;line-height:1.2}
-.evd-what{font-size:16px;line-height:1.7;color:var(--ink);margin:0 0 12px;padding:16px 18px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
-.evd-note{font-size:13px;line-height:1.6;color:var(--ink-soft);margin:0;max-width:72ch}
-.evd-affected{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.evd-affected a,.evd-affected span{display:inline-block;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:var(--white);font-size:14px;font-weight:600;color:var(--ink);text-decoration:none}
-.evd-affected a:hover{color:var(--teal);border-color:var(--teal)}
-.evd-affected span{color:var(--ink-soft)}
-.evd-moves{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;font-variant-numeric:tabular-nums}
-.evd-move{padding:12px 14px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
-.evd-move[data-dir="up"]{border-left-color:#A23B2D}
-.evd-move[data-dir="down"]{border-left-color:#2A50C8}
-.evd-move__hd{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
-.evd-move__mag[data-dir="up"]{color:#A23B2D;font-weight:700}
-.evd-move__mag[data-dir="down"]{color:#2A50C8;font-weight:700}
-.evd-move__tag{display:block;margin:5px 0 0;font-size:12px;color:var(--stone);font-style:italic}
-.evd-empty{font-size:14.5px;line-height:1.6;color:var(--ink-soft);font-style:italic;margin:0;padding:12px 14px;background:var(--cream-2);border-radius:10px}
-.evd-cmv__anchor{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin:16px 0 6px}
-.evd-caveat{font-size:13px;line-height:1.6;color:var(--ink-soft);margin:12px 0 0;max-width:72ch;padding:10px 12px;background:var(--cream-2);border-radius:8px}
-.evd-src{margin:10px 0 0;font-size:13px}
-.evd-src summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
-.evd-src ul{margin:8px 0 0;padding-left:18px;color:var(--ink-soft);line-height:1.75}
-.evd-src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
-.evd-foot{margin:18px 0 30px;font-size:12.5px;color:var(--stone);line-height:1.6}
-.evd-foot a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
-.evd-eyebrow-note{font-size:12.5px;color:var(--ink-soft);font-style:italic;margin:0 0 12px}
-:root[data-theme="dark"] .evd-move[data-dir="up"]{border-left-color:#d06a58}
-:root[data-theme="dark"] .evd-move__mag[data-dir="up"]{color:#d06a58}
-:root[data-theme="dark"] .evd-move[data-dir="down"]{border-left-color:#6d8bf2}
-:root[data-theme="dark"] .evd-move__mag[data-dir="down"]{color:#6d8bf2}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) .evd-move[data-dir="up"]{border-left-color:#d06a58}
-  :root:not([data-theme="light"]) .evd-move__mag[data-dir="up"]{color:#d06a58}
-  :root:not([data-theme="light"]) .evd-move[data-dir="down"]{border-left-color:#6d8bf2}
-  :root:not([data-theme="light"]) .evd-move__mag[data-dir="down"]{color:#6d8bf2}
-}
-${CMV_BARS_RULES}
-${EVENT_EXPOSURE_CSS}
-</style>`;
-
-function emitEventPage(ev, locale) {
-  const es = locale === 'es';
-  const lang = es ? 'es' : 'en';
-  const base = es ? '/es' : '';
-  const id = ev.id;
-  const canonEn = `https://muntin.digital/cost-index/events/${id}/`;
-  const canonEs = `https://muntin.digital/es/cost-index/events/${id}/`;
-  const canon = es ? canonEs : canonEn;
-
-  const [startMs, endMs] = evWindowMs(ev);
-  const sy = String(ev.startDate).slice(0, 4), ey = String(ev.endDate || ev.startDate).slice(0, 4);
-  const sMo = +String(ev.startDate).slice(5, 7) || 0;
-  const monthName = (mo) => (es ? EV_MONTHS_ES : EV_MONTHS_EN)[mo] || '';
-  const whenLabel = sy === ey ? (sMo ? `${monthName(sMo)} ${sy}` : sy) : `${sy}–${ey}`;
-
-  const affected = Array.isArray(ev.affectedSlugs) ? ev.affectedSlugs : [];
-  const nAff = affected.length;
-  const safe = titleSafeLabel(ev.label);
-
-  const title = es
-    ? `${safe} — evento de mercado documentado | Muntin`
-    : `${safe} — a documented market event | Muntin Cost Index`;
-  const desc = es
-    ? `${safe} (${whenLabel}): un evento de mercado documentado junto a las ventanas de precio mayorista que abarcó — coincidencia en el tiempo, nunca una causa. Con fuentes primarias.`
-    : `${safe} (${whenLabel}): a documented market event set beside the wholesale price windows it overlapped — co-occurrence in time, never a cause. Primary sources included.`;
-
-  // Speakable answer (dates + what + affected count + the guard clause). No causal/forecast words.
-  const answer = es
-    ? `${whenLabel}: un evento de mercado documentado que coincidió con las ventanas de precio mayorista de ${nAff} ingrediente${nAff === 1 ? '' : 's'} rastreado${nAff === 1 ? '' : 's'} — coincidencia en el tiempo, nunca una causa afirmada.`
-    : `${whenLabel}: a documented market event that overlapped the wholesale price windows of ${nAff} tracked ingredient${nAff === 1 ? '' : 's'} — co-occurrence in time, never an asserted cause.`;
-
-  // Affected ingredients (deep links to shippable readings).
-  const affHtml = affected.map((s) => `<li>${evSlugLink(s, es, base)}</li>`).join('');
-
-  // Detected moves that overlapped this event's window (±45d, matching the hub magnitude scan).
-  const MARGIN = 45 * 864e5;
-  const moveRows = [];
-  for (const s of affected) {
-    const rec = EVENTS[s];
-    if (!rec || !Array.isArray(rec.events)) continue;
-    const nm = escHtml(evSlugName(s, es));
-    for (const mv of rec.events) {
-      const t = Date.parse(mv.date);
-      if (!(t >= startMs - MARGIN && t <= endMs + MARGIN)) continue;
-      const up = mv.direction === 'up';
-      const dir = up ? 'up' : 'down';
-      const sign = up ? '+' : '−';
-      const rel = up ? (es ? 'por encima de' : 'above') : (es ? 'por debajo de' : 'below');
-      const held = es ? `se mantuvo ${mv.durationDays} días` : `held ${mv.durationDays} days`;
-      const hd = es
-        ? `<strong>${nm}</strong> — ${evDate(mv.date, es)}: la referencia mayorista corrió <span class="evd-move__mag" data-dir="${dir}">${sign}${Math.abs(mv.pctFromNormal)}%</span> ${rel} su normal de ±26 semanas, ${held}.`
-        : `<strong>${nm}</strong> — ${evDate(mv.date, es)}: the wholesale reference ran <span class="evd-move__mag" data-dir="${dir}">${sign}${Math.abs(mv.pctFromNormal)}%</span> ${rel} its ±26-week normal, ${held}.`;
-      const tag = es ? 'Coincidencia en el tiempo, no una causa.' : 'Co-occurrence in time, not a cause.';
-      moveRows.push({ t, html: `<li class="evd-move" data-dir="${dir}"><p class="evd-move__hd">${hd}</p><span class="evd-move__tag">${tag}</span></li>` });
-    }
-  }
-  moveRows.sort((a, b) => a.t - b.t);
-  const movesBlock = moveRows.length
-    ? `<ol class="evd-moves">${moveRows.map((r) => r.html).join('')}</ol>`
-    : `<p class="evd-empty">${es
-        ? 'Ningún movimiento mayorista sostenido de nuestro conjunto detectado cae dentro de la ventana de este evento. El evento está documentado; nuestra serie pública de precios simplemente no marcó una desviación notable de lo normal para estos ingredientes entonces — una ausencia honesta, no oculta.'
-        : "No sustained wholesale move in our detected set falls inside this event's window. The event is documented; our public price series simply didn't flag a notable departure from normal for these ingredients then — an honest absence, not a hidden one."}</p>`;
-
-  // Co-movement per affected slug (top 5 directed co-movers each).
-  const cmvBlocks = affected.map((s) => {
-    if (!CO_MOVEMENT[s]) return '';
-    const v = renderCmvView(s, es, base, 5);
-    const head = `<p class="evd-cmv__anchor">${escHtml(evSlugName(s, es))}</p>`;
-    if (v.empty) return `${head}<p class="cmv-empty">${v.empty}</p>`;
-    return `${head}<p class="cmv-line">${v.line}</p><ol class="cmv-bars">${v.bars}</ol>`;
-  }).filter(Boolean).join('');
-
-  // Sources (verbatim registry, marked data-quoted-source so the banned-word gate treats it as
-  // the cited source material it is).
-  const srcs = (ev.sources || []).filter((s) => s && s.url).map((s) => {
-    const label = escHtml(s.title || s.publisher || s.url);
-    const pub = s.title && s.publisher ? ` — ${escHtml(s.publisher)}` : '';
-    return `<li data-quoted-source><a href="${escHtml(s.url)}" rel="nofollow noopener" target="_blank">${label}</a>${pub}</li>`;
-  }).join('');
-
-  // JSON-LD @graph — number-free description; the cited history rides in articleBody + citation.
-  const numFreeDesc = es
-    ? 'Un evento de mercado documentado en EE. UU., mostrado junto a las ventanas de precio mayorista que abarcó — coincidencia en el tiempo, nunca una causa afirmada.'
-    : 'A documented U.S. food-market event, shown beside the wholesale price windows it overlapped — co-occurrence in time, never an asserted cause.';
-  const citation = (ev.sources || []).filter((s) => s && s.url)
-    .map((s) => ({ '@type': 'CreativeWork', 'url': s.url, ...(s.title ? { 'name': s.title } : {}), ...(s.publisher ? { 'publisher': { '@type': 'Organization', 'name': s.publisher } } : {}) }));
-  const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
-    { '@type': 'Article', '@id': canon + '#article', 'headline': ev.label, 'name': ev.label,
-      'inLanguage': es ? 'es-US' : 'en-US', 'description': numFreeDesc,
-      'articleBody': evExcerpt(ev.whatHappened, 600),
-      'datePublished': EVENTS_SURFACE_PUBLISHED, 'temporalCoverage': evTemporalCoverage(ev),
-      'isAccessibleForFree': true, 'author': { '@id': 'https://muntin.digital/#business' },
-      'publisher': { '@id': 'https://muntin.digital/#business' },
-      'isBasedOn': 'https://muntin.digital/cost-index/events.json',
-      'about': affected.map((s) => ({ '@type': 'Thing', 'name': evSlugName(s, false) })),
-      'citation': citation,
-      'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.ci-answer'] },
-      'isPartOf': { '@id': 'https://muntin.digital/cost-index/events/#dataset' } },
-    { '@type': 'BreadcrumbList', 'itemListElement': [
-      { '@type': 'ListItem', 'position': 1, 'name': es ? 'Inicio' : 'Home', 'item': es ? 'https://muntin.digital/es/' : 'https://muntin.digital/' },
-      { '@type': 'ListItem', 'position': 2, 'name': es ? 'Índice de costos' : 'Cost index', 'item': (es ? 'https://muntin.digital/es' : 'https://muntin.digital') + '/cost-index/' },
-      { '@type': 'ListItem', 'position': 3, 'name': es ? 'Eventos de mercado' : 'Market events', 'item': (es ? 'https://muntin.digital/es' : 'https://muntin.digital') + '/cost-index/events/' },
-      { '@type': 'ListItem', 'position': 4, 'name': safe, 'item': canon } ] },
-  ] }).replace(/</g, '\\u003c');
-
-  const body = `
-  <nav class="breadcrumb" aria-label="Breadcrumb">
-    <a href="${base}/">${es ? 'Inicio' : 'Home'}</a> ›
-    <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> ›
-    <a href="${base}/cost-index/events/">${es ? 'Eventos de mercado' : 'Market events'}</a> ›
-    <span data-quoted-source>${escHtml(ev.label)}</span>
-  </nav>
-  <section class="ci-hero">
-    <p class="ci-eyebrow"><a href="${base}/cost-index/events/">${es ? 'Eventos de mercado' : 'Market events'}</a></p>
-    <h1><span data-quoted-source>${escHtml(ev.label)}</span></h1>
-    <p class="ci-answer">${answer}</p>
-  </section>
-  <div class="ci-body" style="max-width:820px">
-    <section class="evd-section" aria-labelledby="evd-what-h">
-      <h2 id="evd-what-h">${es ? 'Qué pasó' : 'What happened'}</h2>
-      <p class="evd-what" data-quoted-source>${escHtml(ev.whatHappened || '')}</p>
-      <p class="evd-note">${es
-        ? 'Relato documentado de nuestro registro abierto y citado (fuentes abajo). Se muestra como contexto junto al historial de precios — coincidencia en el tiempo, nunca una causa afirmada.'
-        : 'Documented account from our open, cited registry (sources below). Shown as context beside the price record — co-occurrence in time, never an asserted cause.'}</p>
-    </section>
-    <section class="evd-section" aria-labelledby="evd-aff-h">
-      <h2 id="evd-aff-h">${es ? 'Ingredientes afectados' : 'Affected ingredients'}</h2>
-      <ul class="evd-affected">${affHtml}</ul>
-    </section>
-    ${eventExposureSection(affected.map((s) => ({ slug: s, name: evSlugName(s, es) })), ISR_RECORD, locale)}
-    <section class="evd-section" aria-labelledby="evd-mv-h">
-      <h2 id="evd-mv-h">${es ? 'Los movimientos detectados que coincidieron' : 'The detected moves that overlapped'}</h2>
-      <p class="evd-eyebrow-note">${es
-        ? 'Cada cifra es una referencia mayorista frente a su propio normal de ±26 semanas — un movimiento de mercado, nunca un precio entregado.'
-        : "Each figure is a wholesale reference against its own ±26-week normal — a market move, never a delivered price."}</p>
-      ${movesBlock}
-    </section>
-    ${cmvBlocks ? `<section class="evd-section" aria-labelledby="evd-cmv-h">
-      <h2 id="evd-cmv-h">${es ? 'Qué se movió junto' : 'What moved together'}</h2>
-      <p class="evd-eyebrow-note">${es ? 'Coincidencia, no causa' : 'Co-occurrence, not cause'}</p>
-      ${cmvBlocks}
-      <p class="evd-caveat">${es
-        ? 'Moverse en las mismas semanas no es que una cosa cause la otra — muchos de estos comparten una región de cultivo, una ruta de envío o un pasillo. Es un conteo dirigido y acotado: en K de los movimientos notables de un ingrediente, otro corrió igual.'
-        : 'Moving in the same weeks is not one thing causing another — many of these share a growing region, a shipping lane, or an aisle. It is a directed, bounded count: in K of an ingredient\'s own notable moves, another ran the same way.'}</p>
-    </section>` : ''}
-    <section class="evd-section" aria-labelledby="evd-src-h">
-      <h2 id="evd-src-h">${es ? 'Fuentes' : 'Sources'}</h2>
-      <details class="evd-src" open><summary>${(ev.sources || []).length} ${(ev.sources || []).length === 1 ? (es ? 'fuente' : 'source') : (es ? 'fuentes' : 'sources')}</summary><ul>${srcs}</ul></details>
-    </section>
-    <div class="ci-cta-row">
-      <a class="btn btn-primary" href="${base}/tools/vendor-benchmark/">${es ? 'Compara tu factura con esta referencia' : 'Check your own invoice against this reference'}</a>
-      <a class="btn btn-ghost" href="${base}/cost-index/events/">${es ? 'Todos los eventos de mercado' : 'All market events'}</a>
-    </div>
-    <p class="evd-foot">${es
-      ? 'Los eventos documentados vienen de nuestro <a href="/cost-index/events.json">registro abierto y citado</a> (CC‑BY). Los movimientos de precio se detectan del historial público (USDA/BLS/FRED) y se muestran como contexto que coincide en el tiempo, nunca como la causa. <a href="' + base + '/glossary/cost-index/">Cómo se eligen los eventos</a>.'
-      : 'Documented events come from our <a href="/cost-index/events.json">open, cited registry</a> (CC‑BY). Price moves are detected from public history (USDA/BLS/FRED) and shown as co-occurring context, never asserted as the cause. <a href="' + base + '/glossary/cost-index/">How events are picked</a>.'}</p>
-  </div>`;
-  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: EVENT_DETAIL_CSS }) + body + pageTail;
-}
-
-// Hub-only additions: the clickable card title, the co-movement section (hero stat +
-// anchored explorer), and the downloads/cite block. Appended to EVENTS_HUB_CSS.
-const EVH_ADD_CSS = `<style>
-.evh-card__label a{color:inherit;text-decoration:none}
-.evh-card__label a:hover{color:var(--teal)}
-.cmv-section{margin:38px 0 8px}
-.cmv-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin:0 0 6px}
-.cmv-section h2{font-family:var(--font-display);font-size:clamp(20px,3vw,28px);font-weight:500;color:var(--ink);margin:0 0 12px;line-height:1.2}
-.cmv-hero{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin:0 0 12px;padding:16px 18px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:12px}
-.cmv-hero__pct{font-family:var(--font-display);font-size:clamp(40px,8vw,64px);font-weight:560;line-height:.95;color:var(--teal);letter-spacing:-.02em}
-.cmv-hero__gloss{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0;max-width:54ch;flex:1 1 260px}
-.cmv-null{font-size:14px;line-height:1.6;color:var(--ink);margin:0 0 12px;max-width:72ch;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--rust,#b5623f);border-radius:8px}
-.cmv-null strong{font-weight:700;font-variant-numeric:tabular-nums}
-.cmv-caveat{font-size:13px;line-height:1.6;color:var(--ink-soft);margin:0 0 16px;max-width:72ch;padding:10px 12px;background:var(--white);border:1px solid var(--line);border-radius:8px}
-.cmv-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 14px}
-.cmv-controls__lab{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
-.cmv-controls select{font:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink);max-width:100%}
-.cmv-controls select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
-.cmv-src{font-size:12.5px;color:var(--stone);line-height:1.55;margin:14px 0 0}
-.cmv-src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
-.evh-downloads{margin:34px 0 8px;padding:16px 18px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px}
-.evh-downloads h2{font-family:var(--font-display);font-size:clamp(18px,2.6vw,24px);font-weight:500;color:var(--ink);margin:0 0 8px}
-.evh-downloads p{font-size:14px;color:var(--ink-soft);margin:0 0 10px;line-height:1.55}
-.evh-dl-list{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--ink)}
-.evh-dl-list a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
-.evh-dl-list .evh-lic{color:var(--stone);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-left:8px}
-.evh-cite{margin:12px 0 0;font-size:13px}
-.evh-cite summary{cursor:pointer;color:var(--ink-soft);font-weight:600;display:inline-block;padding:6px 0;min-height:24px}
-.evh-cite p{margin:6px 0 0;color:var(--ink-soft);line-height:1.6}
-.evh-cite code{font-size:12.5px;background:var(--white);padding:1px 5px;border-radius:4px}
-${CMV_BARS_RULES}
-</style>`;
 
 function emitEventsHubPage(locale) {
   const es = locale === 'es';
@@ -3387,12 +3077,9 @@ function emitEventsHubPage(locale) {
     }).join(', ');
     const srcs = (e.ev.sources || []).filter((s) => s && s.url)
       .map((s) => `<li data-quoted-source><a href="${escHtml(s.url)}" rel="nofollow noopener" target="_blank">${escHtml(s.publisher || s.title || s.url)}</a>${s.publisher && s.title ? ' — ' + escHtml(s.title) : ''}</li>`).join('');
-    // The permalink id + the detail-page link both ride INSIDE the data-quoted-source <h3>: the
-    // scan-time scrub drops the whole element, so a registry id/label carrying a retired word
-    // (e.g. "…-disruption-2022") never reaches the banned-word gate as the site's own copy.
     return `<li class="evh-card" data-cats="${escHtml(e.cats.join(' '))}" data-move="${move}">
       <div class="evh-card__head"><span class="evh-card__when">${escHtml(whenLabel(e))}</span>${magBadge}</div>
-      <h3 class="evh-card__label" id="ev-${escHtml(e.ev.id)}" data-quoted-source><a href="${base}/cost-index/events/${escHtml(e.ev.id)}/">${escHtml(e.ev.label)}</a></h3>
+      <h3 class="evh-card__label" data-quoted-source>${escHtml(e.ev.label)}</h3>
       <p class="evh-card__what" data-quoted-source>${escHtml(e.ev.whatHappened || '')}</p>
       <p class="evh-card__items"><strong>${es ? 'Afecta' : 'Affected'}</strong>${items}</p>
       <details class="evh-card__src"><summary>${(e.ev.sources || []).length} ${(e.ev.sources || []).length === 1 ? (es ? 'fuente' : 'source') : (es ? 'fuentes' : 'sources')}</summary><ul>${srcs}</ul></details>
@@ -3400,96 +3087,16 @@ function emitEventsHubPage(locale) {
   }).join('\n    ');
 
   const countTmpl = es ? '{n} de ' + nEv + ' mostrados' : '{n} of ' + nEv + ' shown';
-  const pageUrl = es ? canonEs : canonEn;
-  const absBase = es ? 'https://muntin.digital/es' : 'https://muntin.digital';
-
-  // ---- Co-movement explorer (94% had company) --------------------------------
-  const cs = COMPANY_STAT;
-  const cb = COMPANY_BASE;
-  const cmvDef = defaultCmvAnchor();
-  const cmvView = renderCmvView(cmvDef, es, base, 8);
-  const cmvOptions = Object.keys(CO_MOVEMENT)
-    .sort((x, y) => evSlugName(x, es).localeCompare(evSlugName(y, es)))
-    .map((s) => `<option value="${s}"${s === cmvDef ? ' selected' : ''}>${escHtml(evSlugName(s, es))}</option>`).join('');
-  const cmvIsland = JSON.stringify(cmvIslandData(es, base)).replace(/</g, '\\u003c');
-  const cmvSection = `
-    <section class="cmv-section" aria-labelledby="cmv-h">
-      <p class="cmv-eyebrow">${es ? 'Coincidencia, no causa' : 'Co-occurrence, not cause'}</p>
-      <h2 id="cmv-h">${es ? 'Cuando un choque tuvo compañía' : 'When one shock had company'}</h2>
-      <div class="cmv-hero">
-        <span class="cmv-hero__pct">${cs.pct}%</span>
-        <p class="cmv-hero__gloss">${es
-          ? `de los ${cs.total} movimientos de precio notables que detectamos (${cs.withCompany} de ${cs.total}) compartieron sus semanas con al menos otro ingrediente que corrió en la misma dirección. Pero eso es lo normal, no una señal — mira el nulo abajo.`
-          : `of the ${cs.total} notable price shocks we detected (${cs.withCompany} of ${cs.total}) shared their weeks with at least one other ingredient running the same direction. But that is the norm, not a signal — read the null below.`}</p>
-      </div>
-      <p class="cmv-null">${es
-        ? `En un nulo barajado — donde esos mismos ${cs.total} movimientos se reasignan al azar a ingredientes (${cb.iters} permutaciones) — cerca del <strong>${cb.basePct}%</strong> aún comparte una semana en la misma dirección. Así que "tuvo compañía" apenas supera al azar: la señal no es que un choque tuviera compañía, sino <strong>cuál</strong> ingrediente se movió junto, y por qué.`
-        : `In a shuffled null — where those same ${cs.total} moves are randomly reassigned to ingredients (${cb.iters} permutations) — about <strong>${cb.basePct}%</strong> still share a same-direction week. So "had company" barely beats chance: the signal is not that a shock had company, but <strong>which</strong> ingredient co-moved, and why.`}</p>
-      <p class="cmv-caveat">${es
-        ? 'Moverse en las mismas semanas no es que una cosa cause la otra — muchos comparten una región de cultivo, una ruta de envío o un pasillo. Es un conteo dirigido y acotado: en K de los movimientos propios de un ingrediente, otro corrió igual.'
-        : "Moving in the same weeks is not one thing causing another — many share a growing region, a shipping lane, or an aisle. It is a directed, bounded count: in K of an ingredient's own moves, another ran the same way."}</p>
-      <div class="cmv-controls">
-        <label class="cmv-controls__lab" for="cmvAnchor">${es ? 'Ingrediente ancla' : 'Anchor ingredient'}</label>
-        <select id="cmvAnchor">${cmvOptions}</select>
-      </div>
-      <div class="cmv-view">
-        <p class="cmv-line" id="cmvLine">${cmvView.line}</p>
-        <ol class="cmv-bars" id="cmvList">${cmvView.bars}</ol>
-        <p class="cmv-empty" id="cmvEmpty"${cmvView.empty ? '' : ' hidden'}>${cmvView.empty}</p>
-      </div>
-      <p class="cmv-src">${es
-        ? 'Co-movimiento dirigido sobre el conjunto de eventos detectados (CC0). Coincidencia en el tiempo, nunca una causa afirmada.'
-        : 'Directed co-movement over the detected-events dataset (CC0). Co-occurrence in time, never an asserted cause.'}</p>
-    </section>
-    <script type="application/json" id="cmvData">${cmvIsland}</script>`;
-
-  // ---- Downloads + cite ------------------------------------------------------
-  const tasl = es
-    ? 'Muntin Cost Index — Eventos de mercado · Muntin Digital · https://muntin.digital/cost-index/events/ · CC BY 4.0 para el registro documentado; CC0 1.0 para los extractos de movimientos detectados y co-movimiento.'
-    : 'Muntin Cost Index — Market Events · Muntin Digital · https://muntin.digital/cost-index/events/ · CC BY 4.0 for the documented registry; CC0 1.0 for the detected-moves and co-movement extracts.';
-  const dlSection = `
-    <section class="evh-downloads" aria-labelledby="evh-dl-h">
-      <h2 id="evh-dl-h">${es ? 'Datos abiertos' : 'Open data'}</h2>
-      <p>${es ? 'Descarga el registro documentado y los extractos derivados. Reutilízalos libremente.' : 'Download the documented registry and the derived extracts. Reuse them freely.'}</p>
-      <ul class="evh-dl-list">
-        <li>${es ? 'Registro documentado' : 'Documented registry'}: <a href="/cost-index/events.json" download>events.json</a><span class="evh-lic">CC BY 4.0</span></li>
-        <li>${es ? 'Movimientos detectados' : 'Detected moves'}: <a href="/cost-index/events-detected.json" download>JSON</a> · <a href="/cost-index/events-detected.csv" download>CSV</a><span class="evh-lic">CC0</span></li>
-        <li>${es ? 'Co-movimiento' : 'Co-movement'}: <a href="/cost-index/co-movement.json" download>JSON</a> · <a href="/cost-index/co-movement.csv" download>CSV</a><span class="evh-lic">CC0</span></li>
-      </ul>
-      <details class="evh-cite"><summary>${es ? 'Citar este conjunto de datos' : 'Cite this dataset'}</summary><p>${escHtml(tasl)}</p></details>
-    </section>`;
-
-  // ---- Schema: CollectionPage + ItemList + upgraded Dataset ------------------
-  const seenU = new Set(); const citationUrls = [];
-  for (const en of entries) for (const s of (en.ev.sources || [])) if (s && s.url && !seenU.has(s.url)) { seenU.add(s.url); citationUrls.push(s.url); }
-  const itemList = entries.map((e, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': e.ev.label, 'url': absBase + '/cost-index/events/' + e.ev.id + '/' }));
-  const answerLine = es
-    ? `${nEv} eventos de mercado documentados en EE. UU., ${yMin}–${yMax}, cada uno junto a las ventanas de precio mayorista que abarcó — coincidencia en el tiempo, nunca una causa afirmada.`
-    : `${nEv} documented U.S. food-market events, ${yMin}–${yMax}, each set beside the wholesale price windows it overlapped — co-occurrence in time, never an asserted cause.`;
   const jsonld = JSON.stringify({ '@context': 'https://schema.org', '@graph': [
-    { '@type': ['CollectionPage'], '@id': pageUrl + '#page', 'url': pageUrl, 'name': h1, 'inLanguage': es ? 'es-US' : 'en-US', 'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'description': desc, 'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', '.ci-answer'] }, 'mainEntity': { '@id': pageUrl + '#eventlist' } },
-    { '@type': 'ItemList', '@id': pageUrl + '#eventlist', 'numberOfItems': nEv, 'itemListElement': itemList },
-    { '@type': 'Dataset', '@id': pageUrl + '#dataset', 'name': h1, 'url': pageUrl, 'description': desc, 'temporalCoverage': `${yMin}/${yMax}`, 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' }, 'isAccessibleForFree': true,
-      'variableMeasured': [
-        { '@type': 'PropertyValue', 'name': es ? 'Desviación de la referencia mayorista frente al normal de ±26 semanas' : 'Wholesale reference departure from ±26-week normal', 'unitText': 'PERCENT', 'description': es ? 'Cuánto se alejó la referencia mayorista pública de un ingrediente afectado de su propio normal local centrado de ±26 semanas en la ventana del evento. Una referencia de mercado, no un precio entregado.' : "How far an affected ingredient's public wholesale reference ran from its own centered ±26-week local normal in the event window. A market reference, not a delivered price." },
-        { '@type': 'PropertyValue', 'name': es ? 'Conteo de co-movimiento dirigido' : 'Directed co-movement count', 'description': es ? 'En K de los N movimientos notables propios de un ingrediente, otro corrió en la misma dirección en la misma ventana de ~6 semanas. Coincidencia, nunca causa.' : "In K of an ingredient's own N notable moves, another ran the same direction in the same ~6-week window. Co-occurrence, never cause." },
-      ],
-      'citation': citationUrls,
-      'distribution': [
-        { '@type': 'DataDownload', 'name': es ? 'Registro documentado (CC BY)' : 'Documented registry (CC BY)', 'encodingFormat': 'application/json', 'contentUrl': 'https://muntin.digital/cost-index/events.json', 'license': 'https://creativecommons.org/licenses/by/4.0/' },
-        { '@type': 'DataDownload', 'name': 'Detected moves (JSON)', 'encodingFormat': 'application/json', 'contentUrl': 'https://muntin.digital/cost-index/events-detected.json', 'license': 'https://creativecommons.org/publicdomain/zero/1.0/' },
-        { '@type': 'DataDownload', 'name': 'Detected moves (CSV)', 'encodingFormat': 'text/csv', 'contentUrl': 'https://muntin.digital/cost-index/events-detected.csv', 'license': 'https://creativecommons.org/publicdomain/zero/1.0/' },
-        { '@type': 'DataDownload', 'name': 'Co-movement (JSON)', 'encodingFormat': 'application/json', 'contentUrl': 'https://muntin.digital/cost-index/co-movement.json', 'license': 'https://creativecommons.org/publicdomain/zero/1.0/' },
-        { '@type': 'DataDownload', 'name': 'Co-movement (CSV)', 'encodingFormat': 'text/csv', 'contentUrl': 'https://muntin.digital/cost-index/co-movement.csv', 'license': 'https://creativecommons.org/publicdomain/zero/1.0/' },
-      ] },
+    { '@type': 'Dataset', '@id': (es ? canonEs : canonEn) + '#dataset', 'name': h1, 'url': es ? canonEs : canonEn, 'description': desc, 'temporalCoverage': `${yMin}/${yMax}`, 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' }, 'isAccessibleForFree': true, 'distribution': { '@type': 'DataDownload', 'encodingFormat': 'application/json', 'contentUrl': 'https://muntin.digital/cost-index/events.json' } },
     { '@type': 'BreadcrumbList', 'itemListElement': [
       { '@type': 'ListItem', 'position': 1, 'name': es ? 'Inicio' : 'Home', 'item': es ? 'https://muntin.digital/es/' : 'https://muntin.digital/' },
       { '@type': 'ListItem', 'position': 2, 'name': es ? 'Índice de costos' : 'Cost index', 'item': (es ? 'https://muntin.digital/es' : 'https://muntin.digital') + '/cost-index/' },
-      { '@type': 'ListItem', 'position': 3, 'name': h1, 'item': pageUrl } ] },
-  ] }).replace(/</g, '\\u003c');
+      { '@type': 'ListItem', 'position': 3, 'name': h1, 'item': es ? canonEs : canonEn } ] }
+  ] });
 
   const stat = (n, l) => `<div><div class="evh-stat__n">${n}</div><div class="evh-stat__l">${escHtml(l)}</div></div>`;
-  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: EVENTS_HUB_CSS + EVH_ADD_CSS }) + `
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: EVENTS_HUB_CSS }) + `
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href="${base}/">${es ? 'Inicio' : 'Home'}</a> ›
     <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> ›
@@ -3498,10 +3105,9 @@ function emitEventsHubPage(locale) {
   <section class="ci-hero">
     <p class="ci-eyebrow"><a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a></p>
     <h1>${escHtml(h1)}</h1>
-    <p class="ci-answer">${answerLine}</p>
     <p class="ci-lede">${lede}</p>
   </section>
-  <div class="ci-body" style="max-width:860px">
+  <div class="ci-body" style="max-width:min(1040px,100%)">
     <div class="evh-stats">
       ${stat(nEv, es ? 'eventos documentados' : 'documented events')}
       ${stat(`${yMin}–${yMax}`, es ? 'de historia' : 'of history')}
@@ -3519,15 +3125,12 @@ function emitEventsHubPage(locale) {
     ${cards}
     </ul>
     <p class="evh-empty" hidden>${es ? 'Ningún evento en esa categoría.' : 'No events in that category.'}</p>
-    ${cmvSection}
-    ${dlSection}
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="${base}/cost-index/">${es ? 'Ver el índice' : 'Browse the index'}</a>
       <a class="btn btn-ghost" href="${base}/open/">${es ? 'Datos abiertos' : 'Open data'}</a>
     </div>
   </div>
-  <script>${EVENTS_HUB_JS}</script>
-  <script>${CMV_HUB_JS}</script>` + pageTail;
+  <script>${EVENTS_HUB_JS}</script>` + pageTail;
 }
 
 // ====================================================================
@@ -3570,68 +3173,6 @@ function seasonalDigest() {
 // seasons, not a real price swing (watermelon, pumpkin) — the honesty notes
 // name them. We keep them OUT of the "timing pays" showcase and flag them.
 const SEA_ARTIFACT_CAP = 175;
-
-// ---- Build-time corpus fusion for /open/seasonality/ (ADR-018 CHAIN) --------
-// Joins the Ingredient State Record (import-VALUE seasonality, origin concentration,
-// reliance, hedge_swap, co-movement) onto every CLASSIFIED digest item, under the
-// absolute honesty contract. seasonalDigest() is the SOLE authority for the
-// cheapest/dearest month + amplitude (never ISR's own save_pct/cheapest_month — its
-// coverage differs and would contradict the page's classified count). The mechanism
-// label + swap verdict language is generated by scripts/lib/seasonality-fusion.mjs and
-// unit-tested there (no supply verbs, no cause, no forecast). PURE + memoized.
-let _seaFusion = null;
-function seasonalityFusion() {
-  if (_seaFusion) return _seaFusion;
-  const dg = seasonalDigest();
-  const bySlug = {};
-  for (const it of dg.items) bySlug[it.slug] = it;      // slug -> {cheap, dear, amp, cls}
-  const saveOf = (amp) => Math.round(amp / (100 + amp) * 100);
-  const rows = {};
-  for (const it of dg.items) {
-    const isr = ISR_RECORD[it.slug] || null;
-    const mech = mechanismFor(isr, it.cheap);
-    const conc = concentrationFor(isr);
-    // Resolve the hedge_swap DISPLAY NAME to a classified slug (degrade if unresolved).
-    let hedge = null;
-    const swapName = isr && typeof isr.hedge_swap === 'string' ? isr.hedge_swap.trim() : '';
-    if (swapName) {
-      const swapSlug = slugifyName(swapName);
-      const swapItem = swapSlug && bySlug[swapSlug];
-      if (swapItem) {
-        const comovers = (isr && Array.isArray(isr.comovers) ? isr.comovers : []).map((c) => c && c.slug);
-        const coMove = comovers.includes(swapSlug);
-        const verdict = swapVerdict(
-          { slug: it.slug, cheap: it.cheap, dear: it.dear },
-          { slug: swapSlug, cheap: swapItem.cheap, dear: swapItem.dear },
-          coMove);
-        hedge = { swapSlug, swapName, coMove, verdict, swapCheap: swapItem.cheap, swapDear: swapItem.dear };
-      }
-    }
-    const bp = isr && typeof isr.band_pct === 'number' ? isr.band_pct : null;
-    const save = saveOf(it.amp);
-    const scc = seasonalClass(SEASON[it.slug]);
-    rows[it.slug] = {
-      slug: it.slug, cheap: it.cheap, dear: it.dear, amp: it.amp, cls: it.cls,
-      save,
-      band_pct: bp,
-      // signal-to-noise: the seasonal saving against the item's own routine band. A HEURISTIC
-      // ratio of two same-baseline percentages (labeled as such), never a formal statistic.
-      sig: bp && bp > 0 ? +(save / bp).toFixed(2) : null,
-      years: scc && typeof scc.years === 'number' ? scc.years : null,
-      posture: isr && typeof isr.posture === 'string' ? isr.posture : null,
-      importIndex: isr && Array.isArray(isr.import_seasonal_index) ? isr.import_seasonal_index : null,
-      mech, conc, hedge,
-    };
-  }
-  // Build-derived headline save range from the classified WINDOW items (field crops),
-  // so the hero copy templates the number from data and never hardcodes a range.
-  const windowSaves = dg.items
-    .filter((it) => it.cls === 'window' && it.amp <= SEA_ARTIFACT_CAP)
-    .map((it) => saveOf(it.amp));
-  const range = headlineRange(windowSaves);
-  _seaFusion = { rows, bySlug, range, classifiedN: dg.items.length };
-  return _seaFusion;
-}
 
 function dataCounts() {
   const rd = (p) => { try { return JSON.parse(fs.readFileSync(path.join(repoRoot, p), 'utf8')); } catch { return null; } };
@@ -3719,82 +3260,7 @@ const OPEN_CSS = `<style>
 .od-note{background:var(--cream-2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:8px 0}
 .od-note p{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px}
 .od-note p:last-child{margin:0}
-.sea-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-/* §0 honesty capsule + funnel + license */
-.sea-hero2{margin:6px 0 4px;padding:18px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:14px}
-.sea-capsule{font-size:16px;line-height:1.6;color:var(--ink);margin:0 0 14px;max-width:70ch}
-.sea-capsule strong{color:var(--teal);font-weight:700}
-.sea-funnel{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0 0 12px}
-.sea-funnel__step{font-size:13px;color:var(--ink-soft);background:var(--white);border:1px solid var(--line);border-radius:999px;padding:5px 12px}
-.sea-funnel__step b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:700}
-.sea-funnel__arr{color:var(--stone);font-weight:700}
-.sea-lic{font-size:12px;color:var(--stone);margin:0}
-.sea-lic__t{font-weight:700;letter-spacing:.03em;color:var(--ink-soft)}
-/* §4 mechanism grid + chips */
-.sea-mechgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:12px;margin:14px 0 0}
-.sea-mechcard{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
-.sea-mechcard__hd{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 8px}
-.sea-mechcard__hd a{color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;border-bottom:1px solid transparent}
-.sea-mechcard__hd a:hover{border-bottom-color:var(--teal)}
-.sea-mechcard__mo{font-size:11.5px;color:var(--stone);white-space:nowrap}
-.sea-mechcard__tag{font-size:12.5px;line-height:1.5;color:var(--ink-soft);margin:8px 0 0}
-.sea-mchip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.02em;padding:3px 9px;border-radius:999px;border:1px solid var(--line);margin:0 5px 4px 0}
-.sea-mchip--counter-phase{color:#0d6b6b;background:rgba(13,107,107,.08);border-color:rgba(13,107,107,.25)}
-.sea-mchip--domestic-low{color:#8a4b2a;background:rgba(138,75,42,.08);border-color:rgba(138,75,42,.25)}
-.sea-mchip--domestic-only{color:var(--ink-soft);background:var(--cream-2)}
-.sea-mchip--conc{color:var(--stone);background:transparent}
-/* dual-calendar figure */
-.sea-dual{margin:16px 0;padding:16px 18px;background:var(--white);border:1px solid var(--line);border-radius:14px}
-.sea-dual__grid{display:grid;grid-template-columns:130px 1fr;gap:8px 12px;align-items:center}
-.sea-dual__rowlab{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft)}
-.sea-dual__row{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;align-items:end;height:64px}
-.sea-dual__cell{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:2px;border-radius:4px}
-.sea-dual__cell--cheap{background:rgba(13,107,107,.10)}
-.sea-dual__bar{display:block;width:70%;height:var(--h);border-radius:3px 3px 0 0;min-height:4px}
-.sea-dual__bar--dom{background:var(--teal)}
-.sea-dual__bar--imp{background:#b98a4b}
-.sea-dual__bar--na{background:repeating-linear-gradient(45deg,var(--line),var(--line) 2px,transparent 2px,transparent 4px)}
-.sea-dual__mo{font-size:8px;color:var(--stone);font-weight:600}
-.sea-dual figcaption{font-size:13px;color:var(--ink-soft);margin:12px 0 0;line-height:1.5}
-.sea-dual .cite,.sea-swap .cite{margin:8px 0 0;font-size:12px}
-.sea-dual .cite summary,.sea-caveat .cite summary{cursor:pointer;color:var(--stone);font-weight:600}
-.sea-dual .cite p{font-size:12px;color:var(--ink-soft);line-height:1.5;margin:6px 0 0}
-/* §6 Swap Validator */
-.sea-swap{display:grid;gap:14px;margin:8px 0 0}
-.sea-swap__pick{display:flex;flex-direction:column;gap:5px;max-width:340px}
-.sea-swap__pick span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft)}
-.sea-swap__pick select{font:inherit;font-size:15px;padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:var(--white);color:var(--ink)}
-.sea-swap__pick select:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
-.sea-swap__out{padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-radius:12px}
-.sea-swap__badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.02em;padding:4px 11px;border-radius:999px;margin:0 0 8px;border:1px solid var(--line)}
-.sea-swap__badge--real-hedge{color:#0d6b6b;background:rgba(13,107,107,.10);border-color:rgba(13,107,107,.3)}
-.sea-swap__badge--offset{color:#8a6a2a;background:rgba(138,106,42,.10);border-color:rgba(138,106,42,.3)}
-.sea-swap__badge--mirror{color:#8a2a2a;background:rgba(138,42,42,.10);border-color:rgba(138,42,42,.3)}
-.sea-swap__badge--shared-calendar{color:var(--ink-soft);background:var(--white)}
-.sea-swap__line{font-size:14.5px;line-height:1.55;color:var(--ink);margin:0}
-/* §3 bankability scatter */
-.sea-scatter{margin:16px 0;padding:14px 16px;background:var(--white);border:1px solid var(--line);border-radius:14px}
-.sea-scatter__svg{width:100%;height:auto;display:block;overflow:visible}
-.scat-grid{stroke:var(--line);stroke-width:1;opacity:.6}
-.scat-tick{font-size:10px;fill:var(--stone)}
-.scat-axlab{font-size:11px;fill:var(--ink-soft);font-weight:600}
-.scat-floor{stroke:var(--rust,#b5623f);stroke-width:1.5;stroke-dasharray:5 4}
-.scat-floorlab{font-size:10.5px;fill:var(--rust,#b5623f);font-weight:700}
-.scat-dot{stroke:var(--white);stroke-width:1}
-.scat-dot--bank{fill:var(--teal)}
-.scat-dot--swamp{fill:var(--rust,#b5623f)}
-.sea-scatter figcaption{font-size:13px;color:var(--ink-soft);margin:10px 0 0;line-height:1.5}
-.sea-scattbl{margin:12px 0 0}
-.sea-scattbl>summary{cursor:pointer;color:var(--teal);font-weight:600;font-size:14px;padding:6px 0}
-.sea-scattbl__wrap{overflow-x:auto}
-.sea-scattbl table{border-collapse:collapse;width:100%;font-size:13.5px;margin:6px 0 0}
-.sea-scattbl th,.sea-scattbl td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
-.sea-scattbl thead th{font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--ink-soft)}
-.sea-scattbl th[scope=row] a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px solid transparent}
-.sea-scattbl th[scope=row] a:hover{border-bottom-color:var(--teal)}
-.sea-scattbl .scat-r--swamp td:last-child{color:var(--rust,#b5623f);font-weight:700}
-.sea-scattbl .scat-r--bank td:last-child{color:var(--teal);font-weight:700}
-@media (max-width:640px){.sea-clock{grid-template-columns:1fr}.sea-row{grid-template-columns:104px 1fr 46px}.sea-dual__grid{grid-template-columns:1fr}.sea-dual__rowlab{margin-top:6px}}
+@media (max-width:640px){.sea-clock{grid-template-columns:1fr}.sea-row{grid-template-columns:104px 1fr 46px}}
 </style>`;
 
 // ---- Radial "seasonal clock": how many ingredients bottom out each month ----
@@ -3848,11 +3314,6 @@ function emitOpenHub(locale) {
   const es = locale === 'es';
   const lang = es ? 'es' : 'en';
   const base = es ? '/es' : '';
-  // License URIs + a DataDownload builder for the DataCatalog. CC0 = deterministic recompute of
-  // public-domain gov data; CC-BY = Muntin's compiled/curated sets (credit required).
-  const CC0 = 'https://creativecommons.org/publicdomain/zero/1.0/';
-  const CCBY = 'https://creativecommons.org/licenses/by/4.0/';
-  const dl = (fmt, contentUrl, license) => ({ '@type': 'DataDownload', 'encodingFormat': fmt === 'csv' ? 'text/csv' : 'application/json', 'contentUrl': contentUrl, 'license': license });
   const canonEn = 'https://muntin.digital/open/';
   const canonEs = 'https://muntin.digital/es/open/';
   const url = es ? canonEs : canonEn;
@@ -3879,40 +3340,19 @@ function emitOpenHub(locale) {
       accent: 'var(--season)', h: es ? 'Estacionalidad' : 'Seasonality',
       stat: es ? `Normales de 12 meses · ${readyN} ingredientes` : `12-month normals · ${readyN} ingredients`,
       d: es ? 'Cuándo está más barato cada ingrediente — y dónde el calendario apenas importa. Derivado del historial público profundo.' : 'When each ingredient is cheapest — and where the calendar barely matters. Derived from the deep public history.',
-      links: [[es ? 'Aprender y explorar' : 'Learn & explore', `${base}/open/seasonality/`], ['CSV', '/cost-index/seasonality.csv'], ['JSON', '/cost-index/seasonality.json']], lic: 'CC0',
+      links: [[es ? 'Aprender y explorar' : 'Learn & explore', `${base}/open/seasonality/`]], lic: 'CC0',
     },
     {
-      // Two license layers, made unambiguous per-link: the detected-moves + co-movement bulk is
-      // CC0 (pure recompute of a public series); the curated, cited registry is CC-BY (Muntin's
-      // compilation), self-labeled in its own link so the badge is never read across both.
       accent: 'var(--gold)', h: es ? 'Eventos de mercado' : 'Market events',
       stat: es ? `${nEvents} eventos documentados` : `${nEvents} documented events`,
       d: es ? 'Choques de oferta y su co-ocurrencia con el precio — enmarcados como asociación, nunca como causa.' : 'Supply shocks and their price co-occurrence — framed as association, never as cause.',
-      links: [[es ? 'Ver el explorador' : 'Browse the explorer', `${base}/cost-index/events/`], [es ? 'Movimientos (CSV)' : 'Detected moves (CSV)', '/cost-index/events-detected.csv'], ['JSON', '/cost-index/events-detected.json'], [es ? 'Co-movimiento (CSV)' : 'Co-movement (CSV)', '/cost-index/co-movement.csv'], ['JSON', '/cost-index/co-movement.json'], [es ? 'Registro citado — CC-BY' : 'Cited registry — CC-BY', '/cost-index/events.json']], lic: 'CC0',
+      links: [['JSON', '/cost-index/events.json']], lic: 'CC-BY',
     },
     {
       accent: 'var(--teal)', h: es ? 'Rendimientos' : 'Ingredient yields',
       stat: es ? `${nYields} rendimientos comestibles` : `${nYields} edible yields`,
       d: es ? 'Convierte una libra al mayoreo en costo por plato — el porcentaje comestible de cada ingrediente.' : 'Turn a wholesale pound into plate cost — the edible portion of each ingredient.',
-      links: [[es ? 'Ver el explorador' : 'Browse the explorer', `${base}/library/ingredient-yields/`], ['CSV', '/cost-index/yields.csv'], ['JSON', '/cost-index/yields.json']], lic: 'CC-BY',
-    },
-    {
-      accent: 'var(--season)', h: es ? 'Fijar o flotar' : 'Lock-or-float',
-      stat: es ? '100 ingredientes · fijar / cojín / flotar / reservar' : '100 ingredients · lock / cushion / float / withhold',
-      d: es ? 'Qué tan estrecha ha corrido la banda mayorista de cada ingrediente — si puedes fijar un precio de menú o conviene dejarlo flotar. Ancho de banda, nunca un pronóstico.' : "How tight each ingredient's recent wholesale band has run — whether you can lock a menu price or should float it. Band width, never a forecast.",
-      links: [[es ? 'Usa la herramienta' : 'Use the tool', `${base}/tools/cost-pulse/`], ['CSV', '/cost-index/lockfloat.csv'], ['JSON', '/cost-index/lockfloat.json']], lic: 'CC-BY',
-    },
-    {
-      accent: 'var(--gold)', h: es ? 'Registro de anomalías' : 'Anomaly log',
-      stat: es ? '102 ingredientes · Hampel + Pettitt' : '102 ingredients · Hampel + Pettitt',
-      d: es ? 'Valores atípicos y quiebres de régimen en el historial profundo de precios de cada ingrediente — descriptivo, nunca una causa ni un pronóstico.' : "Statistical outliers and regime breaks in each ingredient's deep price history — descriptive, never a cause and never a forecast.",
-      links: [['CSV', '/cost-index/anomaly-log.csv'], ['JSON', '/cost-index/anomaly-log.json']], lic: 'CC-BY',
-    },
-    {
-      accent: 'var(--teal)', h: es ? 'Ficha de estado del ingrediente' : 'Ingredient State Record',
-      stat: es ? '100 ingredientes · postura + rendimiento + presión + importación' : '100 ingredients · posture + yield + pressure + imports',
-      d: es ? 'Una ficha por ingrediente: postura de precio, rendimiento comestible y cocido, mes más barato, la cobertura, la dirección de presión presente y el flujo de importación de EE. UU. (2010–2025). Descriptivo, nunca un pronóstico.' : 'One record per ingredient — pricing posture, edible & cooked yield, cheapest month, the hedge swap, present pressure direction, and the 2010–2025 US import stream. Descriptive, never a forecast.',
-      links: [[es ? 'Ver el manual' : 'Browse the playbook', `${base}/cost-index/menu-pricing/`], ['CSV', '/cost-index/ingredient-state-record.csv'], ['JSON', '/cost-index/ingredient-state-record.json']], lic: 'CC-BY',
+      links: [['JSON', '/cost-index/yields.json']], lic: 'CC-BY',
     },
   ];
   const cardHtml = cards.map((c) => `
@@ -3931,23 +3371,9 @@ function emitOpenHub(locale) {
       { '@type': ['CollectionPage', 'DataCatalog'], '@id': url + '#page', 'url': url, 'name': h1, 'inLanguage': es ? 'es-US' : 'en-US',
         'isPartOf': { '@id': 'https://muntin.digital/#website' }, 'description': desc,
         'dataset': [
-          { '@type': 'Dataset', 'name': es ? 'Índice de costos de ingredientes' : 'Restaurant ingredient cost index', 'url': 'https://muntin.digital' + base + '/cost-index/', 'license': CC0, 'creator': { '@id': 'https://muntin.digital/#business' },
-            'distribution': [ dl('json', 'https://muntin.digital/cost-index/index.json', CC0), dl('csv', 'https://muntin.digital/cost-index/index.csv', CC0) ] },
-          { '@type': 'Dataset', 'name': es ? 'Normales estacionales mayoristas' : 'Seasonal wholesale normals', 'url': 'https://muntin.digital' + base + '/open/seasonality/', 'license': CC0, 'creator': { '@id': 'https://muntin.digital/#business' },
-            'distribution': [ dl('json', 'https://muntin.digital/cost-index/seasonality.json', CC0), dl('csv', 'https://muntin.digital/cost-index/seasonality.csv', CC0) ] },
-          { '@type': 'Dataset', 'name': es ? 'Eventos de mercado (registro citado)' : 'Cost index market events (cited registry)', 'url': 'https://muntin.digital/cost-index/events/', 'license': CCBY, 'creator': { '@id': 'https://muntin.digital/#business' },
-            'distribution': [ dl('json', 'https://muntin.digital/cost-index/events.json', CCBY) ] },
-          { '@type': 'Dataset', 'name': es ? 'Movimientos de precio detectados y co-movimiento' : 'Detected price moves & co-movement', 'url': 'https://muntin.digital/cost-index/events/', 'license': CC0, 'creator': { '@id': 'https://muntin.digital/#business' },
-            'distribution': [ dl('json', 'https://muntin.digital/cost-index/events-detected.json', CC0), dl('csv', 'https://muntin.digital/cost-index/events-detected.csv', CC0), dl('json', 'https://muntin.digital/cost-index/co-movement.json', CC0), dl('csv', 'https://muntin.digital/cost-index/co-movement.csv', CC0) ] },
-          { '@type': 'Dataset', 'name': es ? 'Rendimientos comestibles de ingredientes' : 'Ingredient edible yields', 'url': 'https://muntin.digital' + base + '/library/ingredient-yields/', 'license': CCBY, 'creator': { '@id': 'https://muntin.digital/#business' },
-            'distribution': [ dl('json', 'https://muntin.digital/cost-index/yields.json', CCBY), dl('csv', 'https://muntin.digital/cost-index/yields.csv', CCBY) ] },
-          { '@type': 'Dataset', 'name': es ? 'Predictibilidad fijar-o-flotar' : 'Lock-or-float predictability', 'url': 'https://muntin.digital' + base + '/tools/cost-pulse/', 'license': CCBY, 'creator': { '@id': 'https://muntin.digital/#business' },
-            'distribution': [ dl('json', 'https://muntin.digital/cost-index/lockfloat.json', CCBY), dl('csv', 'https://muntin.digital/cost-index/lockfloat.csv', CCBY) ] },
-          { '@type': 'Dataset', 'name': es ? 'Registro de anomalías de precio' : 'Price anomaly log', 'url': 'https://muntin.digital/cost-index/anomaly-log.json', 'license': CCBY, 'creator': { '@id': 'https://muntin.digital/#business' },
-            'distribution': [ dl('json', 'https://muntin.digital/cost-index/anomaly-log.json', CCBY), dl('csv', 'https://muntin.digital/cost-index/anomaly-log.csv', CCBY) ] },
-          { '@type': 'Dataset', 'name': es ? 'Ficha de estado del ingrediente' : 'Ingredient State Record', 'url': 'https://muntin.digital' + base + '/cost-index/menu-pricing/', 'license': CCBY, 'creator': { '@id': 'https://muntin.digital/#business' },
-            'description': es ? 'Una ficha de estado presente por ingrediente: postura, banda, rendimiento y merma, temporada, cobertura, dirección de presión y flujo de importación de EE. UU. 2010-2025. Descriptivo, nunca un pronóstico.' : 'One present-state record per ingredient: posture, band, yield & trim, season, hedge, pressure direction, and the 2010-2025 US import stream. Descriptive, never a forecast.',
-            'distribution': [ dl('json', 'https://muntin.digital/cost-index/ingredient-state-record.json', CCBY), dl('csv', 'https://muntin.digital/cost-index/ingredient-state-record.csv', CCBY) ] },
+          { '@type': 'Dataset', 'name': es ? 'Índice de costos de ingredientes' : 'Restaurant ingredient cost index', 'url': 'https://muntin.digital' + base + '/cost-index/', 'license': 'https://creativecommons.org/publicdomain/zero/1.0/', 'creator': { '@id': 'https://muntin.digital/#business' } },
+          { '@type': 'Dataset', 'name': es ? 'Eventos de mercado del índice de costos' : 'Cost index market events', 'url': 'https://muntin.digital/cost-index/events.json', 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' } },
+          { '@type': 'Dataset', 'name': es ? 'Rendimientos comestibles de ingredientes' : 'Ingredient edible yields', 'url': 'https://muntin.digital/cost-index/yields.json', 'license': 'https://creativecommons.org/licenses/by/4.0/', 'creator': { '@id': 'https://muntin.digital/#business' } },
         ] },
       { '@type': 'BreadcrumbList', '@id': url + '#breadcrumbs', 'itemListElement': crumb.map((c, i) => ({ '@type': 'ListItem', 'position': i + 1, 'name': c[0], 'item': c[1] })) },
     ],
@@ -3967,253 +3393,21 @@ function emitOpenHub(locale) {
   <hr class="od-rule">
   <section aria-labelledby="od-sets">
     <h2 class="od-h2" id="od-sets">${es ? 'Los conjuntos de datos' : 'The datasets'}</h2>
-    <p class="od-sub">${es ? 'Siete conjuntos de datos, una postura: cada cifra es rastreable a datos públicos y descargable en formatos abiertos.' : 'Seven datasets, one posture: every figure traces to public data and downloads in open formats.'}</p>
+    <p class="od-sub">${es ? 'Cuatro superficies, una postura: cada cifra es rastreable a datos públicos y descargable en formatos abiertos.' : 'Four surfaces, one posture: every figure traces to public data and downloads in open formats.'}</p>
     <div class="od-grid">${cardHtml}</div>
-  </section>
-  <hr class="od-rule">
-  <section class="od-prose" aria-labelledby="od-research">
-    <h2 class="od-h2" id="od-research">${es ? 'La lectura, no solo los datos' : 'The read, not just the data'}</h2>
-    <p>${es ? 'Estos conjuntos son la materia prima. El <a href="' + base + '/cost-index/menu-pricing/">manual de precios de menú</a> los une por ingrediente en una lectura que una cocina puede usar: qué fijar o flotar, el costo real por porción comestible, si un mes de compra es real o solo ruido, y qué cambio no ahorra nada. Análisis original, no agregación — cada cifra sale de estos datos.' : 'These sets are the raw material. The <a href="' + base + '/cost-index/menu-pricing/">menu-pricing playbook</a> joins them per ingredient into one read a kitchen can act on: what to print or float, the true cost per edible portion, whether a buying month is real or just noise, and which swap saves nothing. Original analysis, not aggregation — every figure comes from this data.'}</p>
   </section>
   <hr class="od-rule">
   <section class="od-prose" aria-labelledby="od-honest">
     <h2 class="od-h2" id="od-honest">${es ? 'Cómo se mantiene honesto' : 'How this stays honest'}</h2>
     <p>${es ? 'Un número se publica solo cuando lo respalda un <strong>nivel mayorista real en dólares</strong> de una fuente pública, corroborado por una segunda — nunca un índice sin nivel ni una sola cotización sin verificar. Si no supera esa barra, la página lo dice en lugar de inventar una cifra.' : 'A number publishes only when a <strong>real wholesale dollar level</strong> from a public source clears the bar, corroborated by a second — never an index with no level, never a single unverified quote. If it does not clear the bar, the page says so instead of inventing a figure.'}</p>
     <p>${es ? 'El movimiento se enmarca como <strong>co-ocurrencia, no causa</strong>: mostramos que un precio se movió junto a un factor, no que el factor lo causó. Y cada figura es una <strong>re-derivación determinista</strong> del historial público — puedes reconstruirla desde la misma fuente.' : 'Movement is framed as <strong>co-occurrence, not cause</strong>: we show a price moved alongside a driver, not that the driver caused it. And every figure is a <strong>deterministic re-derivation</strong> of the public record — you can rebuild it from the same source.'}</p>
-    <p>${es ? 'Fuentes: USDA Market News, USDA NDPSR, BLS (IPP/PPI), FRED, NASS y el US Census Bureau. Licencia: los archivos derivados del gobierno — el índice, las normales estacionales y los movimientos detectados + co-movimiento — son de dominio público (CC0); los conjuntos compilados — el registro de eventos de mercado, los rendimientos, fijar-o-flotar, el registro de anomalías y la ficha de estado del ingrediente — son CC-BY: úsalos y cítanos como “Muntin Digital” (las columnas de importación de la ficha son de dominio público de EE. UU.).' : 'Sources: USDA Market News, USDA NDPSR, BLS (PPI/APU), FRED, NASS and the US Census Bureau. License: the government-derived files — the index, the seasonal normals, and the detected price moves + co-movement — are public domain (CC0); the compiled datasets — the market-events registry, ingredient yields, lock-or-float, the anomaly log, and the ingredient state record — are CC-BY: use them, credit “Muntin Digital” (the state record’s US import columns are themselves US public domain).'}</p>
+    <p>${es ? 'Fuentes: USDA Market News, USDA NDPSR, BLS (IPP/PPI) y FRED. Licencia: los números del índice son de dominio público (CC0); los conjuntos compilados (eventos, rendimientos) son CC-BY — úsalos, cítanos como “Muntin Digital”.' : 'Sources: USDA Market News, USDA NDPSR, BLS (PPI/APU) and FRED. License: the index numbers are public domain (CC0); the compiled datasets (events, yields) are CC-BY — use them, credit “Muntin Digital.”'}</p>
   </section>
   </div>`;
   return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss: OPEN_CSS }) + body + pageTail;
 }
 
 // ---- /open/seasonality/ — the learning surface ---------------------
-// §0 — build-derived honesty capsule + classification funnel + license split.
-// The headline save range is templated from the classified field-crop distribution
-// (never hardcoded), so it can't drift from the data on the next refresh.
-function seaHeadlineHtml(locale) {
-  const es = locale === 'es';
-  const dg = seasonalDigest();
-  const fu = seasonalityFusion();
-  const classifiedN = dg.clsN.window + dg.clsN.moderate + dg.clsN.flat;
-  const r = fu.range;
-  const rangeStr = r ? `${r.loSave}–${r.hiSave}%` : (es ? 'un dígito a dos dígitos' : 'single- to double-digit');
-  const cap = es
-    ? `Para un puñado de cultivos de campo frescos, comprar en el mes correcto recorta la referencia mayorista <strong>${rangeStr}</strong> frente al propio normal mensual de 5 años de ese artículo. Para la mayoría de los cultivos de almacén, importaciones de todo el año y proteínas, el calendario casi no mueve la cifra. Son niveles de referencia frente a la propia temporada de cada artículo — no un precio entregado, y nunca un pronóstico.`
-    : `For a handful of fresh field crops, buying in the right month cuts the wholesale reference <strong>${rangeStr}</strong> against that item's own 5-year monthly normal. For most storage crops, year-round imports, and proteins, the calendar barely moves the number. These are reference levels vs each item's own season — not a delivered price, and never a forecast.`;
-  const fLabel = es
-    ? `Embudo de clasificación: ${dg.readyN} ingredientes con un normal de 5 años, ${classifiedN} con un mes barato y caro nombrado, ${dg.clsN.window} con una ventana estacional clara.`
-    : `Classification funnel: ${dg.readyN} ingredients with a 5-year normal, ${classifiedN} earn a named cheap and dear month, ${dg.clsN.window} carry a clear seasonal window.`;
-  const step = (n, label) => `<span class="sea-funnel__step"><b>${n}</b> ${label}</span>`;
-  return `
-  <section class="sea-hero2" aria-labelledby="sea-hero2-h">
-    <h2 class="sea-sr" id="sea-hero2-h">${es ? 'El titular honesto' : 'The honest headline'}</h2>
-    <p class="sea-capsule">${cap}</p>
-    <div class="sea-funnel" role="img" aria-label="${escHtml(fLabel)}">
-      ${step(dg.readyN, es ? 'normal de 5 años' : '5-yr normal')}
-      <span class="sea-funnel__arr" aria-hidden="true">→</span>
-      ${step(classifiedN, es ? 'mes barato/caro nombrado' : 'named cheap/dear month')}
-      <span class="sea-funnel__arr" aria-hidden="true">→</span>
-      ${step(dg.clsN.window, es ? 'ventana estacional clara' : 'clear seasonal window')}
-    </div>
-    <p class="sea-lic">${es ? 'Normales crudos' : 'Raw normals'}: <span class="sea-lic__t">CC0</span> · ${es ? 'Clasificaciones derivadas' : 'Derived classifications'}: <span class="sea-lic__t">CC-BY 4.0</span></p>
-  </section>`;
-}
-
-// A compact dual-calendar figure for one representative counter-phase item: the
-// domestic wholesale-reference curve (normalized to its own mean) above, the import-
-// VALUE index below, counter-phase months shaded. Two calendars beside each other —
-// never one causing the other, never a supply claim.
-function seaDualCalendar(slug, locale) {
-  const es = locale === 'es';
-  const MO = es ? MONTHS_ES : MONTHS_EN;
-  const INI = (es ? MONTHS_ES : MONTHS_EN).map((m) => (m ? m[0].toUpperCase() : ''));
-  const isr = ISR_RECORD[slug];
-  const seas = SEASON[slug];
-  if (!isr || !Array.isArray(isr.import_seasonal_index) || !seas || !seas.months) return '';
-  const l = LABELS[slug] || {}; const name = (es ? (l.es || l.en) : l.en) || slug;
-  // Domestic curve normalized to its own mean over the months that exist.
-  const dom = []; const present = [];
-  for (let m = 1; m <= 12; m++) { const md = seas.months[String(m).padStart(2, '0')]; if (md && md.medianCents > 0) { dom[m] = md.medianCents; present.push(md.medianCents); } else dom[m] = null; }
-  if (present.length < 6) return '';
-  const mean = present.reduce((a, b) => a + b, 0) / present.length;
-  const imp = isr.import_seasonal_index.map(Number);
-  const impMax = Math.max(...imp), domMaxIdx = Math.max(...present.map((v) => v / mean));
-  const fu = seasonalityFusion().rows[slug];
-  const cheapMo = fu ? fu.cheap : null;
-  const bar = (idxVal, cls) => {
-    const h = idxVal == null ? 0 : Math.max(6, Math.round(idxVal / (cls === 'imp' ? impMax : domMaxIdx) * 100));
-    return idxVal == null
-      ? `<span class="sea-dual__bar sea-dual__bar--na" style="--h:6%" title="${es ? 'sin normal ese mes' : 'no normal that month'}"></span>`
-      : `<span class="sea-dual__bar sea-dual__bar--${cls}" style="--h:${h}%"></span>`;
-  };
-  const rowDom = []; const rowImp = [];
-  for (let m = 1; m <= 12; m++) {
-    const shade = m === cheapMo ? ' sea-dual__cell--cheap' : '';
-    rowDom.push(`<span class="sea-dual__cell${shade}">${bar(dom[m] == null ? null : dom[m] / mean, 'dom')}<span class="sea-dual__mo">${INI[m]}</span></span>`);
-    rowImp.push(`<span class="sea-dual__cell${shade}">${bar(imp[m - 1], 'imp')}<span class="sea-dual__mo">${INI[m]}</span></span>`);
-  }
-  const mech = MECHANISM_STRINGS[(fu && fu.mech.key) || 'domestic-low']((fu && fu.mech) || {}, es);
-  const alt = es
-    ? `Dos calendarios de 12 meses para ${name}, uno al lado del otro: arriba, la curva de referencia mayorista nacional normalizada a su propia media; abajo, el índice del valor de importación. El mes más barato nacional (${MO[cheapMo] || ''}) está sombreado. ${mech.tag} El valor de importación es nominal, nunca volumen ni cuota de oferta; ninguna curva causa la otra.`
-    : `Two 12-month calendars for ${name}, side by side: on top, the domestic wholesale-reference curve normalized to its own mean; below, the import-value index. The domestic cheapest month (${MO[cheapMo] || ''}) is shaded. ${mech.tag} Import value is nominal, never volume or supply share; neither curve causes the other.`;
-  const cap = es
-    ? `${name}: dos calendarios en ${mech.label.toLowerCase()} — mostrados juntos, ninguno causa el otro.`
-    : `${name}: two calendars, ${mech.label.toLowerCase()} — shown together, neither causing the other.`;
-  return `
-  <figure class="sea-dual" data-audio-alt="${escHtml(alt)}">
-    <div class="sea-dual__grid">
-      <span class="sea-dual__rowlab">${es ? 'Referencia nacional' : 'Domestic reference'}</span>
-      <div class="sea-dual__row">${rowDom.join('')}</div>
-      <span class="sea-dual__rowlab">${es ? 'Valor de importación' : 'Import value'}</span>
-      <div class="sea-dual__row">${rowImp.join('')}</div>
-    </div>
-    <figcaption>${escHtml(cap)}</figcaption>
-    <details class="cite"><summary>${es ? 'Fuente' : 'Source'}</summary><p>${es ? 'Curva nacional: normales mensuales de 5 años (USDA/BLS/FRED, CC0). Índice de valor de importación: valor de aduanas de EE. UU. (Census, dominio público) — valor nominal, nunca tonelaje.' : 'Domestic curve: 5-year monthly normals (USDA/BLS/FRED, CC0). Import-value index: U.S. customs value (Census, public domain) — nominal value, never tonnage.'}</p></details>
-  </figure>`;
-}
-
-// §4 — "Why the low lands when it does": per-item mechanism labels (value-only, no
-// supply verbs, no cause), a representative dual-calendar figure, and the load-bearing
-// import-value caveat.
-function seaWhyHtml(locale) {
-  const es = locale === 'es';
-  const MO = es ? MONTHS_ES : MONTHS_EN;
-  const fu = seasonalityFusion();
-  const nameOf = (slug) => { const l = LABELS[slug] || {}; return (es ? (l.es || l.en) : l.en) || slug; };
-  const base = es ? '/es' : '';
-  // Window items only (the ones with a real timing window), sorted by amplitude.
-  const items = Object.values(fu.rows).filter((r) => r.cls === 'window' && r.amp <= SEA_ARTIFACT_CAP)
-    .sort((a, b) => b.amp - a.amp);
-  // Pick a representative counter-phase item with a domestic curve for the figure.
-  const repr = items.find((r) => r.mech.key === 'counter-phase' && SEASON[r.slug] && SEASON[r.slug].months
-    && Object.keys(SEASON[r.slug].months).length >= 8) || items.find((r) => r.mech.key === 'counter-phase');
-  const glyph = { 'counter-phase': '⇄', 'domestic-low': '▽', 'domestic-only': '▪' };
-  const card = (r) => {
-    const m = MECHANISM_STRINGS[r.mech.key](r.mech, es);
-    const conc = r.conc ? concentrationString(r.conc, es) : null;
-    const concChip = conc ? `<span class="sea-mchip sea-mchip--conc" title="${escHtml(conc.tag)}">◧ ${escHtml(conc.label)}</span>` : '';
-    return `<div class="sea-mechcard">
-      <div class="sea-mechcard__hd"><a href="${base}/cost-index/${r.slug}/#cheapest">${escHtml(nameOf(r.slug))}</a><span class="sea-mechcard__mo">${es ? 'más barato' : 'cheapest'} ${MO[r.cheap]}</span></div>
-      <span class="sea-mchip sea-mchip--${r.mech.key}">${glyph[r.mech.key]} ${escHtml(m.label)}</span>${concChip}
-      <p class="sea-mechcard__tag">${escHtml(m.tag)}</p>
-    </div>`;
-  };
-  return `
-  <section aria-labelledby="sea-why">
-    <h2 class="od-h2" id="sea-why">${es ? 'Por qué el mínimo cae cuando cae' : 'Why the low lands when it does'}</h2>
-    <p class="od-sub">${es ? 'Cada ventana estacional lleva ahora un descriptor estructural derivado del calendario del valor de importación de ese artículo — dónde se sitúa el valor de importación frente al mínimo nacional. Es la forma de la curva, nunca una causa de precio ni un flujo de oferta.' : "Each seasonal window now carries a structural descriptor derived from that item's import-value calendar — where import value sits relative to the domestic low. It's the shape of the curve, never a price cause or a supply flow."}</p>
-    ${repr ? seaDualCalendar(repr.slug, locale) : ''}
-    <div class="sea-mechgrid">${items.slice(0, 12).map(card).join('')}</div>
-    <div class="od-note sea-caveat" style="margin-top:16px"><p>${escHtml(mechanismCaveat(es))}</p></div>
-  </section>`;
-}
-
-// §6 — The Swap Validator. For anchor items with a hedge_swap that resolves to a
-// classified slug, certify calendar OFFSET only (real hedge / partial offset / mirror /
-// shared calendar) from both items' cheap months + co-movement. Never a price outcome.
-function seaSwapHtml(locale) {
-  const es = locale === 'es';
-  const MO = es ? MONTHS_ES : MONTHS_EN;
-  const fu = seasonalityFusion();
-  const nameOf = (slug) => { const l = LABELS[slug] || {}; return (es ? (l.es || l.en) : l.en) || slug; };
-  const rows = Object.values(fu.rows).filter((r) => r.hedge).sort((a, b) => a.slug.localeCompare(b.slug));
-  if (!rows.length) return '';
-  const data = {};
-  for (const r of rows) {
-    const ctx = { anchorName: nameOf(r.slug), swapName: r.hedge.swapName, anchorCheap: r.cheap, anchorDear: r.dear, swapCheap: r.hedge.swapCheap };
-    const v = SWAP_STRINGS[r.hedge.verdict.key] ? SWAP_STRINGS[r.hedge.verdict.key](ctx, es) : null;
-    if (!v) continue;
-    data[r.slug] = { anchor: nameOf(r.slug), swap: r.hedge.swapName, key: r.hedge.verdict.key, label: v.label, line: v.line, cheap: MO[r.cheap], dear: MO[r.dear] };
-  }
-  const keys = Object.keys(data);
-  if (!keys.length) return '';
-  const first = data[keys[0]];
-  const opt = keys.map((k) => `<option value="${escHtml(k)}">${escHtml(data[k].anchor)}</option>`).join('');
-  const verdictHtml = (d) => `<span class="sea-swap__badge sea-swap__badge--${d.key}">${escHtml(d.label)}</span><p class="sea-swap__line">${escHtml(d.line)}</p>`;
-  return `
-  <section aria-labelledby="sea-swap-h">
-    <h2 class="od-h2" id="sea-swap-h">${es ? 'Cuando tu artículo llega a su máximo, ¿qué está barato en su lugar?' : "When your item peaks, what's actually cheap instead?"}</h2>
-    <p class="od-sub">${es ? `Para ${keys.length} artículos con un sustituto candidato en el registro, el validador usa la estacionalidad como árbitro: certifica el desfase de calendario — no promete un resultado de precio.` : `For ${keys.length} items with a candidate swap on record, the validator uses seasonality as referee: it certifies calendar offset — it does not promise a price outcome.`}</p>
-    <div class="sea-swap">
-      <label class="sea-swap__pick"><span>${es ? 'Tu artículo' : 'Your item'}</span>
-        <select id="seaSwapSel">${opt}</select>
-      </label>
-      <div class="sea-swap__out" id="seaSwapOut" aria-live="polite">${verdictHtml(first)}</div>
-    </div>
-    <div class="od-note sea-caveat" style="margin-top:14px"><p>${escHtml(swapCaveat(es))}</p></div>
-    <script type="application/json" id="seaSwapData">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>
-    <script>
-    (function(){
-      var el=document.getElementById('seaSwapData'),sel=document.getElementById('seaSwapSel'),out=document.getElementById('seaSwapOut');
-      if(!el||!sel||!out)return;var d;try{d=JSON.parse(el.textContent)}catch(e){return}
-      function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-      function render(k){var x=d[k];if(!x)return;out.innerHTML='<span class="sea-swap__badge sea-swap__badge--'+x.key+'">'+esc(x.label)+'</span><p class="sea-swap__line">'+esc(x.line)+'</p>'}
-      sel.addEventListener('change',function(){render(sel.value)});
-    })();
-    </script>
-  </section>`;
-}
-
-// §3 — Big gap ≠ good buy: the bankability scatter. Plots every classified item that
-// carries a band by how big its seasonal saving is (x) against how much it jitters anyway
-// (y = saving ÷ own band, a HEURISTIC ratio). Below the noise floor (ratio 1.0) the seasonal
-// gap is real but smaller than the item's own routine swing — swamped, not bankable.
-function seaScatterHtml(locale) {
-  const es = locale === 'es';
-  const MO = es ? MONTHS_ES : MONTHS_EN;
-  const fu = seasonalityFusion();
-  const nameOf = (slug) => { const l = LABELS[slug] || {}; return (es ? (l.es || l.en) : l.en) || slug; };
-  const base = es ? '/es' : '';
-  const pts = Object.values(fu.rows).filter((r) => r.sig != null && r.save != null).sort((a, b) => b.sig - a.sig);
-  const lackBand = Object.values(fu.rows).filter((r) => r.sig == null).length;
-  if (pts.length < 8) return '';
-  // scales
-  const maxSave = Math.max(50, Math.ceil(Math.max(...pts.map((p) => p.save)) / 10) * 10);
-  const minY = 0.3, maxY = Math.max(20, Math.ceil(Math.max(...pts.map((p) => p.sig))));
-  const W = 640, H = 340, mL = 52, mR = 16, mT = 16, mB = 46;
-  const plotW = W - mL - mR, plotH = H - mT - mB;
-  const xS = (save) => mL + (save / maxSave) * plotW;
-  const l10 = (v) => Math.log10(Math.max(minY, v));
-  const yS = (sig) => mT + plotH - (l10(sig) - l10(minY)) / (l10(maxY) - l10(minY)) * plotH;
-  const floorY = yS(1);
-  const gridVals = [0.5, 1, 2, 5, 10, 20].filter((v) => v >= minY && v <= maxY);
-  const grid = gridVals.map((v) => `<line class="scat-grid" x1="${mL}" y1="${yS(v).toFixed(1)}" x2="${W - mR}" y2="${yS(v).toFixed(1)}"/><text class="scat-tick" x="${mL - 6}" y="${(yS(v) + 3).toFixed(1)}" text-anchor="end">${v}×</text>`).join('');
-  const xticks = [0, Math.round(maxSave / 2), maxSave].map((v) => `<text class="scat-tick" x="${xS(v).toFixed(1)}" y="${H - mB + 18}" text-anchor="middle">${v}%</text>`).join('');
-  const rOf = (y) => (y >= 5 ? 5.5 : y >= 4 ? 4.5 : 3.5);
-  const dots = pts.map((p) => {
-    const bankable = p.sig >= 1;
-    const t = `${nameOf(p.slug)}: ${p.save}% ${es ? 'más barato' : 'cheaper'}, ${es ? 'banda' : 'band'} ${p.band_pct}%, S/N ${p.sig} (${p.posture || '—'})`;
-    return `<circle class="scat-dot scat-dot--${bankable ? 'bank' : 'swamp'}" cx="${xS(p.save).toFixed(1)}" cy="${yS(p.sig).toFixed(1)}" r="${rOf(p.years)}"><title>${escHtml(t)}</title></circle>`;
-  }).join('');
-  const alt = es
-    ? `Diagrama de dispersión de ${pts.length} ingredientes clasificados: eje X, el ahorro estacional (% más barato); eje Y en escala logarítmica, la señal-ruido (ahorro ÷ banda propia). Una línea de "piso de ruido" en 1×: por encima, el ahorro estacional supera el vaivén rutinario del artículo (comprable); por debajo, el ahorro es real pero menor que su propio ruido semanal (ahogado). ${pts.filter((p) => p.sig < 1).length} caen bajo el piso.`
-    : `Scatter of ${pts.length} classified ingredients: x-axis, the seasonal saving (% cheaper); y-axis on a log scale, the signal-to-noise (saving ÷ the item's own band). A "noise floor" line at 1×: above it the seasonal saving beats the item's routine swing (bankable); below it the saving is real but smaller than its own week-to-week noise (swamped). ${pts.filter((p) => p.sig < 1).length} fall below the floor.`;
-  // ranked table — the canonical screen-reader + no-JS reading
-  const rows = pts.map((p) => `<tr class="scat-r--${p.sig >= 1 ? 'bank' : 'swamp'}"><th scope="row"><a href="${base}/cost-index/${p.slug}/#cheapest">${escHtml(nameOf(p.slug))}</a></th><td>${MO[p.cheap]}</td><td>${p.save}%</td><td>${p.band_pct}%</td><td>${p.sig}×</td><td>${escHtml(p.posture || '—')}</td><td>${p.sig >= 1 ? (es ? 'Comprable' : 'Bankable') : (es ? 'Ahogado' : 'Swamped')}</td></tr>`).join('');
-  return `
-  <section aria-labelledby="sea-bank">
-    <h2 class="od-h2" id="sea-bank">${es ? 'Una gran brecha no es lo mismo que una buena compra' : "Big gap isn't the same as a good buy"}</h2>
-    <p class="od-sub">${es ? 'La amplitud por sí sola engaña. Aquí cada ventana se posiciona por cuánto ahorra (eje X) frente a cuánto oscila igual todo el año (eje Y = ahorro ÷ su propia banda). Bajo el piso de ruido, la temporada queda ahogada por el vaivén rutinario del artículo.' : "Amplitude alone misleads. Here each window is placed by how much it saves (x) against how much it swings anyway all year (y = saving ÷ its own band). Below the noise floor, the season is swamped by the item's routine jitter."}</p>
-    <figure class="sea-scatter" data-audio-alt="${escHtml(alt)}">
-      <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${escHtml(alt.slice(0, 240))}" class="sea-scatter__svg">
-        ${grid}
-        <line class="scat-floor" x1="${mL}" y1="${floorY.toFixed(1)}" x2="${W - mR}" y2="${floorY.toFixed(1)}"/>
-        <text class="scat-floorlab" x="${W - mR}" y="${(floorY - 5).toFixed(1)}" text-anchor="end">${es ? 'piso de ruido (1×)' : 'noise floor (1×)'}</text>
-        ${xticks}
-        <text class="scat-axlab" x="${(mL + plotW / 2).toFixed(1)}" y="${H - 6}" text-anchor="middle">${es ? '% más barato (ahorro estacional)' : '% cheaper (seasonal saving)'}</text>
-        <text class="scat-axlab" transform="translate(13,${(mT + plotH / 2).toFixed(1)}) rotate(-90)" text-anchor="middle">${es ? 'señal-ruido (log)' : 'signal-to-noise (log)'}</text>
-        ${dots}
-      </svg>
-      <figcaption>${es ? `Por encima del piso = comprable; por debajo = la temporada queda ahogada por el ruido propio. ${pts.filter((p) => p.sig < 1).length} de ${pts.length} caen debajo.` : `Above the floor = bankable; below = the season is swamped by the item's own noise. ${pts.filter((p) => p.sig < 1).length} of ${pts.length} fall below.`}</figcaption>
-      <details class="cite"><summary>${es ? 'Datos y método' : 'Data & method'}</summary><p>${es ? `Ahorro estacional de la mediana mensual de 5 años (CC0); banda propia del registro del ingrediente. Señal-ruido = ahorro ÷ banda, una razón heurística de dos porcentajes, no un estadístico formal. ${lackBand} artículos clasificados sin banda no aparecen.` : `Seasonal saving from the 5-year monthly median (CC0); own band from the ingredient state record. Signal-to-noise = saving ÷ band, a heuristic ratio of two percentages, not a formal statistic. ${lackBand} classified items without a band do not appear.`}</p></details>
-    </figure>
-    <details class="sea-scattbl"><summary>${es ? 'Ver la tabla ordenada' : 'See the ranked table'}</summary>
-      <div class="sea-scattbl__wrap"><table><thead><tr><th scope="col">${es ? 'Ingrediente' : 'Ingredient'}</th><th scope="col">${es ? 'Más barato' : 'Cheapest'}</th><th scope="col">${es ? '% barato' : '% cheaper'}</th><th scope="col">${es ? 'Banda' : 'Band'}</th><th scope="col">S/N</th><th scope="col">${es ? 'Postura' : 'Posture'}</th><th scope="col">${es ? 'Veredicto' : 'Verdict'}</th></tr></thead><tbody>${rows}</tbody></table></div>
-    </details>
-    <div class="od-note sea-caveat" style="margin-top:14px"><p>${es ? 'El ancho de banda es cuánto oscila normalmente el precio de este artículo — un descriptor de previsibilidad, no un pronóstico ni una dirección. La señal-ruido es una razón heurística de dos porcentajes, no un estadístico formal. Un punto bajo la línea significa que la brecha estacional es real pero menor que el ruido semana a semana del propio artículo — la temporada puede quedar ahogada en cualquier semana dada.' : "Band width is how far this item's price routinely swings — a predictability descriptor, not a price forecast or a direction call. Signal-to-noise is a heuristic ratio of two percentages, not a formal statistic. A point below the line means the seasonal gap is real but smaller than the item's own week-to-week noise — the season can be swamped in any given week."}</p></div>
-  </section>`;
-}
-
 function emitSeasonalityHub(locale) {
   const es = locale === 'es';
   const lang = es ? 'es' : 'en';
@@ -4299,7 +3493,6 @@ function emitSeasonalityHub(locale) {
     <h1>${escHtml(h1)}</h1>
     <p class="od-hero__lede">${es ? 'La estacionalidad es el ritmo anual de lo que cuesta un ingrediente — fijado por cosechas, almacenamiento, importaciones y clima. El titular honesto: un puñado de cultivos de campo frescos premian el momento, y la mayoría de los cultivos de almacén, importaciones y proteínas no.' : 'Seasonality is the yearly rhythm in what an ingredient costs — set by harvest, storage, imports and weather. The honest headline: a handful of fresh field crops reward timing, and most storage crops, year-round imports, and proteins do not.'}</p>
   </section>
-  ${seaHeadlineHtml(locale)}
   <section class="sea-clock" aria-labelledby="sea-clock-h">
     ${seasonalClockSvg(locale)}
     <div class="sea-explore">
@@ -4347,10 +3540,6 @@ function emitSeasonalityHub(locale) {
     ${artifacts.length ? `<div class="od-note" style="margin-top:16px"><p>${es ? `Excluidos a propósito: ${artifacts.join(', ')} muestran oscilaciones aún mayores que casi con certeza son un cambio de empaque o unidad entre la fruta de verano y la de invierno, no un movimiento de precio real. La dirección es confiable; el múltiplo exacto no.` : `Deliberately excluded: ${artifacts.join(', ')} show even larger raw swings that are almost certainly a pack or unit change between summer and winter fruit, not a real price move. The direction is reliable; the exact multiple is not.`}</p></div>` : ''}
   </section>
   <hr class="od-rule">
-  ${seaWhyHtml(locale)}
-  <hr class="od-rule">
-  ${seaScatterHtml(locale)}
-  <hr class="od-rule">
   <section class="od-prose" aria-labelledby="sea-read">
     <h2 class="od-h2" id="sea-read">${es ? 'Cómo leer la curva de 12 meses' : 'How to read the 12-month curve'}</h2>
     <p>${es ? 'Cada página de ingrediente trae una curva de 12 meses construida con medianas de varios años. La <strong>línea</strong> es la mediana (lo típico) de cada mes — el centro del rango histórico, para que un año raro no distorsione la forma. La <strong>banda</strong> sombreada es la dispersión: cuánto ha variado ese mes de un año a otro. Banda estrecha = precio confiable; banda ancha = mes volátil.' : 'Every ingredient page carries a 12-month curve built from multi-year medians. The <strong>line</strong> is each month’s median (typical) price — the middle of the historical range, so one freak year doesn’t distort the shape. The shaded <strong>band</strong> is the spread: how much that month has varied year to year. A tight band means dependable; a wide band means volatile.'}</p>
@@ -4361,8 +3550,6 @@ function emitSeasonalityHub(locale) {
     <h2 class="od-h2" id="sea-play-h">${es ? 'El manual del operador' : 'The operator’s playbook'}</h2>
     <ol class="sea-play">${play.map((p) => `<li>${p}</li>`).join('')}</ol>
   </section>
-  <hr class="od-rule">
-  ${seaSwapHtml(locale)}
   <hr class="od-rule">
   <section aria-labelledby="sea-honest">
     <h2 class="od-h2" id="sea-honest">${es ? 'Dónde el calendario apenas importa' : 'Where the calendar barely matters'}</h2>
@@ -4387,8 +3574,8 @@ if (ONLY) {
 
 const targets = [];
 for (const slug of buildSlugs) {
-  targets.push({ path: `cost-index/${slug}/index.html`,    content: injectRecall(emitIngredientPage(slug, 'en'), slug, RECALL_INDEX, false) });
-  targets.push({ path: `es/cost-index/${slug}/index.html`, content: injectRecall(emitIngredientPage(slug, 'es'), slug, RECALL_INDEX, true) });
+  targets.push({ path: `cost-index/${slug}/index.html`,    content: emitIngredientPage(slug, 'en') });
+  targets.push({ path: `es/cost-index/${slug}/index.html`, content: emitIngredientPage(slug, 'es') });
   // Downloadable series only for shippable readings — never expose the thin
   // data behind an "expanding coverage" ingredient as a data file.
   if (shippable(slug)) {
@@ -4414,28 +3601,13 @@ targets.push({ path: 'cost-index/lab/index.html',    content: emitLabPage('en') 
 targets.push({ path: 'es/cost-index/lab/index.html', content: emitLabPage('es') });
 targets.push({ path: 'cost-index/events/index.html',    content: emitEventsHubPage('en') });
 targets.push({ path: 'es/cost-index/events/index.html', content: emitEventsHubPage('es') });
-// Per-event detail pages — one per curated registry event, EN + ES. Slug = the event id
-// (final-forever). Built whole regardless of --only so EN↔ES stay in parity.
-for (const ev of REGISTRY_EVENTS) {
-  if (!ev || !ev.id) continue;
-  targets.push({ path: `cost-index/events/${ev.id}/index.html`,    content: emitEventPage(ev, 'en') });
-  targets.push({ path: `es/cost-index/events/${ev.id}/index.html`, content: emitEventPage(ev, 'es') });
-}
 
 targets.push({ path: 'open/index.html',                content: emitOpenHub('en') });
 targets.push({ path: 'es/open/index.html',             content: emitOpenHub('es') });
 targets.push({ path: 'open/seasonality/index.html',    content: emitSeasonalityHub('en') });
 targets.push({ path: 'es/open/seasonality/index.html', content: emitSeasonalityHub('es') });
-// /cost-index/research/ — original computed analysis over the open data (Workstream F).
-// Returns [] until data/cost-research-content.json exists, so this is inert until content lands.
-for (const t of researchTargets({ pageHead, pageTail, escHtml, repoRoot })) targets.push(t);
 let drift = 0;
-// Dev affordance: CI_ONLY_PATH=<substr> writes ONLY targets whose path matches, so a single
-// data-driven page (e.g. the menu-pricing explorer) can be regenerated without churning the
-// other ~130 committed pages the ephemeral engine is behind on. Inert unless the env is set.
-const onlyPath = process.env.CI_ONLY_PATH || null;
 for (const tgt of targets) {
-  if (onlyPath && !tgt.path.includes(onlyPath)) continue;
   const fullPath = path.join(repoRoot, tgt.path);
   if (checkMode) {
     const existing = fs.existsSync(fullPath) ? fs.readFileSync(fullPath, 'utf8') : null;

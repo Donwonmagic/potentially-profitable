@@ -1,0 +1,248 @@
+<style>
+  /* ============================================================
+     Muntin — "inside the data" — v3.
+     Depth by LAYER SEPARATION + parallax, not by rotating the
+     scene. The plane stays square to you; near layers slide
+     against far ones as you move. Muntin tokens; honest.
+     ============================================================ */
+  :root{
+    --teal:#2A50C8; --teal-lt:#5B8CF0; --rust:#C42E2E; --gold:#B7791F;
+    --ink:#16181D; --cream:#F6F7F8; --stone:#6B7280; --line:#E3E5E9;
+    --room-1:#EEF0F4; --room-2:#DDE0E7; --room-fog:rgba(42,80,200,.06);
+    --glass:rgba(255,255,255,.74); --glass-edge:rgba(20,22,26,.10); --glass-hi:rgba(255,255,255,.9);
+    --text:#16181D; --text-soft:#4A4F59; --text-mut:#6B7280;
+    --grid:rgba(20,22,26,.09);
+    --num:#16181D; --teal-sig:#1F3A93; --rust-sig:#C42E2E;
+    --font-display:Georgia,'Times New Roman',serif;
+    --font-body:system-ui,-apple-system,'Segoe UI',sans-serif;
+    --font-mono:ui-monospace,'SF Mono','Cascadia Code','JetBrains Mono',Menlo,monospace;
+    --ease-out:cubic-bezier(.16,1,.3,1);
+    color-scheme:light;
+  }
+  :root[data-theme="dark"], @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --room-1:#0b0d11; --room-2:#060708; --room-fog:rgba(122,167,255,.10);
+    --glass:rgba(34,40,52,.58); --glass-edge:rgba(180,200,255,.14); --glass-hi:rgba(200,220,255,.16);
+    --text:#F1EDE5; --text-soft:#C3BEB2; --text-mut:#9AA0AB;
+    --grid:rgba(150,175,220,.10);
+    --num:#F6F3EC; --teal:#7AA7FF; --teal-lt:#A9C6FF; --teal-sig:#9DBBFF; --rust:#F0736B; --rust-sig:#F58A82; --gold:#D8A94A;
+    color-scheme:dark;
+  }}
+  :root[data-theme="light"]{
+    --room-1:#EEF0F4; --room-2:#DDE0E7; --room-fog:rgba(42,80,200,.06);
+    --glass:rgba(255,255,255,.74); --glass-edge:rgba(20,22,26,.10); --glass-hi:rgba(255,255,255,.9);
+    --text:#16181D; --text-soft:#4A4F59; --text-mut:#6B7280; --grid:rgba(20,22,26,.09);
+    --num:#16181D; --teal:#2A50C8; --teal-lt:#5B8CF0; --teal-sig:#1F3A93; --rust:#C42E2E; --rust-sig:#C42E2E; --gold:#B7791F;
+    color-scheme:light;
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0}
+  .page{
+    min-height:100vh; font-family:var(--font-body); color:var(--text);
+    background:
+      radial-gradient(90% 70% at 50% 14%, var(--room-fog) 0%, transparent 60%),
+      radial-gradient(140% 120% at 50% 120%, var(--room-1) 0%, var(--room-2) 100%);
+    -webkit-font-smoothing:antialiased;
+    padding:clamp(16px,3vw,40px) clamp(14px,4vw,40px) 44px; overflow-x:hidden;
+  }
+  .wrap{max-width:940px; margin:0 auto}
+
+  header{display:flex; flex-wrap:wrap; align-items:flex-end; gap:14px 26px; margin-bottom:8px}
+  .id{flex:1 1 320px; min-width:0}
+  .eyebrow{font-family:var(--font-mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--text-mut); margin:0 0 9px}
+  h1{font-family:var(--font-display); font-weight:600; font-size:clamp(24px,4vw,38px); line-height:1.06; letter-spacing:-.01em; margin:0; text-wrap:balance}
+  h1 em{font-style:italic; color:var(--teal)}
+  .sub{margin:11px 0 0; max-width:56ch; color:var(--text-soft); font-size:14.5px; line-height:1.55}
+  .controls{display:flex; gap:8px; flex-wrap:wrap}
+  .btn{font-family:var(--font-body); font-size:12.5px; font-weight:600; color:var(--text); background:color-mix(in srgb,var(--glass) 70%,transparent); border:1px solid var(--glass-edge); border-radius:999px; padding:9px 14px; cursor:pointer; display:inline-flex; align-items:center; gap:7px; -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); transition:border-color .18s,transform .1s}
+  .btn:hover{border-color:var(--teal)}
+  .btn:active{transform:translateY(1px)}
+  .btn:focus-visible{outline:none; box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 34%,transparent)}
+  .btn[aria-pressed="true"]{border-color:var(--teal); color:var(--teal)}
+  .btn i{width:8px;height:8px;border-radius:50%;background:var(--teal)}
+
+  /* ---------------- the depth scene ---------------- */
+  .scene{
+    perspective:1600px; perspective-origin:50% 42%;
+    margin:22px auto 0; max-width:600px; height:clamp(430px,66vw,500px); position:relative;
+  }
+  /* the plane stays square to the viewer — a tiny fixed recline only, NO pointer rotation */
+  .rig{position:absolute; inset:0; transform-style:preserve-3d; transform:rotateX(3deg); --px:0px; --py:0px}
+
+  /* receding environment: a faint floor grid + glow, held still so moving layers read against it */
+  .env{position:absolute; left:50%; top:50%; width:1300px; height:1300px; margin:-650px 0 0 -650px;
+    transform:translateZ(-380px) rotateX(80deg);
+    background:
+      radial-gradient(closest-side, var(--room-fog), transparent 72%),
+      repeating-linear-gradient(0deg, transparent 0 60px, var(--grid) 60px 61px),
+      repeating-linear-gradient(90deg, transparent 0 60px, var(--grid) 60px 61px);
+    -webkit-mask-image:radial-gradient(closest-side,#000 38%,transparent 76%); mask-image:radial-gradient(closest-side,#000 38%,transparent 76%);
+    pointer-events:none}
+  .halo{position:absolute; left:50%; top:46%; width:520px; height:360px; margin:-180px 0 0 -260px; transform:translateZ(-240px);
+    background:radial-gradient(closest-side, var(--room-fog), transparent 70%); filter:blur(20px); pointer-events:none}
+
+  .pane{position:absolute; left:50%; border-radius:14px; background:var(--glass); border:1px solid var(--glass-edge);
+    -webkit-backdrop-filter:blur(9px) saturate(1.08); backdrop-filter:blur(9px) saturate(1.08);
+    box-shadow:0 1px 0 var(--glass-hi) inset, 0 26px 54px -28px rgba(0,0,0,.5)}
+
+  /* movers recede in clear, separate strata behind the read.
+     parallax: each shifts OPPOSITE the pointer, nearer = more, so the
+     front slides across the ones behind — you look around it into depth. */
+  .mover{width:336px; margin-left:-168px; padding:11px 15px; display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center; font-size:13px; color:var(--text-soft)}
+  .mover .nm{font-weight:600; color:var(--text)}
+  .mover .cf{font-family:var(--font-mono); font-size:9.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--text-mut)}
+  .mover .d{font-family:var(--font-mono); font-variant-numeric:tabular-nums; font-weight:600; white-space:nowrap}
+  .d.up{color:var(--rust-sig)} .d.down{color:var(--teal-sig)} .d.calm{color:var(--text-mut)}
+  .m1{top:23%; transform:translateZ(-46px)  translateY(-40px) translate(calc(var(--px)*-.42),calc(var(--py)*-.42))}
+  .m2{top:23%; transform:translateZ(-118px) translateY(-74px) translate(calc(var(--px)*-.26),calc(var(--py)*-.26)); opacity:.72; filter:blur(.5px)}
+  .m3{top:23%; transform:translateZ(-192px) translateY(-104px) translate(calc(var(--px)*-.15),calc(var(--py)*-.15)); opacity:.44; filter:blur(1.3px)}
+
+  /* the hero read floats forward; it slides most, so it parallaxes against the strata */
+  .read{width:378px; margin-left:-189px; top:30%; padding:20px 20px 17px; transform:translateZ(58px) translate(calc(var(--px)*-.85),calc(var(--py)*-.85));
+    box-shadow:0 1px 0 var(--glass-hi) inset, 0 40px 66px -26px rgba(0,0,0,.55), 0 8px 20px -10px rgba(0,0,0,.32)}
+  .read__top{display:flex; align-items:center; gap:10px; margin-bottom:13px}
+  .read__lab{font-family:var(--font-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.12em; color:var(--text-mut)}
+  .read__state{margin-left:auto; font-family:var(--font-mono); font-size:9.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--text-mut); display:inline-flex; align-items:center; gap:6px; border:1px solid var(--glass-edge); border-radius:999px; padding:3px 9px}
+  .read__state b{width:6px;height:6px;border-radius:50%;background:var(--gold);display:block}
+  .headrow{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap}
+  .big{font-family:var(--font-mono); font-variant-numeric:tabular-nums; font-size:clamp(40px,9vw,56px); font-weight:600; letter-spacing:-.03em; line-height:.95; color:var(--num); text-shadow:0 10px 22px rgba(0,0,0,.24)}
+  .chip{font-family:var(--font-mono); font-size:12px; font-weight:600; padding:4px 10px; border-radius:6px; display:inline-flex; gap:5px; align-items:center}
+  .chip.up{color:var(--rust-sig); background:color-mix(in srgb,var(--rust) 15%,transparent)}
+  .conf{display:inline-flex; align-items:center; gap:8px; margin-top:12px; font-size:12.5px; font-weight:600; color:var(--text-soft); padding:4px 10px 4px 8px; border-radius:5px; background:color-mix(in srgb,var(--text) 5%,transparent)}
+  .conf::before{content:''; width:22px; border-top:2px solid var(--text-soft)}
+  .spark{display:block; width:100%; height:56px; margin-top:13px; overflow:visible}
+  .spark .grid{stroke:var(--glass-edge); stroke-width:1; stroke-dasharray:2 3}
+  .spark .fill{fill:color-mix(in srgb,var(--teal) 12%,transparent); opacity:0; transition:opacity .5s var(--ease-out) .4s}
+  .spark .line{fill:none; stroke:var(--teal); stroke-width:2; stroke-linejoin:round; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:0; filter:drop-shadow(0 5px 7px color-mix(in srgb,var(--teal) 36%,transparent))}
+  .spark .dot{fill:var(--teal); filter:drop-shadow(0 0 6px var(--teal))}
+  .assembled .spark .line{animation:ink 1000ms var(--ease-out) .15s both}
+  .assembled .spark .fill{opacity:1}
+  @keyframes ink{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+  .stamp{margin:13px 2px 0; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.02em; color:var(--text-mut); line-height:1.5}
+  .stamp b{color:var(--text-soft)}
+
+  /* boot: layers ease into their depth once (gentle, no swing) */
+  .rig:not(.assembled) .read{transform:translateZ(0) translate(calc(var(--px)*-.85),calc(var(--py)*-.85))}
+  .rig:not(.assembled) .m1,.rig:not(.assembled) .m2,.rig:not(.assembled) .m3{opacity:0}
+  .rig.assembled .read,.rig.assembled .m1,.rig.assembled .m2,.rig.assembled .m3{transition:transform .8s var(--ease-out), opacity .8s var(--ease-out)}
+
+  /* ---------- honest flat fallback ---------- */
+  .scene.flat{perspective:none; height:auto}
+  .scene.flat .rig{transform:none; position:relative; display:flex; flex-direction:column; gap:10px; align-items:center; height:auto}
+  .scene.flat .env,.scene.flat .halo{display:none}
+  .scene.flat .pane{-webkit-backdrop-filter:none; backdrop-filter:none; background:color-mix(in srgb,var(--glass) 100%,#fff 0%)}
+  .scene.flat .mover,.scene.flat .read,.scene.flat .m1,.scene.flat .m2,.scene.flat .m3{transform:none; position:relative; left:auto; top:auto; margin:0; opacity:1; filter:none; width:100%; max-width:378px}
+  .scene.flat .big{text-shadow:none} .scene.flat .spark .line{filter:none}
+
+  .cap{max-width:600px; margin:22px auto 0; text-align:center}
+  .cap p{margin:0; font-size:12.5px; line-height:1.55; color:var(--text-soft)}
+  .cap b{color:var(--text)}
+  .rail{max-width:600px; margin:14px auto 0; font-size:11.5px; line-height:1.6; color:var(--text-mut); text-align:center}
+  .rail b{color:var(--text-soft)}
+  footer{max-width:600px; margin:26px auto 0; padding-top:14px; border-top:1px solid var(--glass-edge); font-size:11px; line-height:1.6; color:var(--text-mut); text-align:center}
+  footer code{font-family:var(--font-mono)}
+
+  @media (max-width:520px){
+    .scene{max-width:100%; height:clamp(390px,108vw,450px)}
+    .read{width:298px; margin-left:-149px} .mover{width:278px; margin-left:-139px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .rig.assembled .read,.rig.assembled .m1,.rig.assembled .m2,.rig.assembled .m3{transition:none}
+    .assembled .spark .line{animation:none; stroke-dashoffset:0}
+  }
+</style>
+
+<div class="page">
+  <div class="wrap">
+
+    <header>
+      <div class="id">
+        <p class="eyebrow">Muntin · inside the data · v3</p>
+        <h1>Layers at different <em>distances</em> — no swing.</h1>
+        <p>The read stays square to you. Move your pointer and the front slides against the strata behind it — you look <em>around</em> the basket into its parts. Depth is the separation, not the scene tilting. Try <b>dark mode</b>; <b>Depth off</b> shows the honest flat state.</p>
+      </div>
+      <div class="controls">
+        <button class="btn" id="theme"><i></i><span id="themeLbl">Theme: auto</span></button>
+        <button class="btn" id="replay">↻ Reassemble</button>
+        <button class="btn" id="depth" aria-pressed="false">Depth off</button>
+      </div>
+    </header>
+
+    <div class="scene" id="scene">
+      <div class="rig" id="rig">
+        <div class="env"></div>
+        <div class="halo"></div>
+
+        <div class="pane mover m3"><span class="nm">Sweet potato</span><span class="cf">too new</span><span class="d calm">— holding</span></div>
+        <div class="pane mover m2"><span class="nm">Yellow onion</span><span class="cf">measured</span><span class="d down">▼ easing</span></div>
+        <div class="pane mover m1"><span class="nm">Ground beef</span><span class="cf">measured</span><span class="d up">▲ building</span></div>
+
+        <figure class="pane read" id="read">
+          <div class="read__top">
+            <span class="read__lab">Cost Index · basket</span>
+            <span class="read__state"><b></b> as of Jul 22</span>
+          </div>
+          <div class="headrow">
+            <span class="big">104.8</span>
+            <span class="chip up">▲ building</span>
+          </div>
+          <span class="conf">measured</span>
+          <svg class="spark" viewBox="0 0 400 56" preserveAspectRatio="none" role="img" aria-label="Basket index rose over the tracked window; illustrative sample.">
+            <line class="grid" x1="0" y1="28" x2="400" y2="28"></line>
+            <path class="fill" d="M4,44 L37,45 L70,43 L103,46 L136,36 L169,37 L202,32 L235,33 L268,23 L301,21 L334,17 L367,11 L396,8 L396,56 L4,56 Z"></path>
+            <path class="line" pathLength="1" d="M4,44 L37,45 L70,43 L103,46 L136,36 L169,37 L202,32 L235,33 L268,23 L301,21 L334,17 L367,11 L396,8"></path>
+            <circle class="dot" cx="396" cy="8" r="3.2"></circle>
+          </svg>
+          <p class="stamp">wholesale reference · <b>Not your prices</b> · as of 2026-07-22</p>
+        </figure>
+      </div>
+    </div>
+
+    <div class="cap">
+      <p><b>Distance means provenance.</b> The certified basket is nearest you; its measured parts sit behind it — separate strata, dimmer the deeper they go. You look into the read, not at a chart of it.</p>
+    </div>
+    <p class="rail"><b>Still honest:</b> the number never moves on its own, dims, or tweens; “measured” leads in words; “Not your prices” stays; <b>Depth off</b> (and reduced-motion / low-end devices) collapses to a fully-composed flat read.</p>
+
+    <footer>Illustrative sample · real read builds from the newest <code>cost-index-editions.json</code>, EN + ES · type in system stand-ins (live ships Fraunces + Inter) · plan of record <code>docs/design/depth-immersion-dream-backlog.md</code></footer>
+
+  </div>
+</div>
+
+<script>
+  (function(){
+    var root=document.documentElement, rig=document.getElementById('rig'), scene=document.getElementById('scene');
+    var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var modes=['auto','light','dark'], mi=0, lbl=document.getElementById('themeLbl');
+    document.getElementById('theme').addEventListener('click',function(){
+      mi=(mi+1)%3; var m=modes[mi];
+      if(m==='auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme',m);
+      lbl.textContent='Theme: '+m;
+    });
+
+    function assemble(){ rig.classList.remove('assembled'); void rig.offsetWidth; rig.classList.add('assembled'); }
+    document.getElementById('replay').addEventListener('click',assemble);
+    if(reduce){ rig.classList.add('assembled'); } else { setTimeout(assemble,220); }
+
+    var depthOff=false, db=document.getElementById('depth');
+    db.addEventListener('click',function(){
+      depthOff=!depthOff; scene.classList.toggle('flat',depthOff);
+      db.setAttribute('aria-pressed',String(depthOff)); db.textContent=depthOff?'Depth on':'Depth off';
+      if(depthOff){ rig.style.setProperty('--px','0px'); rig.style.setProperty('--py','0px'); }
+    });
+
+    // parallax by TRANSLATION only — no rotation. Layers set their own coefficient.
+    if(!reduce){
+      var raf=0, px=0, py=0;
+      scene.addEventListener('pointermove',function(e){
+        if(depthOff) return;
+        var r=scene.getBoundingClientRect();
+        px=((e.clientX-r.left)/r.width-.5)*22;   // ±11px pointer drive
+        py=((e.clientY-r.top)/r.height-.5)*16;    // ±8px
+        if(!raf) raf=requestAnimationFrame(apply);
+      });
+      scene.addEventListener('pointerleave',function(){ px=0; py=0; if(!raf) raf=requestAnimationFrame(apply); });
+      function apply(){ raf=0; rig.style.setProperty('--px',px.toFixed(2)+'px'); rig.style.setProperty('--py',py.toFixed(2)+'px'); }
+    }
+  })();
+</script>
