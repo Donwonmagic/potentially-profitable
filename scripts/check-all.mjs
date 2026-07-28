@@ -753,6 +753,12 @@ const CHECKS = [
   ['ERS food dollar honesty','check-ers-food-dollar.mjs'],
   ['Open-data catalog (idem)','build-open-data-catalog.mjs', '--check'],
   ['Open-data catalog gate','check-open-data-catalog.mjs'],
+  // The license side of _headers. check-open-data-catalog above guards the
+  // data/*.jsonl wildcard specifically; this one guards EVERY rule that sends a
+  // Link rel="license", so a glob widened over cost-index/ (9 CC0 files, 13
+  // CC-BY, 7 undeclared) cannot relicense the CC-BY set in transit.
+  ['Header license self-test','check-headers-license.mjs','--self-test'],
+  ['Header license claims','check-headers-license.mjs'],
   // Audio coverage — manifest-driven audit of which written pieces
   // ship a studio audio edition in which languages. Warn-only during
   // the studio-audio rollout (pre-existing ENGLISH-IN-FOREIGN issues
