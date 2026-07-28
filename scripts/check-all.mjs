@@ -565,6 +565,12 @@ const CHECKS = [
   // co-occurrence markup + distinct-events-not-notices + graceful absence; the injector lands next.
   ['Recall-roster lib self-test','lib/recall-roster.mjs','--self-test'],
   ['Ingredient recalls sync','inject-ingredient-recalls.mjs','--check'],
+  // Provenance hop (audit 2026-07-28) — the ingredient read card links the source
+  // registry (named agency report per slug) + this series' recorded-revision count.
+  // build-cost-index-pages.mjs overwrites ingredient HTML, so the refresh cron re-runs
+  // this injector; the --check here is what fails the deploy if it is ever skipped.
+  ['Provenance hop self-test','inject-provenance-hop.mjs','--self-test'],
+  ['Provenance hop in sync','inject-provenance-hop.mjs','--check'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
   ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
   // Study evidence dataset (ADR-019): the menu-pricing paper's claims × its 36 grounding sources

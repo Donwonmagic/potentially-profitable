@@ -432,7 +432,7 @@ main{padding-top:64px}
       <li><strong>Correcciones.</strong> Un error descubierto — una unidad mal interpretada, un término de mercancía equivocado — se corrige en la especificación de la fuente, se re-verifica y se re-incorpora. Una corrección que cambia una lectura publicada se anota en el registro de cambios.</li>
       <li><strong>Retiros.</strong> Una serie descontinuada o suprimida transiciona al ingrediente a <em>ausente</em> con la razón, en lugar de quedar congelada en un último valor obsoleto.</li>
     </ul>
-    <p>La política se respalda con un registro público: cada cambio en una lectura ya publicada queda anotado en el <a href="/cost-index/revisions.json">registro de revisiones</a> append-only, un diff determinista que se re-verifica en cada build — vacío hasta que una lectura se revise por primera vez, e imposible de sobrescribir en silencio.</p>
+    <p>La política se respalda con un registro público: cada cambio en una lectura ya publicada queda anotado en el <a href="/cost-index/revisions.json">registro de revisiones</a> append-only, un diff determinista que se re-verifica en cada build — solo crece cuando una lectura ya publicada cambia realmente, e imposible de sobrescribir en silencio.</p>
 
     <h2 id="governance">Gobernanza y disciplina de hechos</h2>
     <p>La metodología se versiona con el código. Un cambio en cómo se evalúa un número — un umbral, un reductor, un nuevo método derivado — es un commit revisable con una entrada fechada en el registro de cambios, para que un lector pueda ver no solo el método actual sino cómo evolucionó.</p>
