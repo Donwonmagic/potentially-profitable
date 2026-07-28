@@ -403,6 +403,23 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
@@ -746,6 +763,12 @@ main{padding-top:64px}
   <li>Watch the direction over a few weeks before re-pricing a dish — one week is noise.</li>
 </ol>
 <p>Costing a dish that uses cheddar cheese? Use the <a href="/tools/plate-cost/?from=cheddar-cheese">Plate Cost Calculator</a>.</p>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#cheddar-cheese">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $1.43B (2025), series 2010-2025, YoY -15.5%. Top origins: 24% Italy · 16% France · 9% Spain (diversified, HHI 0.11). Peak import months: Oct · Nov · Dec. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 040690.</span> <span class="ci-supply__meta">The 'other cheese' basket, explicitly including cheddar and colby; broader than cheddar alone.</span></p>
+    <p class="ci-supply__p">US exports: $1.28B (2025). <span class="ci-supply__caveat">US domestic-export value (US Census, DF=1) — nominal value, never your delivered price.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">
@@ -761,6 +784,13 @@ main{padding-top:64px}
         </form>
       </div>
     </div>
+    <!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-cheddar-cheese">
+    <h2 id="ci-recalls-h-cheddar-cheese">Food-safety recall history</h2>
+    <p class="ci-recalls__lede">4 documented recall events name this ingredient in the product text, 2 Class I — shown as co-occurrence, never a cause, never joined to a price.</p>
+    <p class="ci-recalls__stat mono">4 events · 8 notices · latest 2026-02-04</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2026-02-04 · Class II · Terminated · Prima Vera Nueva, Inc. · U.S. Distribution: CA, NV</span></p><p class="ci-recalls__prod">Mushroom, Spinach &amp; Salsa Tamales with 2 Cheeses Ingredients: Organic Corn Flour Masa, Mushrooms, Spinach, Onions, Jalapenos, Jack and White Cheddar Cheese (pasteurized milk, chee…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2026-02-04 · Class II · Terminated · Prima Vera Nueva, Inc. · U.S. Distribution: CA, NV</span></p><p class="ci-recalls__prod">Roasted Pumpkin &amp; White Cheddar Tamales Ingredients: Organic Corn Flour Masa, Pumpkin, Green Chile, Sharp Cheddar Cheese (Pasteurized Milk, Cheese Cultures, Salt and Enzymes), But…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2024-06-26 · Class I · Terminated · Raw Farm LLC · Products are distributed to retailers and distribution centers in the following U.S. states: TX, CA, CO, AZ. No foreign…</span></p><p class="ci-recalls__prod">Raw Cheddar Cheese, made from unpasteurized milk, 8 oz (1/2 lb) block, Keep Refrigerated under 40 degrees</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2024-06-26 · Class I · Terminated · Raw Farm LLC · Products are distributed to retailers and distribution centers in the following U.S. states: TX, CA, CO, AZ. No foreign…</span></p><p class="ci-recalls__prod">Raw Cheddar Cheese, made from unpasteurized milk, 16 oz (1 lb) block, Keep Refrigerated under 40 degrees</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2024-06-26 · Class I · Terminated · Raw Farm LLC · Products are distributed to retailers and distribution centers in the following U.S. states: TX, CA, CO, AZ. No foreign…</span></p><p class="ci-recalls__prod">Raw Cheddar Cheese, made from unpasteurized milk, 8 oz (1/2 lb), shredded, in a plastic bag, Keep Refrigerated under 40 degrees</p></li></ul>
+    <p class="ci-recalls__caveat">The tag is a whole-word text match on the product, not a supply or price link; it can include composite products that merely name the ingredient. Events are distinct counts, not notices. FDA-regulated foods only.</p>
+  </section><!-- /ingredient-recalls:end -->
     <section class="ci-faq" aria-labelledby="ci-faq-h-cheddar-cheese">
   <h2 id="ci-faq-h-cheddar-cheese">Frequently asked</h2>
   <div class="ci-faq__item"><h3 class="ci-faq__q">What does cheddar cheese cost wholesale right now?</h3><p class="ci-faq__a">It moves week to week. The market read above shows the current typical range and the date behind it; read it against your own invoice.</p></div>
