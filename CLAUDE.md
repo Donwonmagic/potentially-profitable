@@ -44,7 +44,9 @@ The operator bio: **Don Goldstein, full-time Front-of-House Manager at Tacombi �
 
 ## Key gates
 
-CI orchestrator is `scripts/check-all.mjs` — runs every `check-*.mjs` script in sequence and fails fast.
+CI orchestrator is `scripts/check-all.mjs` — runs the wired `check-*.mjs` scripts in sequence and fails fast. It also runs inside the Cloudflare deploy (`wrangler.jsonc` `build.command`), so **a failing gate blocks the deploy** — never wire a gate that is currently failing.
+
+  - **Gate coverage** (`check-gate-coverage.mjs`) — the meta-gate, and it runs first. Every `check-*.mjs` on disk must be either wired into `check-all` or listed in that script's `UNWIRED` registry with a date, its current pass/fail status, and a reason. There is no third state, so a gate can no longer be written and silently never run. As of 2026-07-28: 128 scripts, 123 wired, 5 documented-unwired (two of which fail, which is exactly why they must not be wired before their violations are fixed).
 
   - **Fabrication blocklist** (`check-fabrications.mjs`) — blocks the May-2026 fabrication patterns (invented cohorts, fake URLs, the "two restaurants" bio drift). Fail-CI.
   - **Article graphics** (`check-article-graphics.mjs`) — 9 rules per article: ≥2 content figures, ≥2 distinct viz-* kinds, ≥80-char `data-audio-alt`, `<figcaption>` per figure, teal↔rust tone balance, viz-bars `--w` vs num consistency, cross-post dedup, no autolink markers inside attribute values, and **rule 9 — signed data may not ride a one-directional `viz-bars`** (labels mixing + and − must use `viz-diverge`; detection keys on the numeric labels, never `data-tone`, since ~60 figures legitimately use rust/teal for pass/fail categories over all-positive values). Per-slug `HISTORICAL_WAIVERS` + `DEDUP_ALLOW` allowlist, both with dated comments. `GENERATED_ROOTS` (`cost-index/`, `es/cost-index/`) are additionally scanned for figure QUALITY only — rules 3, 4, 6, 8, 9 — because those pages are template-built, carry no `id="post-body"`, and may legitimately ship one figure or none; pages without figures are skipped.

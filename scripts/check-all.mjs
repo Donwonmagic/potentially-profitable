@@ -27,6 +27,12 @@ const repoRoot   = path.resolve(path.dirname(__filename), '..');
 // Each entry: [label, script, ...args]. Order is stable so output
 // reads top-to-bottom in the same way each run.
 const CHECKS = [
+  // Runs first: it answers "is the rest of this list complete?". Every
+  // check-*.mjs on disk must be in this list or in its documented UNWIRED
+  // registry — a gate nobody invokes is the appearance of protection, not
+  // protection. Found 5 such scripts on 2026-07-28, two of them failing.
+  ['Gate coverage self-test','check-gate-coverage.mjs','--self-test'],
+  ['Gate coverage',       'check-gate-coverage.mjs'],
   ['Name coherence',      'check-name-coherence.mjs',      '--check'],
   ['Counts coherence',    'check-counts-coherence.mjs',    '--check'],
   // Phase-fact-check — blocklist for the patterns that came back as
