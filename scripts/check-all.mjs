@@ -33,6 +33,13 @@ const CHECKS = [
   // protection. Found 5 such scripts on 2026-07-28, two of them failing.
   ['Gate coverage self-test','check-gate-coverage.mjs','--self-test'],
   ['Gate coverage',       'check-gate-coverage.mjs'],
+  // The other half of the same question. Gate coverage asks "is every check
+  // script run?"; this asks "is every (idem) builder this file --checks
+  // actually re-run by something?". check-all runs at the END of the deploy
+  // command, so a builder verified here but run nowhere turns drift into a red
+  // deploy no automation can clear. 34 of 96 have no automated healer.
+  ['Idem coverage self-test','check-idem-coverage.mjs','--self-test'],
+  ['Idem coverage',      'check-idem-coverage.mjs'],
   ['Name coherence',      'check-name-coherence.mjs',      '--check'],
   ['Counts coherence',    'check-counts-coherence.mjs',    '--check'],
   // Phase-fact-check — blocklist for the patterns that came back as

@@ -1199,6 +1199,21 @@ neither); vanilla publish-threshold. Freight double-count RESOLVED (one live ser
   safe on origin.** Recover: `git fetch origin <branch> && git reset --hard origin/<branch>`
   (working tree is usually clean). **Rule: commit + push every increment BEFORE any slower audit
   — the push is the only durable artifact.**
+- **⚠ 2026-07-28 — the "(idem)" set is now GATED, and the real number is worse than three.**
+  `check-idem-coverage.mjs` (wired, runs right after gate-coverage) classifies every `(idem)`
+  builder in `check-all` into exactly one of: run by the deploy `build.command`, run by a named
+  workflow, or listed in its `MANUAL` registry with **who runs it and when it drifts**. No fourth
+  state. Result: **96 builders — 56 deploy-healed, 6 workflow-healed, 34 with no automated healer.**
+    - Most of the 34 are safe *by construction* and the registry says why: **13 serve `/course/`**,
+      which CLAUDE.md freezes — a builder whose inputs never change cannot drift — and **8 render
+      operator-fetched public data** (ADR-013: the fetch needs keys + network the container lacks,
+      so the builder is re-run beside the data it renders).
+    - **The live ones are the rest.** `inject-knit-rail` is the highest-churn: it drifted during the
+      freeze work itself, because freezing articles changed the related-reading rails.
+      `inject-topic-card-links`, `inject-topic-eyebrow`, `build-article-graphics`,
+      `build-claims-json` (already a documented manual step) and the theme/cuisine trio follow.
+    - **Run `inject-knit-rail.mjs` after ANY article add / freeze / retire.** That one line would
+      have saved a red deploy this session.
 - **⚠ CORRECTION 2026-07-28 — the "(idem)" set, verified against the actual deploy command.**
   The entry below says the idem reds are "deploy-healed ... (sitemap, OG cards, CSS cache-bust,
   site-counts, glossary/hub schema, RSS, H2 anchors, **theme/cuisine pages**)". That list is
