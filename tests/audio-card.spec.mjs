@@ -63,8 +63,10 @@ const ARTICLE_CSS = path.join(
 const AUDIO_PAUSED = (() => {
   try {
     const css = fs.readFileSync(ARTICLE_CSS, 'utf8');
-    const block = css.slice(css.indexOf('EDITORIAL PAUSE'));
-    if (!block) return false;
+    const pauseAt = css.indexOf('EDITORIAL PAUSE');
+    // indexOf miss is -1; slice(-1) would take the last character, not "not found".
+    if (pauseAt < 0) return false;
+    const block = css.slice(pauseAt);
     // The pause is active when .listen-card is in a display:none !important rule.
     const rule = block.slice(0, block.indexOf('}') + 1);
     return /\.listen-card\b/.test(rule) && /display\s*:\s*none\s*!important/.test(rule);
