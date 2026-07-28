@@ -124,6 +124,9 @@ jobs:
           # and its own gate correctly refuses the commit).
           node scripts/build-cost-lockfloat.mjs
           node scripts/backtest-cost-forecast.mjs
+          # Anomaly log (Hampel/Pettitt over deep history) — upstream of the
+          # anomaly open-data reshape below; same posture as lockfloat/backtest.
+          node scripts/build-cost-anomaly-log.mjs
           # Re-render hub / per-ingredient / lab pages.
           node scripts/build-cost-index-pages.mjs
           # Re-inject the "Where it comes from" + food-safety recall sections —
@@ -143,9 +146,9 @@ jobs:
           # at last build while the hub refreshes. Current information everywhere.
           node scripts/build-ingredient-yield-pages.mjs
           # Open-data reshapes (CC0/CC-BY) — re-derive the public cost-index/*.{json,csv}
-          # datasets from the freshly regenerated sources (seasonality, events, lockfloat)
-          # so the /open downloads never lag the index. Pure data files, no nav. Their
-          # --check in check-all fails the deploy if this is ever skipped.
+          # datasets from the freshly regenerated sources (seasonality, events, lockfloat,
+          # anomaly log) so the /open downloads never lag the index. Pure data files, no
+          # nav. --check-gated in the Fact + calibration gates step below.
           node scripts/build-seasonality-open-data.mjs
           node scripts/build-events-open-data.mjs
           node scripts/build-lockfloat-open-data.mjs
@@ -220,6 +223,7 @@ jobs:
           node scripts/build-cost-index-provenance.mjs --check
           node scripts/build-cost-index-audit.mjs --check
           node scripts/build-cost-lockfloat.mjs --check
+          node scripts/build-cost-anomaly-log.mjs --check
           node scripts/build-cost-index-calibration-report.mjs --check
           node scripts/backtest-cost-forecast.mjs --check
           node scripts/inject-cost-index-calibration.mjs --check
@@ -236,6 +240,13 @@ jobs:
           node scripts/build-cost-outlook.mjs --check
           node scripts/inject-cost-index-speakable.mjs --check
           node scripts/build-cost-index-email-preview.mjs --check
+          # Open-data reshapes rebuilt above — same pre-commit drift gate as the
+          # other derived families (a skipped reshape must not reach commit).
+          node scripts/build-seasonality-open-data.mjs --check
+          node scripts/build-events-open-data.mjs --check
+          node scripts/build-lockfloat-open-data.mjs --check
+          node scripts/build-anomaly-open-data.mjs --check
+          node scripts/build-yields-open-data.mjs --check
           # The emailed render itself must pass its content rules (banned
           # techniques, numeric parity, confidence language, sign agreement,
           # quiet-lead determinism) BEFORE the data that produces it commits.
@@ -274,6 +285,7 @@ jobs:
           git add data/cost-index.json data/cost-index.js \
             data/cost-index-health.json data/seasonality.json \
             data/cost-lockfloat.json data/cost-lockfloat.js \
+            data/cost-anomaly-log.json \
             data/cost-index-audit.json data/cost-index-calibration-report.json \
             data/cost-forecast-backtest.json data/cost-outlook.json \
             data/cost-revisions.json data/cost-index-readings.prev.json \
