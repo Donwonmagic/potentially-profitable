@@ -336,6 +336,44 @@ function run() {
     weather: rd('data/ingredient-weather-codes.json'),
   };
   const { rows, problems } = buildRows(src);
+
+  // SPECIES CHECK. ingredient-hs-codes.json's _doc claims "Every code is VERIFIED against
+  // the Census I_COMMODITY_SDESC ... (the description must match the ingredient)". Nothing
+  // enforced it, and two codes contradicted their own source: 030366 was labelled "COD,
+  // FROZEN (whole)" while Census calls it HAKE, FROZEN — cod's import layer was hake's —
+  // and 080290 was labelled "PECANS" while Census calls it the all-other-nuts residual.
+  // A wrong-species binding silently attributes one commodity's trade to another, which no
+  // downstream honesty note can undo. Byte-equality is the wrong test (most descriptions
+  // are legitimate paraphrase); requiring one shared significant word catches the real
+  // contradictions — measured: 2 of 147 verifiable codes, both genuine.
+  const STOP = new Set('AND OR OF THE FRESH FROZEN CHILLED DRIED NESOI NT NOT EXC PREP PRESERVED WHOLE IN OTHER'.split(' '));
+  const sig = (s) => new Set(String(s).toUpperCase().match(/[A-Z]{3,}/g)?.filter((w) => !STOP.has(w)) || []);
+  const substrate = new Map();
+  try {
+    for (const line of fs.readFileSync(path.join(repo, 'data/census-imports.jsonl'), 'utf8').split('\n')) {
+      if (!line.trim()) continue;
+      let d; try { d = JSON.parse(line); } catch { continue; }
+      const h = String(d.hs || '');
+      for (const r of (d.rows || [])) {
+        if (Array.isArray(r) && typeof r[0] === 'string' && r[0] !== 'I_COMMODITY_SDESC') {
+          if (!substrate.has(h)) substrate.set(h, new Set());
+          substrate.get(h).add(r[0]);
+        }
+      }
+    }
+  } catch { /* substrate absent -> nothing to verify against; the codes still ship */ }
+  let verified = 0;
+  for (const [code, v] of Object.entries(src.hs.codes || {})) {
+    const theirs = substrate.get(code);
+    if (!theirs || !theirs.size) continue;            // not in the pull; cannot verify offline
+    verified++;
+    const ours = sig(v.sdesc || '');
+    const all = new Set([...theirs].flatMap((x) => [...sig(x)]));
+    if (ours.size && all.size && ![...ours].some((w) => all.has(w))) {
+      problems.push(`census_hs code "${code}" is labelled "${v.sdesc}" but Census calls it "${[...theirs][0]}" — no shared term. A wrong-species binding attributes another commodity's trade to ${JSON.stringify(v.slugs)}.`);
+    }
+  }
+
   if (problems.length) {
     for (const p of problems.slice(0, 10)) console.error('  ✗ ' + p);
     console.error(`✗ ingredient-codes: ${problems.length} malformed source entr(ies) — fix the code table rather than publishing a crosswalk that hides them.`);

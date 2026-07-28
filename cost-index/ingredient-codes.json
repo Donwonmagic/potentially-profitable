@@ -10,10 +10,10 @@
   },
   "honesty_note": "An identity map, never a measurement. No price, no volume, no share, no ranking, no forecast. A code here means \"this is the federal identifier we read for this ingredient\" — never that the ingredient is imported, grown domestically, or scarce. `granularity` is an absolute cross-authority level (line finer than commodity, group coarser, proxy = not an identity of the ingredient at all). `binding` = code_shared_by_slugs means the source CANNOT separate the listed ingredients, so any per-slug figure drawn from that code is really the combined figure for all of them.",
   "counts": {
-    "rows": 475,
+    "rows": 474,
     "slugs": 164,
     "byAuthority": {
-      "census_hs": 250,
+      "census_hs": 249,
       "usda_ers": 71,
       "usda_nass": 102,
       "noaa_fisheries": 24,
@@ -1481,17 +1481,6 @@
       "authority": "census_hs",
       "code": "030251",
       "label": "COD, FRESH OR CHILLED",
-      "granularity": "commodity",
-      "native_level": "hs6",
-      "binding": "slug_aggregates_codes",
-      "shared_with": "",
-      "note": ""
-    },
-    {
-      "slug": "cod",
-      "authority": "census_hs",
-      "code": "030366",
-      "label": "COD, FROZEN (whole)",
       "granularity": "commodity",
       "native_level": "hs6",
       "binding": "slug_aggregates_codes",
@@ -3108,12 +3097,12 @@
       "slug": "pecan",
       "authority": "census_hs",
       "code": "080290",
-      "label": "PECANS",
+      "label": "NUTS NESOI, FRESH OR DRIED, SHELLED OR NOT",
       "granularity": "commodity",
       "native_level": "hs6",
       "binding": "slug_aggregates_codes",
       "shared_with": "",
-      "note": ""
+      "note": "2026-07-28: RESIDUAL basket, not a pecan-specific line — HS does not break pecans out at this level, so this reads as \"other nuts incl. pecans\". Never a pecan-only figure."
     },
     {
       "slug": "pecan",

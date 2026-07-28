@@ -130,7 +130,6 @@ cloves,census_hs,090720,"CLOVES, CRUSHED OR GROUND",commodity,hs6,slug_aggregate
 coconut,census_hs,080111,"COCONUTS, DESICCATED",commodity,hs6,slug_aggregates_codes,,
 coconut,census_hs,080119,"COCONUTS, FRESH, NESOI",commodity,hs6,slug_aggregates_codes,,
 cod,census_hs,030251,"COD, FRESH OR CHILLED",commodity,hs6,slug_aggregates_codes,,
-cod,census_hs,030366,"COD, FROZEN (whole)",commodity,hs6,slug_aggregates_codes,,
 cod,census_hs,030471,"COD FILLETS, FROZEN",commodity,hs6,slug_aggregates_codes,,
 cod,noaa_fisheries,cod,Cod,group,noaa_category,exact,,"Atlantic + Pacific cod, both wild; CODFISHES ** is the aggregate rollup."
 coffee,census_hs,090121,"COFFEE, ROASTED, NOT DECAFFEINATED",commodity,hs6,exact,,
@@ -277,7 +276,7 @@ parsley,usda_nass,PARSLEY,PARSLEY,commodity,nass_commodity,exact,,
 pear,census_hs,080830,"PEARS, FRESH",commodity,hs6,exact,,
 pear,usda_ers,Fresh pears: Supply and use,fruit-fresh,commodity,ers_commodity,exact,,scope: commodity
 pear,usda_nass,PEARS,PEARS,commodity,nass_commodity,exact,,
-pecan,census_hs,080290,PECANS,commodity,hs6,slug_aggregates_codes,,
+pecan,census_hs,080290,"NUTS NESOI, FRESH OR DRIED, SHELLED OR NOT",commodity,hs6,slug_aggregates_codes,,"2026-07-28: RESIDUAL basket, not a pecan-specific line — HS does not break pecans out at this level, so this reads as ""other nuts incl. pecans"". Never a pecan-only figure."
 pecan,census_hs,080299,"NUTS, FRESH OR DRIED, NESOI",commodity,hs6,slug_aggregates_codes,,
 pecan,usda_nass,PECANS,PECANS,commodity,nass_commodity,exact,,
 pecorino,census_hs,0406905600,CHEESE FROM SHEEPS MILK IN ORIG LOAVES SUITABLE FOR GRATING,line,hs10,slug_aggregates_codes,,"Sheep-milk grating cheeses (Pecorino Romano and relatives), summed."
