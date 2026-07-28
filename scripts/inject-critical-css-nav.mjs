@@ -32,10 +32,14 @@ const checkOnly  = process.argv.includes('--check');
 // Minimum nav rules to render the header correctly on first paint.
 // Hand-extracted from assets/site-core.css. Stay in sync if those
 // source rules change — if you see new flash, add the rule here.
+// NB 2026-07-28: use palette TOKENS here, never raw hex. This block previously hardcoded
+// #E8E2D6 — the retired --line value — and migrate-warm-palette.mjs (deploy chain) exists to
+// purge exactly that, so re-landing this injector re-introduced a retired colour on 770 pages
+// and tripped the warm-palette gate. var(--cream) on the same rule proves tokens resolve here.
 const NAV_CRITICAL = [
   '/* nav-critical */',
   // Header height + horizontal layout
-  '.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E8E2D6}',
+  '.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid var(--line)}',
   '.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}',
   // Logo: font + svg sizing so brand mark + wordmark land correctly
   '.logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}',

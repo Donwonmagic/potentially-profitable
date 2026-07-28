@@ -630,6 +630,14 @@ const CHECKS = [
   // that 54 other articles carry. Now gated so they cannot rot again.
   ['Hub modified time','inject-hub-modified-time.mjs','--check'],
   ['Article author card','inject-article-author-card.mjs','--check'],
+  // Re-landed 2026-07-28 after investigation (founder call). All three had PARTIAL
+  // coverage, not supersession: the homepage carried 5 feed-discovery links while
+  // cost-index/apple/ carried none. Now in the WRANGLER deploy chain (they are sitewide,
+  // not cost-index-specific), so a page regeneration re-applies them instead of
+  // silently stripping them. NB inject-critical-css-nav's --check is PRESENCE-only: it
+  // does not detect a changed block, which is how a retired palette hex survived in it.
+  ['Feed discovery links','inject-feed-discovery.mjs','--check'],
+  ['ESL inline bridge','inject-esl-bridge.mjs','--check'],
   ['Coverage regime in sync','inject-coverage-regime-note.mjs','--check'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
   ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],

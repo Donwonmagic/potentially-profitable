@@ -7,10 +7,6 @@
       "reason": "2026-07-16: seed-glossary-og --check; deploy regenerates brand/og/cards.json."
     },
     {
-      "label": "CSS cache-bust (idem)",
-      "reason": "2026-07-16: inject-css-cache-bust --check; deploy re-stamps content-hash ?v=."
-    },
-    {
       "label": "Site counts (idem)",
       "reason": "2026-07-16: inject-site-counts --check; deploy re-stamps count sentinels (359/733)."
     },
