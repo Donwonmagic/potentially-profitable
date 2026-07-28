@@ -173,12 +173,22 @@ last-good). A year of coursework is close to the best thing that could happen to
         `measured-derived-absent`, `prediction-band`, `price-confidence`, `assessed-benchmark`,
         `cme`, `ratio-bridge`, `cost-data`, `data-literacy`, `restaurant-numbers`, `freshness`,
         `fda`. Freezing those would have been actively wrong.
-  - **⚠ CONTENT GAP the link graph exposed (not yet fixed):** roughly **11 core Cost-Index glossary
-    terms are linked from no article at all** — the ones listed just above. The company's own
-    defining vocabulary is not wired into its own writing. That is the *opposite* problem from
-    dilution and it is the more valuable one: these are exactly the terms a cost-intelligence
-    company should own definitionally and cite from its cost articles. Worth a pass that adds
-    genuine in-body links from the 27 cost/margin articles to this vocabulary.
+  - **⚠ CORRECTED 2026-07-28 — the "11 orphaned cost terms" claim was PARTLY A SCAN ARTIFACT.**
+    The link-graph scan roots were `library, blog, tools, sheets, cost-index` and **omitted
+    `learn/`**. `learn/topics/cost-data/` — the Cost data & sources pillar hub — already links
+    `cme`, `assessed-benchmark`, `ratio-bridge`, `fda` and `freshness`. So the real orphan set was
+    never 11. After the start-here rewrite added `measured-derived-absent`, `price-confidence` and
+    `prediction-band`, **8 of the 11 are cited from live pages; 3 genuinely remain**:
+    `cost-data`, `data-literacy`, `restaurant-numbers`.
+  - **⚠ AND THE SAME BLIND SPOT CAUSED A REAL MIS-FREEZE, now fixed.** Because `learn/` was outside
+    the scan, four glossary terms looked orphaned when a **live, deliberately-kept** page still
+    linked them — `learn/topics/operations-margin/` links `catering-page`, `subtype-bar-pub`,
+    `subtype-cafe`, `subtype-casual-dining`. Three of those are restaurant taxonomy, not web-design
+    vocabulary at all. **Unfrozen (8 pages).** Frozen glossary terms: **77 → 73**, and re-verified
+    with `learn/` included: **0 frozen terms are linked from any live page.**
+    **Method lesson worth keeping: a link-graph audit is only as good as its root list. State the
+    roots explicitly and justify each omission, or the graph will invent orphans and you will
+    retire pages that something still points at.**
   - **Mechanism + how to reverse.** 39 pages (20 EN + 19 ES; one is EN-only) had their existing
     robots meta changed from `content="max-image-preview:large, …"` to
     `content="noindex, follow, max-image-preview:large, …"`. **To unfreeze, delete the
