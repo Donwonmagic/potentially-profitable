@@ -126,6 +126,13 @@ jobs:
           node scripts/backtest-cost-forecast.mjs
           # Re-render hub / per-ingredient / lab pages.
           node scripts/build-cost-index-pages.mjs
+          # Re-inject the "Where it comes from" + food-safety recall sections —
+          # the page builder overwrites ingredient HTML wholesale and does not
+          # emit these (owned by the injectors / lib mirrors). Without this the
+          # next refresh strips them and the check-all supply/recall sync gates
+          # fail on the committed pages.
+          node scripts/inject-supply-picture.mjs
+          node scripts/inject-ingredient-recalls.mjs
           # Re-stamp the /about/ live basket read (same data the hub composite
           # features) so the pledge "the numbers I check on my shifts" never
           # freezes at last build. Reads data/cost-index.json; EN + ES.
@@ -219,6 +226,8 @@ jobs:
           node scripts/build-cost-index-embed.mjs --check
           node scripts/build-cost-index-feed.mjs --check
           node scripts/inject-about-cost-read.mjs --check
+          node scripts/inject-supply-picture.mjs --check
+          node scripts/inject-ingredient-recalls.mjs --check
           node scripts/check-cost-index-confidence.mjs
           node scripts/build-cost-revisions.mjs --check
           node scripts/build-cost-index-reproduce.mjs --check
