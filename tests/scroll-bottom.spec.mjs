@@ -21,30 +21,22 @@
 
 import { test, expect } from '@playwright/test';
 
+// 2026-07-28: this list had drifted to 15 tools retired in the 2026-06-26
+// off-funnel cut (seo-grader, storefront-health, gbp-grader, store-hours,
+// menu-copy, menu-converter, photo-brief, brand-suite, compare, page-health,
+// schema-check, search-ideas, tech-stack, audits/restaurant). They 404 against
+// the static test server — the Worker's 301s don't exist there — so the gate
+// was asserting on pages that are gone instead of on the tools that ship.
+// Now tracks exactly the live set (mirrors the same swap lighthouserc.js made).
 const TOOLS = [
   '/tools/',
   '/tools/start/',
   '/tools/audits/',
-  '/tools/audits/restaurant/',
-  '/tools/brand-suite/',
-  '/tools/compare/',
   '/tools/cost-pulse/',
-  '/tools/gbp-grader/',
-  '/tools/store-hours/#holidays',
   '/tools/margin-math/',
-  '/tools/menu-converter/',
-  '/tools/menu-copy/',
   '/tools/menu-engineering/',
-  '/tools/page-health/mobile/',
-  '/tools/store-hours/',
-  '/tools/photo-brief/',
   '/tools/plate-cost/',
-  '/tools/schema-check/',
-  '/tools/search-ideas/',
-  '/tools/seo-grader/',
-  '/tools/page-health/',
-  '/tools/storefront-health/',
-  '/tools/tech-stack/',
+  '/tools/vendor-benchmark/',
 ];
 
 // Matches the suspect "bare code leak" patterns. Either literal

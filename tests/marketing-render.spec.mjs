@@ -33,8 +33,12 @@ const PAGES = [
   '/es/',
   '/studio/',
   '/es/studio/',
-  '/start/',
-  '/es/start/',
+  // 2026-07-28: /start/ + /es/start/ were retired in the 2026-06-26 tools cut
+  // and now 301 into the Cost Index (src/worker.js). The static test server has
+  // no Worker, so they 404 here. Replaced with the funnel's front door, which
+  // is what those URLs resolve to for a real visitor.
+  '/cost-index/',
+  '/es/cost-index/',
   '/about/',
   '/es/about/',
   '/receipts/',
