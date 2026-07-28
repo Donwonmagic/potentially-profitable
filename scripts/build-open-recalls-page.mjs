@@ -376,6 +376,13 @@ ${tbody}
 `;
 }
 
+// ES alternates are emitted ONLY when the Spanish page actually exists. A dangling
+// hreflang tells crawlers a translation is available and then 404s (ADR-020 thread,
+// 2026-07-28). This self-heals: land es/open/recalls/index.html and the tags return.
+const ES_EXISTS = fs.existsSync(path.join(repo, 'es/open/recalls/index.html'));
+const ES_ALT = ES_EXISTS ? '<link rel="alternate" hreflang="es" href="https://muntin.digital/es/open/recalls/" />\n' : '';
+const ES_OG_ALT = ES_EXISTS ? '<meta property="og:locale:alternate" content="es_US" />\n' : '';
+
 // ---- head + style (byte-mirror the landings shell; only the page-specific block differs) ----------
 function HEAD(title, desc, breadcrumb) {
   return `<title>${title}</title>
@@ -384,11 +391,9 @@ function HEAD(title, desc, breadcrumb) {
 <meta name="theme-color" content="#2A50C8" />
 <link rel="canonical" href="https://muntin.digital/open/recalls/" />
 <link rel="alternate" hreflang="en" href="https://muntin.digital/open/recalls/" />
-<link rel="alternate" hreflang="es" href="https://muntin.digital/es/open/recalls/" />
-<link rel="alternate" hreflang="x-default" href="https://muntin.digital/open/recalls/" />
+${ES_ALT}<link rel="alternate" hreflang="x-default" href="https://muntin.digital/open/recalls/" />
 <meta property="og:locale" content="en_US" />
-<meta property="og:locale:alternate" content="es_US" />
-<meta property="og:type" content="website" />
+${ES_OG_ALT}<meta property="og:type" content="website" />
 <meta property="og:title" content="${esc(title)}" />
 <meta property="og:description" content="${esc(desc)}" />
 <meta property="og:url" content="https://muntin.digital/open/recalls/" />
