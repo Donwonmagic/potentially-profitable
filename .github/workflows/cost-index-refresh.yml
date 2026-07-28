@@ -138,6 +138,12 @@ jobs:
           node scripts/inject-ingredient-recalls.mjs
           node scripts/inject-provenance-hop.mjs
           node scripts/inject-seasonality-why.mjs
+          # Qualifies each page's published band-coverage rate with the regime split
+          # the lifetime average hides (coverage is materially worse INSIDE a detected
+          # price episode). Recomputes the same conformalNext(window: 52) call the page
+          # engine makes, so the qualifier and the sentence it sits under describe one
+          # instrument. Must run after build-cost-index-pages.mjs, which owns the card.
+          node scripts/inject-coverage-regime-note.mjs
           # M/W/F measured-read spine + its hub band. Appends ONLY when the read
           # actually changes; otherwise advances lastCheckedAt in place. No post,
           # no email — ADR-012 stands (the dispatch is monthly + hand-written).
@@ -241,6 +247,7 @@ jobs:
           node scripts/inject-ingredient-recalls.mjs --check
           node scripts/inject-provenance-hop.mjs --check
           node scripts/inject-seasonality-why.mjs --check
+          node scripts/inject-coverage-regime-note.mjs --check
           node scripts/build-cost-index-reads.mjs --check
           node scripts/inject-cost-index-read-band.mjs --check
           node scripts/check-cost-index-confidence.mjs

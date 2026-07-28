@@ -579,6 +579,14 @@ const CHECKS = [
   ['Cost-index read band in sync','inject-cost-index-read-band.mjs','--check'],
   ['Provenance hop self-test','inject-provenance-hop.mjs','--self-test'],
   ['Provenance hop in sync','inject-provenance-hop.mjs','--check'],
+  // Coverage regime qualifier (audit 2026-07-28) — the read card's "our 80% range caught
+  // the next print about N% of the time" is a lifetime average that hides WHEN it misses:
+  // coverage falls from ~78% outside a detected price episode to ~61% inside one. The
+  // injector recomputes the SAME conformalNext(alpha .20, window 52) call the page engine
+  // makes (NOT cost-lockfloat.json, which is a window-26 band), so the qualifier and the
+  // sentence above it describe one instrument. Same refresh-cron rule as the hop above.
+  ['Coverage regime self-test','inject-coverage-regime-note.mjs','--self-test'],
+  ['Coverage regime in sync','inject-coverage-regime-note.mjs','--check'],
   ['Seasonality open-data self-test','build-seasonality-open-data.mjs','--self-test'],
   ['Seasonality open-data sync','build-seasonality-open-data.mjs','--check'],
   // Study evidence dataset (ADR-019): the menu-pricing paper's claims × its 36 grounding sources
