@@ -16,8 +16,9 @@
  * summary at the end so a passing run is informative too.
  */
 
-import { spawnSync } from 'node:child_process';
+import { spawnSync, spawn } from 'node:child_process';
 import { readFileSync } from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -942,21 +943,81 @@ const expectedLabels = baselineFile
   ? loadBaseline(path.isAbsolute(baselineFile) ? baselineFile : path.join(repoRoot, baselineFile))
   : null;
 
-const results = [];
-let failed = 0;
+// ── runner ───────────────────────────────────────────────────────────────────
+// SERIAL by default — that is what the Cloudflare deploy runs, and it must stay
+// that way (wrangler.jsonc does NOT pass --jobs, so a concurrency bug here can
+// never silently weaken the deploy gate).
+//
+// `--jobs N` is an opt-in local accelerator. The suite is CPU-bound, not
+// I/O-bound (measured: user 3m30.8 + sys 0m20.0 ~= real 3m44.8 on a 4-core box),
+// so a worker pool over the same CHECKS array is a real win: ~224s -> ~100s at
+// --jobs 4. Beyond core count it buys nothing, so N is capped at the machine's
+// cores (and 4, the reference box). This is the ADR-020 rule in practice —
+// parallelism is free ONLY where its output requires no human read, and nobody
+// reads a green gate.
+//
+// Invariants held: results print in CHECKS order (logs stay diffable), the
+// summary line is extracted identically, and exit semantics + both baseline
+// refusal layers below are untouched.
+const jobsIdx = process.argv.indexOf('--jobs');
+const jobsRaw = jobsIdx !== -1 ? parseInt(process.argv[jobsIdx + 1], 10) : 1;
+const MAX_JOBS = Math.min(4, typeof os.availableParallelism === 'function' ? os.availableParallelism() : 4);
+const JOBS = Number.isFinite(jobsRaw) && jobsRaw > 1 ? Math.min(jobsRaw, MAX_JOBS) : 1;
 
-for (const [label, script, ...args] of CHECKS) {
+// Checks that must never run concurrently. Empty today; add an entry WITH A DATED
+// REASON if one is ever found to share mutable state (a temp path, a lockfile).
+// Anything listed here is run in a serial tail pass after the pool drains.
+const SERIAL_ONLY = new Set([]);
+
+function summarize(label, script, code, out, err) {
+  // Last meaningful line of stdout (or stderr if stdout empty).
+  const lines = (out || err || '').split(/\r?\n/).filter((l) => l.trim());
+  const lastLine = lines[lines.length - 1] || '(no output)';
+  return { label, script, status: code === 0 ? 'PASS' : 'FAIL', summary: lastLine.slice(0, 80) };
+}
+
+function runOneSync([label, script, ...args]) {
   const r = spawnSync(process.execPath, [path.join(repoRoot, 'scripts', script), ...args], {
     stdio: ['ignore', 'pipe', 'pipe'],
     encoding: 'utf8',
   });
-  const status = r.status === 0 ? 'PASS' : 'FAIL';
-  if (r.status !== 0) failed++;
-  // Last meaningful line of stdout (or stderr if stdout empty).
-  const lines = (r.stdout || r.stderr || '').split(/\r?\n/).filter((l) => l.trim());
-  const lastLine = lines[lines.length - 1] || '(no output)';
-  results.push({ label, script, status, summary: lastLine.slice(0, 80) });
+  return summarize(label, script, r.status, r.stdout, r.stderr);
 }
+
+function runOneAsync([label, script, ...args]) {
+  return new Promise((resolve) => {
+    const c = spawn(process.execPath, [path.join(repoRoot, 'scripts', script), ...args], {
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    let out = '', err = '';
+    c.stdout.on('data', (d) => { out += d; });
+    c.stderr.on('data', (d) => { err += d; });
+    c.on('error', (e) => resolve(summarize(label, script, 1, '', String(e && e.message))));
+    c.on('close', (code) => resolve(summarize(label, script, code, out, err)));
+  });
+}
+
+const results = new Array(CHECKS.length);
+
+if (JOBS === 1) {
+  for (let i = 0; i < CHECKS.length; i++) results[i] = runOneSync(CHECKS[i]);
+} else {
+  const parallelIdx = [], serialIdx = [];
+  CHECKS.forEach((c, i) => (SERIAL_ONLY.has(c[0]) ? serialIdx : parallelIdx).push(i));
+  let cursor = 0;
+  const worker = async () => {
+    for (;;) {
+      const k = cursor++;
+      if (k >= parallelIdx.length) return;
+      const i = parallelIdx[k];
+      results[i] = await runOneAsync(CHECKS[i]);
+    }
+  };
+  await Promise.all(Array.from({ length: JOBS }, worker));
+  for (const i of serialIdx) results[i] = runOneSync(CHECKS[i]);
+}
+
+const failed = results.reduce((n, r) => n + (r.status === 'FAIL' ? 1 : 0), 0);
 
 console.log('Cohesion checks');
 console.log('───────────────');
