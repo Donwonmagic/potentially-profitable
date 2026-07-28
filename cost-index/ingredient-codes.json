@@ -20,7 +20,7 @@
       "ghcn_weather": 23,
       "noaa_cpc_oni": 5
     },
-    "sharedCodeRows": 117
+    "sharedCodeRows": 149
   },
   "columns": [
     "slug",
@@ -75,9 +75,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "butternut-squash;yellow-squash;zucchini",
+      "note": ""
     },
     {
       "slug": "acorn-squash",
@@ -187,7 +187,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "apple",
@@ -220,7 +220,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "artichoke",
@@ -253,7 +253,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "asparagus",
@@ -286,7 +286,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "lemon;lime",
-      "note": "stated origin: Mexico 88%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "avocado",
@@ -297,7 +297,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "avocado",
@@ -328,9 +328,9 @@
       "label": "red-meat",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "pork-belly;pork-loin;pork-shoulder",
+      "note": ""
     },
     {
       "slug": "bacon",
@@ -363,7 +363,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "banana",
@@ -416,9 +416,9 @@
       "label": "red-meat",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "ground-beef;ribeye;short-rib;striploin",
+      "note": ""
     },
     {
       "slug": "beef-tenderloin",
@@ -473,7 +473,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "cucumber;eggplant;habanero-pepper;jalapeno;poblano-pepper;serrano-pepper;tomato",
-      "note": "stated origin: Mexico 73%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "bell-pepper",
@@ -484,7 +484,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "bell-pepper",
@@ -572,7 +572,7 @@
       "native_level": "weather_region",
       "binding": "exact",
       "shared_with": "",
-      "note": "stated origin: Peru 56%"
+      "note": "proxy stands in for: Peru"
     },
     {
       "slug": "blueberry",
@@ -583,7 +583,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "blueberry",
@@ -616,7 +616,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "brussels-sprouts;cilantro;collard-greens;daikon;kale;leek;rutabaga",
-      "note": "stated origin: Mexico 78%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "bok-choy",
@@ -671,7 +671,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "broccoli",
@@ -704,7 +704,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "bok-choy;cilantro;collard-greens;daikon;kale;leek;rutabaga",
-      "note": "stated origin: Mexico 87%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "brussels-sprouts",
@@ -715,7 +715,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "brussels-sprouts",
@@ -779,9 +779,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "iceberg-lettuce",
+      "note": ""
     },
     {
       "slug": "butter-lettuce",
@@ -823,9 +823,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "acorn-squash;yellow-squash;zucchini",
+      "note": ""
     },
     {
       "slug": "butternut-squash",
@@ -856,9 +856,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "shiitake",
+      "note": ""
     },
     {
       "slug": "button-mushroom",
@@ -889,9 +889,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "napa-cabbage",
+      "note": ""
     },
     {
       "slug": "cabbage",
@@ -946,7 +946,7 @@
       "native_level": "weather_region",
       "binding": "exact",
       "shared_with": "",
-      "note": "stated origin: Guatemala 58%"
+      "note": "proxy stands in for: Guatemala"
     },
     {
       "slug": "cantaloupe",
@@ -957,7 +957,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "cantaloupe",
@@ -1012,7 +1012,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "carrot",
@@ -1100,7 +1100,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "cauliflower",
@@ -1144,7 +1144,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "celery",
@@ -1285,9 +1285,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "tomato",
+      "note": ""
     },
     {
       "slug": "cherry-tomato",
@@ -1307,9 +1307,9 @@
       "label": "poultry",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "chicken-thigh;whole-chicken",
+      "note": ""
     },
     {
       "slug": "chicken-breast",
@@ -1329,9 +1329,9 @@
       "label": "poultry",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "chicken-breast;whole-chicken",
+      "note": ""
     },
     {
       "slug": "chicken-thigh",
@@ -1364,7 +1364,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "bok-choy;brussels-sprouts;collard-greens;daikon;kale;leek;rutabaga",
-      "note": "stated origin: Mexico 96%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "cilantro",
@@ -1551,7 +1551,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "bok-choy;brussels-sprouts;cilantro;daikon;kale;leek;rutabaga",
-      "note": "stated origin: Mexico 62%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "collard-greens",
@@ -1562,7 +1562,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "collard-greens",
@@ -1617,7 +1617,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "corn-on-the-cob",
@@ -1650,7 +1650,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "bell-pepper;eggplant;habanero-pepper;jalapeno;poblano-pepper;serrano-pepper;tomato",
-      "note": "stated origin: Mexico 54%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "cucumber",
@@ -1661,7 +1661,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "cucumber",
@@ -1716,7 +1716,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "bok-choy;brussels-sprouts;cilantro;collard-greens;kale;leek;rutabaga",
-      "note": "stated origin: Mexico 62%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "daikon",
@@ -1815,7 +1815,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "bell-pepper;cucumber;habanero-pepper;jalapeno;poblano-pepper;serrano-pepper;tomato",
-      "note": "stated origin: Mexico 87%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "eggplant",
@@ -1826,7 +1826,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "eggplant",
@@ -1859,7 +1859,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "eggs",
@@ -1892,7 +1892,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "garlic",
@@ -1969,7 +1969,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "grapefruit",
@@ -2002,7 +2002,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "grapes",
@@ -2035,7 +2035,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "green-beans",
@@ -2077,9 +2077,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "red-leaf-lettuce;romaine-lettuce",
+      "note": ""
     },
     {
       "slug": "green-leaf-lettuce",
@@ -2110,9 +2110,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "onion;red-onion",
+      "note": ""
     },
     {
       "slug": "green-onion",
@@ -2154,9 +2154,9 @@
       "label": "red-meat",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "beef-tenderloin;ribeye;short-rib;striploin",
+      "note": ""
     },
     {
       "slug": "ground-beef",
@@ -2222,7 +2222,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "bell-pepper;cucumber;eggplant;jalapeno;poblano-pepper;serrano-pepper;tomato",
-      "note": "stated origin: Mexico 94%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "habanero-pepper",
@@ -2286,9 +2286,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "butter-lettuce",
+      "note": ""
     },
     {
       "slug": "iceberg-lettuce",
@@ -2321,7 +2321,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "bell-pepper;cucumber;eggplant;habanero-pepper;poblano-pepper;serrano-pepper;tomato",
-      "note": "stated origin: Mexico 98%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "jalapeno",
@@ -2365,7 +2365,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "bok-choy;brussels-sprouts;cilantro;collard-greens;daikon;leek;rutabaga",
-      "note": "stated origin: Mexico 96%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "kale",
@@ -2376,7 +2376,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "kale",
@@ -2420,7 +2420,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "kiwi",
@@ -2508,7 +2508,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "lamb",
@@ -2541,7 +2541,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "bok-choy;brussels-sprouts;cilantro;collard-greens;daikon;kale;rutabaga",
-      "note": "stated origin: Mexico 67%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "lemon",
@@ -2563,7 +2563,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "avocado;lime",
-      "note": "stated origin: Mexico 76%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "lemon",
@@ -2574,7 +2574,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "lemon",
@@ -2607,7 +2607,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "avocado;lemon",
-      "note": "stated origin: Mexico 76%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "lime",
@@ -2618,7 +2618,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "lime",
@@ -2695,7 +2695,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "mango",
@@ -2770,9 +2770,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "cabbage",
+      "note": ""
     },
     {
       "slug": "napa-cabbage",
@@ -2860,7 +2860,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "okra",
@@ -2913,9 +2913,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "green-onion;red-onion",
+      "note": ""
     },
     {
       "slug": "onion",
@@ -2948,7 +2948,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "orange",
@@ -2981,7 +2981,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "papaya",
@@ -3080,7 +3080,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "pear",
@@ -3190,7 +3190,7 @@
       "native_level": "weather_region",
       "binding": "exact",
       "shared_with": "",
-      "note": "stated origin: Costa Rica 83%"
+      "note": "proxy stands in for: Costa Rica"
     },
     {
       "slug": "pineapple",
@@ -3201,7 +3201,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "pineapple",
@@ -3267,7 +3267,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "bell-pepper;cucumber;eggplant;habanero-pepper;jalapeno;serrano-pepper;tomato",
-      "note": "stated origin: Mexico 100%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "poblano-pepper",
@@ -3298,9 +3298,9 @@
       "label": "red-meat",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "bacon;pork-loin;pork-shoulder",
+      "note": ""
     },
     {
       "slug": "pork-belly",
@@ -3331,9 +3331,9 @@
       "label": "red-meat",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "bacon;pork-belly;pork-shoulder",
+      "note": ""
     },
     {
       "slug": "pork-loin",
@@ -3375,9 +3375,9 @@
       "label": "red-meat",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "bacon;pork-belly;pork-loin",
+      "note": ""
     },
     {
       "slug": "pork-shoulder",
@@ -3509,7 +3509,7 @@
       "native_level": "weather_region",
       "binding": "exact",
       "shared_with": "",
-      "note": "stated origin: Mexico 100%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "raspberry",
@@ -3520,7 +3520,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "raspberry",
@@ -3562,9 +3562,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "green-leaf-lettuce;romaine-lettuce",
+      "note": ""
     },
     {
       "slug": "red-leaf-lettuce",
@@ -3595,9 +3595,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "green-onion;onion",
+      "note": ""
     },
     {
       "slug": "red-onion",
@@ -3628,9 +3628,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "russet-potato",
+      "note": ""
     },
     {
       "slug": "red-potato",
@@ -3672,9 +3672,9 @@
       "label": "red-meat",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "beef-tenderloin;ground-beef;short-rib;striploin",
+      "note": ""
     },
     {
       "slug": "ribeye",
@@ -3716,9 +3716,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "green-leaf-lettuce;red-leaf-lettuce",
+      "note": ""
     },
     {
       "slug": "romaine-lettuce",
@@ -3749,9 +3749,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "red-potato",
+      "note": ""
     },
     {
       "slug": "russet-potato",
@@ -3784,7 +3784,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "bok-choy;brussels-sprouts;cilantro;collard-greens;daikon;kale;leek",
-      "note": "stated origin: Mexico 62%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "saffron",
@@ -3817,7 +3817,7 @@
       "native_level": "enso_oni_index",
       "binding": "code_shared_by_slugs",
       "shared_with": "salmon-skin-on-fillet;shrimp;shrimp-head-on;shrimp-pd",
-      "note": "stated origin: Chile 63%"
+      "note": "proxy stands in for: Chile"
     },
     {
       "slug": "salmon-fillet",
@@ -3850,7 +3850,7 @@
       "native_level": "enso_oni_index",
       "binding": "code_shared_by_slugs",
       "shared_with": "salmon-fillet;shrimp;shrimp-head-on;shrimp-pd",
-      "note": "stated origin: Chile 63%"
+      "note": "proxy stands in for: Chile"
     },
     {
       "slug": "salmon-skin-on-fillet",
@@ -3927,7 +3927,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "bell-pepper;cucumber;eggplant;habanero-pepper;jalapeno;poblano-pepper;tomato",
-      "note": "stated origin: Mexico 100%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "serrano-pepper",
@@ -3958,9 +3958,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "button-mushroom",
+      "note": ""
     },
     {
       "slug": "shiitake",
@@ -3980,9 +3980,9 @@
       "label": "red-meat",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "beef-tenderloin;ground-beef;ribeye;striploin",
+      "note": ""
     },
     {
       "slug": "short-rib",
@@ -4180,7 +4180,7 @@
       "native_level": "enso_oni_index",
       "binding": "code_shared_by_slugs",
       "shared_with": "salmon-fillet;salmon-skin-on-fillet;shrimp-head-on;shrimp-pd",
-      "note": "stated origin: Ecuador 50%"
+      "note": "proxy stands in for: Ecuador"
     },
     {
       "slug": "shrimp",
@@ -4378,7 +4378,7 @@
       "native_level": "enso_oni_index",
       "binding": "code_shared_by_slugs",
       "shared_with": "salmon-fillet;salmon-skin-on-fillet;shrimp;shrimp-pd",
-      "note": "stated origin: Ecuador 50%"
+      "note": "proxy stands in for: Ecuador"
     },
     {
       "slug": "shrimp-head-on",
@@ -4422,7 +4422,7 @@
       "native_level": "enso_oni_index",
       "binding": "code_shared_by_slugs",
       "shared_with": "salmon-fillet;salmon-skin-on-fillet;shrimp;shrimp-head-on",
-      "note": "stated origin: India 50%"
+      "note": "proxy stands in for: India"
     },
     {
       "slug": "shrimp-pd",
@@ -4532,7 +4532,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "spinach",
@@ -4631,7 +4631,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "strawberry",
@@ -4673,9 +4673,9 @@
       "label": "red-meat",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "beef-tenderloin;ground-beef;ribeye;short-rib",
+      "note": ""
     },
     {
       "slug": "striploin",
@@ -4708,7 +4708,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "sweet-potato",
@@ -4818,7 +4818,7 @@
       "native_level": "weather_region",
       "binding": "code_shared_by_slugs",
       "shared_with": "bell-pepper;cucumber;eggplant;habanero-pepper;jalapeno;poblano-pepper;serrano-pepper",
-      "note": "stated origin: Mexico 81%"
+      "note": "proxy stands in for: Mexico"
     },
     {
       "slug": "tomato",
@@ -4827,9 +4827,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "cherry-tomato",
+      "note": ""
     },
     {
       "slug": "tomato",
@@ -4950,7 +4950,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "watermelon",
@@ -4970,9 +4970,9 @@
       "label": "poultry",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "chicken-breast;chicken-thigh",
+      "note": ""
     },
     {
       "slug": "whole-chicken",
@@ -5115,7 +5115,7 @@
       "native_level": "ers_commodity",
       "binding": "exact",
       "shared_with": "",
-      "note": "scope: commodity"
+      "note": ""
     },
     {
       "slug": "whole-turkey",
@@ -5179,9 +5179,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "acorn-squash;butternut-squash;zucchini",
+      "note": ""
     },
     {
       "slug": "yellow-squash",
@@ -5245,9 +5245,9 @@
       "label": "vegetables-fresh",
       "granularity": "commodity",
       "native_level": "ers_commodity",
-      "binding": "exact",
-      "shared_with": "",
-      "note": "scope: commodity"
+      "binding": "code_shared_by_slugs",
+      "shared_with": "acorn-squash;butternut-squash;yellow-squash",
+      "note": ""
     },
     {
       "slug": "zucchini",

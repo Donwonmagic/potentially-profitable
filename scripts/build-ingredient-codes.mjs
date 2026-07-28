@@ -76,6 +76,20 @@ export function hsLevel(code) {
   return null;                                   // unknown length -> caller must reject
 }
 
+/**
+ * The weather table's `origin` reads "Mexico 88%" — a SUPPLY SHARE. This file's own honesty
+ * note promises "no price, no volume, no share, no ranking, no forecast", and 28 rows were
+ * publishing exactly a share, contradicting it in the same artifact. The country is the
+ * relevant identity fact (it says which growing region the proxy stands for); the percentage
+ * belongs to the state record, which carries the caveats a share needs. Strip the number,
+ * keep the place.
+ */
+export function originNote(origin) {
+  if (!origin) return '';
+  const place = String(origin).replace(/\s*\d+(\.\d+)?\s*%/g, '').trim().replace(/[,;]$/, '');
+  return place ? `proxy stands in for: ${place}` : '';
+}
+
 export function bindingOf(slugCodeCount, codeSlugCount) {
   const agg = slugCodeCount > 1, shared = codeSlugCount > 1;
   if (agg && shared) return 'aggregate_and_shared';
@@ -135,11 +149,21 @@ export function buildRows(src) {
   }
 
   // ── usda_ers ──────────────────────────────────────────────────────────────
-  for (const [s, v] of Object.entries((src.ers && src.ers.map) || {})) {
+  // Same shared-series case as NASS: 11 ERS commodities are bound by 32 slugs
+  // ("Beef: Supply and use - carcass weight" alone binds 5), so a hardcoded 'exact' would
+  // publish an exclusivity the source refutes. `scope` is NOT used as a granularity signal:
+  // it is the constant 'commodity' on all 71 rows and therefore carries no information.
+  const ersMap = (src.ers && src.ers.map) || {};
+  const ersUse = new Map();
+  for (const v of Object.values(ersMap)) ersUse.set(String(v.commodity || ''), (ersUse.get(String(v.commodity || '')) || 0) + 1);
+  for (const [s, v] of Object.entries(ersMap)) {
+    const code = String(v.commodity || '');
     rows.push({
-      slug: s, authority: 'usda_ers', code: String(v.commodity || ''), label: v.group || '',
+      slug: s, authority: 'usda_ers', code, label: v.group || '',
       granularity: 'commodity', native_level: 'ers_commodity',
-      binding: 'exact', shared_with: '', note: v.scope ? `scope: ${v.scope}` : '',
+      binding: (ersUse.get(code) || 1) > 1 ? 'code_shared_by_slugs' : 'exact',
+      shared_with: Object.entries(ersMap).filter(([o, ov]) => o !== s && String(ov.commodity || '') === code).map(([o]) => o).sort().join(';'),
+      note: '',
     });
   }
 
@@ -183,7 +207,7 @@ export function buildRows(src) {
         granularity: 'proxy', native_level: 'weather_region',
         binding: (landUse.get(v.land) || 1) > 1 ? 'code_shared_by_slugs' : 'exact',
         shared_with: Object.entries(wcodes).filter(([o, ov]) => ov.land === v.land && o !== s).map(([o]) => o).sort().join(';'),
-        note: v.origin ? `stated origin: ${v.origin}` : '',
+        note: originNote(v.origin),
       });
     } else if (v.oni) {
       // Every ONI row references the SAME index, so the shared binding here is real —
@@ -193,7 +217,7 @@ export function buildRows(src) {
         granularity: 'proxy', native_level: 'enso_oni_index',
         binding: oniSlugs.length > 1 ? 'code_shared_by_slugs' : 'exact',
         shared_with: oniSlugs.filter((o) => o !== s).join(';'),
-        note: v.origin ? `stated origin: ${v.origin}` : '',
+        note: originNote(v.origin),
       });
     } else {
       problems.push(`weather entry "${s}" declares neither a land station nor an ONI index — it names no identifier at all.`);
@@ -281,7 +305,7 @@ if (process.argv.includes('--self-test')) {
 
   const wx = rows.find((r) => r.slug === 'avocado' && r.authority === 'ghcn_weather');
   t('a weather region is a proxy, never an identity', wx.granularity === 'proxy');
-  t('the weather row keeps its stated origin', /Mexico 88%/.test(wx.note));
+  t('the weather row names the origin country but not its share', wx.note === 'proxy stands in for: Mexico');
   t('a region serving 2 slugs is shared', rows.find((r) => r.slug === 'tomato' && r.authority === 'ghcn_weather').shared_with === 'cucumber');
   t('a region serving 1 slug is exact', wx.binding === 'exact' && wx.shared_with === '');
 
@@ -306,6 +330,25 @@ if (process.argv.includes('--self-test')) {
   t('every row carries a legal granularity', rows.every((r) => GRANULARITY.includes(r.granularity)));
   t('every row carries a legal binding', rows.every((r) => BINDING.includes(r.binding)));
   t('no row carries a quantity, price or share', rows.every((r) => !/\b(price|usd|\$|tonne|kg\b|lbs?\b|volume|share)\b/i.test(`${r.label} ${r.note}`)));
+
+  // REGRESSION: the weather table's `origin` is "Mexico 88%" — a SUPPLY SHARE. 28 rows
+  // published one while this file's own honesty note promises "no share".
+  t('origin keeps the country', originNote('Mexico 88%') === 'proxy stands in for: Mexico');
+  t('origin drops the share figure', !/\d/.test(originNote('Mexico 88%')));
+  t('a decimal share is stripped too', !/\d/.test(originNote('Peru 56.4%')));
+  t('an origin with no share survives intact', originNote('Chile') === 'proxy stands in for: Chile');
+  t('an absent origin yields no note', originNote(undefined) === '' && originNote('') === '');
+  t('NO published row carries a percentage anywhere', rows.every((r) => !/\d\s?%/.test(`${r.label} ${r.note} ${r.code}`)));
+
+  // REGRESSION: usda_ers hardcoded binding:'exact' while 11 ERS commodities bind 32 slugs.
+  const ersSrc = { ers: { map: { a: { commodity: 'Beef: Supply and use', group: 'red-meat', scope: 'commodity' },
+                                 b: { commodity: 'Beef: Supply and use', group: 'red-meat', scope: 'commodity' },
+                                 c: { commodity: 'Fresh avocados', group: 'fruit-fresh', scope: 'commodity' } } } };
+  const er = buildRows(ersSrc).rows;
+  t('a shared ERS commodity is NOT claimed exact', er.find((r) => r.slug === 'a').binding === 'code_shared_by_slugs');
+  t('the shared ERS row names the other slug', er.find((r) => r.slug === 'a').shared_with === 'b');
+  t('an unshared ERS commodity stays exact', er.find((r) => r.slug === 'c').binding === 'exact');
+  t('ERS scope is not smuggled in as a granularity signal', er.every((r) => r.granularity === 'commodity' && !/scope/.test(r.note)));
 
   const csv = toCsv(rows);
   t('CSV header is the declared column set', csv.split('\n')[0] === COLS.join(','));
