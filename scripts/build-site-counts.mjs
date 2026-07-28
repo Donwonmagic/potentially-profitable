@@ -112,7 +112,11 @@ const counts = {
     blog:    blogArticles,
   },
   ledger: {
-    // Whole weeks until Muntin Ledger GA (2026-11-13). Recomputed every
+    // RETIRED 2026-07-28: the GA countdown. A public countdown toward a date
+    // the company is not committed to is exactly the over-claim the fact gate
+    // exists to prevent, and it self-destructs by ticking to zero. Restore only
+    // alongside an announced date.
+    // Whole weeks until Muntin Ledger GA. Recomputed every
     // build; rounds down so the number is never optimistic.
     ga_weeks_out: Math.max(0, Math.floor((Date.UTC(2026, 10, 13) - Date.now()) / (7 * 86400000))),
   },
