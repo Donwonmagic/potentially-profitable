@@ -32,9 +32,22 @@ const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
 const checkOnly  = process.argv.includes('--check');
 
+// A page that tells crawlers not to index it does not belong in the index we
+// hand to AI crawlers either. build-sitemap.mjs, build-llms-full.mjs and
+// inject-feed-discovery.mjs all already read this tag; llms.txt was the one
+// surface that did not, which made "stamp noindex to retire a page" only
+// three-quarters true — the page vanished from the sitemap and the full
+// corpus dump but stayed listed here. (2026-07-28)
+//
+// listToolPages already expressed this intent as a filename convention,
+// skipping `_`-prefixed dirs because they are "noindex,nofollow dev pages".
+// Reading the actual tag generalises that instead of relying on the name.
+const NOINDEX_RE = /<meta\s+name="robots"[^>]*content="[^"]*noindex/i;
+
 function readMeta(file) {
   if (!fs.existsSync(file)) return null;
   const src = fs.readFileSync(file, 'utf8');
+  if (NOINDEX_RE.test(src)) return null;
   const titleM = src.match(/<title>([^<]+)<\/title>/);
   const descM  = src.match(/<meta\s+name="description"\s+content="([^"]+)"/);
   const h1M    = src.match(/<h1[^>]*>([\s\S]*?)<\/h1>/);
