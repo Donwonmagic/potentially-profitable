@@ -77,10 +77,27 @@ const RETIRED_COPY = [
 
 // Same suspect-markup detector as scroll-bottom.spec.mjs.
 function suspectsInTextNodes() {
+  const TAGISH = /<\/?(?:html|body|head|script|style|main|section|div|p|h\d|li|ul|ol|a|button|form|input|span)\b/gi;
   return Array.from(document.querySelectorAll('main, body > section, body > div'))
     .flatMap((root) => Array.from(root.querySelectorAll('p, h1, h2, h3, h4, li')))
-    .map((el) => el.textContent || '')
-    .filter((t) => /<\/?(?:html|body|head|script|style|main|section|div|p|h\d|li|ul|ol|a|button|form|input|span)\b/i.test(t));
+    .map((el) => {
+      // The detector's stated intent is "HTML-looking text OUTSIDE <pre>/<code>",
+      // but reading el.textContent swallowed those children too. Drop them.
+      const clone = el.cloneNode(true);
+      clone.querySelectorAll('code, pre, kbd, samp').forEach((n) => n.remove());
+      return clone.textContent || '';
+    })
+    .filter((t) => {
+      const hits = t.match(TAGISH) || [];
+      if (!hits.length) return false;
+      // A real "bare code leak" (the Phase 0 bug this guards) dumps structure:
+      // a closing structural tag, or several tags in one text node. Prose that
+      // NAMES one element — /never/ says "what isn't loaded in the <head>" —
+      // is a single opening mention and is not a leak. Requiring either a
+      // structural closer or 2+ tag-like sequences keeps the guard meaningful
+      // while ending that false positive. (2026-07-28)
+      return /<\/(?:html|body|head|main|section|div)\b/i.test(t) || hits.length >= 2;
+    });
 }
 
 for (const path of PAGES) {
