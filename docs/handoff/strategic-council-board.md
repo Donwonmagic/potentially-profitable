@@ -19,6 +19,28 @@ council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 
 ## ⮕ CURRENT STATE — CHECKABILITY THREAD (updated 2026-07-28)
 
+**20. Spanish /open — first generator bilingual; `/es/open/demand/` ships (2026-07-29).**
+`build-open-demand-page.mjs` renders EN + ES from ONE template via an `L[locale]` table —
+the founder's stated reason for this route ("the only version that doesn't drift"). 0 English
+leakage, reciprocal hreflang, per-locale canonical, all three honesty fences translated as a
+unit. **`guardHtml()` is now locale-aware**: checking English literals against a Spanish render
+would either fail spuriously or, worse, pass a Spanish page that had quietly LOST its fences.
+Self-test 8 → **19**, including one asserting the guard catches a Spanish page carrying only
+the English fence. Two of my own defects caught by gates: an English `variableMeasured`
+schema.org description leaked into ES; my ES meta description ran 165 chars vs the ≤155 rule
+(now 144). Pattern proven for `labor` (23 strings) and `recalls` (35).
+
+**INFRA INCIDENT, resolved — read before trusting a local `git log`.** Mid-session the local
+branch pointer rolled back to `7592d7363`, silently discarding 19 pushed commits from the
+LOCAL view while the working tree kept newer files. A commit made in that state
+(`50d9e3370`) was built on the stale base and pushed non-fast-forward → rejected, which is
+what surfaced it. **Origin was never damaged** — all 19 commits were safe there. Recovery:
+save the new file via `git show <sha>:<path>`, `git checkout -B <branch> origin/<branch>`,
+re-apply. The 25-entry baseline and the missing board anchor seen during this window were
+symptoms of the stale tree, not real regressions. If `check-all` suddenly reports far more
+baselined entries than the board says, suspect this before pruning anything.
+
+
 **Branch:** `claude/vendor-benchmark-redesign-yn273q` (restarted from main after PR #523
 merged). 5 commits pushed, `check-all --baseline --jobs 4` = **EXIT 0, zero NEW
 regressions, 7/7 baselined**.

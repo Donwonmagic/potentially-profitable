@@ -26,6 +26,111 @@ const FENCE = 'never blended into the food index, the pressure math, or the Vend
 const OBSERVED = 'observed sales, never a forecast';
 const PROV = 'provisional advance estimate';
 
+// ── BILINGUAL (2026-07-29, founder call: "add a locale to the generators") ────
+// One template, two locales. The honesty fences are translated as a unit with the prose so
+// an ES reader gets the SAME guarantee, not a softer one: observed-never-a-forecast, the
+// newest month provisional, and the never-blended fence are load-bearing in both languages.
+const L = {
+  en: {
+    FENCE, OBSERVED, PROV,
+    lang: 'en', base: '', path: 'open/demand/',
+    title: 'The Sector Demand Backdrop — US Food-Services Monthly Sales (Census MARTS)',
+    desc: 'US Food Services & Drinking Places monthly sales, US$ millions (Census MARTS via FRED, NAICS 722). Observed sales, never a demand forecast.',
+    settled: 'settled',
+    crumbHome: 'Home', crumbOpen: 'Open data', crumbSelf: 'The Sector Demand Backdrop',
+    navOpen: 'Open data', navCost: 'Cost Index',
+    kick: 'Muntin Open Data · Explorer',
+    licAria: 'This dataset is Creative Commons Zero, public domain',
+    h1: 'The Sector Demand Backdrop',
+    themeAria: 'Switch color theme', themeTitle: 'Switch light / dark theme',
+    ledeA: 'US Food Services &amp; Drinking Places monthly sales, in US$ millions (Census MARTS via FRED, NAICS 722).',
+    ledeB: 'The most recent month is a', ledeC: ', subject to revision.', ledeD: 'reference.',
+    ledeHonest: 'The sell-side backdrop: what the sector takes in, set beside the cost data — never a demand forecast, and never inside any Muntin price index.',
+    laneAria: 'How to read this page',
+    laneLead: 'A separate descriptive lane (ADR-013).',
+    laneBody1: 'These are observed sector sales —', laneBody2: '— set beside the cost data, never an input to any Muntin price index, pressure reading, or Vendor Benchmark reference. The newest month is always a',
+    h2Sales: 'Monthly food-service sales',
+    beatSub1: 'is the seasonally adjusted trend;', beatSub2: 'is the raw seasonal shape (the same demand, before the seasonal pattern is removed). The most recent month renders hollow — a', beatSub3: ', not a settled point, never drawn as final.',
+    legSA: 'SA — trend (seasonally adjusted)', legNSA: 'NSA — seasonal shape', legProv: 'provisional advance estimate',
+    svgTitle: (a, b) => `US food-services monthly sales, seasonally adjusted and not, ${a} to ${b}.`,
+    svgDesc: (a, b) => `A line chart of US Food Services and Drinking Places monthly sales in US dollars millions, from ${a} to ${b}. The seasonally adjusted trend rises over the decade, drops sharply in spring 2020, then recovers. The not-seasonally-adjusted line oscillates around it with the yearly seasonal shape. The most recent month is a provisional advance estimate, drawn hollow. Observed sales, never a forecast, and never blended into any price index or the Vendor Benchmark.`,
+    figAudio: 'US food-services monthly sales, seasonally adjusted trend and the raw not-seasonally-adjusted seasonal shape, in US dollars millions — observed sales, never a forecast, the newest month a provisional advance estimate, never blended into any price index or the Vendor Benchmark.',
+    figCap1: 'Monthly sales, SA trend and NSA seasonal shape —', figCap2: '; the newest month is a',
+    ahaLead: 'The documented COVID shock is the sharpest move on record: seasonally adjusted sales fell from',
+    ahaMid1: 'in', ahaMid2: 'to', ahaMid3: 'in', ahaTail: '— a documented past drop, both endpoints settled months.',
+    ahaHonest: 'Observed context, never a forecast. US$ millions, seasonally adjusted. The recovery since is real but nominal — dollars, not inflation-adjusted volume.',
+    h2Table: 'Every month, as data',
+    nojs: 'This table is the source of record — it works with no JavaScript, and the chart above is an enhancement of it. The newest month is flagged a provisional advance estimate.',
+    capA: 'Census MARTS monthly sales for Food Services &amp; Drinking Places (NAICS 722), US$ millions,', capB: '= seasonally adjusted;', capC: '= not adjusted. The most recent month (', capD: ') is a provisional advance estimate, subject to revision. Observed sales, never a forecast.',
+    thMonth: 'Month', thSA: 'Sales, SA ($M)', thNSA: 'Sales, NSA ($M)', thStatus: 'Status',
+    h2Cant: "What this can't tell you",
+    cant: [
+      ['National, whole-sector.', 'This is all of US NAICS 722 — not the DMV, not fine dining, not one segment. A top-line, not your line.'],
+      ['Nominal dollars.', 'Inflation is not removed; growth in the number mixes real volume with higher prices. It is not a real-demand index.'],
+      ['The newest month is provisional.', 'The most recent month is a %PROV%, revised in later releases — read it as a first draft.'],
+      ['Observed, not predicted.', 'Every point is a documented past month; %OBSERVED%.'],
+      ['A backdrop, fenced off.', 'It is %FENCE% reference — set beside the cost data, never inside it.'],
+    ],
+    h2Prov: 'Provenance &amp; license',
+    provRaw: 'Raw feed · CC0', provRawB: 'Census MARTS via FRED (US Census Bureau), public domain.',
+    provPub: 'Published series · CC0', provPubB: 'A straight reshape; the newest month flagged provisional.',
+    provWhat: 'What this is', provWhatB: (o, f, pv) => `A descriptive demand backdrop — ${o}, ${f} reference. The newest month is a ${pv}.`,
+    provCat: 'Catalog', provCatB: 'Full open-data catalog →',
+    varSA: 'Seasonally adjusted monthly food-services sales, US$ millions — observed sales, never a forecast; the latest month is a provisional advance estimate.',
+    varNSA: 'Not-seasonally-adjusted monthly food-services sales, US$ millions — the raw seasonal shape; never blended into any price index or the Vendor Benchmark.',
+  },
+  es: {
+    FENCE: 'nunca se mezcla con el índice de alimentos, el cálculo de presión ni la referencia del Vendor Benchmark',
+    OBSERVED: 'ventas observadas, nunca un pronóstico',
+    PROV: 'estimación preliminar de avance',
+    lang: 'es', base: '/es', path: 'es/open/demand/',
+    title: 'El telón de fondo de la demanda del sector — ventas mensuales de servicios de comida en EE.UU. (Census MARTS)',
+    desc: 'Ventas mensuales de Servicios de Comida y Bebida de EE.UU., millones de US$ (Census MARTS vía FRED, NAICS 722). Observadas, nunca un pronóstico.',
+    settled: 'consolidado',
+    crumbHome: 'Inicio', crumbOpen: 'Datos abiertos', crumbSelf: 'El telón de fondo de la demanda del sector',
+    navOpen: 'Datos abiertos', navCost: 'Índice de costos',
+    kick: 'Datos abiertos de Muntin · Explorador',
+    licAria: 'Este conjunto de datos es Creative Commons Zero, dominio público',
+    h1: 'El telón de fondo de la demanda del sector',
+    themeAria: 'Cambiar el tema de color', themeTitle: 'Cambiar tema claro / oscuro',
+    ledeA: 'Ventas mensuales de Servicios de Comida y Bebida de EE.UU., en millones de US$ (Census MARTS vía FRED, NAICS 722).',
+    ledeB: 'El mes más reciente es una', ledeC: ', sujeta a revisión.', ledeD: 'referencia.',
+    ledeHonest: 'El telón de fondo del lado de las ventas: lo que ingresa el sector, puesto junto a los datos de costos — nunca un pronóstico de demanda, y nunca dentro de ningún índice de precios de Muntin.',
+    laneAria: 'Cómo leer esta página',
+    laneLead: 'Un carril descriptivo aparte (ADR-013).',
+    laneBody1: 'Estas son ventas observadas del sector —', laneBody2: '— puestas junto a los datos de costos, nunca una entrada de ningún índice de precios de Muntin, lectura de presión ni referencia del Vendor Benchmark. El mes más nuevo siempre es una',
+    h2Sales: 'Ventas mensuales de servicios de comida',
+    beatSub1: 'es la tendencia desestacionalizada;', beatSub2: 'es la forma estacional cruda (la misma demanda, antes de quitar el patrón estacional). El mes más reciente se dibuja hueco — una', beatSub3: ', no un punto consolidado, nunca trazado como definitivo.',
+    legSA: 'SA — tendencia (desestacionalizada)', legNSA: 'NSA — forma estacional', legProv: 'estimación preliminar de avance',
+    svgTitle: (a, b) => `Ventas mensuales de servicios de comida en EE.UU., desestacionalizadas y sin desestacionalizar, de ${a} a ${b}.`,
+    svgDesc: (a, b) => `Un gráfico de líneas de las ventas mensuales de Servicios de Comida y Bebida de EE.UU. en millones de dólares, de ${a} a ${b}. La tendencia desestacionalizada sube a lo largo de la década, cae bruscamente en la primavera de 2020 y luego se recupera. La línea sin desestacionalizar oscila a su alrededor con la forma estacional anual. El mes más reciente es una estimación preliminar de avance, dibujada hueca. Ventas observadas, nunca un pronóstico, y nunca mezcladas con ningún índice de precios ni con el Vendor Benchmark.`,
+    figAudio: 'Ventas mensuales de servicios de comida en EE.UU., la tendencia desestacionalizada y la forma estacional cruda sin desestacionalizar, en millones de dólares — ventas observadas, nunca un pronóstico, el mes más nuevo una estimación preliminar de avance, nunca mezcladas con ningún índice de precios ni con el Vendor Benchmark.',
+    figCap1: 'Ventas mensuales, tendencia SA y forma estacional NSA —', figCap2: '; el mes más nuevo es una',
+    ahaLead: 'El choque documentado de la COVID es el movimiento más brusco del registro: las ventas desestacionalizadas cayeron de',
+    ahaMid1: 'en', ahaMid2: 'a', ahaMid3: 'en', ahaTail: '— una caída pasada documentada, ambos extremos meses consolidados.',
+    ahaHonest: 'Contexto observado, nunca un pronóstico. Millones de US$, desestacionalizados. La recuperación posterior es real pero nominal — dólares, no volumen ajustado por inflación.',
+    h2Table: 'Cada mes, como datos',
+    nojs: 'Esta tabla es la fuente de registro — funciona sin JavaScript, y el gráfico de arriba es una mejora de ella. El mes más nuevo se marca como estimación preliminar de avance.',
+    capA: 'Ventas mensuales Census MARTS de Servicios de Comida y Bebida (NAICS 722), millones de US$,', capB: '= desestacionalizado;', capC: '= sin ajustar. El mes más reciente (', capD: ') es una estimación preliminar de avance, sujeta a revisión. Ventas observadas, nunca un pronóstico.',
+    thMonth: 'Mes', thSA: 'Ventas, SA (M$)', thNSA: 'Ventas, NSA (M$)', thStatus: 'Estado',
+    h2Cant: 'Lo que esto no puede decirte',
+    cant: [
+      ['Nacional, todo el sector.', 'Esto es todo el NAICS 722 de EE.UU. — no el DMV, no la alta cocina, no un solo segmento. Una cifra global, no la tuya.'],
+      ['Dólares nominales.', 'No se quita la inflación; el crecimiento de la cifra mezcla volumen real con precios más altos. No es un índice de demanda real.'],
+      ['El mes más nuevo es preliminar.', 'El mes más reciente es una %PROV%, revisada en publicaciones posteriores — léelo como un primer borrador.'],
+      ['Observado, no predicho.', 'Cada punto es un mes pasado documentado; %OBSERVED%.'],
+      ['Un telón de fondo, con valla.', 'Es una referencia que %FENCE% — puesta junto a los datos de costos, nunca dentro de ellos.'],
+    ],
+    h2Prov: 'Procedencia y licencia',
+    provRaw: 'Fuente cruda · CC0', provRawB: 'Census MARTS vía FRED (Oficina del Censo de EE.UU.), dominio público.',
+    provPub: 'Serie publicada · CC0', provPubB: 'Un remodelado directo; el mes más nuevo marcado como preliminar.',
+    provWhat: 'Qué es esto', provWhatB: (o, f, pv) => `Un telón de fondo descriptivo de la demanda — ${o}, una referencia que ${f}. El mes más nuevo es una ${pv}.`,
+    provCat: 'Catálogo', provCatB: 'Catálogo completo de datos abiertos →',
+    varSA: 'Ventas mensuales desestacionalizadas de servicios de comida, millones de US$ — ventas observadas, nunca un pronóstico; el último mes es una estimación preliminar de avance.',
+    varNSA: 'Ventas mensuales sin desestacionalizar de servicios de comida, millones de US$ — la forma estacional cruda; nunca se mezcla con ningún índice de precios ni con el Vendor Benchmark.',
+  },
+};
+
 function model() {
   const src = rd(SRC);
   const months = (src.months || []).slice().sort((a, b) => String(a.date).localeCompare(String(b.date)));
@@ -38,25 +143,28 @@ function model() {
   return { src, months, provDate, trough, span };
 }
 
-function page(m) {
+function page(m, loc = 'en') {
+  const t = L[loc];
+  const FENCE = t.FENCE, OBSERVED = t.OBSERVED, PROV = t.PROV;
+  const B = t.base, ABS = 'https://muntin.digital/' + (loc === 'es' ? 'es/' : '') + 'open/demand/';
   const months = m.months, sp = m.span, tr = m.trough;
-  const title = 'The Sector Demand Backdrop — US Food-Services Monthly Sales (Census MARTS)';
-  const desc = 'US Food Services & Drinking Places monthly sales, US$ millions (Census MARTS via FRED, NAICS 722). Observed sales, never a demand forecast.';
-  const tbody = months.map((r) => `          <tr${r.provisional ? ' class="dm-prov-row"' : ''}><td class="l mono">${esc(r.date)}</td><td class="mono">${r.sales_sa_musd == null ? '—' : r.sales_sa_musd.toLocaleString('en-US')}</td><td class="mono">${r.sales_nsa_musd == null ? '—' : r.sales_nsa_musd.toLocaleString('en-US')}</td><td class="l">${r.provisional ? '<span class="dm-prov">provisional advance estimate</span>' : 'settled'}</td></tr>`).join('\n');
+  const title = t.title;
+  const desc = t.desc;
+  const tbody = months.map((r) => `          <tr${r.provisional ? ' class="dm-prov-row"' : ''}><td class="l mono">${esc(r.date)}</td><td class="mono">${r.sales_sa_musd == null ? '—' : r.sales_sa_musd.toLocaleString('en-US')}</td><td class="mono">${r.sales_nsa_musd == null ? '—' : r.sales_nsa_musd.toLocaleString('en-US')}</td><td class="l">${r.provisional ? `<span class="dm-prov">${t.PROV}</span>` : t.settled}</td></tr>`).join('\n');
   const data = {
     meta: { dataset: 'Census MARTS — US food-services monthly sales (NAICS 722)', unit: m.src.unit || 'US$ millions', license: 'CC0 1.0', raw_url: 'https://muntin.digital/data/marts-sales.json', csv_url: 'https://muntin.digital/cost-index/marts-sales.csv', json_url: 'https://muntin.digital/cost-index/marts-sales.json', catalog_url: 'https://muntin.digital/open/', provisional_month: m.provDate, fence: `${OBSERVED}; ${FENCE}`, span: sp },
     months: months.map((r) => ({ date: r.date, sa: r.sales_sa_musd, nsa: r.sales_nsa_musd, provisional: !!r.provisional })),
   };
   const breadcrumb = JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://muntin.digital/' },
-    { '@type': 'ListItem', position: 2, name: 'Open data', item: 'https://muntin.digital/open/' },
-    { '@type': 'ListItem', position: 3, name: 'The Sector Demand Backdrop', item: 'https://muntin.digital/open/demand/' },
+    { '@type': 'ListItem', position: 1, name: t.crumbHome, item: 'https://muntin.digital/' + (loc === 'es' ? 'es/' : '') },
+    { '@type': 'ListItem', position: 2, name: t.crumbOpen, item: 'https://muntin.digital/' + (loc === 'es' ? 'es/' : '') + 'open/' },
+    { '@type': 'ListItem', position: 3, name: t.crumbSelf, item: ABS },
   ] });
   const dataset = JSON.stringify({
     '@context': 'https://schema.org', '@type': 'Dataset',
-    name: 'US food-services monthly retail sales (Census MARTS)',
-    description: 'Monthly retail sales for Food Services & Drinking Places (NAICS 722), US$ millions, seasonally adjusted and not, via FRED. Observed sales, never a forecast; the most recent month is a provisional advance estimate. A descriptive demand backdrop, never in the food index.',
-    url: 'https://muntin.digital/open/demand/',
+    name: t.title,
+    description: t.desc,
+    url: ABS,
     creator: { '@type': 'Organization', name: 'Muntin Cost Index', url: 'https://muntin.digital/' },
     isBasedOn: { '@type': 'Dataset', name: 'US Census Bureau Monthly Retail Trade Survey (MARTS)', creator: { '@type': 'GovernmentOrganization', name: 'US Census Bureau' } },
     license: CC0,
@@ -64,8 +172,8 @@ function page(m) {
     spatialCoverage: { '@type': 'Place', name: 'United States' },
     keywords: ['food services sales', 'MARTS', 'retail trade', 'NAICS 722', 'demand backdrop', 'FRED'],
     variableMeasured: [
-      { '@type': 'PropertyValue', name: 'sales_sa_musd', description: 'Seasonally adjusted monthly food-services sales, US$ millions — observed sales, never a forecast; the latest month is a provisional advance estimate.' },
-      { '@type': 'PropertyValue', name: 'sales_nsa_musd', description: 'Not-seasonally-adjusted monthly food-services sales, US$ millions — the raw seasonal shape; never blended into any price index or the Vendor Benchmark.' },
+      { '@type': 'PropertyValue', name: 'sales_sa_musd', description: t.varSA },
+      { '@type': 'PropertyValue', name: 'sales_nsa_musd', description: t.varNSA },
     ],
     distribution: [
       { '@type': 'DataDownload', name: 'MARTS sales CSV (CC0)', encodingFormat: 'text/csv', contentUrl: 'https://muntin.digital/cost-index/marts-sales.csv', license: CC0 },
@@ -73,7 +181,7 @@ function page(m) {
     ],
   });
 
-  return `${HEAD(title, desc, breadcrumb)}${STYLE}
+  return `${HEAD(title, desc, breadcrumb, loc)}${STYLE}
 
 <div class="wrap">
 <body>
@@ -85,62 +193,62 @@ function page(m) {
       <img class="logo-mark" src="/brand/mark/mark-square-ink.svg" alt="" width="36" height="36" />
       <span class="logo-text">Muntin Digital</span>
     </a>
-    <nav class="nav-links" aria-label="Primary"><a href="/open/">Open data</a><a href="/cost-index/">Cost Index</a></nav>
+    <nav class="nav-links" aria-label="Primary"><a href="${B}/open/">${t.navOpen}</a><a href="${B}/cost-index/">${t.navCost}</a></nav>
   </div>
 </header>
 <header class="mast">
   <div class="mast-top">
     <div>
       <p class="kick">
-        <span>Muntin Open Data · Explorer</span>
-        <span class="lic" data-lic="cc0" role="img" aria-label="This dataset is Creative Commons Zero, public domain">CC0</span>
+        <span>${t.kick}</span>
+        <span class="lic" data-lic="cc0" role="img" aria-label="${t.licAria}">CC0</span>
       </p>
-      <h1>The Sector Demand Backdrop</h1>
+      <h1>${t.h1}</h1>
     </div>
-    <button class="themebtn" id="themeBtn" aria-label="Switch color theme" title="Switch light / dark theme">◐</button>
+    <button class="themebtn" id="themeBtn" aria-label="${t.themeAria}" title="${t.themeTitle}">◐</button>
     <span id="themeLive" class="sr-only" role="status" aria-live="polite"></span>
   </div>
-  <p class="lede">US Food Services &amp; Drinking Places monthly sales, in US$ millions (Census MARTS via FRED, NAICS 722). <b>${OBSERVED}</b>. The most recent month is a <b>${PROV}</b>, subject to revision. <b>${FENCE}</b> reference.<span class="honest" style="margin-top:8px">The sell-side backdrop: what the sector takes in, set beside the cost data — never a demand forecast, and never inside any Muntin price index.</span></p>
+  <p class="lede">${t.ledeA} <b>${OBSERVED}</b>. ${t.ledeB} <b>${PROV}</b>${t.ledeC} <b>${FENCE}</b> ${t.ledeD}<span class="honest" style="margin-top:8px">${t.ledeHonest}</span></p>
 </header>
 
 <main id="main">
 
-  <section class="panel dm-lane" aria-label="How to read this page">
-    <p style="margin:0"><b>A separate descriptive lane (ADR-013).</b> These are observed sector sales — <b>${OBSERVED}</b> — set beside the cost data, never an input to any Muntin price index, pressure reading, or Vendor Benchmark reference. The newest month is always a <b>${PROV}</b>.</p>
+  <section class="panel dm-lane" aria-label="${t.laneAria}">
+    <p style="margin:0"><b>${t.laneLead}</b> ${t.laneBody1} <b>${OBSERVED}</b> ${t.laneBody2} <b>${PROV}</b>.</p>
   </section>
 
-  <h2>Monthly food-service sales · ${sp ? ym(sp.from) + ' → ' + ym(sp.to) : ''}</h2>
-  <p class="beat-sub"><b>SA</b> is the seasonally adjusted trend; <b>NSA</b> is the raw seasonal shape (the same demand, before the seasonal pattern is removed). The most recent month renders hollow — a <b>${PROV}</b>, not a settled point, never drawn as final.</p>
+  <h2>${t.h2Sales} · ${sp ? ym(sp.from) + ' → ' + ym(sp.to) : ''}</h2>
+  <p class="beat-sub"><b>SA</b> ${t.beatSub1} <b>NSA</b> ${t.beatSub2} <b>${PROV}</b>${t.beatSub3}</p>
   <figure class="panel">
     <div class="legend" aria-hidden="true">
-      <span class="sw"><span class="dm-box dm-sa"></span> SA — trend (seasonally adjusted)</span>
-      <span class="sw"><span class="dm-box dm-nsa"></span> NSA — seasonal shape</span>
-      <span class="sw"><span class="dm-dot-prov"></span> provisional advance estimate</span>
+      <span class="sw"><span class="dm-box dm-sa"></span> ${t.legSA}</span>
+      <span class="sw"><span class="dm-box dm-nsa"></span> ${t.legNSA}</span>
+      <span class="sw"><span class="dm-dot-prov"></span> ${t.legProv}</span>
     </div>
     <div class="dm-scroll">
       <svg id="sales" role="img" width="960" height="360" aria-labelledby="sales-t sales-d">
-        <title id="sales-t">US food-services monthly sales, seasonally adjusted and not, ${sp ? ym(sp.from) + ' to ' + ym(sp.to) : ''}.</title>
-        <desc id="sales-d">A line chart of US Food Services and Drinking Places monthly sales in US dollars millions, from ${sp ? ym(sp.from) : ''} to ${sp ? ym(sp.to) : ''}. The seasonally adjusted trend rises over the decade, drops sharply in spring 2020, then recovers. The not-seasonally-adjusted line oscillates around it with the yearly seasonal shape. The most recent month is a provisional advance estimate, drawn hollow. Observed sales, never a forecast, and never blended into any price index or the Vendor Benchmark.</desc>
+        <title id="sales-t">${t.svgTitle(sp ? ym(sp.from) : '', sp ? ym(sp.to) : '')}</title>
+        <desc id="sales-d">${t.svgDesc(sp ? ym(sp.from) : '', sp ? ym(sp.to) : '')}</desc>
       </svg>
     </div>
-    <figcaption class="honest" data-audio-alt="US food-services monthly sales, seasonally adjusted trend and the raw not-seasonally-adjusted seasonal shape, in US dollars millions — observed sales, never a forecast, the newest month a provisional advance estimate, never blended into any price index or the Vendor Benchmark.">Monthly sales, SA trend and NSA seasonal shape — <b>${OBSERVED}</b>; the newest month is a <b>${PROV}</b>.</figcaption>
+    <figcaption class="honest" data-audio-alt="${t.figAudio}">${t.figCap1} <b>${OBSERVED}</b>${t.figCap2} <b>${PROV}</b>.</figcaption>
   </figure>
 
-${tr ? `  <p class="aha" id="aha">The documented COVID shock is the sharpest move on record: seasonally adjusted sales fell from <span class="mono">${tr.from.toLocaleString('en-US')}</span> in <span class="mono">${ym(tr.fromDate)}</span> to <span class="mono">${tr.to.toLocaleString('en-US')}</span> in <span class="mono">${ym(tr.toDate)}</span> — a documented past drop, both endpoints settled months.
-    <span class="honest" style="display:block;margin-top:6px">Observed context, never a forecast. US$ millions, seasonally adjusted. The recovery since is real but nominal — dollars, not inflation-adjusted volume.</span>
+${tr ? `  <p class="aha" id="aha">${t.ahaLead} <span class="mono">${tr.from.toLocaleString('en-US')}</span> ${t.ahaMid1} <span class="mono">${ym(tr.fromDate)}</span> ${t.ahaMid2} <span class="mono">${tr.to.toLocaleString('en-US')}</span> ${t.ahaMid3} <span class="mono">${ym(tr.toDate)}</span> ${t.ahaTail}
+    <span class="honest" style="display:block;margin-top:6px">${t.ahaHonest}</span>
   </p>` : ''}
 
-  <h2>Every month, as data</h2>
-  <p class="nojs-note">This table is the source of record — it works with no JavaScript, and the chart above is an enhancement of it. The newest month is flagged a provisional advance estimate.</p>
+  <h2>${t.h2Table}</h2>
+  <p class="nojs-note">${t.nojs}</p>
   <div class="tablewrap">
     <table class="data" id="tbl">
-      <caption>Census MARTS monthly sales for Food Services &amp; Drinking Places (NAICS 722), US$ millions, ${sp ? ym(sp.from) + '–' + ym(sp.to) : ''}. <b>SA</b> = seasonally adjusted; <b>NSA</b> = not adjusted. The most recent month (${m.provDate ? ym(m.provDate) : ''}) is a provisional advance estimate, subject to revision. Observed sales, never a forecast.</caption>
+      <caption>${t.capA} ${sp ? ym(sp.from) + '–' + ym(sp.to) : ''}. <b>SA</b> ${t.capB} <b>NSA</b> ${t.capC}${m.provDate ? ym(m.provDate) : ''}${t.capD}</caption>
       <thead>
         <tr>
-          <th scope="col" class="l">Month</th>
-          <th scope="col">Sales, SA ($M)</th>
-          <th scope="col">Sales, NSA ($M)</th>
-          <th scope="col" class="l">Status</th>
+          <th scope="col" class="l">${t.thMonth}</th>
+          <th scope="col">${t.thSA}</th>
+          <th scope="col">${t.thNSA}</th>
+          <th scope="col" class="l">${t.thStatus}</th>
         </tr>
       </thead>
       <tbody>
@@ -149,24 +257,20 @@ ${tbody}
     </table>
   </div>
 
-  <h2>What this can't tell you</h2>
+  <h2>${t.h2Cant}</h2>
   <section class="panel">
     <ul style="margin:0;padding-left:20px;line-height:1.7">
-      <li><b>National, whole-sector.</b> This is all of US NAICS 722 — not the DMV, not fine dining, not one segment. A top-line, not your line.</li>
-      <li><b>Nominal dollars.</b> Inflation is not removed; growth in the number mixes real volume with higher prices. It is not a real-demand index.</li>
-      <li><b>The newest month is provisional.</b> The most recent month is a <b>${PROV}</b>, revised in later releases — read it as a first draft.</li>
-      <li><b>Observed, not predicted.</b> Every point is a documented past month; <b>${OBSERVED}</b>.</li>
-      <li><b>A backdrop, fenced off.</b> It is <b>${FENCE}</b> reference — set beside the cost data, never inside it.</li>
+${t.cant.map(([b, body]) => `      <li><b>${b}</b> ${body.replace('%PROV%', `<b>${PROV}</b>`).replace('%OBSERVED%', `<b>${OBSERVED}</b>`).replace('%FENCE%', `<b>${FENCE}</b>`)}</li>`).join('\n')}
     </ul>
   </section>
 
   <footer class="prov">
-    <h2>Provenance &amp; license</h2>
+    <h2>${t.h2Prov}</h2>
     <div class="provgrid">
-      <div><b>Raw feed · CC0</b><br>Census MARTS via FRED (US Census Bureau), public domain. <a href="/data/marts-sales.json">data/marts-sales.json</a></div>
-      <div><b>Published series · CC0</b><br>A straight reshape; the newest month flagged provisional. <a href="/cost-index/marts-sales.csv">marts-sales.csv</a> · <a href="/cost-index/marts-sales.json">marts-sales.json</a></div>
-      <div><b>What this is</b><br>A descriptive demand backdrop — ${OBSERVED}, ${FENCE} reference. The newest month is a ${PROV}.</div>
-      <div><b>Catalog</b><br><a href="/open/">Full open-data catalog →</a></div>
+      <div><b>${t.provRaw}</b><br>${t.provRawB} <a href="/data/marts-sales.json">data/marts-sales.json</a></div>
+      <div><b>${t.provPub}</b><br>${t.provPubB} <a href="/cost-index/marts-sales.csv">marts-sales.csv</a> · <a href="/cost-index/marts-sales.json">marts-sales.json</a></div>
+      <div><b>${t.provWhat}</b><br>${t.provWhatB(OBSERVED, FENCE, PROV)}</div>
+      <div><b>${t.provCat}</b><br><a href="${B}/open/">${t.provCatB}</a></div>
     </div>
   </footer>
 
@@ -226,23 +330,32 @@ ${tbody}
 // ES alternates are emitted ONLY when the Spanish page actually exists. A dangling
 // hreflang tells crawlers a translation is available and then 404s (ADR-020 thread,
 // 2026-07-28). This self-heals: land es/open/demand/index.html and the tags return.
-const ES_EXISTS = fs.existsSync(path.join(repo, 'es/open/demand/index.html'));
-const ES_ALT = ES_EXISTS ? '<link rel="alternate" hreflang="es" href="https://muntin.digital/es/open/demand/" />\n' : '';
-const ES_OG_ALT = ES_EXISTS ? '<meta property="og:locale:alternate" content="es_US" />\n' : '';
+// Both locales are now GENERATED from one template (2026-07-29), so the alternates are
+// unconditional and reciprocal: each page points at itself as its canonical and at the
+// other as its hreflang pair. The old existsSync guard was correct when ES was absent —
+// a dangling hreflang promises a translation and then 404s — but it is dead weight now
+// that the same run always writes both. If a locale is ever dropped, restore the guard.
+const EN_URL = 'https://muntin.digital/open/demand/';
+const ES_URL = 'https://muntin.digital/es/open/demand/';
 
-function HEAD(title, desc, breadcrumb) {
+function HEAD(title, desc, breadcrumb, loc) {
+  const SELF = loc === 'es' ? ES_URL : EN_URL;
+  const OG_LOC = loc === 'es' ? 'es_US' : 'en_US';
+  const OG_ALT = loc === 'es' ? 'en_US' : 'es_US';
   return `<title>${title}</title>
 <meta name="robots" content="max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 <meta name="description" content="${esc(desc)}" />
 <meta name="theme-color" content="#2A50C8" />
-<link rel="canonical" href="https://muntin.digital/open/demand/" />
-<link rel="alternate" hreflang="en" href="https://muntin.digital/open/demand/" />
-${ES_ALT}<link rel="alternate" hreflang="x-default" href="https://muntin.digital/open/demand/" />
-<meta property="og:locale" content="en_US" />
-${ES_OG_ALT}<meta property="og:type" content="website" />
+<link rel="canonical" href="${SELF}" />
+<link rel="alternate" hreflang="en" href="${EN_URL}" />
+<link rel="alternate" hreflang="es" href="${ES_URL}" />
+<link rel="alternate" hreflang="x-default" href="${EN_URL}" />
+<meta property="og:locale" content="${OG_LOC}" />
+<meta property="og:locale:alternate" content="${OG_ALT}" />
+<meta property="og:type" content="website" />
 <meta property="og:title" content="${esc(title)}" />
 <meta property="og:description" content="${esc(desc)}" />
-<meta property="og:url" content="https://muntin.digital/open/demand/" />
+<meta property="og:url" content="${SELF}" />
 <meta property="og:site_name" content="Muntin Digital" />
 <meta property="og:image" content="https://muntin.digital/brand/og/tool-cost-pulse.png" />
 <meta property="og:image:type" content="image/png" />
@@ -357,10 +470,13 @@ footer.prov a{word-break:break-word}
 `;
 
 // ---- honesty self-guard: observed/forecast/fence literals; provisional adjacent to any latest value --
-const REQUIRED_LITERALS = [OBSERVED, PROV, FENCE];
-function guardHtml(html, m) {
+// The fences are checked PER LOCALE. Checking the English strings against the Spanish render
+// would either fail spuriously or, worse, pass a Spanish page that had quietly lost its
+// fences. A translated guarantee is only a guarantee if the guard speaks the language.
+function guardHtml(html, m, loc = 'en') {
   const errs = [];
-  for (const lit of REQUIRED_LITERALS) if (!html.includes(lit)) errs.push(`missing required literal: "${lit}"`);
+  const lt = L[loc];
+  for (const lit of [lt.OBSERVED, lt.PROV, lt.FENCE]) if (!html.includes(lit)) errs.push(`missing required literal (${loc}): "${lit}"`);
   // cross-lane causal claims only — "never a demand forecast" is an honest negation and must NOT trip this
   if (/\bdemand (drove|pushed|caused|lifted|forced|drives|pushes)\b/i.test(html)) errs.push('a cross-lane causal claim ("demand drove/pushed…") appears in affirmative voice');
   // the latest-month numeric value may appear only where "provisional advance estimate" is adjacent
@@ -399,6 +515,23 @@ function selfTest() {
     const lm = model();
     eq('LIVE page passes the honesty guard', guardHtml(page(lm), lm), []);
   }
+  // BILINGUAL (2026-07-29). The Spanish page must carry the SAME guarantees, not softer
+  // ones — a fence lost in translation is a fence lost. These assert the ES render is
+  // actually Spanish, keeps all three fences in Spanish, leaks no English fence, and points
+  // its canonical at itself rather than at the English page.
+  const esHtml = page(model(), 'es');
+  eq('ES render carries the Spanish observed fence', esHtml.includes(L.es.OBSERVED), true);
+  eq('ES render carries the Spanish provisional fence', esHtml.includes(L.es.PROV), true);
+  eq('ES render carries the Spanish never-blended fence', esHtml.includes(L.es.FENCE), true);
+  eq('ES render leaks no English fence', esHtml.includes(L.en.OBSERVED) || esHtml.includes(L.en.FENCE), false);
+  eq('ES render is in Spanish', esHtml.includes('El telón de fondo de la demanda del sector'), true);
+  eq('ES canonical points at the ES URL', esHtml.includes('rel="canonical" href="https://muntin.digital/es/open/demand/"'), true);
+  eq('EN canonical points at the EN URL', page(model(), 'en').includes('rel="canonical" href="https://muntin.digital/open/demand/"'), true);
+  eq('both locales carry reciprocal hreflang', esHtml.includes('hreflang="en"') && esHtml.includes('hreflang="es"'), true);
+  eq('the honesty guard speaks Spanish (ES render passes it)', guardHtml(esHtml, model(), 'es'), []);
+  eq('the guard would CATCH a Spanish page with an English-only fence', guardHtml('<html>observed sales, never a forecast</html>', model(), 'es').length > 0, true);
+  eq('EN and ES are the same template (identical section count)',
+     (page(model(), 'en').match(/<h2>/g) || []).length === (esHtml.match(/<h2>/g) || []).length, true);
   console.log(`build-open-demand-page self-test: ${pass}/${pass + fail} passed.`);
   process.exit(fail ? 1 : 0);
 }
@@ -407,21 +540,34 @@ const args = new Set(process.argv.slice(2));
 if (args.has('--self-test')) selfTest();
 if (!fs.existsSync(path.join(repo, SRC))) { console.error(`build-open-demand-page: ${SRC} not found — run scripts/build-marts-open-data.mjs first.`); process.exit(args.has('--check') ? 0 : 1); }
 const m = model();
-const html = page(m);
-const errs = guardHtml(html, m);
-if (errs.length) { console.error('build-open-demand-page: honesty guard failed:\n  ' + errs.join('\n  ')); process.exit(1); }
+// One template, two locales — the founder's call was a locale IN THE GENERATOR precisely so
+// the Spanish page cannot drift from the English one. Every string comes from L[loc]; the
+// honesty guard runs against BOTH renders, so a fence lost in translation fails the build.
+const TARGETS = [['en', OUT], ['es', 'es/' + OUT]];
+const RENDERED = TARGETS.map(([loc, out]) => {
+  const h = page(m, loc);
+  const e = guardHtml(h, m, loc);
+  if (e.length) { console.error(`build-open-demand-page: honesty guard failed for ${loc}:\n  ` + e.join('\n  ')); process.exit(1); }
+  return { loc, out, html: h };
+});
 if (args.has('--check')) {
-  const p = path.join(repo, OUT);
-  const cur = fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : null;
   // Compare only the generator-owned body (<header class="mast"> … </main>): the
   // deploy chain injects the canonical nav/footer (sync-includes) + dark-mode +
   // css-cache-bust around and above this body AFTER generation, so a full-string
   // compare would always drift post-inject. The body is injector-untouched.
   const body = (s) => { if (s == null) return s; const a = s.indexOf('<header class="mast">'); const b = s.lastIndexOf('</main>'); return (a >= 0 && b > a) ? s.slice(a, b) : s; };
-  if (body(cur) !== body(html)) { console.error(`✗ ${OUT} is stale — run: node scripts/build-open-demand-page.mjs`); process.exit(1); }
-  console.log(`✓ ${OUT} in sync.`);
+  let drift = 0;
+  for (const r of RENDERED) {
+    const fp = path.join(repo, r.out);
+    const cur = fs.existsSync(fp) ? fs.readFileSync(fp, 'utf8') : null;
+    if (body(cur) !== body(r.html)) { console.error(`✗ ${r.out} is stale — run: node scripts/build-open-demand-page.mjs`); drift++; }
+  }
+  if (drift) process.exit(1);
+  console.log(`✓ ${RENDERED.map((r) => r.out).join(' + ')} in sync (EN + ES from one template).`);
   process.exit(0);
 }
-fs.mkdirSync(path.dirname(path.join(repo, OUT)), { recursive: true });
-fs.writeFileSync(path.join(repo, OUT), html);
-console.log(`Wrote ${OUT} — ${m.months.length} months, fenced demand backdrop (provisional: ${m.provDate}).`);
+for (const r of RENDERED) {
+  fs.mkdirSync(path.dirname(path.join(repo, r.out)), { recursive: true });
+  fs.writeFileSync(path.join(repo, r.out), r.html);
+}
+console.log(`Wrote ${RENDERED.map((r) => r.out).join(' + ')} — ${m.months.length} months, fenced demand backdrop (provisional: ${m.provDate}).`);
