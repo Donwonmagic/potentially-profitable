@@ -26,9 +26,59 @@
 //   duration" eligibility window can be exercised.
 
 import { test, expect } from '@playwright/test';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const ARTICLE = '/blog/30-days-after-leaving-doordash-restaurant-case-study/';
 const ARTICLE_ES = '/es/blog/wix-vs-custom-for-restaurants/';
+
+// ─────────────────────────────────────────────────────────────────────
+// EDITORIAL PAUSE guard (2026-07-28).
+//
+// assets/site-article.css carries an "EDITORIAL PAUSE" block that hides
+// every audio surface site-wide — `.listen-btn, .listen-card, .listen-dock,
+// … { display: none !important; }` — because canon §12 blocks publishing a
+// click-to-listen that cannot actually play while the MP3 render pipeline is
+// mid-flight. listen.js still MOUNTS the card, so it exists in the DOM but
+// can never become visible.
+//
+// Every test in this file calls waitForSelector('.listen-card'), which
+// defaults to state:'visible'. With the pause active each one burned the full
+// 30s timeout, and playwright.config.mjs sets `retries: 2` in CI, so the file
+// alone cost 24 × 30s × 3 ≈ 36 minutes against a 20-minute job cap. The job
+// was cancelled inside THIS spec every run — the three other spec files never
+// executed at all, which is why trimming them changed nothing.
+//
+// So: skip this suite while the pause is in force, and let it come back
+// automatically the moment that CSS block is removed. Deleting the pause to
+// make the tests run would un-pause audio site-wide — the opposite of what
+// the canon requires.
+const ARTICLE_CSS = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '..',
+  'assets',
+  'site-article.css',
+);
+const AUDIO_PAUSED = (() => {
+  try {
+    const css = fs.readFileSync(ARTICLE_CSS, 'utf8');
+    const pauseAt = css.indexOf('EDITORIAL PAUSE');
+    // indexOf miss is -1; slice(-1) would take the last character, not "not found".
+    if (pauseAt < 0) return false;
+    const block = css.slice(pauseAt);
+    // The pause is active when .listen-card is in a display:none !important rule.
+    const rule = block.slice(0, block.indexOf('}') + 1);
+    return /\.listen-card\b/.test(rule) && /display\s*:\s*none\s*!important/.test(rule);
+  } catch {
+    return false;
+  }
+})();
+
+test.skip(
+  AUDIO_PAUSED,
+  'Audio editions are hidden site-wide by the EDITORIAL PAUSE block in assets/site-article.css (canon §12). These tests wait for .listen-card to be VISIBLE, so they cannot pass while it is display:none. They re-enable automatically when the pause is lifted.',
+);
 
 test.describe('Audio card — visual chrome', () => {
   test('eyebrow renders in stone with a teal underline (muntin motif)', async ({ page }) => {
