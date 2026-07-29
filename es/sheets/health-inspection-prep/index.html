@@ -293,10 +293,10 @@ header.nav{min-height:64px}
         <table class="sheet-row-table">
           <thead><tr><th>Item</th><th>Pass</th><th>Fail</th><th>Notes</th></tr></thead>
           <tbody>
-            <tr><td>All cooler temp logs current (≤ 24h gap)</td><td><input type="checkbox" name="temp_logs_p" /></td><td><input type="checkbox" name="temp_logs_f" /></td><td><input type="text" name="temp_logs_n" /></td></tr>
-            <tr><td>Walk-in cooler 36–40°F at last reading</td><td><input type="checkbox" name="walkin_p" /></td><td><input type="checkbox" name="walkin_f" /></td><td><input type="text" name="walkin_n" /></td></tr>
-            <tr><td>Hot-hold ≥ 140°F at last reading</td><td><input type="checkbox" name="hothold_p" /></td><td><input type="checkbox" name="hothold_f" /></td><td><input type="text" name="hothold_n" /></td></tr>
-            <tr><td>Cooling logs (160→70°F in 2h, 70→41°F in 4h)</td><td><input type="checkbox" name="cooling_p" /></td><td><input type="checkbox" name="cooling_f" /></td><td><input type="text" name="cooling_n" /></td></tr>
+            <tr><td>All cooler temp logs current (≤ 24h gap)</td><td><input aria-label="Pass — All cooler temp logs current (≤ 24h gap)" type="checkbox" name="temp_logs_p" /></td><td><input aria-label="Fail — All cooler temp logs current (≤ 24h gap)" type="checkbox" name="temp_logs_f" /></td><td><input aria-label="Notes — All cooler temp logs current (≤ 24h gap)" type="text" name="temp_logs_n" /></td></tr>
+            <tr><td>Walk-in cooler 36–40°F at last reading</td><td><input aria-label="Pass — Walk-in cooler 36–40°F at last reading" type="checkbox" name="walkin_p" /></td><td><input aria-label="Fail — Walk-in cooler 36–40°F at last reading" type="checkbox" name="walkin_f" /></td><td><input aria-label="Notes — Walk-in cooler 36–40°F at last reading" type="text" name="walkin_n" /></td></tr>
+            <tr><td>Hot-hold ≥ 140°F at last reading</td><td><input aria-label="Pass — Hot-hold ≥ 140°F at last reading" type="checkbox" name="hothold_p" /></td><td><input aria-label="Fail — Hot-hold ≥ 140°F at last reading" type="checkbox" name="hothold_f" /></td><td><input aria-label="Notes — Hot-hold ≥ 140°F at last reading" type="text" name="hothold_n" /></td></tr>
+            <tr><td>Cooling logs (160→70°F in 2h, 70→41°F in 4h)</td><td><input aria-label="Pass — Cooling logs (160→70°F in 2h, 70→41°F in 4h)" type="checkbox" name="cooling_p" /></td><td><input aria-label="Fail — Cooling logs (160→70°F in 2h, 70→41°F in 4h)" type="checkbox" name="cooling_f" /></td><td><input aria-label="Notes — Cooling logs (160→70°F in 2h, 70→41°F in 4h)" type="text" name="cooling_n" /></td></tr>
           </tbody>
         </table>
       </fieldset>
@@ -306,11 +306,11 @@ header.nav{min-height:64px}
         <table class="sheet-row-table">
           <thead><tr><th>Item</th><th>Pass</th><th>Fail</th><th>Notes</th></tr></thead>
           <tbody>
-            <tr><td>Hand-sinks stocked (soap, single-use towels, hot water)</td><td><input type="checkbox" name="hand_p" /></td><td><input type="checkbox" name="hand_f" /></td><td><input type="text" name="hand_n" /></td></tr>
-            <tr><td>3-compartment sink + sanitizer concentration verified</td><td><input type="checkbox" name="sink3_p" /></td><td><input type="checkbox" name="sink3_f" /></td><td><input type="text" name="sink3_n" /></td></tr>
-            <tr><td>Chemicals labeled and stored away from food</td><td><input type="checkbox" name="chem_p" /></td><td><input type="checkbox" name="chem_f" /></td><td><input type="text" name="chem_n" /></td></tr>
-            <tr><td>FIFO / dating system in place; nothing past expiration</td><td><input type="checkbox" name="fifo_p" /></td><td><input type="checkbox" name="fifo_f" /></td><td><input type="text" name="fifo_n" /></td></tr>
-            <tr><td>Pest control: no evidence; service log current</td><td><input type="checkbox" name="pest_p" /></td><td><input type="checkbox" name="pest_f" /></td><td><input type="text" name="pest_n" /></td></tr>
+            <tr><td>Hand-sinks stocked (soap, single-use towels, hot water)</td><td><input aria-label="Pass — Hand-sinks stocked (soap, single-use towels, hot water)" type="checkbox" name="hand_p" /></td><td><input aria-label="Fail — Hand-sinks stocked (soap, single-use towels, hot water)" type="checkbox" name="hand_f" /></td><td><input aria-label="Notes — Hand-sinks stocked (soap, single-use towels, hot water)" type="text" name="hand_n" /></td></tr>
+            <tr><td>3-compartment sink + sanitizer concentration verified</td><td><input aria-label="Pass — 3-compartment sink + sanitizer concentration verified" type="checkbox" name="sink3_p" /></td><td><input aria-label="Fail — 3-compartment sink + sanitizer concentration verified" type="checkbox" name="sink3_f" /></td><td><input aria-label="Notes — 3-compartment sink + sanitizer concentration verified" type="text" name="sink3_n" /></td></tr>
+            <tr><td>Chemicals labeled and stored away from food</td><td><input aria-label="Pass — Chemicals labeled and stored away from food" type="checkbox" name="chem_p" /></td><td><input aria-label="Fail — Chemicals labeled and stored away from food" type="checkbox" name="chem_f" /></td><td><input aria-label="Notes — Chemicals labeled and stored away from food" type="text" name="chem_n" /></td></tr>
+            <tr><td>FIFO / dating system in place; nothing past expiration</td><td><input aria-label="Pass — FIFO / dating system in place; nothing past expiration" type="checkbox" name="fifo_p" /></td><td><input aria-label="Fail — FIFO / dating system in place; nothing past expiration" type="checkbox" name="fifo_f" /></td><td><input aria-label="Notes — FIFO / dating system in place; nothing past expiration" type="text" name="fifo_n" /></td></tr>
+            <tr><td>Pest control: no evidence; service log current</td><td><input aria-label="Pass — Pest control: no evidence; service log current" type="checkbox" name="pest_p" /></td><td><input aria-label="Fail — Pest control: no evidence; service log current" type="checkbox" name="pest_f" /></td><td><input aria-label="Notes — Pest control: no evidence; service log current" type="text" name="pest_n" /></td></tr>
           </tbody>
         </table>
       </fieldset>
@@ -320,10 +320,10 @@ header.nav{min-height:64px}
         <table class="sheet-row-table">
           <thead><tr><th>Item</th><th>Pass</th><th>Fail</th><th>Notes</th></tr></thead>
           <tbody>
-            <tr><td>Food handler / manager certifications posted</td><td><input type="checkbox" name="cert_p" /></td><td><input type="checkbox" name="cert_f" /></td><td><input type="text" name="cert_n" /></td></tr>
-            <tr><td>Allergen matrix current with menu</td><td><input type="checkbox" name="allerg_p" /></td><td><input type="checkbox" name="allerg_f" /></td><td><input type="text" name="allerg_n" /></td></tr>
-            <tr><td>Employee illness policy posted &amp; understood</td><td><input type="checkbox" name="illness_p" /></td><td><input type="checkbox" name="illness_f" /></td><td><input type="text" name="illness_n" /></td></tr>
-            <tr><td>Self-inspection log up to date (this sheet)</td><td><input type="checkbox" name="self_p" /></td><td><input type="checkbox" name="self_f" /></td><td><input type="text" name="self_n" /></td></tr>
+            <tr><td>Food handler / manager certifications posted</td><td><input aria-label="Pass — Food handler / manager certifications posted" type="checkbox" name="cert_p" /></td><td><input aria-label="Fail — Food handler / manager certifications posted" type="checkbox" name="cert_f" /></td><td><input aria-label="Notes — Food handler / manager certifications posted" type="text" name="cert_n" /></td></tr>
+            <tr><td>Allergen matrix current with menu</td><td><input aria-label="Pass — Allergen matrix current with menu" type="checkbox" name="allerg_p" /></td><td><input aria-label="Fail — Allergen matrix current with menu" type="checkbox" name="allerg_f" /></td><td><input aria-label="Notes — Allergen matrix current with menu" type="text" name="allerg_n" /></td></tr>
+            <tr><td>Employee illness policy posted &amp; understood</td><td><input aria-label="Pass — Employee illness policy posted & understood" type="checkbox" name="illness_p" /></td><td><input aria-label="Fail — Employee illness policy posted & understood" type="checkbox" name="illness_f" /></td><td><input aria-label="Notes — Employee illness policy posted & understood" type="text" name="illness_n" /></td></tr>
+            <tr><td>Self-inspection log up to date (this sheet)</td><td><input aria-label="Pass — Self-inspection log up to date (this sheet)" type="checkbox" name="self_p" /></td><td><input aria-label="Fail — Self-inspection log up to date (this sheet)" type="checkbox" name="self_f" /></td><td><input aria-label="Notes — Self-inspection log up to date (this sheet)" type="text" name="self_n" /></td></tr>
           </tbody>
         </table>
       </fieldset>
