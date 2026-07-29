@@ -102,6 +102,37 @@ last-good). A year of coursework is close to the best thing that could happen to
   - Naive ingredient-name matching is **unsafe**: it flagged 55/55 articles because "apple"
     matches Apple. Any corpus↔index mapping must be curated or evidence-derived, never fuzzy.
 
+**MAIN MERGED 2026-07-29 — the course was RETIRED, not frozen, and the gates caught up by themselves**
+
+  PR #530 (a parallel session, founder call) **deleted** the whole Open the Doors subsystem —
+  `/course/`, `/method/`, the 30 course-companion sheets — with 301s to the funnel. That is the
+  stronger version of the freeze this thread had applied, and it **invalidates assumptions this
+  branch's gates encoded**. 41 merge conflicts, resolved by decision:
+
+  - **30 course sheets** — accepted main's deletion over this branch's `noindex` stamp.
+  - **`/learn/start-here/`** — kept THIS branch's five cost steps. #530 cut the course step from a
+    website-build tour, leaving "Audit your own site / Close the biggest leak", which is still the
+    retired line. Ours replaced the premise instead of trimming it.
+  - **Homepage, `/ledger/`, `/ledger/demo/` (EN+ES)** — kept the **GA-date retirement**. Main still
+    carried "November 13, 2026" and a live weeks-out countdown; the Ledger moved to 2027, so that
+    date is false and a countdown toward it self-destructs.
+  - `llms.txt` + feeds regenerated rather than hand-merged.
+
+  **The part worth remembering: two registries failed on their own obsolescence, correctly.**
+  `check-idem-coverage` reded on **13 stale MANUAL entries** the instant #530 deleted the course
+  builders they documented; `check-gate-coverage` reded on `check-course-mobile-css.mjs` for the
+  same reason. Neither was allowed to outlive what it described. Counts now: **83 idem builders**
+  (56 deploy / 6 workflow / 21 manual) and **125 check scripts** (121 wired / 4 documented-unwired).
+
+  - **Asymmetry closed the same day:** `check-positioning-drift`'s `ALLOW` had **no** staleness
+    check while its two sibling registries did. Added `staleAllow` — an entry no indexed
+    over-threshold page uses is flagged, because a slug-keyed exemption outliving its page
+    **silently pre-approves a future page that reuses the slug**. It found 2 dead entries on its
+    first run (`es/glossary/index.html`, the ES checklist), both verified before removal: the pages
+    still exist and are indexed but now score 2 against a threshold of 3, because the #530 merge
+    stripped the course cross-links that carried the vocabulary. Their EN counterparts still score
+    4 and 3 and keep their entries.
+
 **POSITIONING — ITERATION 3: the gate had the same blind spot it was written to punish**
 
   `check-positioning-drift` scanned only `library/blog`, so it would **not** have caught

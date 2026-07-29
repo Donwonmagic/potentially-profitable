@@ -116,7 +116,6 @@ export const ALLOW = {
   // crawlers. Pruning a hub would hide live pages, not retire them.
   'blog/index.html': { since: '2026-07-28', why: 'Blog hub — a complete listing of posts including frozen ones, which is the point of freeze-don\'t-delete.' },
   'glossary/index.html': { since: '2026-07-28', why: 'Glossary hub — lists all 171 terms including frozen ones so a reader can still reach every definition.' },
-  'es/glossary/index.html': { since: '2026-07-28', why: 'ES glossary hub — lists every term including frozen ones so a reader can still reach each definition.' },
 
   // A glossary legitimately DEFINES adjacent vocabulary. Defining "hosting" is
   // not claiming to sell websites, and these four are load-bearing: each is
@@ -143,8 +142,7 @@ export const ALLOW = {
   // from 11 live pages (about, for/restaurants, the learn hub, start-here), so
   // retiring it is a navigation change rather than a one-token freeze. Left
   // indexed and flagged here so it stays visible until the operator decides.
-  'learn/checklists/restaurant-website-checklist': { since: '2026-07-28', why: 'OPEN DECISION — retired-line by subject but promoted from 11 live pages; retiring it means editing navigation, not just stamping noindex.' },
-  'es/learn/checklists/restaurant-website-checklist': { since: '2026-07-28', why: 'ES mirror of the website checklist — same OPEN DECISION, promoted from live navigation.' },
+  'learn/checklists/restaurant-website-checklist': { since: '2026-07-28', why: 'OPEN DECISION — retired-line by subject but promoted from 11 live pages; retiring it means editing navigation, not just stamping noindex. Its ES mirror dropped below the threshold after the #530 merge and no longer needs an entry; the decision still covers both.' },
 };
 
 export const NOINDEX_RE = /<meta name="robots"[^>]*content="[^"]*noindex/i;
@@ -189,6 +187,32 @@ export function allowEntry(rel, allow = ALLOW) {
   return allow[rel] || allow[dir] || allow[dir.split('/').pop()] || null;
 }
 
+/**
+ * An ALLOW entry that no page uses is stale bookkeeping, and worse than tidy:
+ * a slug-keyed exemption outliving its page would silently pre-approve a FUTURE
+ * page that happens to reuse the slug. Two ways to go stale — the page is gone,
+ * or it is now frozen (freezing IS the resolution, so the exemption is moot).
+ *
+ * Added 2026-07-29. The sibling registries in check-gate-coverage and
+ * check-idem-coverage already had this, and both fired correctly when PR #530
+ * deleted the course — 13 stale MANUAL entries and 1 stale UNWIRED entry. This
+ * one could not have, which was an asymmetry rather than a decision.
+ */
+export function staleAllow(matchedKeys, allow = ALLOW) {
+  const used = matchedKeys instanceof Set ? matchedKeys : new Set(matchedKeys);
+  return Object.keys(allow).filter((k) => !used.has(k));
+}
+
+/** Which ALLOW key matched, rather than the entry itself. */
+export function allowKeyFor(rel, allow = ALLOW) {
+  const dir = rel.replace(/\/index\.html$/, '');
+  const slug = dir.split('/').pop();
+  if (allow[rel]) return rel;
+  if (allow[dir]) return dir;
+  if (allow[slug]) return slug;
+  return null;
+}
+
 export function countRetired(text, vocab = RETIRED_VOCAB) {
   let n = 0;
   for (const phrase of vocab) {
@@ -213,6 +237,11 @@ function selfTest() {
     [allowEntry('learn/checklists/bar/index.html', { 'learn/checklists/bar': { why: 'x' } }) !== null, true, 'a directory-path entry matches'],
     [allowEntry('blog/index.html', { 'blog/index.html': { why: 'x' } }) !== null, true, 'a full-path entry matches a hub file'],
     [allowEntry('library/other/index.html', { foo: { why: 'x' } }), null, 'an unrelated page is not allowed'],
+    [allowKeyFor('library/foo/index.html', { foo: { why: 'x' } }), 'foo', 'allowKeyFor returns the matching key'],
+    [allowKeyFor('library/none/index.html', { foo: { why: 'x' } }), null, 'allowKeyFor returns null when nothing matches'],
+    [staleAllow(new Set(['a']), { a: { why: 'x' }, b: { why: 'y' } }).join(), 'b', 'an unmatched entry is stale'],
+    [staleAllow(new Set(['a', 'b']), { a: { why: 'x' }, b: { why: 'y' } }).length, 0, 'fully matched entries are not stale'],
+    [staleAllow([], { a: { why: 'x' } }).join(), 'a', 'staleAllow accepts an array as well as a Set'],
   ];
   let pass = 0;
   for (const [got, want, why] of cases) {
@@ -240,6 +269,7 @@ function main(argv) {
   let scanned = 0;
   let frozen = 0;
   let allowed = 0;
+  const matched = new Set();
 
   for (const rel of walk(REPO)) {
     const html = fs.readFileSync(path.join(REPO, rel), 'utf8');
@@ -247,15 +277,29 @@ function main(argv) {
     scanned++;
     const n = countRetired(prose(html));
     if (n < THRESHOLD) continue;
-    if (allowEntry(rel)) { allowed++; continue; }
+    const key = allowKeyFor(rel);
+    if (key) { allowed++; matched.add(key); continue; }
     drifted.push({ where: rel, n });
   }
 
-  if (!drifted.length) {
+  const stale = staleAllow(matched);
+
+  if (!drifted.length && !stale.length) {
     console.log(
       `check-positioning-drift: ${scanned} indexed article(s) scanned (${frozen} frozen, skipped) — none carries retired-line vocabulary above the threshold beyond ${allowed} allowlisted. 0 violations.`,
     );
     process.exit(0);
+  }
+
+  if (stale.length) {
+    console.error(`check-positioning-drift: ${stale.length} stale ALLOW entr(ies) — no indexed page over the threshold uses them:\n`);
+    for (const k of stale) console.error(`  \u2717 ${k}`);
+    console.error(`
+The page was retired, frozen, or reworded below the threshold. Remove the entry:
+a slug-keyed exemption that outlives its page silently pre-approves a FUTURE
+page that reuses the slug.
+`);
+    if (!drifted.length) process.exit(1);
   }
 
   drifted.sort((a, b) => b.n - a.n);
