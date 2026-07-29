@@ -61,7 +61,9 @@ const REPO = path.resolve(path.dirname(__filename), '..');
  */
 const SKIP_TOP = new Set([
   'node_modules', 'assets', 'brand', 'docs', 'scripts', 'src', '_includes',
-  'tests', 'dist', 'data', 'course', // course/: frozen retired line, kept live by decision
+  'tests', 'dist', 'data',
+  // 'course' was skipped here until 2026-07-29; PR #530 deleted the directory
+  // outright (301s to /cost-index/), so there is nothing left to skip.
 ]);
 const THRESHOLD = 3;
 const MAX_DEPTH = 5;

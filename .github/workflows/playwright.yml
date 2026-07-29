@@ -105,8 +105,12 @@ jobs:
         run: |
           npx playwright test --reporter=line --project=desktop
 
-      - name: Upload Playwright report on failure
-        if: failure()
+      # Always upload, not `if: failure()`. A CANCELLED job (e.g. the 20-minute
+      # timeout that this workflow hit on five consecutive runs) does not
+      # satisfy failure(), so the report was silently skipped in exactly the
+      # situation where it was needed to diagnose the hang.
+      - name: Upload Playwright report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report

@@ -41,6 +41,15 @@ const RETIRED = [
   '/tools/menu-converter/',
   '/tools/brand-suite/',
   '/start/',
+  // 2026-07-28 course + method retirement. The Open the Doors bootcamp, the
+  // method-manifesto + Workshop-Kit pages, and the course-companion sheet pack
+  // now resolve ONLY through the Worker 301s (src/worker.js): course/method →
+  // /cost-index/, the sheet pack → /sheets/. Same class as the entries above,
+  // so the same guard applies — this is precisely the gate that should have
+  // been taught about them when those redirects landed.
+  '/course/',
+  '/method/',
+  '/sheets/course-',
 ];
 
 // Chrome + funnel surfaces that must NEVER hard-link a retired path. The

@@ -32,9 +32,14 @@
  * this gate at the moment it is introduced, rather than surfacing months later
  * as a deploy nobody can turn green.
  *
- * Being in MANUAL is legitimate. Eleven of these serve /course/, which CLAUDE.md
- * freezes — a builder whose inputs never change cannot drift. What MANUAL
- * forbids is the dependency being undocumented.
+ * Being in MANUAL is legitimate — eight of these render operator-fetched public
+ * data whose refresh needs keys this container does not have (ADR-013). What
+ * MANUAL forbids is the dependency being undocumented.
+ *
+ * 2026-07-29: the 13 /course/ entries were REMOVED here, not by hand but because
+ * this gate demanded it. PR #530 retired the course and deleted its builders, and
+ * staleManual failed on all 13 at the next run — the registry cannot outlive the
+ * thing it documents.
  *
  * Usage:
  *   node scripts/check-idem-coverage.mjs
@@ -53,12 +58,6 @@ const ORCHESTRATOR = 'scripts/check-all.mjs';
 const WRANGLER = 'wrangler.jsonc';
 const WORKFLOW_DIR = '.github/workflows';
 
-const FROZEN_COURSE = {
-  since: '2026-07-28',
-  who: 'nobody — and that is correct',
-  drifts: 'only if /course/ content changes, and CLAUDE.md freezes the course ("kept live, no further investment"). A builder whose inputs never change cannot drift.',
-};
-
 const OPERATOR_DATA = {
   since: '2026-07-28',
   who: 'the operator, on the Mac that holds the API keys',
@@ -71,21 +70,6 @@ const OPERATOR_DATA = {
  * gate exists to prevent.
  */
 export const MANUAL = {
-  // --- /course/: frozen surface, inputs cannot change ----------------------
-  'inject-course-listen.mjs': FROZEN_COURSE,
-  'inject-course-mark-complete.mjs': FROZEN_COURSE,
-  'inject-course-config-sync.mjs': FROZEN_COURSE,
-  'inject-course-sheet-link.mjs': FROZEN_COURSE,
-  'inject-course-objectives.mjs': FROZEN_COURSE,
-  'inject-course-plain-language.mjs': FROZEN_COURSE,
-  'inject-course-mobile-css.mjs': FROZEN_COURSE,
-  'inject-course-og-images.mjs': FROZEN_COURSE,
-  'inject-tool-course-crosslink.mjs': FROZEN_COURSE,
-  'inject-glossary-lesson-sidecar.mjs': FROZEN_COURSE,
-  'inject-topic-course-rail.mjs': FROZEN_COURSE,
-  'inject-article-course-rail.mjs': FROZEN_COURSE,
-  'build-course-titles-bundle.mjs': FROZEN_COURSE,
-
   // --- operator-fetched public data (ADR-013) ------------------------------
   'build-ingredient-state-record.mjs': OPERATOR_DATA,
   'build-eia-energy-backdrop.mjs': OPERATOR_DATA,

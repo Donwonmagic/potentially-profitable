@@ -85,11 +85,6 @@ export const UNWIRED = {
     status: 'passes — advisory',
     why: 'Prints .innerHTML call sites for human review ("verify the RHS is page-authored") and then reports clean. The judgement it asks for is not mechanical.',
   },
-  'check-course-mobile-css.mjs': {
-    since: '2026-07-28',
-    status: 'passes — 52 pages unchanged',
-    why: 'Scoped entirely to /course/, which CLAUDE.md freezes ("kept live, no further investment"). Gating frozen scope adds deploy risk for a surface that is not being changed.',
-  },
 };
 
 export function findCheckScripts(names) {

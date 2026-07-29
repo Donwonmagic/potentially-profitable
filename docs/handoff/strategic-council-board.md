@@ -386,6 +386,23 @@ their findings are the verified facts above.
 run below). **Directive:** make every surface feel native at every viewport, build → audit →
 iterate; no horizontal scroll; "the very best we can make it."
 
+**Course + method retirement (2026-07-28):** founder asked why the retired `/method/` pages still
+failed lhci — they weren't gone; the whole **Open the Doors subsystem** was live. Founder chose to
+**actually retire** it, target **the funnel**, with a **clean teardown** (strip course CTAs from the
+~91 cross-linked pages too) *including* the course-companion **sheet pack**. Torn out: the 4 page trees
+(`/course/`, `/method/`, ES) = 229 files; ~23 course scripts; 17 `check-all` course gate registrations;
+the 4 rail injectors' CTAs stripped from 91 pages (`inject-{topic,article}-course-rail`,
+`inject-tool-course-crosslink`, `inject-glossary-lesson-sidecar`); `course-lessons.json` /
+`course-releases.json` / `glossary-course-anchors.json` / `assets/data/course-titles.json`; the RSS
+course lane; the `/sheets/course-*` pack (30 pages + 15 `sheets.es.json` entries); the 6 lighthouse
+URLs; the `library-batches.json` course promo; public promos in `/tools/start/` + `/learn/start-here/`.
+All 301 to the funnel via `src/worker.js` (course/method → `/cost-index/`, sheet pack → `/sheets/`).
+Fixed a warm-palette gate crash (it listed 2 deleted scripts). Regenerated sitemap/RSS/counts/llms; the
+other 7 idem-drifts self-heal in the deploy chain (each verified present in `wrangler.jsonc`). **Left
+DORMANT for a follow-up PR** (invisible with no course pages feeding them): `/api/course/*` KV runtime +
+`src/lib/course.js`, the `/account/` course-progress tile, the course email lifecycle (`lifecycleCourse*`
+in `src/lib/lifecycle-emails.js`), and the `/window/` course-contact JS branch.
+
 **Merge of record (2026-07-18):** merged `origin/main` (the "warmth" thread — 50 commits: on-device
 Golden-Hour whisper via `warmth.js` + `.hero::after --gh-eve`, theme cross-fade, cost-index fresh
 2026-07-17 read + reconciliation, cost-watch operator loop, breadcrumbs, copy-link reassurance beat)

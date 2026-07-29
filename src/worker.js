@@ -540,6 +540,40 @@ export default {
       }
     }
 
+    // 2026-07-28 course + method retirement — the build-a-website bootcamp
+    // (/course/) and the method-manifesto + Workshop Kit brand pages (/method/)
+    // belonged to the retired website-build/services line. The ~94 pages are
+    // removed; every path in both namespaces 301s into the funnel's front door,
+    // the Cost Index. Prefix match covers the roots and any sub-path/asset. In
+    // code (not _redirects) for the same 100-rule-cap reason as the redirects
+    // above. NOTE the trailing-slash anchoring: '/method/' (with slash) never
+    // matches the live '/methods/' voice-contract page — '/methods/'.startsWith
+    // ('/method/') is false — and '/method' matches only the exact bare root.
+    if (request.method === 'GET') {
+      if (pathname === '/es/course' || pathname.startsWith('/es/course/') ||
+          pathname === '/es/method' || pathname.startsWith('/es/method/')) {
+        return new Response(null, { status: 301, headers: { location: '/es/cost-index/' + url.search } });
+      }
+      if (pathname === '/course' || pathname.startsWith('/course/') ||
+          pathname === '/method' || pathname.startsWith('/method/')) {
+        return new Response(null, { status: 301, headers: { location: '/cost-index/' + url.search } });
+      }
+    }
+
+    // 2026-07-28 course retirement (cont.) — the Open the Doors "course-bootcamp"
+    // companion sheet pack (/sheets/course-*, 15 EN + 15 ES) retired with the
+    // course. Prefix match on the 'course-' sheet slugs ONLY — the live operator
+    // sheets (recipe-cost-card, etc.) are untouched. 301 into the sheets catalog
+    // so a bookmarked worksheet lands on the live pack list, not a 404.
+    if (request.method === 'GET') {
+      if (pathname.startsWith('/es/sheets/course-')) {
+        return new Response(null, { status: 301, headers: { location: '/es/sheets/' + url.search } });
+      }
+      if (pathname.startsWith('/sheets/course-')) {
+        return new Response(null, { status: 301, headers: { location: '/sheets/' + url.search } });
+      }
+    }
+
     // 2026-07-11 research consolidation — the seven thin /cost-index/research/
     // pages + their hub were folded into the single interactive menu-pricing
     // playbook (/cost-index/menu-pricing/), which joins all four data layers
