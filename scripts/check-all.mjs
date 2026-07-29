@@ -220,6 +220,10 @@ const CHECKS = [
   // name (axe `label` / `select-name`). Measured 2026-07-28: 1216+193
   // violations across 26 of 33 sheet pages before this landed.
   ['Sheet input labels (idem)','inject-sheet-input-labels.mjs','--check'],
+  // One document per page. Sixteen sheet pages ship a duplicated document
+  // tail (a split inline <script>), which the browser hoists back into <body>
+  // as a second <footer> + blocks outside <main>. Waived-and-tracked; blocks new.
+  ['Document structure',  'check-document-structure.mjs'],
   ['Intent param targets','check-intent-param-targets.mjs','--check'],
   ['Article fieldnotes (idem)','inject-article-fieldnotes.mjs','--check'],
   ['Article listen (idem)','inject-article-listen.mjs','--check'],
