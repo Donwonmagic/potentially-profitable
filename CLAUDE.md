@@ -6,7 +6,7 @@ Project memory for Claude Code sessions on `muntin.digital` — a one-person, **
 
 New work consolidates around the cost-intelligence funnel (the Cost Index, the live free tools, Muntin Ledger). Do **not** reinvest in these:
 
-  - **Frozen:** the build-a-website course (`/course/`) — kept live, no further investment.
+  - **Retired 2026-07-28:** the build-a-website course (`/course/`), the method-manifesto + Workshop-Kit pages (`/method/`), and the course-companion sheet pack (`/sheets/course-*`, 15 EN + 15 ES). The whole "Open the Doors" subsystem was torn out — its course CI gates + injectors, the 4 rail injectors (`inject-{topic,article}-course-rail`, `inject-tool-course-crosslink`, `inject-glossary-lesson-sidecar`) whose CTAs were stripped from ~91 pages, the data manifests (`course-lessons.json`, `course-releases.json`, `glossary-course-anchors.json`, `assets/data/course-titles.json`), and the RSS course lane. All paths **301 to the funnel** (course/method → `/cost-index/`; the sheet pack → `/sheets/`). Left **dormant** for a follow-up: the `/api/course/*` KV runtime + `src/lib/course.js`, the `/account/` course-progress tile, the course email lifecycle (`lifecycleCourse*`), and the `/window/` course-contact JS branch — all invisible with no course pages to feed them.
   - **Cut 2026-06-17:** fr/it/pt/zh article audio (EN + ES only now); the "coming soon" tool roadmap (the 6 unbuilt tools removed; `data/tools.json` `roadmap` is empty; `tools.coming` = 0).
   - **Retired earlier:** the web-studio services tiers (301 to `/studio/`, which is now the company page); the Menu Design Suite + Invoice Decoder tools (their `/never/` marketing was removed 2026-06-17).
   - **Prune candidates (off-funnel, do not expand):** the brand/design operator-sheet pack.

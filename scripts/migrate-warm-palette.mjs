@@ -188,10 +188,8 @@ const mode = process.argv.includes("--check")
 const TEMPLATES = [
   "build-theme-story-pages.mjs",
   "new-article-skeleton.mjs",
-  "new-workshop-widget.mjs",
   "build-themes-review-board.mjs",
   "build-cuisine-landing-pages.mjs",
-  "new-course-lesson.mjs",
 ].map((s) => path.join(REPO, "scripts", s));
 
 // Chrome stylesheets (no theme-swatch content) get a full safe sweep.
@@ -204,7 +202,6 @@ const STYLESHEETS = ["assets/sheets.css", "assets/site.css"].map((s) =>
 const SCRIPTS = [
   "scripts/inject-critical-fonts.mjs",
   "scripts/inject-critical-link-color.mjs",
-  "scripts/inject-course-mark-complete.mjs",
   "scripts/build-sheets-index.mjs",
 ].map((s) => path.join(REPO, s));
 // Brand SVGs. After the 2026 "Golden Hour" migration every brand asset is
