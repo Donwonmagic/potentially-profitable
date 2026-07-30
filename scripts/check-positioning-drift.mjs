@@ -137,12 +137,6 @@ export const ALLOW = {
   'learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026': { since: '2026-07-28', why: 'Margin research measured in dollars; cited by kept content. Websites are the sample, not the subject.' },
   'es/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026': { since: '2026-07-28', why: 'ES mirror of the margin-audit research note — websites are the sample, not the subject.' },
 
-  // OPEN DECISION, not a settled allow. "The Restaurant Website Checklist — 30
-  // Things Your Site Should Do" is retired-line by subject, but it is promoted
-  // from 11 live pages (about, for/restaurants, the learn hub, start-here), so
-  // retiring it is a navigation change rather than a one-token freeze. Left
-  // indexed and flagged here so it stays visible until the operator decides.
-  'learn/checklists/restaurant-website-checklist': { since: '2026-07-28', why: 'OPEN DECISION — retired-line by subject but promoted from 11 live pages; retiring it means editing navigation, not just stamping noindex. Its ES mirror dropped below the threshold after the #530 merge and no longer needs an entry; the decision still covers both.' },
 };
 
 export const NOINDEX_RE = /<meta name="robots"[^>]*content="[^"]*noindex/i;
