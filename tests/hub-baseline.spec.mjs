@@ -27,9 +27,12 @@ test.describe('Tool hub baseline', () => {
   test('hub renders a primary CTA above the fold', async ({ page }) => {
     await page.goto('/tools/', { waitUntil: 'networkidle' });
 
+    // NOTE: do not assert on ctas.first(). DOM order is not visual order here —
+    // the first a.btn-primary on the hub is the mobile sticky-bar "Contact"
+    // link, which is collapsed to 0x0 at the desktop viewport. Measuring the
+    // rendered geometry below is the assertion; a .first() visibility check
+    // only re-introduces that ordering assumption.
     const ctas = page.locator('a.btn-primary');
-    await expect(ctas.first()).toBeVisible();
-
     const viewportHeight = page.viewportSize().height;
     const aboveFold = await ctas.evaluateAll(
       (els, vh) =>
