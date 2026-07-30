@@ -44,7 +44,7 @@
       "url": "https://muntin.digital/blog/cost-index-2026-07/",
       "inLanguage": "en-US",
       "datePublished": "2026-07-09T13:00:00-04:00",
-      "dateModified": "2026-07-09",
+      "dateModified": "2026-07-24",
       "author": {
         "@id": "https://muntin.digital/#don-goldstein",
         "@type": "Person",
@@ -118,7 +118,7 @@
       "url": "https://muntin.digital/blog/cost-index-2026-07/",
       "isPartOf": { "@id": "https://muntin.digital/cost-index/#index-dataset" },
       "datePublished": "2026-07-09",
-      "dateModified": "2026-07-09",
+      "dateModified": "2026-07-24",
       "temporalCoverage": "2026-06-08/2026-07-06",
       "license": "https://creativecommons.org/publicdomain/zero/1.0/",
       "creator": { "@id": "https://muntin.digital/#business" },
@@ -579,30 +579,36 @@ header.nav{min-height:64px}
       <p>The weighted Restaurant Basket sits −5.0% <!-- src: dispatch.basket.pct (exact −4.96%, printed in the cite-this block) --> against its baseline, direction down <!-- src: dispatch.basket.dir -->, with 63.6% <!-- src: dispatch.basket.agreement --> directional agreement among contributors and 16 of 16 <!-- src: dispatch.basket.nContributing/.nDeclared --> declared ingredients reporting on full coverage <!-- src: dispatch.basket.coverage = 1 -->. The basket's data anchor is 2026-05-01 <!-- src: dispatch.basket.asOf -->.</p>
       <p>That anchor is why no month-over-month basket move prints here. The comparison machinery ran — the prior data print, dated <a href="/blog/cost-index-week-2026-06-18/">2026-06-18</a> <!-- src: dispatch.wow.prevAsOf --> — but the anchor hasn't refreshed since that print <!-- src: dispatch.wow.basket.state = "anchor-unchanged", .anchor = 2026-05-01 -->, so there is no new basket move to report, and I'd rather show a blank line than a manufactured delta. Per-ingredient month-over-month deltas are blank for a related reason: they compute only for gated items <!-- src: script line 313 -->, and nothing gated.</p>
 
-      <figure class="viz-figure" data-audio-alt="Where the panel sits, data as of 2026-07-06. First, a ring for the spread: 36 of 81 tracked ingredients read below their own baseline window, 24 above, 21 flat. Second, a single bar for the weighted basket, drawn as a displacement from a baseline tick rather than a share of a whole: the basket reads minus 5.0% against its baseline on the 2026-05-01 anchor, and the bar's length is the size of that gap against a 10-percent scale, with 16 of 16 declared ingredients contributing and 63.6% directional agreement. Both are dated state reads against each item's own tracked window, not month-over-month moves.">
-        <div class="viz-rings">
-          <div class="viz-ring" style="--score:44;">
-            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-spread" focusable="false">
-              <title id="ring-spread">36 of 81 ingredients reading below their own baseline window</title>
-              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">36/81</text>
-            </svg>
-            <p class="viz-ring__label"><strong>Below baseline</strong>24 above &middot; 21 flat</p>
+            <figure class="viz-figure article-figure" data-audio-alt="Two readings of where the panel sits this week. First, the spread across all 81 tracked ingredients: 24 read above their own baseline window (cost building), 36 below it (cost easing), and 21 flat — shown as one stacked bar so every part is visible. Second, the weighted basket reads minus 5.0% against its baseline (high confidence · 16 ingredients), placed as a position left or right of the baseline line. Both are state-of-play reads versus each baseline window, never a move since last week.">
+        <div class="viz-pair">
+          <div class="viz-split">
+            <p class="viz-split__title">All 81 tracked ingredients, by where they read</p>
+            <div class="viz-split__bar">
+              <span class="viz-split__seg" data-tone="teal" style="--w:0.4444"></span>
+              <span class="viz-split__seg" data-tone="stone" style="--w:0.2593"></span>
+              <span class="viz-split__seg" data-tone="rust" style="--w:0.2963"></span>
+            </div>
+            <div class="viz-split__legend">
+              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="teal"></span>Below &mdash; easing <strong>36</strong></span>
+              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="stone"></span>Flat <strong>21</strong></span>
+              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="rust"></span>Above &mdash; building <strong>24</strong></span>
+            </div>
+          </div>
+          <div class="viz-gauge">
+            <p class="viz-gauge__big" data-tone="teal">−5.0%</p>
+            <p class="viz-gauge__sub"><strong>below baseline</strong> &middot; high confidence &middot; 16 ingredients</p>
+            <div class="viz-gauge__track">
+              <span class="viz-gauge__line"></span>
+              <span class="viz-gauge__fill" data-tone="teal" style="left:25.00%;width:25.00%"></span>
+              <span class="viz-gauge__zero"></span>
+              <span class="viz-gauge__dot" data-tone="teal" style="left:25.00%"></span>
+            </div>
+            <div class="viz-gauge__ends"><span>&minus;10%</span><span class="mid">baseline</span><span>+10%</span></div>
           </div>
         </div>
-        <div class="viz-bars">
-          <p class="viz-bars__title">Weighted basket vs baseline &mdash; a displacement, not a share</p>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Basket <span style="opacity:.6">16 of 16 contributing &middot; 63.6% agreement &middot; anchor 2026-05-01</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__mark" style="--x:0" aria-hidden="true"></span><span class="viz-bars__fill" data-tone="teal" style="--w:0.5"></span></div>
-            <p class="viz-bars__num">&minus;5.0%</p>
-          </div>
-          <p class="viz-bars__note">The tick is the baseline; the bar is the basket&rsquo;s gap below it, drawn against a 10% scale.</p>
-        </div>
-        <figcaption>Where the panel sits as of 2026-07-06: 36 of 81 reads below baseline, and a weighted basket displaced &minus;5.0% from its baseline on the 2026-05-01 anchor.</figcaption>
+        <figcaption>Where the panel sits, week of 2026-07-06: the spread of reads across the panel, and the weighted basket's position against its baseline. Both are reads versus each baseline window, not a week-over-week move.</figcaption>
       </figure>
-      <details class="cite"><summary>Source: the dispatch payload behind these rings</summary><div class="cite-body"><p><span class="cite-source">Muntin Cost Index dispatch payload</span>, read as of 2026-07-06 &mdash; basket weights v2026-Q2, methodology v1.3.0. Frozen edition snapshot: <a href="/cost-index/week-2026-07-06.json">week-2026-07-06.json</a> (CC0).</p></div></details>
+      <details class="cite"><summary>Source: the dispatch payload behind these figures</summary><div class="cite-body"><p><span class="cite-source">Muntin Cost Index dispatch payload</span>, read as of 2026-07-06 &mdash; basket weights v2026-Q2, methodology v1.3.0. Frozen edition snapshot: <a href="/cost-index/week-2026-07-06.json">week-2026-07-06.json</a> (CC0).</p></div></details>
 
       <p>The biggest individual pulls, stated as forces and not as a sum: <a href="/cost-index/chicken-breast/">chicken breast (boneless)</a> reads −14.0% <!-- src: dispatch.heaviest.pct (−13.98%) --> at weight 0.17 <!-- src: dispatch.heaviest.weight -->, worth −2.38 basket points <!-- src: dispatch.heaviest.points --> — the heaviest single force on the board, with a pressure read behind it naming feed grain (corn) on a 6–9 week lead <!-- src: dispatch.heaviest.pressure --> (association, not cause). The counterweight is <a href="/cost-index/vegetable-oil/">vegetable oil</a> at +29.3% <!-- src: dispatch.topPush.pct (+29.26%) --> on weight 0.12 <!-- src: dispatch.topPush -->, worth +3.51 points <!-- src: dispatch.topPush.points --> of push, with no pressure read attached <!-- src: dispatch.topPush.pressure = null -->. Behind those two: <a href="/cost-index/tomato/">tomato</a> −33.3%, <a href="/cost-index/onion/">onion</a> +25.6%, <a href="/cost-index/pork-shoulder/">pork shoulder</a> −19.8%, <a href="/cost-index/butter/">butter</a> −15.1%, <a href="/cost-index/eggs/">eggs</a> −15.0% <!-- src: dispatch.contributors[] (−33.33 / +25.64 / −19.83 / −15.12 / −14.98) -->. One driver read worth naming: imported seafood at +1.9% <!-- src: dispatch.drivers[0].pct (+1.88%) -->, leading 16 seafood lines <!-- src: dispatch.drivers[0].leads -->.</p>
 
@@ -785,58 +791,56 @@ header.nav{min-height:64px}
       <h3 id="the-seasonal-calendar">The August calendar</h3>
       <p>39 of 100 <!-- src: seasonality.json summary.ready/total --> tracked ingredients carry enough distinct years to establish a seasonal norm (the bar is 2 years <!-- src: params.minYearsPerMonth -->; 61 are still building <!-- src: summary.building -->), and 38 of them have an established August <!-- src: months["08"].years ≥ 2 -->. By that history, <a href="/cost-index/raspberry/">raspberry</a>'s August median sits +55.5% above July's ($12.67 → $19.70), <a href="/cost-index/avocado/">avocado</a>'s +13.4% ($67.68 → $76.75), <a href="/cost-index/russet-potato/">russet potato</a>'s +13.2% ($20.98 → $23.75), <a href="/cost-index/chicken-breast/">chicken breast</a>'s +8.6% ($1.75 → $1.90 per lb), <a href="/cost-index/onion/">onion</a>'s +7.3% ($26.00 → $27.90) <!-- src: seasonality.json months["07"]→["08"] medians -->. <a href="/cost-index/cantaloupe/">Cantaloupe</a>'s sits −35.6% below ($34.95 → $22.50), <a href="/cost-index/romaine-lettuce/">romaine</a>'s −18.2% ($31.80 → $26.00), <a href="/cost-index/pork-shoulder/">pork shoulder</a>'s −10.7% ($1.21 → $1.08 per lb), <a href="/cost-index/bell-pepper/">bell pepper</a>'s −9.9% ($26.30 → $23.70) <!-- src: seasonality.json months["07"]→["08"] medians -->. Button mushroom, spinach, cauliflower, kale, sweet potato, and basil hold identical July and August medians <!-- src: seasonality.json, dead-flat list -->. Pattern statements from dated history, not predictions. If you are writing an August menu, this is the table to write it against: history taxes raspberry and favors cantaloupe and romaine — a pattern to plan around, not a price to count on.</p>
 
-      <figure class="viz-figure" data-audio-alt="What August's own history has done, from each ingredient's July-to-August record of at least 2 distinct years. August medians above July's: raspberry +55.5%, July median $12.67 to August $19.70; avocado +13.4%, $67.68 to $76.75; russet potato +13.2%, $20.98 to $23.75; chicken breast +8.6%, $1.75 to $1.90 per pound; onion +7.3%, $26.00 to $27.90. August medians below July's: cantaloupe -35.6%, $34.95 to $22.50; romaine -18.2%, $31.80 to $26.00; pork shoulder -10.7%, $1.21 to $1.08 per pound; bell pepper -9.9%, $26.30 to $23.70. These are pattern statements from the calendar's own history, not predictions.">
-        <div class="viz-bars">
-          <p class="viz-bars__title">Normally rises into August (historical July&rarr;August median moves)</p>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label"><a href="/cost-index/raspberry/">Raspberry</a> <span style="opacity:.6">$12.67 &rarr; $19.70</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:1.000"></span></div>
-            <p class="viz-bars__num">+55.5%</p>
+            <figure class="viz-figure" data-audio-alt="What August's own history has done, from each ingredient's July-to-August record of at least 2 distinct years. August medians above July's: raspberry +55.5%, July median $12.67 to August $19.70; avocado +13.4%, $67.68 to $76.75; russet potato +13.2%, $20.98 to $23.75; chicken breast +8.6%, $1.75 to $1.90 per pound; onion +7.3%, $26.00 to $27.90. August medians below July's: cantaloupe -35.6%, $34.95 to $22.50; romaine -18.2%, $31.80 to $26.00; pork shoulder -10.7%, $1.21 to $1.08 per pound; bell pepper -9.9%, $26.30 to $23.70. These are pattern statements from the calendar's own history, not predictions.">
+        <div class="viz-diverge">
+          <p class="viz-diverge__title">Normally rises into August (historical July&rarr;August median moves)</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label"><a href="/cost-index/raspberry/">Raspberry</a> <span style="opacity:.6">$12.67 &rarr; $19.70</span></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="rust" style="--w:1.000"></span></div>
+            <p class="viz-diverge__num">+55.5%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label"><a href="/cost-index/avocado/">Avocado</a> <span style="opacity:.6">$67.68 &rarr; $76.75</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.242"></span></div>
-            <p class="viz-bars__num">+13.4%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label"><a href="/cost-index/avocado/">Avocado</a> <span style="opacity:.6">$67.68 &rarr; $76.75</span></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="rust" style="--w:0.241"></span></div>
+            <p class="viz-diverge__num">+13.4%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label"><a href="/cost-index/russet-potato/">Russet potato</a> <span style="opacity:.6">$20.98 &rarr; $23.75</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.238"></span></div>
-            <p class="viz-bars__num">+13.2%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label"><a href="/cost-index/russet-potato/">Russet potato</a> <span style="opacity:.6">$20.98 &rarr; $23.75</span></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="rust" style="--w:0.238"></span></div>
+            <p class="viz-diverge__num">+13.2%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label"><a href="/cost-index/chicken-breast/">Chicken breast</a> <span style="opacity:.6">$1.75/lb &rarr; $1.90/lb</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.154"></span></div>
-            <p class="viz-bars__num">+8.6%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label"><a href="/cost-index/chicken-breast/">Chicken breast</a> <span style="opacity:.6">$1.75/lb &rarr; $1.90/lb</span></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="rust" style="--w:0.155"></span></div>
+            <p class="viz-diverge__num">+8.6%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label"><a href="/cost-index/onion/">Onion</a> <span style="opacity:.6">$26.00 &rarr; $27.90</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.132"></span></div>
-            <p class="viz-bars__num">+7.3%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label"><a href="/cost-index/onion/">Onion</a> <span style="opacity:.6">$26.00 &rarr; $27.90</span></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="rust" style="--w:0.132"></span></div>
+            <p class="viz-diverge__num">+7.3%</p>
           </div>
-        </div>
-        <div class="viz-bars">
-          <p class="viz-bars__title">Normally falls into August</p>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label"><a href="/cost-index/cantaloupe/">Cantaloupe</a> <span style="opacity:.6">$34.95 &rarr; $22.50</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.642"></span></div>
-            <p class="viz-bars__num">−35.6%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label"><a href="/cost-index/bell-pepper/">Bell pepper</a> <span style="opacity:.6">$26.30 &rarr; $23.70</span></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="teal" style="--w:0.178"></span></div>
+            <p class="viz-diverge__num">−9.9%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label"><a href="/cost-index/romaine-lettuce/">Romaine</a> <span style="opacity:.6">$31.80 &rarr; $26.00</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.329"></span></div>
-            <p class="viz-bars__num">−18.2%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label"><a href="/cost-index/pork-shoulder/">Pork shoulder</a> <span style="opacity:.6">$1.21/lb &rarr; $1.08/lb</span></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="teal" style="--w:0.193"></span></div>
+            <p class="viz-diverge__num">−10.7%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label"><a href="/cost-index/pork-shoulder/">Pork shoulder</a> <span style="opacity:.6">$1.21/lb &rarr; $1.08/lb</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.194"></span></div>
-            <p class="viz-bars__num">−10.7%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label"><a href="/cost-index/romaine-lettuce/">Romaine</a> <span style="opacity:.6">$31.80 &rarr; $26.00</span></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="teal" style="--w:0.328"></span></div>
+            <p class="viz-diverge__num">−18.2%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label"><a href="/cost-index/bell-pepper/">Bell pepper</a> <span style="opacity:.6">$26.30 &rarr; $23.70</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.178"></span></div>
-            <p class="viz-bars__num">−9.9%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label"><a href="/cost-index/cantaloupe/">Cantaloupe</a> <span style="opacity:.6">$34.95 &rarr; $22.50</span></p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="teal" style="--w:0.641"></span></div>
+            <p class="viz-diverge__num">−35.6%</p>
           </div>
-          <p class="viz-bars__note"><strong>Pattern, not prediction</strong> &mdash; historical July&rarr;August median moves from &ge;2 distinct years per item (39 of 100 tracked ingredients have deep enough history). Dead flat by that history: <a href="/cost-index/button-mushroom/">button mushroom</a>, <a href="/cost-index/spinach/">spinach</a>, <a href="/cost-index/cauliflower/">cauliflower</a>, <a href="/cost-index/kale/">kale</a>, <a href="/cost-index/sweet-potato/">sweet potato</a>, <a href="/cost-index/basil/">basil</a>.</p>
+          <div class="viz-diverge__axis"><span class="is-teal">&larr; easing (cost down)</span><span>baseline</span><span class="is-rust">building (cost up) &rarr;</span></div>
+          <p class="viz-diverge__note"><strong>Pattern, not prediction</strong> &mdash; historical July&rarr;August median moves from &ge;2 distinct years per item (39 of 100 tracked ingredients have deep enough history). Dead flat by that history: <a href="/cost-index/button-mushroom/">button mushroom</a>, <a href="/cost-index/spinach/">spinach</a>, <a href="/cost-index/cauliflower/">cauliflower</a>, <a href="/cost-index/kale/">kale</a>, <a href="/cost-index/sweet-potato/">sweet potato</a>, <a href="/cost-index/basil/">basil</a>.</p>
         </div>
         <figcaption>The July&rarr;August moves each ingredient's own history has produced, from &ge;2 distinct years per item &mdash; a calendar pattern, not a forecast.</figcaption>
       </figure>

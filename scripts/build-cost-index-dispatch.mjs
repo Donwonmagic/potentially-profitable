@@ -520,6 +520,77 @@ const DONOR = 'blog/ai-local-pack-restaurant-phone-calls-2026/index.html';
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const escAttr = (s) => esc(s).replace(/"/g, '&quot;');
 const widthOf = (p, max) => (max > 0 ? Math.min(1, Math.abs(p) / max) : 0);
+
+// --- signed-data figure helpers (zero-centred, direction never colour-alone) ---
+// A read vs baseline, or a basket contribution, is SIGNED: it can build cost
+// (positive → rust → right of centre) or ease it (negative → teal → left). These
+// render on a diverging axis so magnitude is length, direction is side + colour +
+// the signed number. Tone is 1:1 with sign in this domain, so one attribute drives
+// both. Callers pass rows PRE-SORTED (signed-descending groups pushers over easers).
+const DIVERGE_AXIS = `          <div class="viz-diverge__axis"><span class="is-teal">&larr; easing (cost down)</span><span>baseline</span><span class="is-rust">building (cost up) &rarr;</span></div>`;
+
+function divergeRows(items, max) {
+  return items.map((it) => {
+    const tone = it.value >= 0 ? 'rust' : 'teal';
+    const w = (max > 0 ? Math.min(1, Math.abs(it.value) / max) : 0).toFixed(3);
+    return `          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">${it.label}</p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-tone="${tone}" style="--w:${w}"></span></div>
+            <p class="viz-diverge__num">${it.num}</p>
+          </div>`;
+  }).join('\n');
+}
+
+// The panel's whole (N ingredients) split into below / flat / above — a single
+// stacked bar that shows every part, replacing a ring that drew only one slice.
+function spreadSplit(ins) {
+  const total = ins.count || (ins.up + ins.down + ins.flat) || 1;
+  const seg = (n) => (n / total).toFixed(4);
+  return `          <div class="viz-split">
+            <p class="viz-split__title">All ${total} tracked ingredients, by where they read</p>
+            <div class="viz-split__bar">
+              <span class="viz-split__seg" data-tone="teal" style="--w:${seg(ins.down)}"></span>
+              <span class="viz-split__seg" data-tone="stone" style="--w:${seg(ins.flat)}"></span>
+              <span class="viz-split__seg" data-tone="rust" style="--w:${seg(ins.up)}"></span>
+            </div>
+            <div class="viz-split__legend">
+              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="teal"></span>Below &mdash; easing <strong>${ins.down}</strong></span>
+              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="stone"></span>Flat <strong>${ins.flat}</strong></span>
+              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="rust"></span>Above &mdash; building <strong>${ins.up}</strong></span>
+            </div>
+          </div>`;
+}
+
+// The weighted basket as a POSITION on a zero-centred axis — a signed % reads as
+// left-of-baseline (easing) or right (building), not an arbitrary ring fill.
+function basketGauge(ins, subLabel) {
+  const basket = ins.basket || {};
+  const pct = typeof basket.pct === 'number' ? basket.pct : null;
+  if (pct == null) {
+    return `          <div class="viz-gauge">
+            <p class="viz-gauge__big" data-tone="stone">&mdash;</p>
+            <p class="viz-gauge__sub">No basket reading this edition &middot; ${subLabel}</p>
+          </div>`;
+  }
+  const tone = pct > 0 ? 'rust' : pct < 0 ? 'teal' : 'stone';
+  const pctPoints = Math.abs(pct) * 100;           // pct stored as a fraction (−0.05)
+  const range = Math.max(10, Math.ceil((pctPoints * 1.4) / 5) * 5);
+  const half = Math.min(1, pctPoints / range) * 50; // % of the full track from centre
+  const dotLeft = pct < 0 ? 50 - half : 50 + half;
+  const fillLeft = pct < 0 ? 50 - half : 50;
+  const word = pct > 0 ? 'above baseline' : pct < 0 ? 'below baseline' : 'at baseline';
+  return `          <div class="viz-gauge">
+            <p class="viz-gauge__big" data-tone="${tone}">${fmtPct(pct)}</p>
+            <p class="viz-gauge__sub"><strong>${word}</strong> &middot; ${subLabel}</p>
+            <div class="viz-gauge__track">
+              <span class="viz-gauge__line"></span>
+              <span class="viz-gauge__fill" data-tone="${tone}" style="left:${fillLeft.toFixed(2)}%;width:${half.toFixed(2)}%"></span>
+              <span class="viz-gauge__zero"></span>
+              <span class="viz-gauge__dot" data-tone="${tone}" style="left:${dotLeft.toFixed(2)}%"></span>
+            </div>
+            <div class="viz-gauge__ends"><span>&minus;${range}%</span><span class="mid">baseline</span><span>+${range}%</span></div>
+          </div>`;
+}
 const fmtPct = (x) => `${x >= 0 ? '+' : '−'}${Math.abs(x * 100).toFixed(1)}%`; // − for display
 const fmtPctPlain = (x) => `${x >= 0 ? '+' : '-'}${Math.abs(x * 100).toFixed(1)}%`; // ascii, for narration
 const money = (cents) => `$${(cents / 100).toFixed(2)}`;
@@ -578,64 +649,37 @@ function buildBars(ins) {
     .sort((a, b) => Math.abs(b.pct) - Math.abs(a.pct))
     .slice(0, 6);
   const max = Math.max(...movers.map((m) => Math.abs(m.pct)), 0.0001);
-  const rows = movers.map((m) => {
-    const tone = m.pct >= 0 ? 'rust' : 'teal';
-    const w = widthOf(m.pct, max).toFixed(3);
-    return `          <div class="viz-bars__row">
-            <p class="viz-bars__label">${esc(m.name)}</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="${tone}" style="--w:${w}"></span></div>
-            <p class="viz-bars__num">${fmtPct(m.pct)}</p>
-          </div>`;
-  }).join('\n');
+  const ordered = [...movers].sort((a, b) => b.pct - a.pct); // signed desc → building on top, easing below
+  const rows = divergeRows(ordered.map((m) => ({ label: esc(m.name), value: m.pct, num: fmtPct(m.pct) })), max);
 
-  const narr = movers.map((m) => `${m.name} ${fmtPctPlain(m.pct)} vs its tracked baseline`).join('; ');
-  const alt = `The widest gaps from baseline across the tracked panel this week, with bars scaled so the largest mover fills the track. Rust bars are ingredients reading above their own baseline window (cost building); teal bars are reading below it (cost easing). Each percentage is a state-of-play read versus that ingredient's own tracked baseline, not a week-over-week change. Reading the bars: ${narr}.`;
+  const narr = ordered.map((m) => `${m.name} ${fmtPctPlain(m.pct)} vs its tracked baseline`).join('; ');
+  const alt = `The widest gaps from baseline across the tracked panel this week, on a zero-centred axis so the direction is unmistakable. Bars to the right of centre (rust) are ingredients reading above their own baseline window — cost building; bars to the left (teal) are reading below it — cost easing. Distance from the centre is how wide the gap. Each percentage is a state-of-play read versus that ingredient's own tracked baseline, not a week-over-week change. Reading the bars: ${narr}.`;
 
   return `      <figure class="viz-figure article-figure" data-audio-alt="${escAttr(alt)}">
-        <div class="viz-bars">
-          <p class="viz-bars__title">Widest gaps from baseline this week (bars scaled to the largest mover; rust is building cost, teal is easing)</p>
+        <div class="viz-diverge">
+          <p class="viz-diverge__title">Widest gaps from baseline this week &mdash; building cost to the right, easing to the left</p>
 ${rows}
-          <p class="viz-bars__note">Each bar is a read versus <strong>that ingredient's own tracked baseline window</strong> &mdash; a state-of-play snapshot of what's flashing, not a move since last week.</p>
+${DIVERGE_AXIS}
+          <p class="viz-diverge__note">Each bar is a read versus <strong>that ingredient's own tracked baseline window</strong> &mdash; distance from the centre is the size of the gap, side is the direction. A state-of-play snapshot, not a move since last week.</p>
         </div>
-        <figcaption>The widest gaps from each ingredient's tracked baseline, week of ${ins.asOf}. Rust bars are building cost; teal bars are easing.</figcaption>
+        <figcaption>The widest gaps from each ingredient's tracked baseline, week of ${ins.asOf}. Right of centre is building cost; left is easing.</figcaption>
       </figure>`;
 }
 
 function buildRings(ins) {
   const total = ins.count || (ins.up + ins.down + ins.flat);
-  const upScore = total > 0 ? Math.round((ins.up / total) * 100) : 0;
   const basket = ins.basket || {};
   const basketPct = typeof basket.pct === 'number' ? basket.pct : null;
-  const basketScore = basketPct == null ? 0 : Math.min(100, Math.round((Math.abs(basketPct) / 0.5) * 100));
-  const basketBand = basketPct == null ? 'warn' : basketPct > 0 ? 'bad' : 'good';
 
-  const alt = `Two readings of where the panel sits this week. The first ring shows the spread: ${ins.up} of ${total} tracked ingredients are reading above their own baseline window, ${ins.down} below, and ${ins.flat} flat. The second ring shows the weighted basket${basket.asOf ? `, as of ${basket.asOf}` : ''}: it reads ${basketPct == null ? 'no value this week' : fmtPctPlain(basketPct)} against its baseline at ${basket.confidence || 'unstated'} confidence across ${basket.nContributing || total} contributing ingredients. Both are state-of-play reads versus each baseline window, never a move since last week.`;
-
-  const spreadRing = `          <div class="viz-ring" data-band="${ins.up > ins.down ? 'bad' : 'good'}" style="--score:${upScore};">
-            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-spread" focusable="false">
-              <title id="ring-spread">${ins.up} of ${total} ingredients reading above baseline</title>
-              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">${ins.up}/${total}</text>
-            </svg>
-            <p class="viz-ring__label"><strong>Above baseline</strong>${ins.down} below &middot; ${ins.flat} flat</p>
-          </div>`;
-  const basketRing = `          <div class="viz-ring" data-band="${basketBand}" style="--score:${basketScore};--delay:120ms;">
-            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-basket" focusable="false">
-              <title id="ring-basket">Weighted basket reads ${basketPct == null ? 'no value' : fmtPctPlain(basketPct)} against baseline</title>
-              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">${basketPct == null ? '&mdash;' : fmtPct(basketPct)}</text>
-            </svg>
-            <p class="viz-ring__label"><strong>Weighted basket</strong>${basket.confidence || 'n/a'} confidence &middot; ${basket.nContributing || total} ingredients</p>
-          </div>`;
+  const alt = `Two readings of where the panel sits this week. First, the spread across all ${total} tracked ingredients: ${ins.up} read above their own baseline window (cost building), ${ins.down} below it (cost easing), and ${ins.flat} flat — shown as one stacked bar so every part is visible. Second, the weighted basket${basket.asOf ? `, as of ${basket.asOf}` : ''}: it reads ${basketPct == null ? 'no value this week' : fmtPctPlain(basketPct)} against its baseline at ${basket.confidence || 'unstated'} confidence across ${basket.nContributing || total} contributing ingredients, placed as a position left or right of the baseline line. Both are state-of-play reads versus each baseline window, never a move since last week.`;
+  const sub = `${basket.confidence || 'n/a'} confidence &middot; ${basket.nContributing || total} ingredients`;
 
   return `      <figure class="viz-figure article-figure" data-audio-alt="${escAttr(alt)}">
-        <div class="viz-rings">
-${spreadRing}
-${basketRing}
+        <div class="viz-pair">
+${spreadSplit(ins)}
+${basketGauge(ins, sub)}
         </div>
-        <figcaption>Where the panel sits, week of ${ins.asOf}: the spread of reads above baseline, and the weighted basket's own reading. Both are reads versus each baseline window, not a week-over-week move.</figcaption>
+        <figcaption>Where the panel sits, week of ${ins.asOf}: the spread of reads across the panel, and the weighted basket's position against its baseline. Both are reads versus each baseline window, not a week-over-week move.</figcaption>
       </figure>`;
 }
 
@@ -680,28 +724,25 @@ function buildContrib(ins) {
   const rows = (ins.contributors || []).slice(0, 6);
   if (rows.length < 2) return '';
   const max = Math.max(...rows.map((c) => Math.abs(c.points)), 0.0001);
-  const barRows = rows.map((c) => {
-    const tone = c.points >= 0 ? 'rust' : 'teal';
-    const w = widthOf(c.points, max).toFixed(3);
-    const wpct = Math.round(c.weight * 100);
-    return `          <div class="viz-bars__row">
-            <p class="viz-bars__label">${esc(c.name)} <span style="opacity:.6">(${wpct}% of basket)</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="${tone}" style="--w:${w}"></span></div>
-            <p class="viz-bars__num">${fmtPts(c.points)}</p>
-          </div>`;
-  }).join('\n');
+  const ordered = [...rows].sort((a, b) => b.points - a.points); // signed desc → pushers on top, easers below
+  const barRows = divergeRows(ordered.map((c) => ({
+    label: `${esc(c.name)} <small>${Math.round(c.weight * 100)}% of basket</small>`,
+    value: c.points,
+    num: fmtPts(c.points),
+  })), max);
 
-  const narr = rows.map((c) => `${c.name}, ${Math.round(c.weight * 100)} percent of the basket and reading ${fmtPctPlain(c.pct)} against baseline, contributes ${fmtPtsPlain(c.points)}`).join('; ');
+  const narr = ordered.map((c) => `${c.name}, ${Math.round(c.weight * 100)} percent of the basket and reading ${fmtPctPlain(c.pct)} against baseline, contributes ${fmtPtsPlain(c.points)}`).join('; ');
   const basketPlain = ins.basket && typeof ins.basket.pct === 'number' ? fmtPctPlain(ins.basket.pct) : 'no reading';
-  const alt = `What makes up the basket reading this week, ingredient by ingredient. The weighted basket reads ${basketPlain} against baseline, and that single number is the sum of each staple's weight times its own read. Rust bars push the basket up, teal bars pull it down; the bars are scaled so the largest contributor fills the track. ${narr}. The contributions sum, with offsets, to the headline basket figure — a couple of movers usually do most of the talking while the steady staples hold it down.`;
+  const alt = `What makes up the basket reading this week, ingredient by ingredient, on a zero-centred axis. The weighted basket reads ${basketPlain} against baseline, and each staple's contribution is its weight times its own read. Bars to the right of centre (rust) are staples pushing the basket up; bars to the left (teal) are pulling it down; distance from the centre is how hard. ${narr}. A couple of movers usually do most of the talking while the steady staples hold the middle.`;
 
   return `      <figure class="viz-figure article-figure" data-audio-alt="${escAttr(alt)}">
-        <div class="viz-bars">
-          <p class="viz-bars__title">What's moving the basket this week (each staple's weight × its own read; rust pushes the basket up, teal pulls it down)</p>
+        <div class="viz-diverge">
+          <p class="viz-diverge__title">What's moving the basket this week &mdash; each staple's contribution (weight &times; its own read)</p>
 ${barRows}
-          <p class="viz-bars__note">A "point" is one one-hundredth of the basket percentage. Each bar is <strong>weight × that ingredient's read</strong> &mdash; a heavy staple barely moving anchors the basket, a light one moving hard can still swing it.</p>
+${DIVERGE_AXIS}
+          <p class="viz-diverge__note">A "point" is one one-hundredth of the basket percentage. Distance from the centre is how hard a staple pushes; <strong>side is which way</strong>. A heavy staple barely moving sits near the centre; a light one moving hard reaches out.</p>
         </div>
-        <figcaption>The basket figure for the week of ${ins.asOf}, decomposed: each staple's contribution is its weight times its own read. Rust pushes up, teal pulls down.</figcaption>
+        <figcaption>The basket read for the week of ${ins.asOf}, decomposed: each staple's contribution is its weight times its own read. Right of centre pushes the basket up, left pulls it down.</figcaption>
       </figure>`;
 }
 
@@ -1830,61 +1871,38 @@ function buildPullsMonthly(ins, monthName) {
   const rows = (ins.contributors || []).slice(0, 6);
   if (rows.length < 2) return '';
   const max = Math.max(...rows.map((c) => Math.abs(c.points)), 0.0001);
-  const barRows = rows.map((c) => {
-    const tone = c.points >= 0 ? 'rust' : 'teal';
-    const w = widthOf(c.points, max).toFixed(3);
-    const wpct = Math.round(c.weight * 100);
-    return `          <div class="viz-bars__row">
-            <p class="viz-bars__label">${ingLink(c.key, c.name)} <span style="opacity:.6">(${wpct}% of basket)</span></p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="${tone}" style="--w:${w}"></span></div>
-            <p class="viz-bars__num">${fmtPts(c.points)}</p>
-          </div>`;
-  }).join('\n');
-  const narr = rows.map((c) => `${c.name}, ${Math.round(c.weight * 100)} percent of the basket and reading ${fmtPctPlain(c.pct)} against baseline, pulls ${fmtPtsPlain(c.points)}`).join('; ');
+  const ordered = [...rows].sort((a, b) => b.points - a.points); // signed desc → pushers on top, easers below
+  const barRows = divergeRows(ordered.map((c) => ({
+    label: `${ingLink(c.key, c.name)} <small>${Math.round(c.weight * 100)}% of basket</small>`,
+    value: c.points,
+    num: fmtPts(c.points),
+  })), max);
+  const narr = ordered.map((c) => `${c.name}, ${Math.round(c.weight * 100)} percent of the basket and reading ${fmtPctPlain(c.pct)} against baseline, pulls ${fmtPtsPlain(c.points)}`).join('; ');
   const basketPlain = ins.basket && typeof ins.basket.pct === 'number' ? fmtPctPlain(ins.basket.pct) : 'no reading';
-  const alt = `The biggest individual pulls on the basket for the ${monthName} edition, read as of ${ins.asOf}. The weighted basket reads ${basketPlain} against baseline; that headline is a weighted median, so these pulls do not sum to it — they are the loudest individual tugs, each one weight times that staple's own read. Rust bars pull the basket up, teal bars pull it down, scaled so the largest pull fills the track. ${narr}. Public wholesale levels, never a delivered price.`;
+  const alt = `The biggest individual pulls on the basket for the ${monthName} edition, read as of ${ins.asOf}, on a zero-centred axis. The weighted basket reads ${basketPlain} against baseline; that headline is a weighted median, so these pulls do not sum to it — they are the loudest individual tugs, each one weight times that staple's own read. Bars to the right of centre (rust) pull the basket up, bars to the left (teal) pull it down; distance from the centre is how hard. ${narr}. Public wholesale levels, never a delivered price.`;
   return `      <figure class="viz-figure" data-audio-alt="${escAttr(alt)}">
-        <div class="viz-bars">
-          <p class="viz-bars__title">The biggest individual pulls (each staple's weight × its own read; rust pulls the basket up, teal pulls it down) — read as of ${ins.asOf}</p>
+        <div class="viz-diverge">
+          <p class="viz-diverge__title">The biggest individual pulls &mdash; each staple's weight &times; its own read (as of ${ins.asOf})</p>
 ${barRows}
-          <p class="viz-bars__note">A &ldquo;point&rdquo; is one one-hundredth of the basket percentage. The headline basket number is a <strong>weighted median</strong>, so these pulls do not sum to it &mdash; they are the loudest individual tugs on the read, not an addition.</p>
+${DIVERGE_AXIS}
+          <p class="viz-diverge__note">A &ldquo;point&rdquo; is one one-hundredth of the basket percentage. The headline basket number is a <strong>weighted median</strong>, so these pulls do not sum to it &mdash; they are the loudest individual tugs on the read, not an addition.</p>
         </div>
-        <figcaption>The biggest individual pulls on the ${esc(monthName)} basket read (as of ${ins.asOf}). Rust pulls up, teal pulls down; the median headline is not their sum.</figcaption>
+        <figcaption>The biggest individual pulls on the ${esc(monthName)} basket read (as of ${ins.asOf}). Right of centre pulls up, left pulls down; the median headline is not their sum.</figcaption>
       </figure>`;
 }
 
 function buildRingsMonthly(ins, monthName) {
   const total = ins.count || (ins.up + ins.down + ins.flat);
-  const upScore = total > 0 ? Math.round((ins.up / total) * 100) : 0;
   const basket = ins.basket || {};
   const basketPct = typeof basket.pct === 'number' ? basket.pct : null;
-  const basketScore = basketPct == null ? 0 : Math.min(100, Math.round((Math.abs(basketPct) / 0.5) * 100));
-  const basketBand = basketPct == null ? 'warn' : basketPct > 0 ? 'bad' : 'good';
-  const alt = `Two readings of where the panel sits in the ${monthName} edition, read as of ${ins.asOf}. The first ring shows the spread: ${ins.up} of ${total} tracked ingredients read above their own baseline window, ${ins.down} below, and ${ins.flat} flat. The second ring shows the weighted basket${basket.asOf ? `, anchored ${basket.asOf}` : ''}: it reads ${basketPct == null ? 'no value this edition' : fmtPctPlain(basketPct)} against its baseline across ${basket.nContributing || total} contributing ingredients. Both are dated reads versus each baseline window, never a forecast and never a delivered price.`;
-  const spreadRing = `          <div class="viz-ring" data-band="${ins.up > ins.down ? 'bad' : 'good'}" style="--score:${upScore};">
-            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-spread" focusable="false">
-              <title id="ring-spread">${ins.up} of ${total} ingredients reading above baseline</title>
-              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">${ins.up}/${total}</text>
-            </svg>
-            <p class="viz-ring__label"><strong>Above baseline</strong>${ins.down} below &middot; ${ins.flat} flat</p>
-          </div>`;
-  const basketRing = `          <div class="viz-ring" data-band="${basketBand}" style="--score:${basketScore};--delay:120ms;">
-            <svg class="viz-ring__svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-labelledby="ring-basket" focusable="false">
-              <title id="ring-basket">Weighted basket reads ${basketPct == null ? 'no value' : fmtPctPlain(basketPct)} against baseline</title>
-              <circle class="viz-ring__track" cx="60" cy="60" r="52" fill="none" stroke-width="8"/>
-              <circle class="viz-ring__fill" cx="60" cy="60" r="52" fill="none" stroke-width="8" transform="rotate(-90 60 60)"/>
-              <text class="viz-ring__num" x="60" y="60" text-anchor="middle">${basketPct == null ? '&mdash;' : fmtPct(basketPct)}</text>
-            </svg>
-            <p class="viz-ring__label"><strong>Weighted basket</strong>${basket.nContributing || total} ingredients</p>
-          </div>`;
+  const alt = `Two readings of where the panel sits in the ${monthName} edition, read as of ${ins.asOf}. First, the spread across all ${total} tracked ingredients: ${ins.up} read above their own baseline window (cost building), ${ins.down} below it (cost easing), and ${ins.flat} flat — shown as one stacked bar so every part is visible. Second, the weighted basket${basket.asOf ? `, anchored ${basket.asOf}` : ''}: it reads ${basketPct == null ? 'no value this edition' : fmtPctPlain(basketPct)} against its baseline across ${basket.nContributing || total} contributing ingredients, placed as a position left or right of the baseline line. Both are dated reads versus each baseline window, never a forecast and never a delivered price.`;
+  const sub = `${basket.nContributing || total} ingredients`;
   return `      <figure class="viz-figure" data-audio-alt="${escAttr(alt)}">
-        <div class="viz-rings">
-${spreadRing}
-${basketRing}
+        <div class="viz-pair">
+${spreadSplit(ins)}
+${basketGauge(ins, sub)}
         </div>
-        <figcaption>Where the panel sits, ${esc(monthName)} edition (read as of ${ins.asOf}): the spread of reads above baseline, and the weighted basket's own reading.</figcaption>
+        <figcaption>Where the panel sits, ${esc(monthName)} edition (read as of ${ins.asOf}): the spread of reads across the panel, and the weighted basket's position against its baseline.</figcaption>
       </figure>`;
 }
 
