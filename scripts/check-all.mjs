@@ -427,6 +427,21 @@ const CHECKS = [
   // to turn a persistent stall into a red (alerting) scheduled run.
   ['Cost-index freshness (warn)','check-cost-index-freshness.mjs'],
   ['Cost-index freshness self-test','check-cost-index-freshness.mjs','--self-test'],
+  // Orphaned-page gate. The builder's carry-forward path drops an ingredient whose
+  // points all fail the vendor predicate — intended for the DATA, but nothing deletes
+  // the committed cost-index/<slug>/ page (EN+ES) or its sitemap entry, so the price
+  // freezes permanently on a live page while every other gate reads green. Slugs are
+  // final-forever, so the answer is always "notice, then decide" — never a quiet drop.
+  ['Cost-index orphans self-test','check-cost-index-orphans.mjs','--self-test'],
+  ['Cost-index orphans','check-cost-index-orphans.mjs'],
+  // Per-ingredient dead-feed roster. The sibling freshness gate above takes the
+  // file-wide MAX asOf, so one fresh read masks every stalled series; this one
+  // names them individually and counts down to the POINT_STALE_DAYS cliff, where
+  // the builder drops the ingredient and orphans its page. Warn-only by design
+  // (a dead feed must not block an unrelated PR); --strict fails on the
+  // unexpected roster once those are triaged.
+  ['Cost-index series freshness self-test','check-cost-index-series-freshness.mjs','--self-test'],
+  ['Cost-index series freshness (warn)','check-cost-index-series-freshness.mjs'],
   ['Cost-index health (idem)','build-cost-index-health.mjs','--check'],
   ['Cost-index provenance (idem)','build-cost-index-provenance.mjs','--check'],
   ['Cost-index health self-test','build-cost-index-health.mjs','--self-test'],

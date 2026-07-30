@@ -215,6 +215,14 @@ jobs:
         run: |
           node scripts/check-cost-index-sync.mjs
           node scripts/check-cost-index-calibration.mjs
+          # A refresh that drops an ingredient (its points all aged out) would
+          # orphan that ingredient's published EN+ES page — frozen price, still
+          # in the sitemap, never regenerated again. Catch it BEFORE the commit,
+          # not later in check-all on somebody's unrelated PR.
+          # Roster of feeds that stopped updating, with a countdown to the cliff
+          # where the builder drops them. Warn-only: a dead upstream must not
+          # block a refresh that is otherwise carrying good data forward.
+          node scripts/check-cost-index-series-freshness.mjs
           # A fresh fetch must never publish a trend % that contradicts its own
           # sparkline (the unwindowed-index-source bug). Fail the run before commit.
           node scripts/reconcile-cost-index-trends.mjs --check
@@ -264,6 +272,7 @@ jobs:
           node scripts/check-trend-skill.mjs
 
       - name: Commit the measured read
+        id: commit
         if: steps.keys.outputs.configured == 'true'
         run: |
           git config user.name "muntin-cost-index-bot"
@@ -316,6 +325,27 @@ jobs:
             echo "::error::The Cost Index data is more than a month ahead of the last published dispatch — time to hand-write the monthly edition (see docs/plans/monthly-dispatch-site-edition.md)."
             exit 1
           fi
+      - name: Orphaned-page alarm
+        # POST-COMMIT ON PURPOSE. If this run dropped an ingredient whose points
+        # all aged out, that ingredient's published EN+ES pages are now orphaned
+        # and somebody has to decide (re-source, or retire deliberately). But the
+        # condition is CREATED by the refresh and cannot be healed by it, so
+        # blocking the commit would discard a correct, freshly measured read for
+        # ~99 healthy ingredients in order to protect one stale page — and every
+        # subsequent Mon/Wed/Fri run would fail at the same line until a human
+        # acted. The data is right; only the page inventory is stale. So: land
+        # the good read, then go red and email the founder, exactly like the
+        # heartbeat alarm below. check-all.mjs keeps this gate HARD, where a
+        # human is present to act on it.
+        # Tied to the commit step's OUTCOME: when gates fail the commit is
+        # skipped and the working tree can disagree with published state —
+        # running the orphan check there would false-alarm about a file that
+        # was thrown away. `always()` is kept alongside it so that a failure in
+        # a step BETWEEN the commit and here (the dispatch-freshness check)
+        # cannot silence a real orphan report.
+        if: always() && steps.commit.outcome == 'success'
+        run: node scripts/check-cost-index-orphans.mjs
+
       - name: Heartbeat freshness check
         if: steps.keys.outputs.configured == 'true'
         # Keys are set, so the index IS expected to be current. On the Mon/Wed/Fri
