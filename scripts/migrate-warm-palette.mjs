@@ -41,11 +41,14 @@ const TOKENS = {
   "--cream-2": ["#F3EEE3", "#EDEEF1"],
   "--ink": ["#14161A", "#16181D"],
   "--ink-soft": ["#2A2D33", "#4A4F59"],
-  // 2026-07-30: darkened from #6B7280. At #6B7280 the token measured 4.17:1 on
-  // --cream-2 (#EDEEF1) — under the 4.5:1 WCAG AA floor — on table headers and
-  // hint text across the Operator Sheets. #5F6674 measures 4.97:1 there (5.38
-  // on --cream, 5.77 on white), so it keeps margin if a background is retuned.
-  "--stone": ["#6B6B6B", "#5F6674"],
+  // 2026-07-30: darkened from #6B7280, which measured 4.17:1 on --cream-2
+  // (#EDEEF1) — under the 4.5:1 WCAG AA floor — on table headers and hint text
+  // across the Operator Sheets. The replacement is not a new grey: --stone is
+  // used purely as caption/label ink, so it now resolves to the spine's semantic
+  // core.text.tertiary (#5f6670), which the product had already bumped off
+  // #6b7280 for the same reason (packages/ui/tokens.css --mun-text-tertiary).
+  // Measures 5.00:1 on --cream-2, 5.41:1 on --cream, 5.80:1 on white.
+  "--stone": ["#6B6B6B", "#5f6670"],
   "--stone-2": ["#9A958B", "#9AA0AB"],
   "--teal": ["#1F4E5B", "#2A50C8"],
   "--teal-dark": ["#143640", "#1F3A93"],

@@ -1525,6 +1525,21 @@ function seasonalFaqItem(slug, lc, es) {
 }
 
 // ---- Page head (skeleton chrome; sync-includes expands the nav) -----
+//
+// The <style> block below is emitted verbatim into all 280 cost-index pages,
+// so keep rationale here as JS rather than as CSS comments that would ship
+// 280 times over.
+//
+// 2026-07-30 (a11y): two contrast fixes in that block.
+//   • --stone was #6B7280. On --cream-2 (#EDEEF1) that is 4.17:1 — under AA
+//     for the small text it carries (.ci-yield__src, .ci-events__foot,
+//     .evh-stat__l, .sea-row__mo, the SVG label fills). Now #5f6670 (4.97:1),
+//     matching the canonical token in assets/site-core.css. These pages inline
+//     their own :root, so the earlier stylesheet-only fix never reached them.
+//   • .ci-card--pending used opacity:.72, which blended its link text down to
+//     3.7:1 across 26 nodes. The "not ready yet" state now rides on three cues
+//     that cost no contrast: the grey card fill (ready cards are white), a
+//     dashed border, and the "coverage in progress" note itself.
 function pageHead(opts) {
   const { lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss } = opts;
   const canon = locale === 'es' ? canonEs : canonEn;
@@ -1564,7 +1579,7 @@ function pageHead(opts) {
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 <style>
-:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--teal-wash:rgba(42,80,200,.06);--stone:#6B7280;--gold:#B7791F;--season:#6b4fa1;--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--teal-wash:rgba(42,80,200,.06);--stone:#5f6670;--gold:#B7791F;--season:#6b4fa1;--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
@@ -1731,7 +1746,7 @@ main{padding-top:64px}
 .ci-index{margin:10px 0 4px}
 .ci-index__cap{margin:0 0 4px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
 .ci-index .mtn-spark{max-width:100%;height:auto}figure.ci-index>svg.mtn-spark{width:100%}
-.ci-card--pending{opacity:.72;background:var(--cream-2)}
+.ci-card--pending{background:var(--cream-2);border-style:dashed}
 .ci-card--pending a{color:var(--ink-soft)}
 .ci-pending-note{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
 .ci-readings{margin:20px 0 8px}

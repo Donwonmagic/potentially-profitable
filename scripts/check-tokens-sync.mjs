@@ -97,7 +97,7 @@ function selfTest() {
 // constant in BOTH guards, CI fails — keeping the two-repo single source of
 // truth honest.
 const EXPECTED_SPINE_HASH =
-  "3681742a5d58d95835dee6f1a67fd4c550f6ba929548d1b872ff0b079dcb6e11";
+  "39957e7e4bb55cfa6ea0c13220245636fea767e981fce3cde5aebd66c683ae78";
 
 // ADR-001: the studio "Golden Hour" accent (marigold #FFB020 / coral #FF6B5C) is an
 // editorial-ONLY layer. It lives in this repo's editorial CSS (--light-marigold /
