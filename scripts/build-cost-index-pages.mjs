@@ -883,20 +883,14 @@ function sparkBlock(r, locale) {
     : `Recent range ${money(lo)}–${money(hi)}, right now ${money(now)} — ${pos}.`;
   // Percentile-of-history as a COUNT (never a smoothed "85th percentile"):
   // the figure operators repeat. Last ≤12 prior reads, honesty-gated like
-  // the rest of the block. Ties are explicit: "every" requires a strict
-  // inequality against all priors — equal prints are not "lower than."
+  // the rest of the block.
   const recent = vals.slice(Math.max(0, vals.length - 13), vals.length - 1);
   const above = recent.filter((v) => now > v).length;
-  const below = recent.filter((v) => now < v).length;
   const rank = recent.length >= 8
-    ? (below === recent.length
+    ? (above === 0
         ? (es ? `Más bajo que cada una de sus últimas ${recent.length} lecturas.` : `Lower than every one of its last ${recent.length} reads.`)
         : above === recent.length
         ? (es ? `Más alto que cada una de sus últimas ${recent.length} lecturas.` : `Higher than every one of its last ${recent.length} reads.`)
-        : above === 0 && below === 0
-        ? (es ? `Empatado con cada una de sus últimas ${recent.length} lecturas.` : `Tied with every one of its last ${recent.length} reads.`)
-        : above === 0
-        ? (es ? `Más bajo que ${below} de sus últimas ${recent.length} lecturas.` : `Lower than ${below} of its last ${recent.length} reads.`)
         : (es ? `Más alto que ${above} de sus últimas ${recent.length} lecturas.` : `Higher than ${above} of its last ${recent.length} reads.`))
     : '';
   const alt = (es ? 'Precio ' : 'Price ') + shape + '. ' + capsule + (rank ? ' ' + rank : '');
@@ -1251,52 +1245,19 @@ function marketReadBlock(slug, locale) {
 // reconstructed share one valueCents scale (the backfill's own contract). Live
 // points win on any shared date; the backfill is cut at the first live date so a
 // monthly series never interleaves with the daily live window.
-// cost-index.json keeps only a rolling live window (~26 prints). When that window
-// advances, older live days drop out of the JSON — but they must not disappear from
-// the public download or be replaced by monthly reconstructed backfill. Seed from
-// any previously published reconstructed:false observations on disk, then overlay
-// the current live window (which wins on shared dates).
-function loadPublishedLive(slug, basis) {
-  const p = path.join(repoRoot, `cost-index/${slug}/series.json`);
-  if (!fs.existsSync(p)) return [];
-  try {
-    const j = JSON.parse(fs.readFileSync(p, 'utf8'));
-    const obs = Array.isArray(j.observations) ? j.observations : [];
-    const b = j.basis || basis || 'wholesale';
-    return obs
-      .filter((o) => o && o.date && o.reconstructed === false && typeof o.priceUsd === 'number' && isFinite(o.priceUsd) && o.priceUsd > 0)
-      .map((o) => ({
-        date: o.date,
-        valueCents: Math.round(o.priceUsd * 100),
-        source: o.source || null,
-        basis: b,
-        reconstructed: false
-      }));
-  } catch {
-    return [];
-  }
-}
 function mergedSeries(slug, entry) {
   const point = entry && entry.points && entry.points[0];
   const basis = (point && point.level && point.level.basis) || 'wholesale';
   const live = (entry && Array.isArray(entry.history)) ? entry.history : [];
-  const publishedLive = loadPublishedLive(slug, basis);
   const deep = Array.isArray(DEEP_HIST[slug]) ? DEEP_HIST[slug] : [];
   const okPt = (p) => p && p.date && typeof p.valueCents === 'number' && isFinite(p.valueCents) && p.valueCents > 0;
-  const firstLive = [...live.filter(okPt), ...publishedLive.filter(okPt)]
-    .map((p) => p.date).sort()[0] || null;
+  const firstLive = live.filter(okPt).map((p) => p.date).sort()[0] || null;
   const byDate = new Map();
   for (const p of deep) {
     if (!okPt(p)) continue;
     if (firstLive && p.date >= firstLive) continue;   // live takes over from here
     byDate.set(p.date, { date: p.date, valueCents: p.valueCents, source: null, basis, reconstructed: true });
   }
-  // Previously published live prints survive rolling-window dropout.
-  for (const p of publishedLive) {
-    if (!okPt(p)) continue;
-    byDate.set(p.date, { date: p.date, valueCents: p.valueCents, source: p.source || null, basis: p.basis || basis, reconstructed: false });
-  }
-  // Current live window wins on any shared date.
   for (const p of live) {
     if (!okPt(p)) continue;
     byDate.set(p.date, { date: p.date, valueCents: p.valueCents, source: p.source || null, basis: p.basis || basis, reconstructed: false });
