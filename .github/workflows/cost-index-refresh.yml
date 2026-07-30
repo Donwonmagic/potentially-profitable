@@ -292,7 +292,8 @@ jobs:
             data/cost-confidence-calibration.json \
             data/cost-confidence-shadow.json data/email-preview/ \
             cost-index/ es/cost-index/ \
-            library/ingredient-yields/ es/library/ingredient-yields/ sitemap.xml
+            library/ingredient-yields/ es/library/ingredient-yields/ sitemap.xml \
+            about/index.html es/about/index.html
           git checkout -- . 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No data change today — nothing to commit."
