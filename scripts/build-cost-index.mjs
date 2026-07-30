@@ -77,9 +77,25 @@ function computeBasket(out) {
 
 const ok = (ingredient, point) => pointIssues(ingredient, point, srcIng, boundsMap).length === 0;
 
-function mergePoints(existing, incoming) {
+function mergePoints(ingredient, existing, incoming) {
   const byAsOf = new Map();
-  for (const p of existing || []) byAsOf.set(p.asOf, p);
+  // Re-filter PRIOR points through the same predicate the carry-forward path
+  // uses (:144). Without this, an ingredient that keeps receiving fresh reads
+  // silently accumulates points that have aged past POINT_STALE_DAYS inside
+  // points[], and check-cost-index-sync.mjs — the deploy gate — trips on them.
+  // That is exactly what happened on 2026-07-30: seven still-live series
+  // (ribeye, beef-tenderloin, pork-shoulder, pork-loin, eggs, cheddar-cheese,
+  // butter) tripped the gate on a 2026-04-01 tail the moment it crossed 120
+  // days. MAX_POINTS is a COUNT cap, not an age cap, so it does not evict them:
+  // ribeye holds 15 of 26 slots, ~11 reads short of pushing the stale one out.
+  //
+  // This cannot drop an ingredient. It only runs for ingredients that received
+  // an incoming point THIS run, and that point already passed pointIssues() to
+  // be vendored at all (:123), so at least one point always survives. Frozen
+  // series take the carry-forward branch instead, and stay visible to the
+  // staleness gate + check-cost-index-series-freshness.mjs — the dead-feed
+  // evidence is not touched here.
+  for (const p of existing || []) if (ok(ingredient, p)) byAsOf.set(p.asOf, p);
   for (const p of incoming || []) byAsOf.set(p.asOf, p);   // incoming wins on same asOf
   return [...byAsOf.values()]
     .sort((a, b) => (a.asOf < b.asOf ? 1 : a.asOf > b.asOf ? -1 : 0))  // newest first
@@ -124,7 +140,7 @@ function main() {
     const issues = pointIssues(ingredient, points[ingredient], srcIng, boundsMap);
     if (issues.length) { for (const i of issues) dropped[i] = (dropped[i] || 0) + 1; continue; }
     const prior = (existing.ingredients?.[ingredient]?.points) || [];
-    out.ingredients[ingredient] = { points: mergePoints(prior, [points[ingredient]]) };
+    out.ingredients[ingredient] = { points: mergePoints(ingredient, prior, [points[ingredient]]) };
     // Historical curve (sibling to points): gated for citeability + bounds but
     // NOT for staleness (old by design). A failing series is dropped, never
     // vendored — the current point still ships.

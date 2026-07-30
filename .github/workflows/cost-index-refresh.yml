@@ -219,7 +219,6 @@ jobs:
           # orphan that ingredient's published EN+ES page — frozen price, still
           # in the sitemap, never regenerated again. Catch it BEFORE the commit,
           # not later in check-all on somebody's unrelated PR.
-          node scripts/check-cost-index-orphans.mjs
           # Roster of feeds that stopped updating, with a countdown to the cliff
           # where the builder drops them. Warn-only: a dead upstream must not
           # block a refresh that is otherwise carrying good data forward.
@@ -325,6 +324,21 @@ jobs:
             echo "::error::The Cost Index data is more than a month ahead of the last published dispatch — time to hand-write the monthly edition (see docs/plans/monthly-dispatch-site-edition.md)."
             exit 1
           fi
+      - name: Orphaned-page alarm
+        # POST-COMMIT ON PURPOSE. If this run dropped an ingredient whose points
+        # all aged out, that ingredient's published EN+ES pages are now orphaned
+        # and somebody has to decide (re-source, or retire deliberately). But the
+        # condition is CREATED by the refresh and cannot be healed by it, so
+        # blocking the commit would discard a correct, freshly measured read for
+        # ~99 healthy ingredients in order to protect one stale page — and every
+        # subsequent Mon/Wed/Fri run would fail at the same line until a human
+        # acted. The data is right; only the page inventory is stale. So: land
+        # the good read, then go red and email the founder, exactly like the
+        # heartbeat alarm below. check-all.mjs keeps this gate HARD, where a
+        # human is present to act on it.
+        if: always() && steps.keys.outputs.configured == 'true'
+        run: node scripts/check-cost-index-orphans.mjs
+
       - name: Heartbeat freshness check
         if: steps.keys.outputs.configured == 'true'
         # Keys are set, so the index IS expected to be current. On the Mon/Wed/Fri

@@ -9,8 +9,14 @@
  * data (a dead feed must age out rather than freeze a stale level), but it is
  * silent, and nothing downstream cleans up after it:
  *
- *   - `gatedSlugs()` in build-cost-index-pages.mjs requires `points[0]`, so a
- *     dropped ingredient simply stops being regenerated;
+ *   - `gatedSlugs()` in build-cost-index-pages.mjs requires THREE things —
+ *     membership in the ING_META literal, `points[0]`, AND an entry in
+ *     data/cost-index-labels.json — so losing ANY of them stops the page being
+ *     regenerated. The label map is hand-curated and loaded inside a try/catch
+ *     that degrades silently to `{}`, so a lost label freezes a page just as
+ *     completely as lost data, while the data still looks healthy. This gate
+ *     checks all three; an earlier version modelled only `points[0]` and would
+ *     have reported those orphans as clean;
  *   - nothing deletes cost-index/<slug>/index.html or its /es/ mirror, and
  *     build-sitemap.mjs walks directories, so the page stays published and
  *     stays in sitemap.xml;
@@ -64,7 +70,7 @@ const NON_INGREDIENT = new Set([
  * @param {Set<string>} nonIngredient  editorial-surface allowlist
  * @returns {string[]} issue strings (empty when clean)
  */
-export function findOrphans(pages, ingredients, nonIngredient) {
+export function findOrphans(pages, ingredients, nonIngredient, labels = null, ingMeta = null) {
   const issues = [];
   for (const { rel, slug } of pages) {
     if (nonIngredient.has(slug)) continue;
@@ -73,6 +79,14 @@ export function findOrphans(pages, ingredients, nonIngredient) {
       issues.push(`${rel} is published but "${slug}" is absent from data/cost-index.json — the page will never be regenerated again and its price is frozen.`);
     } else if (!Array.isArray(entry.points) || !entry.points[0]) {
       issues.push(`${rel} is published but "${slug}" has no points[0] — gatedSlugs() skips it, so the page is frozen at its last build.`);
+    } else if (labels && !labels[slug]) {
+      // gatedSlugs() has THREE terms, not one. LABELS comes from the
+      // hand-curated data/cost-index-labels.json, loaded inside a try/catch that
+      // degrades silently to {} — so losing one label freezes that page just as
+      // completely as losing its data, with the data still looking healthy.
+      issues.push(`${rel} is published but "${slug}" has no entry in data/cost-index-labels.json — gatedSlugs() requires a label, so the page is frozen at its last build.`);
+    } else if (ingMeta && !ingMeta.has(slug)) {
+      issues.push(`${rel} is published but "${slug}" is not in ING_META (build-cost-index-pages.mjs) — gatedSlugs() iterates ING_META, so the page is frozen at its last build.`);
     }
   }
   // The allowlist must not be able to hide a real ingredient.
@@ -82,6 +96,35 @@ export function findOrphans(pages, ingredients, nonIngredient) {
     }
   }
   return issues;
+}
+
+/**
+ * The ING_META key set, read out of build-cost-index-pages.mjs. It is a source
+ * literal rather than a data file, so this parses the keys of the object —
+ * gatedSlugs() iterates it, and a slug removed from it freezes that page.
+ */
+export function parseIngMetaKeys(src) {
+  const at = src.indexOf('const ING_META = {');
+  if (at === -1) return null;
+  const open = src.indexOf('{', at);
+  let depth = 0;
+  let end = -1;
+  for (let i = open; i < src.length; i++) {
+    if (src[i] === '{') depth++;
+    else if (src[i] === '}') { depth--; if (depth === 0) { end = i; break; } }
+  }
+  if (end === -1) return null;
+  const body = src.slice(open + 1, end);
+  const keys = new Set();
+  // Top-level keys only: `'slug': { … }` or `slug: { … }` at depth 1.
+  let d = 0;
+  for (const m of body.matchAll(/(?:^|[,{])\s*'?([a-z0-9-]+)'?\s*:\s*\{|\{|\}/gm)) {
+    if (m[0] === '{') { d++; continue; }
+    if (m[0] === '}') { d--; continue; }
+    if (d === 0 && m[1]) keys.add(m[1]);
+    d++;
+  }
+  return keys.size ? keys : null;
 }
 
 /** Published ingredient-page dirs across the EN + ES trees. */
@@ -128,8 +171,33 @@ function selfTest() {
     const got = findOrphans(pages, ingredients, NI).length;
     if (got !== expected) { console.error(`  ✗ ${name}: expected ${expected} issue(s), got ${got}`); failed++; }
   }
+
+  // gatedSlugs() has three terms. Healthy data is not enough — a page also
+  // freezes if its LABEL or its ING_META key disappears, and an earlier version
+  // of this gate modelled only points[0] and reported those orphans as clean.
+  const live = [{ rel: 'cost-index/ribeye/index.html', slug: 'ribeye' }];
+  const data = { ribeye: { points: [{ asOf: '2026-07-28' }] } };
+  const withLabel = { ribeye: 'Ribeye' };
+  const withMeta = new Set(['ribeye']);
+  const three = [
+    ['all three terms present passes', findOrphans(live, data, NI, withLabel, withMeta).length, 0],
+    ['a lost label is an orphan', findOrphans(live, data, NI, {}, withMeta).length, 1],
+    ['a removed ING_META key is an orphan', findOrphans(live, data, NI, withLabel, new Set()).length, 1],
+  ];
+  for (const [name, got, expected] of three) {
+    if (got !== expected) { console.error(`  ✗ ${name}: expected ${expected} issue(s), got ${got}`); failed++; }
+  }
+
+  // The ING_META parser must find the real keys, not the nested ones.
+  const keys = parseIngMetaKeys("const ING_META = {\n  ribeye: { unit: 'lb', cut: { grade: 'choice' } },\n  'whole-crab': { unit: 'lb' },\n};\n");
+  if (!keys || keys.size !== 2 || !keys.has('ribeye') || !keys.has('whole-crab')) {
+    console.error(`  ✗ parseIngMetaKeys: expected {ribeye, whole-crab}, got ${keys ? [...keys].join(',') : 'null'}`); failed++;
+  }
+  if (parseIngMetaKeys('no ING_META here') !== null) {
+    console.error('  ✗ parseIngMetaKeys: a missing literal must return null so the gate fails loudly'); failed++;
+  }
   if (failed) { console.error(`✗ check-cost-index-orphans self-test: ${failed}/${cases.length} case(s) failed.`); process.exit(1); }
-  console.log(`check-cost-index-orphans self-test: ${cases.length}/${cases.length} passed.`);
+  console.log(`check-cost-index-orphans self-test: ${cases.length + three.length + 2}/${cases.length + three.length + 2} passed.`);
   process.exit(0);
 }
 
@@ -138,12 +206,27 @@ function main() {
 
   const pages = collectPages();
   const index = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index.json'), 'utf8'));
-  const issues = findOrphans(pages, index.ingredients || {}, NON_INGREDIENT);
+  const labels = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-labels.json'), 'utf8')).labels || {};
+  const ingMeta = parseIngMetaKeys(fs.readFileSync(path.join(repoRoot, 'scripts/build-cost-index-pages.mjs'), 'utf8'));
+  if (!ingMeta) {
+    console.error('✗ check-cost-index-orphans: could not parse ING_META out of build-cost-index-pages.mjs.');
+    console.error('  gatedSlugs() iterates it, so skipping that term would leave a real orphan path uncovered. Update parseIngMetaKeys().');
+    process.exit(1);
+  }
+  const issues = findOrphans(pages, index.ingredients || {}, NON_INGREDIENT, labels, ingMeta);
 
   if (issues.length) {
     console.error(`✗ Cost-index orphans: ${issues.length} published page(s) have no live data:`);
     for (const i of issues) console.error(`  - ${i}`);
-    console.error('  Slugs are final-forever: re-source the feed, or retire the page deliberately (301 + sitemap), never leave it frozen.');
+    console.error('  Slugs are final-forever, so deleting the directory is NOT the remedy — it would satisfy this gate silently,');
+  console.error('  which is the quiet drop the gate exists to prevent. Pick a real disposal and record it:');
+  console.error('    1. Re-source the feed (check-cost-index-series-freshness.mjs shows whether that is even open —');
+  console.error('       a KNOWN_SOURCE_LATENT slug has no free wholesale source, so for those this branch is closed).');
+  console.error('    2. Render a terminal last-good state on the page ("this feed stopped publishing; last measured <date>"),');
+  console.error('       history preserved, excluded from the basket — the codebase already speaks this at basket level.');
+  console.error('    3. Retire the slug deliberately: a dated entry + 301 target, cross-checked against the Worker redirect map.');
+  console.error('  NOTE (2026-07-30): options 2 and 3 have no runbook or precedent yet — no cost-index ingredient page has ever');
+  console.error('  been retired. The first slug to trip this gate needs that decision made, not a quick fix.');
     process.exit(1);
   }
   const checked = pages.filter((p) => !NON_INGREDIENT.has(p.slug)).length;
