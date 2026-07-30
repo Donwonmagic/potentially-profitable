@@ -123,6 +123,45 @@ function weeklyDedup(hist) {
     .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
 }
 
+/**
+ * Per-source-family fetch failures, so a whole family going dark is REPORTED
+ * rather than swallowed.
+ *
+ * Found 2026-07-30: 15 of 100 ingredients had been frozen for 60-91 days, and
+ * every single one of them touches NOAA — the NOAA family was 0-for-15 while
+ * AMS was 74-for-74. The three catches below were `{ /* skip; others
+ * contribute *\/ }`, so a total outage of one upstream looked exactly like a
+ * healthy run: the composer just carried last-good forward, the heartbeat gate
+ * reads the file-wide MAX asOf and said "fresh", and nothing anywhere said the
+ * word NOAA. NOAA is keyless, so no amount of secret configuration would have
+ * surfaced it either.
+ *
+ * "Others contribute" is a fine RUNTIME policy — one dead upstream must not
+ * fail a run that is otherwise composing real data. It is not a fine
+ * REPORTING policy.
+ */
+const sourceFailures = new Map();
+function noteSourceFailure(family, ingredient, err) {
+  if (!sourceFailures.has(family)) sourceFailures.set(family, { n: 0, ingredients: [], first: null });
+  const rec = sourceFailures.get(family);
+  rec.n++;
+  if (rec.ingredients.length < 8) rec.ingredients.push(ingredient);
+  if (!rec.first) rec.first = (err && err.message ? err.message : String(err)).slice(0, 200);
+}
+
+export function reportSourceFailures(log = console.warn) {
+  if (!sourceFailures.size) return 0;
+  log(`fetch-cost-index-sources: ${sourceFailures.size} source family/families FAILED to fetch this run:`);
+  for (const [family, rec] of sourceFailures) {
+    log(`  ${family}: ${rec.n} ingredient(s) — ${rec.ingredients.join(', ')}${rec.n > rec.ingredients.length ? ', …' : ''}`);
+    log(`    first error: ${rec.first}`);
+  }
+  log('  Those ingredients carry last-good forward, so the composed file looks healthy and the');
+  log('  file-wide freshness heartbeat still reads "fresh". Run scripts/check-cost-index-series-freshness.mjs');
+  log('  to see which individual series have actually stopped moving.');
+  return sourceFailures.size;
+}
+
 async function liveFetch(ingredient, m) {
   const out = { ams: [] };
   // Deep-backfill window: when COST_INDEX_SERIES_DAYS is set (the --history-out
@@ -178,15 +217,15 @@ async function liveFetch(ingredient, m) {
   if (m.noaa && typeof S.normalizeNoaaTrade === 'function') {
     // NOAA Fisheries import unit value (keyless). One trade dump, cached + reused
     // across species; normalizeNoaaTrade filters by commodity.
-    try { out.noaa = await F.fetchNoaaTrade({ years: DEEP_DAYS ? Math.max(m.noaa.years || 2, Math.ceil(DEEP_DAYS / 365)) : m.noaa.years }); } catch (e) { /* skip; others contribute */ }
+    try { out.noaa = await F.fetchNoaaTrade({ years: DEEP_DAYS ? Math.max(m.noaa.years || 2, Math.ceil(DEEP_DAYS / 365)) : m.noaa.years }); } catch (e) { noteSourceFailure('noaa', ingredient, e); }
   }
   if (m.census && typeof S.normalizeCensusTrade === 'function') {
     // US Census import unit value (keyless) → landed $/lb for any HS code.
-    try { out.census = await F.fetchCensusTrade({ hs: m.census.hs, years: DEEP_DAYS ? Math.max(m.census.years || 3, Math.ceil(DEEP_DAYS / 365)) : (m.census.years || 3) }); } catch (e) { /* skip; others contribute */ }
+    try { out.census = await F.fetchCensusTrade({ hs: m.census.hs, years: DEEP_DAYS ? Math.max(m.census.years || 3, Math.ceil(DEEP_DAYS / 365)) : (m.census.years || 3) }); } catch (e) { noteSourceFailure('census', ingredient, e); }
   }
   if (m.eia && process.env.EIA_KEY) {
     // EIA v2 (electricity etc.) — needs EIA_KEY; an energy-direction index signal.
-    try { out.eia = await F.fetchEia(m.eia); } catch (e) { /* skip; transient/missing */ }
+    try { out.eia = await F.fetchEia(m.eia); } catch (e) { noteSourceFailure('eia', ingredient, e); }
   }
   return out;
 }
@@ -494,7 +533,10 @@ async function main() {
   } else {
     const withHist = Object.values(artifact.points).filter((p) => Array.isArray(p.history) && p.history.length).length;
     log(`\n— ${composed} ingredient(s) composed (${withHist} with history), ${driversComposed} driver(s)${LIVE ? `, ${skipped} skipped (verified:false — confirm source ids first, pin #8)` : ''}.`);
-    if (!LIVE) log('  Run with --live + FRED_KEY/BLS_KEY/AMS_KEY once source ids are verified to fetch real data.');
+    // The workflows set six data keys, not three — an operator who reads this
+    // hint and stops at AMS_KEY silently loses the LMR/EIA/NASS-backed series.
+    // NOAA + Census are keyless (and so cannot be fixed by adding a secret).
+    if (!LIVE) log('  Run with --live + FRED_KEY/BLS_KEY/AMS_KEY/LMR_KEY/EIA_KEY/NASS_KEY once source ids are verified to fetch real data. (NOAA + Census are keyless.)');
   }
 
   // --history-out: final write of the deep backfill store (checkpoints already
@@ -509,6 +551,11 @@ async function main() {
     const r = writeHistoryStore();
     if (r) console.log(`Wrote deep history → ${historyOutFile}: ${r.keys} ingredient(s), ${r.pts} weekly point(s). Next: node scripts/build-seasonality.mjs && node scripts/check-all.mjs`);
   }
+
+  // Say which upstreams went dark. Never fails the run — a dead upstream must
+  // not discard a run that composed real data for everything else — but it can
+  // no longer be invisible.
+  reportSourceFailures();
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
