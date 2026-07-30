@@ -337,10 +337,13 @@ jobs:
         # the good read, then go red and email the founder, exactly like the
         # heartbeat alarm below. check-all.mjs keeps this gate HARD, where a
         # human is present to act on it.
-        # Tied to the commit step's outcome (not always()): when gates fail the
-        # commit is skipped and the working tree can disagree with published
-        # state — running the orphan check there would false-alarm.
-        if: steps.commit.outcome == 'success'
+        # Tied to the commit step's OUTCOME: when gates fail the commit is
+        # skipped and the working tree can disagree with published state —
+        # running the orphan check there would false-alarm about a file that
+        # was thrown away. `always()` is kept alongside it so that a failure in
+        # a step BETWEEN the commit and here (the dispatch-freshness check)
+        # cannot silence a real orphan report.
+        if: always() && steps.commit.outcome == 'success'
         run: node scripts/check-cost-index-orphans.mjs
 
       - name: Heartbeat freshness check

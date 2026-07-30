@@ -149,7 +149,13 @@ function noteSourceFailure(family, ingredient, err) {
   if (!rec.first) rec.first = (err && err.message ? err.message : String(err)).slice(0, 200);
 }
 
+let sourceFailuresReported = false;
 export function reportSourceFailures(log = console.warn) {
+  // Idempotent: the explicit calls before each process.exit(1) below and the
+  // process-level handler at the bottom of this file both reach here, and the
+  // operator must see this summary exactly once.
+  if (sourceFailuresReported) return sourceFailures.size;
+  sourceFailuresReported = true;
   if (!sourceFailures.size) return 0;
   log(`fetch-cost-index-sources: ${sourceFailures.size} source family/families FAILED to fetch this run:`);
   for (const [family, rec] of sourceFailures) {
@@ -561,5 +567,11 @@ async function main() {
   // no longer be invisible.
   reportSourceFailures();
 }
+
+// Belt and braces on top of the explicit flushes before each process.exit(1):
+// a process-level handler also covers the main().catch path below, where an
+// unhandled error would otherwise discard failures already recorded this run.
+// reportSourceFailures() is idempotent, so this never double-prints.
+process.on('exit', () => { reportSourceFailures(); });
 
 main().catch((e) => { console.error(e); process.exit(1); });
