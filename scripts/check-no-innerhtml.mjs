@@ -72,15 +72,14 @@ const ALLOWED_PATHS = new Set([
   'tools/_shared/states.js',
 ]);
 
-// Directory prefixes excluded from the scan. The Workshop Kit
-// widgets at tools/_shared/workshop/ are the Open the Doors course's
-// Method primitives — a self-contained component library where each
-// widget owns its own DOM and never interpolates user input. They
-// predate the safe-html.js migration policy and live outside the
-// legacy tool-suite surfaces this check was designed to gate.
-const ALLOWED_PREFIXES = [
-  'tools/_shared/workshop/',
-];
+// Directory prefixes excluded from the scan.
+//
+// 2026-07-30: emptied. The sole entry was tools/_shared/workshop/ — the Open
+// the Doors course's Workshop Kit primitives — which was deleted with the rest
+// of the course subsystem. Keeping a waiver for a path that no longer exists
+// would silently excuse anything later created at that path, so the entry goes
+// with the directory.
+const ALLOWED_PREFIXES = [];
 
 // Patterns that count as "innerHTML usage". innerHTML assignment is
 // the primary risk. `.outerHTML =` and `document.write` count too.
