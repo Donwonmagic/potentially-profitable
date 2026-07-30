@@ -213,6 +213,16 @@ const HISTORICAL_WAIVERS = [
 // Inner-text SHA1 hashes that are legitimately repeated across articles
 // (shared diagrams, side-by-side companions). Each entry: dated comment.
 const DEDUP_ALLOW = new Set([
+  // 2026-07-30 — the panel-position figure ("Where the panel sits, week of
+  // 2026-07-06") shared between blog/cost-index-2026-07 (the MONTHLY edition)
+  // and blog/cost-index-week-2026-07-06 (the WEEKLY). Structural, not a
+  // copy-paste: build-cost-index-dispatch.mjs emits both surfaces from the same
+  // asOf snapshot, and the monthly pivot (founder-signed 2026-07-06) landed on
+  // the same date as that week's dispatch, so both render the identical figure
+  // from one dataset. Regenerating either would change already-published
+  // dispatch content of record. Pre-dates this branch — origin/main fails the
+  // same rule with byte-identical files.
+  '7c2617dec836',
   // 2026-05-28 — review-velocity viz-bars shared between es/library/
   // (canonical, post-blog-library-split) and es/blog/ (legacy slug
   // that still ships the same article body in the ES tree). Both surfaces
