@@ -523,6 +523,9 @@ async function main() {
     // vendored index survives (the last-good rule). Demo always has fixtures.
     if (LIVE && composed === 0) {
       console.error(`Refusing to write ${outFile}: 0 points composed (all sources failed?). Last-good artifact left intact — investigate before vendoring.`);
+      // Flush before exit — this is exactly when every family may have failed
+      // and the aggregated log is most useful to the operator.
+      reportSourceFailures();
       process.exit(1);
     }
     const fs = await import('node:fs');
@@ -546,6 +549,7 @@ async function main() {
   if (historyOutFile) {
     if (LIVE && Object.keys(deepHistory).length === 0) {
       console.error(`Refusing to write ${historyOutFile}: nothing composed and no existing store. Last-good (if any) left intact.`);
+      reportSourceFailures();
       process.exit(1);
     }
     const r = writeHistoryStore();

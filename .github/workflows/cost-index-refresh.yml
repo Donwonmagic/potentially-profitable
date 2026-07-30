@@ -272,6 +272,7 @@ jobs:
           node scripts/check-trend-skill.mjs
 
       - name: Commit the measured read
+        id: commit
         if: steps.keys.outputs.configured == 'true'
         run: |
           git config user.name "muntin-cost-index-bot"
@@ -336,7 +337,10 @@ jobs:
         # the good read, then go red and email the founder, exactly like the
         # heartbeat alarm below. check-all.mjs keeps this gate HARD, where a
         # human is present to act on it.
-        if: always() && steps.keys.outputs.configured == 'true'
+        # Tied to the commit step's outcome (not always()): when gates fail the
+        # commit is skipped and the working tree can disagree with published
+        # state — running the orphan check there would false-alarm.
+        if: steps.commit.outcome == 'success'
         run: node scripts/check-cost-index-orphans.mjs
 
       - name: Heartbeat freshness check
