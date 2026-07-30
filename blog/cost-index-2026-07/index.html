@@ -579,29 +579,29 @@ header.nav{min-height:64px}
       <p>The weighted Restaurant Basket sits −5.0% <!-- src: dispatch.basket.pct (exact −4.96%, printed in the cite-this block) --> against its baseline, direction down <!-- src: dispatch.basket.dir -->, with 63.6% <!-- src: dispatch.basket.agreement --> directional agreement among contributors and 16 of 16 <!-- src: dispatch.basket.nContributing/.nDeclared --> declared ingredients reporting on full coverage <!-- src: dispatch.basket.coverage = 1 -->. The basket's data anchor is 2026-05-01 <!-- src: dispatch.basket.asOf -->.</p>
       <p>That anchor is why no month-over-month basket move prints here. The comparison machinery ran — the prior data print, dated <a href="/blog/cost-index-week-2026-06-18/">2026-06-18</a> <!-- src: dispatch.wow.prevAsOf --> — but the anchor hasn't refreshed since that print <!-- src: dispatch.wow.basket.state = "anchor-unchanged", .anchor = 2026-05-01 -->, so there is no new basket move to report, and I'd rather show a blank line than a manufactured delta. Per-ingredient month-over-month deltas are blank for a related reason: they compute only for gated items <!-- src: script line 313 -->, and nothing gated.</p>
 
-            <figure class="viz-figure article-figure" data-audio-alt="Two readings of where the panel sits this week. First, the spread across all 81 tracked ingredients: 36 read above their own baseline window (cost building), NaN below it (cost easing), and NaN flat — shown as one stacked bar so every part is visible. Second, the weighted basket reads &mdash; against its baseline (81 ingredients), placed as a position left or right of the baseline line. Both are state-of-play reads versus each baseline window, never a move since last week.">
+            <figure class="viz-figure article-figure" data-audio-alt="Two readings of where the panel sits this week. First, the spread across all 81 tracked ingredients: 24 read above their own baseline window (cost building), 36 below it (cost easing), and 21 flat — shown as one stacked bar so every part is visible. Second, the weighted basket reads minus 5.0% against its baseline (high confidence · 16 ingredients), placed as a position left or right of the baseline line. Both are state-of-play reads versus each baseline window, never a move since last week.">
         <div class="viz-pair">
           <div class="viz-split">
             <p class="viz-split__title">All 81 tracked ingredients, by where they read</p>
             <div class="viz-split__bar">
-              <span class="viz-split__seg" data-tone="teal" style="--w:NaN"></span>
-              <span class="viz-split__seg" data-tone="stone" style="--w:NaN"></span>
-              <span class="viz-split__seg" data-tone="rust" style="--w:0.4444"></span>
+              <span class="viz-split__seg" data-tone="teal" style="--w:0.4444"></span>
+              <span class="viz-split__seg" data-tone="stone" style="--w:0.2593"></span>
+              <span class="viz-split__seg" data-tone="rust" style="--w:0.2963"></span>
             </div>
             <div class="viz-split__legend">
-              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="teal"></span>Below &mdash; easing <strong>NaN</strong></span>
-              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="stone"></span>Flat <strong>NaN</strong></span>
-              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="rust"></span>Above &mdash; building <strong>36</strong></span>
+              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="teal"></span>Below &mdash; easing <strong>36</strong></span>
+              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="stone"></span>Flat <strong>21</strong></span>
+              <span class="viz-split__key"><span class="viz-split__swatch" data-tone="rust"></span>Above &mdash; building <strong>24</strong></span>
             </div>
           </div>
           <div class="viz-gauge">
-            <p class="viz-gauge__big" data-tone="stone">&mdash;</p>
-            <p class="viz-gauge__sub"><strong>at baseline</strong> &middot; 81 ingredients</p>
+            <p class="viz-gauge__big" data-tone="teal">−5.0%</p>
+            <p class="viz-gauge__sub"><strong>below baseline</strong> &middot; high confidence &middot; 16 ingredients</p>
             <div class="viz-gauge__track">
               <span class="viz-gauge__line"></span>
-              <span class="viz-gauge__fill" data-tone="stone" style="left:50.00%;width:0.00%"></span>
+              <span class="viz-gauge__fill" data-tone="teal" style="left:25.00%;width:25.00%"></span>
               <span class="viz-gauge__zero"></span>
-              <span class="viz-gauge__dot" data-tone="stone" style="left:50.00%"></span>
+              <span class="viz-gauge__dot" data-tone="teal" style="left:25.00%"></span>
             </div>
             <div class="viz-gauge__ends"><span>&minus;10%</span><span class="mid">baseline</span><span>+10%</span></div>
           </div>
