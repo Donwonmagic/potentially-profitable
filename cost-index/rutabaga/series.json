@@ -9,8 +9,8 @@
   "coverage": {
     "start": "2001-04-25",
     "end": "2026-07-28",
-    "points": 1328,
-    "reconstructed": 1302
+    "points": 1329,
+    "reconstructed": 1301
   },
   "asOf": "2026-07-28",
   "observations": [
@@ -7823,8 +7823,14 @@
     {
       "date": "2026-06-17",
       "priceUsd": 30,
-      "source": null,
-      "reconstructed": true
+      "source": "usda-ams-atlanta",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-06-18",
+      "priceUsd": 30,
+      "source": "usda-ams-atlanta",
+      "reconstructed": false
     },
     {
       "date": "2026-06-22",
