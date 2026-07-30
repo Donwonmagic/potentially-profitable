@@ -17,6 +17,70 @@ outage, the /try demo, the 06-27 audits, prior branch states) is frozen verbatim
 council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 #234–#239 product) are merged to main and closed.
 
+## ⮕ CURRENT STATE — EVAL-ENGINEERING PASS (updated 2026-07-30)
+
+**Branch (both repos):** `claude/project-audit-strategy-ddx5ot`. **Directive:** full two-repo audit,
+then implement the eval-engineering discipline from an X essay the founder sent (measure the path not
+just the answer; a verdict that does not change the next edge is a report; any failure you do not turn
+into a permanent test, you will meet again). Cadence: ground → build → adversarially audit → iterate.
+
+**The framing that earned it:** the audit found the essay's own 83.9%-quality-vs-32.3%-faithfulness gap
+already live here — storefront `check-all` 297/306 and the product gates near-uniformly green, while
+the ADR-009 market-prior fallback had been dead 42 days, 18 of 100 cost-index feeds were frozen, and
+the $19 founding rate had no billing path. ~160 gates, and all three walked through, because nearly
+every gate measures the PRESENCE OF A SHAPE rather than whether the system is grounded in what it claims.
+
+**SHIPPED (all pushed):**
+- `e3b7c07` (product) — re-vendored the Cost-Index snapshot (was 2026-06-13..06-18, 42d stale, past the
+  resolver's 30d cliff → the inventory market prior + Plate's vendor-vs-market read were both dormant).
+- `de17b2a` (product) — `check-cost-index-snapshot-freshness.mjs`. Threshold is PARSED from
+  `cost-index-valuation.ts` so gate and resolver cannot drift; warn tier at 20d; verified against the
+  real pre-fix snapshot (24/24 dead at 42–47d). Wired into ci.yml node-lints.
+- `a766324ec` + `14d71e238` (storefront) — `check-cost-index-orphans.mjs`. The builder's carry-forward
+  `if (!kept.length) continue` drops an ingredient silently; nothing deletes its EN+ES page or its
+  sitemap entry, so the price freezes on a live page while every gate reads green. Models all THREE
+  `gatedSlugs()` terms (ING_META ∧ points[0] ∧ label — the label map degrades to `{}` in a silent catch).
+- `999a4c122` (storefront) — `check-cost-index-series-freshness.mjs`, the per-ingredient dead-feed roster.
+  `check-cost-index-freshness` takes the file-wide MAX asOf, so one fresh read masked 18 frozen series.
+- `05eec9d` (product) — wired the 5 orphan gates (incl. `check-funnel-no-pii` + `check-view-rls`, a privacy
+  and a tenant-isolation gate with no CI teeth). `check-es-coverage`'s 13 failures were FALSE POSITIVES —
+  the pages delegate ES to shared templates and the gate never followed the import.
+- `29fb590` (product) — pricing registry + gate. `apps/web/lib/pricing-constants.ts` declares every posted
+  price with its basis and billability; the gate now prints **"NOT BILLABLE TODAY — founding
+  ($19/per_location)"** on every green run. The six copy strings regained the "per location" / "por local"
+  qualifier they had dropped away from ADR-013.
+- `e14ca9b` (product) — `regret_rate` was structurally 0-or-1 (3-token writer vs 4-token demote vs a
+  substring vendor filter), and the demote route's docstring falsely claimed the extract service consults
+  the event. Fixed the filter to match its own comment; corrected the docstring.
+
+**⚠ OPEN — NEEDS THE FOUNDER, do not paper over:**
+1. **18 frozen feeds; the deploy gate is red for a real reason.** 8 are UNEXPECTED (not the documented
+   seafood gap): squid 91d; shrimp, vegetable-oil, clams, shrimp-head-on, shrimp-pd, pork-belly 60d;
+   ground-beef 51d. **shrimp + vegetable-oil are basket contributors** — which is why `basket.asOf` reads
+   2026-06-01 while `_lastReviewed` is 2026-07-29. squid hits the 120d cliff ~2026-08-29. Decide per feed:
+   re-source, or move into `KNOWN_SOURCE_LATENT` with a dated comment. Then promote
+   `check-cost-index-series-freshness.mjs --strict`.
+2. **No retirement path exists for a cost-index ingredient page.** scallops drops on the next keyed refresh.
+   "Re-source" is closed for it (KNOWN_SOURCE_LATENT) and "retire deliberately" has no runbook, no
+   precedent, no verification — while deleting the directory would satisfy the orphan gate SILENTLY.
+   Needs either a terminal last-good render or a `cost-index-retired.json` registry + 301, decided once.
+3. **$19/location is unbillable.** No SKU, no fourth `priceIdForTier` branch, no `STRIPE_PRICE_*` field, no
+   `trial_period_days`, and checkout quantity is `seats` with Solo capped at 1. Paid GA 2026-11-13 with
+   "billing live on launch day" locked. The gate now counts this down in CI output every run.
+4. **Basket ordering bug (pre-existing).** `build-cost-index.mjs` computes the basket, THEN
+   `reconcile-cost-index-trends.mjs` rewrites `points[].trend.pct` and never recomputes it — so every
+   committed file carries a pre-reconcile basket over post-reconcile points (committed −0.53% vs −5.0%
+   recomputed). Fix belongs in workflow ORDERING. Not touched: it changes a published headline number.
+5. **Trust surfaces lapsed (product):** warrant canary last signed 2026-05-10 (81d); the Q2 transparency
+   doc still says "final report at 2026-07-01", 29 days past its own published date.
+
+**Method note that paid for itself twice:** the adversarial pass is not ceremony. Round 1 refuted a
+proposal to trim `points[]` (it would have deleted the only per-ingredient dead-feed evidence in CI and
+put 11 ingredients on a 30-day deletion fuse). Round 2 caught a self-inflicted outage I had just
+committed — the orphan gate wired PRE-COMMIT in the refresh workflow would have discarded a correct read
+for ~99 healthy ingredients to protect one stale page, on every run, forever. Both were reproduced
+independently before acting.
+
 ## ⮕ CURRENT STATE — UX/UI ELEVATION PROGRAM (updated 2026-07-18)
 
 **Branch:** `claude/strategic-council-board-docs-m3w6dy` (a distinct thread from the redesign
