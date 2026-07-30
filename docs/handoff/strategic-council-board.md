@@ -81,6 +81,400 @@ committed — the orphan gate wired PRE-COMMIT in the refresh workflow would hav
 for ~99 healthy ingredients to protect one stale page, on every run, forever. Both were reproduced
 independently before acting.
 
+## ⮕ CURRENT STATE — HONESTY-SPINE + VIZ THREAD (updated 2026-07-28)
+
+**Branch:** `claude/strategic-council-board-docs-g9yuen` (both repos). All work below is
+committed and pushed there; no PR is open.
+
+**MAIN MERGED IN 2026-07-28** (`a22f7d7a9`) — 219 commits including PR #523 (Vendor Benchmark
+redesign + the per-ingredient open-data chain). One conflict, `data/library-tags.json`, resolved by
+keeping **both** sides' entries (main's `menu-pricing-grounded-100-ingredients-2026` and this
+branch's `restaurant-prime-cost`). `assets/site.css` auto-merged clean despite both sides touching
+it. Post-merge derived-artifact drift healed by running the seven in-chain injectors.
+
+  - **`check-all` is 327 of 327** — the first fully green container run in this thread. See the
+    ⚠ CORRECTION in Runbooks: the ten `(idem)` reds were one upstream cause (a stale CSS cache-bust
+    hash), not ten problems, and three of them were never deploy-healed to begin with.
+  - **Rule 9 vs PR #523 — checked, nothing to fix.** The worry recorded here was that #523's new
+    per-ingredient sections land in `cost-index/`, a tree with no figure gate before this thread.
+    They ship **no figures at all**: of 142 `cost-index/*/index.html` pages, exactly **one**
+    (`cost-index/menu-pricing/`) carries a `viz-figure`/`article-figure`. `GENERATED_ROOTS` skips
+    figureless pages by design, so the gate is silent and correct. Worth knowing as a content
+    observation, not a defect: 141 of 142 ingredient pages are prose + tables with no data figure.
+  - **Both new gates survived the merge unchanged**, which is the useful signal — they were not
+    tuned to this branch's tree. `check-claim-usage` 144 edges resolving across main's 219 commits;
+    `check-blog-index-links` 62 links (was 59), including main's new post.
+
+**Directive shift this session.** Muntin Ledger moved to **2027** — the operator is starting a
+college course, with little time or money for a launch. That inverts the strategy: the Cost Index
+is not a funnel for a product, it IS the company for the next year, and it happens to be the rare
+asset that compounds while unattended (Mon/Wed/Fri cron, free public gov inputs, degrades to
+last-good). A year of coursework is close to the best thing that could happen to the archive.
+
+**Shipped**
+
+  - **Data-viz honesty sweep.** Signed data was being drawn on one-directional bars across the
+    Cost Index dispatch and 5 articles — direction carried by colour alone. Added `viz-diverge`
+    (zero-centred; side = direction, `data-dir` decoupled from `data-tone` so a "down is bad"
+    metric reads rust-on-the-left), `viz-split` (every part of a whole drawn, replacing rings that
+    drew one slice), `viz-gauge` (a signed value as a position, replacing `|pct|/50%` ring fill).
+    Generators rewritten so every future edition inherits it; 5 published editions restyled in
+    place from their own frozen numbers. **Rule 9** added to `check-article-graphics.mjs`: a
+    `viz-bars` figure whose labels mix + and − fails CI. It keys on the NUMERIC LABELS, never on
+    `data-tone` — 62 figures legitimately use rust/teal for pass/fail over all-positive values and
+    would have been false positives. `GENERATED_ROOTS` now scans `cost-index/` + `es/cost-index/`
+    for figure quality only (those pages carry no `id="post-body"`, so adding them to `SCAN_ROOTS`
+    would have been a silent no-op).
+  - **Launch date retired.** 8 pages named 2026-11-13, JSON-LD asserted `availabilityStarts`, and
+    a live countdown ticked toward it. Retired at the source of record
+    (`sourced-claims.json#ledger_founding_offer_2026`) and re-exported, so the rendered and
+    machine-readable claims cannot disagree. The founding offer is untouched and still true.
+  - **Fact-registry repair + gate.** 20 of 78 `used_in` edges pointed at nothing, and they are
+    copied verbatim into the PUBLIC `/claims.json` — false public statements inside the artifact
+    meant to prove the site does not invent. Repaired **on evidence** (which page renders the
+    claim's source URL), never on slug similarity, which proposed nonsense. Then found the inverse
+    rot: 79 real citations undocumented, almost all ES translations. New
+    `scripts/check-claim-usage.mjs` is bidirectional (ERROR on a dead edge, WARN both ways,
+    INFO on uncited claims). 78 → 144 edges, all resolving. check-all is now **260** checks.
+  - **Decay alarms that fire without the operator.** Both repos had alarms wired only to
+    push/PR — the alarms that exist for absence were switched off by absence.
+    `cost-index-snapshot-watch.yml` (product, weekly) and `freshness-heartbeat.yml` (storefront,
+    Saturdays) now run the time-decay gates on a clock, open a single rolling issue, and fail the
+    job so a scheduled-failure email is a second channel. The product's market-prior snapshot was
+    re-vendored (`07-04..07-14` → `07-18..07-24`) days before its oldest readings went dark.
+
+**Verified facts worth not re-deriving**
+
+  - `data/` is **publicly served and crawlable** (~32MB). The deploy tar excludes `docs/`,
+    `scripts/`, `_includes/`, `src/` — but NOT `data/`, and robots.txt is `Allow: /`. Nothing
+    sensitive is in it (no keys, no drafts; only fictional demo emails), but it is unlicensed and
+    uncredited. **`docs/` is the safe place for any internal artifact.**
+  - **CORS is absent everywhere** — 0 occurrences of `Access-Control-Allow-Origin` in `_headers`,
+    including on the CC0 `/cost-index/*.json` exports. Any browser-side or agent read fails.
+  - **98% of a published series is reconstructed.** `cost-index/ribeye/series.json`: 1,311 of
+    1,337 observations carry `reconstructed: true`; only **26** are measured by Muntin. The data
+    is re-derivable by anyone with a FRED/BLS key. What is NOT re-derivable — by anyone, including
+    Muntin retroactively — is the as-published record.
+  - **The as-published record is 2 editions deep.** `cost-index-editions.json` holds 4 entries;
+    06-05 and 06-16 are reconstructed seeds with **0 reads**. Only 06-18 (82 reads) and 07-06
+    (81 reads) can honestly anchor an "as of" answer.
+  - The fact gate is a **pattern blocklist**, not a semantic validator. The real protection is
+    determinism — that a relation is re-derivable from a committed file.
+  - Corpus composition: of 55 EN articles, **35 (64%) are web-design/SEO advice** for the retired
+    services line; 17 (31%) are cost intelligence. 21 genuine food-cost articles exist and exactly
+    **1** links to a live ingredient page.
+  - Naive ingredient-name matching is **unsafe**: it flagged 55/55 articles because "apple"
+    matches Apple. Any corpus↔index mapping must be curated or evidence-derived, never fuzzy.
+
+**MAIN MERGED 2026-07-29 — the course was RETIRED, not frozen, and the gates caught up by themselves**
+
+  PR #530 (a parallel session, founder call) **deleted** the whole Open the Doors subsystem —
+  `/course/`, `/method/`, the 30 course-companion sheets — with 301s to the funnel. That is the
+  stronger version of the freeze this thread had applied, and it **invalidates assumptions this
+  branch's gates encoded**. 41 merge conflicts, resolved by decision:
+
+  - **30 course sheets** — accepted main's deletion over this branch's `noindex` stamp.
+  - **`/learn/start-here/`** — kept THIS branch's five cost steps. #530 cut the course step from a
+    website-build tour, leaving "Audit your own site / Close the biggest leak", which is still the
+    retired line. Ours replaced the premise instead of trimming it.
+  - **Homepage, `/ledger/`, `/ledger/demo/` (EN+ES)** — kept the **GA-date retirement**. Main still
+    carried "November 13, 2026" and a live weeks-out countdown; the Ledger moved to 2027, so that
+    date is false and a countdown toward it self-destructs.
+  - `llms.txt` + feeds regenerated rather than hand-merged.
+
+  **The part worth remembering: two registries failed on their own obsolescence, correctly.**
+  `check-idem-coverage` reded on **13 stale MANUAL entries** the instant #530 deleted the course
+  builders they documented; `check-gate-coverage` reded on `check-course-mobile-css.mjs` for the
+  same reason. Neither was allowed to outlive what it described. Counts now: **83 idem builders**
+  (56 deploy / 6 workflow / 21 manual) and **125 check scripts** (121 wired / 4 documented-unwired).
+
+  - **Asymmetry closed the same day:** `check-positioning-drift`'s `ALLOW` had **no** staleness
+    check while its two sibling registries did. Added `staleAllow` — an entry no indexed
+    over-threshold page uses is flagged, because a slug-keyed exemption outliving its page
+    **silently pre-approves a future page that reuses the slug**. It found 2 dead entries on its
+    first run (`es/glossary/index.html`, the ES checklist), both verified before removal: the pages
+    still exist and are indexed but now score 2 against a threshold of 3, because the #530 merge
+    stripped the course cross-links that carried the vocabulary. Their EN counterparts still score
+    4 and 3 and keep their entries.
+
+**POSITIONING — ITERATION 3: the gate had the same blind spot it was written to punish**
+
+  `check-positioning-drift` scanned only `library/blog`, so it would **not** have caught
+  `/learn/start-here/` — the library's own entry point, the worst offender on the site. Exactly the
+  root-list failure recorded one entry below, committed by the gate meant to prevent it.
+
+  - **Site-wide sweep: 23 indexed pages over threshold, 12 of them outside the old roots.** The gate
+    now walks **every** content surface (1095 indexed pages, up from 62) with an **explicit
+    `SKIP_TOP`** — each skip justified as "not reader-facing prose", never left implicit. `ALLOW`
+    matching is now path-aware (full path → directory → bare slug) so hubs and nested pages can be
+    named precisely while the original slug entries keep working.
+  - **All four KEPT pillar hubs were promoting frozen articles** — 13 cards across EN+ES
+    (`operations-margin` 4+4, `ai-search` 2+2, `information-security` 1). Same defect the library
+    index had, on a surface nobody had swept. Pruned. A 14th link survived because it lived in an
+    **injected** pillar essay: the source is `data/topic-essays.json`, so the HTML fix would have
+    been overwritten — de-linked at source and re-injected. **0 frozen links remain on any live
+    topic hub.**
+  - **Judgement calls recorded rather than silently applied** (21 allowlisted, each with a reason):
+    hubs (`blog/index`, `glossary/index`) legitimately list frozen entries — that *is*
+    freeze-don't-delete; a glossary may **define** adjacent words it does not sell (`hosting`); and
+    `client-side` / `fetch-request` / `url-fragment` are the in-browser vocabulary behind the tools'
+    "nothing leaves your browser" promise — product privacy story, not retired line.
+  - **⚠ ONE OPEN DECISION, deliberately not taken.** `/learn/checklists/restaurant-website-checklist/`
+    ("30 Things Your Site Should Do") is retired-line by subject but is **promoted from 11 live
+    pages** — `about`, `for/restaurants`, the learn hub, `start-here`. Retiring it is a navigation
+    change, not a one-token freeze, so it is allowlisted **as an open decision** and will keep
+    showing up in the gate's allow list until someone settles it.
+  - Verified by negative test on a page outside the OLD roots (the checklist), which the previous
+    gate could not have seen. Also observed: `inject-knit-rail` is already freeze-aware — it
+    swapped a frozen article out of a related-reading rail on its own.
+
+**POSITIONING: cost intelligence, not a web-design blog (operator call, 2026-07-28)**
+
+  Open item #4 is **decided and executed**. The operator's words: *"we are a cost intelligence
+  company, not web design blog."*
+
+  - **Structured data was the worst offender.** `about/index.html` carried two Person `knowsAbout`
+    lists, and the second read *"Restaurant website design, Small business SEO, Google Business
+    Profile, Restaurant operations, Website conversion optimization"* — four of five terms from the
+    retired line, and **not one word about cost, price, or invoices** in either list. That is the
+    entity signal Google and AI crawlers consume. Replaced with terms backed by live surfaces
+    (cost intelligence, wholesale food price data, food cost, prime cost, invoice/vendor price
+    tracking) plus the operations/FOH/certification entries that were already true. ES mirrored.
+  - **`llms.txt`** now opens "Muntin Digital is a restaurant cost-intelligence company" (it used to
+    end by advertising "a website course"), and the 27-lesson course moved from **second position
+    to last**, its promotional paragraph replaced by one honest line: frozen legacy resource, still
+    works, no longer developed. Nothing was delisted — all entries survived.
+  - **20 articles frozen** (18 tagged `local-seo`/`conversions`/`trust-reviews`/`brand-design`/
+    `speed-mobile`, plus the 2 `ai-search` pieces that are really web-design: *"which restaurant
+    website platform"* and *"Can ChatGPT write your restaurant website?"*). **The 7 genuine
+    AI-discovery pieces were deliberately KEPT** — being cited by AI is how the Cost Index gets
+    found, so those are the method, not the filler. Corpus is now 27 cost/margin + 7 AI-discovery
+    + 2 security, against 20 frozen.
+  - **⚠ ITERATION 2 (same day): the tag-based freeze was INCOMPLETE, and the tag was the reason.**
+    A prose audit of what remained indexed found **five heavily web-design articles still live** —
+    `best-restaurant-website-platform` (74 retired-line phrases), `how-to-hire-a-restaurant-web-designer`
+    (33), `custom-restaurant-website-pricing` (20), `when-to-rebuild-your-restaurant-website` (11),
+    `does-my-restaurant-need-a-website` (4). **All five are tagged `operations-margin` first**, with
+    `brand-design` demoted to second, so a sweep keyed on `topics[0]` could never see them. The tag
+    said cost; the prose said web design. Frozen (10 pages EN+ES), which cascaded **23 more glossary
+    terms** into orphanhood — frozen by the same evidence rule (46 pages).
+    **This also means the earlier "27 cost/margin" count was inflated.** True live figures now:
+    **34 live EN articles** — 22 `operations-margin`, 7 `ai-search`, 2 `information-security`,
+    3 not in `blog_posts` — against **25 frozen**. Glossary: **94 live / 77 frozen** per locale.
+    **203 pages frozen in total.**
+  - **`check-positioning-drift.mjs` closes the loop** (wired, and on the `BASELINE_DENYLIST` —
+    positioning is an identity claim, not build freshness). Any INDEXED library/blog article whose
+    prose carries ≥3 retired-line phrases must be frozen or listed in `ALLOW` with a dated reason.
+    It deliberately does **not** auto-classify: raw counts do not separate cleanly (a kept POS
+    comparison scores 9; a frozen web-design piece scored 4), so the judgement stays human and the
+    gate only guarantees it gets made. Four articles are allowlisted as genuine spend/safety
+    decisions that merely name builders — `toast-vs-square-vs-clover`, `restaurant-app-decision`,
+    `commission-free-online-ordering`, `how-to-tell-if-a-restaurant-tool-is-safe` — plus their ES
+    mirrors. Negative-tested: unfreezing the 74-hit article makes it fail at 89.
+  - **HONEST NEGATIVE — the autolink fix for the 11 orphaned cost terms does NOT work; do not
+    retry it.** `data/glossary-autolink-aliases.json` looked like the answer (its own doc says
+    "Wave-3 seed for the 81 orphan terms", and 81 is exactly the orphan count). It is not.
+    **41 of its 81 entries are terms now frozen** — half that effort went into web-design
+    vocabulary — and **none of the 11 cost terms are in it.** More decisively, a prose probe shows
+    the vocabulary simply is not in the article corpus: `prediction band` 0, `price confidence` 0,
+    `ratio bridge` 0, `data literacy` 0, `CME` 0, `assessed benchmark` 0 across all live articles.
+    These terms are unlinked because **the concepts live on the `cost-index/` pages and in the
+    dispatches, not in the library** — an editorial gap, not a mechanical one. An alias would link
+    nothing. Closing it means writing cost prose that uses the vocabulary, not editing a registry.
+    (Method note: the first probe returned 0 for *everything*, including the word "measured".
+    That was a shell-escaping bug in a `node -e` one-liner mangling `\b`, not a finding — the real
+    count is 18. Probes that scan prose belong in a script file, not a shell one-liner.)
+  - **54 glossary terms frozen too (108 pages, EN+ES), chosen by link graph rather than by topic.**
+    The method matters, because the earlier lesson stands: a corpus↔index mapping must be
+    evidence-derived, never fuzzy. For each of the 171 terms, count inbound links from pages that
+    are still indexed. Result: **90 terms are load-bearing** for live content and were left alone;
+    **81 are orphaned**, and those split into two groups that deserve opposite treatment.
+      - **54 linked ONLY by the now-frozen articles → frozen.** The list is unanimous web-design
+        vocabulary (`analogous-colors`, `oklab`, `wcag-contrast`, `favicon`, `lighthouse`,
+        `hreflang`, `robots-txt`, `ttfb`, `viewport-meta`, `pagespeed-insights`, …) with **zero**
+        cost terms in it. They became orphaned *as a consequence* of the article freeze, which is
+        why the link graph found them and a topic guess would not have.
+      - **27 linked by nothing at all → deliberately NOT frozen.** That group is mixed, and
+        freezing it as a block would have deindexed the Cost Index's own honesty vocabulary:
+        `measured-derived-absent`, `prediction-band`, `price-confidence`, `assessed-benchmark`,
+        `cme`, `ratio-bridge`, `cost-data`, `data-literacy`, `restaurant-numbers`, `freshness`,
+        `fda`. Freezing those would have been actively wrong.
+  - **⚠ CORRECTED 2026-07-28 — the "11 orphaned cost terms" claim was PARTLY A SCAN ARTIFACT.**
+    The link-graph scan roots were `library, blog, tools, sheets, cost-index` and **omitted
+    `learn/`**. `learn/topics/cost-data/` — the Cost data & sources pillar hub — already links
+    `cme`, `assessed-benchmark`, `ratio-bridge`, `fda` and `freshness`. So the real orphan set was
+    never 11. After the start-here rewrite added `measured-derived-absent`, `price-confidence` and
+    `prediction-band`, **8 of the 11 are cited from live pages; 3 genuinely remain**:
+    `cost-data`, `data-literacy`, `restaurant-numbers`.
+  - **⚠ AND THE SAME BLIND SPOT CAUSED A REAL MIS-FREEZE, now fixed.** Because `learn/` was outside
+    the scan, four glossary terms looked orphaned when a **live, deliberately-kept** page still
+    linked them — `learn/topics/operations-margin/` links `catering-page`, `subtype-bar-pub`,
+    `subtype-cafe`, `subtype-casual-dining`. Three of those are restaurant taxonomy, not web-design
+    vocabulary at all. **Unfrozen (8 pages).** Frozen glossary terms: **77 → 73**, and re-verified
+    with `learn/` included: **0 frozen terms are linked from any live page.**
+    **Method lesson worth keeping: a link-graph audit is only as good as its root list. State the
+    roots explicitly and justify each omission, or the graph will invent orphans and you will
+    retire pages that something still points at.**
+  - **Mechanism + how to reverse.** 39 pages (20 EN + 19 ES; one is EN-only) had their existing
+    robots meta changed from `content="max-image-preview:large, …"` to
+    `content="noindex, follow, max-image-preview:large, …"`. **To unfreeze, delete the
+    `noindex, follow, ` token and rebuild** — that is the entire operation. `follow` is deliberate:
+    links still pass equity to the cost-intelligence pages they point at. No slug changed, no 301
+    was added, every URL still returns 200, inbound links are intact.
+  - **Rebuild after any freeze change:** `build-sitemap` + `build-llms-txt` (both in the deploy
+    chain and gated) and `build-llms-full` (**NOT in the chain, NOT gated — must be committed by
+    hand or the frozen articles stay in the public corpus dump**). `inject-hub-collection-schema`
+    then heals the hub ItemList. Do **not** run `inject-feed-discovery` for this: it is not in the
+    chain, and running it standalone adds feed blocks to ~679 unrelated pages.
+  - **What the freeze does NOT remove, honestly:** an article that cites a research note still
+    appears as a **back-reference in the research-notes citation graph** in `llms-full.txt`
+    ("this study is cited by …"). Its body is gone from the corpus dump and its entry is gone from
+    every index. Suppressing the back-reference would make the citation record false about who
+    cites what, so it stays. Human-facing `/blog/` and `/library/` still list the frozen articles —
+    that is the point of freeze-don't-delete: readable and reachable, just not advertised to
+    machines. The hub `ItemList` schema dropped them (19 → 15 on the blog hub), which is correct.
+
+**Post-main-merge cadence (2026-07-28) — the theme was "a gate nobody runs"**
+
+  Every item below is the same shape: something documented as protection that was not running,
+  or documentation that had drifted from what the code does. Both repos now fail CI on it.
+
+  - **5 of 128 storefront check scripts ran nowhere; 5 of 38 in the product.** CLAUDE.md claimed
+    `check-all.mjs` "runs every `check-*.mjs` script" — it did not. **`check-gate-coverage.mjs`
+    now runs FIRST in both repos** (storefront `check-all`, product privacy job): every check
+    script must be wired or in a documented `UNWIRED` registry with a date, status, and reason.
+    No third state. A stale entry (now wired, or deleted) also fails, so the list cannot rot into
+    a mute allowlist. Both verified by negative test with a throwaway script.
+  - **The product's five were the serious ones, and three had drifted while nobody looked.**
+      - `check-funnel-no-pii` (no personal data in analytics emits) and `check-view-rls` (a SQL
+        view must not become an RLS bypass) both **passed** — wired while wiring was free.
+        `check-view-rls` had **zero references anywhere in the repo**, not even a runbook.
+      - `check-es-coverage` and `check-pronunciations` each named a **`ci.yml -> locale-parity
+        job` that does not exist** — they documented coverage they never had. `check-pronunciations`
+        was even marked "BLOCKING as of P3 C7."
+      - Consequences that accumulated: **13 competitor pages** (`/vs/*`, `/switch/*`) emitted
+        `hreflang="es-MX"` while rendering English — `canonical.ts`'s own doc comment forbids
+        exactly this ("does NOT emit an es-MX hreflang it cannot honour"). Set to `hasES: false`,
+        which is what they are; the 18 routes that really render Spanish are untouched. And **6
+        unwrapped QBO acronyms** that Spanish VoiceOver mispronounces — 4 wrapped in `<Abbr>`, 2
+        were inside a `<meta description>` where JSX cannot go, so it spells out "QuickBooks
+        Online". All five now wired. Product commits `be330dd`, `fb4f8de`.
+  - **Storefront `_headers` license claims are now gated** (`check-headers-license.mjs`) — see the
+    closed CORS item above for why a blanket CC0 glob would have relicensed 13 CC-BY files.
+  - **`llms.txt` now honours `noindex`**, which both completes "freeze, don't delete" and drops 32
+    off-funnel entries — see the verified mechanism note above.
+  - **`CLAUDE.md` corrected in both repos:** storefront — the dispatch is monthly + hand-written
+    with no publish cron (it claimed weekly + a Tuesday cron), and `check-all` gates the deploy;
+    product — the check-script wiring rule.
+
+**Late-session additions (2026-07-28, overnight)**
+
+  - **A product feature had been silently dead for 22 days.**
+    `apps/api/src/data/cost-pressure-snapshot.json` sat at asOf 2026-06-15 while its resolver
+    (`supply-pressure-suggest.ts`) fails closed at 21 days — dormant since 2026-07-06, every
+    supply-pressure suggestion returning no band, nothing logged. Its sibling snapshot had a CI
+    gate; this one had none. Re-vendored (→ 2026-07-20, 22 slugs) and
+    `check-cost-pressure-snapshot-fresh.mjs` added, wired into ci.yml and into the weekly watch,
+    which now covers both snapshots. Product commit `3475807`.
+  - **~~The CORS gap does NOT self-resolve when PR #523 lands.~~ CLOSED 2026-07-28** — #523 merged,
+    `_headers` was free, and the block shipped (commit `decd4432e`). Detail worth keeping: the
+    obvious implementation was wrong. Mirroring the `/data/*.jsonl` pattern with one blanket
+    `/cost-index/*.json` CC0 rule would have **relicensed 13 CC-BY files in transit** — that
+    directory holds 9 files self-declaring CC0, 13 declaring CC BY 4.0, and 7 declaring nothing.
+    What shipped separates the two kinds of statement: **CORS broad** (it only lifts a browser read
+    restriction on files already public to any `curl` — no new exposure) and the **license `Link`
+    narrow** (`week-*.{json,csv}` only, where the JSON self-declares CC0 in-band, the Dataset
+    JSON-LD repeats it, and the dispatch's cite line prints "(CC0)").
+    `scripts/check-headers-license.mjs` now holds that line: every `_headers` rule sending a
+    `Link rel="license"` must match what each matched file declares — in-band for JSON, via
+    `cost-index/open-data-catalog.json` for NDJSON (which has no metadata slot, and which
+    `check-open-data-catalog.mjs` already gates for exactly this reason), or by a named waiver with
+    a written reason. Verified by **negative test**: widening the rule back to `/cost-index/*.json`
+    produces 20 violations naming the CC-BY files, then reverts clean.
+  - **Correction to an earlier note in this thread:** the product's `.typecheck-baseline.json`
+    carries **0** accepted errors (apps/api 0, apps/web 0, apps/email-worker 0, all stamped
+    2026-07-03), not 2. An earlier statement in this session counted object keys, not errors.
+  - **Product decay audit — honest negative results.** `check-subprocessor-freshness.mjs` looked
+    absence-blind but is not: its 30-day rule asserts `(now − since) >= 30`, which gets *easier*
+    with time, and drift requires an IaC change, which requires a push. Correctly activity-gated.
+    `check-competitor-claims.mjs` already has a monthly cron. After the pressure fix, no known
+    absence-blind alarm remains in either repo.
+
+**Third workflow landed + two agent overclaims caught (2026-07-28, overnight)**
+
+  `docs/strategy/2026-07-28-legitimately-useful.md`. Both corrections below were found by checking
+  the repo, and both are recorded in that file's own header so it can never be read straight.
+
+  - **FALSE — "the human page does not abstain."** The doc's headline finding claims 13 of the 19
+    ingredients withheld from the CC0 feed still render a reading on their HTML page. The counts
+    are right (100 tracked → 81 published → 19 withheld, 13 with pages); the conclusion is wrong.
+    **All 13 explicitly abstain and explain why** — `/cost-index/shrimp/` renders "Coverage in
+    progress… we're not publishing a number. The index shows a price only when public data supports
+    an honest one." None renders a price. 13 of 13, zero exceptions. **The abstention discipline is
+    intact on both surfaces. Nothing to fix.** Acting on this would have meant "repairing" the
+    site's single most distinctive property while it was working correctly.
+  - **OVERSTATED — "llms.txt says: restaurant web-design blog."** The llms.txt *description* leads
+    correctly: "Muntin Digital builds the Cost Index — weekly wholesale reference prices… from
+    public U.S. data (USDA, BLS, FRED)." The positioning is right. What is diluted is the *link
+    list*: of 56 library/blog entries, ~26 are web-design/SEO flavoured against ~20 cost/margin.
+    So the modest, true version of the strategy stands — freezing retired-line articles would
+    concentrate the inventory — but the domain is not mis-describing itself.
+  - **~~Useful mechanism the doc surfaced (unverified)~~ — VERIFIED 2026-07-28, and it was
+    three-quarters true.** The claim was that `build-sitemap.mjs`, `build-llms-txt.mjs`,
+    `build-llms-full.mjs` and `inject-feed-discovery.mjs` all honour `<meta name="robots" noindex>`.
+    Three do. **`build-llms-txt.mjs` did not** — so a noindex stamp dropped a page from the sitemap
+    and the full corpus dump while leaving it listed in `llms.txt`, the AI-facing index that
+    retirement was meant to concentrate. Fixed in commit `8e258fae4`; `readMeta` now returns null
+    for a noindex page, reusing the null guards all four call sites already had.
+    **"Freeze, don't delete" is now genuinely one stamp, fully reversible, no 301s, no slug changes
+    — the low-risk path for open item #4 is real.**
+    The fix was not a no-op, and the delta is worth knowing: `llms.txt` lost **32 entries
+    (310 → 278**, same in `es/llms.txt`) — `/tools/start/` and 31 of 48 sheets, every one carrying an
+    explicit `noindex, nofollow`. The site had been handing AI crawlers an index of pages that tell
+    crawlers to stay away. The 31/48 split is **deliberate curation**, which is why honouring it is
+    right and not merely consistent: the 17 indexed sheets are the operations/cost-margin pack
+    (allergen matrix, line check, inventory count, invoice receiving, monthly P&L, daily sales
+    recap); the 31 noindexed are the frozen course sheets plus the brand/design pack CLAUDE.md
+    already names an off-funnel prune candidate. That judgement was encoded in the HTML; `llms.txt`
+    was the one surface ignoring it. This is also the *modest, true* version of the doc's llms.txt
+    finding — the dilution was the link list, and 32 off-funnel links left it without touching a
+    single article.
+
+**Open — needs the operator, deliberately not decided**
+
+  1. **The `data/` posture.** Exclude it from the deploy tar, or license + document it and take
+     the attribution. Currently neither.
+  2. ~~**CORS on `/cost-index/*`.**~~ **DONE 2026-07-28** (commit `decd4432e`) — see the closed item
+     above. It turned out not to be a posture change at all: the site was already publishing
+     citation instructions for those files, so the missing header meant the instructions did not
+     work. What needed judgement was the license `Link`, not the CORS.
+  3. ~~**Cron the dispatch.**~~ **NOT AN OPEN QUESTION — already decided, 2026-07-09 founder call.**
+     Withdrawn 2026-07-28 after reading the source instead of the symptom. The header of
+     `.github/workflows/cost-index-dispatch.yml` records it verbatim: *"MANUAL-ONLY (founder call
+     2026-07-09): the monthly dispatch is HAND-WRITTEN and hand-published each month; no cron
+     generates or publishes posts… The freshness gate (check-cost-index-dispatch-fresh.mjs, 38d)
+     reds CI as the reminder if a month ever slips — **the machine reminds, humans write**."*
+     So `workflow_dispatch:`-only is the decision, and the ~2026-08-16 red is the **designed
+     reminder firing**, not a failure. The date was right; the framing was not. **Proposing a cron
+     here would have overridden an explicit human call** — the lesson is that an "obvious
+     automation gap" deserves a check for a recorded decision before it is called a gap.
+     Two stale facts fell out of this and are fixed in `CLAUDE.md`: the cadence is **monthly**, not
+     weekly, and there is **no Tuesday 14:00 UTC publish+email cron** — CLAUDE.md had asserted both,
+     which would have led a future session to "restore" a cron that was deliberately removed.
+     What IS automated is the **data** (`cost-index-refresh.yml`, daily 13:00 UTC). The publication
+     is not, on purpose.
+  4. **The 35 retired-line articles.** Keep, merge, or retire — undecidable here because there is
+     no analytics in the container. The decision needs a Plausible/GSC check on whether they bring
+     traffic that reaches the index.
+  5. **PR #523** (open, `dirty` vs main) adds per-ingredient Kitchen-profile / origin / recall
+     sections + an open-data chain. When it merges, this branch needs main merged in (both touch
+     `assets/site.css`), and the new ingredient-page sections must be checked against rule 9 —
+     they land in a tree that had no figure gate until this session.
+
+**In flight:** two strategy workflows (corpus↔index reconciliation; "legitimately useful / better
+than the best"). A third (knowledge-graph review) and a fourth (frontier north star) have landed —
+their findings are the verified facts above.
+
 ## ⮕ CURRENT STATE — UX/UI ELEVATION PROGRAM (updated 2026-07-18)
 
 **Branch:** `claude/strategic-council-board-docs-m3w6dy` (a distinct thread from the redesign
@@ -917,6 +1311,50 @@ neither); vanilla publish-threshold. Freight double-count RESOLVED (one live ser
   safe on origin.** Recover: `git fetch origin <branch> && git reset --hard origin/<branch>`
   (working tree is usually clean). **Rule: commit + push every increment BEFORE any slower audit
   — the push is the only durable artifact.**
+- **⚠ 2026-07-28 — the "(idem)" set is now GATED, and the real number is worse than three.**
+  `check-idem-coverage.mjs` (wired, runs right after gate-coverage) classifies every `(idem)`
+  builder in `check-all` into exactly one of: run by the deploy `build.command`, run by a named
+  workflow, or listed in its `MANUAL` registry with **who runs it and when it drifts**. No fourth
+  state. Result: **96 builders — 56 deploy-healed, 6 workflow-healed, 34 with no automated healer.**
+    - Most of the 34 are safe *by construction* and the registry says why: **13 serve `/course/`**,
+      which CLAUDE.md freezes — a builder whose inputs never change cannot drift — and **8 render
+      operator-fetched public data** (ADR-013: the fetch needs keys + network the container lacks,
+      so the builder is re-run beside the data it renders).
+    - **The live ones are the rest.** `inject-knit-rail` is the highest-churn: it drifted during the
+      freeze work itself, because freezing articles changed the related-reading rails.
+      `inject-topic-card-links`, `inject-topic-eyebrow`, `build-article-graphics`,
+      `build-claims-json` (already a documented manual step) and the theme/cuisine trio follow.
+    - **Run `inject-knit-rail.mjs` after ANY article add / freeze / retire.** That one line would
+      have saved a red deploy this session.
+- **⚠ CORRECTION 2026-07-28 — the "(idem)" set, verified against the actual deploy command.**
+  The entry below says the idem reds are "deploy-healed ... (sitemap, OG cards, CSS cache-bust,
+  site-counts, glossary/hub schema, RSS, H2 anchors, **theme/cuisine pages**)". That list is
+  **partly wrong**, and the wrong part is the dangerous part. Ground truth is the `build.command`
+  in `wrangler.jsonc:146` — one long `&&` chain ending `… && node scripts/check-all.mjs && mkdir -p
+  dist && tar … | tar -xf - -C dist`. Read it directly; do not infer it.
+    - **In the chain (genuinely deploy-healed):** `inject-css-cache-bust` (runs TWICE — once mid-chain
+      and again after the second `build-css-shells`/`inject-css-shells`), `wire-glossary-knit`,
+      `seed-glossary-og`, `inject-site-counts`, `inject-article-abstract-mentions`, `build-rss`,
+      `inject-italic-font-preloads`.
+    - **NOT in the chain:** `build-themes-review-board`, `build-theme-story-pages`,
+      `build-cuisine-landing-pages` — plus the already-documented `build-library`,
+      `build-cost-index-pages`, `build-claims-json`.
+    - **Why that matters:** `check-all.mjs` runs at the END of the chain, before the tar. A builder
+      that is NOT in the chain but IS in `check-all` cannot be healed by deploying — it **fails the
+      deploy**, and only a human running it and committing clears it. Treating those three as
+      "known noise" is how a red deploy gets ignored.
+    - **Why all ten looked identical anyway (2026-07-28):** they shared one upstream cause. The CSS
+      cache-bust hash was stale in the container, and the three theme/cuisine builders emit pages
+      carrying that stamp, so they reported drift downstream. Running `inject-css-cache-bust` alone
+      cleared all four of the long-standing reds and took `check-all` to **327/327** — the first
+      fully green container run in this thread. Diagnostic that separates real from phantom: run the
+      `--check` on `origin/main` too. Main showed 82 pages, this branch 1278; a shared condition
+      would show the same number on both, so the delta was this branch's own `assets/site.css` edit.
+    - **What the restamp did NOT fix:** nothing user-facing. An earlier commit message in this thread
+      claimed returning visitors were being served stale CSS and that the new viz families would
+      render unstyled. **That was wrong** — deploy re-stamps before tarring, so shipped pages always
+      carried fresh hashes. The value is that a container `check-all` is now trustworthy instead of
+      carrying ten phantom reds that train the next session to ignore reds.
 - **`check-all` deploy-regen baseline — the "(idem)" set.** A partial container run of
   `node scripts/check-all.mjs` reds on ~25 of ~258 checks; **all are deploy-healed idempotency
   builders** (sitemap, OG cards, CSS cache-bust, site-counts, glossary/hub schema, RSS, H2

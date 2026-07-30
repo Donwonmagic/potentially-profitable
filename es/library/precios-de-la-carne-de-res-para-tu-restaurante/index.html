@@ -65,7 +65,7 @@
       },
       "url": "https://muntin.digital/es/library/precios-de-la-carne-de-res-para-tu-restaurante/",
       "datePublished": "2026-07-05",
-      "dateModified": "2026-07-05",
+      "dateModified": "2026-07-24",
       "inLanguage": "es-ES",
       "wordCount": 1500,
       "author": {
@@ -297,9 +297,9 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
      (with a <noscript> fallback for the JS-disabled path). The
      onload assigns this.rel='stylesheet', which the browser then
      applies; before that the critical CSS above carries the page. -->
-<link rel="preload" as="style" href="/assets/site-core.css?v=f8b6c001b1bb" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="/assets/site-article.css?v=8787ec2df8b4" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=f8b6c001b1bb"><link rel="stylesheet" href="/assets/site-article.css?v=8787ec2df8b4"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=9287f3577b96" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="/assets/site-article.css?v=c6396a94e06f" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=9287f3577b96"><link rel="stylesheet" href="/assets/site-article.css?v=c6396a94e06f"></noscript>
 
 <style>
   /* ============ BLOG POST LAYOUT (shared with other posts; will extract to site.css in a later refactor) ============ */
@@ -740,29 +740,30 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
 
       <p>La historia estructural detrás de la escalada actual es real: un hato ganadero nacional que viene encogiéndose desde 2019 contra una demanda firme, lo que presiona al alza a toda la categoría de forma duradera. El Servicio de Investigación Económica del USDA proyecta la carne de res y ternera al menudeo de 2026 arriba cerca de 12% en el año &mdash; el mayor aumento de cualquier categoría de alimentos. Pero ese promedio esconde tanto como cuenta: dentro de él, el ribeye, la molida, el filete y el short rib responden cada uno a su propia demanda, su propio recorte, su propio momento.</p>
 
-      <figure class="viz-figure article-figure" data-audio-alt="Una gráfica de barras ordenada con un solo mensaje: en una sola semana, los cortes de res de tu línea pueden moverse en direcciones distintas y por montos distintos, así que un promedio de toda la res te dice muy poco sobre el corte que de verdad compras. Un corte se muestra subiendo con fuerza en rojo óxido, marcado como un movimiento real para actuar. Otro se muestra casi plano. Un tercero se muestra cediendo ligeramente en teal, marcado como ruido que no deberías perseguir. Un cuarto se queda a media tabla. Los porcentajes exactos aquí son ilustrativos, dibujados para mostrar que los cortes divergen; las cifras actuales de tus propios cortes viven en el Índice de Costos en vivo, con fecha y fuente.">
-        <div class="viz-bars">
-          <p class="viz-bars__title">Una semana, cuatro cortes, cuatro direcciones (ilustrativo &mdash; consulta el &Iacute;ndice de Costos en vivo para cifras actuales)</p>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Un corte en alza real</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.90"></span></div>
-            <p class="viz-bars__num">+12%</p>
+            <figure class="viz-figure article-figure" data-audio-alt="Una gráfica de barras ordenada con un solo mensaje: en una sola semana, los cortes de res de tu línea pueden moverse en direcciones distintas y por montos distintos, así que un promedio de toda la res te dice muy poco sobre el corte que de verdad compras. Un corte se muestra subiendo con fuerza en rojo óxido, marcado como un movimiento real para actuar. Otro se muestra casi plano. Un tercero se muestra cediendo ligeramente en teal, marcado como ruido que no deberías perseguir. Un cuarto se queda a media tabla. Los porcentajes exactos aquí son ilustrativos, dibujados para mostrar que los cortes divergen; las cifras actuales de tus propios cortes viven en el Índice de Costos en vivo, con fecha y fuente.">
+        <div class="viz-diverge">
+          <p class="viz-diverge__title">Una semana, cuatro cortes, cuatro direcciones (ilustrativo &mdash; consulta el &Iacute;ndice de Costos en vivo para cifras actuales)</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Un corte en alza real</p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-dir="pos" data-tone="rust" style="--w:1.000"></span></div>
+            <p class="viz-diverge__num">+12%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Un corte casi plano</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.18"></span></div>
-            <p class="viz-bars__num">+2%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Un corte casi plano</p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-dir="pos" data-tone="rust" style="--w:0.167"></span></div>
+            <p class="viz-diverge__num">+2%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Un corte que cede en la semana</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="teal" style="--w:0.20"></span></div>
-            <p class="viz-bars__num">&minus;2%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Un corte que cede en la semana</p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-dir="neg" data-tone="teal" style="--w:0.167"></span></div>
+            <p class="viz-diverge__num">−2%</p>
           </div>
-          <div class="viz-bars__row">
-            <p class="viz-bars__label">Un corte subiendo a media tabla</p>
-            <div class="viz-bars__track"><span class="viz-bars__fill" data-tone="rust" style="--w:0.40"></span></div>
-            <p class="viz-bars__num">+5%</p>
+          <div class="viz-diverge__row">
+            <p class="viz-diverge__label">Un corte subiendo a media tabla</p>
+            <div class="viz-diverge__track"><span class="viz-diverge__zero"></span><span class="viz-diverge__fill" data-dir="pos" data-tone="rust" style="--w:0.417"></span></div>
+            <p class="viz-diverge__num">+5%</p>
           </div>
+          <div class="viz-diverge__axis"><span class="is-teal">&larr; cheaper</span><span>baseline</span><span class="is-rust">pricier &rarr;</span></div>
         </div>
         <figcaption>La misma semana puede mover cuatro cortes de res en cuatro direcciones &mdash; por eso re-precias cortes, no &ldquo;la res.&rdquo;</figcaption>
       </figure>

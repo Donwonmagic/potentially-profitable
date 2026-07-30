@@ -49,6 +49,8 @@ import {
   hashFigureInner,
   numTextToShare,
   findAutolinkInAttribute,
+  findSignedVizBars,
+  GENERATED_ROOTS,
 } from './check-article-graphics.mjs';
 
 test('SCAN_ROOTS covers EN + ES library + blog', () => {
@@ -307,4 +309,68 @@ test('two figures of the same viz kind still fail variety (unchanged)', () => {
     ...detectVizKinds(fig), ...detectNonVizKinds('', fig),
   ]);
   assert.equal(all.size, 1);
+});
+
+
+// --------------------------------------------------------------------
+//  Rule 9 — signed data must not ride a one-directional bar.
+//  These pin the detector's boundary: it keys on the NUMERIC LABELS and
+//  never on data-tone, because tone is legitimately used for pass/fail
+//  and good/bad categories over all-positive values.
+// --------------------------------------------------------------------
+
+const barsFig = (nums, tones) => ({
+  openAttrs: '',
+  inner: '<div class="viz-bars">' + nums.map((n, i) =>
+    `<div class="viz-bars__row"><p class="viz-bars__label">r${i}</p>` +
+    `<div class="viz-bars__track"><span class="viz-bars__fill" data-tone="${(tones || [])[i] || 'rust'}" style="--w:0.5"></span></div>` +
+    `<p class="viz-bars__num">${n}</p></div>`).join('') + '</div>',
+});
+
+test('rule 9 flags a viz-bars figure whose labels mix + and −', () => {
+  const hits = findSignedVizBars([barsFig(['+12%', '&minus;6%'])]);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].figIndex, 0);
+  assert.equal(hits[0].count, 2);
+});
+
+test('rule 9 ignores an all-positive ranking (magnitude comparison)', () => {
+  assert.equal(findSignedVizBars([barsFig(['+12%', '+7%', '+0.5%'])]).length, 0);
+  assert.equal(findSignedVizBars([barsFig(['$1,200', '$3,000'])]).length, 0);
+});
+
+test('rule 9 ignores an all-negative Pareto of losses (same sign)', () => {
+  // reservation-conversion-guide ships −15…−3 as a ranked loss list; that is a
+  // same-sign magnitude comparison and belongs on viz-bars.
+  assert.equal(findSignedVizBars([barsFig(['&minus;15', '&minus;9', '&minus;3'])]).length, 0);
+});
+
+test('rule 9 does not treat en-dash ranges as negative numbers', () => {
+  // "4–6 weeks" / "8–12 fields" must not read as a minus sign.
+  assert.equal(findSignedVizBars([barsFig(['2 weeks', '4&ndash;6 weeks', '+3 weeks'])]).length, 0);
+});
+
+test('rule 9 keys on numbers, NOT on data-tone (no false positive on category tones)', () => {
+  // Contrast ratios / menu quadrants use rust+teal for pass/fail over
+  // all-positive values. ~60 such figures ship today; none may be flagged.
+  const fig = barsFig(['12.6:1', '4.8:1', '3.1:1'], ['teal', 'teal', 'rust']);
+  assert.equal(findSignedVizBars([fig]).length, 0);
+});
+
+test('rule 9 does not fire on viz-diverge (the correct family for signed data)', () => {
+  const diverge = {
+    openAttrs: '',
+    inner: '<div class="viz-diverge"><div class="viz-diverge__row">' +
+      '<p class="viz-diverge__num">+3.5</p></div><div class="viz-diverge__row">' +
+      '<p class="viz-diverge__num">&minus;2.4</p></div></div>',
+  };
+  assert.equal(findSignedVizBars([diverge]).length, 0);
+});
+
+test('GENERATED_ROOTS covers the EN + ES Cost Index surfaces', () => {
+  assert.ok(GENERATED_ROOTS.includes('cost-index'));
+  assert.ok(GENERATED_ROOTS.includes('es/cost-index'));
+  // They must NOT be in SCAN_ROOTS: those pages carry no id="post-body",
+  // so scanning them there would silently skip every one.
+  assert.ok(!SCAN_ROOTS.includes('cost-index'));
 });
