@@ -394,6 +394,13 @@ const CHECKS = [
   // to turn a persistent stall into a red (alerting) scheduled run.
   ['Cost-index freshness (warn)','check-cost-index-freshness.mjs'],
   ['Cost-index freshness self-test','check-cost-index-freshness.mjs','--self-test'],
+  // Orphaned-page gate. The builder's carry-forward path drops an ingredient whose
+  // points all fail the vendor predicate — intended for the DATA, but nothing deletes
+  // the committed cost-index/<slug>/ page (EN+ES) or its sitemap entry, so the price
+  // freezes permanently on a live page while every other gate reads green. Slugs are
+  // final-forever, so the answer is always "notice, then decide" — never a quiet drop.
+  ['Cost-index orphans self-test','check-cost-index-orphans.mjs','--self-test'],
+  ['Cost-index orphans','check-cost-index-orphans.mjs'],
   ['Cost-index health (idem)','build-cost-index-health.mjs','--check'],
   ['Cost-index provenance (idem)','build-cost-index-provenance.mjs','--check'],
   ['Cost-index health self-test','build-cost-index-health.mjs','--self-test'],

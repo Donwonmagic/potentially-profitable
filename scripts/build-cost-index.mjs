@@ -103,6 +103,11 @@ function main() {
   const existing = existsSync(OUT) ? rd(OUT) : {};
   const out = { ...emptyCanonical(), ingredients: {} };
   const dropped = {};
+  // Ingredients that lost EVERY point this run. `dropped` counts issue CODES, so
+  // losing one point of fifteen and losing an ingredient outright looked identical
+  // in the log — which is how a whole ingredient could vanish unnoticed, orphaning
+  // its published EN+ES page. Name them (check-cost-index-orphans.mjs enforces).
+  const droppedIngredients = [];
   let vendored = 0;
 
   for (const ingredient of Object.keys(points)) {
@@ -137,7 +142,7 @@ function main() {
   for (const ingredient of Object.keys(existing.ingredients || {})) {
     if (out.ingredients[ingredient]) continue;
     const kept = ((existing.ingredients[ingredient].points) || []).filter((p) => ok(ingredient, p));
-    if (!kept.length) continue;
+    if (!kept.length) { droppedIngredients.push(ingredient); continue; }
     out.ingredients[ingredient] = { points: kept };
     const priorHist = existing.ingredients[ingredient].history;
     if (Array.isArray(priorHist) && priorHist.length && !historyIssues(ingredient, priorHist, srcIng, boundsMap).length) {
@@ -264,6 +269,11 @@ function main() {
   const histN = Object.values(out.ingredients).filter((x) => Array.isArray(x.history) && x.history.length).length;
   const bk = out.basket && out.basket.pct != null ? ` · basket ${(out.basket.pct * 100).toFixed(1)}% (${Math.round(out.basket.coverage * 100)}% covered)` : '';
   console.log(`build-cost-index: vendored ${vendored} ingredient(s), ${histN} with history, ${vendoredDrivers} driver(s)${dropMsg}${bk}.${DRY ? ' (dry-run)' : ''}`);
+  if (droppedIngredients.length) {
+    console.warn(`build-cost-index: ${droppedIngredients.length} ingredient(s) lost every point and were DROPPED from the index: ${droppedIngredients.join(', ')}.`);
+    console.warn('  Their published cost-index/<slug>/ pages (EN+ES) are now orphaned — frozen price, still in the sitemap, never regenerated.');
+    console.warn('  Re-source the feed or retire the page deliberately. check-cost-index-orphans.mjs fails until one of those happens.');
+  }
 }
 
 main();

@@ -215,6 +215,11 @@ jobs:
         run: |
           node scripts/check-cost-index-sync.mjs
           node scripts/check-cost-index-calibration.mjs
+          # A refresh that drops an ingredient (its points all aged out) would
+          # orphan that ingredient's published EN+ES page — frozen price, still
+          # in the sitemap, never regenerated again. Catch it BEFORE the commit,
+          # not later in check-all on somebody's unrelated PR.
+          node scripts/check-cost-index-orphans.mjs
           # A fresh fetch must never publish a trend % that contradicts its own
           # sparkline (the unwindowed-index-source bug). Fail the run before commit.
           node scripts/reconcile-cost-index-trends.mjs --check
