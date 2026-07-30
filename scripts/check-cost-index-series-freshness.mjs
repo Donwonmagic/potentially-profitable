@@ -65,6 +65,18 @@ export function ageDays(asOf, now) {
 }
 
 /**
+ * Whole days until check-cost-index-sync's POINT_STALE_DAYS cliff.
+ * Matches pointIssues(): stale iff (now - parseDay(asOf)) / 86400000 > cliffDays.
+ * Negative once past; 0 means the point is still valid but crosses on the next tick.
+ */
+export function daysUntilCliff(asOf, now, cliffDays) {
+  const ageExact = (now - Date.parse(asOf + 'T00:00:00Z')) / 86400000;
+  return ageExact > cliffDays
+    ? Math.floor(cliffDays - ageExact)
+    : Math.ceil(cliffDays - ageExact);
+}
+
+/**
  * Build the frozen-series roster.
  *
  * @param {Record<string, {points?: Array<{asOf?: string}>}>} ingredients
@@ -85,7 +97,7 @@ export function roster(ingredients, opts) {
       slug,
       asOf: point.asOf,
       age,
-      cliffInDays: cliffDays - age,
+      cliffInDays: daysUntilCliff(point.asOf, now, cliffDays),
       inBasket: basket.has(slug),
     };
     if (knownLatent.has(slug)) known.push(row);
@@ -96,7 +108,7 @@ export function roster(ingredients, opts) {
 }
 
 function line(r, cliffDays) {
-  const cliff = r.cliffInDays <= 0
+  const cliff = r.cliffInDays < 0
     ? `PAST the ${cliffDays}d cliff`
     : `cliff in ${r.cliffInDays}d`;
   return `  ${r.slug.padEnd(24)} last read ${r.asOf}  ${String(r.age).padStart(3)}d  (${cliff})${r.inBasket ? '  [BASKET CONTRIBUTOR — dates the published headline]' : ''}`;
@@ -145,7 +157,17 @@ function selfTest() {
   // Past the cliff is reported, not hidden.
   r = roster({ squid: { points: [{ asOf: '2026-02-01' }] } }, opts());
   eq('past-cliff still listed', r.unexpected.length, 1);
-  eq('past-cliff has a non-positive countdown', r.unexpected[0].cliffInDays <= 0, true);
+  eq('past-cliff has a negative countdown', r.unexpected[0].cliffInDays < 0, true);
+
+  // Sync's pointIssues uses fractional age > cliffDays (no Math.round). At exactly
+  // 120.0d the point is still valid; Math.round + (<= 0) would have said PAST.
+  r = roster({ boundary: { points: [{ asOf: '2026-04-01' }] } }, opts());
+  eq('exact-cliff countdown is 0', r.unexpected[0].cliffInDays, 0);
+  eq('exact-cliff is not past', r.unexpected[0].cliffInDays < 0, false);
+  // ~119.7d rounds to 120 for display age, but must still count down (sync keeps it).
+  r = roster({ boundary: { points: [{ asOf: '2026-04-01' }] } }, opts({ now: Date.parse('2026-07-29T16:48:00Z') }));
+  eq('pre-cliff rounded boundary is not past', r.unexpected[0].cliffInDays < 0, false);
+  eq('pre-cliff rounded boundary still counts down', r.unexpected[0].cliffInDays > 0, true);
 
   // An ingredient with no points is not a frozen feed (it is coverage in progress).
   eq('no points is not frozen', roster({ x: { points: [] } }, opts()).unexpected.length, 0);
@@ -162,7 +184,7 @@ function selfTest() {
     for (const f of fails) console.error(`  - ${f}`);
     process.exit(1);
   }
-  console.log('check-cost-index-series-freshness self-test: 16/16 assertions passed.');
+  console.log('check-cost-index-series-freshness self-test: 20/20 assertions passed.');
   process.exit(0);
 }
 
