@@ -27,6 +27,19 @@ const repoRoot   = path.resolve(path.dirname(__filename), '..');
 // Each entry: [label, script, ...args]. Order is stable so output
 // reads top-to-bottom in the same way each run.
 const CHECKS = [
+  // Runs first: it answers "is the rest of this list complete?". Every
+  // check-*.mjs on disk must be in this list or in its documented UNWIRED
+  // registry — a gate nobody invokes is the appearance of protection, not
+  // protection. Found 5 such scripts on 2026-07-28, two of them failing.
+  ['Gate coverage self-test','check-gate-coverage.mjs','--self-test'],
+  ['Gate coverage',       'check-gate-coverage.mjs'],
+  // The other half of the same question. Gate coverage asks "is every check
+  // script run?"; this asks "is every (idem) builder this file --checks
+  // actually re-run by something?". check-all runs at the END of the deploy
+  // command, so a builder verified here but run nowhere turns drift into a red
+  // deploy no automation can clear. 34 of 96 have no automated healer.
+  ['Idem coverage self-test','check-idem-coverage.mjs','--self-test'],
+  ['Idem coverage',      'check-idem-coverage.mjs'],
   ['Name coherence',      'check-name-coherence.mjs',      '--check'],
   ['Counts coherence',    'check-counts-coherence.mjs',    '--check'],
   // Phase-fact-check — blocklist for the patterns that came back as
@@ -36,6 +49,26 @@ const CHECKS = [
   // the registry with a real source URL, be cited inline via a
   // <details class="cite"> drawer, or be labeled illustrative.
   ['Fabrication blocklist','check-fabrications.mjs',       '--check'],
+  // Claim-usage gate — the fact registry's own bookkeeping. Every `used_in`
+  // entry in data/sourced-claims.json must resolve to a real page. These are
+  // copied verbatim into the PUBLIC /claims.json, so a broken edge is a false
+  // public statement about where a claim is cited. Added 2026-07-28 after 20 of
+  // 78 edges were found pointing at articles that do not exist (slugs renamed
+  // in the blog/library split, plus articles planned and never written). This
+  // is the gap check-article-graphics.mjs names under "Not enforced here".
+  ['Claim usage',          'check-claim-usage.mjs'],
+  // Blog-index link resolvability — build-blog-index.mjs emits /blog/<slug>/ for
+  // every blog_posts entry regardless of `namespace`, so a library-namespace
+  // entry needs a matching 301 in src/lib/blog-library-redirects.js or the index
+  // ships a link to nothing. That gap has been found by hand three times now
+  // (twice on 2026-07-18, once on 2026-07-28); this makes it mechanical.
+  ['Blog index links',     'check-blog-index-links.mjs'],
+  // Positioning: an INDEXED article whose prose is about building or buying a
+  // website must be frozen or allowlisted. A pillar-tag sweep cannot catch this
+  // — the five articles that prompted this gate were all tagged
+  // operations-margin while reading as web design (one scored 89 phrases).
+  ['Positioning drift self-test','check-positioning-drift.mjs','--self-test'],
+  ['Positioning drift',    'check-positioning-drift.mjs'],
   // Per-language audio fact gate — the HTML gate above deliberately skips the
   // narration JSON, but the renderer speaks chunks[].text verbatim in six
   // languages. This applies the shared fabrication registry per spoken
@@ -725,6 +758,12 @@ const CHECKS = [
   ['ERS food dollar honesty','check-ers-food-dollar.mjs'],
   ['Open-data catalog (idem)','build-open-data-catalog.mjs', '--check'],
   ['Open-data catalog gate','check-open-data-catalog.mjs'],
+  // The license side of _headers. check-open-data-catalog above guards the
+  // data/*.jsonl wildcard specifically; this one guards EVERY rule that sends a
+  // Link rel="license", so a glob widened over cost-index/ (9 CC0 files, 13
+  // CC-BY, 7 undeclared) cannot relicense the CC-BY set in transit.
+  ['Header license self-test','check-headers-license.mjs','--self-test'],
+  ['Header license claims','check-headers-license.mjs'],
   // Audio coverage — manifest-driven audit of which written pieces
   // ship a studio audio edition in which languages. Warn-only during
   // the studio-audio rollout (pre-existing ENGLISH-IN-FOREIGN issues
@@ -780,6 +819,10 @@ const BASELINE_ALLOW_NONIDEM = new Set([]);
 const BASELINE_DENYLIST = new Set([
   'check-fabrications.mjs',
   'check-audio-fabrications.mjs',
+  'check-claim-usage.mjs',
+  'check-blog-index-links.mjs',
+  // Positioning is an identity claim, not build freshness — never baseline it.
+  'check-positioning-drift.mjs',
   'check-retired-links.mjs',
   'check-locale-parity.mjs',
   'check-hreflang-orphans.mjs',

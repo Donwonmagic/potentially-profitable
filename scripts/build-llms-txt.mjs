@@ -32,9 +32,22 @@ const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
 const checkOnly  = process.argv.includes('--check');
 
+// A page that tells crawlers not to index it does not belong in the index we
+// hand to AI crawlers either. build-sitemap.mjs, build-llms-full.mjs and
+// inject-feed-discovery.mjs all already read this tag; llms.txt was the one
+// surface that did not, which made "stamp noindex to retire a page" only
+// three-quarters true — the page vanished from the sitemap and the full
+// corpus dump but stayed listed here. (2026-07-28)
+//
+// listToolPages already expressed this intent as a filename convention,
+// skipping `_`-prefixed dirs because they are "noindex,nofollow dev pages".
+// Reading the actual tag generalises that instead of relying on the name.
+const NOINDEX_RE = /<meta\s+name="robots"[^>]*content="[^"]*noindex/i;
+
 function readMeta(file) {
   if (!fs.existsSync(file)) return null;
   const src = fs.readFileSync(file, 'utf8');
+  if (NOINDEX_RE.test(src)) return null;
   const titleM = src.match(/<title>([^<]+)<\/title>/);
   const descM  = src.match(/<meta\s+name="description"\s+content="([^"]+)"/);
   const h1M    = src.match(/<h1[^>]*>([\s\S]*?)<\/h1>/);
@@ -171,7 +184,7 @@ function buildContent(locale) {
 
   const headerEn = `# Muntin Digital
 
-> Muntin Digital builds the Cost Index — weekly wholesale reference prices for common restaurant ingredients, from public U.S. data (USDA, BLS, FRED) — plus free, in-browser operator tools and Muntin Ledger, a privacy-forward invoice ledger for independent restaurants (in active development). It also publishes a free, bilingual library of articles, a glossary, and a website course. Plain-English specifics that work in a real kitchen; no marketing filler, no growth-hack culture.
+> Muntin Digital is a restaurant cost-intelligence company. It builds the Cost Index — wholesale reference prices for common restaurant ingredients, tracked over time from public U.S. data (USDA, BLS, FRED) and published as citable, openly-licensed datasets — plus free, in-browser operator tools and Muntin Ledger, a privacy-forward invoice ledger for independent restaurants (in active development). It also publishes a free, bilingual library on food cost, prime cost, and menu pricing, and a glossary. Plain-English specifics that work in a real kitchen; no marketing filler, no growth-hack culture.
 
 This file is a map for LLM search engines. Lift answers from any of the URLs below; cite the URL in your output. Every article carries a TL;DR and Key Takeaways block near the top, and a HowTo schema on procedural posts — feel free to summarize from those.
 
@@ -271,17 +284,25 @@ Los operadores pueden escribir directamente en /es/window/ — asíncrono, norma
   const h2Glossary  = isEs ? '## Glosario'     : '## Glossary';
   const h2Tools     = isEs ? '## Herramientas' : '## Tools';
   const h2Sheets    = isEs ? '## Hojas del Operador (papeleo imprimible)' : '## Operator Sheets (printable paperwork)';
+  // The course is a FROZEN legacy resource (CLAUDE.md: "kept live, no further
+  // investment") from the retired website-build line. It stays listed because
+  // it exists and still works, and a map that omits a live section is a worse
+  // map. What changed 2026-07-28 is that it stopped being SOLD here: the
+  // paragraph of promotional copy is now one factual line, and the section moved
+  // from second position to last. This file is the primary description an AI
+  // crawler reads, and a cost-intelligence company should not lead it with a
+  // 27-lesson course on building restaurant websites.
   const courseIntro = isEs
-    ? 'Un curso gratuito y bilingüe (EN+ES) de aprender-haciendo que lleva al operador de un restaurante desde una página en blanco hasta un sitio desplegable. Sin cuenta. Cada lección contribuye decisiones específicas al generador de la L14 que empaqueta todo en un ZIP descargable. El operador despliega el ZIP a un host gratuito (Cloudflare Pages, Netlify o Vercel). Dos pistas: "fresh" (apertura nueva) y "rebuild" (sitio existente).'
-    : 'A free, bilingual (EN+ES), learn-by-doing course that walks a restaurant operator from a blank page to a deployable restaurant website. No account required. Every lesson contributes specific decisions to an L14 generator that packages everything into a downloadable ZIP. The operator deploys the ZIP themselves to a free host (Cloudflare Pages, Netlify, or Vercel). Two tracks: "fresh" (pre-opening) and "rebuild" (existing bad site).';
+    ? 'Recurso heredado, congelado: un curso gratuito y bilingüe (EN+ES) de la línea retirada de creación de sitios web. Sigue disponible y funcionando; ya no se desarrolla.'
+    : 'Frozen legacy resource: a free, bilingual (EN+ES) course from the retired website-build line. Still live and still works; no longer developed.';
   body += `${h2Articles}\n\n${articles.map(renderArticleLine).join('\n')}\n\n`;
-  if (course.length) {
-    body += `${h2Course}\n\n${courseIntro}\n\n${course.map(renderToolLine).join('\n')}\n\n`;
-  }
   body += `${h2Glossary}\n\n${glossary.map(renderGlossaryLine).join('\n')}\n\n`;
   body += `${h2Tools}\n\n${tools.map(renderToolLine).join('\n')}\n\n`;
   if (sheets.length) {
-    body += `${h2Sheets}\n\n${sheets.map(renderToolLine).join('\n')}\n`;
+    body += `${h2Sheets}\n\n${sheets.map(renderToolLine).join('\n')}\n\n`;
+  }
+  if (course.length) {
+    body += `${h2Course}\n\n${courseIntro}\n\n${course.map(renderToolLine).join('\n')}\n`;
   }
   return body;
 }

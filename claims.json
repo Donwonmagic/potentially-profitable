@@ -1,6 +1,6 @@
 {
   "_doc": "Public, machine-readable claim ledger for muntin.digital. Every externally-verifiable factual claim used across the library, paired with its primary public source and the date it was last checked. Generated from data/sourced-claims.json by scripts/build-claims-json.mjs — do not edit by hand. Operator-experience claims (first-hand, no public URL) are documented at https://muntin.digital/about/#timeline.",
-  "as_of": "2026-07-23",
+  "as_of": "2026-07-28",
   "count": 47,
   "claims": [
     {
@@ -11,7 +11,9 @@
       "date_verified": "2026-05-14",
       "used_in": [
         "how-to-get-cited-in-google-ai-overviews-restaurant",
-        "may-2026-wave-publishing-for-citation"
+        "may-2026-wave-publishing-for-citation",
+        "methods",
+        "es/methods"
       ]
     },
     {
@@ -21,8 +23,10 @@
       "source_url": "https://baymard.com/lists/cart-abandonment-rate",
       "date_verified": "2026-05-14",
       "used_in": [
-        "why-your-restaurant-loses-reservations-every-night",
-        "learn/research/cart-abandonment-rate"
+        "reservation-conversion-guide",
+        "learn/research/cart-abandonment-rate",
+        "es/library/guia-conversion-reservas",
+        "es/learn/research/cart-abandonment-rate"
       ]
     },
     {
@@ -32,7 +36,10 @@
       "source_url": "https://www.bls.gov/news.release/cpi.nr0.htm",
       "date_verified": "2026-07-23",
       "used_in": [
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "restaurant-menu-inflation-2026",
+        "es/library/costo-primo-de-restaurante",
+        "es/blog/inflacion-de-menu-de-restaurante-2026"
       ]
     },
     {
@@ -51,9 +58,7 @@
       "source_name": "Como",
       "source_url": "https://www.como.com/",
       "date_verified": "2026-05-14",
-      "used_in": [
-        "loyalty-programs-for-independent-restaurants-what-works-2026"
-      ]
+      "used_in": []
     },
     {
       "id": "cpi_food_at_home_may_2026",
@@ -63,7 +68,9 @@
       "date_verified": "2026-06-14",
       "used_in": [
         "restaurant-menu-inflation-2026",
-        "inflacion-de-menu-de-restaurante-2026"
+        "inflacion-de-menu-de-restaurante-2026",
+        "restaurant-prime-cost",
+        "es/library/costo-primo-de-restaurante"
       ]
     },
     {
@@ -74,7 +81,9 @@
       "date_verified": "2026-06-14",
       "used_in": [
         "restaurant-menu-inflation-2026",
-        "inflacion-de-menu-de-restaurante-2026"
+        "inflacion-de-menu-de-restaurante-2026",
+        "restaurant-prime-cost",
+        "es/library/costo-primo-de-restaurante"
       ]
     },
     {
@@ -84,7 +93,7 @@
       "source_url": "https://ohr.dc.gov/page/tipped-wage-workers-fairness-act",
       "date_verified": "2026-05-14",
       "used_in": [
-        "service-charges-vs-tipping-restaurant-operator-math-2026"
+        "service-charge-vs-tipping-model"
       ]
     },
     {
@@ -94,10 +103,8 @@
       "source_url": "https://merchants.doordash.com/en-us/pricing",
       "date_verified": "2026-05-14",
       "used_in": [
-        "an-honest-doordash-math-for-independent-restaurants-2026",
-        "uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026",
         "30-days-after-leaving-doordash-restaurant-case-study",
-        "is-doordash-worth-it-for-restaurants-in-2026"
+        "es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante"
       ]
     },
     {
@@ -107,7 +114,8 @@
       "source_url": "https://www.opentable.com/events/fathers-day",
       "date_verified": "2026-06-18",
       "used_in": [
-        "get-found-fathers-day-weekend-2026"
+        "get-found-fathers-day-weekend-2026",
+        "es/blog/dia-del-padre-que-te-encuentren-2026"
       ]
     },
     {
@@ -116,9 +124,7 @@
       "source_name": "Fivestars",
       "source_url": "https://www.fivestars.com/",
       "date_verified": "2026-05-14",
-      "used_in": [
-        "loyalty-programs-for-independent-restaurants-what-works-2026"
-      ]
+      "used_in": []
     },
     {
       "id": "food_cost_target_band_2026",
@@ -129,7 +135,8 @@
       "used_in": [
         "tools/plate-cost/",
         "docs/strategy-cost-intelligence-app.md",
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "es/library/costo-primo-de-restaurante"
       ]
     },
     {
@@ -139,8 +146,7 @@
       "source_url": "https://blog.google/products-and-platforms/products/search/search-io-2026/",
       "date_verified": "2026-05-22",
       "used_in": [
-        "google-ai-mode-restaurant-local-results-2026",
-        "google-ai-mode-reservation-booking-restaurant-2026"
+        "google-ai-mode-restaurant-local-results-2026"
       ]
     },
     {
@@ -160,7 +166,8 @@
       "source_url": "https://status.search.google.com/",
       "date_verified": "2026-05-22",
       "used_in": [
-        "may-2026-discovery-changed-under-you"
+        "may-2026-discovery-changed-under-you",
+        "es/blog/la-busqueda-cambio-bajo-tus-pies-mayo-2026"
       ]
     },
     {
@@ -170,9 +177,14 @@
       "source_url": "https://support.google.com/business/answer/7091",
       "date_verified": "2026-05-14",
       "used_in": [
-        "how-to-respond-to-google-reviews-restaurant-playbook-2026",
         "my-restaurant-isnt-on-google-maps-10-minute-diagnostic",
-        "how-to-set-up-google-business-profile-for-your-restaurant"
+        "how-to-set-up-google-business-profile-for-your-restaurant",
+        "does-my-restaurant-need-a-website",
+        "how-to-get-more-google-reviews-for-your-restaurant",
+        "restaurant-local-seo",
+        "es/library/como-configurar-google-business-profile-para-tu-restaurante",
+        "es/library/como-conseguir-mas-resenas-google-para-tu-restaurante",
+        "es/library/seo-local-para-restaurantes"
       ]
     },
     {
@@ -181,10 +193,7 @@
       "source_name": "Google Search Central — Local Business structured data",
       "source_url": "https://developers.google.com/search/docs/appearance/structured-data/local-business",
       "date_verified": "2026-05-14",
-      "used_in": [
-        "restaurant-schema-markup-6-types-google-uses",
-        "restaurant-schema-markup-complete-paste-ready-example"
-      ]
+      "used_in": []
     },
     {
       "id": "gpo_independent_savings_2026",
@@ -195,7 +204,8 @@
       "used_in": [
         "tools/vendor-benchmark/",
         "tools/_shared/fair-price-gap.js",
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "es/library/costo-primo-de-restaurante"
       ]
     },
     {
@@ -204,9 +214,7 @@
       "source_name": "Grubhub Merchant",
       "source_url": "https://get.grubhub.com/grubhub-pricing-and-fees/",
       "date_verified": "2026-05-14",
-      "used_in": [
-        "uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026"
-      ]
+      "used_in": []
     },
     {
       "id": "instagram_2024_algorithm_update",
@@ -224,23 +232,63 @@
       "source_name": "Klaviyo",
       "source_url": "https://www.klaviyo.com/pricing",
       "date_verified": "2026-05-14",
-      "used_in": [
-        "loyalty-programs-for-independent-restaurants-what-works-2026"
-      ]
+      "used_in": []
     },
     {
       "id": "ledger_founding_offer_2026",
-      "claim": "Muntin Ledger is free while in private beta; general availability is November 13, 2026. Operators who join the founding list before launch get the founding rate: three months free, then $19 a month per location for as long as they stay. Pricing is posted in writing at ledger.muntin.digital.",
-      "source_name": "Muntin Ledger — posted pricing (first-party, founder-confirmed 2026-06-27; per-location basis founder-confirmed 2026-07-09)",
+      "claim": "Muntin Ledger is free while in private beta. Operators who join the founding list before launch get the founding rate: three months free, then $19 a month per location for as long as they stay. Pricing is posted in writing at ledger.muntin.digital. The general-availability date is not announced.",
+      "source_name": "Muntin Ledger — posted pricing (first-party, founder-confirmed 2026-06-27; per-location basis founder-confirmed 2026-07-09; GA date retired 2026-07-28 — not announced)",
       "source_url": "https://ledger.muntin.digital/",
-      "date_verified": "2026-07-09",
+      "date_verified": "2026-07-28",
       "used_in": [
         "ledger/",
         "es/ledger/",
         "ledger/demo/",
         "es/ledger/demo/",
         "index.html",
-        "es/index.html"
+        "es/index.html",
+        "commission-free-online-ordering-restaurants",
+        "custom-restaurant-website-pricing",
+        "google-review-response-playbook",
+        "how-to-get-cited-in-google-ai-overviews-restaurant",
+        "how-to-raise-restaurant-menu-prices-without-losing-reservations",
+        "how-to-tell-if-a-restaurant-tool-is-safe",
+        "keep-plate-cost-honest-when-prices-change",
+        "loyalty-program-roi",
+        "menu-design-themes",
+        "my-restaurant-isnt-on-google-maps-10-minute-diagnostic",
+        "privacy-forward-restaurant-bookkeeping",
+        "restaurant-app-decision",
+        "restaurant-menu-engineering",
+        "restaurant-prime-cost",
+        "service-charge-vs-tipping-model",
+        "third-party-delivery-comparison",
+        "third-party-delivery-economics",
+        "toast-vs-square-vs-clover-for-restaurants",
+        "what-beef-prices-mean-for-your-restaurant",
+        "30-days-after-leaving-doordash-restaurant-case-study",
+        "instagram-as-restaurant-seo-strategy-2026",
+        "restaurant-menu-inflation-2026",
+        "es/library/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026",
+        "es/library/como-lograr-que-google-cite-tu-restaurante-en-ai-overview",
+        "es/library/como-responder-resenas-google-restaurante-playbook-2026",
+        "es/library/como-saber-si-una-herramienta-de-restaurante-es-segura",
+        "es/library/como-salir-de-doordash-mi-restaurante",
+        "es/library/como-subir-precios-de-menu-sin-perder-reservas",
+        "es/library/contabilidad-de-restaurante-con-privacidad",
+        "es/library/costo-del-plato-cuando-cambian-los-precios",
+        "es/library/costo-primo-de-restaurante",
+        "es/library/decision-app-restaurante",
+        "es/library/ingenieria-de-menu-para-restaurantes",
+        "es/library/menu-design-themes",
+        "es/library/pedidos-en-linea-sin-comision-para-restaurantes",
+        "es/library/precios-de-la-carne-de-res-para-tu-restaurante",
+        "es/library/programas-de-lealtad-para-restaurantes-independientes-2026",
+        "es/library/toast-vs-square-vs-clover-para-restaurantes",
+        "es/library/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026",
+        "es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante",
+        "es/blog/inflacion-de-menu-de-restaurante-2026",
+        "es/blog/instagram-como-seo-para-restaurante-2026"
       ]
     },
     {
@@ -249,9 +297,7 @@
       "source_name": "Mailchimp",
       "source_url": "https://mailchimp.com/pricing/marketing/",
       "date_verified": "2026-05-14",
-      "used_in": [
-        "loyalty-programs-for-independent-restaurants-what-works-2026"
-      ]
+      "used_in": []
     },
     {
       "id": "menu_price_lag_wholesale_2025",
@@ -261,7 +307,8 @@
       "date_verified": "2026-06-18",
       "used_in": [
         "docs/strategy-cost-intelligence-app.md",
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "es/library/costo-primo-de-restaurante"
       ]
     },
     {
@@ -273,7 +320,8 @@
       "used_in": [
         "tools/plate-cost/",
         "docs/strategy-cost-intelligence-app.md",
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "es/library/costo-primo-de-restaurante"
       ]
     },
     {
@@ -284,7 +332,12 @@
       "date_verified": "2026-06-14",
       "used_in": [
         "restaurant-menu-inflation-2026",
-        "inflacion-de-menu-de-restaurante-2026"
+        "inflacion-de-menu-de-restaurante-2026",
+        "restaurant-prime-cost",
+        "cost-index-2026-07",
+        "cost-index-week-2026-06-18",
+        "cost-index-week-2026-07-06",
+        "es/library/costo-primo-de-restaurante"
       ]
     },
     {
@@ -302,9 +355,11 @@
       "source_url": "https://www.nngroup.com/articles/fitts-law/",
       "date_verified": "2026-05-14",
       "used_in": [
-        "why-your-restaurant-loses-reservations-every-night",
+        "reservation-conversion-guide",
         "learn/research/fittss-law",
-        "learn/research/local-business-websites"
+        "learn/research/local-business-websites",
+        "es/library/guia-conversion-reservas",
+        "es/learn/research/fittss-law"
       ]
     },
     {
@@ -314,7 +369,8 @@
       "source_url": "https://restaurant.org/research-and-media/media/press-releases/persistent-cost-increases-and-enduring-demand-will-shape-the-restaurant-industry-in-2026/",
       "date_verified": "2026-07-23",
       "used_in": [
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "es/library/costo-primo-de-restaurante"
       ]
     },
     {
@@ -324,7 +380,8 @@
       "source_url": "https://restaurant.org/research-and-media/research/industry-statistics/national-statistics/",
       "date_verified": "2026-06-18",
       "used_in": [
-        "get-found-fathers-day-weekend-2026"
+        "get-found-fathers-day-weekend-2026",
+        "es/blog/dia-del-padre-que-te-encuentren-2026"
       ]
     },
     {
@@ -334,7 +391,8 @@
       "source_url": "https://www.opentable.com/restaurant-solutions/2026-diner-trends/",
       "date_verified": "2026-05-22",
       "used_in": [
-        "google-ai-mode-reservation-booking-restaurant-2026"
+        "get-found-fathers-day-weekend-2026",
+        "es/blog/dia-del-padre-que-te-encuentren-2026"
       ]
     },
     {
@@ -344,7 +402,8 @@
       "source_url": "https://www.opentable.com/restaurant-solutions/2026-diner-trends/",
       "date_verified": "2026-06-18",
       "used_in": [
-        "get-found-fathers-day-weekend-2026"
+        "get-found-fathers-day-weekend-2026",
+        "es/blog/dia-del-padre-que-te-encuentren-2026"
       ]
     },
     {
@@ -354,7 +413,8 @@
       "source_url": "https://www.prnewswire.com/news-releases/popmenu-releases-top-restaurant-trends-to-watch-in-2026-302692236.html",
       "date_verified": "2026-07-23",
       "used_in": [
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "es/library/costo-primo-de-restaurante"
       ]
     },
     {
@@ -364,7 +424,8 @@
       "source_url": "https://www.restaurant365.com/blog/how-to-calculate-prime-cost-in-a-restaurant/",
       "date_verified": "2026-07-23",
       "used_in": [
-        "library/restaurant-prime-cost/"
+        "library/restaurant-prime-cost/",
+        "es/library/costo-primo-de-restaurante"
       ]
     },
     {
@@ -394,7 +455,8 @@
       "source_url": "https://squareup.com/help/us/en/article/6382-square-loyalty-pricing",
       "date_verified": "2026-05-14",
       "used_in": [
-        "loyalty-programs-for-independent-restaurants-what-works-2026"
+        "toast-vs-square-vs-clover-for-restaurants",
+        "es/library/toast-vs-square-vs-clover-para-restaurantes"
       ]
     },
     {
@@ -415,8 +477,11 @@
       "date_verified": "2026-05-14",
       "used_in": [
         "wix-vs-custom-for-restaurants",
-        "why-your-restaurant-loses-reservations-every-night",
-        "learn/research/mobile-page-speed-3-second-rule"
+        "reservation-conversion-guide",
+        "learn/research/mobile-page-speed-3-second-rule",
+        "es/library/guia-conversion-reservas",
+        "es/library/wix-vs-custom-para-restaurantes",
+        "es/learn/research/mobile-page-speed-3-second-rule"
       ]
     },
     {
@@ -426,7 +491,8 @@
       "source_url": "https://pos.toasttab.com/products/loyalty",
       "date_verified": "2026-05-14",
       "used_in": [
-        "loyalty-programs-for-independent-restaurants-what-works-2026"
+        "toast-vs-square-vs-clover-for-restaurants",
+        "es/library/toast-vs-square-vs-clover-para-restaurantes"
       ]
     },
     {
@@ -435,9 +501,7 @@
       "source_name": "Uber Eats Merchant",
       "source_url": "https://merchants.ubereats.com/us/en/pricing/",
       "date_verified": "2026-05-14",
-      "used_in": [
-        "uber-eats-vs-doordash-vs-grubhub-restaurant-math-2026"
-      ]
+      "used_in": []
     },
     {
       "id": "uberall_ai_invisibility_2026",
