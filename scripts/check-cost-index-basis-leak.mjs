@@ -63,11 +63,22 @@ export const isDollarBasis = (b) => DOLLAR_BASES.indexOf(b) >= 0;
 // (content-bound); relaxed value→basis 2026-07-10 after NOAA moved 9 of these off
 // their 07-02 values with no rendered-surface impact. salmon-fillet joined the
 // day its stale mislabeled series.json was withdrawn.
+// 2026-07-31: scallops REMOVED (10 -> 9). Not a judgement call — the scheduled
+// Mon/Wed/Fri refresh dropped it from data/cost-index.json on its own this run
+// (main bedc415f0, "measured read 2026-07-31"): both its points failed
+// pointIssues (2026-05-01 stale-level, 2026-04-01 stale + stale-level), so
+// build-cost-index.mjs's carry-forward took the `if (!kept.length) continue`
+// branch. This registry is a fixed key-set asserted for exact size, so it has to
+// follow the data or the self-test fails at 9 of 10. If NOAA republishes
+// scallops the guard will flag it as a NEW source-latent slug pending a human
+// re-add — the guard working, not a regression.
+// NOTE: the two published scallops pages are now orphaned and
+// check-cost-index-orphans.mjs fails on them; that disposal decision is still
+// open and is NOT resolved by this entry.
 export const KNOWN_SOURCE_LATENT = new Map([
   ['octopus', { basis: 'index' }],
   ['salmon-fillet', { basis: 'index' }],
   ['salmon-skin-on-fillet', { basis: 'index' }],
-  ['scallops', { basis: 'index' }],
   ['tuna-loin', { basis: 'index' }],
   ['whole-crab', { basis: 'index' }],
   ['whole-halibut', { basis: 'index' }],

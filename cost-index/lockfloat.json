@@ -1,7 +1,7 @@
 {
   "_doc": "Lock-or-float predictability: for each ingredient, how tight its wholesale-reference band has run recently (a conformal half-width) and the menu-pricing posture that follows — lock (very steady), cushion, float (swingy), or withhold (too little evidence to say). Band WIDTH, not a price forecast. The price level itself is deliberately not published. Not a delivered price.",
   "license": "https://creativecommons.org/licenses/by/4.0/",
-  "asOf": "2026-07-28",
+  "asOf": "2026-07-30",
   "thresholds": {
     "lockMaxHalfWidth": 0.08,
     "cushionMaxHalfWidth": 0.2,
@@ -12,9 +12,9 @@
     "lock": 37,
     "cushion": 19,
     "float": 7,
-    "withhold": 37
+    "withhold": 36
   },
-  "count": 100,
+  "count": 99,
   "ingredients": [
     {
       "slug": "acorn-squash",
@@ -968,19 +968,6 @@
     {
       "slug": "salmon-skin-on-fillet",
       "name": "Salmon (skin-on fillet)",
-      "bucket": "withhold",
-      "monthly": false,
-      "half_width_pct": null,
-      "coverage": null,
-      "coverage_lo": null,
-      "coverage_hi": null,
-      "up_pct": null,
-      "down_pct": null,
-      "n_tested": null
-    },
-    {
-      "slug": "scallops",
-      "name": "Scallops",
       "bucket": "withhold",
       "monthly": false,
       "half_width_pct": null,
