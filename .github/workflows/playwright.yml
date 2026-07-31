@@ -1,4 +1,4 @@
-# Playwright CI — runtime regression net for the tool suite + bootcamp
+# Playwright CI — runtime regression net for the tool suite
 #
 # Runs all tests/*.spec.mjs on every PR to main and on direct pushes.
 # Four spec files in scope today:
@@ -7,12 +7,6 @@
 #                                     code halfway down any tool page)
 #   tests/hub-baseline.spec.mjs     — tool hub renders + tier filter +
 #                                     visual snapshot at desktop
-#   tests/workshop-widgets.spec.mjs — all 18 Workshop Kit widgets'
-#                                     demo pages render + key context
-#                                     round-trips
-#   tests/course-baseline.spec.mjs  — every lesson page renders, the
-#                                     mark-complete + generator round-
-#                                     trips work end-to-end
 #   tests/marketing-render.spec.mjs — the load-bearing non-tool pages
 #                                     (home, /studio/ company page,
 #                                     /start/, /about/, cost-index hub,
@@ -21,9 +15,33 @@
 #                                     services-era copy. Added after a
 #                                     stale hero + /studio/ loop reached
 #                                     production uncaught.
+#   tests/audio-card.spec.mjs       — audio-edition card chrome. Skips
+#                                     itself while the EDITORIAL PAUSE
+#                                     block in assets/site-article.css
+#                                     hides .listen-card; re-enables
+#                                     automatically when the pause lifts.
 #
-# Status: continue-on-error initially while baseline snapshots settle.
-# Promote to required-check once three consecutive PRs land green.
+# (workshop-widgets and course-baseline were listed here until 2026-07-31.
+# Both specs were deleted with the Workshop-Kit / course retirement; the
+# header outlived the files it documented.)
+#
+# Status: BLOCKING as of 2026-07-31. The 2026-05-28 header said
+# "continue-on-error initially while baseline snapshots settle — promote to
+# required-check once three consecutive PRs land green", and then it stayed
+# advisory for two months while going red, because a continue-on-error job
+# reds the CHECK and still concludes the RUN as success. Nobody saw it.
+#
+# What that cost: "tier filter narrows the visible cards" hard-coded the
+# `quick` tier and had been failing since the tool roadmap was cut on
+# 2026-06-17 — six weeks. The hub CTA assertion was pinning the retired
+# positioning, so it started failing the moment the funnel rewire landed and
+# read as a regression when it was the test that was wrong. And the visual
+# baseline had drifted past the nav change.
+#
+# A gate nobody runs is the appearance of protection, not protection. That
+# rule is enforced for scripts/check-*.mjs by check-gate-coverage.mjs; this
+# is the same rule applied to the workflow lane by hand. Do not re-add
+# continue-on-error to make a red go away — fix the test or fix the page.
 
 name: Playwright
 
@@ -37,6 +55,19 @@ on:
 permissions:
   contents: read
 
+# PINNED, not floating. This suite compares SCREENSHOTS, and the pixels come
+# from the chromium build the runner installs — so `@playwright/test@1.x`
+# meant any upstream chromium bump could red the snapshot with no change to
+# the site. Harmless while the job was advisory; a false-red generator now
+# that it blocks. 1.56.0 ships chromium revision 1194, which is the build the
+# committed baselines in tests/hub-baseline.spec.mjs-snapshots/ were rendered
+# with. Bumping this version means regenerating those baselines in the same
+# commit (npx playwright test tests/hub-baseline.spec.mjs --update-snapshots)
+# and eyeballing the diff — a pixel gate is only honest if its baseline and
+# its browser move together.
+env:
+  PW_VERSION: 1.56.0
+
 concurrency:
   group: playwright-${{ github.ref }}
   cancel-in-progress: true
@@ -45,7 +76,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    continue-on-error: true
+    # No continue-on-error — see the Status note in this file's header. A red
+    # here blocks, which is the point.
 
     steps:
       - name: Check out
@@ -68,15 +100,20 @@ jobs:
           node scripts/stamp-hreflang.mjs
           node scripts/build-sitemap.mjs
 
-      # Cache Playwright's browser binaries. The cache key includes the
-      # @playwright/test version to invalidate on upgrade. Chromium is
-      # ~150 MB downloaded; the cache hit shaves 30-60s off the run.
+      # Cache Playwright's browser binaries. Chromium is ~150 MB downloaded;
+      # a cache hit shaves 30-60s off the run.
+      #
+      # The key now includes PW_VERSION. Until 2026-07-31 the comment here
+      # claimed "the cache key includes the @playwright/test version to
+      # invalidate on upgrade" while the key hashed only playwright.config.mjs
+      # — so a version bump would have been served a stale browser cache. That
+      # matters more now that the snapshot comparison blocks.
       - name: Cache Playwright browsers
         id: pw-cache
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('playwright.config.mjs') }}
+          key: ${{ runner.os }}-playwright-${{ env.PW_VERSION }}-${{ hashFiles('playwright.config.mjs') }}
 
       - name: Install Playwright + dependencies
         # Install @playwright/test into a transient local node_modules so
@@ -87,7 +124,7 @@ jobs:
         # node_modules, `npx playwright install` downloads the chromium
         # binary + OS deps (libnss3, libatk-bridge, etc.).
         run: |
-          npm install --no-save --no-fund --no-audit --silent @playwright/test@1.x
+          npm install --no-save --no-fund --no-audit --silent @playwright/test@${{ env.PW_VERSION }}
           if [ "${{ steps.pw-cache.outputs.cache-hit }}" != "true" ]; then
             npx playwright install --with-deps chromium
           else
