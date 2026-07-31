@@ -6,6 +6,17 @@
   "coverageLimits": {
     "jurisdiction": "openFDA Food Enforcement covers FDA-regulated food only. Meat, poultry, and processed egg products are USDA/FSIS jurisdiction and are ABSENT from this endpoint entirely — verified: across the tracked panel, beef, pork, and every chicken slug have zero product-text mentions in the full result set. A zero recall count for those slugs is guaranteed by the source, not measured.",
     "matching": "Slug tags come from a whole-word text match on the product description. An ingredient named only in the reason field, spelled unusually, or referenced by a brand name is not tagged.",
+    "nameArityBias": {
+      "singleWordSlugs": 104,
+      "multiWordSlugs": 64,
+      "meanTagsPerSingleWordSlug": 8.91,
+      "meanTagsPerMultiWordSlug": 1.61,
+      "biasRatio": 5.54,
+      "pctOfTagsToSingleWord": 90,
+      "zeroTagSingleWord": 29,
+      "zeroTagMultiWord": 42,
+      "note": "Multi-word ingredient names are tagged ~5.54x less often than single-word names (1.61 vs 8.91 tags per slug), and 42 of 64 multi-word slugs have zero tags versus 29 of 104 single-word slugs. This is a property of the MATCHER, not of food safety."
+    },
     "freshCommodityFilter": "Finished and processed goods are dropped on purpose (isFreshCommodity), so this is a raw-commodity recall record, not total recall volume for an ingredient.",
     "notComparable": "Recall COUNTS are not comparable across slugs of different categories. Use within-slug over time, never slug-vs-slug as an exposure ranking."
   },

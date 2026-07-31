@@ -91,6 +91,35 @@ function isFreshCommodity(product) {
   return FRESH_CUE.test(p) || words <= 5;
 }
 
+/**
+ * Measure the matcher's own arity bias, so the disclosure carries numbers instead of adjectives.
+ * matchSlugs needs the WHOLE phrase present verbatim, so a multi-word display name ("Salmon
+ * skin-on fillet" -> "salmon skin on fillet") can only match a product description that happens to
+ * use that exact word sequence — which almost never occurs. Single-word names have no such barrier.
+ * Computed from the built output every time, never hand-typed, so it cannot go stale.
+ */
+export function arityBias(kept, kws) {
+  const tally = {};
+  for (const r of kept) for (const s of r.slugs) tally[s] = (tally[s] || 0) + 1;
+  const bucket = { single: [], multi: [] };
+  for (const k of kws) (k.kw.split(' ').length === 1 ? bucket.single : bucket.multi).push(tally[k.slug] || 0);
+  const sum = (a) => a.reduce((x, y) => x + y, 0);
+  const mean = (a) => (a.length ? sum(a) / a.length : 0);
+  const zero = (a) => a.filter((x) => x === 0).length;
+  const total = sum(bucket.single) + sum(bucket.multi);
+  const r2 = (n) => Math.round(n * 100) / 100;
+  return {
+    singleWordSlugs: bucket.single.length,
+    multiWordSlugs: bucket.multi.length,
+    meanTagsPerSingleWordSlug: r2(mean(bucket.single)),
+    meanTagsPerMultiWordSlug: r2(mean(bucket.multi)),
+    biasRatio: mean(bucket.multi) > 0 ? r2(mean(bucket.single) / mean(bucket.multi)) : null,
+    pctOfTagsToSingleWord: total ? r2(sum(bucket.single) / total * 100) : null,
+    zeroTagSingleWord: zero(bucket.single),
+    zeroTagMultiWord: zero(bucket.multi),
+  };
+}
+
 function assemble(rawResults, kws, fetchedAt) {
   const kept = [];
   for (const r of rawResults) {
@@ -99,6 +128,7 @@ function assemble(rawResults, kws, fetchedAt) {
     const slugs = matchSlugs(rec.product, kws);         // product only — never the allergen-laden reason
     if (slugs.length) kept.push({ ...rec, slugs });
   }
+  const bias = arityBias(kept, kws);
   return {
     _doc: 'openFDA Food Enforcement (recall) events for the Cost Index events lane (ADR-011), FILTERED to recalls whose product text mentions a tracked ingredient (slug-tagged). Each row is a DATED, DOCUMENTED recall, surfaced as CO-OCCURRENCE beside a price window — NEVER an asserted price cause, magnitude, or forecast. The slug tag is a whole-word text match on the product, not an inferred link. Source: openFDA (US FDA), public domain (CC0). Built by scripts/fetch-food-recalls.mjs --live on the operator Mac. READ coverageLimits BEFORE COMPARING SLUGS: this instrument is blind to whole categories, so a zero here is not a safety record.',
     source: `openFDA Food Enforcement — ${ENDPOINT}`,
@@ -111,6 +141,14 @@ function assemble(rawResults, kws, fetchedAt) {
     coverageLimits: {
       jurisdiction: 'openFDA Food Enforcement covers FDA-regulated food only. Meat, poultry, and processed egg products are USDA/FSIS jurisdiction and are ABSENT from this endpoint entirely — verified: across the tracked panel, beef, pork, and every chicken slug have zero product-text mentions in the full result set. A zero recall count for those slugs is guaranteed by the source, not measured.',
       matching: 'Slug tags come from a whole-word text match on the product description. An ingredient named only in the reason field, spelled unusually, or referenced by a brand name is not tagged.',
+      // MEASURED, not asserted — recomputed on every build from the output itself. The matcher
+      // requires the whole display name verbatim, so a multi-word name can only match a product
+      // description using that exact word sequence. It is the single largest distortion in this
+      // file: a multi-word ingredient's zero usually means "unmatchable name", not "no recalls".
+      nameArityBias: {
+        ...bias,
+        note: `Multi-word ingredient names are tagged ~${bias.biasRatio ?? '?'}x less often than single-word names (${bias.meanTagsPerMultiWordSlug} vs ${bias.meanTagsPerSingleWordSlug} tags per slug), and ${bias.zeroTagMultiWord} of ${bias.multiWordSlugs} multi-word slugs have zero tags versus ${bias.zeroTagSingleWord} of ${bias.singleWordSlugs} single-word slugs. This is a property of the MATCHER, not of food safety.`,
+      },
       freshCommodityFilter: 'Finished and processed goods are dropped on purpose (isFreshCommodity), so this is a raw-commodity recall record, not total recall volume for an ingredient.',
       notComparable: 'Recall COUNTS are not comparable across slugs of different categories. Use within-slug over time, never slug-vs-slug as an exposure ranking.',
     },
@@ -160,6 +198,19 @@ function selfTest() {
   eq('coverageLimits present', typeof cl === 'object' && cl !== null, true);
   eq('discloses the USDA/FSIS jurisdiction gap', /FSIS/.test(cl.jurisdiction), true);
   eq('warns counts are not comparable across slugs', /not comparable/i.test(cl.notComparable), true);
+  // arity bias — measured from the output, never hand-typed
+  const bkw = [{ slug: 'one', kw: 'kale' }, { slug: 'two', kw: 'salmon skin on fillet' }];
+  const bkept = [{ slugs: ['one'] }, { slugs: ['one'] }, { slugs: ['one', 'two'] }];
+  const bias = arityBias(bkept, bkw);
+  eq('counts single- vs multi-word slugs', [bias.singleWordSlugs, bias.multiWordSlugs], [1, 1]);
+  eq('mean tags per single-word slug', bias.meanTagsPerSingleWordSlug, 3);
+  eq('mean tags per multi-word slug', bias.meanTagsPerMultiWordSlug, 1);
+  eq('bias ratio is single/multi', bias.biasRatio, 3);
+  eq('share of tags to single-word', bias.pctOfTagsToSingleWord, 75);
+  eq('zero-tag multi-word counted', arityBias([], bkw).zeroTagMultiWord, 1);
+  eq('no divide-by-zero when nothing matched', arityBias([], bkw).biasRatio, null);
+  eq('empty keyword set does not throw', arityBias([], []).pctOfTagsToSingleWord, null);
+  eq('bias ships inside coverageLimits', typeof cl.nameArityBias === 'object' && /property of the MATCHER/.test(cl.nameArityBias.note), true);
   // fresh-commodity gate — the honesty filter that keeps raw-ingredient recalls, drops finished goods
   eq('fresh cue → kept', isFreshCommodity('Fresh Cilantro and diced Onion tray, 12 oz'), true);
   eq('short commodity name → kept', isFreshCommodity('Romaine Lettuce 10 oz'), true);
@@ -225,7 +276,22 @@ function retag() {
     }
     return { ...r, slugs: next };
   }).filter((r) => r.slugs.length);
-  const out = { ...assemble([], kws, cur.fetchedAt), fetchedAt: cur.fetchedAt, since: cur.since, fetched_total: cur.fetched_total, matched: recalls.length, recalls };
+  // assemble() gives the shell, but it is called with NO raw rows here (the rows are already
+  // normalized), so its computed coverageLimits.nameArityBias would describe an empty set.
+  // Recompute it from the rows we actually retagged, or the disclosure would publish all-zeros.
+  const shell = assemble([], kws, cur.fetchedAt);
+  const out = {
+    ...shell,
+    coverageLimits: { ...shell.coverageLimits, nameArityBias: { ...arityBias(recalls, kws), note: shell.coverageLimits.nameArityBias.note } },
+    fetchedAt: cur.fetchedAt,
+    since: cur.since,
+    fetched_total: cur.fetched_total,
+    matched: recalls.length,
+    recalls,
+  };
+  // Rebuild the note against the real numbers (the shell's note was written from the empty set).
+  const b = out.coverageLimits.nameArityBias;
+  b.note = `Multi-word ingredient names are tagged ~${b.biasRatio ?? '?'}x less often than single-word names (${b.meanTagsPerMultiWordSlug} vs ${b.meanTagsPerSingleWordSlug} tags per slug), and ${b.zeroTagMultiWord} of ${b.multiWordSlugs} multi-word slugs have zero tags versus ${b.zeroTagSingleWord} of ${b.singleWordSlugs} single-word slugs. This is a property of the MATCHER, not of food safety.`;
   fs.writeFileSync(p, JSON.stringify(out, null, 2) + '\n');
   console.log(`fetch-food-recalls --retag: re-tagged ${cur.recalls.length} stored rows; ${changed} changed.`);
   console.log('  slugs gaining tags:', Object.keys(added).length ? JSON.stringify(added) : 'none');
