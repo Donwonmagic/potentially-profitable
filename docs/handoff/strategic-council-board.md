@@ -387,6 +387,30 @@ free only where its output requires no human read*.
      template slots. Publish `revisedClaim`, never `claim`. Two duplicate pairs (30≡31, 32≡33);
      hypotheses 10, 22 and 30 carry no code and cannot be recomputed from the salvage at all.
 
+20b. **THE FINDING THE RUN ACTUALLY PAID FOR — Cost Pulse tells operators "nothing to call" on an
+   ingredient that jumped 44% inside the window used to make that call.** Not from a hypothesis;
+   from mining what the kill panel *computed* while destroying them. Mechanism, verified end to
+   end: the lock/float band is the (1−alpha) quantile of one-step residuals over a trailing window
+   — **the 80th percentile over 26 steps** (`cost-conformal.js:137-138`). A quantile describes the
+   TYPICAL step. When ≥80% of steps are exactly zero the 80th-percentile residual **is zero**, the
+   band collapses to ±0%, `degenerate` fires (`cost-conformal.js:158`), the classifier withholds
+   with `reason='flat'` (`cost-lockfloat.js:63`), and the UI prints *"flat and stale — nothing to
+   call"* (`tools/_shared/cost-lockfloat-ui.js:44`).
+   Sound for a sticky quote. **Backwards for a sparse-but-violent series** — sits at one price for
+   weeks, then moves hard. Median day flat, tail enormous, and the tail IS the risk. Measured
+   against the real deep history (~1310 reads/slug), inside the same 26-step window:
+   **carrot 44.1%** (4 moves, 85% zero-steps), **kale 13.3%**, **sweet-potato 11.8%**. The other 8
+   `flat` slugs are genuinely frozen in-window, so their label holds.
+   **This is ADR-022's rule in a different instrument** — a published average must carry the regime
+   that breaks it. Gate: `check-flat-label-jumps.mjs` (15 assertions), wired into check-all. It
+   deliberately **does not restate any verdict** — changing a bucket or widening a band alters what
+   operators see and is a **FOUNDER CALL**, currently open. It only makes the case impossible to
+   miss. **Two false trails worth not repeating:** the `spark` array is `downsample(vals, 40)` of
+   ~1310 reads, so ~32 real reads per point — never test tail behaviour on it (I did; it said the
+   tails weren't frozen, and it was an artifact of downsampling). And `edible_yield_pct` in the
+   state record is bit-identical to `ingredient-yields.json` (96 of 96 non-null shared), so the two
+   are one source, not corroboration — already documented, not a defect.
+
 21. **The kill panel on the 7 `confirmed` findings completed: 7 tested, 7 KILLED, 0 survivors**
    (28 agents, 0 errors, 2.17M tokens; raw at `docs/handoff/discovery-run/kill-panel-7-confirmed.json`,
    per-agent journal at `kill-panel-journal.jsonl`). Combined with the regrade above:
