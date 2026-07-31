@@ -201,39 +201,41 @@ only). r4 → 0. apps/api 3190 green. **All 6 insight surfaces in `apps/api/src/
 currency-scope hardened transitively (3 surfaces depend on it; no defects surfaced across the vendor-relationships
 + ap-pacing audits that read it).
 
-And **cross-surface consistency — 🔶 OPEN after r1→r4 (2026-07-25, r5 running)** (product-only; the first audit
+And **cross-surface consistency — 🔶 OPEN after r1→r5 (2026-07-25, r6 running)** (product-only; the first audit
 that is NOT about one surface — it asks whether the surfaces AGREE WITH EACH OTHER). Runbook:
-`runbooks/audits/cross-surface-2026-07.md`. **r1: 16 confirmed → 10 distinct; r2: 14 → 9; r3: 16 → 11; r4: 14.**
-**All r1–r4 defects are fixed and pushed.**
-**Why it matters more than any single-surface round:** several defects were caused by *this loop's own earlier
-fixes*. The VR-4 dedup, the bill-steadiness relabel and the ap-pacing disclosure were each correct on the surface
-they were made and each created a disagreement with a sibling reading the same data — and r2 caught my r1
-XS-CURRENCY fix making one row internally contradictory (spend columns and steadiness score over DISJOINT invoice
-sets, with the page's own "left out" footnote describing exactly the scored invoices). **Fixing a surface in
-isolation can introduce a cross-surface defect.** Highlights: the bill-steadiness score was computed over
-different record sets, windows, row caps and vendor-identity rules on the two pages that render it (now one
-population, one rule — `insights/vendor-identity.ts`); `use-tax`, the hub "Spend this month" KPI, `budget-vs-actual`
-and both aggregate SQL queries all summed money across currencies under a hardcoded "$"; and **r3 found a genuine
-production bug** — `getVendorSpend` selected `v.name`, a column the `vendors` table does not have, so the hub's
-Pareto card fails while a sibling lists the same vendors.
+`runbooks/audits/cross-surface-2026-07.md`. **r1: 16 confirmed → 10 distinct; r2: 14 → 9; r3: 16 → 11; r4: 14;
+r5: 20 confirmed with ZERO refuted → 16 distinct.** **All r1–r5 defects are fixed and pushed.**
 
-**r4 changed the method: the SQL is executed now, not read.** Postgres 16 turns out to ship in the container
-(`/usr/lib/postgresql/16/bin`; `initdb` refuses to run as root — run it as an unprivileged user; recipe in the
-runbook). That retired the standing "verify against Neon" follow-up **and immediately caught a second production
-bug this loop had itself introduced**: r3's `(SELECT cur FROM dom) AS currency` made the currency scalar output
-column 1, so the pre-existing `GROUP BY 1` grouped by *it* and left `month_start` ungrouped — a hard Postgres
-error that took BOTH hub spend cards down. A syntactically valid query that reads correctly can still fail at
-runtime. r4 also fixed: blank-vendor and punctuation-variant bills dropped by `forecastCashFlow` but counted by
-its money-out twin; the undated-invoice disclosure that never reached the drill-in or relationships page; the last
-two hardcoded `$` over scoped feeds; both aggregate queries moved onto the
-`COALESCE(e.issue_date, e.created_at::date)` basis every other month feed uses; and **the mid-week past-due gap** —
-`/insights/ap-pacing` labels a bill due earlier this week "due earlier" under a payment-status caveat while
-`/insights/bills` counted the same dollars as ordinary upcoming "Known", because its reconciliation line is gated
-on a counter that only fires for bills due before the grace band. *The gate that should have caught it pinned an
-`asOf` of **Monday** — the one weekday where week 0 starts today and the gap is empty by construction.* **A test
-can pass on the one input where the bug cannot exist.** **Not converged:** each round's fixes held, but every
-round the lenses reach one hop further out (now `/today`, the budget panel, the Ledger, the aggregates store).
-apps/api **3203** green, apps/web **126** green.
+**Why it matters more than any single-surface round:** several defects were caused by *this loop's own earlier
+fixes* — the VR-4 dedup, the bill-steadiness relabel, the ap-pacing disclosure, r3's currency column, r4's glyph
+sweep. Each was correct on the surface it was made and each created a disagreement with a sibling reading the same
+data. **Fixing a surface in isolation can introduce a cross-surface defect.**
+
+**The method changed twice.** r4: the SQL gets **executed**, not read — Postgres 16 ships in the container
+(recipe in the runbook), which retired the "verify against Neon" follow-up and immediately caught a `GROUP BY`
+ordinal this loop had introduced, taking both hub spend cards down. r5: a third lens that runs the query AND
+checks every claimed cross-surface *identity* across weekday, timezone and date-format variation.
+
+**r5 is the round worth reading.** Nothing was refuted — the lenses finally reached surfaces no earlier round had
+read. Four money feeds were each electing "the org's dominant currency" over a different population, and the
+category filter sat **inside** the election CTE: seeded six USD invoices at $10 and four EUR food invoices at
+EUR900, the same query returned `USD / $60` with no category and `EUR / EUR3,600` with one. On one screen the KPI
+read "$60 … 4 invoices in another currency were not counted" and the Food card beneath it rendered those very
+invoices as EUR3,600 — sixty times the whole, in the glyph the page had just disclaimed. Also fixed: three routes
+still losing undated invoices at the store (two of them the money-out pair, which keys on DUE date and never reads
+issue_date at all); both aggregates applying a currency filter they never disclosed; the hub KPI counting nine
+verdict kinds under a two-kind hint while the panel beneath it could read "none"; `vendorDisplayMap` picking the
+NEWEST spelling while `vendors.canonical_name` keeps the oldest; the operator's stored budget relabelled in the
+spend currency; and "your biggest week" picked on money the twin explicitly refuses to count.
+
+**Two lessons this round paid for.** (1) *A test can pass on the one input where the bug cannot exist* — the
+mid-week past-due gate pinned an `asOf` of Monday, the single weekday where the gap it covers is empty by
+construction. (2) *Store parity is not only about SQL* — routing two routes through `getDominantCurrency` made the
+STUB the authority wherever there is no data plane, and its convenient "USD" would have scoped a EUR-only org to
+dollars and excluded every invoice. A test caught that one.
+
+**Not converged:** each round's fixes held, but every round the lenses reach one hop further out (now `/today`,
+the budget panel, the settings pages, the aggregates store). apps/api **3233** green, apps/web **126** green.
 
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
