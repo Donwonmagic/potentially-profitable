@@ -120,6 +120,47 @@ export function arityBias(kept, kws) {
   };
 }
 
+/**
+ * A "recall count" is a count of NOTICES, and one outbreak can emit dozens. Measured on the live
+ * file: 718 notices are only 315 events (median 1 notice, max 70), and a slug's total is routinely
+ * one event — iceberg-lettuce's 5 notices are a single event, red-onion's 31 are 65% one event.
+ * Ranking ingredients by notice count therefore ranks outbreak paperwork, not exposure. Computed
+ * from the output on every build so the disclosure cannot drift from the data.
+ */
+export function eventConcentration(kept) {
+  const perEvent = {}
+  const perSlug = {}
+  for (const r of kept) {
+    perEvent[r.event_id] = (perEvent[r.event_id] || 0) + 1
+    for (const s of r.slugs) {
+      perSlug[s] = perSlug[s] || {}
+      perSlug[s][r.event_id] = (perSlug[s][r.event_id] || 0) + 1
+    }
+  }
+  const sizes = Object.values(perEvent).sort((a, b) => a - b)
+  const worst = Object.entries(perSlug)
+    .map(([slug, ev]) => {
+      const v = Object.values(ev)
+      const total = v.reduce((a, b) => a + b, 0)
+      return { slug, notices: total, largestEvent: Math.max(...v) }
+    })
+    .filter((x) => x.notices >= 5)
+    .sort((a, b) => b.largestEvent / b.notices - a.largestEvent / a.notices)
+    .slice(0, 5)
+    .map((x) => `${x.slug} (${x.largestEvent}/${x.notices})`)
+  return {
+    notices: kept.length,
+    distinctEvents: sizes.length,
+    medianNoticesPerEvent: sizes.length ? sizes[Math.floor(sizes.length / 2)] : null,
+    maxNoticesPerEvent: sizes.length ? sizes[sizes.length - 1] : null,
+    singleNoticeEvents: sizes.filter((x) => x === 1).length,
+    mostConcentratedSlugs: worst,
+    note: sizes.length
+      ? `${kept.length} notices are only ${sizes.length} distinct events (median ${sizes[Math.floor(sizes.length / 2)]}, max ${sizes[sizes.length - 1]}). A slug's count is frequently ONE outbreak: ${worst.join(', ')}. Counting notices counts outbreak paperwork, not exposure.`
+      : 'No rows to measure.',
+  }
+}
+
 function assemble(rawResults, kws, fetchedAt) {
   const kept = [];
   for (const r of rawResults) {
@@ -129,6 +170,7 @@ function assemble(rawResults, kws, fetchedAt) {
     if (slugs.length) kept.push({ ...rec, slugs });
   }
   const bias = arityBias(kept, kws);
+  const events = eventConcentration(kept);
   return {
     _doc: 'openFDA Food Enforcement (recall) events for the Cost Index events lane (ADR-011), FILTERED to recalls whose product text mentions a tracked ingredient (slug-tagged). Each row is a DATED, DOCUMENTED recall, surfaced as CO-OCCURRENCE beside a price window — NEVER an asserted price cause, magnitude, or forecast. The slug tag is a whole-word text match on the product, not an inferred link. Source: openFDA (US FDA), public domain (CC0). Built by scripts/fetch-food-recalls.mjs --live on the operator Mac. READ coverageLimits BEFORE COMPARING SLUGS: this instrument is blind to whole categories, so a zero here is not a safety record.',
     source: `openFDA Food Enforcement — ${ENDPOINT}`,
@@ -149,6 +191,9 @@ function assemble(rawResults, kws, fetchedAt) {
         ...bias,
         note: `Multi-word ingredient names are tagged ~${bias.biasRatio ?? '?'}x less often than single-word names (${bias.meanTagsPerMultiWordSlug} vs ${bias.meanTagsPerSingleWordSlug} tags per slug), and ${bias.zeroTagMultiWord} of ${bias.multiWordSlugs} multi-word slugs have zero tags versus ${bias.zeroTagSingleWord} of ${bias.singleWordSlugs} single-word slugs. This is a property of the MATCHER, not of food safety.`,
       },
+      // MEASURED, not asserted — recomputed on every build. The second reason counts are not
+      // comparable: a slug's total is frequently one outbreak's notice paperwork.
+      eventConcentration: events,
       freshCommodityFilter: 'Finished and processed goods are dropped on purpose (isFreshCommodity), so this is a raw-commodity recall record, not total recall volume for an ingredient.',
       notComparable: 'Recall COUNTS are not comparable across slugs of different categories. Use within-slug over time, never slug-vs-slug as an exposure ranking.',
     },
@@ -211,6 +256,19 @@ function selfTest() {
   eq('no divide-by-zero when nothing matched', arityBias([], bkw).biasRatio, null);
   eq('empty keyword set does not throw', arityBias([], []).pctOfTagsToSingleWord, null);
   eq('bias ships inside coverageLimits', typeof cl.nameArityBias === 'object' && /property of the MATCHER/.test(cl.nameArityBias.note), true);
+  // event concentration — a slug's count is often one outbreak's paperwork
+  const ec = eventConcentration([
+    { event_id: 'E1', slugs: ['a'] }, { event_id: 'E1', slugs: ['a'] }, { event_id: 'E1', slugs: ['a'] },
+    { event_id: 'E1', slugs: ['a'] }, { event_id: 'E1', slugs: ['a'] }, { event_id: 'E2', slugs: ['b'] },
+  ]);
+  eq('counts notices vs distinct events', [ec.notices, ec.distinctEvents], [6, 2]);
+  eq('max notices in one event', ec.maxNoticesPerEvent, 5);
+  eq('single-notice events counted', ec.singleNoticeEvents, 1);
+  eq('names the most concentrated slug (>=5 notices)', ec.mostConcentratedSlugs[0], 'a (5/5)');
+  eq('a slug under 5 notices is not ranked', ec.mostConcentratedSlugs.length, 1);
+  eq('empty input does not throw', eventConcentration([]).distinctEvents, 0);
+  eq('empty input yields a stated note, never a fake number', eventConcentration([]).note, 'No rows to measure.');
+  eq('event concentration ships inside coverageLimits', typeof cl.eventConcentration === 'object', true);
   // fresh-commodity gate — the honesty filter that keeps raw-ingredient recalls, drops finished goods
   eq('fresh cue → kept', isFreshCommodity('Fresh Cilantro and diced Onion tray, 12 oz'), true);
   eq('short commodity name → kept', isFreshCommodity('Romaine Lettuce 10 oz'), true);
@@ -282,7 +340,11 @@ function retag() {
   const shell = assemble([], kws, cur.fetchedAt);
   const out = {
     ...shell,
-    coverageLimits: { ...shell.coverageLimits, nameArityBias: { ...arityBias(recalls, kws), note: shell.coverageLimits.nameArityBias.note } },
+    coverageLimits: {
+      ...shell.coverageLimits,
+      nameArityBias: { ...arityBias(recalls, kws), note: shell.coverageLimits.nameArityBias.note },
+      eventConcentration: eventConcentration(recalls),
+    },
     fetchedAt: cur.fetchedAt,
     since: cur.since,
     fetched_total: cur.fetched_total,

@@ -17,6 +17,21 @@
       "zeroTagMultiWord": 42,
       "note": "Multi-word ingredient names are tagged ~5.54x less often than single-word names (1.61 vs 8.91 tags per slug), and 42 of 64 multi-word slugs have zero tags versus 29 of 104 single-word slugs. This is a property of the MATCHER, not of food safety."
     },
+    "eventConcentration": {
+      "notices": 718,
+      "distinctEvents": 315,
+      "medianNoticesPerEvent": 1,
+      "maxNoticesPerEvent": 70,
+      "singleNoticeEvents": 209,
+      "mostConcentratedSlugs": [
+        "iceberg-lettuce (5/5)",
+        "red-onion (20/31)",
+        "romaine-lettuce (11/18)",
+        "cauliflower (6/10)",
+        "cabbage (15/26)"
+      ],
+      "note": "718 notices are only 315 distinct events (median 1, max 70). A slug's count is frequently ONE outbreak: iceberg-lettuce (5/5), red-onion (20/31), romaine-lettuce (11/18), cauliflower (6/10), cabbage (15/26). Counting notices counts outbreak paperwork, not exposure."
+    },
     "freshCommodityFilter": "Finished and processed goods are dropped on purpose (isFreshCommodity), so this is a raw-commodity recall record, not total recall volume for an ingredient.",
     "notComparable": "Recall COUNTS are not comparable across slugs of different categories. Use within-slug over time, never slug-vs-slug as an exposure ranking."
   },
