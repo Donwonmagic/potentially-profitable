@@ -387,6 +387,28 @@ free only where its output requires no human read*.
      template slots. Publish `revisedClaim`, never `claim`. Two duplicate pairs (30≡31, 32≡33);
      hypotheses 10, 22 and 30 carry no code and cannot be recomputed from the salvage at all.
 
+20c. **Two more defects mined from the kill corpus, both operator-facing, both fixed/gated.**
+   - **The hedge verdict was comparing series to themselves.** Substitutes with no tracked price
+     series of their own — broccolini, savoy cabbage, canned tomatoes, garlic powder, celery root —
+     have `subSlug` fall back to the PARENT slug, so co-movement asked "how often did broccoli
+     co-move with broccoli?" and returned **0 of 6**. Impossible; a series always moves with itself.
+     The classifier published that degenerate zero as `verdict:"hedge"`. **The file proved the bug
+     against itself:** clams/scallops hit the identical condition and correctly carry `hedge:null`,
+     because seafood is excluded from the co-movement corpus so the lookup never ran. 11 withdrawn
+     to `hedge:null` — the substitutions stay, the price claim goes.
+   - **Every hedge/mirror verdict on the site is computed from n ≤ 6** (min 1, median 6, max 6;
+     78 hedge vs 16 mirror). At that width **"hedge" is the DEFAULT** — "mirror" needs co-movement
+     across most of ≤6 moves. Dangerous for same-species pairs: **kale/collard-greens** (both
+     *Brassica oleracea*, hedge at 2/6) and **ribeye/striploin** (same animal, adjacent primals, one
+     cattle market, hedge at 2/6 — if beef moves, both move). 19 registered with dated reasons in
+     `check-substitute-hedge-integrity.mjs`. **Rewriting a verdict is a FOUNDER CALL — open.**
+   - **Recall matcher arity bias, now measured and self-computing.** Single-word ingredient names get
+     **8.91 tags/slug**; multi-word get **1.61** — a **5.5× gap**, 90% of all tags to single-word
+     names, and **42 of 64 multi-word slugs have ZERO tags** vs 29 of 104 single-word. Cause is
+     structural: `matchSlugs` needs the whole display name verbatim, so "salmon skin on fillet" can
+     only tag a description using that exact sequence. `arityBias()` recomputes it on every build
+     and embeds it in `coverageLimits`, so the disclosure can never drift from the data.
+
 20b. **THE FINDING THE RUN ACTUALLY PAID FOR — Cost Pulse tells operators "nothing to call" on an
    ingredient that jumped 44% inside the window used to make that call.** Not from a hypothesis;
    from mining what the kill panel *computed* while destroying them. Mechanism, verified end to
