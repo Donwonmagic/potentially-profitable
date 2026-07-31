@@ -158,6 +158,11 @@ const MENU_FIELDS = [
   { name: 'comover', type: 'string', description: 'A checked co-moving ingredient in the tracked record; blank where none — co-occurrence, never a measured cause.' },
   { name: 'comover_shared', type: 'integer', description: 'Number of shared large-move episodes with the co-mover.' },
   { name: 'comover_of', type: 'integer', description: 'Total large-move episodes considered for the co-mover test.' },
+  // Added 2026-07-31. A blank `comover` conflated two facts a consumer cannot otherwise separate:
+  // the ingredient was never MEASURED (no detected episode to anchor on), or it was measured and
+  // its tightest companion fell under the documented 50% bar. Only the second says anything about
+  // the market. Per ADR-023 — an instrument that returns nothing must publish the discriminator.
+  { name: 'comover_withheld_reason', type: 'string', description: "Why `comover` is blank: 'not_measured' (no detected price episode to anchor a co-mover test on) or 'below_threshold' (measured; the tightest companion shared under half of this ingredient's own moves). Blank when a co-mover IS published.", constraints: { enum: ['not_measured', 'below_threshold', ''] } },
 ];
 const LIC_CCBY = [{ name: 'CC-BY-4.0', path: CCBY, title: 'Creative Commons Attribution 4.0 International' }];
 

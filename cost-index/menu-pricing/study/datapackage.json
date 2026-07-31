@@ -130,8 +130,8 @@
       "format": "csv",
       "mediatype": "text/csv",
       "encoding": "utf-8",
-      "bytes": 6568,
-      "hash": "sha256:e34b21fe6ace50ae1e9d4b212ec0e9b1d5c0e1e17abe40ecf5dc82cfc485980c",
+      "bytes": 7640,
+      "hash": "sha256:c260b25af1a91095a2905b0941ae7f820601092738d5ba54217dbc0e0dc6b22f",
       "dialect": {
         "csvddfVersion": 1.2,
         "delimiter": ",",
@@ -238,6 +238,18 @@
             "name": "comover_of",
             "type": "integer",
             "description": "Total large-move episodes considered for the co-mover test."
+          },
+          {
+            "name": "comover_withheld_reason",
+            "type": "string",
+            "description": "Why `comover` is blank: 'not_measured' (no detected price episode to anchor a co-mover test on) or 'below_threshold' (measured; the tightest companion shared under half of this ingredient's own moves). Blank when a co-mover IS published.",
+            "constraints": {
+              "enum": [
+                "not_measured",
+                "below_threshold",
+                ""
+              ]
+            }
           }
         ],
         "primaryKey": "slug"
