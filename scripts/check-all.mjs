@@ -685,6 +685,13 @@ const CHECKS = [
   // event→price causation, and wholesale-as-delivered-price framing across EN+ES.
   ['Cost-research honesty self-test','check-cost-research.mjs','--self-test'],
   ['Cost-research honesty','check-cost-research.mjs'],
+  // JSONL corpus integrity (2026-07-31). census-imports.jsonl shipped 21 unparseable lines
+  // ({"hs":"...","year":2010,"rows":} — a truncated empty result). Nothing caught it because every
+  // consumer skips a bad line by design (build-ingredient-state-record.mjs:47,
+  // build-ingredient-codes.mjs:398), so a corrupt record and an absent one became the same
+  // nothing. Repaired to "rows":[] — which preserves that the fetch HAPPENED. See ADR-023.
+  ['JSONL corpus self-test','check-jsonl-integrity.mjs','--self-test'],
+  ['JSONL corpus integrity','check-jsonl-integrity.mjs'],
   // Menu-pricing dataset freshness (2026-07-31). researchTargets() emits SIX published artifacts
   // and is imported by NOTHING — its own header claimed otherwise until today, which is likely why
   // the gap survived. The two DATA artifacts are recomputed here and drift is a red, so the freeze
