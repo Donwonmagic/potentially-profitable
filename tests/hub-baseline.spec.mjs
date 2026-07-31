@@ -37,7 +37,10 @@
 //
 //   3. The visual baselines were of the old site: the retired nav
 //      (Work / Studio / Reach Don), the cream palette, the pre-
-//      repositioning hero copy. Regenerated against the current hub.
+//      repositioning hero copy. Regenerated against the current hub — but see
+//      the parked note on that test. The new baselines are the right page
+//      rendered by the wrong Chromium, so the assertion is held rather than
+//      tuned to pass. The two logic tests above are green on CI.
 
 import { test, expect } from '@playwright/test';
 
@@ -97,7 +100,32 @@ test.describe('Tool hub baseline', () => {
     expect(hiddenCount).toBe(allCount - shownCount);
   });
 
-  test('hub visual snapshot — desktop', async ({ page }) => {
+  // PARKED 2026-07-31 — the baseline cannot be generated where this was fixed.
+  //
+  // The two logic tests above were repaired against a real local repro and are
+  // green on CI. This one is different in kind: it needs a byte-faithful
+  // screenshot, and CI renders with Chromium build 1234 (whatever
+  // @playwright/test@1.x resolves to that day) while the container this was
+  // fixed in has 1194 and cannot download the other — the environment has no
+  // route to the Chrome-for-Testing CDN. A baseline captured here is the right
+  // SITE and the wrong RENDERER, so it fails on the runner for reasons that
+  // have nothing to do with the hub.
+  //
+  // The two ways to make it pass from here were both worse than parking it.
+  // Raising maxDiffPixelRatio until the mismatch fits under it would tune the
+  // threshold to the answer, and the number would then be meaningless for the
+  // regressions it exists to catch. Deleting the test would drop the coverage
+  // silently. Parking it says the true thing: the assertion is sound, the
+  // fixture is not, and here is exactly who can fix it.
+  //
+  // TO RESTORE (one command, on any machine that can install browsers):
+  //   npx playwright install chromium
+  //   npx playwright test tests/hub-baseline.spec.mjs --update-snapshots
+  // then drop this test.fixme() and commit the three PNGs. The committed
+  // baselines were already refreshed to the CURRENT hub in this commit — they
+  // were still showing the retired Work/Studio nav and the cream palette — so
+  // whoever does this starts from the right page and only re-renders it.
+  test.fixme('hub visual snapshot — desktop', async ({ page }) => {
     await page.goto('/tools/', { waitUntil: 'networkidle' });
     // Mask the .ctx-pill because its content depends on localStorage
     // history; the rest of the layout should be stable.
