@@ -201,40 +201,40 @@ only). r4 → 0. apps/api 3190 green. **All 6 insight surfaces in `apps/api/src/
 currency-scope hardened transitively (3 surfaces depend on it; no defects surfaced across the vendor-relationships
 + ap-pacing audits that read it).
 
-And **cross-surface consistency — 🔶 OPEN after r1→r6 (2026-07-25, r7 running)** (product-only; the first audit
+And **cross-surface consistency — 🔶 OPEN after r1→r7 (2026-07-25, r8 running)** (product-only; the first audit
 that is NOT about one surface — it asks whether the surfaces AGREE WITH EACH OTHER). Runbook:
-`runbooks/audits/cross-surface-2026-07.md`. **r1: 16 confirmed → 10 distinct; r2: 14 → 9; r3: 16 → 11; r4: 14;
-r5: 20 confirmed with ZERO refuted → 16; r6: 19 confirmed with ZERO refuted → 9.** **All r1–r6 defects are fixed
-and pushed.** apps/api **3242** green, apps/web **126** green.
+`runbooks/audits/cross-surface-2026-07.md`. **r1: 16→10 distinct; r2: 14→9; r3: 16→11; r4: 14; r5: 20 confirmed
+with ZERO refuted→16; r6: 19 confirmed with ZERO refuted→9; r7: 23 confirmed / 3 refuted→13.** **All r1–r7
+defects are fixed and pushed.** apps/api **3250** green, apps/web **126** green.
 
-**The pattern, stated plainly after six rounds:** *every* round has found defects created by the previous round's
-fixes — the VR-4 dedup, the bill-steadiness relabel, the ap-pacing disclosure, r3's currency column, r4's glyph
-sweep, r5's org election. Not carelessness: each fix was correct on the surface it was made. **A cross-surface
-property cannot be maintained one surface at a time.** The only thing that holds it is a gate that walks EVERY
-caller — the coalesce-basis gate over all seven routes, the org-election gate over all seven, the identity map as
-the single emission point.
+**What seven rounds established.** The defect was never "the insight pages disagree with each other." It is that
+**the product has more money-rendering surfaces than it has places where the rule is written down.** Six rounds
+inside /insights converged on a currency-and-completeness discipline; r7 pointed a lens at everything else — the
+Ledger, /today, the inbox, settings, the item catalog, the inventory surfaces, the exports and the emails — and
+that one lens found more than the other two combined. The fix is the same every time: one rule, one emission
+point, and a gate that walks every caller.
 
-**The method now runs the code.** Postgres 16 ships in the container (recipe in the runbook), so the aggregate SQL
-is executed rather than read — which caught a `GROUP BY` ordinal r3 had introduced (both hub spend cards dead) and
-a category filter sitting inside the currency-election CTE (the Food card rendering sixty times the whole, in a
-glyph the page had just disclaimed). r5 added a third lens that also checks every claimed cross-surface *identity*
-across weekday, timezone and date-format variation.
+**And every round has found defects created by the previous round's fixes** — the VR-4 dedup, the bill-steadiness
+relabel, the ap-pacing disclosure, r3's currency column, r4's glyph sweep, r5's org election, r6's own stub
+default. Not carelessness: each was correct on the surface it was made. **A cross-surface property cannot be
+maintained one surface at a time.**
 
-**r6's headline was not an insight page at all.** `/documents` — the Ledger, the product's primary surface —
-stamped `$` on every invoice and summed across currencies in its footer, while carrying each row's real currency
-unread. The same invoice read "$500.00" there and "1 invoice in another currency was not counted" on every
-/insights page — and the Ledger is where the operator lands FROM those pages. r6 also found that r5's org-wide
-currency election never reached the per-surface computes: executed against one ledger, six surfaces reported
-"USD, 8 excluded" while the 15-day pricing scorecard reported "EUR, 40 excluded" — the exact inverse. And it found
-that r5's budget fix corrected the FORMATTING while leaving the cross-currency comparison still being asserted:
-/insights showed an "Over" chip beside its own sentence saying the pacing was not a real comparison.
+**r7's headlines.** A budget verdict on /today asserting *"Food over budget by $200.00"* six inches above a spend
+card reading *"Food $2,400 of $3,000"* and a line saying one invoice in another currency was not counted — the
+verdict summed every currency raw, with no soft-delete guard. Its single-currency leg needs no foreign invoice at
+all: soft-deleting a duplicate leaves the extraction row, so ordinary cleanup made the verdict quote money the
+ledger, the spend card and the panel all exclude. **A page cannot count itself** — the Ledger printed its 50-row
+page as the org's invoice count and, because `loaded < total` was then false, hid the button that would have
+fetched the other 3,950, beside a CSV export returning all of them. The signed accountant package asserted an
+invoice count that matched the PDF folder and ledger.csv but not ledger.iif. And the inventory purchases roll-up
+blended currencies into one WAC — verified on Postgres at **three times** the real unit cost — which the valuation
+ladder then labelled **MEASURED**, the strongest claim this product makes.
 
-**Lessons paid for, in order:** a test can pass on the one input where the bug cannot exist (the mid-week past-due
-gate pinned a Monday `asOf`); store parity is not only about SQL (a stub's convenient "USD" would have scoped a
-EUR-only org to dollars); and fixing the formatting is not fixing the claim.
+**Method now: execute, don't read.** Postgres 16 ships in the container (recipe in the runbook). Four production
+bugs across r4–r7 were invisible to reading — a nonexistent column, a `GROUP BY` ordinal that shifted, a category
+filter inside a currency-election CTE, and the blended WAC.
 
-**Not converged:** each round's fixes held, but every round the lenses reach one hop further out — now the Ledger,
-the inbox, settings, the inventory surfaces and the export paths.
+**Not converged:** each round's fixes held, but every round the lenses reach one hop further out.
 
 **⚠ Container-revert count: four.** The fourth also wiped `node_modules` (`pnpm install --frozen-lockfile`
 restores it) and the scratchpad, and cost the uncommitted half of a round's work. Push every increment.
