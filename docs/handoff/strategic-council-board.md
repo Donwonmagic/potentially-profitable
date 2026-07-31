@@ -201,38 +201,40 @@ only). r4 → 0. apps/api 3190 green. **All 6 insight surfaces in `apps/api/src/
 currency-scope hardened transitively (3 surfaces depend on it; no defects surfaced across the vendor-relationships
 + ap-pacing audits that read it).
 
-And **cross-surface consistency — 🔶 OPEN after r1→r8 (2026-07-25, r9 running)** (product-only; the first audit
+And **cross-surface consistency — 🔶 OPEN after r1→r9 (2026-07-25, r10 running)** (product-only; the first audit
 that is NOT about one surface — it asks whether the surfaces AGREE WITH EACH OTHER). Runbook:
 `runbooks/audits/cross-surface-2026-07.md`. **r1: 16→10 distinct; r2: 14→9; r3: 16→11; r4: 14; r5: 20 confirmed
-with ZERO refuted→16; r6: 19 confirmed with ZERO refuted→9; r7: 23/3→13; r8: 30 confirmed / 1 refuted→17.**
-**All r1–r8 defects are fixed and pushed.** apps/api **3259** green, apps/web **126** green.
+with ZERO refuted→16; r6: 19 confirmed with ZERO refuted→9; r7: 23/3→13; r8: 30/1→17; r9: 25 confirmed→16.**
+**All r1–r9 defects are fixed and pushed.** apps/api **3261** green, apps/web **126** green.
 
-**r8's finding was r7.** Six of its seventeen defects were the previous round's own work — two fixes that shipped
-new bugs and four that stopped one caller short. The category-filtered Ledger inherited an org-wide total and a
-Load More button that could never terminate, on a path that was CORRECT before r7 touched it. The budget verdict's
-currency-election window was hand-rolled right after a comment promised it matched the shared one; it was off by a
-month all year and in December collapsed to a single month, re-acquiring the very defect it had just fixed.
+**r9 is the round that stopped patching — read this one.** The soft-delete rule (deleting an invoice sets
+`documents.deleted_at` and LEAVES the extractions row) had been re-learned four rounds running: r7 added it to one
+surface, r8 gave it an owner and applied it to two stores, r9 found five MORE unguarded reads. So r9 built a gate
+instead of a fifth patch — `scripts/check-soft-delete-coverage.mjs`, wired into ci.yml, which walks every SQL
+string in apps/api that reads `extractions` or `line_item_observations` and fails unless it carries the guard or
+is listed with a stated reason (statement-level, so an exemption only excuses the query someone looked at).
 
-**The lesson, now the loop's operating rule:** *a fix is done when every CALLER of the rule it changed has been
-walked* — and the durable form is a shared function or predicate **with a test asserting every caller uses it**,
-not a comment claiming two implementations agree. That is what r8 built: one exported election window, one
-`soft-delete-sql.ts` owning both predicates, one identity map, one currency-scope helper — each gated.
+**It found 20 unguarded reads on its first run — fifteen of which no audit round had raised.** Plate cost was
+pricing ingredients off deleted invoices; the count sheet took its case size from one; category suggestions were
+driven by them; the item detail *linked to* them from a table sitting directly below a block that excluded them.
 
-**Two pre-existing HIGHs no reading would have found.** /today's KPI strip queried `updated_at` on `extractions`,
-a column no migration ever added — a PARSE error, so the whole statement failed and every card rendered an
-em-dash beside an /inbox printing the same queue as a number. And the entire observation layer had no soft-delete
-guard, so a deleted invoice kept setting an item's WAC, its "last paid" price and the food-cost Purchases leg
-forever (verified on Postgres: unguarded 4, guarded 3).
+**The lesson, and the change to how this loop works:** eight rounds of "walk every caller" did not lower the
+defect rate. A gate did, in one run. **Where a rule recurs across rounds, the deliverable is the GATE, not the
+patch.** r10 is pointed at two jobs: attack the new gate (it is load-bearing now — can it be fooled?), and name
+the next class dense enough to deserve one.
 
-**What eight rounds established.** The defect was never "the insight pages disagree." It is that **the product has
-more money-rendering surfaces than it has places where the rule is written down** — and that **a cross-surface
-property cannot be maintained one surface at a time.** Every round has found defects created by the previous
-round's fixes, each correct where it was made.
+**Also in r9:** a THIRD currency election, in `catalog-store`, collapsed into the shared one; /today and /inbox
+counting different review queues because the KPI strip re-typed a narrower needs-review rule than the Ledger (and
+the two columns cannot re-converge, since the bulk "mark" action writes only `documents.status`); and three r8
+fixes that were still wrong — including a cross-currency guard in the statement matcher that **could never fire**,
+because the route never gave the statement side a currency.
 
-**Method: execute, don't read.** Postgres 16 ships in the container (recipe in the runbook). Six production bugs
-across r4–r8 were invisible to reading — a nonexistent column ×2, a `GROUP BY` ordinal that shifted, a category
-filter inside a currency-election CTE, a blended WAC at three times the real unit cost, and an unguarded
-observation layer.
+**What nine rounds established.** The defect was never "the insight pages disagree." It is that **the product has
+more money-rendering surfaces than it has places where the rule is written down** — and **a cross-surface property
+cannot be maintained one surface at a time.** Every round has found defects created by the previous round's fixes.
+
+**Method: execute, don't read.** Postgres 16 ships in the container (recipe in the runbook). Seven production bugs
+across r4–r9 were invisible to reading.
 
 **Not converged.** ⚠ Container-revert count: four (one also wiped `node_modules` — `pnpm install
 --frozen-lockfile` restores it — and the scratchpad). Push every increment.
