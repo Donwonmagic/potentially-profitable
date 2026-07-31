@@ -52,6 +52,24 @@ every gate measures the PRESENCE OF A SHAPE rather than whether the system is gr
 - `e14ca9b` (product) — `regret_rate` was structurally 0-or-1 (3-token writer vs 4-token demote vs a
   substring vendor filter), and the demote route's docstring falsely claimed the extract service consults
   the event. Fixed the filter to match its own comment; corrected the docstring.
+- **PR #245 (product) and PR #536 (storefront) are MERGED.** #245 green; #536 merged with three reds the
+  founder accepted (a July-dispatch figure-hash collision, a Playwright hub baseline, an lhci
+  accessibility check — see open item 6).
+- `b4983d1fc` (storefront) + `c191888` (product) — **ADR-020**, the Ledger launch deferral to 2027, and
+  the copy that still said otherwise. `LAUNCH_DATE_ISO` called itself "the canonical date … to check the
+  strings against" while nothing checked them, so ten hand-written copies of 2026-11-13 sat in
+  `copy.ts`/`copy.es.ts` and all silently became false. Constant is now `null`, the strings say "private
+  beta", and `check-launch-date-claims.mjs` binds the two: null fails any launch-date claim, a set date
+  fails any claim that disagrees. 18 self-test assertions; 5/5 mutations caught.
+- `bc7b99285` (storefront) — **ADR-021**, the retirement path (open item 2, now CLOSED). A dead feed's
+  last-good state is archived by `build-cost-index.mjs` at the moment of the drop;
+  `build-cost-index-pages.mjs` renders a terminal EN+ES page ("this series stopped publishing, last
+  measured `<date>`", history preserved, out of the basket, URL alive); `check-cost-index-orphans.mjs`
+  accepts it ONLY when the published page carries the `cost-index:retired` marker, so the archive can
+  never mute the gate for a page nobody rebuilt. A dollar figure prints only if that point would have
+  shipped while live — the NOAA seafood is `basis:'index'` at half of delivered wholesale, and retiring
+  a page must not be the back door that finally prints it as a price. Retirement is self-clearing: a
+  revived feed drops its own archive entry. Hub gains a "Retired series" section.
 
 **⚠ OPEN — NEEDS THE FOUNDER, do not paper over:**
 1. **18 frozen feeds; the deploy gate is red for a real reason.** 8 are UNEXPECTED (not the documented
@@ -60,10 +78,12 @@ every gate measures the PRESENCE OF A SHAPE rather than whether the system is gr
    2026-06-01 while `_lastReviewed` is 2026-07-29. squid hits the 120d cliff ~2026-08-29. Decide per feed:
    re-source, or move into `KNOWN_SOURCE_LATENT` with a dated comment. Then promote
    `check-cost-index-series-freshness.mjs --strict`.
-2. **No retirement path exists for a cost-index ingredient page.** scallops drops on the next keyed refresh.
-   "Re-source" is closed for it (KNOWN_SOURCE_LATENT) and "retire deliberately" has no runbook, no
-   precedent, no verification — while deleting the directory would satisfy the orphan gate SILENTLY.
-   Needs either a terminal last-good render or a `cost-index-retired.json` registry + 301, decided once.
+2. ~~**No retirement path exists for a cost-index ingredient page.**~~ **CLOSED 2026-07-31 by ADR-021**
+   (`bc7b99285`). Terminal last-good render, built rather than hand-authored. **Watch the next refresh:**
+   `scallops` is the first real retirement and it happens on the NEXT scheduled run, not on the
+   2026-08-29 cliff the roster predicted — its 2026-05-01 point fails on `stale-level`. The whole
+   sequence (archive → terminal page → green orphan gate) should complete inside that one run. It has
+   been verified only against a simulated cliff in this container, never a real keyed refresh.
 3. **$19/location is unbillable.** No SKU, no fourth `priceIdForTier` branch, no `STRIPE_PRICE_*` field, no
    `trial_period_days`, and checkout quantity is `seats` with Solo capped at 1. Paid GA 2026-11-13 with
    "billing live on launch day" locked. The gate now counts this down in CI output every run.
@@ -73,6 +93,35 @@ every gate measures the PRESENCE OF A SHAPE rather than whether the system is gr
    recomputed). Fix belongs in workflow ORDERING. Not touched: it changes a published headline number.
 5. **Trust surfaces lapsed (product):** warrant canary last signed 2026-05-10 (81d); the Q2 transparency
    doc still says "final report at 2026-07-01", 29 days past its own published date.
+6. **Three inherited storefront CI reds from PR #536**, merged with founder approval, still unresolved:
+   a July-dispatch figure-hash collision (a content call, needs a rewritten figure), a Playwright
+   hub-baseline diff, and an lhci accessibility check. The branch differs from main in only 7 files and
+   `tools/`, `tests/`, `assets/`, `data/` are byte-identical, so the latter two are probably flakes —
+   inferred from the diff, NOT reproduced (no network to re-run, no local Playwright).
+7. **`check-cost-index-sync` is RED on `main` right now, so the Cloudflare deploy is blocked.** 24 stale
+   points, all on a 2026-04-01 tail that crossed the 120-day cliff on 2026-07-30 — one day after the
+   last refresh (2026-07-29) ran. **No action needed and none should be taken:** replaying the next
+   refresh against the committed data clears all 24 and leaves `_lastReviewed=2026-07-31`. The
+   carry-forward filter and PR #536's `mergePoints` fix already handle it. If it is still red after the
+   next scheduled run, that is a real finding.
+8. **NOAA is dark and keyless** — 15 of the 18 frozen feeds are NOAA, which is a source outage, not a
+   secrets problem. Diagnosing it needs one live run on the operator's Mac:
+   `node scripts/fetch-cost-index-sources.mjs --live --out /tmp/ci.json`, then the
+   `source family/families FAILED` block from the output.
+9. **Cross-repo PAT (approved, not yet minted).** A fine-grained PAT scoped `contents: write` to
+   `Muntin-Invoice-Decoder` only, stored as a secret in `potentially-profitable`, lets the storefront
+   refresh re-vendor and commit the product's cost-index snapshot. Without it, the 30-day snapshot
+   cliff stays a manual one-command chore (`node apps/api/scripts/vendor-cost-index.mjs`).
+
+**Method note — the simulation paid for itself three more times (2026-07-31).** Building ADR-021 meant
+replaying the cliff rather than reasoning about it: freeze the clock, hand the builder an empty artifact,
+run the whole page pipeline, then mutate the result. It predicted 6 drops and produced **13**; the seven
+extras drop on `stale-level`, which the dead-feed roster did not model at all — so `parsley` and
+`yellow-squash`, both reading three days old, were 29 days from silent retirement while the roster called
+them live. The same replay on today's clock showed the first retirement is `scallops` on the NEXT run,
+not 2026-08-29. And rendering the terminal page surfaced a live falsehood in the edible-yield block —
+"your true cost per usable pound runs higher than the purchase price" on the eight ingredients whose
+yield is 1.0. None of the three were the thing being built.
 
 **Method note that paid for itself twice:** the adversarial pass is not ceremony. Round 1 refuted a
 proposal to trim `points[]` (it would have deleted the only per-ingredient dead-feed evidence in CI and
