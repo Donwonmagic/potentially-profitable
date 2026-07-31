@@ -387,6 +387,19 @@ free only where its output requires no human read*.
      template slots. Publish `revisedClaim`, never `claim`. Two duplicate pairs (30≡31, 32≡33);
      hypotheses 10, 22 and 30 carry no code and cannot be recomputed from the salvage at all.
 
+20d. **ADR-023 generalizes — applying its lens to the NEXT dataset found a fifth instance
+   immediately.** `cost-index/co-movement.json` publishes **80 anchors while the Cost Index tracks
+   102 ingredients**, and nothing in the file said the other 22 existed. Absent ≠ measured-and-found-
+   independent; those are opposite claims and only one is true. A reader looking up shrimp found
+   nothing and would conclude shrimp co-moves with nothing. **The absences are exactly the clusters
+   `audit-panel-independence.mjs` found**: 15 seafood (NOAA ~5 reads, too short to detect an
+   episode), 5 AMS Atlanta herbs (flat 26 reads), ground-beef (BLS, 5 reads), sweet-potato. Fixed
+   with a computed `coverage` block. **The existing self-test was checking exclusion but not
+   disclosure, so a silent drop passed CI** — the new assertions pin the honesty, not the shape.
+   **Lesson: the lens is reusable. Point it at any published dataset and ask what a zero or an
+   absence there cannot distinguish.** Datasets not yet swept: seasonality, menu-pricing,
+   events-detected, the NASS/Census/EIA corpus builders.
+
 20c. **Two more defects mined from the kill corpus, both operator-facing, both fixed/gated.**
    - **The hedge verdict was comparing series to themselves.** Substitutes with no tracked price
      series of their own — broccolini, savoy cabbage, canned tomatoes, garlic powder, celery root —
