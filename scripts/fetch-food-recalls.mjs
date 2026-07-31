@@ -51,10 +51,19 @@ function normalize(r) {
   };
 }
 
+// Fold accents to ASCII BEFORE the [^a-z ] strip. Without this, "Jalapeño" lowercases to
+// "jalapeño", the strip turns "ñ" into a SPACE, and the keyword becomes "jalape o" — a phrase
+// that appears in no product text on earth. The slug then reports zero recalls forever, and the
+// zero reads as a food-safety fact instead of a string bug. Found 2026-07-31 by the discovery
+// run's kill panel: 4 openFDA rows name jalapeños (one is "Supreme Jalapenos Diced") and none
+// carried the jalapeno slug. Must be applied to BOTH sides — keyword and product text — or an
+// accented product description fails to match an un-accented keyword.
+const deburr = (s) => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '');
+
 // Derive one match phrase per ingredient from its display name (drop parentheticals + non-letters).
 function ingredientKeywords(isr) {
   return (isr.ingredients || isr || []).map((r) => {
-    const kw = String(r.name || '').toLowerCase().replace(/\([^)]*\)/g, ' ').replace(/[^a-z ]/g, ' ').replace(/\s+/g, ' ').trim();
+    const kw = deburr(r.name).toLowerCase().replace(/\([^)]*\)/g, ' ').replace(/[^a-z ]/g, ' ').replace(/\s+/g, ' ').trim();
     return { slug: r.slug, kw };
   }).filter((x) => x.slug && x.kw && x.kw.length >= 3 && !STOPWORDS.has(x.kw));
 }
@@ -63,7 +72,7 @@ function ingredientKeywords(isr) {
 // PRODUCT ONLY — never the reason field, which is full of allergen warnings ("undeclared cashew")
 // that would false-match a sunflower recall to cashew. Returns the matched slugs.
 function matchSlugs(product, kws) {
-  const p = ' ' + String(product || '').toLowerCase().replace(/[^a-z ]/g, ' ').replace(/\s+/g, ' ').trim() + ' ';
+  const p = ' ' + deburr(product).toLowerCase().replace(/[^a-z ]/g, ' ').replace(/\s+/g, ' ').trim() + ' ';
   const hits = [];
   for (const { slug, kw } of kws) if (p.includes(' ' + kw + ' ') || p.includes(' ' + kw + 's ')) hits.push(slug);
   return hits;
@@ -76,7 +85,7 @@ function matchSlugs(product, kws) {
 const FRESH_CUE = /\b(fresh|raw|whole|organic|bulk|sprouts?|leafy|bunch|clamshell|shell[- ]?on|head|cut|diced|sliced|peeled|produce)\b/;
 const PROCESSED_CUE = /\b(rings?|pudding|cookies?|candy|chocolate|lassi|sauce|dressing|snacks?|bars?|drinks?|beverage|dessert|cakes?|cheesecake|pie|ice[- ]?cream|sherbe?r?t|sorbet|gelato|custard|froyo|flavou?red|seasoning|marshmallow|cereal|granola|chips?|crackers?|jerky|bread|muffins?|smoothie|latte|syrup|jam|jelly|spread|dip|salad|burgers?|fillets?|sandwich|sandwiches|patty|patties|pizza|wraps?|meals?|kit|entree|hummus|deli|tacos?|burritos?|sushi|rolls?|nuggets?|tenders?|dumplings?)\b/;
 function isFreshCommodity(product) {
-  const p = String(product || '').toLowerCase();
+  const p = deburr(product).toLowerCase();
   if (PROCESSED_CUE.test(p)) return false;
   const words = p.replace(/[^a-z ]/g, ' ').split(/\s+/).filter(Boolean).length;
   return FRESH_CUE.test(p) || words <= 5;
@@ -91,10 +100,20 @@ function assemble(rawResults, kws, fetchedAt) {
     if (slugs.length) kept.push({ ...rec, slugs });
   }
   return {
-    _doc: 'openFDA Food Enforcement (recall) events for the Cost Index events lane (ADR-011), FILTERED to recalls whose product text mentions a tracked ingredient (slug-tagged). Each row is a DATED, DOCUMENTED recall, surfaced as CO-OCCURRENCE beside a price window — NEVER an asserted price cause, magnitude, or forecast. The slug tag is a whole-word text match on the product, not an inferred link. Source: openFDA (US FDA), public domain (CC0). Built by scripts/fetch-food-recalls.mjs --live on the operator Mac.',
+    _doc: 'openFDA Food Enforcement (recall) events for the Cost Index events lane (ADR-011), FILTERED to recalls whose product text mentions a tracked ingredient (slug-tagged). Each row is a DATED, DOCUMENTED recall, surfaced as CO-OCCURRENCE beside a price window — NEVER an asserted price cause, magnitude, or forecast. The slug tag is a whole-word text match on the product, not an inferred link. Source: openFDA (US FDA), public domain (CC0). Built by scripts/fetch-food-recalls.mjs --live on the operator Mac. READ coverageLimits BEFORE COMPARING SLUGS: this instrument is blind to whole categories, so a zero here is not a safety record.',
     source: `openFDA Food Enforcement — ${ENDPOINT}`,
     license: 'CC0-1.0 / public-domain-usgov',
     framing: 'co-occurrence, never cause',
+    // An absence in this file is an INSTRUMENT LIMIT, not evidence of safety. Publishing a
+    // cross-slug recall comparison without these caveats would assert a fact the source cannot
+    // support. Surfaced 2026-07-31 when the discovery run's kill panel used recall counts to
+    // compare withheld vs published ingredients and the comparison collapsed on this.
+    coverageLimits: {
+      jurisdiction: 'openFDA Food Enforcement covers FDA-regulated food only. Meat, poultry, and processed egg products are USDA/FSIS jurisdiction and are ABSENT from this endpoint entirely — verified: across the tracked panel, beef, pork, and every chicken slug have zero product-text mentions in the full result set. A zero recall count for those slugs is guaranteed by the source, not measured.',
+      matching: 'Slug tags come from a whole-word text match on the product description. An ingredient named only in the reason field, spelled unusually, or referenced by a brand name is not tagged.',
+      freshCommodityFilter: 'Finished and processed goods are dropped on purpose (isFreshCommodity), so this is a raw-commodity recall record, not total recall volume for an ingredient.',
+      notComparable: 'Recall COUNTS are not comparable across slugs of different categories. Use within-slug over time, never slug-vs-slug as an exposure ranking.',
+    },
     fetchedAt: fetchedAt || null,
     since: SINCE,
     fetched_total: rawResults.length,
@@ -129,6 +148,18 @@ function selfTest() {
   eq('no partial-word false positive', matchSlugs('Onionskin paper wrap', kws), []);
   eq('matches a two-word phrase', matchSlugs('Butter Lettuce clamshell', kws), ['butter-lettuce']);
   eq('generic word "butter" is stopworded out of ingredientKeywords', ingredientKeywords({ ingredients: [{ slug: 'butter', name: 'Butter (AA, bulk)' }] }).length, 0);
+  // accent folding — the "jalape o" class of silent zero (regression, 2026-07-31)
+  eq('accented display name folds to an ASCII keyword', ingredientKeywords({ ingredients: [{ slug: 'jalapeno', name: 'Jalapeño' }] })[0].kw, 'jalapeno');
+  const jkw = [{ slug: 'jalapeno', kw: 'jalapeno' }];
+  eq('un-accented product text matches', matchSlugs('Supreme Jalapenos Diced 7 OZ', jkw), ['jalapeno']);
+  eq('accented product text matches the same keyword', matchSlugs('Fresh Jalapeño peppers, bulk', jkw), ['jalapeno']);
+  eq('accent folding does not create a false positive', matchSlugs('Fresh Poblano peppers, bulk', jkw), []);
+  eq('accented name survives the fresh-commodity gate', isFreshCommodity('Fresh Jalapeño peppers, bulk'), true);
+  // coverage limits must ship with the data, or a zero reads as a safety record
+  const cl = assemble([], [], null).coverageLimits;
+  eq('coverageLimits present', typeof cl === 'object' && cl !== null, true);
+  eq('discloses the USDA/FSIS jurisdiction gap', /FSIS/.test(cl.jurisdiction), true);
+  eq('warns counts are not comparable across slugs', /not comparable/i.test(cl.notComparable), true);
   // fresh-commodity gate — the honesty filter that keeps raw-ingredient recalls, drops finished goods
   eq('fresh cue → kept', isFreshCommodity('Fresh Cilantro and diced Onion tray, 12 oz'), true);
   eq('short commodity name → kept', isFreshCommodity('Romaine Lettuce 10 oz'), true);
@@ -169,7 +200,40 @@ async function live() {
   console.log(`fetch-food-recalls: ${out.matched} of ${out.fetched_total} recalls since ${SINCE} mention a tracked ingredient → wrote ${OUT}.`);
 }
 
+/**
+ * Offline PARTIAL repair. Re-runs slug matching over the rows already stored in
+ * data/food-recalls.json, whose product text is preserved verbatim. Fixes rows that are in the
+ * file but under-tagged (the jalapeño class of bug) without needing network or the operator Mac.
+ *
+ * PARTIAL, and the limit is structural: rows that matched NO slug at fetch time were never
+ * written, so a recall that only ever mentioned jalapeños is not in the file and cannot be
+ * recovered here. Only --live restores those. Reports both numbers so the gap stays visible.
+ */
+function retag() {
+  const p = path.join(repo, OUT);
+  const cur = JSON.parse(fs.readFileSync(p, 'utf8'));
+  const kws = ingredientKeywords(loadIsr());
+  let changed = 0;
+  const added = {};
+  const recalls = (cur.recalls || []).map((r) => {
+    const next = matchSlugs(r.product, kws);
+    const before = (r.slugs || []).slice().sort().join(',');
+    const after = next.slice().sort().join(',');
+    if (before !== after) {
+      changed++;
+      for (const s of next) if (!(r.slugs || []).includes(s)) added[s] = (added[s] || 0) + 1;
+    }
+    return { ...r, slugs: next };
+  }).filter((r) => r.slugs.length);
+  const out = { ...assemble([], kws, cur.fetchedAt), fetchedAt: cur.fetchedAt, since: cur.since, fetched_total: cur.fetched_total, matched: recalls.length, recalls };
+  fs.writeFileSync(p, JSON.stringify(out, null, 2) + '\n');
+  console.log(`fetch-food-recalls --retag: re-tagged ${cur.recalls.length} stored rows; ${changed} changed.`);
+  console.log('  slugs gaining tags:', Object.keys(added).length ? JSON.stringify(added) : 'none');
+  console.log('  NOTE: rows that matched nothing at fetch time were never stored and are NOT recoverable offline — run --live for those.');
+}
+
 if (process.argv.includes('--self-test')) { selfTest(); }
+else if (process.argv.includes('--retag')) { retag(); }
 else if (process.argv.includes('--live')) { live().catch((e) => { console.error('fetch-food-recalls --live failed:', e.message); process.exit(1); }); }
 else {
   const kws = ingredientKeywords(loadIsr());

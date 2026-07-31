@@ -1,8 +1,14 @@
 {
-  "_doc": "openFDA Food Enforcement (recall) events for the Cost Index events lane (ADR-011), FILTERED to recalls whose product text mentions a tracked ingredient (slug-tagged). Each row is a DATED, DOCUMENTED recall, surfaced as CO-OCCURRENCE beside a price window — NEVER an asserted price cause, magnitude, or forecast. The slug tag is a whole-word text match on the product, not an inferred link. Source: openFDA (US FDA), public domain (CC0). Built by scripts/fetch-food-recalls.mjs --live on the operator Mac.",
+  "_doc": "openFDA Food Enforcement (recall) events for the Cost Index events lane (ADR-011), FILTERED to recalls whose product text mentions a tracked ingredient (slug-tagged). Each row is a DATED, DOCUMENTED recall, surfaced as CO-OCCURRENCE beside a price window — NEVER an asserted price cause, magnitude, or forecast. The slug tag is a whole-word text match on the product, not an inferred link. Source: openFDA (US FDA), public domain (CC0). Built by scripts/fetch-food-recalls.mjs --live on the operator Mac. READ coverageLimits BEFORE COMPARING SLUGS: this instrument is blind to whole categories, so a zero here is not a safety record.",
   "source": "openFDA Food Enforcement — https://api.fda.gov/food/enforcement.json",
   "license": "CC0-1.0 / public-domain-usgov",
   "framing": "co-occurrence, never cause",
+  "coverageLimits": {
+    "jurisdiction": "openFDA Food Enforcement covers FDA-regulated food only. Meat, poultry, and processed egg products are USDA/FSIS jurisdiction and are ABSENT from this endpoint entirely — verified: across the tracked panel, beef, pork, and every chicken slug have zero product-text mentions in the full result set. A zero recall count for those slugs is guaranteed by the source, not measured.",
+    "matching": "Slug tags come from a whole-word text match on the product description. An ingredient named only in the reason field, spelled unusually, or referenced by a brand name is not tagged.",
+    "freshCommodityFilter": "Finished and processed goods are dropped on purpose (isFreshCommodity), so this is a raw-commodity recall record, not total recall volume for an ingredient.",
+    "notComparable": "Recall COUNTS are not comparable across slugs of different categories. Use within-slug over time, never slug-vs-slug as an exposure ranking."
+  },
   "fetchedAt": "2026-07-24T13:41:10.596Z",
   "since": "20200101",
   "fetched_total": 10082,
@@ -387,7 +393,8 @@
       "slugs": [
         "cheddar-cheese",
         "onion",
-        "spinach"
+        "spinach",
+        "jalapeno"
       ]
     },
     {
@@ -508,7 +515,8 @@
       "product_type": "Food",
       "slugs": [
         "onion",
-        "spinach"
+        "spinach",
+        "jalapeno"
       ]
     },
     {
@@ -3633,7 +3641,8 @@
       "states": "Indiana",
       "product_type": "Food",
       "slugs": [
-        "onion"
+        "onion",
+        "jalapeno"
       ]
     },
     {
@@ -4285,6 +4294,7 @@
       "product_type": "Food",
       "slugs": [
         "okra",
+        "jalapeno",
         "bacon"
       ]
     },

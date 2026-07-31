@@ -1,0 +1,970 @@
+{
+  "summary": "Adversarial kill panels for the 7 CONFIRMED findings only — reads already-computed results from the repo, runs no exec phase",
+  "agentCount": 28,
+  "logs": [
+    "PANEL DONE — clean 0, survives-weakened 0, killed 7, UNCOVERED 0 (panel did not return — NOT survivors)"
+  ],
+  "result": {
+    "counts": {
+      "confirmedTested": 7,
+      "survivedClean": 0,
+      "survivedWeakened": 0,
+      "killed": 7,
+      "uncoveredNotVerified": 0
+    },
+    "clean": [],
+    "weakened": [],
+    "killed": [
+      {
+        "index": 0,
+        "claim": "Named culinary substitutes co-move MORE than category-matched non-substitute pairs — the shared-episode rate for the {n}",
+        "fatal": [
+          {
+            "lens": "honesty-contract",
+            "problem": "The core statistic is the undirected pair score the site retired of record. `cavg(a,b)=(cdir(a,b)+cdir(b,a))/2` symmetrizes a measure that `cost-index/co-movement.json`'s `_doc`, `scripts/lib/cost-events-analysis.mjs:12-14` (\"never a global undirected pair count, which would over-imply a relationship\"), and ADR-015 Decision 1 all require to stay directed and anchored. ADR-015's own worked example of the asymmetry that must be preserved — \"chicken-breast→thigh 5/6 is not thigh→breast 5/5\" — is exactly the pair the finding leads with, collapsed into a 0.917 that exists in neither direction. Every headline number, the top-10 entanglement table, and the 16-zero-pairs list rest on that measure. Not fixable by caveat; requires re-derivation in the directed measure."
+          },
+          {
+            "lens": "prior-art",
+            "problem": "The claim is prior art twice over and its residual novelty is definitional. Externally, Pindyck & Rotemberg (1990) already own \"a co-moving swap does not hedge\" — and it is already reference [29] in /cost-index/menu-pricing/study/index.html, whose own evidence table (offset ~159227) records exactly that myth as corrected. Internally, the site already publishes the strictly-more-useful per-pair form: 94 hedge/mirror verdicts with k/n in data/ingredient-depth.json, `comover`/`comover_shared`/`comover_of` in cost-index/menu-pricing.json (chicken-breast → \"Chicken thigh\", 5 of 6), \"moved with chicken thigh\" on five live event cards, a full study section \"The swap that helps versus the swap that mirrors,\" an FAQ, an llms.txt owned question, and completed task #36. The only incremental element — the category-matched control — is carried by pairs that are the same species or the same animal (6 Lactuca sativa lettuce pairs, cherry tomato/tomato, broccoli/cauliflower, chicken breast/thigh = 8 of its own top 10), tested against different-crop controls, so it restates a botanical and butchery identity rather than a market relationship."
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "claim": "The public record as currently shipped CANNOT determine whether episodes are clustering more over time: the detected-eve",
+        "fatal": [
+          {
+            "lens": "prior-art",
+            "problem": "Not a discovery and not operator-actionable. The headline premise (topN=6 caps the file) is an already-published design decision — ADR-011-notable-price-events-surface.md:36 \"top-6\", data/cost-index-events.json params.topN=6 and _doc \"the top 6 biggest SUSTAINED departures\" — so \"it is not a census\" is a restatement, not a finding. It then refutes a temporal-clustering claim that appears nowhere on the site (checked cost-index/events/index.html, build-cost-index-pages.mjs, co-movement.json), so no shipped sentence is corrected. Its one operator-relevant positive result, that episodes co-occur far more than chance, is already the site's published position (co-movement.json headline.pct_with_company=94; the \"part of a broad market move\" line in evCohortLine) and is confounded by the produce seasonality the engine's own comment already names — the finding's caveats admit the surrogate does not preserve calendar-month position and the panel is mostly produce. Nothing here changes an operator's purchase, contract, portion, or menu price, and the author withdraws the only novel statistic himself (\"I would not publish it as 'episodes are becoming rarer'\")."
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "claim": "The 11 ingredients withheld for reason='flat' are not flat markets — they are dead price-discovery: their public wholesa",
+        "fatal": [
+          {
+            "lens": "statistical",
+            "problem": "The permutation test's exchangeability assumption is violated and the headline median is a single-desk artifact: 5 of the 10 Group A series are one AMS Boston herb table (identical start 2024-01-10, identical n=130, same source, synchronized change weeks — tarragon/thyme both change 2025-01-22 and 2025-01-29; oregano/thyme both 2026-01-21 and 2026-01-28), a 6th (rutabaga) is the same desk, and the reported median (2 of 51 changes) is set by that block. Effective n for Group A is about 6 reporting blocks, not 10, so \"0 of 10,000 relabelings, p = 0.00000\" is not a valid p-value. Compounding it, the label itself is a near-deterministic function of the outcome (reason='flat' <- degenerate <- halfWidthPct < 0.003 <- the same one-step residual vector whose nonzero fraction IS the change rate, cost-lockfloat.js:63 / cost-conformal.js:155-157), so the null is falsified by construction and the discovery window only defers it via one-year persistence the finding itself documents. And the claim is factually false for 3 of the 10 — kale 17/51 (17 distinct values in 52 rows), collard-greens 19/51 in discovery, carrot 11/51 are not dead quotes; the non-independent median hides a bimodal group."
+          },
+          {
+            "lens": "honesty-contract",
+            "problem": "The claim's central assertion — \"are not flat markets — they are dead price-discovery,\" with \"administratively sticky quotes\" pinned on named USDA AMS desks — is an unsourced causal attribution that the finding's own caveat 7 says the statistic cannot make (\"it shows the reported number did not move, and those are exactly the two things this statistic cannot separate\"). It fits none of the three permitted patterns in docs/fact-check.md, and it publishes something stronger than the site's own shipped copy for the same label (tools/_shared/cost-lockfloat-ui.js:44: \"flat and stale — nothing to call\"). Compounding it, the contamination half is largely a restatement of the classifier's definition (cost-lockfloat.js:73-75 with cost-conformal.js:150-157 force low-change-rate series into the lock bucket), so the second sentence is an artifact presented as a discovery."
+          },
+          {
+            "lens": "prior-art",
+            "problem": "The headline restates copy the site already publishes for this exact set — \"flat and stale — nothing to call\" (tools/_shared/cost-lockfloat-ui.js:44, live on /tools/cost-pulse/) — and restates the labeling rule itself: all 11 flat items carry halfWidthPct/upPct/downPct exactly 0 in data/cost-lockfloat.json, meaning the label is assigned because the quote did not move. Staleness in thin AMS terminal quotes is additionally standard, source-annotated practice (the AMS FV020 reports flag \"offerings light\" on basil, oregano, rosemary, thyme, cilantro). And it is not actionable: these 11 are already withheld, and the implied action is verbatim the site's existing withhold CTA at cost-lockfloat-ui.js:520-521."
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "claim": "Food-safety event exposure is statistically indistinguishable between the dark (withheld) and the published set of the 1",
+        "fatal": [
+          {
+            "lens": "alternative-explanation",
+            "problem": "The outcome variable is a display-name word-match count, not recall exposure: 86.5% of all slug-event pairs accrue to single-word keywords (7.18/slug vs 1.20/slug for multi-word), and the two groups differ 62.2% vs 46.0% in single-word share. The published \"unbiased\" estimate of 4.757 vs 4.048 (ratio 1.1752) reverses to 3.882 vs 4.048 (0.9592) when the shrimp/salmon aliases the finding itself identified are collapsed, and falls to 0.7633 when additionally standardized to PUBLISHED's keyword-arity mix — a swing driven entirely by measurement construction. Compounding it, two DARK slugs are hard zeros for non-safety reasons: `jalapeno` (\"Jalapeño\" → keyword \"jalape o\", unmatchable, from the `[^a-z ]` strip at scripts/fetch-food-recalls.mjs:57) and `ground-beef` (FSIS recalls categorically absent from openFDA; 0 of 718 rows mention it)."
+          },
+          {
+            "lens": "honesty-contract",
+            "problem": "The measuring instrument is blind to different categories in each arm, and the blindness is perfectly confounded with the grouping. openFDA excludes all USDA/FSIS meat and poultry recalls: PUBLISHED holds 11 of 63 such slugs (chicken-breast, whole-turkey, pork-shoulder, ribeye, striploin, beef-tenderloin, ...) all at 0 events, vs 1 of 37 in DARK (ground-beef, 0 rows) — deflating the PUBLISHED numerator ~6.5x harder and putting the direction of the reported 1.09 rate ratio in question. Simultaneously DARK is 15/37 seafood vs 0/63, deflated by a different mechanism (PROCESSED_CUE drops fillets?/sushi/rolls?/deli at fetch-food-recalls.mjs:78; whole-salmon, whole-halibut, whole-lobster, whole-crab, whole-trout, tuna-loin, salmon-fillet are two-word keyword phrases that never appear in FDA product text, all 0 events). The label-permutation p cannot see either gap because permuting labels permutes the blind spots with them, and the finding's own taggability check is computed from the same matcher, so it is circular (ADR-022). Publishing this as \"food-safety event exposure\" speaks a differentially-blind name-match proxy as the construct — the import-VALUE-never-volume rule's exact failure mode."
+          },
+          {
+            "lens": "prior-art",
+            "problem": "The finding restates, as a measured result, a caveat muntin.digital already publishes verbatim on the very surface the data comes from — /open/recalls/ and cost-index/food-recalls-by-ingredient.json._doc both already say the recall tag is \"never joined to a price … not a sourcing signal\" — using two datasets the site already ships publicly, to negate a belief no operator, agency, or trade publication holds. Compounding it, the claim misnames its own independent variable: 33 of the 37 \"dark\" slugs have live cost-index pages, 32 publish a price level and 21 carry a full backtested series, while two \"published\" slugs (pork-belly, striploin) have no page at all — so \"the public price record happens to cover\" is not what the withhold flag encodes, and the operator choice the claim negates does not exist."
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "claim": "The lock/cushion/float band fails disproportionately during the exact episodes it is being trusted to survive: across th",
+        "fatal": [
+          {
+            "lens": "statistical",
+            "problem": "The exposure variable is misconstructed, and the error is differential. data/cost-index-events.json `date` is the episode PEAK and `durationDays` is the shoulder-to-shoulder span STRADDLING it (scripts/build-cost-index-events.mjs:99-107, verified by re-deriving all 337 durations with 0 mismatches), but the analysis scores [date, date + durationDays] — an interval whose mean 45.9% lies past the true episode end. 43.0% of \"inside\" tests (1,664/3,873) are not in an episode and miss at 22.78%, below the outside baseline; 1,615 genuinely in-episode run-up tests, the highest-miss stratum in the data at 50.71%, are scored as controls. Correctly aligned, R = 2.01 (coverage 51.5% inside, 53.4% for lock) — so the headline is conservative, but the published qualification reverses: true mid-episode R = 1.663 (coverage 59.9%), not the 1.068 \"recovery\" the revised claim builds its operator rule on. That rule tells a lock operator the band is trustworthy again inside a sustained plateau when it is not."
+          },
+          {
+            "lens": "alternative-explanation",
+            "problem": "The event windows are mis-registered against the episodes they name. build-cost-index-events.mjs sets `date` to the PEAK and `durationDays` to the full two-sided shoulder span (l..r around that peak), but the finding joins on [date, date + durationDays] — anchored at the peak, running forward by the whole span. The peak sits a median 47.1% into its episode (94.7% of events not at the start), so 1,664 of the 3,873 \"inside\" tests (43.0%) fall entirely outside the true episode, while the entire run-up — the highest-miss stratum, R = 2.0714 (1,025/2,001) — is scored as \"outside.\" The headline sentence \"1,416 of 3,873 prints inside detected event windows\" is therefore false, and the edges/interior decomposition that the revised claim's operator rule depends on measures a window that never contained the onset and is ~43% phantom post-episode tail (that tail alone: R = 1.1452, at the finding's own 1.10 calendar floor). Correct registration gives R = 2.0124 — a different number and a different rule."
+          },
+          {
+            "lens": "honesty-contract",
+            "problem": "The publishable payload — \"the band is least reliable while a price is entering or leaving a departure\" — is conditioned on a hindsight-only label. Event windows come from a CENTERED ±26-week median (build-cost-index-events.mjs:45,114) with forward-expanded durations (:99–104), so \"inside/edge of an episode\" is not knowable for ~6 months, while the band's coverage is leakage-free walk-forward by construction (cost-conformal.js:77, :16/126/149). An operator can only act on the rule by guessing that a departure is starting — a direction/timing call the surface's own certified copy gate forbids (check-lockfloat-copy.mjs cases direction-will-move / direction-more-likely / opportunity-lock-a-low) and the no-forecast rule bars. Compounding it, the honesty stamp \"every level is public wholesale reference, never delivered price\" is false for 2 of the 63 series: pork-belly (BLS WPS022104) and vegetable-oil (FRED PCU3112243112243 / BLS WPU0278) are PPI INDEX series with basis \"index\" and level:null — 536 of 65,932 tests — and our own data/cost-index-sources.json says of vegetable-oil \"No free oil price LEVEL exists … honestly directional.\" Both sit in the lock bucket the claim headlines."
+          },
+          {
+            "lens": "prior-art",
+            "problem": "The headline relationship is already published by this site: ADR-022 `coverage-regime-qualifier` (Accepted 2026-07-28) ships the inside-vs-outside-episode coverage split on 134 EN/ES ingredient pages via `scripts/inject-coverage-regime-note.mjs`, gated at `scripts/check-all.mjs:620,641`, stating \"77.7% outside a detected price episode and 60.7% during one — a miss rate about 1.8x higher.\" This finding is the window-26 restatement of that window-52 claim — and ADR-022 Decision 2 explicitly names and rejects the lockfloat `replay` strip as the substrate for this very measurement (\"It is a different band\"). Compounding it: the direction is standard conformal-under-distribution-shift prior art (ACI / EnbPI / volatility clustering), conceded in the finding's own caveat 1, and the conditioning label is uncomputable in real time (centered ±26-week baseline at `build-cost-index-events.mjs:114`, two-sided duration expansion at `:99-106`, retrospective top-6 ranking at `:119-124`), so the refined operator rule cannot be executed at the moment of decision."
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "claim": "For the tracked ingredients that have both a noise-gated cheap month and a 12-month import-value seasonal index, the che",
+        "fatal": [
+          {
+            "lens": "statistical",
+            "problem": "A debunking null published on a test that cannot support a debunk. The advertised sensitivity is wrong (power at the stated 62% MDE is 0.562, not 0.80; the 80%-power MDE is ~0.68 at n=50 and ~0.70 at the design-effect-corrected n_eff=41.6, ICC 0.0713 by category, plus 4 pairs sharing byte-identical import_seasonal_index so only 46 distinct calendars exist). The pooled null is a cancelling mixture the analysis flagged but never tested: 31 rows with >=10y customs history go 35.5% hits and mean circular distance 3.61, while 14 rows with <=4y go 64.3% and 1.93 (Mann-Whitney p=0.0058 uncorrected), so the headline 2.96~3.0 is an average of two opposite numbers. And the statistic is biased toward the null by construction — customs VALUE = price x quantity under inelastic ag demand makes a heavy-arrival month register as a low-value month — which the finding's own caveat concedes (\"cannot adjudicate the folk model as stated\") in direct contradiction of its headline sentence."
+          },
+          {
+            "lens": "alternative-explanation",
+            "problem": "The pooled null is an aggregation/resolution artifact, not a property of the two calendars. Splitting the 50 rows by the granularity of the import series they are built from — 6-digit HS buckets vs 10-digit HTS statistical lines, a field (`import_hs6`) present in the same data file — yields mean circular distances of 3.72 (n=25, p_align = 0.9924, anti-aligned) and 2.20 (n=25, p_align = 0.0121, aligned). The headline 2.96 is the average of the two; the split itself is significant (permutation p = 0.0013 on the collinear span split, p = 0.0091 after deduping to 46 distinct HS codes). The claim \"the tracked import-value record gives no support for reading a price trough off import timing\" is false for the half of the sample with item-specific customs lines. The finding named this exact hazard in its caveats and dismissed it as \"not separable with these fields,\" which is factually incorrect."
+          },
+          {
+            "lens": "honesty-contract",
+            "problem": "The claim adjudicates a VOLUME proposition (\"heavy-arrival window\") using a customs-VALUE series that structurally cannot see volume — the exact value-never-volume breach for which this repo's own adversarial audit already deleted this identical pairing (`buyclock` = cheapest_month × import peak; build-ingredient-state-record.mjs:370-373, 2026-07-18-corpus-expansion-overnight.md:163-165). Compounding it, the finding's own caveat concedes the null is \"partly mechanical\" because value = price × quantity drags import value down in the same month a price falls, and states outright that it \"cannot adjudicate the folk model as stated about physical arrivals\" — yet the revisedClaim omits that caveat and concludes the record \"gives no support\" anyway. A null that is partly an artifact of the metric's construction cannot be published as evidence against the proposition it was built against."
+          },
+          {
+            "lens": "prior-art",
+            "problem": "The finding is a restatement of content the site already publishes: scripts/lib/seasonality-fusion.mjs mechanismFor() lines 76-79 performs the identical import_seasonal_index[cheapest_month-1] test, and open/seasonality/index.html lines 595-596 already publishes the resulting split (28 counter-phase / 42 not-import-aligned / 14 no-import-calendar of 84) along with the exact value-never-volume caveat and the \"one is not causing the other\" line. The same 1.05 threshold on the finding's own 50 rows gives 20/50 = 40%, matching the published 28/70 = 40%. On top of that, docs/handoff/2026-07-18-corpus-expansion-overnight.md lines 163-165 records that the repo's own 4-lens audit already dropped this exact read (`buyclock`) because it breached value-never-volume and \"added nothing to a buy the cheapest_month field already decides.\" No operator decision changes, and the entry itself concedes the import-VALUE series cannot adjudicate a claim about physical arrivals."
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "claim": "An FDA recall on an ingredient does not co-occur with a detected departure in that ingredient's wholesale reference seri",
+        "fatal": [
+          {
+            "lens": "statistical",
+            "problem": "The power certification that distinguishes this from an uninformative null fails on the finding's own pre-registered threshold. Effective n is 162, not 263, when the design effect is measured on the block-shuffle null that actually sets the critical value (null SD 0.01540 vs naive 0.01031, DEFF 2.23) rather than on a bootstrap of the observed statistic with 9 hits in 6 clusters. 162 < the 191 the finding says is required, so its own VOID branch triggers. Direct simulation against the design's real empirical critical value (0.0691, not the assumed 0.0600) gives power against an exact doubling of 0.625 with event-clustered planting and 0.704 even under a maximally generous iid alternative — never the claimed 0.80. Eighty-percent power begins at roughly 2.2x the null, not 1.84x. The study therefore cannot rule out a doubling of the large-move rate, which is precisely the effect an operator would act on, so the headline \"no advance warning\" outruns the evidence."
+          },
+          {
+            "lens": "alternative-explanation",
+            "problem": "Exposure and outcome are measured in different geographies and at different supply-chain positions, and the corpus cannot fix it. 83% of observations are priced off a single terminal market (LA 53.9%, Boston 29.3%), while 91.5% of recall notices are regional, not nationwide — 242 of 362 observations (66.9%) pair a recall whose distribution states exclude the state of the market setting the price. data/food-recalls.json carries no origin/production field, and many exposures are downstream fresh-cut processors whose recalls remove nothing from wholesale supply (the dataset's own _doc: \"a whole-word text match on the product, not an inferred link\"). The dilution is asymmetric — mismatched pairs still generate chance hits under the shuffled null but cannot generate causal hits under the alternative — so a doubling among valid exposures moves the pooled rate only 0.0397→0.0528, requiring n≈1,500 against the effective n=263 they claim as adequate. Their own VOID branch fires, and \"a measured absence rather than an untested one\" is unsupported."
+          },
+          {
+            "lens": "honesty-contract",
+            "problem": "The exposure variable is a whole-word product-text tag that open/recalls/index.html itself publishes as \"not a supply or price link\" (composite and store-brand goods that merely name the ingredient) — 8 of the 9 headline co-occurrences are rum, supplements, tamales, cream cheese, leeks and sliced cucumber, not the tagged commodity — so \"an FDA recall on an ingredient\" misdescribes the instrument; and the analysis performs exactly the recall-to-price join that ADR-015's 2026-07-24c addendum forbids and that scripts/check-open-lane-honesty.mjs:59-64 enforces as a required published literal (\"never joined to a price\") in the page lede, meta/OG description, schema.org Dataset description, dataset note, and the recall section on every cost-index/<slug>/ page."
+          },
+          {
+            "lens": "prior-art",
+            "problem": "The conclusion is not new on either axis. Internally, /home/user/potentially-profitable/open/recalls/index.html line 331 already publishes \"a recall is never a price signal\" and scripts/build-open-recalls-page.mjs enforces a no-price guard around it, so the finding restates the site's own live editorial doctrine. Externally, USDA ERS (spinach 2006: -$202.5M spinach, +$141.9M lettuce) and the meat-recall demand literature established the economics long ago — and they predict a DOWN move in the implicated commodity plus an UP move in substitutes. The code tests up-episodes only (`if x[\"direction\"] == \"up\"`), reports any-direction 11/362 with no null, and never tests the down direction, so the finding scores a null on the one direction prior art already said would be null. It then pools ~200 single-notice lot recalls (median 1 notice/event across 315 events) with the two genuine national outbreaks, and stratifies only by FDA hazard class (Class I = 426/718 notices), which is not a scale or publicity proxy — so the null is also a dilution of exactly the event class known to move produce markets."
+          }
+        ]
+      }
+    ],
+    "uncovered": [],
+    "allVerdicts": [
+      {
+        "index": 0,
+        "lens": "statistical",
+        "verdict": "survives-weakened",
+        "fatal": "none",
+        "caveat": "Publish the interval, not the point estimate. The durable effect is roughly +10 percentage points, about 2x — not +17.17pp / 2.8x. Clustering the 30 strata into their 14 genuinely independent ingredient components (one component contains all six lettuce pairs plus both cabbage pairs) and bootstrapping gives a 95% CI of [+10.1pp, +21.0pp] on the difference and [2.07x, 4.12x] on the ratio. Any published sentence must carry that lower bound or say \"roughly twice\"; \"2.8 times\" as a bare figure is an over-claim on a point estimate that moves to ~+10pp under every de-clustering, outlier-removal, and drop-rule-restoring variant (one-per-anchor +10.30pp; drop lettuce +10.93pp; drop top-5 +9.76pp; cross-commodity-only +9.85pp).\n\nThree further requirements. (1) State the effective sample size honestly as 14 independent ingredient clusters, not 30 pairs or 23 anchors — the permutation p of 0.0001 assumes 30 independent strata and is optimistic; at one-stratum-per-cluster the median p is 0.0010 with a 95th percentile of 0.0130. (2) Fix the denominator inconsistency: the \"32 same-category / 6 cross-category\" split comes from the relaxed 38-pair design while the headline 26.9%/9.8% comes from the 30-pair primary — say so explicitly or the two paragraphs do not reconcile. (3) Drop the two-decimal precision on individual pairs. Detection caps at six episodes per ingredient and 65 of 80 anchors sit at exactly n=6, so the measure moves in steps of 0.167; \"chicken breast to chicken thigh sits at 0.92\" should read \"shared five of six\" or similar, and it should be named as the single most influential observation in the result (removing it alone moves the headline from +17.17pp to +14.72pp). Retain the existing shared-reporting caveat verbatim — my analysis shows the effect survives removing same-commodity varieties (+9.85pp on 17 cross-commodity pairs, p=0.00055), which strengthens that caveat's honesty but does not retire it.",
+        "reasoning": "I reproduced the stratum construction exactly from the three named files (30 strata, mean treatment 0.26944, mean per-stratum control 0.09772, obs +0.17173) and then ran six attacks. Five of the six failed to dent it; the sixth kills the magnitude, not the effect.\n\nATTACK 1 — STRUCTURAL OPPORTUNITY / SHIFTING DENOMINATOR. This was my best shot and it failed cleanly. `data/cost-index-events.json` has wildly heterogeneous history spans: 63 slugs start 2001 (~25y) but 27 start 2024/2025 (span.years as low as 1.2). Two ingredients whose price histories barely overlap CANNOT share an episode, so if substitute partners systematically had longer-overlapping spans than controls, the whole effect would be a coverage artifact. There IS an asymmetry — mean structural ceiling (fraction of the anchor's events whose ±6wk window intersects the partner's span) is 0.9667 for treatment vs 0.8938 for controls. But conditioning it away does nothing: restricting BOTH arms to full-overlap pairs only (23 strata) gives +17.58pp, p<5e-5 — slightly LARGER. Opportunity-normalising (v/ceiling) gives +16.94pp, p<5e-5. Not a span artifact.\n\nATTACK 2 — DENOMINATOR ASYMMETRY IN k/n. cavg is (k_ab/n_a + k_ba/n_b)/2, so a small-n partner can only score 0 or 1 and would inflate. Mean n_b = 5.567 vs mean n_c = 5.737; treatment has 2 of 30 partners with n<=2, controls 9 of 251. The asymmetry runs slightly the wrong way for the finding and is far too small to matter.\n\nATTACK 3 — SELECTION ON THE DEPENDENT VARIABL"
+      },
+      {
+        "index": 0,
+        "lens": "alternative-explanation",
+        "verdict": "survives-weakened",
+        "fatal": "none",
+        "caveat": "Do not publish +17.17pp / 2.76x as the headline. Publish ~+10pp / ~2.2x (n=19, p=0.0003) as the number, and disclose the decomposition in the same breath: 11 of the 30 pairs are varieties or cuts of one reported commodity (five lettuce×lettuce pairs, chicken-breast×chicken-thigh, chicken-thigh×whole-chicken, three cabbage-family pairs); those 11 average 0.402 against 0.113 controls, the other 19 average 0.193 against 0.089. State that green-leaf and red-leaf lettuce print the identical carton price in 29.3% of their 1,312 common weeks (r=0.939, median ratio 1.000) — for that pair \"shares price episodes\" is close to a restatement of \"AMS quotes them as one line.\" Do not lead with chicken-breast→chicken-thigh 0.92: it is 17% of the whole headline gap from a single pair, and data/cost-index-sources.json flags chicken-thigh's AMS spec as STAGED with the item term unconfirmed. Conversely, correct the finding's own framing on two points: the shared-terminal-report confound is real but small (same-market controls 0.138 vs cross-market 0.091, and treatment gets no lift from sharing a market), and the \"soft authoring contamination\" worry is testably wrong-signed (the substitute pairs left with subSlug:null average 0.361, above the treatment mean). Also add what the finding does not carry: coverage/vintage density explains 0.98pp and shared seasonal calendar 2.29pp of the gap — say so, because a reader will otherwise assume seasonality is the whole story.",
+        "reasoning": "I hunted for a mundane mechanism that reproduces +17.17pp / 2.76x without any substitute→entanglement relationship. Four candidates, three dead, one that survives and forces the headline down.\n\nDEAD 1 — coverage/vintage/density artifact. Anchors have wildly different histories (data/cost-index-history.json: 61 of 80 span 2001–2026 at ~1,313 weekly points, but chicken-breast/chicken-thigh/whole-chicken/whole-turkey are 200 points 2022-08-29→2026-06-22 and bok-choy is 129 points 2024–2026). Two short-window items get their 6 events forced into the same 4-year box while long-window controls scatter theirs over 25 years — a pure density lift. I re-placed each neighbor's events uniformly on its OWN date grid (counts and direction multiset preserved, 400 draws/pair, ±6wk window per data/cost-index-events.json params cohortWeeks=6): expected treatment 0.0575 vs expected control 0.0477, diff +0.0098. That is 5.7% of the observed gap. Not the mechanism.\n\nDEAD 2 — plain seasonality. build-cost-index-events.mjs uses a centered ±26-week median baseline (line ~46, BASE_WIN=26), which folds annual seasonality in but not sharp region-transition weeks, and substitutes share growing calendars. Month-preserving null (same month-of-year, random year within the item's own span): treatment 0.0715 vs control 0.0486, diff +0.0229 — 13% of the gap. Not the mechanism.\n\nDEAD 3 — treatment selected on the outcome. data/ingredient-depth.json has 162 of 296 substitute sub-rows with subSlug:null, and `hed"
+      },
+      {
+        "index": 0,
+        "lens": "honesty-contract",
+        "verdict": "kill",
+        "fatal": "The core statistic is the undirected pair score the site retired of record. `cavg(a,b)=(cdir(a,b)+cdir(b,a))/2` symmetrizes a measure that `cost-index/co-movement.json`'s `_doc`, `scripts/lib/cost-events-analysis.mjs:12-14` (\"never a global undirected pair count, which would over-imply a relationship\"), and ADR-015 Decision 1 all require to stay directed and anchored. ADR-015's own worked example of the asymmetry that must be preserved — \"chicken-breast→thigh 5/6 is not thigh→breast 5/5\" — is exactly the pair the finding leads with, collapsed into a 0.917 that exists in neither direction. Every headline number, the top-10 entanglement table, and the 16-zero-pairs list rest on that measure. Not fixable by caveat; requires re-derivation in the directed measure.",
+        "caveat": "If a directed re-derivation is ever published, it must carry ALL of: (1) the co-movement framing verbatim — directed, bounded, anchored: \"K of ingredient X's OWN N notable moves were shared by Y,\" never a symmetrized pair score, never a ranked pair table, never a network/matrix visual (ADR-015 Decision 1); (2) \"this is a WHOLESALE REFERENCE read against each ingredient's own baseline window — never a delivered or invoice price; two items that share wholesale timing can still behave differently on your invoice under contract, pack spec, and pass-through lag\"; (3) retrospective phrasing only — \"over the 39 scored pairs in the detected record,\" never \"N times more likely,\" and no hedging recommendation stated as a forward rule (menu-pricing.json: \"descriptive of the tracked record, never a forecast\"); (4) \"not a controlled study and no claim of statistical significance\" (check-cost-research.mjs OVERCLAIM_RE), with the +12.11pp restored-pool figure as the headline, not +17.17pp, per the finding's own outcome-correlated-drop-rule caveat; (5) the shared-reporting artifact stated IN the published sentence, not only in the appendix — five of the ten most-entangled pairs are lettuce varieties printed on the same AMS report out of the same shipping districts, so a shared episode may be a shared-collection artifact; (6) an explicit note that \"named culinary substitute\" is Muntin's own unsourced editorial list (296 sub-rows in data/ingredient-depth.json carry no source field) authored in the same repo as the co-movement data; (7) n=30 pairs from 23 distinct anchors, 51.9% of declared pairs unscoreable, and the cross-category arm (n=6, p=0.45) published as nothing at all. Precondition, not a caveat: every number must be moved out of the ephemeral /tmp scratchpad into scripts/lib/cost-research.mjs and grounded by check-cost-research.mjs before a single figure is typed into prose.",
+        "reasoning": "KILL — on the measure, not the arithmetic.\n\n1) FATAL: the statistic is the framing this site retired of record. The finding's unit of analysis is `cavg(a,b) = (cdir(a,b)+cdir(b,a))/2` (see the finding's own `code`), a symmetrized, undirected pair score. Three artifacts of record forbid exactly that. `cost-index/co-movement.json` `_doc`: \"A fraction of X's OWN history, never a global pair count... not a measured relationship.\" `scripts/lib/cost-events-analysis.mjs` lines 12-14: \"the measure is DIRECTED and BOUNDED ('in K of X's own N moves, Y co-moved') — never a global undirected pair count, which would over-imply a relationship.\" And `docs/editorial/decisions/ADR-015-open-data-explore-surfaces.md`, Decision 1: \"We do **not** publish a global undirected pair count (the discarded 'romaine ↔ red-leaf co-moved 46 times' framing invites a false sense of a measured relationship)\" — with the visual form restricted to anchored single-hue bars, \"never a correlation matrix, chord diagram, or network graph.\" A ranked table of undirected pair entanglement scores IS the retired object. Worse, ADR-015 uses as its worked example of the asymmetry that must be preserved: \"chicken-breast→thigh 5/6 is not thigh→breast 5/5.\" The finding's headline pair prints \"chicken breast<->chicken thigh 0.917 (5/6 and 5/5)\" — a number that exists in neither direction, manufactured by averaging the exact two values the ADR says must stay apart. Same for apple<->banana (directed 0.167 and 0.500, published as "
+      },
+      {
+        "index": 0,
+        "lens": "prior-art",
+        "verdict": "kill",
+        "fatal": "The claim is prior art twice over and its residual novelty is definitional. Externally, Pindyck & Rotemberg (1990) already own \"a co-moving swap does not hedge\" — and it is already reference [29] in /cost-index/menu-pricing/study/index.html, whose own evidence table (offset ~159227) records exactly that myth as corrected. Internally, the site already publishes the strictly-more-useful per-pair form: 94 hedge/mirror verdicts with k/n in data/ingredient-depth.json, `comover`/`comover_shared`/`comover_of` in cost-index/menu-pricing.json (chicken-breast → \"Chicken thigh\", 5 of 6), \"moved with chicken thigh\" on five live event cards, a full study section \"The swap that helps versus the swap that mirrors,\" an FAQ, an llms.txt owned question, and completed task #36. The only incremental element — the category-matched control — is carried by pairs that are the same species or the same animal (6 Lactuca sativa lettuce pairs, cherry tomato/tomato, broccoli/cauliflower, chicken breast/thigh = 8 of its own top 10), tested against different-crop controls, so it restates a botanical and butchery identity rather than a market relationship.",
+        "caveat": "If published over this objection, it may not be framed as a discovery and must carry all of: (1) attribution that the general result is Pindyck & Rotemberg (1990), already the study's reference [29], and that the site already answers this pair by pair — with links to data/ingredient-depth.json's hedge verdicts and menu-pricing.json's comover fields, so it reads as a quantification of a published position, not a new one; (2) the same-commodity disclosure, stated before any ratio: 8 of the 10 most-entangled pairs are the same botanical species or the same animal (6 lettuce pairs are all Lactuca sativa, cherry tomato/tomato, broccoli/cauliflower are Brassica oleracea, chicken breast/thigh are two cuts of one bird), so much of the gap is varietal and cut identity rather than market linkage; (3) absolute levels alongside the ratio, so it cannot contradict the live study line \"most named substitutes still move on their own clock and do hedge\" — mean 26.9%, median 0.167, and 16 of 39 scoreable pairs at zero shared episodes both directions; (4) the honest magnitude +10.30pp (one pair per anchor, p=0.0026) or +12.11pp (thin pools restored), never the +17.17pp headline, which the finding's own caveats attribute to an outcome-correlated drop rule; (5) the shared-reporting caveat — the 8 USDA AMS terminal markets are one methodology and the lettuce varieties are reported off the same reports out of the same shipping districts; (6) co-occurrence vocabulary per ADR-015 and cost-index/co-movement.json's framing field — never a coefficient, lead/lag, magnitude or cause; and (7) explicit suppression of the cross-category arm (n=6, p=0.45), which does not support \"pick your backup from a different category.\"",
+        "reasoning": "EXTERNAL PRIOR ART — the site already cites the paper that owns this claim. `/home/user/potentially-profitable/cost-index/menu-pricing/study/index.html` carries Pindyck & Rotemberg (1990), \"The Excess Co-Movement of Commodity Prices,\" Economic Journal 100(403):1173-1189, as reference [29] (JSON-LD at offset ~12600, reference list at ~192471). The study's own machine-readable evidence table records the myth that source corrects, at offset ~159227: \"The myth that price co-movement reveals an economic linkage - that co-moving goods are substitutes/complements, or that a co-moving swap hedges.\" That is verbatim the finding's framing (\"the standard trade advice 'swap to the cheaper one' is systematically weaker as a hedge than it is assumed to be\"). The prior art is 36 years old, peer-reviewed, and already on the page being written for. Separately, \"your hedge instrument correlates with your exposure\" is the textbook definition of basis risk in commodity risk management, and USDA AMS publishes a broiler cutout composite precisely because chicken parts price off one bird.\n\nINTERNAL PRIOR ART — the repo already ships the per-pair version, which is strictly more useful than the aggregate. (a) `/home/user/potentially-profitable/data/ingredient-depth.json` `_doc` reads \"substitutes with a price-hedge verdict computed from our own co-movement data\"; every substitute row carries `hedge: {verdict, share, k, n, thin}` — 78 `hedge` + 16 `mirror` verdicts already assigned across 296 sub-rows"
+      },
+      {
+        "index": 1,
+        "lens": "statistical",
+        "verdict": "survives-weakened",
+        "fatal": "Nothing fatal to the headline, which is a coverage/negative result resting on arithmetic I verified. But one sub-claim is fatally mis-specified and must be deleted before publication: the mean-cohort-size trend \"ratio 0.9929, 95% CI [0.9906, 0.9952]\" was fitted at the event level (implied SE 0.001196 on 2,466 rows) on an outcome that addCohorts (build-cost-index-events.mjs:150-159) defines as a mutual property of a co-occurrence cluster — m co-occurring events yield m near-identical cohort values, so the effective n is the number of clusters (order 10^2), not 2,466. The quasi-Poisson phi=2.774 correction addresses residual dispersion, not within-cluster dependence, and under-corrects by roughly 2-4x. Clustered at the year — the correct unit for a year trend, 25 cells — the slope is not distinguishable from the observed year-to-year scatter (t ≈ -1.5 to -2.2).",
+        "caveat": "Publish the coverage result; do NOT publish either downward trend as a signed effect. Specifically: (1) Replace \"both metrics run flat-to-slightly-DOWN\" and its two CIs with \"flat — no detectable rise in either metric,\" and state that the upper bound tolerates at most roughly +0.2%/yr. Delete the cohort-size CI [0.9906, 0.9952] entirely (unit-of-analysis error) and, if the rate trend is quoted at all, quote it with the dispersion floored at 1: CI [-0.01239, -0.00077], noting it is fitted on 25 year cells and that the detector's 12-observation min-separation (build-cost-index-events.mjs:122) caps the panel at ~244 events/yr against an observed ~99/yr, compressing exactly the turbulent years and biasing the slope downward. (2) The clustering result must read \"p < 0.0005 against a null that also destroys shared calendar seasonality — shared produce seasonality alone can generate this,\" inline, not in a footnote. (3) Report Spearman rho=0.584 descriptively and drop its p=0.0017 (26 autocorrelated year cells, iid null invalid). (4) State that the 61-slug balanced panel excludes every recently added slug and all 16 seafood items, so the flat result describes long-tracked series and is not a direct statement about the current 100-ingredient panel. (5) When quoting the edge finding, note it is worse than stated for the 17 monthly-cadence series, whose ±26-OBSERVATION baseline makes the terminal edge zone ~2 years wide.",
+        "reasoning": "WHAT SURVIVES CLEAN (I checked the inputs, and these are arithmetic, not inference):\n\n1. The censoring core. 65/102 slugs at eventCount==6, 432/2,634 survival, year-nonuniform survival 7.7%→27.9%, 26/26 years missing the uncapped cohort profile by >15%. These are counts, not estimates. No n problem, no multiple-comparison problem. The byte-for-byte fidelity gate at TOP_N=6 plus the greedy structure at build-cost-index-events.mjs:119-124 (candidates sorted by |dev| desc, min-separation 12, break at TOP_N) means the uncapped set is a strict SUPERSET whose first 6 picks per slug are identical. The comparison is internally valid by construction.\n\n2. The edge artifact, which is STRONGER than the finding states. build-cost-index-events.mjs:114 computes base[i] = median(vals.slice(max(0,i-26), min(n,i+27))) — the window TRUNCATES rather than being dropped, so the terminal 26 observations always get a one-sided baseline. I checked data/cost-index-history.json: series end 2026-04-01 through 2026-07-01, and cadence is heterogeneous — 84 slugs at 7-day median gap but 17 at 31-day and 1 at 84-day. BASE_WIN is in OBSERVATIONS, so for the 17 monthly series the edge zone reaches back ~26 months (to ~2024), not 6 months. All of calendar 2026 is inside the edge zone for every series, with margin.\n\n3. The debunk of the 2024→2026 jump. Multiply determined and I verified the denominator leg independently: the shipped jump rests on n=17 vs n=19 events, a post-hoc pair selected from 325 possible y"
+      },
+      {
+        "index": 1,
+        "lens": "alternative-explanation",
+        "verdict": "survives-weakened",
+        "fatal": "Not fatal to the coverage claim (topN=6 censoring and terminal-window edge bias are both arithmetic, verified at scripts/build-cost-index-events.mjs:51/:114/:123/:171 and in data/cost-index-events.json params). FATAL to the three headline statistics offered as the corrective: (1) the -0.66%/yr episode-rate and -0.71%/yr cohort-size trends are numerically reproduced by a detector-independent property of the same balanced 61-slug panel — the share of 13-week windows with a ≥20% swing falls -0.53%/yr (46.89% in 2001 → 38.50% in 2025; -0.51 to -0.67%/yr across lag/threshold specs) — driven by the unchanged-weekly-quote share rising 15.1% → 35.1% (+3.80%/yr), which the log(series-weeks) exposure offset cannot absorb because observation counts are flat (~3,130/yr); (2) the p=0.0005 alignment result is confounded by shared upstream — 51 of 61 panel slugs (84%) are one of two terminal markets, 33 LA + 18 Boston — plus the already-admitted loss of calendar-month position under circular shift and the 2021-23 common food-price wave, none of which the surrogate null controls for.",
+        "caveat": "Publish the coverage/defect statement; do NOT publish the three counter-numbers as stated. Required with any version that keeps them: (a) Strike \"both metrics run flat-to-slightly-DOWN, not up\" and both CIs from the revised claim, or annotate them as UNINTERPRETABLE AS MARKET FACTS: on the same balanced panel and with no detector involved, the frequency of ≥20% 13-week swings already falls -0.53%/yr, and the share of week-over-week unchanged quotes rises 15.1% (2001) → 35.1% (2025), so detector sensitivity declines monotonically across the fitted window — the same artifact that fabricates a decline would also mask a real rise, so this is a null with unquantified power, not a refutation of \"clustering more.\" (b) Demote \"Episodes DO co-occur far more than chance\" to \"not separable from shared upstream\": 84% of the panel (33 usda-ams-los-angeles + 18 usda-ams-boston of 61) is two terminal-market sheets, and circular shift provides no cross-market and no calendar-month control. (c) Do not compare the shipped 3.24x cohort jump to the uncapped 1.23x as if the shrinkage were evidence — cohort counts distinct peers and saturates, so cross-run ratios are compressed mechanically. (d) Soften \"the 6.47 is entirely edge-artifact\": the finding's own measurement puts edge-zone enrichment at only 1.14x, which cannot carry a 3.24x jump; the load-bearing explanations are the topN cap, panel growth (86 → 102 → 100), and newly-added short series (6 of 19 shipped 2026 events come from slugs starting 2022-2025, including both eggs events on an n=74 series where only ~21 of 74 observations are interior).",
+        "reasoning": "WHAT SURVIVES MY LENS CLEANLY (I checked, I could not break it).\n\nThe coverage/censoring leg is arithmetic, not inference, and has no mundane alternative. `scripts/build-cost-index-events.mjs:51` is a literal `const TOP_N = 6`, applied at `:123` (`if (picked.length >= TOP_N) break;`) BEFORE anything else, and `data/cost-index-events.json` carries `params.topN: 6`, `summary: {ingredients: 80, events: 432}`. Nothing about a shared source or a units mismatch manufactures a hard per-slug lifetime cap; 65/102 slugs sitting exactly at 6 is what a binding cap looks like.\n\nThe \"per-year mean cohort restates censoring density\" mechanism is in fact STRONGER than the finding says. `addCohorts(items)` runs at `:171`, i.e. AFTER the cap, and cohort is `Array.from(new Set(peers))` over the surviving flat list (`:150-160`). So per-year mean cohort is not correlated with per-year survivor count — it is a deterministic functional of it. Reporting Spearman rho=0.584 (p=0.0017) understates a definitional identity.\n\nThe edge leg is also arithmetic and I confirmed it. `:114` builds the baseline as `median(vals.slice(Math.max(0, i - BASE_WIN), Math.min(n, i + BASE_WIN + 1)))` — the window silently truncates at both ends. On the balanced panel, calendar 2026 holds 1,562 observations across 61 slugs = 25.6 per slug, all of them ≤26 observations from the series end (`acorn-squash` ends 2026-06-30). So \"100% of 2026 events sit in the one-sided-baseline zone\" is guaranteed by construction. I also found"
+      },
+      {
+        "index": 1,
+        "lens": "honesty-contract",
+        "verdict": "survives-weakened",
+        "fatal": "Fatal only to one bundled sub-claim, which must be struck before publication: \"Episodes DO co-occur far more than chance (variance 21.893 vs surrogate median 14.188, p=0.0005)\" is a global undirected measured-coupling statement with a significance value, which ADR-015 Decision 1 and cost-index/co-movement.json's own `_doc` (\"never a global pair count... No coefficient, lead, or lag is implied\") have already ruled out publishing — and it is confounded by shared seasonality and shared terminal market (33 of 61 panel slugs price out of Los Angeles, 18 out of Boston) by the finding's own admission that the circular-shift null does not preserve calendar-month position. The coverage/censoring/edge core is not fatally defective.",
+        "caveat": "Publication is conditional on all six: (1) STRIKE the \"alignment exists, p=0.0005\" result; publish only the negative half (late/early variance ratio 0.9117, p=0.65, \"no evidence alignment is increasing\"), and state that the surrogate does not preserve calendar-month position so panel-wide alignment is not identified against shared seasonality or shared terminal market. (2) State the basis on every claim: these are public USDA AMS terminal-market / LMR WHOLESALE reference prints, a reference and never a delivered price; 60 of the 61 balanced-panel series are wholesale and the 61st (vegetable-oil, FRED) is a monthly INDEX, not a price, whose ±26-observation baseline is ±26 months, not ±26 weeks. (3) Re-denominate the censoring rate: 16 of the 102 slugs (15 NOAA customs seafood at 9-10 rows, ground-beef at 4) fall under the detector's own `n < 2*BASE_WIN` guard and can never emit an event, so the rate is 65 of 86 analyzable (75.6%), not 65 of 102 (63.7%). (4) No uncapped number publishes until the uncapped run's script and output are committed and `--check`-gated (or registered in data/sourced-claims.json) — none exists in the repo today. (5) Frame the -0.66%/yr and -0.71%/yr trends as descriptive of 25 year-cells on tracked wholesale series, carrying the finding's own line \"I would not publish it as 'episodes are becoming rarer'\"; never as a market property and never forward-looking (ADR-010's never-a-forecast ceiling). (6) Say explicitly that ADR-022's published inside-episode coverage figure (60.74%) is defined against this same capped file — \"inside one of that ingredient's top-6 lifetime moves\" — and that this finding does not claim the published qualifier is wrong.",
+        "reasoning": "WHAT SURVIVES (verified independently against committed files, not recomputed from the finding's code). data/cost-index-events.json: items=102, summary {ingredients:80, events:432}, params.topN=6, and exactly 65 slugs sit at eventCount==6. Per-year shipped mean cohort: 2023=1.500 (n=8), 2024=2.000 (n=17), 2025=3.567 (n=30), 2026=6.474 (n=19) — the 2.00 to 6.47 jump is real in the file. The edge finding is arithmetic and I confirmed it: history max date is 2026-07-01 and the earliest calendar-2026 event is 2026-01-05, so all 19 shipped 2026 events sit inside the terminal 26 weekly observations where the centered ±26 baseline in eventsFor() (scripts/build-cost-index-events.mjs, `base[i] = median(vals.slice(max(0,i-26), min(n,i+27)))`) is one-sided. Publishing \"this file supports per-ingredient episode SHAPE claims and NO temporal rate claim\" breaks no honesty rule — it is the same class of self-critique the site already made a decision of record (ADR-022: \"under-coverage is a real, reportable fact, not something to widen away\") and it asserts no cause, no forecast, no delivered price.\n\nFATAL AS WRITTEN, EXCISABLE (why weakened, not clean).\n\n(1) The clustering-EXISTS sub-claim collides head-on with a standing decision. The revisedClaim publishes \"Episodes DO co-occur far more than chance (weekly active-count variance 21.893 vs surrogate median 14.188, p=0.0005)\". That is a global, undirected, panel-level coupling statistic carrying a significance value. ADR-015 Decision 1 (docs/"
+      },
+      {
+        "index": 1,
+        "lens": "prior-art",
+        "verdict": "kill",
+        "fatal": "Not a discovery and not operator-actionable. The headline premise (topN=6 caps the file) is an already-published design decision — ADR-011-notable-price-events-surface.md:36 \"top-6\", data/cost-index-events.json params.topN=6 and _doc \"the top 6 biggest SUSTAINED departures\" — so \"it is not a census\" is a restatement, not a finding. It then refutes a temporal-clustering claim that appears nowhere on the site (checked cost-index/events/index.html, build-cost-index-pages.mjs, co-movement.json), so no shipped sentence is corrected. Its one operator-relevant positive result, that episodes co-occur far more than chance, is already the site's published position (co-movement.json headline.pct_with_company=94; the \"part of a broad market move\" line in evCohortLine) and is confounded by the produce seasonality the engine's own comment already names — the finding's caveats admit the surrogate does not preserve calendar-month position and the panel is mostly produce. Nothing here changes an operator's purchase, contract, portion, or menu price, and the author withdraws the only novel statistic himself (\"I would not publish it as 'episodes are becoming rarer'\").",
+        "caveat": "Do not publish any of this as a finding. Salvage exactly one component internally, as an engineering ticket, never as reader-facing content: the terminal-window defect at scripts/build-cost-index-events.mjs:114, where the baseline slice is truncated rather than skipped, so the last 26 observations of every series get a one-sided \"normal.\" It is live and wrong on the page today — /cost-index/cantaloupe/ prints a Jul 2026 event at +109% under the sentence \"Each figure is the peak versus its own ~1-year local median\" (history ends 2026-07-01, so that median is ~26 weeks trailing-only); /cost-index/carrot/ has the same shape at Apr 2026. Both ADR-011 and the file's _doc say \"centered ±26-week\" with no edge caveat. If the ticket is written, it MUST be widened beyond the finding's scope: the finding blesses \"per-ingredient episode SHAPE claims,\" but eventsTakeaway() in build-cost-index-pages.mjs already publishes a per-ingredient RATE — perDecade = evs.length / (span.years/10) — thresholded at >=2 and >=1.8 to drive the fix-vs-float verdict on 80 live pages, which the cap flattens to an identical 2.38 for every 25.2-year produce slug while eggs (span 1.4y) scores 28.57. Any \"the cap only affects trends\" framing would leave that live artifact untouched.",
+        "reasoning": "I judged this only on prior art and operator usefulness. The statistics are not in dispute; the question is whether anything here is new, and whether an operator can act on it.\n\nPRIOR ART — the headline is a restatement of a documented design parameter.\nThe claim's load-bearing premise is \"the file caps each ingredient at topN=6.\" That cap is not a hidden defect; it is a published decision, stated in three places the site already ships:\n- `docs/editorial/decisions/ADR-011-notable-price-events-surface.md:36` — \"≥20% floor, **top-6**, merged in time.\"\n- `data/cost-index-events.json` `params.topN: 6` (machine-readable, in the CC0 artifact).\n- The same file's `_doc`: \"the **top 6** biggest SUSTAINED departures.\"\n\"A top-6 list is not an exhaustive census\" is what a top-6 list means. The genuinely new content is the *quantification* of the bite (65/102 slugs sit exactly at 6; 16.4% survival, 432 of 2,634; year-non-uniform 7.7% in 2016 vs 27.9% in 2026) — real, unmeasured anywhere in `docs/`, but that is an internal calibration number, not a discovery.\n\nPRIOR ART — the refuted claim was never published.\nI grepped the rendered events hub (`cost-index/events/index.html`, 41.9KB of extracted text), the pages engine (`scripts/build-cost-index-pages.mjs`), and `cost-index/co-movement.json`. Nothing on the site asserts a rising episode rate or increasing clustering. The hub publishes the 39-event cited registry; co-movement publishes `headline.total_events=432` / `pct_with_company=94` wit"
+      },
+      {
+        "index": 2,
+        "lens": "statistical",
+        "verdict": "kill",
+        "fatal": "The permutation test's exchangeability assumption is violated and the headline median is a single-desk artifact: 5 of the 10 Group A series are one AMS Boston herb table (identical start 2024-01-10, identical n=130, same source, synchronized change weeks — tarragon/thyme both change 2025-01-22 and 2025-01-29; oregano/thyme both 2026-01-21 and 2026-01-28), a 6th (rutabaga) is the same desk, and the reported median (2 of 51 changes) is set by that block. Effective n for Group A is about 6 reporting blocks, not 10, so \"0 of 10,000 relabelings, p = 0.00000\" is not a valid p-value. Compounding it, the label itself is a near-deterministic function of the outcome (reason='flat' <- degenerate <- halfWidthPct < 0.003 <- the same one-step residual vector whose nonzero fraction IS the change rate, cost-lockfloat.js:63 / cost-conformal.js:155-157), so the null is falsified by construction and the discovery window only defers it via one-year persistence the finding itself documents. And the claim is factually false for 3 of the 10 — kale 17/51 (17 distinct values in 52 rows), collard-greens 19/51 in discovery, carrot 11/51 are not dead quotes; the non-independent median hides a bimodal group.",
+        "caveat": "If any part of this is published, it must be published as description, not inference: (1) delete the p-value and the permutation test entirely — the labeling rule (halfWidthPct < 0.003 on the same residual vector) guarantees the result, and 5 of 10 Group A series are one AMS Boston herb table with synchronized repricing, so the exchangeability the test needs does not hold; (2) do not report a Group A median — report counts by series, and state that 6 of the 10 flat-withheld ingredients come from a single AMS desk (Boston) and 5 of those are one herb table; (3) state explicitly that the claim does NOT hold for kale (17 of 51 weeks changed, 17 distinct values in 52 rows), collard-greens (19 of 51 in the earlier window), or carrot (11 of 51) — the flat bucket is bimodal, and the honest headline is that a percentile-dispersion rule labels moving quotes 'flat', not that the bucket is uniformly dead; (4) drop the contamination count — \"all eight are locks, no cushion or float item is that sticky\" is arithmetic from the ordered halfWidthPct bins (0.08 / 0.20 / 0.30) rather than a finding, and the count of 8 turns on a three-way tie at 17/51 (kale, leek, pear) with red-potato one change away; (5) keep the finding's own caveats 2 (regime, not structure) and 7 (this is the reported number, not the market).",
+        "reasoning": "Group A is not 10 independent series. Five of the ten (basil, oregano, rosemary, tarragon, thyme) are one AMS Boston herb table: identical first observation 2024-01-10, identical length n=130, identical source usda-ams-boston (verified in data/cost-index-history.json), and their change weeks co-occur — tarragon and thyme both change on 2025-01-22 AND 2025-01-29; oregano and thyme both on 2026-01-21 AND 2026-01-28; oregano and rosemary both on 2025-11-12. A sixth member (rutabaga) is the same desk. So 6 of 10 Group A series come from one desk and 5 of them are one repricing block. The permutation null in the code permutes 71 series labels as exchangeable units; positive within-group dependence at this level makes \"0 of 10,000, p = 0.00000\" uninterpretable, and the headline medians are literally set by that block: sorted Group A holdout change counts are tarragon 0, rosemary 1, rutabaga 1, basil 2, button-mushroom 2, thyme 2, oregano 3, collard-greens 8, carrot 11, kale 17 — the median (2/51 = 3.92%) falls between basil and button-mushroom, i.e. it reports how often the Boston herb table gets repriced. Collapse Group A to independent reporting blocks (herbs, rutabaga, mushroom, collard, kale, carrot) and the discovery-window median moves from 0.059 to about 0.098. The direction survives that collapse; the reported precision does not.\n\nSecond, the test cannot fail by construction, and the discovery window only launders it. reason='flat' comes from conf.degenerate at tools/_share"
+      },
+      {
+        "index": 2,
+        "lens": "alternative-explanation",
+        "verdict": "survives-weakened",
+        "fatal": "The second half of the claim — \"the published lock bucket is itself contaminated by administratively sticky quotes\" — is definitionally entailed and must be cut. The classifier in /home/user/potentially-profitable/tools/_shared/cost-lockfloat.js:30-35,63,72-80 sorts purely on band half-width: degenerate (hw < 0.003) → withhold 'flat'; hw <= 0.08 with coverageLo >= 0.60 → 'lock'; cushion needs hw > 0.08; float needs hw > 0.20. A sticky-but-not-degenerate quote produces small residuals, hence a narrow band, hence there is NO bucket other than 'lock' it can land in. \"All eight of the stickiest published ingredients are locks\" is arithmetic, not a defect discovered in the instrument — habanero's hw is 0.039 and poblano's 0.029, both just above the 0.003 degeneracy cut on a continuum with an arbitrary boundary. Worse, C is a window-mismatch artifact: the label is computed on 26 residuals ending 2026-06-30 while the change rate is measured over 51 pairs spanning a year, so the two rankings cross by construction and the crossing is not even monotone — carrot is labeled 'flat' at a 0.216 holdout change rate while habanero is labeled 'lock' at 0.196, and kale, the \"flat set's worst member\" that anchors the C=8 threshold, repriced 17 times in the last 52 weeks (2025-07-16 through 2026-05-06). A threshold defined by an ingredient that changed 17 times in a year cannot support the word \"contaminated.\"",
+        "caveat": "Publication must (1) quote the discovery-window figures only, and state the mechanism — 'flat' decodes to \">=80% zero weekly deltas in the last 26 weeks\" (cost-conformal.js:156-158), so the holdout 3.9%-vs-72.6% comparison is the label restated; (2) disclose that the published comparison number is inflated by index construction — the weekly point is the MEAN of that week's daily quotes, rounded to the cent (fetch-cost-index-sources.mjs:110-124), and 42% of Group B weekly values fall off the 25-cent quote grid versus 0% of Group A; snapped to 25 cents the discovery gap is 4.9% vs 56.9%, and 12 of the 61 comparison series (usda-lmr, usda-ams-national) are volume-weighted or multi-market averages that cannot repeat a value by construction — quote the conservative Boston-carton-only figure (3.9% vs 56.9%) alongside the headline; (3) name the composition — six of the ten are Boston-desk, five are bunched herbs, and they reprice as a block (rosemary, oregano and rutabaga all move on 2025-11-12; thyme and oregano both move on 2026-01-21 and 2026-01-28), so this is largely one terminal-market section running a standing price sheet, the units are not independent, and p=\"0.00000\" must be softened to a block-level statement; (4) drop the \"lock bucket is contaminated\" sub-claim entirely, or restate it as the neutral fact that stickiness is a continuum and the 0.003 degeneracy cut is an arbitrary point on it — never as a defect in the lock band; (5) keep the finding's own regime caveat (carrot 0.94 in 2001 → 0.15 in 2026) and its caveat 7 (this describes the reported record, not delivered price and not the market).",
+        "reasoning": "I built five mundane mechanisms and tested each against the actual inputs. Four fail to explain the core gap; one is fatal to the contamination half of the claim.\n\nMECHANISM 1 — INDEX CONSTRUCTION (partially real, deflates the headline). `weeklyDedup` in /home/user/potentially-profitable/scripts/fetch-cost-index-sources.mjs:110-124 collapses the daily AMS/LMR pull to one point per ISO week using the MEAN of that week's observations, then `Math.round`s to cents. A weekly mean of two or more differing daily quotes essentially never repeats to the exact cent, so \"quote changed\" is partly a statement about intra-week sampling density, not about repricing. The signature is measurable: 100% of Group A's last-52 values sit exactly on the 25-cent grid (single clean carton quotes), versus a Group B median of 57.7% (92.3% on the 5-cent grid) — i.e. ~42% of Group B weekly values are off-grid averages. Snapping both groups to the nearest 25 cents moves Group B's holdout median 0.7255 → 0.6275 and the discovery median 0.7647 → 0.5686, while Group A is unmoved (0.0392 / 0.0490). So roughly 10-20 points of the published 76.5% is construction, not market activity. Not fatal — the gap is 5.9 vs 76.5, and it does not close.\n\nMECHANISM 2 — AVERAGE-BY-CONSTRUCTION SOURCES IN THE COMPARISON GROUP (real, deflates). 12 of the 61 Group B members draw on usda-lmr (8) or usda-ams-national (4). Those are volume-weighted / multi-market averages that cannot repeat a value by construction: 3% and 4% of th"
+      },
+      {
+        "index": 2,
+        "lens": "honesty-contract",
+        "verdict": "kill",
+        "fatal": "The claim's central assertion — \"are not flat markets — they are dead price-discovery,\" with \"administratively sticky quotes\" pinned on named USDA AMS desks — is an unsourced causal attribution that the finding's own caveat 7 says the statistic cannot make (\"it shows the reported number did not move, and those are exactly the two things this statistic cannot separate\"). It fits none of the three permitted patterns in docs/fact-check.md, and it publishes something stronger than the site's own shipped copy for the same label (tools/_shared/cost-lockfloat-ui.js:44: \"flat and stale — nothing to call\"). Compounding it, the contamination half is largely a restatement of the classifier's definition (cost-lockfloat.js:73-75 with cost-conformal.js:150-157 force low-change-rate series into the lock bucket), so the second sentence is an artifact presented as a discovery.",
+        "caveat": "If any descriptive residue is published, it must carry all five, verbatim in substance: (a) the measured quantity is the rounded weekly MEAN of the daily MIDPOINT of the AMS \"mostly\" range at a single terminal-market desk (mostlyMid, cost-index-sources.js:74-82; weeklyDedup, fetch-cost-index-sources.mjs:110-127) — not \"the quote,\" and the report's low/high range is discarded; (b) an unchanged number means the reported figure did not move, which this data cannot distinguish from a market that did not move — no \"dead price discovery,\" no \"administratively sticky,\" no attribution to any AMS desk; (c) the last-52-week figures (3.9% vs 72.6%) are near-circular — reason='flat' is set from halfWidthPct < 0.003 over the last 26 one-step residuals (cost-conformal.js:157), i.e. the last 27 observations, entirely inside that window — so only the rows -104..-53 figures (5.9% vs 76.5%) may be quoted as evidence, with the mechanism stated; (d) the group is 10 series, five of them fresh herbs from one Boston report over one identical 130-week window, so the p-value's independence assumption must be stated as assumed, not established; (e) \"all eight sticky items are locks\" must be labeled as substantially forced by the classifier's own definition, and the honest framing is narrow — the degeneracy cutoff (0.003) is tighter than the stickiness it is meant to catch — not that the lock band is wrong. The 2001-vs-2026 regime paragraph must be cut entirely unless someone can show the era's rows resolved through the same reducer field.",
+        "reasoning": "The arithmetic is sound — I verified the inputs, not the analysis. tarragon really is 1075 cents in every one of its last 52 rows (2025-07-09..2026-06-30, data/cost-index-history.json), every flat-set series is single-desk and single-basis with no mid-series source switch, and scripts/fetch-cost-index-sources.mjs:96 confirms \"gaps stay gaps, never filled,\" which kills the obvious \"our own last-good carry-forward\" confound. What fails is every interpretive layer on top.\n\n(1) The headline verb breaks the standing rule directly. \"Are not flat markets — they are dead price-discovery ... administratively sticky quotes\" asserts a mechanism the statistic cannot reach. The finding's own caveat 7 concedes it: \"it shows the reported number did not move, and those are exactly the two things this statistic cannot separate.\" A flat market and an unrefreshed quote emit identical rows. Publishing the disjunction resolved in one direction is co-occurrence dressed as cause, and it attributes reporting conduct to three named USDA AMS desks (Boston, Los Angeles, Miami) with nothing in data/sourced-claims.json behind it — it fits none of the three patterns in docs/fact-check.md. Note the live product already says the honest version: tools/_shared/cost-lockfloat-ui.js:44 renders reason='flat' as \"flat and stale — nothing to call.\" The finding would have the site publish something stronger than its own shipped copy, on the same data.\n\n(2) The contamination half is largely definitional, and the fin"
+      },
+      {
+        "index": 2,
+        "lens": "prior-art",
+        "verdict": "kill",
+        "fatal": "The headline restates copy the site already publishes for this exact set — \"flat and stale — nothing to call\" (tools/_shared/cost-lockfloat-ui.js:44, live on /tools/cost-pulse/) — and restates the labeling rule itself: all 11 flat items carry halfWidthPct/upPct/downPct exactly 0 in data/cost-lockfloat.json, meaning the label is assigned because the quote did not move. Staleness in thin AMS terminal quotes is additionally standard, source-annotated practice (the AMS FV020 reports flag \"offerings light\" on basil, oregano, rosemary, thyme, cilantro). And it is not actionable: these 11 are already withheld, and the implied action is verbatim the site's existing withhold CTA at cost-lockfloat-ui.js:520-521.",
+        "caveat": "If any part is published over this verdict, the flat-vs-published comparison must not be framed as a discovery — it must be framed as \"our own withhold label, quantified,\" must lead with the discovery-window figure (5.9% vs 76.5%, rows -104..-53) and never the 3.9% holdout, must state that reason='flat' is assigned from a zero-width residual band over the last 26 steps (cost-conformal.js:158) so the holdout comparison restates the rule, must credit the site's existing \"flat and stale — nothing to call\" label rather than presenting \"not flat, stale\" as a correction, and must say plainly that a stale quote shows only that the reported number did not move, never that the market did not move. The regime result (carrot 0.94→0.15, rutabaga 0.77→0.00, Group B 0.94→0.69-0.77) must accompany it, since it contradicts \"dead price-discovery\" as a property of the ingredient. The lock-bucket contamination should be routed as an engineering defect against the degeneracy guard plus an ADR, not published as a market insight.",
+        "reasoning": "The headline is a restatement on three independent grounds, and the operator action it implies is already the site's published CTA for exactly this set.\n\n1) THE SITE ALREADY SAYS IT, IN THESE WORDS. `tools/_shared/cost-lockfloat-ui.js:44` ships the public copy for reason='flat': `en: 'flat and stale — nothing to call'` (ES: 'plano y sin cambios'). That string renders live on /tools/cost-pulse/ and /es/tools/cost-pulse/ (the only two pages loading that module) in the withheld group at lines 381-382 and 575. The claim's rhetorical pivot — \"these are NOT flat markets, they are dead price-discovery\" — argues against a position muntin.digital never took. The site's own published word for these 11 is already \"stale.\" The engine comment agrees: `tools/_shared/cost-conformal.js:154` reads \"a flat/stale window yields a ~zero-width band.\"\n\n2) IT IS DEFINITIONALLY IMPLIED BY THE LABEL, NOT JUST IN THE HOLDOUT. Caveat 1 concedes the holdout is near-tautological, but understates it. In `data/cost-lockfloat.json` all 11 flat items carry `halfWidthPct: 0`, `upPct: 0`, `downPct: 0` — exactly zero, not merely under the 0.003 threshold. The 10th-90th quantile of the last 26 one-step residuals being [0,0] means the quote did not move in the large majority of those steps. So \"flat-labeled items change 3.9% of weeks\" is the labeling rule read back one window wider. What is left after removing the tautology is the discovery window (5.9% vs 76.5%), and what that establishes is that a stale series w"
+      },
+      {
+        "index": 3,
+        "lens": "statistical",
+        "verdict": "survives-weakened",
+        "fatal": "none",
+        "caveat": "Three things must change before publication. (a) DELETE the \"4.76 versus 4.05 events per ingredient (ratio 1.18)\" headline, or publish it alongside its inversion: three shrimp aliases supply 66 of the 176 dark incidences (37.5%), and the finding's own alias collapse turns 4.76/4.05 = 1.18 into 3.65/4.05 = 0.90; removing the eleven FSIS-jurisdiction published ingredients as well gives 3.76/4.90 = 0.77. No directional statement — not \"9% more exposed,\" not \"18% more\" — is supportable in either direction. State only the null. (b) STATE THE CENSORING ASYMMETRY IN NUMBERS: openFDA excludes FSIS meat and poultry, so 11 of 63 published ingredients (beef-tenderloin, chicken-breast, chicken-thigh, pork-belly, pork-loin, pork-shoulder, ribeye, short-rib, striploin, whole-chicken, whole-turkey) versus 1 of 37 dark (ground-beef) carry a structurally unobservable outcome — all twelve measured zero. This is a much larger confound than the stopword count (0 vs 1) the finding does report, and it biases the rate ratio upward, in the same direction as every headline RR. (c) WIDEN THE POWER BOUND: \"≈1.9×\" assumes 100 independent units, but 39 ingredients have zero events, 11 more are uncountable, and the informative mass sits in a handful of commodities; after alias collapse and FSIS exclusion the universe is 85. Publish the bound as \"cannot rule out a difference of roughly two-fold or more,\" and drop or heavily qualify the operational sentence \"an operator cannot reduce recall exposure by preferring published ingredients\" — at this power a 1.7× real difference, which would be operationally enormous, is invisible. Also correct the caveat's false statement that salmon-fillet and salmon-skin-on-fillet carry identical counts: they are 0 and 8.",
+        "reasoning": "THE NULL ITSELF SURVIVES, AND SURVIVES HARD. The randomization test is correctly specified for the question asked: labels are permuted over the 100 ingredients with group sizes fixed at 37/63 while the event×slug incidence matrix is held fixed, so the event-level dependence (39 events touch both groups; one event can tag many slugs) is preserved inside the null rather than being wrongly assumed away. There is no selection on the dependent variable: I grepped /home/user/potentially-profitable/tools/_shared/cost-lockfloat.js for recall/enforcement/food-recalls and got ZERO hits — the bucket verdict is a deterministic function of half-width and coverage only (FLOAT_MAX_HW = 0.30 at line 34, withhold-first ladder at lines 58-70). Multiplicity is a non-issue in the direction that matters: five-plus specifications were tried and the smallest p is 0.4709, which is evidence FOR the null, not p-hacking. I ran two further specifications the finding did not, and both stay deep inside the null band. So \"indistinguishable\" is not manufacturable away.\n\nBUT TWO PUBLISHED NUMBERS ARE FRAGILE OR WRONG, AND ONE IS AN ARTIFACT OF EXACTLY THE BIAS THE FINDING CLAIMS TO HAVE CORRECTED.\n\n(1) The \"unbiased re-test\" headline inverts under the finding's own alias fix. The revisedClaim publishes \"4.76 versus 4.05 events per ingredient (ratio 1.18)\". I recomputed the per-slug distinct-event incidences from data/food-recalls.json against data/cost-lockfloat.json: DARK total = 176 over 37, PUB = 255 over"
+      },
+      {
+        "index": 3,
+        "lens": "alternative-explanation",
+        "verdict": "kill",
+        "fatal": "The outcome variable is a display-name word-match count, not recall exposure: 86.5% of all slug-event pairs accrue to single-word keywords (7.18/slug vs 1.20/slug for multi-word), and the two groups differ 62.2% vs 46.0% in single-word share. The published \"unbiased\" estimate of 4.757 vs 4.048 (ratio 1.1752) reverses to 3.882 vs 4.048 (0.9592) when the shrimp/salmon aliases the finding itself identified are collapsed, and falls to 0.7633 when additionally standardized to PUBLISHED's keyword-arity mix — a swing driven entirely by measurement construction. Compounding it, two DARK slugs are hard zeros for non-safety reasons: `jalapeno` (\"Jalapeño\" → keyword \"jalape o\", unmatchable, from the `[^a-z ]` strip at scripts/fetch-food-recalls.mjs:57) and `ground-beef` (FSIS recalls categorically absent from openFDA; 0 of 718 rows mention it).",
+        "caveat": "If any version of this is ever published, it must not be framed as \"recall exposure.\" The only defensible framing is: \"how often an ingredient's name appears in FDA fresh-commodity recall product text does not differ meaningfully between the withheld and published halves of the catalog.\" That must be shipped with (a) the arity decomposition stated inline — 86.5% of matches accrue to single-word keywords, DARK 62.2% vs PUBLISHED 46.0% single-word, and within the single-word stratum the groups are 7.22 vs 7.14; (b) the alias-collapsed count statistic (3.88 vs 4.05, ratio 0.96) printed alongside, never instead of, the crude 4.76/4.05 — with the note that the direction reverses; (c) an explicit statement that USDA/FSIS meat and poultry recalls are entirely absent from openFDA (0 of 718 rows mention \"ground beef\", all 718 are product_type \"Food\"), so `ground-beef` — in the withheld group — is a jurisdictional zero, not a safe ingredient; (d) disclosure that `jalapeno` is a measured zero because of an encoding defect at scripts/fetch-food-recalls.mjs:57, which should be fixed and the analysis re-run before anything ships; and (e) the existing power bound (cannot resolve below ≈1.89×) plus the single-vintage caveat (fetchedAt 2026-07-24). Absent (a)-(d) the piece asserts an operator-facing safety conclusion that the underlying variable does not support.",
+        "reasoning": "The mundane mechanism is that \"recall-event exposure\" here is not a food-safety measure at all — it is a count of how often an ingredient's DISPLAY NAME appears as a bare whole word in short FDA product strings. That is a lexical property of `cost-index/ingredient-state-record.json` `.name`, and it dominates everything.\n\n1) ARITY, NOT SAFETY, DRIVES THE METRIC. `scripts/fetch-food-recalls.mjs:57` derives one keyword per slug from its display name; `:65-68` requires a whole-word/phrase hit. Slugs whose derived keyword is ONE word average 7.18 events; multi-word keywords average 1.20. 373 of the 431 slug-event pairs (86.5%) are earned by the 52 single-word slugs. The two groups differ materially in this composition: DARK is 23/37 = 62.2% single-word, PUBLISHED 29/63 = 46.0%. Within the single-word stratum the groups are 7.217 (DARK) vs 7.138 (PUB), ratio 1.011 — i.e. the \"equality\" the claim reports is just \"both groups contain common produce nouns that match FDA product text at the same rate.\" Standardize DARK to PUBLISHED's keyword-arity mix and the headline count ratio moves 1.1752 → 0.9160.\n\n2) THE PUBLISHED POINT ESTIMATE REVERSES UNDER A CORRECTION THE FINDING ITSELF VALIDATED. `revisedClaim` publishes \"4.76 versus 4.05 events per ingredient (ratio 1.18)\" as the UNBIASED re-test. But shrimp/shrimp-pd/shrimp-head-on each carry 22 events for the single matched word \"shrimp\": 66 of DARK's 176 slug-event pairs, 37.5%, are one commodity counted three times. The finding identif"
+      },
+      {
+        "index": 3,
+        "lens": "honesty-contract",
+        "verdict": "kill",
+        "fatal": "The measuring instrument is blind to different categories in each arm, and the blindness is perfectly confounded with the grouping. openFDA excludes all USDA/FSIS meat and poultry recalls: PUBLISHED holds 11 of 63 such slugs (chicken-breast, whole-turkey, pork-shoulder, ribeye, striploin, beef-tenderloin, ...) all at 0 events, vs 1 of 37 in DARK (ground-beef, 0 rows) — deflating the PUBLISHED numerator ~6.5x harder and putting the direction of the reported 1.09 rate ratio in question. Simultaneously DARK is 15/37 seafood vs 0/63, deflated by a different mechanism (PROCESSED_CUE drops fillets?/sushi/rolls?/deli at fetch-food-recalls.mjs:78; whole-salmon, whole-halibut, whole-lobster, whole-crab, whole-trout, tuna-loin, salmon-fillet are two-word keyword phrases that never appear in FDA product text, all 0 events). The label-permutation p cannot see either gap because permuting labels permutes the blind spots with them, and the finding's own taggability check is computed from the same matcher, so it is circular (ADR-022). Publishing this as \"food-safety event exposure\" speaks a differentially-blind name-match proxy as the construct — the import-VALUE-never-volume rule's exact failure mode.",
+        "caveat": "If any version of this were ever published, it could not be framed as food-safety exposure at all. The only defensible sentence is a scope-bound negative about the corpus, not the world: \"Within openFDA Food Enforcement notices since 2020-01-01 that survive our fresh-commodity filter and whose product NAME contains the ingredient's display word, lock/float bucket membership does not predict tagged-event count (p = 0.79).\" It would have to carry, in the same block and not a footnote: (a) USDA/FSIS meat and poultry recalls are entirely absent, and the published arm holds 11 such ingredients to the withheld arm's 1, so the comparison is deflated unevenly and the 1.09 ratio's direction is not established; (b) the withheld arm is 15/37 seafood against 0/63, and the matcher cannot fire on the two-word names (whole halibut, tuna loin, salmon fillet) or the processed forms (fillet, sushi, roll) that seafood is actually sold in; (c) a slug tag is a product-name co-occurrence, never an attribution — 10.7% of the events are labeling/allergen-only and name the ingredient as a bystander (lime in a shrimp-allergen recall); (d) \"dark\" means the lock/float withhold bucket, which is a risk read, not price-record coverage — 21 of the 37 do have a public series; (e) the design resolves only ~1.9x, so this is a bounded null, never evidence of equality; (f) the 9,364 filtered-out rows are not committed and the result cannot be re-derived from a gated file. With all six attached, nothing operator-actionable remains, which is the honest reason to cut rather than caveat.",
+        "reasoning": "KILL. Five breaches, the first two independently fatal.\n\n1) PROXY SPOKEN AS CONSTRUCT — the \"import VALUE never volume\" rule's exact family, and the blind spots are correlated with the grouping. The corpus is openFDA Food Enforcement only (data/food-recalls.json .source). USDA/FSIS meat and poultry recalls are 100% absent — and the two arms do not hold meat in remotely similar proportion: PUBLISHED carries 11 of 63 USDA/FSIS slugs (beef-tenderloin, chicken-breast, chicken-thigh, pork-belly, pork-loin, pork-shoulder, ribeye, short-rib, striploin, whole-chicken, whole-turkey — every one at 0 events), DARK carries 1 of 37 (ground-beef, 0 rows, verified). Beef and poultry are the dominant FSIS recall categories, so the PUBLISHED numerator is structurally deflated at ~6.5x the rate the DARK numerator is. The headline RR of 1.0889 (\"dark slightly higher\") is partly manufactured by that blind spot and its sign could flip if FSIS were included. Mirroring it in the other direction: DARK is 15 of 37 seafood, PUBLISHED is 0 of 63, and seafood is deflated by a different mechanism — PROCESSED_CUE at scripts/fetch-food-recalls.mjs:78 drops any product containing fillets?|sushi|rolls?|deli|nuggets?|tenders?|burgers?, i.e. most forms fish is sold in, and the keyword derivation (line 55) leaves whole-salmon→\"whole salmon\", whole-halibut, whole-lobster, whole-crab, whole-trout, tuna-loin, salmon-fillet as two-word phrases that never appear verbatim in FDA product text (all 0 events), while the"
+      },
+      {
+        "index": 3,
+        "lens": "prior-art",
+        "verdict": "kill",
+        "fatal": "The finding restates, as a measured result, a caveat muntin.digital already publishes verbatim on the very surface the data comes from — /open/recalls/ and cost-index/food-recalls-by-ingredient.json._doc both already say the recall tag is \"never joined to a price … not a sourcing signal\" — using two datasets the site already ships publicly, to negate a belief no operator, agency, or trade publication holds. Compounding it, the claim misnames its own independent variable: 33 of the 37 \"dark\" slugs have live cost-index pages, 32 publish a price level and 21 carry a full backtested series, while two \"published\" slugs (pork-belly, striploin) have no page at all — so \"the public price record happens to cover\" is not what the withhold flag encodes, and the operator choice the claim negates does not exist.",
+        "caveat": "If any part of this is published despite the kill, it must (a) rename the variable honestly — \"dark\" = \"Muntin declines to publish a lock/float band,\" NOT \"absent from the public price record,\" with the 32/37-publish-a-level and 33/37-have-a-page numbers stated; (b) carry the power bound in the headline, not a footnote: the design resolves only a rate ratio of about 1.9x or larger, so this is a bounded null, never evidence of equality; (c) state that the raw 1.0889 must not be read as \"8.9% more exposed\" because the union/n statistic's own null median is 1.1382; (d) disclose that USDA/FSIS meat and poultry recalls are entirely absent from the openFDA corpus and the two groups do not hold meat in equal proportion; and (e) repeat the site's existing framing that the slug tag is a whole-word product-text match and not a sourcing or safety recommendation.",
+        "reasoning": "PRIOR ART — both halves are already published on muntin.digital, and the conclusion is already the site's stated editorial rule.\n\n1. The recall side is a live public surface. /home/user/potentially-profitable/open/recalls/index.html (\"The Recall Record\") already ships the full per-ingredient table — sortable columns for Documented events, Recall notices, Class-I events, Class-I share, Latest — built from /home/user/potentially-profitable/cost-index/food-recalls-by-ingredient.json (CC-BY, summary: 718 notices, 315 distinct_events, 426 class_i, 96 tagged ingredients). Every input this finding aggregates (Onion 33, Cucumber 28, Shrimp 22, Kale 12, Octopus 2, Tuna Loin 2 …) is already a public row. The lock/float side is likewise already public: tools/cost-pulse renders the buckets and even a \"What we won't call\" wall listing all 37 withheld slugs by reason (tools/_shared/cost-lockfloat-ui.js:564-567). The finding is a cross-tab of two already-published Muntin datasets that returns \"no relationship.\"\n\n2. The conclusion restates a caveat the site already prints. /open/recalls/ says, in the lede and repeated in the section frame: \"never joined to a price, never a cause, never a magnitude. The tag is a whole-word product-text match, not a sourcing signal.\" \"Recall exposure and the price record are unrelated\" is not a discovery on this site — it is the published editorial position of the surface the data comes from. cost-index/food-recalls-by-ingredient.json._doc carries the identica"
+      },
+      {
+        "index": 4,
+        "lens": "statistical",
+        "verdict": "kill",
+        "fatal": "The exposure variable is misconstructed, and the error is differential. data/cost-index-events.json `date` is the episode PEAK and `durationDays` is the shoulder-to-shoulder span STRADDLING it (scripts/build-cost-index-events.mjs:99-107, verified by re-deriving all 337 durations with 0 mismatches), but the analysis scores [date, date + durationDays] — an interval whose mean 45.9% lies past the true episode end. 43.0% of \"inside\" tests (1,664/3,873) are not in an episode and miss at 22.78%, below the outside baseline; 1,615 genuinely in-episode run-up tests, the highest-miss stratum in the data at 50.71%, are scored as controls. Correctly aligned, R = 2.01 (coverage 51.5% inside, 53.4% for lock) — so the headline is conservative, but the published qualification reverses: true mid-episode R = 1.663 (coverage 59.9%), not the 1.068 \"recovery\" the revised claim builds its operator rule on. That rule tells a lock operator the band is trustworthy again inside a sustained plateau when it is not.",
+        "caveat": "If re-run with windows set to the builder's own shoulder span (recompute l..r per scripts/build-cost-index-events.mjs:99-107 rather than trusting [date, date+durationDays]), the corrected finding may publish only with: (1) the \"plateau recovery\" rule struck entirely and replaced by the measured onset 2.30 / mid 1.66 / offset 1.94 stratification — the band is degraded throughout, worst at onset; (2) caveat 1 preserved verbatim — band and events are both Muntin-derived from the same series in data/cost-index-history.json, the band's trailing 26-residual window (tools/_shared/cost-conformal.js:137-139) and the detector's centered +/-26-week normal share a scale, so this quantifies a mechanically expected effect rather than discovering one; (3) the calendar/seasonal floor re-derived on the corrected window — the ~1.10 year-shift residual and the ~1.34x \"episode-specific excess\" in the current draft were both computed on the misaligned interval and cannot carry over; (4) the 10 \"volatile\" withholds named as excluded by construction, so the result is conditional on the band having been publishable at all; (5) horizon stated as next-print (2 of the 63 series are monthly-cadence, not weekly) on public wholesale reference levels, never delivered price.",
+        "reasoning": "First, plainly: the chance-axis attacks I was hired to make all FAIL. n is not the problem. Splitting the 65,932 tests by calendar year, R > 1 in 25 of 26 years (only 2009 at 1.02; R >= 1.3 in 23 of 26) — this is not a 2020-22 macro artifact. Cross-slug contemporaneous dependence, which the per-slug independent block bootstrap destroys and would otherwise understate, is mild: 1,422 distinct dates carry >=1 inside test, median 2 slugs share a date, max 10 of 63 — so the inside sample is idiosyncratic, not a few synchronized shocks. The miss process is stationary across strip deciles (24.53%-26.44%), so the circular block bootstrap's stationarity assumption holds. Multiplicity: counts.hypotheses = 38, so Bonferroni on p = 0.0005 gives 0.019 — still significant. Selection on the DV via the 37 withholds is disclosed and, for the 10 \"volatile\" withholds, conservative.\n\nThe finding dies on a different axis inside my lens: the exposure variable is misconstructed, and its misclassification is differential.\n\nscripts/build-cost-index-events.mjs sets `date` to the PEAK week (line ~129, `date: pts[i].date`, where i is picked from `cand` sorted by descending |dev| at lines ~117-124), and `durationDays` (lines 99-107) walks the shoulder OUTWARD IN BOTH DIRECTIONS from that peak: `while (l-1 >= 0 ...) l--` and `while (r+1 < dev.length ...) r++`, returning date[r] - date[l]. The true episode is [l, r] with the peak INTERIOR. The finding's code builds `[toMs(e.date), toMs(e.date) + e.duration"
+      },
+      {
+        "index": 4,
+        "lens": "alternative-explanation",
+        "verdict": "kill",
+        "fatal": "The event windows are mis-registered against the episodes they name. build-cost-index-events.mjs sets `date` to the PEAK and `durationDays` to the full two-sided shoulder span (l..r around that peak), but the finding joins on [date, date + durationDays] — anchored at the peak, running forward by the whole span. The peak sits a median 47.1% into its episode (94.7% of events not at the start), so 1,664 of the 3,873 \"inside\" tests (43.0%) fall entirely outside the true episode, while the entire run-up — the highest-miss stratum, R = 2.0714 (1,025/2,001) — is scored as \"outside.\" The headline sentence \"1,416 of 3,873 prints inside detected event windows\" is therefore false, and the edges/interior decomposition that the revised claim's operator rule depends on measures a window that never contained the onset and is ~43% phantom post-episode tail (that tail alone: R = 1.1452, at the finding's own 1.10 calendar floor). Correct registration gives R = 2.0124 — a different number and a different rule.",
+        "caveat": "If the analysis is rebuilt on the correct [leftShoulder, rightShoulder] window, publication must additionally carry: this is a TREND effect, not an EPISODE effect, and it is a property of the estimator, not a discovery about markets. cost-conformal.js predicts with a driftless last-value random walk (lines 52-57, 68); an \"event\" is definitionally a sustained >=20% departure, i.e. a drift. Stratified on the band's own visible trailing drift-to-bandwidth ratio, Mantel-Haenszel pooled R is 1.3687, and in the bottom three drift deciles inside-window tests are SAFER than outside (R = 0.786, 0.771, 0.834) — \"being inside an episode\" per se does not degrade the band. A causal, operator-knowable flag using no future data (\"|deviation from my trailing 53-print normal| >= 20%\") reproduces R = 1.4264 over 29.8% of all tests, so the 337-event apparatus adds nothing an operator could not compute at decision time. The published event label itself is NOT operator-usable: it is built on a centered +/-26-print median plus a global argmax/top-6 ranking, so it cannot be evaluated in real time. Any operator-facing sentence must therefore be phrased on the causal trailing-deviation condition, not on \"detected events,\" and must state that the 80%-nominal band already delivers only 74.47% pooled coverage before any of this.",
+        "reasoning": "I reproduced R = 1.4715 exactly (1,416/3,873 vs 15,419/62,059), so the arithmetic is sound, and I killed two of my own candidate objections honestly: (a) aggregation mismatch — the history has 489 monthly-spaced steps (311 at 31d, 178 at 30d) mixed into a weekly series, but restricting to 5-9d steps leaves R = 1.4711 (1,384/3,796 vs 15,211/61,376), so it is not a cadence artifact; (b) degenerate-band contamination — within the 63 analysis slugs, `coverage` null = 0 and `degenerate` = 0, so no withheld-rate strip leaks in.\n\nTHE FATAL MECHANISM IS WINDOW MIS-REGISTRATION, and it is in the finding's own join code. In scripts/build-cost-index-events.mjs, `date` is the PEAK week (line ~126, `date: pts[i].date`, where i is the argmax of |dev| picked at lines ~113-122), and `durationDays` (lines ~100-108) walks the shoulder outward in BOTH directions — `while (l-1 >= 0 ...) l--;` and `while (r+1 < dev.length ...) r++;` — then returns `pts[r].date - pts[l].date`, the full two-sided span. The finding builds its window as `[toMs(e.date), toMs(e.date) + e.durationDays*DAY]`: anchored on the peak, running forward by the whole two-sided length. I measured the damage:\n\n- The peak sits at a median 47.1% (mean 45.9%) into its own episode; 94.7% of the 337 events have the peak away from the start.\n- 1,664 of the 3,873 \"inside\" tests — 43.0% — fall entirely OUTSIDE the true episode [leftShoulder, rightShoulder].\n- Concrete: vegetable-oil peak 2026-05-01, true episode 2025-08-01..2026-05-01, pu"
+      },
+      {
+        "index": 4,
+        "lens": "honesty-contract",
+        "verdict": "kill",
+        "fatal": "The publishable payload — \"the band is least reliable while a price is entering or leaving a departure\" — is conditioned on a hindsight-only label. Event windows come from a CENTERED ±26-week median (build-cost-index-events.mjs:45,114) with forward-expanded durations (:99–104), so \"inside/edge of an episode\" is not knowable for ~6 months, while the band's coverage is leakage-free walk-forward by construction (cost-conformal.js:77, :16/126/149). An operator can only act on the rule by guessing that a departure is starting — a direction/timing call the surface's own certified copy gate forbids (check-lockfloat-copy.mjs cases direction-will-move / direction-more-likely / opportunity-lock-a-low) and the no-forecast rule bars. Compounding it, the honesty stamp \"every level is public wholesale reference, never delivered price\" is false for 2 of the 63 series: pork-belly (BLS WPS022104) and vegetable-oil (FRED PCU3112243112243 / BLS WPU0278) are PPI INDEX series with basis \"index\" and level:null — 536 of 65,932 tests — and our own data/cost-index-sources.json says of vegetable-oil \"No free oil price LEVEL exists … honestly directional.\" Both sit in the lock bucket the claim headlines.",
+        "caveat": "If the council overrides this kill and publishes the descriptive residue only, ALL of the following must ship with it, and the operator rule must be cut outright, not softened: (a) \"Detected event windows are labeled in hindsight — the detector uses a centered ±26-week normal, so it needs about six months of later prints to place a window. Nothing here tells you whether you are inside an episode today; this is an audit of the tracked record, never a live signal.\" (b) Replace all causal wording — \"fails during,\" \"effect,\" \"least reliable while\" — with co-occurrence wording (\"misses co-occur with detected departures\"), and state that the band and the events are two filters over the SAME series (data/cost-index-history.json), so the association is expected and is not evidence that episodes cause misses. (c) Correct the chain stamp: \"61 of the 63 series are public wholesale references (USDA-AMS terminal markets and USDA-LMR); two — pork-belly and vegetable-oil — are producer price INDEX series with no price level at all. None is a delivered or invoice price, and none is farm-gate.\" (d) State the promise we actually made: the band's nominal level is 80%, the surface already publishes each item's MEASURED coverage plus a Wilson CI on the card, and the lock bucket admits on coverageLo ≥ 0.60 (lock coverage runs 71.6–80.2%, median 75.0%) — so the aggregate 74.5% is disclosed design, not a newly found shortfall. (e) Lead with the deflated number: ~1.34x episode-specific after removing the ~1.10 calendar floor, decaying to 1.07 on n = 309 eight weeks into a window; and state the survivorship limit — 37 of 100 catalog items carry no replay strip by gate rule, including the 10 withheld as too volatile, exactly where the effect would plausibly be largest. (f) Horizon stamp: next-week reach, never contract-length drift. (g) Every figure quoted must be registered in data/sourced-claims.json or carry a <details class=\"cite\"> drawer pointing at data/cost-lockfloat.json + data/cost-index-events.json with the build params (BASE_WIN 26, FLOOR_PCT 20, alpha 0.20, minResid 8).",
+        "reasoning": "I verified the finding's inputs rather than recomputing it, and the arithmetic is clean: the 63 replay strips in data/cost-lockfloat.json reconcile EXACTLY with the published per-item `coverage` field (0/63 mismatches; pooled 16,835 misses / 65,932 tests = 0.7447). So this is not a numbers problem. It is a framing-and-publishability problem under the honesty contract, on four counts, two of which I judge fatal.\n\n(1) FALSE HONESTY STAMP — the wholesale/chain-point rule. The revisedClaim closes with \"every level is public wholesale reference, never delivered price.\" That sentence is factually wrong for 2 of the 63 slugs. In data/cost-index-history.json the 63-slug pool splits basis wholesale 65,963 / index 536; the 536 index points are pork-belly (233 pts, source `bls`) and vegetable-oil (303 pts, source `fred`). These are PPI SERIES, not price levels — data/cost-index-sources.json #ingredients/vegetable-oil says so in our own words: seriesId WPU0278 / PCU3112243112243, \"_report\": \"No free oil price LEVEL exists (retail APU discontinued 2005…) → vegetable-oil is honestly directional.\" pork-belly is BLS WPS022104. data/cost-lockfloat.json carries `level:null` for both and `unit:null` for pork-belly. Both sit in the LOCK bucket — the bucket the claim headlines. The pool also mixes chain points inside \"wholesale\": USDA-AMS terminal markets (57,822 pts across LA/Boston/Chicago/NY/Miami/Atlanta/national) plus usda-lmr packer-level (8,141). Small in mass (536/65,932 = 0.81%), but a f"
+      },
+      {
+        "index": 4,
+        "lens": "prior-art",
+        "verdict": "kill",
+        "fatal": "The headline relationship is already published by this site: ADR-022 `coverage-regime-qualifier` (Accepted 2026-07-28) ships the inside-vs-outside-episode coverage split on 134 EN/ES ingredient pages via `scripts/inject-coverage-regime-note.mjs`, gated at `scripts/check-all.mjs:620,641`, stating \"77.7% outside a detected price episode and 60.7% during one — a miss rate about 1.8x higher.\" This finding is the window-26 restatement of that window-52 claim — and ADR-022 Decision 2 explicitly names and rejects the lockfloat `replay` strip as the substrate for this very measurement (\"It is a different band\"). Compounding it: the direction is standard conformal-under-distribution-shift prior art (ACI / EnbPI / volatility clustering), conceded in the finding's own caveat 1, and the conditioning label is uncomputable in real time (centered ±26-week baseline at `build-cost-index-events.mjs:114`, two-sided duration expansion at `:99-106`, retrospective top-6 ranking at `:119-124`), so the refined operator rule cannot be executed at the moment of decision.",
+        "caveat": "If any part of this ships despite the kill, it may NOT be framed as a new finding and MUST carry, in the same block: (1) \"The site already publishes this relationship — 77.7% outside vs 60.7% inside a detected episode, ~1.8x, across 67 ingredients — under ADR-022 (2026-07-28) on every ingredient page that publishes a rate. What follows measures a DIFFERENT band (the Cost Pulse lock/float instrument, conformal window 26) than the one that sentence qualifies (window 52), so 1.47x and 1.8x are not comparable figures and must never be printed as competing estimates of one number.\" (2) \"About a third of the gap is calendar, not episode: shifting every event window by whole years preserves month-of-year, destroys episode alignment, and still yields R = 1.03-1.19 (mean 1.10); the episode-specific excess is ~1.34x.\" (3) \"'Inside an episode' is a retrospective label. It is computed from a centered ±26-week normal, a duration expanded in both directions from the peak, and a top-6 ranking over the ingredient's full history — none of which an operator can evaluate at the moment they consult the band. This is an audit of the tracked record, not a rule you can run in the moment.\" (4) The 8-week interior attenuation (R = 1.07) rests on 309 tests and is low-powered; the 8-week recovery timescale is plausibly the recalibration latency of the band's own 26-residual rolling window (`tools/_shared/cost-conformal.js:138`), not a property of the market.",
+        "reasoning": "KILLED ON PRIOR ART — and the prior art is muntin.digital's own live site, shipped three days before this run.\n\n1. THE HEADLINE IS ALREADY PUBLISHED, ON 134 PAGES, WITH AN ADR OF RECORD. `docs/editorial/decisions/ADR-022-coverage-regime-qualifier.md` (Status: Accepted, Date: 2026-07-28) decides exactly this: \"wherever the site publishes a backtested band-coverage rate, it must also publish how that rate splits inside vs outside a detected price episode.\" Its measured table — 67 ingredients, 74,208 scored reads, outside 77.74%, inside 60.74%, \"miss rate ~1.8x higher inside an episode\" — is the same statistic on the same two datasets. It is not a proposal sitting in a drawer: `scripts/inject-coverage-regime-note.mjs` writes it into every qualifying page, and `scripts/check-all.mjs:620` (\"Coverage regime self-test\") and `:641` (\"Coverage regime in sync\") gate it. Verbatim from `cost-index/broccoli/index.html` (inside `<!-- coverage-regime:start -->`): \"That rate is a lifetime average, and it is not uniform over time. Across the 67 ingredients that publish a rate (74,208 scored reads): 77.7% outside a detected price episode and 60.7% during one — a miss rate about 1.8x higher exactly when a price is already moving.\" ADR-022 records \"Verified on disk: 134 pages carry the note, 0 scope violations, EN/ES parity exact at 67 each.\" A finding whose headline restates a sentence the site already prints in two languages is, by definition, not a discovery.\n\n2. WORSE — ADR-022 EXPLICITLY CO"
+      },
+      {
+        "index": 5,
+        "lens": "statistical",
+        "verdict": "kill",
+        "fatal": "A debunking null published on a test that cannot support a debunk. The advertised sensitivity is wrong (power at the stated 62% MDE is 0.562, not 0.80; the 80%-power MDE is ~0.68 at n=50 and ~0.70 at the design-effect-corrected n_eff=41.6, ICC 0.0713 by category, plus 4 pairs sharing byte-identical import_seasonal_index so only 46 distinct calendars exist). The pooled null is a cancelling mixture the analysis flagged but never tested: 31 rows with >=10y customs history go 35.5% hits and mean circular distance 3.61, while 14 rows with <=4y go 64.3% and 1.93 (Mann-Whitney p=0.0058 uncorrected), so the headline 2.96~3.0 is an average of two opposite numbers. And the statistic is biased toward the null by construction — customs VALUE = price x quantity under inelastic ag demand makes a heavy-arrival month register as a low-value month — which the finding's own caveat concedes (\"cannot adjudicate the folk model as stated\") in direct contradiction of its headline sentence.",
+        "caveat": "If any part is published despite the kill, only the descriptive arithmetic may go out, and it must carry all of: (1) DROP the independence assertion — \"two separate facts about two separate points in the chain\" is accepting the null and contradicts the finding's own caveat that it \"does not establish independence.\" (2) CORRECT the power sentence — not \"could only have detected an alignment rate at or above 62%\" but \"at conventional 80% power this test could only have caught alignment at or above roughly 68%, and roughly 70% once the sample's clustering is accounted for.\" (3) STATE the mechanical bias in the published prose, not just the internal caveat block: import VALUE = price x quantity, so under inelastic demand a heavy-arrival month mechanically prints as a LOW-value month and the test leans toward \"no alignment\" regardless of the truth; this measure cannot adjudicate a folk model about physical arrivals. (4) STATE that n is not 50 independent calendars — 4 pairs (beef-tenderloin/striploin, lemon/lime, red-potato/russet-potato, red-leaf/green-leaf lettuce) share a single HS6 index outright, category ICC is 0.071, design effect 1.20, n_eff ~42, so the CI is wider than [31.8%, 60.7%]. (5) STATE the span heterogeneity: the result is not stable across import-history length (>=10y: 35.5%, circ dist 3.61; <=4y: 64.3%, circ dist 1.93), so the pooled figure summarizes a mixture, not a homogeneous null.",
+        "reasoning": "WHAT SURVIVES. The arithmetic reproduces exactly off /home/user/potentially-profitable/data/ingredient-state-record.json: 50 rows qualify of 169, hits = 23, slots-above-1.0 = 282/600, p0 = 0.470, rejection region k<=16 or k>=31. The methodology is better than average — empirical p0 instead of naive 0.5, a label permutation, three thresholds, tie accounting. I confirmed the no-tautology caveat is true: /home/user/potentially-profitable/scripts/lib/cost-research.mjs lines 195-207 derive cheapest_month solely from data/seasonality.json price medians (loM.medianCents < hiM.p25Cents && amp >= medIQR), with no import input anywhere in timingFor. So the two calendars really are independently constructed. I am not killing this on arithmetic.\n\nWHAT KILLS IT. The claim is a DEBUNKING NULL (\"the public trade record does NOT corroborate the folk model\"). For that, the burden is on power and homogeneity, and the null fails on three independent counts, each of which manufactures a null without the world doing anything.\n\n1. THE POWER SENTENCE IS QUANTITATIVELY WRONG, and it is the load-bearing caveat in revisedClaim. \"The test could only have detected an alignment rate at or above 62%\" describes the rejection boundary, not a detection threshold. At n=50, p0=0.47, alpha=0.05: power at true p=0.62 is 0.562 — a coin flip on detection. Power reaches 0.80 only near p=0.68 (p=0.65 -> 0.726; p=0.70 -> 0.915). Published as written, a reader takes \"could have detected 62%\" as \"would have,\" which ove"
+      },
+      {
+        "index": 5,
+        "lens": "alternative-explanation",
+        "verdict": "kill",
+        "fatal": "The pooled null is an aggregation/resolution artifact, not a property of the two calendars. Splitting the 50 rows by the granularity of the import series they are built from — 6-digit HS buckets vs 10-digit HTS statistical lines, a field (`import_hs6`) present in the same data file — yields mean circular distances of 3.72 (n=25, p_align = 0.9924, anti-aligned) and 2.20 (n=25, p_align = 0.0121, aligned). The headline 2.96 is the average of the two; the split itself is significant (permutation p = 0.0013 on the collinear span split, p = 0.0091 after deduping to 46 distinct HS codes). The claim \"the tracked import-value record gives no support for reading a price trough off import timing\" is false for the half of the sample with item-specific customs lines. The finding named this exact hazard in its caveats and dismissed it as \"not separable with these fields,\" which is factually incorrect.",
+        "caveat": "Do not publish the pooled null in any form. If a stratified version is pursued instead, it is a different finding and must (a) report both strata — 6-digit HS-bucket rows mean distance 3.72 / 36.0% hits vs 10-digit HTS-line rows 2.20 / 56.0% hits, with the split's permutation p = 0.0091 after HS-code dedup — (b) never say the record gives \"no support,\" since the better-resolved half does, (c) state that the aligned stratum's import windows (2022–2025) are contemporaneous with the 5-year trailing price window while the anti-aligned stratum's (2010–2025) are not, so the split confounds customs-code resolution with data vintage and neither can be isolated, (d) carry the existing value = price × quantity caveat verbatim, since HS6 publishes no quantity and this record cannot adjudicate any claim about physical arrivals, and (e) disclose that three lettuce rows and four ingredient pairs share an index vector, so n is 46 distinct import calendars, not 50 independent ones.",
+        "reasoning": "The finding's headline is a NULL, so my lens asks: is there a mundane mechanism that manufactures 23/50 (46.0%) and mean circular distance 2.96 even if a real phase relationship exists? Yes — the 50 rows pool two structurally different measurement regimes, and the pooled statistic is their arithmetic average.\n\nSPLIT BY THE RESOLUTION OF THE IMPORT CALENDAR ITSELF. `import_hs6` in /home/user/potentially-profitable/data/ingredient-state-record.json is sometimes a coarse 6-digit HS bucket and sometimes one or more 10-digit HTS statistical lines. Using the finding's own permutation machinery (B=10,000, cheapest_month shuffled, index vectors fixed):\n- 6-digit HS-bucket rows (n=25, all spans 2010–2025): hit rate 9/25 = 36.0%, mean circular distance 3.72 vs null 2.95, one-sided p_align = 0.9924 — ANTI-aligned.\n- 10-digit HTS-line rows (n=25, mostly 2017–2025): hit rate 14/25 = 56.0%, mean distance 2.20 vs null 3.03, one-sided p_align = 0.0121 — ALIGNED.\nThe pooled 2.96 / 46% is exactly the midpoint of a significant alignment and a significant anti-alignment. Two-group difference: permutation p = 0.0013 (B=20,000) on the equivalent span split (start ≤2012 mean 3.61, n=31, vs start ≥2017 mean 1.89, n=19; Mann-Whitney p = 0.0019). After deduping to one row per distinct `import_hs6` string (46 rows, removing the potato/lemon-lime/leaf-lettuce/beef pairs that share an identical index vector), the split holds: 10-digit 2.26 vs 6-digit 3.70, permutation p = 0.0091, pooled 2.98.\n\nWHY THIS I"
+      },
+      {
+        "index": 5,
+        "lens": "honesty-contract",
+        "verdict": "kill",
+        "fatal": "The claim adjudicates a VOLUME proposition (\"heavy-arrival window\") using a customs-VALUE series that structurally cannot see volume — the exact value-never-volume breach for which this repo's own adversarial audit already deleted this identical pairing (`buyclock` = cheapest_month × import peak; build-ingredient-state-record.mjs:370-373, 2026-07-18-corpus-expansion-overnight.md:163-165). Compounding it, the finding's own caveat concedes the null is \"partly mechanical\" because value = price × quantity drags import value down in the same month a price falls, and states outright that it \"cannot adjudicate the folk model as stated about physical arrivals\" — yet the revisedClaim omits that caveat and concludes the record \"gives no support\" anyway. A null that is partly an artifact of the metric's construction cannot be published as evidence against the proposition it was built against.",
+        "caveat": "If any version of this ever ships, it can only ship as a METHODS note about the instrument, never as a finding about the world, and it must carry all of: (1) \"The customs-VALUE calendar cannot tell you when the wholesale trough falls — and structurally could not have, because import value mixes price and quantity, so a falling price mechanically pulls import value down in the same month. This null is partly an artifact of the metric\" — the mechanical-bias sentence must be in the body, not a footnote. (2) The word \"arrival\"/\"supply\"/\"volume\" must never appear; every reference is \"import-VALUE calendar,\" including the concluding sentence. (3) \"Cheap month\" must read \"wholesale-reference cheap month … never a delivered or invoice price.\" (4) The folk model must be labeled an illustrative framing, not asserted as a held belief, since nothing in data/sourced-claims.json registers it. (5) The n=50 power limit and the double-selection survivorship (119 of 169 records dropped; cheapest_month null on 115/169) must be stated. (6) Disclose that 15 of the 50 indices rest on 3-to-5-year nominal spans, and delete the unsupported \"21 malformed lines\" attribution. (7) `open/imports/index.html:273` (\"the shelf fills exactly when the local harvest is bare. Imports mirror the domestic calendar\") must be fixed FIRST — it commits the same value→volume breach and asserts the opposite phase relation.",
+        "reasoning": "KILL. This finding is the `buyclock` read, which this repo already killed by adversarial audit — returning as a null result. The unit breach that killed it is inherited, not repaired.\n\n1. ALREADY-ADJUDICATED VALUE→VOLUME BREACH. `scripts/build-ingredient-state-record.mjs:370-373` records: \"An earlier draft also carried `buyclock` … an adversarial audit dropped both — buyclock mislabeled an import-VALUE peak as a supply/volume peak and added nothing to a buy the cheapest-month field already decides.\" `docs/handoff/2026-07-18-corpus-expansion-overnight.md:163-165` is explicit: \"❌ `buyclock` (wholesale-cheapest month vs import peak) — labeled an import-value peak a 'supply/volume peak' (value-never-volume breach).\" `buyclock` WAS cheapest_month × import_peak_months. This finding is the identical pairing — and it verifies as much itself, showing the top-3 of import_seasonal_index reproduces import_peak_months on 143/155 rows. The headline claim's inferential target is \"the folk model that a price trough lines up with the HEAVY-ARRIVAL WINDOW.\" \"Heavy-arrival\" is a tonnage construct. `data/ingredient-state-record.json#_doc` states the rule flatly: import value is \"nominal (mixes volume and price) — never import volume (not published at HS6).\" `deriveSeries()` at build script :66-90 confirms the index is built from raw `[[year, month, value]]` customs dollars. A null framing does not repair a unit breach; the instrument still cannot see arrivals in either direction.\n\n2. THE FINDING"
+      },
+      {
+        "index": 5,
+        "lens": "prior-art",
+        "verdict": "kill",
+        "fatal": "The finding is a restatement of content the site already publishes: scripts/lib/seasonality-fusion.mjs mechanismFor() lines 76-79 performs the identical import_seasonal_index[cheapest_month-1] test, and open/seasonality/index.html lines 595-596 already publishes the resulting split (28 counter-phase / 42 not-import-aligned / 14 no-import-calendar of 84) along with the exact value-never-volume caveat and the \"one is not causing the other\" line. The same 1.05 threshold on the finding's own 50 rows gives 20/50 = 40%, matching the published 28/70 = 40%. On top of that, docs/handoff/2026-07-18-corpus-expansion-overnight.md lines 163-165 records that the repo's own 4-lens audit already dropped this exact read (`buyclock`) because it breached value-never-volume and \"added nothing to a buy the cheapest_month field already decides.\" No operator decision changes, and the entry itself concedes the import-VALUE series cannot adjudicate a claim about physical arrivals.",
+        "caveat": "If any version of this is published despite the kill, it must (a) be reframed as a correction to muntin's own live /open/seasonality/ mechanism classification — naming that 28-item \"Import-value counter-phase\" bucket and its examples explicitly — rather than as a refutation of an uncited outside \"folk model\"; (b) disclose that the statistic is the same lookup already shipped in scripts/lib/seasonality-fusion.mjs (threshold 1.05) and that the finding's inputs are that surface's own inputs, not independent evidence; (c) drop every \"arrival window\" / \"heavy-arrival\" formulation, since HS6 customs VALUE contains no quantity and the P x Q identity biases the test toward the null by construction — the honest sentence is \"the import-VALUE calendar carries no information about the trough month,\" never \"imports do not arrive then\"; and (d) carry the n = 50 power statement (detectable only at <=32% or >=62% alignment) plus the disclosure that 24 of the 50 use a shared commodity-scope HS group, so the null may be a resolution artifact.",
+        "reasoning": "PRIOR ART, INTERNAL AND LIVE. The finding's core operation — look up import_seasonal_index[cheapest_month-1] and ask whether it is above the item's own mean — is already shipped code and already published prose on this site.\n\n1. Same operation, same fields, in a build library: /home/user/potentially-profitable/scripts/lib/seasonality-fusion.mjs, mechanismFor(), lines 76-79: `const vCheap = idx[cheapMonth - 1]; const counterPhase = vCheap != null && vCheap >= 1.05; const key = counterPhase ? 'counter-phase' : 'domestic-low';`. That is the finding's hit test at threshold 1.05 instead of 1.00.\n\n2. Same aggregate, already published: /home/user/potentially-profitable/open/seasonality/index.html lines 595-596 renders \"Across the 84 ingredients with a settled window, this is how the two calendars line up\" — Import-value counter-phase 28, Domestic-season low (not import-aligned) 42, Domestically sourced (no import calendar) 14. That is 28 of 70 index-carrying items = 40% \"import elevated at the cheap month.\" I ran the same 1.05 threshold on the finding's own 50-row subset of data/ingredient-state-record.json: 20/50 = 40%. The finding's headline number is the number already on the page.\n\n3. The interpretive caveat the finding treats as its contribution is also already published verbatim on that page (seasonality-fusion.mjs mechanismCaveat(), rendered live): \"Two calendars shown beside each other — one is not causing the other. The import figure is nominal import-value seasonality, nev"
+      },
+      {
+        "index": 6,
+        "lens": "statistical",
+        "verdict": "kill",
+        "fatal": "The power certification that distinguishes this from an uninformative null fails on the finding's own pre-registered threshold. Effective n is 162, not 263, when the design effect is measured on the block-shuffle null that actually sets the critical value (null SD 0.01540 vs naive 0.01031, DEFF 2.23) rather than on a bootstrap of the observed statistic with 9 hits in 6 clusters. 162 < the 191 the finding says is required, so its own VOID branch triggers. Direct simulation against the design's real empirical critical value (0.0691, not the assumed 0.0600) gives power against an exact doubling of 0.625 with event-clustered planting and 0.704 even under a maximally generous iid alternative — never the claimed 0.80. Eighty-percent power begins at roughly 2.2x the null, not 1.84x. The study therefore cannot rule out a doubling of the large-move rate, which is precisely the effect an operator would act on, so the headline \"no advance warning\" outruns the evidence.",
+        "caveat": "If published anyway in weakened form, all three certification numbers must be replaced and the epistemic claim downgraded: strike \"effective n = 263 against 191 required\" and \"cannot detect a lift smaller than 1.84x,\" and state instead that the design's own null distribution has SD 0.01540 (design effect 2.23, effective n 162) with a one-sided .05 critical value of 6.91%, giving 80% power only against a lift of about 2.2x the null (8.8% absolute) and roughly 63-70% power against an exact doubling. It must say plainly that A DOUBLING OF THE RATE CANNOT BE RULED OUT, so the piece may not assert that a recall carries no advance warning — only that no signal is detectable at the resolution the free public record supports. It must also disclose that 112 of the 362 observations (30.9%) come from 18 ingredients whose top-6 lifetime detection record contains no post-2020 up-episode at all and which therefore cannot register a hit under the true alignment, so the informative sample is 250 observations across 37 ingredients, and that the entire result rests on a 9-hit numerator concentrated in 6 ingredients.",
+        "reasoning": "I reproduced the finding's own null (5,000 wrapped per-ingredient shuffles) from data/food-recalls.json, data/cost-index-events.json and data/cost-lockfloat.json. It matches to four decimals: B mean 0.0401 vs their 0.0397, p05 0.0193, median 0.0359, p95 0.0691 — identical. I also reproduced their clustered bootstrap SE at 0.00962 vs their 0.00959. So the arithmetic they report is real, and I am not disputing A = 9/362 = 0.0249, p = 0.86, or the +2y control at 0.0304. The direction and the p-value are sound, and the permutation test's level is correct.\n\nThe defect is in the one thing that makes this publishable rather than an ordinary uninformative null: the power certification. The finding's own kill condition has a VOID branch, and it declares CONFIRMED solely because \"effective n 263 >= 191 required for a doubling.\" That comparison is built on the wrong variance, in two compounding ways, both pushing the same direction.\n\n(1) Wrong critical value. The power calc puts the one-sided .05 bar at B + 1.645*sqrt(B(1-B)/263) = 0.0600. But the p-value is computed against the empirical null, whose 95th percentile is 0.0691 — the real bar is 15% higher than the bar the power calc assumed. Their stated MDE of 0.0730 is derived against the too-low bar.\n\n(2) Wrong design effect. DEFF 1.37 was measured by bootstrapping the OBSERVED statistic, where 9 hits sit in only 6 of 55 ingredients (ginger, green-onion, lime, onion, spinach, tomato). But the dispersion that governs the test is the re"
+      },
+      {
+        "index": 6,
+        "lens": "alternative-explanation",
+        "verdict": "kill",
+        "fatal": "Exposure and outcome are measured in different geographies and at different supply-chain positions, and the corpus cannot fix it. 83% of observations are priced off a single terminal market (LA 53.9%, Boston 29.3%), while 91.5% of recall notices are regional, not nationwide — 242 of 362 observations (66.9%) pair a recall whose distribution states exclude the state of the market setting the price. data/food-recalls.json carries no origin/production field, and many exposures are downstream fresh-cut processors whose recalls remove nothing from wholesale supply (the dataset's own _doc: \"a whole-word text match on the product, not an inferred link\"). The dilution is asymmetric — mismatched pairs still generate chance hits under the shuffled null but cannot generate causal hits under the alternative — so a doubling among valid exposures moves the pooled rate only 0.0397→0.0528, requiring n≈1,500 against the effective n=263 they claim as adequate. Their own VOID branch fires, and \"a measured absence rather than an untested one\" is unsupported.",
+        "caveat": "If any version is published despite this, it may not claim absence, adequate power, or operator guidance. It must state: (1) 66.9% of the 362 tested pairs (242) involve a recall distributed only to states that exclude the terminal market whose quote supplies the price series — LA sets 53.9% of observations, Boston 29.3% — and the corpus has no production-origin field, so the exposure is unverified for two-thirds of the sample; (2) many tagged recalls are of downstream fresh-cut or prepared products that remove nothing from wholesale supply, and the source dataset itself calls the slug tag \"a whole-word text match on the product, not an inferred link\"; (3) the power statement must be withdrawn — corrected for the fraction of pairs able to transmit an effect, detecting a doubling needs roughly n≈1,500 against an effective n of 263, so this is an UNTESTED absence, not a measured one; (4) N=362 overstates the evidence — only 196 observations are capable of registering a hit at all, and 33 of them rest on a 10-point monthly shrimp series with a six-month gap. The honest headline is about the corpus, not the world: \"this pairing of FDA enforcement reports with single-city terminal quotes cannot see a recall-to-price relationship\" — never \"a recall carries no advance warning.\"",
+        "reasoning": "I reproduced the observation set exactly from the stated inputs (n=362, 208 events, 55 ingredients), so the arithmetic is sound. I then tried five mundane mechanisms and REFUTED four of them, which is why the fifth matters.\n\nREFUTED (stating plainly, not manufacturing objections):\n1. Seasonality inflating the null. Recall observations are Jul-Oct heavy (Jul 14.4%, Sep 13.0%, Oct 13.5%) while up-episodes lean Jan-Apr (40.8% of all up-episodes vs 21.9% of recalls), so I expected the ±3y uniform offset shuffle (`off = random.randint(-3*365, 3*365)`) to inflate B by breaking month-of-year phase. I ran season-preserving shuffles (offsets = k*364d and k*365d, k in ±1..3, 3000 iters): B rises to 0.0483 and 0.0452, ABOVE the published 0.0402. The seasonal mechanism strengthens the negative rather than manufacturing it.\n2. Detection dead zone at the span tail. The centered ±26-week baseline could have blocked edge detection, but events fire at span.to itself (acorn-squash, cantaloupe, vegetable-oil all gap=0), and 31/80 ingredients have an event within 400d of span.to vs ~23% expected under uniform exposure. No edge suppression.\n3. Peak-vs-onset dating. scripts/build-cost-index-events.mjs:132 sets `date: pts[i].date` at the PEAK, so a recall-triggered move is labeled at roughly onset + durationDays/2 and a forward-only window could systematically miss it. But only 8/393 up-episodes (2.0%) have durationDays > 168, i.e. half-width > 84d. Minor.\n4. Labeling-recall dilution. Only 10.6% of"
+      },
+      {
+        "index": 6,
+        "lens": "honesty-contract",
+        "verdict": "kill",
+        "fatal": "The exposure variable is a whole-word product-text tag that open/recalls/index.html itself publishes as \"not a supply or price link\" (composite and store-brand goods that merely name the ingredient) — 8 of the 9 headline co-occurrences are rum, supplements, tamales, cream cheese, leeks and sliced cucumber, not the tagged commodity — so \"an FDA recall on an ingredient\" misdescribes the instrument; and the analysis performs exactly the recall-to-price join that ADR-015's 2026-07-24c addendum forbids and that scripts/check-open-lane-honesty.mjs:59-64 enforces as a required published literal (\"never joined to a price\") in the page lede, meta/OG description, schema.org Dataset description, dataset note, and the recall section on every cost-index/<slug>/ page.",
+        "caveat": "If it is ever revived, three things must all be true before a word ships: (a) ADR-023 formally amends ADR-015's \"never joined to a price\" fence and every gated literal in scripts/check-open-lane-honesty.mjs and on the live surfaces is re-worded to match, since publishing while those literals stand makes a machine-readable Dataset description false; (b) the exposure is described as what it is — \"FDA enforcement notices whose product text names the ingredient, a whole-word text match that includes composite and store-brand goods and is not a supply link\" — never as \"a recall on an ingredient\" or events \"touching\" an ingredient, with the 8-of-9 non-commodity numerator (Key Lime Rum, ginger supplement, spinach tamales, Super Greens supplement, strawberry cream cheese, leeks, sliced cucumber, roasting-vegetable mix) shown in the open; (c) every price sentence, including the operator payoff line, says \"wholesale reference series,\" never bare \"price,\" and states that delivered price is absent from the corpus. The caveat block must also drop the false \"egg ... can never be tagged\" line — eggs and butter-lettuce are both in the tested 55.",
+        "reasoning": "I reproduced the observation set only to inspect its inputs (362 obs / 208 events / 55 ingredients — matches exactly) and did not re-run the statistics. The arithmetic is not the problem; the instrument and the standing fence are.\n\n1) THE EXPOSURE VARIABLE IS NOT \"A RECALL ON AN INGREDIENT.\" The slug tag is a whole-word match on recall product text (scripts/fetch-food-recalls.mjs:68, `p.includes(' '+kw+' ')`), and the site already publishes that limit as a promise: open/recalls/index.html \"What this can't tell you\" says \"The matcher is text, not sourcing. A whole-word product-text match pulls in composite and store-brand products that merely name the ingredient — the tag is not a supply or price link.\" The claim (\"An FDA recall on an ingredient\", \"208 distinct FDA recall events touching 55 priced ingredients\") asserts the supply link the corpus disclaims. This is verifiable in the numerator itself: 8 of the 9 headline co-occurrences are not the tagged fresh commodity — lime 2022-03-16 = \"Key Lime Rum\"; tomato 2022-09-28 = \"Roasting Vegetables. With Olive Oil and Herbs.\"; onion 2025-07-23 = \"FG20004 Cucumber, Sliced\"; onion 2025-07-16 = \"1. USA OG2 LEEKS\"; ginger 2025-12-31 = \"Organic Ginger Root Herbal Supplement\"; spinach 2026-02-04 (x2) = \"Mushroom, Spinach & Salsa Tamales\" (event 98152, Prima Vera Nueva, CA/NV) and \"Live it Up brand Super Greens ... dietary supplement\" (98297); tomato 2026-03-18 = \"Made Fresh Salads brand Strawberry Cream Cheese\". Only green-onion 2025-10-"
+      },
+      {
+        "index": 6,
+        "lens": "prior-art",
+        "verdict": "kill",
+        "fatal": "The conclusion is not new on either axis. Internally, /home/user/potentially-profitable/open/recalls/index.html line 331 already publishes \"a recall is never a price signal\" and scripts/build-open-recalls-page.mjs enforces a no-price guard around it, so the finding restates the site's own live editorial doctrine. Externally, USDA ERS (spinach 2006: -$202.5M spinach, +$141.9M lettuce) and the meat-recall demand literature established the economics long ago — and they predict a DOWN move in the implicated commodity plus an UP move in substitutes. The code tests up-episodes only (`if x[\"direction\"] == \"up\"`), reports any-direction 11/362 with no null, and never tests the down direction, so the finding scores a null on the one direction prior art already said would be null. It then pools ~200 single-notice lot recalls (median 1 notice/event across 315 events) with the two genuine national outbreaks, and stratifies only by FDA hazard class (Class I = 426/718 notices), which is not a scale or publicity proxy — so the null is also a dilution of exactly the event class known to move produce markets.",
+        "caveat": "If published over this verdict, it may not be framed as a discovery. It must be positioned as the measurement BEHIND the site's existing line at /open/recalls/ (\"a recall is never a price signal\"), explicitly cite that the site already asserted it, and cite the prior literature it is consistent with (USDA ERS Amber Waves June 2007 and Arnade/Calvin/Kuchler 2009 on spinach 2006; Marsh/Schroeder/Mintert, Applied Economics 36(9) 2004 on meat recalls). It must state plainly that (a) only UP-episodes were tested against a null — the DOWN direction that this literature predicts, and the substitute-price channel, were never tested; (b) the 208 events pool ~200 single-notice firm-level lot recalls with a handful of national outbreaks, and Class I is a hazard class, not a scale proxy, so no publicized-outbreak stratum was isolated; (c) the detection floor is topN=6 lifetime moves at floorPct=20 from a ±26-week normal, so nothing below a top-six ≥20% departure is visible and 18 of 55 ingredients had zero eligible post-2020 up-episodes; and (d) this is a public wholesale reference series, never delivered or invoice price — it cannot be read as \"a recall does not change what your kitchen pays.\"",
+        "reasoning": "The statistics are clean; the originality is not. Three strikes, any one of which is close to fatal on this lens.\n\n1) THE SITE ALREADY PUBLISHES THE CONCLUSION, VERBATIM. /home/user/potentially-profitable/open/recalls/index.html line 331 (generated by scripts/build-open-recalls-page.mjs line 211) ships this sentence live: \"A reference lookup, not a consequence — a recall is never a price signal.\" The same page carries \"never joined to a price\" 10 times, and build-open-recalls-page.mjs lines 8-9 and 531-541 enforce a structural no-price guard (\"There is NO price token anywhere on this page (asserted at build)\"), with a build-time assertion that fails if a \"$\" appears. scripts/lib/recall-roster.mjs lines 30-33 injects the same line onto every one of the ~100 EN+ES ingredient pages: \"shown as co-occurrence, never a cause, never joined to a price.\" The revised claim's payload sentence — \"a recall notice carries no advance warning of an ingredient's price departure\" — is a restatement of muntin.digital's own published doctrine. Publishing it as a discovery is publishing evidence for a sentence the site already asserts. That is a methods footnote for /open/recalls/, not a finding.\n\n2) THE EXTERNAL LITERATURE SETTLED THIS 15-20 YEARS AGO, AND IT SAYS THE TESTED DIRECTION IS THE WRONG ONE. USDA ERS published the market response to exactly this class of event: the 2006 spinach E. coli outbreak (ERS Amber Waves, June 2007; Arnade/Calvin/Kuchler, Rev. Ag. Econ. 31(4):734-750, 2009) meas"
+      }
+    ]
+  },
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Kill"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "kill:statistical#0",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a0673dd801c3cc2e2",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785458061825,
+      "queuedAt": 1785458056146,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Named culinary substitutes co-move MORE than category-match…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 0 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785458533841,
+      "tokens": 88293,
+      "toolCalls": 22,
+      "durationMs": 472015,
+      "resultPreview": "{\"index\":0,\"claimEcho\":\"Named culinary substitutes co-move MORE than category-matched non-substitute pairs — the shared-episode rate for the {n}\",\"lensName\":\"statistical\",\"verdict\":\"survives-weakened\",\"reasoning\":\"I reproduced the stratum construction exactly from the three named files (30 strata, mean treatment 0.26944, mean per-stratum control 0.09772, obs +0.17173) and then ran six attacks. Fiv…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "kill:alternative-explanation#0",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a61037e6929dd5d43",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785458060023,
+      "queuedAt": 1785458056146,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Named culinary substitutes co-move MORE than category-match…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 0 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785458612845,
+      "tokens": 105746,
+      "toolCalls": 31,
+      "durationMs": 552821,
+      "resultPreview": "{\"index\":0,\"claimEcho\":\"Named culinary substitutes co-move MORE than category-matched non-substitute pairs — the shared-episode rate for the {n}\",\"lensName\":\"alternative-explanation\",\"verdict\":\"survives-weakened\",\"reasoning\":\"I hunted for a mundane mechanism that reproduces +17.17pp / 2.76x without any substitute→entanglement relationship. Four candidates, three dead, one that survives and forces …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "kill:honesty-contract#0",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a8a9913bcb23c01e9",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785458537739,
+      "queuedAt": 1785458056146,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Named culinary substitutes co-move MORE than category-match…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 0 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785458842727,
+      "tokens": 77269,
+      "toolCalls": 21,
+      "durationMs": 304988,
+      "resultPreview": "{\"index\":0,\"claimEcho\":\"Named culinary substitutes co-move MORE than category-matched non-substitute pairs — the shared-episode rate for the {n}\",\"lensName\":\"honesty-contract\",\"verdict\":\"kill\",\"reasoning\":\"KILL — on the measure, not the arithmetic.\\n\\n1) FATAL: the statistic is the framing this site retired of record. The finding's unit of analysis is `cavg(a,b) = (cdir(a,b)+cdir(b,a))/2` (see the…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "kill:prior-art#0",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "aafc0a7b99328486e",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785458616456,
+      "queuedAt": 1785458056146,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Named culinary substitutes co-move MORE than category-match…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 0 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785458902068,
+      "tokens": 71336,
+      "toolCalls": 34,
+      "durationMs": 285612,
+      "resultPreview": "{\"index\":0,\"claimEcho\":\"Named culinary substitutes co-move MORE than category-matched non-substitute pairs — the shared-episode rate for the {n}\",\"lensName\":\"prior-art\",\"verdict\":\"kill\",\"reasoning\":\"EXTERNAL PRIOR ART — the site already cites the paper that owns this claim. `/home/user/potentially-profitable/cost-index/menu-pricing/study/index.html` carries Pindyck & Rotemberg (1990), \\\"The Excess…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "kill:statistical#1",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "ae90be9954862ebfe",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785458846835,
+      "queuedAt": 1785458056164,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "The public record as currently shipped CANNOT determine whe…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 1 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785459164956,
+      "tokens": 66289,
+      "toolCalls": 9,
+      "durationMs": 318121,
+      "resultPreview": "{\"index\":1,\"claimEcho\":\"The public record as currently shipped CANNOT determine whether episodes are clustering more over time: the detected-eve\",\"lensName\":\"statistical\",\"verdict\":\"survives-weakened\",\"reasoning\":\"WHAT SURVIVES CLEAN (I checked the inputs, and these are arithmetic, not inference):\\n\\n1. The censoring core. 65/102 slugs at eventCount==6, 432/2,634 survival, year-nonuniform survival…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "kill:alternative-explanation#1",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "aab1439901d9381d0",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785458905643,
+      "queuedAt": 1785458056164,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "The public record as currently shipped CANNOT determine whe…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 1 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785459320738,
+      "tokens": 77087,
+      "toolCalls": 12,
+      "durationMs": 415095,
+      "resultPreview": "{\"index\":1,\"claimEcho\":\"The public record as currently shipped CANNOT determine whether episodes are clustering more over time: the detected-eve\",\"lensName\":\"alternative-explanation\",\"verdict\":\"survives-weakened\",\"reasoning\":\"WHAT SURVIVES MY LENS CLEANLY (I checked, I could not break it).\\n\\nThe coverage/censoring leg is arithmetic, not inference, and has no mundane alternative. `scripts/build-co…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "kill:honesty-contract#1",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a4c2a5ee413fa86b5",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785459170117,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "The public record as currently shipped CANNOT determine whe…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 1 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785459530848,
+      "tokens": 81222,
+      "toolCalls": 22,
+      "durationMs": 360731,
+      "resultPreview": "{\"index\":1,\"claimEcho\":\"The public record as currently shipped CANNOT determine whether episodes are clustering more over time: the detected-eve\",\"lensName\":\"honesty-contract\",\"verdict\":\"survives-weakened\",\"reasoning\":\"WHAT SURVIVES (verified independently against committed files, not recomputed from the finding's code). data/cost-index-events.json: items=102, summary {ingredients:80, events:432},…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "kill:prior-art#1",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a1269937363dbc8e2",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785459324018,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "The public record as currently shipped CANNOT determine whe…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 1 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785459588073,
+      "tokens": 74431,
+      "toolCalls": 22,
+      "durationMs": 264055,
+      "resultPreview": "{\"index\":1,\"claimEcho\":\"The public record as currently shipped CANNOT determine whether episodes are clustering more over time: the detected-eve\",\"lensName\":\"prior-art\",\"verdict\":\"kill\",\"reasoning\":\"I judged this only on prior art and operator usefulness. The statistics are not in dispute; the question is whether anything here is new, and whether an operator can act on it.\\n\\nPRIOR ART — the headl…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 9,
+      "label": "kill:statistical#2",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a9e3ded26ad17695b",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785459534754,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "The 11 ingredients withheld for reason='flat' are not flat …",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 2 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785459838590,
+      "tokens": 65760,
+      "toolCalls": 10,
+      "durationMs": 303836,
+      "resultPreview": "{\"index\":2,\"claimEcho\":\"The 11 ingredients withheld for reason='flat' are not flat markets — they are dead price-discovery: their public wholesa\",\"lensName\":\"statistical\",\"verdict\":\"kill\",\"reasoning\":\"Group A is not 10 independent series. Five of the ten (basil, oregano, rosemary, tarragon, thyme) are one AMS Boston herb table: identical first observation 2024-01-10, identical length n=130, identi…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 10,
+      "label": "kill:alternative-explanation#2",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "af88478eebd756af0",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785459591825,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "The 11 ingredients withheld for reason='flat' are not flat …",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 2 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785460033596,
+      "tokens": 84194,
+      "toolCalls": 17,
+      "durationMs": 441770,
+      "resultPreview": "{\"index\":2,\"claimEcho\":\"The 11 ingredients withheld for reason='flat' are not flat markets — they are dead price-discovery: their public wholesa\",\"lensName\":\"alternative-explanation\",\"verdict\":\"survives-weakened\",\"reasoning\":\"I built five mundane mechanisms and tested each against the actual inputs. Four fail to explain the core gap; one is fatal to the contamination half of the claim.\\n\\nMECHANIS…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 11,
+      "label": "kill:honesty-contract#2",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "abcf97715fd2c0c00",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785459843673,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "The 11 ingredients withheld for reason='flat' are not flat …",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 2 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785460234134,
+      "tokens": 84795,
+      "toolCalls": 31,
+      "durationMs": 390461,
+      "resultPreview": "{\"index\":2,\"claimEcho\":\"The 11 ingredients withheld for reason='flat' are not flat markets — they are dead price-discovery: their public wholesa\",\"lensName\":\"honesty-contract\",\"verdict\":\"kill\",\"reasoning\":\"The arithmetic is sound — I verified the inputs, not the analysis. tarragon really is 1075 cents in every one of its last 52 rows (2025-07-09..2026-06-30, data/cost-index-history.json), every fl…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 12,
+      "label": "kill:prior-art#2",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "ab99940f19178c794",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785460037963,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "The 11 ingredients withheld for reason='flat' are not flat …",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 2 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785460276464,
+      "tokens": 78075,
+      "toolCalls": 21,
+      "durationMs": 238501,
+      "resultPreview": "{\"index\":2,\"claimEcho\":\"The 11 ingredients withheld for reason='flat' are not flat markets — they are dead price-discovery: their public wholesa\",\"lensName\":\"prior-art\",\"verdict\":\"kill\",\"reasoning\":\"The headline is a restatement on three independent grounds, and the operator action it implies is already the site's published CTA for exactly this set.\\n\\n1) THE SITE ALREADY SAYS IT, IN THESE WORDS. …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 13,
+      "label": "kill:statistical#3",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a0a2cb009ffee7a98",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785460239073,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Food-safety event exposure is statistically indistinguishab…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 3 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785460463370,
+      "tokens": 56618,
+      "toolCalls": 9,
+      "durationMs": 224295,
+      "resultPreview": "{\"index\":3,\"claimEcho\":\"Food-safety event exposure is statistically indistinguishable between the dark (withheld) and the published set of the 1\",\"lensName\":\"statistical\",\"verdict\":\"survives-weakened\",\"reasoning\":\"THE NULL ITSELF SURVIVES, AND SURVIVES HARD. The randomization test is correctly specified for the question asked: labels are permuted over the 100 ingredients with group sizes fixed at …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 14,
+      "label": "kill:alternative-explanation#3",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "afcae7a32197c76b5",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785460280946,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Food-safety event exposure is statistically indistinguishab…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 3 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785460574832,
+      "tokens": 69630,
+      "toolCalls": 13,
+      "durationMs": 293886,
+      "resultPreview": "{\"index\":3,\"claimEcho\":\"Food-safety event exposure is statistically indistinguishable between the dark (withheld) and the published set of the 1\",\"lensName\":\"alternative-explanation\",\"verdict\":\"kill\",\"reasoning\":\"The mundane mechanism is that \\\"recall-event exposure\\\" here is not a food-safety measure at all — it is a count of how often an ingredient's DISPLAY NAME appears as a bare whole word in …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 15,
+      "label": "kill:honesty-contract#3",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "ae908bd4a1a09f519",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785460467273,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Food-safety event exposure is statistically indistinguishab…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 3 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785460802493,
+      "tokens": 80933,
+      "toolCalls": 16,
+      "durationMs": 335219,
+      "resultPreview": "{\"index\":3,\"claimEcho\":\"Food-safety event exposure is statistically indistinguishable between the dark (withheld) and the published set of the 100-i\",\"lensName\":\"honesty-contract\",\"verdict\":\"kill\",\"reasoning\":\"KILL. Five breaches, the first two independently fatal.\\n\\n1) PROXY SPOKEN AS CONSTRUCT — the \\\"import VALUE never volume\\\" rule's exact family, and the blind spots are correlated with the g…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 16,
+      "label": "kill:prior-art#3",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a81c19b60066af8c2",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785460580073,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "Food-safety event exposure is statistically indistinguishab…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 3 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785460808924,
+      "tokens": 64290,
+      "toolCalls": 17,
+      "durationMs": 228851,
+      "resultPreview": "{\"index\":3,\"claimEcho\":\"Food-safety event exposure is statistically indistinguishable between the dark (withheld) and the published set of the 1\",\"lensName\":\"prior-art\",\"verdict\":\"kill\",\"reasoning\":\"PRIOR ART — both halves are already published on muntin.digital, and the conclusion is already the site's stated editorial rule.\\n\\n1. The recall side is a live public surface. /home/user/potentially-p…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 17,
+      "label": "kill:statistical#4",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a393497b337d8083f",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785460807720,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "The lock/cushion/float band fails disproportionately during…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 4 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785461278331,
+      "tokens": 85180,
+      "toolCalls": 18,
+      "durationMs": 470611,
+      "resultPreview": "{\"index\":4,\"claimEcho\":\"The lock/cushion/float band fails disproportionately during the exact episodes it is being trusted to survive: across th\",\"lensName\":\"statistical\",\"verdict\":\"kill\",\"reasoning\":\"First, plainly: the chance-axis attacks I was hired to make all FAIL. n is not the problem. Splitting the 65,932 tests by calendar year, R > 1 in 25 of 26 years (only 2009 at 1.02; R >= 1.3 in 23 of …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 18,
+      "label": "kill:alternative-explanation#4",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "aa8c2aaa2ea064ca0",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785460812823,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "The lock/cushion/float band fails disproportionately during…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 4 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785461243773,
+      "tokens": 87740,
+      "toolCalls": 13,
+      "durationMs": 430947,
+      "resultPreview": "{\"index\":4,\"claimEcho\":\"The lock/cushion/float band fails disproportionately during the exact episodes it is being trusted to survive: across th\",\"lensName\":\"alternative-explanation\",\"verdict\":\"kill\",\"reasoning\":\"I reproduced R = 1.4715 exactly (1,416/3,873 vs 15,419/62,059), so the arithmetic is sound, and I killed two of my own candidate objections honestly: (a) aggregation mismatch — the histor…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 19,
+      "label": "kill:honesty-contract#4",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "ae1a0218360fdd20f",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785461247839,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "The lock/cushion/float band fails disproportionately during…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 4 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785461580969,
+      "tokens": 78369,
+      "toolCalls": 18,
+      "durationMs": 333130,
+      "resultPreview": "{\"index\":4,\"claimEcho\":\"The lock/cushion/float band fails disproportionately during the exact episodes it is being trusted to survive: across th\",\"lensName\":\"honesty-contract\",\"verdict\":\"kill\",\"reasoning\":\"I verified the finding's inputs rather than recomputing it, and the arithmetic is clean: the 63 replay strips in data/cost-lockfloat.json reconcile EXACTLY with the published per-item `coverage`…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 20,
+      "label": "kill:prior-art#4",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a25d78d8e8b41b1a2",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785461281851,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "The lock/cushion/float band fails disproportionately during…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 4 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785461500805,
+      "tokens": 76887,
+      "toolCalls": 16,
+      "durationMs": 218954,
+      "resultPreview": "{\"index\":4,\"claimEcho\":\"The lock/cushion/float band fails disproportionately during the exact episodes it is being trusted to survive: across th\",\"lensName\":\"prior-art\",\"verdict\":\"kill\",\"reasoning\":\"KILLED ON PRIOR ART — and the prior art is muntin.digital's own live site, shipped three days before this run.\\n\\n1. THE HEADLINE IS ALREADY PUBLISHED, ON 134 PAGES, WITH AN ADR OF RECORD. `docs/editor…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 21,
+      "label": "kill:statistical#5",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a3006dfd3c7912313",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785461504938,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "For the tracked ingredients that have both a noise-gated ch…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 5 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785461880481,
+      "tokens": 69465,
+      "toolCalls": 16,
+      "durationMs": 375542,
+      "resultPreview": "{\"index\":5,\"claimEcho\":\"For the tracked ingredients that have both a noise-gated cheap month and a 12-month import-value seasonal index, the che\",\"lensName\":\"statistical\",\"verdict\":\"kill\",\"reasoning\":\"WHAT SURVIVES. The arithmetic reproduces exactly off /home/user/potentially-profitable/data/ingredient-state-record.json: 50 rows qualify of 169, hits = 23, slots-above-1.0 = 282/600, p0 = 0.470, rej…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 22,
+      "label": "kill:alternative-explanation#5",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "aa88ac45b7b1d6e3a",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785461587272,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "For the tracked ingredients that have both a noise-gated ch…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 5 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785461925740,
+      "tokens": 70910,
+      "toolCalls": 17,
+      "durationMs": 338467,
+      "resultPreview": "{\"index\":5,\"claimEcho\":\"For the tracked ingredients that have both a noise-gated cheap month and a 12-month import-value seasonal index, the che\",\"lensName\":\"alternative-explanation\",\"verdict\":\"kill\",\"reasoning\":\"The finding's headline is a NULL, so my lens asks: is there a mundane mechanism that manufactures 23/50 (46.0%) and mean circular distance 2.96 even if a real phase relationship exists? Y…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 23,
+      "label": "kill:honesty-contract#5",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a444ce3ebbf1f3d24",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785461884080,
+      "queuedAt": 1785458056165,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "For the tracked ingredients that have both a noise-gated ch…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 5 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785462139163,
+      "tokens": 82306,
+      "toolCalls": 18,
+      "durationMs": 255083,
+      "resultPreview": "{\"index\":5,\"claimEcho\":\"For the tracked ingredients that have both a noise-gated cheap month and a 12-month import-value seasonal index, the che\",\"lensName\":\"honesty-contract\",\"verdict\":\"kill\",\"reasoning\":\"KILL. This finding is the `buyclock` read, which this repo already killed by adversarial audit — returning as a null result. The unit breach that killed it is inherited, not repaired.\\n\\n1. ALRE…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 24,
+      "label": "kill:prior-art#5",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "aa87484768f9bf1fc",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785461930622,
+      "queuedAt": 1785458056166,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "For the tracked ingredients that have both a noise-gated ch…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 5 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785462303172,
+      "tokens": 70925,
+      "toolCalls": 18,
+      "durationMs": 372549,
+      "resultPreview": "{\"index\":5,\"claimEcho\":\"For the tracked ingredients that have both a noise-gated cheap month and a 12-month import-value seasonal index, the che\",\"lensName\":\"prior-art\",\"verdict\":\"kill\",\"reasoning\":\"PRIOR ART, INTERNAL AND LIVE. The finding's core operation — look up import_seasonal_index[cheapest_month-1] and ask whether it is above the item's own mean — is already shipped code and already publis…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 25,
+      "label": "kill:statistical#6",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a74b1c92816dc8143",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785462144295,
+      "queuedAt": 1785458056166,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "An FDA recall on an ingredient does not co-occur with a det…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 6 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785462510272,
+      "tokens": 67658,
+      "toolCalls": 9,
+      "durationMs": 365977,
+      "resultPreview": "{\"index\":6,\"claimEcho\":\"An FDA recall on an ingredient does not co-occur with a detected departure in that ingredient's wholesale reference seri\",\"lensName\":\"statistical\",\"verdict\":\"kill\",\"reasoning\":\"I reproduced the finding's own null (5,000 wrapped per-ingredient shuffles) from data/food-recalls.json, data/cost-index-events.json and data/cost-lockfloat.json. It matches to four decimals: B mean …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 26,
+      "label": "kill:alternative-explanation#6",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "adbf688ec30a1740a",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785462306746,
+      "queuedAt": 1785458056166,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "An FDA recall on an ingredient does not co-occur with a det…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 6 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785462868572,
+      "tokens": 89395,
+      "toolCalls": 20,
+      "durationMs": 561826,
+      "resultPreview": "{\"index\":6,\"claimEcho\":\"An FDA recall on an ingredient does not co-occur with a detected departure in that ingredient's wholesale reference seri\",\"lensName\":\"alternative-explanation\",\"verdict\":\"kill\",\"reasoning\":\"I reproduced the observation set exactly from the stated inputs (n=362, 208 events, 55 ingredients), so the arithmetic is sound. I then tried five mundane mechanisms and REFUTED four of t…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 27,
+      "label": "kill:honesty-contract#6",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a46a63689cf304fec",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785462516917,
+      "queuedAt": 1785458056166,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "An FDA recall on an ingredient does not co-occur with a det…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 6 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785462852459,
+      "tokens": 88947,
+      "toolCalls": 24,
+      "durationMs": 335542,
+      "resultPreview": "{\"index\":6,\"claimEcho\":\"An FDA recall on an ingredient does not co-occur with a detected departure in that ingredient's wholesale reference seri\",\"lensName\":\"honesty-contract\",\"verdict\":\"kill\",\"reasoning\":\"I reproduced the observation set only to inspect its inputs (362 obs / 208 events / 55 ingredients — matches exactly) and did not re-run the statistics. The arithmetic is not the problem; the in…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 28,
+      "label": "kill:prior-art#6",
+      "phaseIndex": 1,
+      "phaseTitle": "Kill",
+      "agentId": "a0f6af086b4ac957d",
+      "model": "claude-opus-5",
+      "state": "done",
+      "startedAt": 1785462856736,
+      "queuedAt": 1785458056166,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "lastToolSummary": "An FDA recall on an ingredient does not co-occur with a det…",
+      "promptPreview": "You are an adversarial reviewer trying to KILL a data finding before muntin.digital publishes it.\n\nSTEP 1 — read the finding. Open /home/user/potentially-profitable/docs/handoff/discovery-run/salvaged-findings.json and take the entry at index 6 of the list you get by filtering hypotheses[] to those whose outcome === \"confirmed\" (0-based; there are 7). Use python3 or node for this, not a full file …",
+      "lastProgressAt": 1785463102138,
+      "tokens": 72276,
+      "toolCalls": 18,
+      "durationMs": 245401,
+      "resultPreview": "{\"index\":6,\"claimEcho\":\"An FDA recall on an ingredient does not co-occur with a detected departure in that ingredient's wholesale reference seri\",\"lensName\":\"prior-art\",\"verdict\":\"kill\",\"reasoning\":\"The statistics are clean; the originality is not. Three strikes, any one of which is close to fatal on this lens.\\n\\n1) THE SITE ALREADY PUBLISHES THE CONCLUSION, VERBATIM. /home/user/potentially-profi…"
+    }
+  ],
+  "totalTokens": 2166026,
+  "totalToolCalls": 512
+}
