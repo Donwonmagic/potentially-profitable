@@ -433,6 +433,15 @@ const CHECKS = [
   // reason in SILENT_ALLOW, and the script warns when a registered entry starts moving again.
   ['Panel independence self-test','audit-panel-independence.mjs','--self-test'],
   ['Panel independence',  'audit-panel-independence.mjs',  '--check'],
+  // Flat-label jump blindness (2026-07-31). The lock/float band is the 80th-percentile one-step
+  // residual over 26 steps — it describes the MEDIAN day. When >=80% of steps are zero the band
+  // collapses to ±0%, `degenerate` fires, and the operator is told "flat — nothing to call".
+  // Sound for a sticky quote; backwards for a sparse-but-violent series. carrot carries a 44.1%
+  // single-step jump inside the very window used to call it flat. The gate does not restate any
+  // verdict — that is a founder call on a published surface — it only makes the case impossible
+  // to miss: each one is acknowledged with a dated reason or CI reds. See ADR-023.
+  ['Flat-label jump self-test','check-flat-label-jumps.mjs','--self-test'],
+  ['Flat-label jump blindness','check-flat-label-jumps.mjs'],
   ['Cost-index sync self-test','check-cost-index-sync.mjs','--self-test'],
   // Confidence calibration (P1 #36) — min-of-gates ceiling governs precision.
   // Warn-only during rollout (FAIL_ON_DRIFT in the script); flip once the
