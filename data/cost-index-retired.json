@@ -1,0 +1,285 @@
+{
+  "_doc": "Last-good state of every ingredient dropped from the index because its feed stopped publishing. Written by scripts/build-cost-index.mjs at the moment of the drop (the only moment the record still exists); consumed by scripts/build-cost-index-pages.mjs to render the terminal page, and by scripts/check-cost-index-orphans.mjs to tell a retired page from an orphaned one. An entry is REMOVED when the feed comes back.",
+  "_lastReviewed": "2026-07-31",
+  "_reconstructed": "The 2026-07-31 13:38 UTC refresh ran on a main that predated ADR-021, so it dropped scallops without archiving it. This entry was rebuilt by driving buildRetiredArchive() with data/cost-index.json as of 1f4f6475 (the commit before the drop) — the same function, the same predicates, the same bytes it would have written had the code been on main. Not hand-authored.",
+  "retired": {
+    "scallops": {
+      "retiredOn": "2026-07-31",
+      "lastMeasured": "2026-05-01",
+      "issues": [
+        "stale-level"
+      ],
+      "lastPoint": {
+        "asOf": "2026-05-01",
+        "level": {
+          "basis": "index",
+          "medianCents": 865,
+          "rangeCents": [
+            751,
+            979
+          ],
+          "rangeBasis": "volatility",
+          "typeDispersion": 0,
+          "nObs": 1,
+          "nFamilies": 1,
+          "nSources": 1,
+          "nTypes": 1,
+          "provenance": [
+            {
+              "source": "noaa",
+              "type": "noaa-trade",
+              "valueCents": 865,
+              "date": "2026-04-01"
+            }
+          ]
+        },
+        "trend": {
+          "pct": -0.13930348258706468,
+          "dir": "down",
+          "agreement": 1,
+          "nSources": 2,
+          "nFamilies": 2,
+          "nTypes": 2,
+          "noise": 0.1344
+        },
+        "confidence": "directional",
+        "label": "About $7.51–$9.79 (wholesale reference, single market — band from recent volatility), down -19.5% over the window. 1+ source(s) for level, 2 for trend.",
+        "provenance": [
+          {
+            "kind": "level",
+            "source": "noaa",
+            "type": "noaa-trade",
+            "valueCents": 865,
+            "date": "2026-04-01"
+          },
+          {
+            "kind": "trend",
+            "source": "noaa",
+            "type": "noaa-trade",
+            "basis": "wholesale"
+          },
+          {
+            "kind": "trend",
+            "source": "bls",
+            "type": "bls",
+            "basis": "index"
+          }
+        ],
+        "history": [
+          {
+            "date": "2026-01-01",
+            "valueCents": 1005,
+            "source": "noaa",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-02-01",
+            "valueCents": 761,
+            "source": "noaa",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-03-01",
+            "valueCents": 637,
+            "source": "noaa",
+            "basis": "wholesale"
+          },
+          {
+            "date": "2026-04-01",
+            "valueCents": 865,
+            "source": "noaa",
+            "basis": "wholesale"
+          }
+        ]
+      },
+      "points": [
+        {
+          "asOf": "2026-05-01",
+          "level": {
+            "basis": "index",
+            "medianCents": 865,
+            "rangeCents": [
+              751,
+              979
+            ],
+            "rangeBasis": "volatility",
+            "typeDispersion": 0,
+            "nObs": 1,
+            "nFamilies": 1,
+            "nSources": 1,
+            "nTypes": 1,
+            "provenance": [
+              {
+                "source": "noaa",
+                "type": "noaa-trade",
+                "valueCents": 865,
+                "date": "2026-04-01"
+              }
+            ]
+          },
+          "trend": {
+            "pct": -0.13930348258706468,
+            "dir": "down",
+            "agreement": 1,
+            "nSources": 2,
+            "nFamilies": 2,
+            "nTypes": 2,
+            "noise": 0.1344
+          },
+          "confidence": "directional",
+          "label": "About $7.51–$9.79 (wholesale reference, single market — band from recent volatility), down -19.5% over the window. 1+ source(s) for level, 2 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "noaa",
+              "type": "noaa-trade",
+              "valueCents": 865,
+              "date": "2026-04-01"
+            },
+            {
+              "kind": "trend",
+              "source": "noaa",
+              "type": "noaa-trade",
+              "basis": "wholesale"
+            },
+            {
+              "kind": "trend",
+              "source": "bls",
+              "type": "bls",
+              "basis": "index"
+            }
+          ],
+          "history": [
+            {
+              "date": "2026-01-01",
+              "valueCents": 1005,
+              "source": "noaa",
+              "basis": "wholesale"
+            },
+            {
+              "date": "2026-02-01",
+              "valueCents": 761,
+              "source": "noaa",
+              "basis": "wholesale"
+            },
+            {
+              "date": "2026-03-01",
+              "valueCents": 637,
+              "source": "noaa",
+              "basis": "wholesale"
+            },
+            {
+              "date": "2026-04-01",
+              "valueCents": 865,
+              "source": "noaa",
+              "basis": "wholesale"
+            }
+          ]
+        },
+        {
+          "asOf": "2026-04-01",
+          "level": {
+            "basis": "index",
+            "medianCents": 865,
+            "rangeCents": [
+              751,
+              979
+            ],
+            "rangeBasis": "volatility",
+            "typeDispersion": 0,
+            "nObs": 1,
+            "nFamilies": 1,
+            "nSources": 1,
+            "nTypes": 1,
+            "provenance": [
+              {
+                "source": "noaa",
+                "type": "noaa-trade",
+                "valueCents": 865,
+                "date": "2026-04-01"
+              }
+            ]
+          },
+          "trend": {
+            "pct": -0.1395536671183978,
+            "dir": "down",
+            "agreement": 1,
+            "nSources": 1,
+            "nFamilies": 1,
+            "nTypes": 1,
+            "noise": 0.1798
+          },
+          "confidence": "directional",
+          "label": "About $7.51–$9.79 (wholesale reference, single market — band from recent volatility), down -14% over the window. 1+ source(s) for level, 1 for trend.",
+          "provenance": [
+            {
+              "kind": "level",
+              "source": "noaa",
+              "type": "noaa-trade",
+              "valueCents": 865,
+              "date": "2026-04-01"
+            },
+            {
+              "kind": "trend",
+              "source": "noaa",
+              "type": "noaa-trade",
+              "basis": "wholesale"
+            }
+          ],
+          "history": [
+            {
+              "date": "2026-01-01",
+              "valueCents": 1005,
+              "source": "noaa",
+              "basis": "wholesale"
+            },
+            {
+              "date": "2026-02-01",
+              "valueCents": 761,
+              "source": "noaa",
+              "basis": "wholesale"
+            },
+            {
+              "date": "2026-03-01",
+              "valueCents": 637,
+              "source": "noaa",
+              "basis": "wholesale"
+            },
+            {
+              "date": "2026-04-01",
+              "valueCents": 865,
+              "source": "noaa",
+              "basis": "wholesale"
+            }
+          ]
+        }
+      ],
+      "history": [
+        {
+          "date": "2026-01-01",
+          "valueCents": 1005,
+          "source": "noaa",
+          "basis": "wholesale"
+        },
+        {
+          "date": "2026-02-01",
+          "valueCents": 761,
+          "source": "noaa",
+          "basis": "wholesale"
+        },
+        {
+          "date": "2026-03-01",
+          "valueCents": 637,
+          "source": "noaa",
+          "basis": "wholesale"
+        },
+        {
+          "date": "2026-04-01",
+          "valueCents": 865,
+          "source": "noaa",
+          "basis": "wholesale"
+        }
+      ]
+    }
+  }
+}
