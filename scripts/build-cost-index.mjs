@@ -118,7 +118,18 @@ function main() {
     }
     const issues = pointIssues(ingredient, points[ingredient], srcIng, boundsMap);
     if (issues.length) { for (const i of issues) dropped[i] = (dropped[i] || 0) + 1; continue; }
-    const prior = (existing.ingredients?.[ingredient]?.points) || [];
+    // Re-filter the PRIOR points through the same predicates before merging.
+    // Without this, only the incoming point was validated and the retained tail
+    // rode along untouched — so a point that later aged past POINT_STALE_DAYS
+    // survived every run for as long as the ingredient kept receiving fresh
+    // data, and MAX_POINTS (26) never evicted it because these series hold
+    // 3-15 points. That is what reddened the deploy on 2026-07-30: 23
+    // ingredients each carrying one 2026-04-01 tail entry that crossed 120
+    // days, while their CURRENT reads were 2026-07-28 and perfectly fine.
+    // The no-new-point carry-forward path below already did exactly this
+    // ("re-filter each through the SAME predicates"); the two paths now agree.
+    // History is untouched — it keeps the long record and is staleness-exempt.
+    const prior = ((existing.ingredients?.[ingredient]?.points) || []).filter((p) => ok(ingredient, p));
     out.ingredients[ingredient] = { points: mergePoints(prior, [points[ingredient]]) };
     // Historical curve (sibling to points): gated for citeability + bounds but
     // NOT for staleness (old by design). A failing series is dropped, never
