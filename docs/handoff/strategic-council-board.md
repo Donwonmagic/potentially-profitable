@@ -387,6 +387,22 @@ free only where its output requires no human read*.
      template slots. Publish `revisedClaim`, never `claim`. Two duplicate pairs (30≡31, 32≡33);
      hypotheses 10, 22 and 30 carry no code and cannot be recomputed from the salvage at all.
 
+20e. **MERGING main INTO THIS BRANCH IS AN EDITORIAL TASK, NOT A MECHANICAL ONE — 368 conflicts.**
+   Attempted and deliberately aborted 2026-07-31 rather than resolved badly. The branch is ~64
+   commits behind. `git merge origin/main` conflicts across 368 files: every
+   `cost-index/events/*/index.html`, `wrangler.jsonc` (the deploy chain), and — the one that needs a
+   human — **`CLAUDE.md`, where both sides are partly right**:
+   - *This branch* corrected the orchestrator description: check-all **does NOT fail fast**, reports
+     at the end, and supports `--baseline`. That correction is right and main still carries the
+     stale "fails fast".
+   - *main* added whole sections this branch lacks: the scanner-root-list rule, **idem coverage**,
+     **positioning drift**, **gate coverage** (`check-gate-coverage.mjs` — which does NOT exist on
+     this branch, so do not try to run it here), the `/course/` retirement, and article-graphics
+     **rule 9**.
+   **The correct resolution keeps BOTH: this branch's fails-fast/baseline correction AND main's new
+   gate sections.** Taking either side wholesale loses real information. Budget real time for it;
+   do not resolve it at the end of a long session.
+
 20d. **ADR-023 generalizes — applying its lens to the NEXT dataset found a fifth instance
    immediately.** `cost-index/co-movement.json` publishes **80 anchors while the Cost Index tracks
    102 ingredients**, and nothing in the file said the other 22 existed. Absent ≠ measured-and-found-
