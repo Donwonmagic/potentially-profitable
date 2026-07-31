@@ -349,7 +349,19 @@ function selfTest() {
   eq('study resource bytes match emitted study.csv', dp.resources[0].bytes, Buffer.byteLength(csv, 'utf8'));
   eq('menu resource hash matches on-disk menu-pricing.csv', dp.resources[1].hash, 'sha256:' + sha256(menuCsv));
   eq('study schema has 13 fields', dp.resources[0].schema.fields.length, 13);
-  eq('menu schema has 14 fields', dp.resources[1].schema.fields.length, 14);
+  // A bare field COUNT catches an accidental column but says nothing about whether the descriptor
+  // still describes the file. Pin the count AND the header identity, since the datapackage also
+  // pins a sha256 of the emitted CSV — a schema that drifts from the header publishes a descriptor
+  // that lies about its own resource. This assertion is what failed (correctly) when
+  // comover_withheld_reason was added on 2026-07-31.
+  eq('menu schema has 15 fields', dp.resources[1].schema.fields.length, 15);
+  eq('menu schema field ORDER matches the emitted CSV header',
+    dp.resources[1].schema.fields.map((f) => f.name).join(','),
+    'slug,name,category,posture,band_pct,withhold_reason,coverage_pct,edible_yield_pct,trim_tax,cheapest_month,save_pct,comover,comover_shared,comover_of,comover_withheld_reason');
+  // The discriminator is only useful if its permitted values are declared for consumers.
+  eq('comover_withheld_reason declares its enum',
+    (dp.resources[1].schema.fields.find((f) => f.name === 'comover_withheld_reason').constraints || {}).enum,
+    ['not_measured', 'below_threshold', '']);
   eq('study primaryKey is ref_n', dp.resources[0].schema.primaryKey, 'ref_n');
   eq('posture field carries the four-posture enum', dp.resources[1].schema.fields.find((f) => f.name === 'posture').constraints.enum, ['lock', 'cushion', 'float', 'withhold']);
   // live: the real paper uses 36 sources with zero unmatched citeStrings
