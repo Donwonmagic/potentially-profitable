@@ -223,6 +223,16 @@ const DEDUP_ALLOW = new Set([
   // (canonical) and es/blog/what-should-be-on (legacy slug). Same translation
   // intent as the entry above.
   '5e1492f6896e',
+  // 2026-07-31 — panel-spread figure shared between blog/cost-index-week-2026-07-06
+  // (the last WEEKLY dispatch) and blog/cost-index-2026-07 (the first MONTHLY one,
+  // published three days later on 2026-07-09, the day of the cadence change).
+  // Both read the SAME edition snapshot, so the builder emits the same figure —
+  // that is the correct output, not a copy-paste. The caption names its edition
+  // outright ("week of 2026-07-06"), so a reader of the monthly post is told
+  // which panel they are looking at; nothing is presented as newer than it is.
+  // A transition artifact of the 2026-07-09 founder call, not a pattern: the two
+  // slug families never overlap again.
+  '7c2617dec836',
 ]);
 
 // The viz-* family names this gate recognises. Wrapper class viz-figure

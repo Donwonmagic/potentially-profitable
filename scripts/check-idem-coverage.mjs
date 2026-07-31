@@ -133,20 +133,42 @@ export const MANUAL = {
   },
 
   // --- theme / cuisine landing pages ---------------------------------------
+  //
+  // READ THIS BEFORE RUNNING ANY OF THE THREE. Their `drifts` notes said "run
+  // the builder to heal it" from 2026-07-28 until 2026-07-31, and that is a
+  // REGRESSION, not a fix. Verified by running them on 2026-07-31: on
+  // library/menu-design-themes/trattoria/ regeneration strips the injected
+  // `/* perf-critical */` inline CSS block, reverts `<!-- lazy-load:site -->`
+  // back to a plain `<script defer>`, and rewrites the CSS cache-bust hashes to
+  // pre-minification values (9287f3577b96 -> a8b747b9ea6c). Re-running
+  // build-css-shells + inject-css-shells + inject-lazy-script-loader +
+  // inject-css-cache-bust afterwards does NOT put them back.
+  //
+  // These templates predate the perf-injection chain. Their `--check` is red
+  // because the LIVE pages carry injections their templates do not emit — the
+  // committed page is ahead of the builder, not behind it. So the red is real
+  // (the two genuinely disagree) but the arrow points the other way: the fix is
+  // to teach the templates to emit the shell + lazy-load markers so the
+  // injectors can re-apply on top, not to overwrite 100 pages with output that
+  // has never seen an injector.
+  //
+  // Until that lands these three block the deploy, because check-all runs inside
+  // wrangler's build.command. That is the honest state and it is written down
+  // here rather than worked around.
   'build-themes-review-board.mjs': {
     since: '2026-07-28',
-    who: 'whoever edits the themes data',
-    drifts: 'when theme entries change. Filed for months as "(idem) noise"; it is not noise, it is an unhealed deploy dependency. Its 2026-07-28 red traced to a stale CSS cache-bust hash upstream, not to theme data.',
+    who: 'BLOCKED — do not run to heal; see the note above this entry',
+    drifts: 'when theme entries change, AND permanently since the perf-injection chain landed: the committed pages carry injected critical CSS + lazy-load wrappers this template does not emit, so --check can never be clean. Running it strips them. Fix is template-side.',
   },
   'build-theme-story-pages.mjs': {
     since: '2026-07-28',
-    who: 'whoever edits the themes data',
-    drifts: 'same trigger as build-themes-review-board; the two move together.',
+    who: 'BLOCKED — do not run to heal; see the note above build-themes-review-board',
+    drifts: 'same trigger and same template/injector conflict as build-themes-review-board; the two move together.',
   },
   'build-cuisine-landing-pages.mjs': {
     since: '2026-07-28',
-    who: 'whoever edits the cuisine data',
-    drifts: 'when cuisine entries change. Same "(idem) noise" misfiling as the theme builders.',
+    who: 'BLOCKED — do not run to heal; see the note above build-themes-review-board',
+    drifts: 'when cuisine entries change, AND the same template/injector conflict. Was filed as "(idem) noise", then as healable drift; it is neither.',
   },
 };
 
