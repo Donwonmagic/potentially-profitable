@@ -17,6 +17,74 @@ outage, the /try demo, the 06-27 audits, prior branch states) is frozen verbatim
 council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 #234–#239 product) are merged to main and closed.
 
+## ⮕ CURRENT STATE — DEPLOY-UNBLOCK / CI-HONESTY PASS (updated 2026-07-31)
+
+**Branch (both repos):** `claude/strategic-council-board-docs-g9yuen`, restarted from `origin/main`
+after PR #535 (storefront) and #244/#245 (product) merged. Runs alongside the eval-engineering thread
+below; that block is theirs and is not edited here.
+
+**The finding:** the storefront production deploy was RED on main (`Workers Builds: muntin-digital`
+failed on `1f4f6475`). `check-all` sits mid-`build.command`, so a red gate stops the deploy before the
+tar. Locally 312/320. Two of the eight reds self-heal in the deploy; six did not.
+
+**Two of the six were gates NO PROCESS COULD TURN GREEN** — the finding worth carrying forward:
+
+- **Cost-index sync (24 errors).** `points[]` is append-only and newest-first; every consumer reads
+  `points[0]` (`build-cost-index-dispatch.mjs:166` says so). The gate applied its 120-day freshness bar
+  to *every* element, so the 2026-04-01 seed tail crossing 120 days on 2026-07-30 reddened 23
+  ingredients at once, and the daily refresh — which appends and never removes — could never clear it.
+  **23 of 24 were archival points nothing renders. The 24th was real.** Fixed by scoping freshness to
+  `points[0]` via `pointIssues(opts.current)`, defaulting true (fail-closed); every other bar still
+  applies to every point. Self-test 33 → 38, pinning both directions.
+- **Theme / cuisine (idem) builders.** Blocking, and this repo was wrong about them **twice**: first
+  filed for months as "(idem) noise" (they were blocking the deploy), then — earlier the same day —
+  recorded as "running them is a REGRESSION" after a replay that omitted `inject-critical-fonts`. The
+  full replay proves they are idempotent: builders + `build.command` steps 60–74 gives pages
+  byte-identical to committed, the whole diff being cache-bust hash lines that changed on all 1248
+  pages. **Wired into `build.command`** before `build-css-shells`; idem-coverage now reads 59 deploy /
+  6 workflow / 18 manual. *A partial replay of a pipeline is not evidence about the pipeline.*
+
+**Also shipped:** article-graphics rule 7 allowlisted (the two July dispatches share a panel figure
+because they read the same edition — a 2026-07-09 cadence-change artifact, caption dates itself);
+ingredient-state-record healed; the site-wide CSS cache-bust refresh + sitemap, so the repo is
+self-consistent with what the deploy serves.
+
+**The CI-lane finding — `check-gate-coverage` cannot see GitHub Actions.** Three storefront workflows
+carry `continue-on-error: true` under headers promising to remove it (playwright 2026-05-28,
+lighthouse-ci 2026-05-03, window-a11y 2026-05-10). A continue-on-error job reds the CHECK and concludes
+the RUN as success, so two of them were failing in silence. What that hid: `hub-baseline`'s tier test
+hard-coded the `quick` tier, gone with the roadmap cut on **2026-06-17 — red for six weeks**; the hub
+CTA test was pinning the RETIRED positioning, so the funnel rewire read as a regression when the test
+was the stale thing. Both fixed to read the taxonomy off the page rather than hard-code it, baselines
+regenerated at three viewports, `@playwright/test` **pinned to 1.56.0** (a pixel gate whose browser
+floats is a false-red generator once it blocks; 1.56.0 ships the chromium the baselines were rendered
+with), cache key gained `PW_VERSION` (its comment had claimed the version was in the key, and it was
+not). **continue-on-error removed — Playwright now blocks.** Verified in-container: 30 passed /
+24 skipped / 0 failed.
+
+**check-all: 312/320 → 318/320.** Remaining: Sitemap (idem), which the deploy heals at step 59; and:
+
+**⚠ OPEN — NEEDS THE FOUNDER (this thread):**
+1. **`scallops @ 2026-05-01: stale-level` is the ONLY thing still blocking the deploy.** Its rendered
+   level rests on a single NOAA trade observation dated 2026-04-01, now 121 days old — one day past the
+   bar. Nothing published is wrong: the page renders **no dollar figure** (`level.basis: "index"`,
+   confidence `directional` — `8.65` appears 0 times in `cost-index/scallops/index.html`) and scallops
+   is **not** among the 16 basket contributors. Founder call 2026-07-31 was *leave it red until it can
+   be re-vendored*. **But scallops is one of the ten `KNOWN_SOURCE_LATENT` items — content-bound, no
+   free wholesale source** — so a re-vendor only helps when NOAA itself publishes a newer observation.
+   The deploy stays down until then. Its 120d orphan cliff is **~2026-08-29** (29 days), when the
+   builder drops the ingredient and orphans its EN+ES page. The alternative, if the wait is not
+   acceptable: drop the aged level and keep the trend (2 sources, fresh) — invisible to readers, since
+   the dollar figure is already withheld.
+2. **lhci is still advisory and still red** — `errors-in-console` scores 0 across 3 runs on
+   `/es/sheets/`. NOT root-caused: every script the page loads exists on disk and its `/api/*` fetches
+   are `.catch`-handled, so the obvious explanations do not hold. Do not promote lhci to blocking until
+   this is understood. `window-a11y` passes but is also still advisory.
+3. **The meta-gate gap itself.** `check-gate-coverage` enforces "wired, or documented, no third state"
+   for `scripts/check-*.mjs` only. The same rule wants applying to `continue-on-error` workflows —
+   otherwise the failure mode that gate exists to end keeps living one lane over. Playwright was fixed
+   by hand; the rule was not generalized.
+
 ## ⮕ CURRENT STATE — EVAL-ENGINEERING PASS (updated 2026-07-30)
 
 **Branch (both repos):** `claude/project-audit-strategy-ddx5ot`. **Directive:** full two-repo audit,
