@@ -126,6 +126,17 @@ jobs:
           node scripts/build-cost-index-seed.mjs
           # Re-render the per-ingredient Outlook blocks + hub + lab.
           node scripts/build-cost-index-pages.mjs
+          # Re-inject the "Where it comes from" + food-safety recall sections.
+          # build-cost-index-pages.mjs rewrites every ingredient page WHOLESALE and
+          # does not emit these two sentinel blocks — they are owned by the
+          # injectors. cost-index-refresh.yml re-runs them for exactly this reason;
+          # this workflow did not, so the Monday pressure push staged (below) and
+          # committed ingredient pages with both blocks stripped, which then fails
+          # check-all's supply-picture and ingredient-recalls sync gates on the next
+          # PR and reds the deploy. Same regenerate-then-discard class as the
+          # cost-index-readings.prev.json bug fixed 2026-07-24.
+          node scripts/inject-supply-picture.mjs
+          node scripts/inject-ingredient-recalls.mjs
           # Restore canonical nav (build emits skeleton include sentinels).
           node scripts/sync-includes.mjs
           # HONESTY GATE — must pass before anything is committed. Recompute-and-

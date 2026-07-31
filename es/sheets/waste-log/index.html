@@ -51,8 +51,8 @@ header.nav{min-height:64px}
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=9287f3577b96" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=9287f3577b96"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=415749fd1036" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=415749fd1036"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260717b">
 </head>
 <body data-page="sheet" data-sheet-slug="waste-log" data-sheet-pack="operations-margin" data-pagefind-meta="kind:sheet,pack:operations-margin">
@@ -304,11 +304,11 @@ header.nav{min-height:64px}
           </thead>
           <tbody>
             <tr>
-              <td><input type="text" name="item_1" placeholder="e.g., Salmon, 6oz portion" /></td>
-              <td><input type="number" name="qty_1" min="0" step="0.1" /></td>
-              <td><input type="number" name="cost_1" min="0" step="0.01" /></td>
+              <td><input aria-label="Item — row 1" type="text" name="item_1" placeholder="e.g., Salmon, 6oz portion" /></td>
+              <td><input aria-label="Qty — row 1" type="number" name="qty_1" min="0" step="0.1" /></td>
+              <td><input aria-label="Unit cost ($) — row 1" type="number" name="cost_1" min="0" step="0.01" /></td>
               <td>
-                <select name="reason_1">
+                <select aria-label="Reason — row 1" name="reason_1">
                   <option value="">—</option>
                   <option value="overprep">Overprep</option>
                   <option value="spoilage">Spoilage</option>
@@ -319,7 +319,7 @@ header.nav{min-height:64px}
                 </select>
               </td>
               <td>
-                <select name="day_1">
+                <select aria-label="Day — row 1" name="day_1">
                   <option value="">—</option>
                   <option value="mon">Mon</option><option value="tue">Tue</option>
                   <option value="wed">Wed</option><option value="thu">Thu</option>
@@ -330,73 +330,73 @@ header.nav{min-height:64px}
               <td class="num"><output name="line_1">—</output></td>
             </tr>
             <tr>
-              <td><input type="text" name="item_2" /></td>
-              <td><input type="number" name="qty_2" min="0" step="0.1" /></td>
-              <td><input type="number" name="cost_2" min="0" step="0.01" /></td>
+              <td><input aria-label="Item — row 2" type="text" name="item_2" /></td>
+              <td><input aria-label="Qty — row 2" type="number" name="qty_2" min="0" step="0.1" /></td>
+              <td><input aria-label="Unit cost ($) — row 2" type="number" name="cost_2" min="0" step="0.01" /></td>
               <td>
-                <select name="reason_2"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
+                <select aria-label="Reason — row 2" name="reason_2"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
               </td>
-              <td><select name="day_2"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
+              <td><select aria-label="Day — row 2" name="day_2"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
               <td class="num"><output name="line_2">—</output></td>
             </tr>
             <tr>
-              <td><input type="text" name="item_3" /></td>
-              <td><input type="number" name="qty_3" min="0" step="0.1" /></td>
-              <td><input type="number" name="cost_3" min="0" step="0.01" /></td>
+              <td><input aria-label="Item — row 3" type="text" name="item_3" /></td>
+              <td><input aria-label="Qty — row 3" type="number" name="qty_3" min="0" step="0.1" /></td>
+              <td><input aria-label="Unit cost ($) — row 3" type="number" name="cost_3" min="0" step="0.01" /></td>
               <td>
-                <select name="reason_3"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
+                <select aria-label="Reason — row 3" name="reason_3"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
               </td>
-              <td><select name="day_3"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
+              <td><select aria-label="Day — row 3" name="day_3"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
               <td class="num"><output name="line_3">—</output></td>
             </tr>
             <tr>
-              <td><input type="text" name="item_4" /></td>
-              <td><input type="number" name="qty_4" min="0" step="0.1" /></td>
-              <td><input type="number" name="cost_4" min="0" step="0.01" /></td>
+              <td><input aria-label="Item — row 4" type="text" name="item_4" /></td>
+              <td><input aria-label="Qty — row 4" type="number" name="qty_4" min="0" step="0.1" /></td>
+              <td><input aria-label="Unit cost ($) — row 4" type="number" name="cost_4" min="0" step="0.01" /></td>
               <td>
-                <select name="reason_4"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
+                <select aria-label="Reason — row 4" name="reason_4"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
               </td>
-              <td><select name="day_4"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
+              <td><select aria-label="Day — row 4" name="day_4"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
               <td class="num"><output name="line_4">—</output></td>
             </tr>
             <tr>
-              <td><input type="text" name="item_5" /></td>
-              <td><input type="number" name="qty_5" min="0" step="0.1" /></td>
-              <td><input type="number" name="cost_5" min="0" step="0.01" /></td>
+              <td><input aria-label="Item — row 5" type="text" name="item_5" /></td>
+              <td><input aria-label="Qty — row 5" type="number" name="qty_5" min="0" step="0.1" /></td>
+              <td><input aria-label="Unit cost ($) — row 5" type="number" name="cost_5" min="0" step="0.01" /></td>
               <td>
-                <select name="reason_5"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
+                <select aria-label="Reason — row 5" name="reason_5"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
               </td>
-              <td><select name="day_5"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
+              <td><select aria-label="Day — row 5" name="day_5"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
               <td class="num"><output name="line_5">—</output></td>
             </tr>
             <tr>
-              <td><input type="text" name="item_6" /></td>
-              <td><input type="number" name="qty_6" min="0" step="0.1" /></td>
-              <td><input type="number" name="cost_6" min="0" step="0.01" /></td>
+              <td><input aria-label="Item — row 6" type="text" name="item_6" /></td>
+              <td><input aria-label="Qty — row 6" type="number" name="qty_6" min="0" step="0.1" /></td>
+              <td><input aria-label="Unit cost ($) — row 6" type="number" name="cost_6" min="0" step="0.01" /></td>
               <td>
-                <select name="reason_6"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
+                <select aria-label="Reason — row 6" name="reason_6"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
               </td>
-              <td><select name="day_6"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
+              <td><select aria-label="Day — row 6" name="day_6"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
               <td class="num"><output name="line_6">—</output></td>
             </tr>
             <tr>
-              <td><input type="text" name="item_7" /></td>
-              <td><input type="number" name="qty_7" min="0" step="0.1" /></td>
-              <td><input type="number" name="cost_7" min="0" step="0.01" /></td>
+              <td><input aria-label="Item — row 7" type="text" name="item_7" /></td>
+              <td><input aria-label="Qty — row 7" type="number" name="qty_7" min="0" step="0.1" /></td>
+              <td><input aria-label="Unit cost ($) — row 7" type="number" name="cost_7" min="0" step="0.01" /></td>
               <td>
-                <select name="reason_7"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
+                <select aria-label="Reason — row 7" name="reason_7"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
               </td>
-              <td><select name="day_7"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
+              <td><select aria-label="Day — row 7" name="day_7"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
               <td class="num"><output name="line_7">—</output></td>
             </tr>
             <tr>
-              <td><input type="text" name="item_8" /></td>
-              <td><input type="number" name="qty_8" min="0" step="0.1" /></td>
-              <td><input type="number" name="cost_8" min="0" step="0.01" /></td>
+              <td><input aria-label="Item — row 8" type="text" name="item_8" /></td>
+              <td><input aria-label="Qty — row 8" type="number" name="qty_8" min="0" step="0.1" /></td>
+              <td><input aria-label="Unit cost ($) — row 8" type="number" name="cost_8" min="0" step="0.01" /></td>
               <td>
-                <select name="reason_8"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
+                <select aria-label="Reason — row 8" name="reason_8"><option value="">—</option><option value="overprep">Overprep</option><option value="spoilage">Spoilage</option><option value="dropped">Dropped / damaged</option><option value="comp">Comped</option><option value="staff_meal">Staff meal</option><option value="trim_loss">Trim / yield loss</option></select>
               </td>
-              <td><select name="day_8"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
+              <td><select aria-label="Day — row 8" name="day_8"><option value="">—</option><option value="mon">Mon</option><option value="tue">Tue</option><option value="wed">Wed</option><option value="thu">Thu</option><option value="fri">Fri</option><option value="sat">Sat</option><option value="sun">Sun</option></select></td>
               <td class="num"><output name="line_8">—</output></td>
             </tr>
           </tbody>

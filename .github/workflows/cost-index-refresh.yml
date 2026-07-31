@@ -154,6 +154,14 @@ jobs:
           node scripts/build-lockfloat-open-data.mjs
           node scripts/build-anomaly-open-data.mjs
           node scripts/build-yields-open-data.mjs
+          # The Ingredient State Record derives dateModified from data/cost-lockfloat.json's
+          # asOf (build-ingredient-state-record.mjs:430,634) — which build-cost-lockfloat.mjs
+          # above just advanced. The builder ran in NO workflow and is absent from the
+          # wrangler build chain, yet check-all runs its --check: so every lockfloat refresh
+          # left the record stale and reddened the next PR's deploy until someone reran it by
+          # hand. (Observed 2026-07-30: committed 2026-07-24 vs lockfloat's 2026-07-28.)
+          # Regenerate it here, where its input moves.
+          node scripts/build-ingredient-state-record.mjs
           # Restore canonical nav — the page builders emit skeleton include
           # sentinels; without this the committed pages would ship stripped nav.
           node scripts/sync-includes.mjs
@@ -291,6 +299,9 @@ jobs:
           # then the `git checkout -- .` below discarded the freshly-rolled prev, so every
           # later checkout (the Workers deploy, any PR's check-all) saw prev != current and
           # the revisions --check went red. Stage both so prev never drifts again.
+          # Same shape for the Ingredient State Record: its public .json + .csv ride along
+          # under cost-index/, but data/ingredient-state-record.json is an internal output
+          # that must be named explicitly or the checkout below discards it.
           git add data/cost-index.json data/cost-index.js \
             data/cost-index-health.json data/seasonality.json \
             data/cost-lockfloat.json data/cost-lockfloat.js \
@@ -300,8 +311,10 @@ jobs:
             data/cost-revisions.json data/cost-index-readings.prev.json \
             data/cost-confidence-calibration.json \
             data/cost-confidence-shadow.json data/email-preview/ \
+            data/ingredient-state-record.json \
             cost-index/ es/cost-index/ \
-            library/ingredient-yields/ es/library/ingredient-yields/ sitemap.xml
+            library/ingredient-yields/ es/library/ingredient-yields/ sitemap.xml \
+            about/index.html es/about/index.html
           git checkout -- . 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No data change today — nothing to commit."

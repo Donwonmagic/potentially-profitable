@@ -71,7 +71,12 @@ const OPERATOR_DATA = {
  */
 export const MANUAL = {
   // --- operator-fetched public data (ADR-013) ------------------------------
-  'build-ingredient-state-record.mjs': OPERATOR_DATA,
+  // build-ingredient-state-record.mjs was here until 2026-07-30. It is no longer
+  // manual: its dateModified tracks data/cost-lockfloat.json's asOf, which
+  // cost-index-refresh.yml regenerates and commits daily, so the record went
+  // stale on that workflow's clock rather than an operator's (caught at
+  // 2026-07-24 vs lockfloat's 2026-07-28). It now runs in that same workflow,
+  // right after the builder that moves its input.
   'build-eia-energy-backdrop.mjs': OPERATOR_DATA,
   'build-crop-condition-backdrop.mjs': OPERATOR_DATA,
   'build-noaa-landings.mjs': OPERATOR_DATA,

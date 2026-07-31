@@ -51,8 +51,8 @@ header.nav{min-height:64px}
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-normal.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-variable-latin-wght-italic.woff2" crossorigin>
-<link rel="preload" as="style" href="/assets/site-core.css?v=9287f3577b96" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/site-core.css?v=9287f3577b96"></noscript>
+<link rel="preload" as="style" href="/assets/site-core.css?v=415749fd1036" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/assets/site-core.css?v=415749fd1036"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=20260717b">
 </head>
 <body data-page="sheet" data-sheet-slug="recipe-cost-card" data-sheet-pack="operations-margin" data-pagefind-meta="kind:sheet,pack:operations-margin">
@@ -369,10 +369,10 @@ header.nav{min-height:64px}
           </thead>
           <tbody>
             <tr>
-              <td><input type="text" name="ing_name_1" placeholder="e.g., Chicken, whole" /></td>
-              <td><input type="number" name="ing_qty_1" step="0.01" min="0" placeholder="1.5" /></td>
+              <td><input aria-label="Ingredient — row 1" type="text" name="ing_name_1" placeholder="e.g., Chicken, whole" /></td>
+              <td><input aria-label="Qty — row 1" type="number" name="ing_qty_1" step="0.01" min="0" placeholder="1.5" /></td>
               <td>
-                <select name="ing_unit_1">
+                <select aria-label="Unit — row 1" name="ing_unit_1">
                   <option value="lb">lb</option><option value="oz">oz</option>
                   <option value="kg">kg</option><option value="g">g</option>
                   <option value="ea">ea</option><option value="cup">cup</option>
@@ -380,15 +380,15 @@ header.nav{min-height:64px}
                   <option value="floz">fl&nbsp;oz</option>
                 </select>
               </td>
-              <td><input type="number" name="ing_ap_1" step="0.01" min="0" placeholder="3.20" /></td>
-              <td><input type="number" name="ing_yield_1" step="1" min="1" max="100" value="100" /></td>
+              <td><input aria-label="AP $/unit — row 1" type="number" name="ing_ap_1" step="0.01" min="0" placeholder="3.20" /></td>
+              <td><input aria-label="Yield % — row 1" type="number" name="ing_yield_1" step="1" min="1" max="100" value="100" /></td>
               <td class="num"><output name="ing_cost_1">—</output></td>
             </tr>
             <tr>
-              <td><input type="text" name="ing_name_2" /></td>
-              <td><input type="number" name="ing_qty_2" step="0.01" min="0" /></td>
+              <td><input aria-label="Ingredient — row 2" type="text" name="ing_name_2" /></td>
+              <td><input aria-label="Qty — row 2" type="number" name="ing_qty_2" step="0.01" min="0" /></td>
               <td>
-                <select name="ing_unit_2">
+                <select aria-label="Unit — row 2" name="ing_unit_2">
                   <option value="lb">lb</option><option value="oz">oz</option>
                   <option value="kg">kg</option><option value="g">g</option>
                   <option value="ea">ea</option><option value="cup">cup</option>
@@ -396,15 +396,15 @@ header.nav{min-height:64px}
                   <option value="floz">fl&nbsp;oz</option>
                 </select>
               </td>
-              <td><input type="number" name="ing_ap_2" step="0.01" min="0" /></td>
-              <td><input type="number" name="ing_yield_2" step="1" min="1" max="100" value="100" /></td>
+              <td><input aria-label="AP $/unit — row 2" type="number" name="ing_ap_2" step="0.01" min="0" /></td>
+              <td><input aria-label="Yield % — row 2" type="number" name="ing_yield_2" step="1" min="1" max="100" value="100" /></td>
               <td class="num"><output name="ing_cost_2">—</output></td>
             </tr>
             <tr>
-              <td><input type="text" name="ing_name_3" /></td>
-              <td><input type="number" name="ing_qty_3" step="0.01" min="0" /></td>
+              <td><input aria-label="Ingredient — row 3" type="text" name="ing_name_3" /></td>
+              <td><input aria-label="Qty — row 3" type="number" name="ing_qty_3" step="0.01" min="0" /></td>
               <td>
-                <select name="ing_unit_3">
+                <select aria-label="Unit — row 3" name="ing_unit_3">
                   <option value="lb">lb</option><option value="oz">oz</option>
                   <option value="kg">kg</option><option value="g">g</option>
                   <option value="ea">ea</option><option value="cup">cup</option>
@@ -412,15 +412,15 @@ header.nav{min-height:64px}
                   <option value="floz">fl&nbsp;oz</option>
                 </select>
               </td>
-              <td><input type="number" name="ing_ap_3" step="0.01" min="0" /></td>
-              <td><input type="number" name="ing_yield_3" step="1" min="1" max="100" value="100" /></td>
+              <td><input aria-label="AP $/unit — row 3" type="number" name="ing_ap_3" step="0.01" min="0" /></td>
+              <td><input aria-label="Yield % — row 3" type="number" name="ing_yield_3" step="1" min="1" max="100" value="100" /></td>
               <td class="num"><output name="ing_cost_3">—</output></td>
             </tr>
             <tr>
-              <td><input type="text" name="ing_name_4" /></td>
-              <td><input type="number" name="ing_qty_4" step="0.01" min="0" /></td>
+              <td><input aria-label="Ingredient — row 4" type="text" name="ing_name_4" /></td>
+              <td><input aria-label="Qty — row 4" type="number" name="ing_qty_4" step="0.01" min="0" /></td>
               <td>
-                <select name="ing_unit_4">
+                <select aria-label="Unit — row 4" name="ing_unit_4">
                   <option value="lb">lb</option><option value="oz">oz</option>
                   <option value="kg">kg</option><option value="g">g</option>
                   <option value="ea">ea</option><option value="cup">cup</option>
@@ -428,15 +428,15 @@ header.nav{min-height:64px}
                   <option value="floz">fl&nbsp;oz</option>
                 </select>
               </td>
-              <td><input type="number" name="ing_ap_4" step="0.01" min="0" /></td>
-              <td><input type="number" name="ing_yield_4" step="1" min="1" max="100" value="100" /></td>
+              <td><input aria-label="AP $/unit — row 4" type="number" name="ing_ap_4" step="0.01" min="0" /></td>
+              <td><input aria-label="Yield % — row 4" type="number" name="ing_yield_4" step="1" min="1" max="100" value="100" /></td>
               <td class="num"><output name="ing_cost_4">—</output></td>
             </tr>
             <tr>
-              <td><input type="text" name="ing_name_5" /></td>
-              <td><input type="number" name="ing_qty_5" step="0.01" min="0" /></td>
+              <td><input aria-label="Ingredient — row 5" type="text" name="ing_name_5" /></td>
+              <td><input aria-label="Qty — row 5" type="number" name="ing_qty_5" step="0.01" min="0" /></td>
               <td>
-                <select name="ing_unit_5">
+                <select aria-label="Unit — row 5" name="ing_unit_5">
                   <option value="lb">lb</option><option value="oz">oz</option>
                   <option value="kg">kg</option><option value="g">g</option>
                   <option value="ea">ea</option><option value="cup">cup</option>
@@ -444,8 +444,8 @@ header.nav{min-height:64px}
                   <option value="floz">fl&nbsp;oz</option>
                 </select>
               </td>
-              <td><input type="number" name="ing_ap_5" step="0.01" min="0" /></td>
-              <td><input type="number" name="ing_yield_5" step="1" min="1" max="100" value="100" /></td>
+              <td><input aria-label="AP $/unit — row 5" type="number" name="ing_ap_5" step="0.01" min="0" /></td>
+              <td><input aria-label="Yield % — row 5" type="number" name="ing_yield_5" step="1" min="1" max="100" value="100" /></td>
               <td class="num"><output name="ing_cost_5">—</output></td>
             </tr>
           </tbody>

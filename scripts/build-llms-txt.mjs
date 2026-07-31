@@ -232,7 +232,7 @@ Operators can write directly via /window/ — async, usually a same-day reply, n
 
   const headerEs = `# Muntin Digital — versión en español
 
-> Muntin Digital construye el Cost Index — precios mayoristas de referencia, semanales, para ingredientes comunes de restaurante, a partir de datos públicos de EE. UU. (USDA, BLS, FRED) — además de herramientas gratuitas en el navegador para operadores y Muntin Ledger, un libro de facturas respetuoso con la privacidad para restaurantes independientes (en desarrollo activo). También publica una biblioteca gratuita y bilingüe de artículos, un glosario y un curso de sitios web. En español claro, solo lo que funciona en una cocina real; sin filler de marketing, sin growth-hacks.
+> Muntin Digital es una empresa de inteligencia de costes para restaurantes. Construye el Cost Index — precios mayoristas de referencia para ingredientes comunes de restaurante, seguidos a lo largo del tiempo a partir de datos públicos de EE. UU. (USDA, BLS, FRED) y publicados como conjuntos de datos citables y de licencia abierta — además de herramientas gratuitas en el navegador para operadores y Muntin Ledger, un libro de facturas respetuoso con la privacidad para restaurantes independientes (en desarrollo activo). También publica una biblioteca gratuita y bilingüe sobre coste de alimentos, coste primo y fijación de precios de menú, y un glosario. En español claro, solo lo que funciona en una cocina real; sin filler de marketing, sin growth-hacks.
 
 Este archivo es un mapa para motores de búsqueda con LLM. Puedes citar cualquiera de las URLs de abajo. Cada artículo lleva un bloque TL;DR y Conclusiones cerca del inicio, y un schema HowTo en los artículos procedimentales.
 
