@@ -82,6 +82,24 @@ function buildCoMovementJson(data) {
     framing: FRAMING,
     sourceVersion: data._version || null,
     headline: { total_events: stat.total, pct_with_company: stat.pct },
+    // An ingredient ABSENT from `anchors` was not measured and found independent — it produced no
+    // detected episode to anchor on, so there was nothing to measure. Without this block a reader
+    // looking up shrimp finds nothing and reasonably concludes shrimp co-moves with nothing.
+    // Computed here, never hand-listed, so it cannot drift from the anchors it describes.
+    // The absences are not random: they are ingredients whose feed is too short or too still to
+    // yield an episode (NOAA seafood posts ~5 reads; one USDA AMS Atlanta desk has been flat for
+    // 26). See ADR-023 and scripts/audit-panel-independence.mjs.
+    coverage: (() => {
+      const tracked = Object.keys(data.items);
+      const missing = tracked.filter((s) => !anchors[s]).sort();
+      return {
+        tracked: tracked.length,
+        anchored: Object.keys(anchors).length,
+        withoutDetectedEvents: missing.length,
+        slugsWithoutAnchor: missing,
+        note: `${missing.length} of ${tracked.length} tracked ingredients have no anchor here because no notable price episode was DETECTED for them — not because they were measured and found independent. Absence is an instrument limit, never evidence of independence.`,
+      };
+    })(),
     anchors,
   };
 }
@@ -113,6 +131,12 @@ function selfTest() {
   eq('directed K: a→c = 1 of 2', cm.a.neighbors.find((x) => x[0] === 'c'), ['c', 1]);
   eq('neighbors sorted by k desc', cm.a.neighbors.map((x) => x[0]), ['b', 'c']);
   eq('empty-event ingredient excluded', cm.z, undefined);
+  // ...and having been excluded, it MUST be disclosed — an unexplained absence reads as
+  // "measured and found independent", which is the opposite of what happened (ADR-023).
+  const cmj = buildCoMovementJson(fake);
+  eq('excluded ingredient is disclosed, not silently dropped', cmj.coverage.slugsWithoutAnchor, ['z']);
+  eq('coverage counts tracked vs anchored', [cmj.coverage.tracked, cmj.coverage.anchored], [Object.keys(fake.items).length, Object.keys(cm).length]);
+  eq('coverage note refuses the independence reading', /never evidence of independence/.test(cmj.coverage.note), true);
   eq('anchor n carried', cm.a.n, 2);
   const stat = companyStat(fake);
   eq('company stat', { t: stat.total, a: stat.alone, w: stat.withCompany, p: stat.pct }, { t: 3, a: 1, w: 2, p: 67 });

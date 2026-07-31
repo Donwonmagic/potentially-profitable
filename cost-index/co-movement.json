@@ -7,6 +7,36 @@
     "total_events": 432,
     "pct_with_company": 94
   },
+  "coverage": {
+    "tracked": 102,
+    "anchored": 80,
+    "withoutDetectedEvents": 22,
+    "slugsWithoutAnchor": [
+      "basil",
+      "clams",
+      "ground-beef",
+      "octopus",
+      "oregano",
+      "rosemary",
+      "salmon-fillet",
+      "salmon-skin-on-fillet",
+      "scallops",
+      "shrimp",
+      "shrimp-head-on",
+      "shrimp-pd",
+      "squid",
+      "sweet-potato",
+      "tarragon",
+      "thyme",
+      "tuna-loin",
+      "whole-crab",
+      "whole-halibut",
+      "whole-lobster",
+      "whole-salmon",
+      "whole-trout"
+    ],
+    "note": "22 of 102 tracked ingredients have no anchor here because no notable price episode was DETECTED for them — not because they were measured and found independent. Absence is an instrument limit, never evidence of independence."
+  },
   "anchors": {
     "acorn-squash": {
       "n": 6,
