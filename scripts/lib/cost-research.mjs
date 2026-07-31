@@ -10,8 +10,24 @@
  *
  * Self-contained: it loads its own data and is handed only the site chrome
  * (pageHead/pageTail/escHtml/clampDesc), the slug→name LABELS, and repoRoot.
- * Consumed by build-cost-index-pages.mjs, which spreads researchTargets() into its
- * page list. Honesty-gated by scripts/check-cost-research.mjs.
+ * Honesty-gated by scripts/check-cost-research.mjs.
+ *
+ * !! WIRING, CORRECTED 2026-07-31 — this header used to claim "Consumed by
+ * build-cost-index-pages.mjs, which spreads researchTargets() into its page list."
+ * THAT WAS FALSE. Nothing imports researchTargets(); grep it. The claim is very likely
+ * why the gap went unnoticed, since the file asserted its own wiring.
+ *
+ * Consequence: the SIX artifacts researchTargets() emits — the EN/ES menu-pricing
+ * playbook, the EN/ES study, and menu-pricing.json/.csv — are committed outputs of a
+ * generator no build chain runs. They are frozen, not live. Audited on 2026-07-31 and
+ * they are NOT currently stale (band_pct and posture match data/cost-lockfloat.json on
+ * all 100 rows), but nothing would say so once the source data moves — the exact
+ * silent-freeze shape ADR-023 is about.
+ *
+ * scripts/check-menu-pricing-dataset-fresh.mjs now recomputes the two DATA artifacts and
+ * fails when they drift, so the freeze is at least detectable. The four HTML surfaces are
+ * still ungated: re-wiring researchTargets() would regenerate live published pages, which
+ * is a founder call, not a cleanup.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -219,6 +235,19 @@ export function pricingCards(repoRoot) {
     const sameCat = cs != null && cn != null && cs === cn;
     return { slug: nbSlug, en: nm(nbSlug).en, es: nm(nbSlug).es, k, n: a.n, sameCat };
   };
+  // WHY a swap is absent, using the same discriminator pattern this file already applies to
+  // `withhold_reason`. A bare null conflates two different facts: 68 of 100 ingredients publish no
+  // co-mover, but 22 of those were never MEASURED (no detected episode to anchor on) while 46 were
+  // measured and their tightest companion fell under the 50% bar. A consumer of the CC-BY CSV
+  // reading 68 identical blanks cannot tell "unmeasured" from "measured and rejected" — and only
+  // the second is evidence about the market. Per ADR-023.
+  const swapReasonFor = (s) => {
+    const a = cm[s];
+    if (!a || !a.neighbors || !a.neighbors.length) return 'not_measured';
+    const [, k] = a.neighbors[0];
+    if (!(a.n >= 2 && k / a.n >= 0.5)) return 'below_threshold';
+    return null;
+  };
   const cards = Object.keys(lf).filter((s) => lf[s] && lf[s].bucket).map((s) => {
     const y = yBySlug[s]; const t = timingFor(s); const sw = swapFor(s);
     const cat = y ? y.cat : null;
@@ -234,6 +263,7 @@ export function pricingCards(repoRoot) {
       worthTiming: t ? t.worthTiming : false,
       timingReason: t ? t.reason : 'thin',
       swap: sw,
+      swapReason: sw ? null : swapReasonFor(s),
     };
   });
   // stable, useful default sort: by posture (lock→cushion→float→withhold), then name
@@ -1674,7 +1704,7 @@ export function researchTargets(ctx) {
 // The menu-pricing playbook as a downloadable CC-BY dataset — one row per scored ingredient, the
 // four joined layers. Cheapest-month/save only where the noise-gated window is real (matches the
 // on-page table). Honest nulls elsewhere. Deterministic (no timestamp) so rebuilds don't churn it.
-function pricingDataset(repoRoot) {
+export function pricingDataset(repoRoot) {
   const P = pricingCards(repoRoot);
   const rows = P.cards.map((c) => ({
     slug: c.slug, name: c.en, category: c.cat || null, posture: c.bucket,
@@ -1689,6 +1719,9 @@ function pricingDataset(repoRoot) {
     save_pct: c.worthTiming ? c.savePct : null,
     comover: c.swap ? c.swap.en : null,
     comover_shared: c.swap ? c.swap.k : null, comover_of: c.swap ? c.swap.n : null,
+    // 'not_measured' = no detected episode to anchor on; 'below_threshold' = measured, tightest
+    // companion under the 50% bar. Only the second is evidence about the market (ADR-023).
+    comover_withheld_reason: c.swapReason || null,
   }));
   const meta = {
     dataset: 'Muntin Cost Index — Menu-Pricing Playbook',
@@ -1699,7 +1732,7 @@ function pricingDataset(repoRoot) {
     note: "Every band is a wholesale reference read against each ingredient's own baseline window — never a delivered or retail price. cheapest_month is named only when the seasonal trough clears the noise gate; null means priced year-round. Descriptive of the tracked record, never a forecast; co-occurrence, never cause. For withholds, band_pct carries the measured band where a public wholesale series exists (withhold_reason=too_volatile: the band is too wide to anchor a printed price) and is null where no series exists (withhold_reason=no_series). edible_yield_pct is book edible yield; for citrus it is JUICE yield (juice is the used pound), so its trim_tax is a juice-extraction cost, not knife trim.",
     count: rows.length, ingredients: rows,
   };
-  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'withhold_reason', 'coverage_pct', 'edible_yield_pct', 'trim_tax', 'cheapest_month', 'save_pct', 'comover', 'comover_shared', 'comover_of'];
+  const cols = ['slug', 'name', 'category', 'posture', 'band_pct', 'withhold_reason', 'coverage_pct', 'edible_yield_pct', 'trim_tax', 'cheapest_month', 'save_pct', 'comover', 'comover_shared', 'comover_of', 'comover_withheld_reason'];
   const esc = (v) => { if (v == null) return ''; const s = String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   const csv = [cols.join(',')].concat(rows.map((r) => cols.map((k) => esc(r[k])).join(','))).join('\n') + '\n';
   return { json: JSON.stringify(meta, null, 2) + '\n', csv };

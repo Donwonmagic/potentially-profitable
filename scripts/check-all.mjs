@@ -685,6 +685,13 @@ const CHECKS = [
   // event→price causation, and wholesale-as-delivered-price framing across EN+ES.
   ['Cost-research honesty self-test','check-cost-research.mjs','--self-test'],
   ['Cost-research honesty','check-cost-research.mjs'],
+  // Menu-pricing dataset freshness (2026-07-31). researchTargets() emits SIX published artifacts
+  // and is imported by NOTHING — its own header claimed otherwise until today, which is likely why
+  // the gap survived. The two DATA artifacts are recomputed here and drift is a red, so the freeze
+  // is at least detectable. The four HTML surfaces stay ungated on purpose: re-wiring the
+  // generator regenerates live published pages and is a founder call. See ADR-023.
+  ['Menu-pricing dataset self-test','check-menu-pricing-dataset-fresh.mjs','--self-test'],
+  ['Menu-pricing dataset fresh','check-menu-pricing-dataset-fresh.mjs'],
   // Market-context seed for Vendor Benchmark — per ingredient: volatility class, whether the
   // reference is itself unusual right now vs its own normal, and the most recent DOCUMENTED
   // event. Lets the tool add co-occurrence context about the REFERENCE's state (never the
