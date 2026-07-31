@@ -132,44 +132,36 @@ export const MANUAL = {
     drifts: 'when a new PNG/JPG lands without its AVIF/WebP siblings. Needs image tooling this container does not have.',
   },
 
-  // --- theme / cuisine landing pages ---------------------------------------
+  // --- theme / cuisine landing pages ----------------------------------------
   //
-  // READ THIS BEFORE RUNNING ANY OF THE THREE. Their `drifts` notes said "run
-  // the builder to heal it" from 2026-07-28 until 2026-07-31, and that is a
-  // REGRESSION, not a fix. Verified by running them on 2026-07-31: on
-  // library/menu-design-themes/trattoria/ regeneration strips the injected
-  // `/* perf-critical */` inline CSS block, reverts `<!-- lazy-load:site -->`
-  // back to a plain `<script defer>`, and rewrites the CSS cache-bust hashes to
-  // pre-minification values (9287f3577b96 -> a8b747b9ea6c). Re-running
-  // build-css-shells + inject-css-shells + inject-lazy-script-loader +
-  // inject-css-cache-bust afterwards does NOT put them back.
+  // build-themes-review-board / build-theme-story-pages /
+  // build-cuisine-landing-pages left this registry on 2026-07-31: they are now
+  // run by the deploy (wrangler.jsonc build.command, immediately before
+  // build-css-shells), so the gate classifies them as deploy-run and an entry
+  // here would be stale.
   //
-  // These templates predate the perf-injection chain. Their `--check` is red
-  // because the LIVE pages carry injections their templates do not emit — the
-  // committed page is ahead of the builder, not behind it. So the red is real
-  // (the two genuinely disagree) but the arrow points the other way: the fix is
-  // to teach the templates to emit the shell + lazy-load markers so the
-  // injectors can re-apply on top, not to overwrite 100 pages with output that
-  // has never seen an injector.
+  // Worth recording HOW that took two wrong turns, because both were failures
+  // of measurement rather than of reasoning:
   //
-  // Until that lands these three block the deploy, because check-all runs inside
-  // wrangler's build.command. That is the honest state and it is written down
-  // here rather than worked around.
-  'build-themes-review-board.mjs': {
-    since: '2026-07-28',
-    who: 'BLOCKED — do not run to heal; see the note above this entry',
-    drifts: 'when theme entries change, AND permanently since the perf-injection chain landed: the committed pages carry injected critical CSS + lazy-load wrappers this template does not emit, so --check can never be clean. Running it strips them. Fix is template-side.',
-  },
-  'build-theme-story-pages.mjs': {
-    since: '2026-07-28',
-    who: 'BLOCKED — do not run to heal; see the note above build-themes-review-board',
-    drifts: 'same trigger and same template/injector conflict as build-themes-review-board; the two move together.',
-  },
-  'build-cuisine-landing-pages.mjs': {
-    since: '2026-07-28',
-    who: 'BLOCKED — do not run to heal; see the note above build-themes-review-board',
-    drifts: 'when cuisine entries change, AND the same template/injector conflict. Was filed as "(idem) noise", then as healable drift; it is neither.',
-  },
+  //   1. For months they were filed as "(idem) noise" and ignored. They were
+  //      not noise — check-all runs inside the deploy build.command, so they
+  //      were blocking the production deploy.
+  //   2. On 2026-07-31 this registry briefly said the opposite: that running
+  //      them was a REGRESSION which stripped injected critical CSS and
+  //      lazy-load wrappers. That came from running the builders and then only
+  //      PART of the injector tail — inject-critical-fonts was missing, which
+  //      is what emits the /* perf-critical */ block. The half-processed page
+  //      was read as the builder's doing.
+  //
+  // Replaying the real chain settles it: builders, then build.command steps
+  // 60-74, produces pages BYTE-IDENTICAL to what is committed — across all
+  // three builders, the entire diff was CSS cache-bust hash lines and nothing
+  // else, and those changed on all 1248 pages, not just these 96. The builders
+  // are idempotent; they simply were not in the chain. Hence the wiring.
+  //
+  // The lesson is the root-list lesson wearing different clothes: a partial
+  // replay of a pipeline is not evidence about the pipeline. Run the whole
+  // chain or claim nothing about it.
 };
 
 /** Every `[label containing (idem), script.mjs]` pair in the orchestrator. */
