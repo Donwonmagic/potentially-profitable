@@ -8,9 +8,9 @@
     "windowYears": 5
   },
   "summary": {
-    "total": 99,
+    "total": 100,
     "ready": 84,
-    "building": 15
+    "building": 16
   },
   "ingredients": [
     {
@@ -8054,6 +8054,39 @@
           "medianCents": 405,
           "p25Cents": 393,
           "p75Cents": 417,
+          "n": 2,
+          "years": 2
+        }
+      }
+    },
+    {
+      "key": "scallops",
+      "ready": false,
+      "weeks": 10,
+      "distinctYears": 2,
+      "distinctMonths": 7,
+      "establishedMonths": 3,
+      "progress": "building baseline — 10 of ~78 weeks · 2 of 2 years · 3 established month(s)",
+      "blocker": "need 6 months proven across 2+ years (have 3)",
+      "months": {
+        "02": {
+          "medianCents": 655,
+          "p25Cents": 601,
+          "p75Cents": 708,
+          "n": 2,
+          "years": 2
+        },
+        "03": {
+          "medianCents": 818,
+          "p25Cents": 728,
+          "p75Cents": 909,
+          "n": 2,
+          "years": 2
+        },
+        "04": {
+          "medianCents": 808,
+          "p25Cents": 780,
+          "p75Cents": 837,
           "n": 2,
           "years": 2
         }

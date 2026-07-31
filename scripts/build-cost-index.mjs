@@ -77,9 +77,25 @@ function computeBasket(out) {
 
 const ok = (ingredient, point) => pointIssues(ingredient, point, srcIng, boundsMap).length === 0;
 
-function mergePoints(existing, incoming) {
+function mergePoints(ingredient, existing, incoming) {
   const byAsOf = new Map();
-  for (const p of existing || []) byAsOf.set(p.asOf, p);
+  // Re-filter PRIOR points through the same predicate the carry-forward path
+  // uses (:144). Without this, an ingredient that keeps receiving fresh reads
+  // silently accumulates points that have aged past POINT_STALE_DAYS inside
+  // points[], and check-cost-index-sync.mjs — the deploy gate — trips on them.
+  // That is exactly what happened on 2026-07-30: seven still-live series
+  // (ribeye, beef-tenderloin, pork-shoulder, pork-loin, eggs, cheddar-cheese,
+  // butter) tripped the gate on a 2026-04-01 tail the moment it crossed 120
+  // days. MAX_POINTS is a COUNT cap, not an age cap, so it does not evict them:
+  // ribeye holds 15 of 26 slots, ~11 reads short of pushing the stale one out.
+  //
+  // This cannot drop an ingredient. It only runs for ingredients that received
+  // an incoming point THIS run, and that point already passed pointIssues() to
+  // be vendored at all (:123), so at least one point always survives. Frozen
+  // series take the carry-forward branch instead, and stay visible to the
+  // staleness gate + check-cost-index-series-freshness.mjs — the dead-feed
+  // evidence is not touched here.
+  for (const p of existing || []) if (ok(ingredient, p)) byAsOf.set(p.asOf, p);
   for (const p of incoming || []) byAsOf.set(p.asOf, p);   // incoming wins on same asOf
   return [...byAsOf.values()]
     .sort((a, b) => (a.asOf < b.asOf ? 1 : a.asOf > b.asOf ? -1 : 0))  // newest first
@@ -103,6 +119,11 @@ function main() {
   const existing = existsSync(OUT) ? rd(OUT) : {};
   const out = { ...emptyCanonical(), ingredients: {} };
   const dropped = {};
+  // Ingredients that lost EVERY point this run. `dropped` counts issue CODES, so
+  // losing one point of fifteen and losing an ingredient outright looked identical
+  // in the log — which is how a whole ingredient could vanish unnoticed, orphaning
+  // its published EN+ES page. Name them (check-cost-index-orphans.mjs enforces).
+  const droppedIngredients = [];
   let vendored = 0;
 
   for (const ingredient of Object.keys(points)) {
@@ -118,19 +139,8 @@ function main() {
     }
     const issues = pointIssues(ingredient, points[ingredient], srcIng, boundsMap);
     if (issues.length) { for (const i of issues) dropped[i] = (dropped[i] || 0) + 1; continue; }
-    // Re-filter the PRIOR points through the same predicates before merging.
-    // Without this, only the incoming point was validated and the retained tail
-    // rode along untouched — so a point that later aged past POINT_STALE_DAYS
-    // survived every run for as long as the ingredient kept receiving fresh
-    // data, and MAX_POINTS (26) never evicted it because these series hold
-    // 3-15 points. That is what reddened the deploy on 2026-07-30: 23
-    // ingredients each carrying one 2026-04-01 tail entry that crossed 120
-    // days, while their CURRENT reads were 2026-07-28 and perfectly fine.
-    // The no-new-point carry-forward path below already did exactly this
-    // ("re-filter each through the SAME predicates"); the two paths now agree.
-    // History is untouched — it keeps the long record and is staleness-exempt.
-    const prior = ((existing.ingredients?.[ingredient]?.points) || []).filter((p) => ok(ingredient, p));
-    out.ingredients[ingredient] = { points: mergePoints(prior, [points[ingredient]]) };
+    const prior = (existing.ingredients?.[ingredient]?.points) || [];
+    out.ingredients[ingredient] = { points: mergePoints(ingredient, prior, [points[ingredient]]) };
     // Historical curve (sibling to points): gated for citeability + bounds but
     // NOT for staleness (old by design). A failing series is dropped, never
     // vendored — the current point still ships.
@@ -148,7 +158,7 @@ function main() {
   for (const ingredient of Object.keys(existing.ingredients || {})) {
     if (out.ingredients[ingredient]) continue;
     const kept = ((existing.ingredients[ingredient].points) || []).filter((p) => ok(ingredient, p));
-    if (!kept.length) continue;
+    if (!kept.length) { droppedIngredients.push(ingredient); continue; }
     out.ingredients[ingredient] = { points: kept };
     const priorHist = existing.ingredients[ingredient].history;
     if (Array.isArray(priorHist) && priorHist.length && !historyIssues(ingredient, priorHist, srcIng, boundsMap).length) {
@@ -275,6 +285,11 @@ function main() {
   const histN = Object.values(out.ingredients).filter((x) => Array.isArray(x.history) && x.history.length).length;
   const bk = out.basket && out.basket.pct != null ? ` · basket ${(out.basket.pct * 100).toFixed(1)}% (${Math.round(out.basket.coverage * 100)}% covered)` : '';
   console.log(`build-cost-index: vendored ${vendored} ingredient(s), ${histN} with history, ${vendoredDrivers} driver(s)${dropMsg}${bk}.${DRY ? ' (dry-run)' : ''}`);
+  if (droppedIngredients.length) {
+    console.warn(`build-cost-index: ${droppedIngredients.length} ingredient(s) lost every point and were DROPPED from the index: ${droppedIngredients.join(', ')}.`);
+    console.warn('  Their published cost-index/<slug>/ pages (EN+ES) are now orphaned — frozen price, still in the sitemap, never regenerated.');
+    console.warn('  Re-source the feed or retire the page deliberately. check-cost-index-orphans.mjs fails until one of those happens.');
+  }
 }
 
 main();

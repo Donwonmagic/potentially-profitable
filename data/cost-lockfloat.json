@@ -8,13 +8,13 @@
     "floatMaxHalfWidth": 0.3,
     "lockMinCoverageLo": 0.6
   },
-  "catalog": 99,
+  "catalog": 100,
   "deep": 84,
   "counts": {
     "lock": 37,
     "cushion": 19,
     "float": 7,
-    "withhold": 36
+    "withhold": 37
   },
   "items": {
     "acorn-squash": {
@@ -4368,6 +4368,24 @@
       "name": "Salmon (skin-on fillet)",
       "unit": "lb",
       "level": 551,
+      "monthly": false,
+      "bucket": "withhold",
+      "reason": "no-series",
+      "coverage": null,
+      "coverageLo": null,
+      "coverageHi": null,
+      "upPct": null,
+      "downPct": null,
+      "nTested": null,
+      "halfWidthPct": null,
+      "pos": null,
+      "spark": null,
+      "replay": null
+    },
+    "scallops": {
+      "name": "Scallops",
+      "unit": "lb",
+      "level": 865,
       "monthly": false,
       "bucket": "withhold",
       "reason": "no-series",

@@ -2,13 +2,13 @@
   "_doc": "Coverage/health matrix for the Cost Index, derived purely from data/cost-index.json by scripts/build-cost-index-health.mjs (CI runs --check). confidence is the published read; withinAuditCeiling proves it is not overstated; toHigh names the single binding blocker to a higher tier. Regenerate after every vendor.",
   "generatedFrom": null,
   "summary": {
-    "total": 99,
+    "total": 100,
     "byConfidence": {
       "medium": 19,
       "low": 63,
-      "directional": 17
+      "directional": 18
     },
-    "withDollarLevel": 92,
+    "withDollarLevel": 93,
     "highEligible": 0,
     "overstated": 0
   },
@@ -1508,6 +1508,23 @@
       "weeks": 5,
       "asOf": "2026-06-01",
       "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend agreement is only moderate"
+    },
+    {
+      "key": "scallops",
+      "confidence": "directional",
+      "withinAuditCeiling": true,
+      "hasDollarLevel": true,
+      "basis": "index",
+      "rangeBasis": "volatility",
+      "levelFamilies": 1,
+      "levelTypes": 1,
+      "trendTypes": 2,
+      "trendAgreement": 1,
+      "trendNoise": 0.1344,
+      "typeDispersion": 0,
+      "weeks": 4,
+      "asOf": "2026-05-01",
+      "toHigh": "add a 2nd independent-agency wholesale $ level on the same basis; trend is mildly noisy"
     },
     {
       "key": "shrimp",
