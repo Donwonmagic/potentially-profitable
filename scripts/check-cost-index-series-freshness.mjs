@@ -77,6 +77,29 @@ export function daysUntilCliff(asOf, now, cliffDays) {
 }
 
 /**
+ * The date this ingredient will actually be judged on, and why.
+ *
+ * pointIssues() drops a point on EITHER of two age rules: `stale` (the composite
+ * asOf past the cliff) and `stale-level` (ANY date in level.provenance past it).
+ * This gate read only the first, and the miss was not theoretical: a 2026-07-31
+ * cliff simulation showed parsley and yellow-squash — both reading asOf
+ * 2026-07-28, three days old, counted as LIVE here — dropping 29 days later on a
+ * level anchor from 2026-05-01. Two ingredients were a month from retirement and
+ * the dead-feed roster called the index healthy.
+ *
+ * A countdown that is silently wrong for a whole class of series is worse than
+ * no countdown: it is read as an all-clear. So the effective date is the OLDEST
+ * of the two, and the roster says which one governs.
+ */
+export function effectiveAsOf(point) {
+  let worst = point.asOf, reason = 'feed';
+  for (const p of (point.level && Array.isArray(point.level.provenance) ? point.level.provenance : [])) {
+    if (p && /^\d{4}-\d{2}-\d{2}$/.test(p.date || '') && p.date < worst) { worst = p.date; reason = 'level'; }
+  }
+  return { asOf: worst, reason };
+}
+
+/**
  * Build the frozen-series roster.
  *
  * @param {Record<string, {points?: Array<{asOf?: string}>}>} ingredients
@@ -91,13 +114,16 @@ export function roster(ingredients, opts) {
   for (const [slug, entry] of Object.entries(ingredients || {})) {
     const point = (entry.points || [])[0];
     if (!point || !point.asOf) continue; // absence of data is not a frozen feed
-    const age = ageDays(point.asOf, now);
+    const eff = effectiveAsOf(point);
+    const age = ageDays(eff.asOf, now);
     if (age <= maxAgeDays) { live++; continue; }
     const row = {
       slug,
-      asOf: point.asOf,
+      asOf: eff.asOf,
+      reason: eff.reason,
+      feedAsOf: point.asOf,
       age,
-      cliffInDays: daysUntilCliff(point.asOf, now, cliffDays),
+      cliffInDays: daysUntilCliff(eff.asOf, now, cliffDays),
       inBasket: basket.has(slug),
     };
     if (knownLatent.has(slug)) known.push(row);
@@ -111,7 +137,12 @@ function line(r, cliffDays) {
   const cliff = r.cliffInDays < 0
     ? `PAST the ${cliffDays}d cliff`
     : `cliff in ${r.cliffInDays}d`;
-  return `  ${r.slug.padEnd(24)} last read ${r.asOf}  ${String(r.age).padStart(3)}d  (${cliff})${r.inBasket ? '  [BASKET CONTRIBUTOR — dates the published headline]' : ''}`;
+  // Naming the level case matters: the composite still looks fresh, so "last
+  // read <old date>" without it would read as a contradiction of the hub.
+  const why = r.reason === 'level'
+    ? `  [STALE LEVEL ANCHOR — composite reads ${r.feedAsOf}, but the price behind it is from ${r.asOf}]`
+    : '';
+  return `  ${r.slug.padEnd(24)} last read ${r.asOf}  ${String(r.age).padStart(3)}d  (${cliff})${r.inBasket ? '  [BASKET CONTRIBUTOR — dates the published headline]' : ''}${why}`;
 }
 
 function selfTest() {
@@ -179,12 +210,35 @@ function selfTest() {
   }, opts());
   eq('roster is oldest-first', r.unexpected[0].slug, 'b');
 
+  // THE MISS THIS FIX EXISTS FOR: a fresh composite asOf over a stale LEVEL
+  // anchor. pointIssues() drops on stale-level too, so this series is 29 days
+  // from being dropped while the old roster counted it live.
+  const staleLevel = { points: [{ asOf: '2026-07-28', level: { provenance: [{ date: '2026-05-01' }, { date: '2026-07-28' }] } }] };
+  r = roster({ parsley: staleLevel }, opts());
+  eq('a stale level anchor is caught, not counted live', r.unexpected.length, 1);
+  eq('the level anchor sets the age, not the composite', r.unexpected[0].age, 90);
+  eq('the countdown runs off the level anchor', r.unexpected[0].cliffInDays, 30);
+  eq('the governing date is named', r.unexpected[0].reason, 'level');
+  eq('the composite date is kept for the message', r.unexpected[0].feedAsOf, '2026-07-28');
+
+  // A fresh level anchor under a fresh composite is still silent — the fix must
+  // not turn every ingredient into a roster entry.
+  r = roster({ ribeye: { points: [{ asOf: '2026-07-28', level: { provenance: [{ date: '2026-07-20' }] } }] } }, opts());
+  eq('fresh level provenance stays live', r.live, 1);
+  // A level anchor NEWER than the composite must not make a stale feed look fresh.
+  r = roster({ x: { points: [{ asOf: '2026-05-01', level: { provenance: [{ date: '2026-07-28' }] } }] } }, opts());
+  eq('a newer level anchor cannot rescue a stale composite', r.unexpected.length, 1);
+  eq('the composite still governs when it is older', r.unexpected[0].reason, 'feed');
+  // Malformed provenance dates are ignored rather than crashing or scoring.
+  r = roster({ y: { points: [{ asOf: '2026-07-28', level: { provenance: [{ date: 'n/a' }, {}] } }] } }, opts());
+  eq('malformed provenance dates are ignored', r.live, 1);
+
   if (fails.length) {
     console.error(`✗ check-cost-index-series-freshness self-test: ${fails.length} failure(s):`);
     for (const f of fails) console.error(`  - ${f}`);
     process.exit(1);
   }
-  console.log('check-cost-index-series-freshness self-test: 20/20 assertions passed.');
+  console.log('check-cost-index-series-freshness self-test: 30/30 assertions passed.');
   process.exit(0);
 }
 
@@ -207,7 +261,26 @@ function main() {
     maxAgeDays, cliffDays, now: Date.now(), knownLatent: KNOWN_SOURCE_LATENT, basket,
   });
 
+  // Series that already went over the cliff have LEFT data/cost-index.json, so
+  // the roster above cannot see them — the file it reads has forgotten they
+  // existed. Reporting them from the retirement archive keeps the dead-feed
+  // ledger complete: without this, a feed's last act before disappearing from
+  // this roster forever is to stop being counted by it.
+  const retired = (() => {
+    try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-index-retired.json'), 'utf8')).retired || {}; }
+    catch { return {}; }
+  })();
+  const retiredSlugs = Object.keys(retired).sort();
+
   const total = live + unexpected.length + knownLatent.length;
+  if (retiredSlugs.length) {
+    console.log(`cost-index series freshness: ${retiredSlugs.length} series already retired (past the ${cliffDays}d cliff; terminal page published, out of the basket):`);
+    for (const s of retiredSlugs) {
+      const r = retired[s] || {};
+      console.log(`  ${s.padEnd(24)} last measured ${r.lastMeasured || 'n/a'}   retired ${r.retiredOn || 'n/a'}`);
+    }
+    console.log('  Re-sourcing any of these clears its archive entry and its page returns to a live reading on the next build.');
+  }
   if (!unexpected.length && !knownLatent.length) {
     console.log(`cost-index series freshness: OK — all ${total} series have moved within ${maxAgeDays}d.`);
     process.exit(0);
