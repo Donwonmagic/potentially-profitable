@@ -201,41 +201,43 @@ only). r4 → 0. apps/api 3190 green. **All 6 insight surfaces in `apps/api/src/
 currency-scope hardened transitively (3 surfaces depend on it; no defects surfaced across the vendor-relationships
 + ap-pacing audits that read it).
 
-And **cross-surface consistency — 🔶 OPEN after r1→r5 (2026-07-25, r6 running)** (product-only; the first audit
+And **cross-surface consistency — 🔶 OPEN after r1→r6 (2026-07-25, r7 running)** (product-only; the first audit
 that is NOT about one surface — it asks whether the surfaces AGREE WITH EACH OTHER). Runbook:
 `runbooks/audits/cross-surface-2026-07.md`. **r1: 16 confirmed → 10 distinct; r2: 14 → 9; r3: 16 → 11; r4: 14;
-r5: 20 confirmed with ZERO refuted → 16 distinct.** **All r1–r5 defects are fixed and pushed.**
+r5: 20 confirmed with ZERO refuted → 16; r6: 19 confirmed with ZERO refuted → 9.** **All r1–r6 defects are fixed
+and pushed.** apps/api **3242** green, apps/web **126** green.
 
-**Why it matters more than any single-surface round:** several defects were caused by *this loop's own earlier
-fixes* — the VR-4 dedup, the bill-steadiness relabel, the ap-pacing disclosure, r3's currency column, r4's glyph
-sweep. Each was correct on the surface it was made and each created a disagreement with a sibling reading the same
-data. **Fixing a surface in isolation can introduce a cross-surface defect.**
+**The pattern, stated plainly after six rounds:** *every* round has found defects created by the previous round's
+fixes — the VR-4 dedup, the bill-steadiness relabel, the ap-pacing disclosure, r3's currency column, r4's glyph
+sweep, r5's org election. Not carelessness: each fix was correct on the surface it was made. **A cross-surface
+property cannot be maintained one surface at a time.** The only thing that holds it is a gate that walks EVERY
+caller — the coalesce-basis gate over all seven routes, the org-election gate over all seven, the identity map as
+the single emission point.
 
-**The method changed twice.** r4: the SQL gets **executed**, not read — Postgres 16 ships in the container
-(recipe in the runbook), which retired the "verify against Neon" follow-up and immediately caught a `GROUP BY`
-ordinal this loop had introduced, taking both hub spend cards down. r5: a third lens that runs the query AND
-checks every claimed cross-surface *identity* across weekday, timezone and date-format variation.
+**The method now runs the code.** Postgres 16 ships in the container (recipe in the runbook), so the aggregate SQL
+is executed rather than read — which caught a `GROUP BY` ordinal r3 had introduced (both hub spend cards dead) and
+a category filter sitting inside the currency-election CTE (the Food card rendering sixty times the whole, in a
+glyph the page had just disclaimed). r5 added a third lens that also checks every claimed cross-surface *identity*
+across weekday, timezone and date-format variation.
 
-**r5 is the round worth reading.** Nothing was refuted — the lenses finally reached surfaces no earlier round had
-read. Four money feeds were each electing "the org's dominant currency" over a different population, and the
-category filter sat **inside** the election CTE: seeded six USD invoices at $10 and four EUR food invoices at
-EUR900, the same query returned `USD / $60` with no category and `EUR / EUR3,600` with one. On one screen the KPI
-read "$60 … 4 invoices in another currency were not counted" and the Food card beneath it rendered those very
-invoices as EUR3,600 — sixty times the whole, in the glyph the page had just disclaimed. Also fixed: three routes
-still losing undated invoices at the store (two of them the money-out pair, which keys on DUE date and never reads
-issue_date at all); both aggregates applying a currency filter they never disclosed; the hub KPI counting nine
-verdict kinds under a two-kind hint while the panel beneath it could read "none"; `vendorDisplayMap` picking the
-NEWEST spelling while `vendors.canonical_name` keeps the oldest; the operator's stored budget relabelled in the
-spend currency; and "your biggest week" picked on money the twin explicitly refuses to count.
+**r6's headline was not an insight page at all.** `/documents` — the Ledger, the product's primary surface —
+stamped `$` on every invoice and summed across currencies in its footer, while carrying each row's real currency
+unread. The same invoice read "$500.00" there and "1 invoice in another currency was not counted" on every
+/insights page — and the Ledger is where the operator lands FROM those pages. r6 also found that r5's org-wide
+currency election never reached the per-surface computes: executed against one ledger, six surfaces reported
+"USD, 8 excluded" while the 15-day pricing scorecard reported "EUR, 40 excluded" — the exact inverse. And it found
+that r5's budget fix corrected the FORMATTING while leaving the cross-currency comparison still being asserted:
+/insights showed an "Over" chip beside its own sentence saying the pacing was not a real comparison.
 
-**Two lessons this round paid for.** (1) *A test can pass on the one input where the bug cannot exist* — the
-mid-week past-due gate pinned an `asOf` of Monday, the single weekday where the gap it covers is empty by
-construction. (2) *Store parity is not only about SQL* — routing two routes through `getDominantCurrency` made the
-STUB the authority wherever there is no data plane, and its convenient "USD" would have scoped a EUR-only org to
-dollars and excluded every invoice. A test caught that one.
+**Lessons paid for, in order:** a test can pass on the one input where the bug cannot exist (the mid-week past-due
+gate pinned a Monday `asOf`); store parity is not only about SQL (a stub's convenient "USD" would have scoped a
+EUR-only org to dollars); and fixing the formatting is not fixing the claim.
 
-**Not converged:** each round's fixes held, but every round the lenses reach one hop further out (now `/today`,
-the budget panel, the settings pages, the aggregates store). apps/api **3233** green, apps/web **126** green.
+**Not converged:** each round's fixes held, but every round the lenses reach one hop further out — now the Ledger,
+the inbox, settings, the inventory surfaces and the export paths.
+
+**⚠ Container-revert count: four.** The fourth also wiped `node_modules` (`pnpm install --frozen-lockfile`
+restores it) and the scratchpad, and cost the uncommitted half of a round's work. Push every increment.
 
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
