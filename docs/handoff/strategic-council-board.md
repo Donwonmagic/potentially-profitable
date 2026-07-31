@@ -201,42 +201,56 @@ only). r4 → 0. apps/api 3190 green. **All 6 insight surfaces in `apps/api/src/
 currency-scope hardened transitively (3 surfaces depend on it; no defects surfaced across the vendor-relationships
 + ap-pacing audits that read it).
 
-And **cross-surface consistency — 🔶 OPEN after r1→r9 (2026-07-25, r10 running)** (product-only; the first audit
+And **cross-surface consistency — 🔶 OPEN after r1→r10 (2026-07-31)** (product-only; the first audit
 that is NOT about one surface — it asks whether the surfaces AGREE WITH EACH OTHER). Runbook:
 `runbooks/audits/cross-surface-2026-07.md`. **r1: 16→10 distinct; r2: 14→9; r3: 16→11; r4: 14; r5: 20 confirmed
-with ZERO refuted→16; r6: 19 confirmed with ZERO refuted→9; r7: 23/3→13; r8: 30/1→17; r9: 25 confirmed→16.**
-**All r1–r9 defects are fixed and pushed.** apps/api **3261** green, apps/web **126** green.
+with ZERO refuted→16; r6: 19 confirmed with ZERO refuted→9; r7: 23/3→13; r8: 30/1→17; r9: 25 confirmed→16;
+r10: 20 raised, 17 confirmed, 3 refuted→10.** **All r1–r10 defects are fixed and pushed.** apps/api **3276**
+green, apps/web **128**, cost-alerts **105**, schema **41**.
 
-**r9 is the round that stopped patching — read this one.** The soft-delete rule (deleting an invoice sets
-`documents.deleted_at` and LEAVES the extractions row) had been re-learned four rounds running: r7 added it to one
-surface, r8 gave it an owner and applied it to two stores, r9 found five MORE unguarded reads. So r9 built a gate
-instead of a fifth patch — `scripts/check-soft-delete-coverage.mjs`, wired into ci.yml, which walks every SQL
-string in apps/api that reads `extractions` or `line_item_observations` and fails unless it carries the guard or
-is listed with a stated reason (statement-level, so an exemption only excuses the query someone looked at).
+**r9 built the first gate; r10 found that four gates were already red.** The soft-delete rule had been re-learned
+four rounds running, so r9 shipped `check-soft-delete-coverage.mjs` instead of a fifth patch — it found 20
+unguarded reads on its first run, fifteen no audit had raised. r10 verified that gate holds (all three adversarial
+attacks on it REFUTED) and then ran **every** script `ci.yml` invokes, not just the ones near the diff. Four were
+red on this branch and green at the merge-base — **check-copy-grade, check-verboten-phrases,
+check-typecheck-baseline (112 vs a 101 baseline) and check-reason-copy** — each broken by an earlier round of this
+same audit. check-reason-copy was the instructive one: it sliced `reasonSentence()` as a fixed 4000-char window
+("the function is short"), the function grew, and it reported three missing branches that were sitting in the file
+at offsets 4167 and 4246. *A gate that reds on code it cannot see is worse than no gate.* Replaced with a brace
+matcher that fails rather than truncate, plus seven self-test fixtures.
 
-**It found 20 unguarded reads on its first run — fifteen of which no audit round had raised.** Plate cost was
-pricing ingredients off deleted invoices; the count sheet took its case size from one; category suggestions were
-driven by them; the item detail *linked to* them from a table sitting directly below a block that excluded them.
+**The loop rule r10 adds:** r9 said *where a rule recurs across rounds, the deliverable is the GATE.* r10 adds the
+half that makes it true — **run the WHOLE gate set every round, not the gates near the code you touched.** One
+command, in the runbook.
 
-**The lesson, and the change to how this loop works:** eight rounds of "walk every caller" did not lower the
-defect rate. A gate did, in one run. **Where a rule recurs across rounds, the deliverable is the GATE, not the
-patch.** r10 is pointed at two jobs: attack the new gate (it is load-bearing now — can it be fooled?), and name
-the next class dense enough to deserve one.
+**r10's new gate: `scripts/check-sql-identifiers.mjs`.** Three defects in three rounds were a query naming an
+identifier its target database does not have (r8's ghost `updated_at`; r10's `last_price_currency`; /settings/data-map
+counting three NEON tables against D1 and printing the swallowed errors as a confident "0 documents" on the privacy
+page). Two databases, two schemas, and a SQL string is just a string to tsc. The gate resolves each statement's
+BINDING and checks its tables against that schema. **Built by reintroducing the bug** — the first cut reported OK on
+the whole tree and passed the data-map defect verbatim; each later fix came from counting files that contain SQL but
+contribute zero statements (`.prepare(` on its own line: 20 files invisible; `await import("@neondatabase/serverless")`:
+the five biggest query files invisible; apostrophes in block comments: 315 statements swallowed whole).
 
-**Also in r9:** a THIRD currency election, in `catalog-store`, collapsed into the shared one; /today and /inbox
-counting different review queues because the KPI strip re-typed a narrower needs-review rule than the Ledger (and
-the two columns cannot re-converge, since the bulk "mark" action writes only `documents.status`); and three r8
-fixes that were still wrong — including a cross-currency guard in the statement matcher that **could never fire**,
-because the route never gave the statement side a currency.
+**Also in r10:** *r9's own fix shipped broken* — the `last_price_currency` aggregate landed in the wrong LATERAL, so
+every `/insights/items` load 500'd; and r9's `currency` prop on /insights/food-cost and /insights/variance was
+**inert — no caller ever passed it**, so both pages went on printing dollars while the fix read as done. Migration
+**0058** now freezes the currency on the period snapshot and **0059** on the statement reconciliation: *freeze the
+money's unit with the money.* Cost Check was withholding a cross-currency gap in one sentence and printing it in the
+next — fixed by declining the comparison at the route, since with the band in USD and the price in CAD the VERDICT is
+a cross-unit subtraction too, not a formatting problem. Same shape for the count's USD market prior over a
+non-USD-elected period: the item stays uncovered rather than carry a number we cannot denominate.
 
-**What nine rounds established.** The defect was never "the insight pages disagree." It is that **the product has
+**What ten rounds established.** The defect was never "the insight pages disagree." It is that **the product has
 more money-rendering surfaces than it has places where the rule is written down** — and **a cross-surface property
-cannot be maintained one surface at a time.** Every round has found defects created by the previous round's fixes.
+cannot be maintained one surface at a time.** Every round has found defects created by the previous round's fixes,
+including its own.
 
-**Method: execute, don't read.** Postgres 16 ships in the container (recipe in the runbook). Seven production bugs
-across r4–r9 were invisible to reading.
+**Method: execute, don't read.** Postgres 16 ships in the container (recipe in the runbook). Eight production bugs
+across r4–r10 were invisible to reading; r10's two new migrations and the creep/window fixes were each run against
+a fully-migrated schema under RLS before shipping.
 
-**Not converged.** ⚠ Container-revert count: four (one also wiped `node_modules` — `pnpm install
+**Not converged.** ⚠ Container-revert count: four (twice also wiping `node_modules` — `pnpm install
 --frozen-lockfile` restores it — and the scratchpad). Push every increment.
 
 **Recurring lessons (apply to every surface):**
