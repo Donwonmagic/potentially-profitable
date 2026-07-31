@@ -103,7 +103,7 @@ export function findOrphans(pages, ingredients, nonIngredient, labels = null, in
         // hand-edited or a build was skipped — and while it lasts the page
         // builder silently prefers the live render, so the "retirement" is a
         // claim in a file that nothing on the site reflects.
-        issues.push(`"${slug}" has BOTH live data in data/cost-index.json and an entry in data/cost-index-retired.json — it cannot be both. Re-run build-cost-index.mjs (it drops the archive entry when a feed comes back) or remove the entry by hand.`);
+        issues.push(`${rel}: "${slug}" has BOTH live data in data/cost-index.json and an entry in data/cost-index-retired.json — it cannot be both. Re-run build-cost-index.mjs (it drops the archive entry when a feed comes back) or remove the entry by hand.`);
       } else if (isTerminal && !isTerminal(rel)) {
         // The archive says retired; the published bytes still say otherwise.
         // Without this check, adding a slug to the archive would satisfy the
