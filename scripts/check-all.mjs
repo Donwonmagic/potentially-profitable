@@ -425,6 +425,14 @@ const CHECKS = [
   ['Cost-index editors note','check-cost-index-editors-note.mjs','--check'],
   ['Cost-index confidence framing','check-cost-index-confidence.mjs'],
   ['Cost-index sync',   'check-cost-index-sync.mjs',     '--check'],
+  // Panel independence + silent feeds (2026-07-31). A slug count is not an observation count:
+  // NOAA publishes 14 seafood series on one calendar, so 100 tracked slugs are ~70 independent
+  // ones. The --check half guards the failure this repo hit four separate ways in one day — an
+  // instrument returning nothing with no way to tell "measured zero" from "did not report"
+  // (see ADR-023). Fails only on an UNREGISTERED silent feed; known-flat desks carry a dated
+  // reason in SILENT_ALLOW, and the script warns when a registered entry starts moving again.
+  ['Panel independence self-test','audit-panel-independence.mjs','--self-test'],
+  ['Panel independence',  'audit-panel-independence.mjs',  '--check'],
   ['Cost-index sync self-test','check-cost-index-sync.mjs','--self-test'],
   // Confidence calibration (P1 #36) — min-of-gates ceiling governs precision.
   // Warn-only during rollout (FAIL_ON_DRIFT in the script); flip once the
