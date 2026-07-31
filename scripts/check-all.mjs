@@ -401,6 +401,15 @@ const CHECKS = [
   // and states a `cutSpec`. They disagree because they measure DIFFERENT CUTS (chard
   // stems-in vs leaves-only; orange JUICE vs flesh). Resolving each changes published
   // trim-tax math, so the 7 are pinned with dated reasons and an 8th fails.
+  // Substitute hedge integrity (2026-07-31). The hedge/mirror verdict is operator ADVICE. R1: a
+  // substitute with no tracked series of its own (broccolini, canned tomatoes, garlic powder)
+  // falls back to the PARENT subSlug, so co-movement compared a series to ITSELF and returned a
+  // degenerate 0/6 that the classifier published as "hedge" — 11 of them, now withdrawn to
+  // hedge:null, matching what clams/scallops already did correctly. R2: every verdict in the file
+  // is computed from n<=6, where "hedge" is the DEFAULT outcome, so a same-species pair
+  // (kale/collard greens, ribeye/striploin) needs a dated reason. See ADR-023.
+  ['Substitute hedge self-test','check-substitute-hedge-integrity.mjs','--self-test'],
+  ['Substitute hedge integrity','check-substitute-hedge-integrity.mjs'],
   ['Yield cross-surface agreement','check-yield-agreement.mjs'],
   ['Yield cross-surface self-test','check-yield-agreement.mjs','--self-test'],
   // Ingredient identity crosswalk (completes ADR-017) — slug -> the 5 authorities' codes,
