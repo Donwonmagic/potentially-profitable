@@ -201,10 +201,10 @@ only). r4 → 0. apps/api 3190 green. **All 6 insight surfaces in `apps/api/src/
 currency-scope hardened transitively (3 surfaces depend on it; no defects surfaced across the vendor-relationships
 + ap-pacing audits that read it).
 
-And **cross-surface consistency — 🔶 OPEN after r1→r3 (2026-07-25)** (product-only; the first audit that is NOT
-about one surface — it asks whether the surfaces AGREE WITH EACH OTHER). Runbook:
-`runbooks/audits/cross-surface-2026-07.md`. **r1: 16 confirmed → 10 distinct; r2: 14 → 9; r3: 16 → 11.** All
-HIGHs are fixed and pushed; **8 MED + 1 LOW remain open and enumerated in the runbook.**
+And **cross-surface consistency — 🔶 OPEN after r1→r4 (2026-07-25, r5 running)** (product-only; the first audit
+that is NOT about one surface — it asks whether the surfaces AGREE WITH EACH OTHER). Runbook:
+`runbooks/audits/cross-surface-2026-07.md`. **r1: 16 confirmed → 10 distinct; r2: 14 → 9; r3: 16 → 11; r4: 14.**
+**All r1–r4 defects are fixed and pushed.**
 **Why it matters more than any single-surface round:** several defects were caused by *this loop's own earlier
 fixes*. The VR-4 dedup, the bill-steadiness relabel and the ap-pacing disclosure were each correct on the surface
 they were made and each created a disagreement with a sibling reading the same data — and r2 caught my r1
@@ -215,10 +215,25 @@ different record sets, windows, row caps and vendor-identity rules on the two pa
 population, one rule — `insights/vendor-identity.ts`); `use-tax`, the hub "Spend this month" KPI, `budget-vs-actual`
 and both aggregate SQL queries all summed money across currencies under a hardcoded "$"; and **r3 found a genuine
 production bug** — `getVendorSpend` selected `v.name`, a column the `vendors` table does not have, so the hub's
-Pareto card fails while a sibling lists the same vendors. **⚠ Top follow-up:** the new dominant-currency SQL in
-`insights-aggregates-store.ts` is syntax-checked only (the stub returns zeros; no Postgres in-container) — run it
-against Neon before trusting those cards. **Not converged:** each round's fixes held, but every round the lenses
-reach one hop further out (now `/today`, the budget panel, the Ledger, the aggregates store). apps/api 3196 green.
+Pareto card fails while a sibling lists the same vendors.
+
+**r4 changed the method: the SQL is executed now, not read.** Postgres 16 turns out to ship in the container
+(`/usr/lib/postgresql/16/bin`; `initdb` refuses to run as root — run it as an unprivileged user; recipe in the
+runbook). That retired the standing "verify against Neon" follow-up **and immediately caught a second production
+bug this loop had itself introduced**: r3's `(SELECT cur FROM dom) AS currency` made the currency scalar output
+column 1, so the pre-existing `GROUP BY 1` grouped by *it* and left `month_start` ungrouped — a hard Postgres
+error that took BOTH hub spend cards down. A syntactically valid query that reads correctly can still fail at
+runtime. r4 also fixed: blank-vendor and punctuation-variant bills dropped by `forecastCashFlow` but counted by
+its money-out twin; the undated-invoice disclosure that never reached the drill-in or relationships page; the last
+two hardcoded `$` over scoped feeds; both aggregate queries moved onto the
+`COALESCE(e.issue_date, e.created_at::date)` basis every other month feed uses; and **the mid-week past-due gap** —
+`/insights/ap-pacing` labels a bill due earlier this week "due earlier" under a payment-status caveat while
+`/insights/bills` counted the same dollars as ordinary upcoming "Known", because its reconciliation line is gated
+on a counter that only fires for bills due before the grace band. *The gate that should have caught it pinned an
+`asOf` of **Monday** — the one weekday where week 0 starts today and the gap is empty by construction.* **A test
+can pass on the one input where the bug cannot exist.** **Not converged:** each round's fixes held, but every
+round the lenses reach one hop further out (now `/today`, the budget panel, the Ledger, the aggregates store).
+apps/api **3203** green, apps/web **126** green.
 
 **Recurring lessons (apply to every surface):**
 - **Container-revert discipline** — a worker restart can silently roll the local checkout back
