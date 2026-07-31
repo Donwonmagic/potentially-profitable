@@ -387,6 +387,30 @@ free only where its output requires no human read*.
      template slots. Publish `revisedClaim`, never `claim`. Two duplicate pairs (30≡31, 32≡33);
      hypotheses 10, 22 and 30 carry no code and cannot be recomputed from the salvage at all.
 
+20f. **ADR-023 sweep, round 2 — the menu-pricing generator is DEAD CODE and its header said
+   otherwise.** `researchTargets()` (scripts/lib/cost-research.mjs) emits **six published
+   artifacts** — EN/ES menu-pricing playbook, EN/ES study, `menu-pricing.{json,csv}` — and
+   **nothing imports it**. Its own header claimed *"Consumed by build-cost-index-pages.mjs"*, which
+   is very likely why the gap survived: the file vouched for its own wiring. Header corrected.
+   - **Audited for staleness and found NONE** — posture and `band_pct` match `cost-lockfloat.json`
+     on all 100 rows. (A first probe reported "27 drifts" that were entirely an artifact of my
+     comparison treating a withheld `null` as `0`. Don't repeat that.) The hazard is structural: a
+     frozen dataset and a live one are byte-identical right up until they aren't.
+   - **`check-menu-pricing-dataset-fresh.mjs`** (10 assertions) recomputes the two DATA artifacts
+     and reds on drift. **The four HTML surfaces are deliberately NOT gated** — re-wiring the
+     generator regenerates live published pages, which is a **FOUNDER CALL, still open** (this is
+     the same `researchTargets()` decision flagged earlier: re-wire or delete).
+   - Added `comover_withheld_reason`, separating three states a bare null conflated: **32 shown,
+     44 below_threshold, 24 not_measured**. Purely additive — one key, zero existing values changed.
+   - **The 50% co-mover bar is GOOD code, left alone.** *"A weak co-mover (e.g. 2 of 6) is noise"* —
+     exactly right, and the opposite of the hedge-verdict bug fixed earlier today.
+   - **`ingredient-state-record.json` checked and largely sound** — its `rights` field correctly
+     splits CC-BY corpus columns from public-domain import columns (ADR-015), and it publishes
+     `withImport`/`withPressure` coverage counts. **Remaining gap, unfixed and scoped:** a null in
+     `us_landings_value_usd` (86% of rows) cannot distinguish "not a wild-caught species" from "no
+     landings". Worth a dedicated pass; ~36 fields would need per-field coverage semantics.
+   - **Still unswept:** the NASS/Census/EIA corpus builders.
+
 20e. **MERGING main INTO THIS BRANCH IS AN EDITORIAL TASK, NOT A MECHANICAL ONE — 368 conflicts.**
    Attempted and deliberately aborted 2026-07-31 rather than resolved badly. The branch is ~64
    commits behind. `git merge origin/main` conflicts across 368 files: every
