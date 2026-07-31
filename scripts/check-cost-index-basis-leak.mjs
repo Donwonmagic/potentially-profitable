@@ -63,11 +63,17 @@ export const isDollarBasis = (b) => DOLLAR_BASES.indexOf(b) >= 0;
 // (content-bound); relaxed value→basis 2026-07-10 after NOAA moved 9 of these off
 // their 07-02 values with no rendered-surface impact. salmon-fillet joined the
 // day its stale mislabeled series.json was withdrawn.
+// 2026-07-31: scallops REMOVED (10 -> 9). Both of its points failed the sync
+// gate's own predicate — 2026-04-01 (stale + stale-level) and 2026-05-01
+// (stale-level) — so the age-out left it with none and it drops out of the
+// index entirely, exactly as build-cost-index.mjs does (`if (!kept.length)
+// continue`). Its NOAA source publishes infrequently; when it republishes,
+// scallops returns and this guard will flag it as a NEW source-latent slug
+// pending a human re-add. That is the guard working, not a regression.
 export const KNOWN_SOURCE_LATENT = new Map([
   ['octopus', { basis: 'index' }],
   ['salmon-fillet', { basis: 'index' }],
   ['salmon-skin-on-fillet', { basis: 'index' }],
-  ['scallops', { basis: 'index' }],
   ['tuna-loin', { basis: 'index' }],
   ['whole-crab', { basis: 'index' }],
   ['whole-halibut', { basis: 'index' }],
