@@ -9,8 +9,12 @@
  *               unbounded ships.
  *   FRESHNESS   _lastReviewed is present + well-formed; once the index is
  *               NON-EMPTY it must be < STALE_DAYS old (an empty placeholder is
- *               exempt — there's nothing to review yet). Points older than
- *               POINT_STALE_DAYS warn.
+ *               exempt — there's nothing to review yet). points[0] — the read
+ *               rendered as today's price — hard-fails past POINT_STALE_DAYS,
+ *               both on its own asOf and on its level provenance. points[1..n]
+ *               are the archive behind it and are exempt from freshness ONLY
+ *               (see pointIssues opts.current), the same exemption history[]
+ *               already carries.
  *   PARITY      ingredient keys ⊆ data/cost-index-sources.json; the file is the
  *               canonical shape (_generatedFrom marker).
  *
@@ -41,8 +45,31 @@ const parseDay = (d) => Date.parse(d + 'T00:00:00Z');   // always UTC midnight
  * Returns [] when the point is vendorable for `ingredient`, else a list of
  * issue codes. Used by BOTH the gate (per committed point) and the build
  * (per artifact point + per carried-forward point).
+ *
+ * `opts.current` — is this the point a reader sees as TODAY'S price?
+ *
+ * Everything else here (verified, bounds, provenance, non-empty) applies to
+ * every point unconditionally. Only the two FRESHNESS codes are conditional,
+ * because "stale" is a claim about what a number is being presented as, not
+ * about the number. points[] is an append-only, newest-first series and every
+ * consumer reads points[0] — build-cost-index-dispatch.mjs:166 spells it out:
+ * "points[0] is the CURRENT read (the hub's canonical point); later entries are
+ * older baseline". points[1..n] are archival by construction; calling them
+ * stale is calling a series old for having a past.
+ *
+ * Applied to every element (as it was until 2026-07-31) the gate could not be
+ * satisfied by any action automation can take: the daily refresh appends points
+ * and never removes them, so each series ages into a red on a fixed clock. On
+ * 2026-07-30 the 2026-04-01 seed tail crossed 120 days and 23 ingredients went
+ * red at once — 23 archival points, and exactly ONE real finding (scallops'
+ * rendered level, anchored on a single 121-day-old NOAA observation) buried
+ * underneath them. A gate that cries 24 to mean 1 is not stricter, it is quieter.
+ *
+ * Default is `true` — fail-closed. A caller that knows a point is archival must
+ * say so; a caller that forgets gets the strict reading.
  */
-export function pointIssues(ingredient, point, srcIng, boundsMap, now = Date.now()) {
+export function pointIssues(ingredient, point, srcIng, boundsMap, now = Date.now(), opts = {}) {
+  const current = opts.current !== false;
   const out = [];
   if (!srcIng[ingredient]) out.push('orphan');                          // not in cost-index-sources.json
   else if (srcIng[ingredient].verified !== true) out.push('unverified'); // fact gate
@@ -62,7 +89,7 @@ export function pointIssues(ingredient, point, srcIng, boundsMap, now = Date.now
   // A level must be anchored on FRESH observations — not just carry a fresh
   // composite asOf (a fresh trend can mask a stale level behind it). Check the
   // level provenance dates directly, so build + gate catch what verify catches.
-  if (hasLevel && Array.isArray(point.level.provenance)) {
+  if (current && hasLevel && Array.isArray(point.level.provenance)) {
     const staleLevel = point.level.provenance.some((lp) => lp && DATE_RE.test(lp.date || '') && (now - parseDay(lp.date)) / 86400000 > POINT_STALE_DAYS);
     if (staleLevel) out.push('stale-level');
   }
@@ -77,7 +104,11 @@ export function pointIssues(ingredient, point, srcIng, boundsMap, now = Date.now
   // Freshness is a HARD gate here, not a warning: a stale point must never
   // render as a "current" price. The carry-forward re-vendor path re-runs this,
   // so a series that stops updating ages out instead of freezing a stale level.
-  if (point && DATE_RE.test(point.asOf || '') && (now - parseDay(point.asOf)) / 86400000 > POINT_STALE_DAYS) {
+  // Scoped to the current point (see opts.current above) — a dead feed still
+  // trips this, because when a feed stops updating its newest point IS points[0]
+  // and it ages past the bar there. check-cost-index-series-freshness.mjs is the
+  // second, independent read on the same question.
+  if (current && point && DATE_RE.test(point.asOf || '') && (now - parseDay(point.asOf)) / 86400000 > POINT_STALE_DAYS) {
     out.push('stale');
   }
   return out;
@@ -153,10 +184,15 @@ export function validateIndex(index, sources, bounds, now = Date.now()) {
   for (const key of Object.keys(ingredients)) {
     const points = (ingredients[key] && ingredients[key].points) || [];
     if (!Array.isArray(points)) { errors.push(`${key}.points must be an array.`); continue; }
-    for (const p of points) {
-      const issues = pointIssues(key, p, srcIng, boundsMap, now);   // staleness is now one of these (hard fail)
+    // points[] is newest-first (build-cost-index.mjs mergePoints sorts it, and
+    // computeBasket/the pages/the dispatch all read [0]). Index 0 is the read a
+    // human sees as today's price, so it carries the freshness bar; 1..n are the
+    // archive behind it and carry every OTHER bar. Don't reorder without
+    // revisiting this — the honesty claim rides on [0] being the current read.
+    points.forEach((p, i) => {
+      const issues = pointIssues(key, p, srcIng, boundsMap, now, { current: i === 0 });
       if (issues.length) errors.push(`${key} @ ${p && p.asOf ? p.asOf : '?'}: ${issues.join(', ')}.`);
-    }
+    });
     // Historical series (optional, sibling to points): citeable + bounded, but
     // EXEMPT from staleness (old by design). Lives outside the points[] array
     // the stale gate iterates, so the current-price gate is untouched.
@@ -232,6 +268,15 @@ function selfTest() {
     ['dollar history out of 2x band FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good], history: [{ date: '2026-05-01', valueCents: 999999, source: 'usda-ams', basis: 'wholesale' }] } } }, false],
     ['index-basis history is unbounded — passes', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good], history: idxHist } } }, true],
     ['CRITICAL: stale current point STILL FAILS while history is exempt', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, asOf: '2026-01-01' }], history: staleHist } } }, false],
+    // ---- points[]: [0] is the rendered read, [1..n] are the archive ----
+    // The 2026-07-31 scope fix. These four are the whole contract: an aged tail
+    // behind a fresh head is a series with a past, not a stale price; an aged
+    // HEAD is a stale price no matter how healthy the tail looks.
+    ['aged points[1] behind a fresh points[0] passes (archival)', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good, { ...good, asOf: '2026-01-01' }] } } }, true],
+    ['aged points[1] with stale LEVEL provenance passes (archival)', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good, { ...good, asOf: '2026-02-01', level: { medianCents: 1400, provenance: [{ source: 'usda-ams', date: '2025-01-01' }] } }] } } }, true],
+    ['CRITICAL: stale points[0] FAILS even with fresh points behind it', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [{ ...good, asOf: '2026-01-01' }, good] } } }, false],
+    ['archival exemption is freshness ONLY — unbounded points[1] still FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good, { ...good, asOf: '2026-01-01', level: { medianCents: 999999 } }] } } }, false],
+    ['archival exemption is freshness ONLY — uncited points[1] still FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good, { ...good, asOf: '2026-01-01', provenance: [] }] } } }, false],
     // ---- drivers ----
     ['driver with trend + index history + valid lead passes', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } }, drivers: { corn: goodDriver } }, true],
     ['driver naming a non-vendored lead FAILS', { _lastReviewed: '2026-06-01', _generatedFrom: 'verified-sources-only', ingredients: { ribeye: { points: [good] } }, drivers: { corn: { ...goodDriver, leads: ['saffron'] } } }, false],
@@ -264,6 +309,15 @@ function main() {
     console.error('✗ cost-index sync: ' + errors.length + ' error(s):');
     errors.forEach((e) => console.error('  - ' + e));
     console.error('  Fix data/cost-index.json (or rebuild with scripts/build-cost-index.mjs). Unverified/unsourced/unbounded/stale points must not ship.');
+    // A stale/stale-level red is the ONE failure a rebuild in CI cannot clear:
+    // the point is fine, the FEED behind it stopped. Say so, because the generic
+    // line above sends you to a rebuild that will faithfully reproduce the red.
+    if (errors.some((e) => /\bstale(-level)?\b/.test(e))) {
+      console.error('  A `stale`/`stale-level` line means the CURRENT read (points[0]) has aged past');
+      console.error(`  ${POINT_STALE_DAYS} days — its source feed stopped, so no rebuild in CI can clear it. Re-run the`);
+      console.error('  fetch on the operator Mac (keys + network) and commit, or drop the aged level and');
+      console.error('  keep the trend. Points behind [0] are archival and exempt; only [0] is checked.');
+    }
     process.exit(1);
   }
   const n = Object.keys(idx.data.ingredients || {}).length;

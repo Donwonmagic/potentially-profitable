@@ -75,27 +75,43 @@ function computeBasket(out) {
   return B.basketTrend(latest, basketWeights);
 }
 
+// The full predicate, freshness included — for any point that will be RENDERED
+// as the current read (points[0]).
 const ok = (ingredient, point) => pointIssues(ingredient, point, srcIng, boundsMap).length === 0;
+
+// Prior points are ARCHIVAL: they sit at points[1..n] behind the incoming read,
+// and nothing renders them as today's price. `current: false` exempts them from
+// the two freshness codes and from nothing else — an archival point that is
+// unverified, unsourced, or out-of-bounds is still dropped.
+const okArchival = (ingredient, point) =>
+  pointIssues(ingredient, point, srcIng, boundsMap, Date.now(), { current: false }).length === 0;
 
 function mergePoints(ingredient, existing, incoming) {
   const byAsOf = new Map();
   // Re-filter PRIOR points through the same predicate the carry-forward path
-  // uses (:144). Without this, an ingredient that keeps receiving fresh reads
-  // silently accumulates points that have aged past POINT_STALE_DAYS inside
-  // points[], and check-cost-index-sync.mjs — the deploy gate — trips on them.
-  // That is exactly what happened on 2026-07-30: seven still-live series
-  // (ribeye, beef-tenderloin, pork-shoulder, pork-loin, eggs, cheddar-cheese,
-  // butter) tripped the gate on a 2026-04-01 tail the moment it crossed 120
-  // days. MAX_POINTS is a COUNT cap, not an age cap, so it does not evict them:
-  // ribeye holds 15 of 26 slots, ~11 reads short of pushing the stale one out.
+  // uses (:144), so a point that was never citeable cannot ride along forever.
+  //
+  // On 2026-07-30 this filter was strict about AGE too, because pointIssues()
+  // applied freshness to every point: seven still-live series (ribeye,
+  // beef-tenderloin, pork-shoulder, pork-loin, eggs, cheddar-cheese, butter)
+  // tripped the deploy gate on a 2026-04-01 tail the moment it crossed 120 days,
+  // and evicting that tail here was how the build cleared it. MAX_POINTS is a
+  // COUNT cap, not an age cap, so it does not evict them on its own: ribeye
+  // holds 15 of 26 slots, ~11 reads short of pushing the stale one out.
+  //
+  // 2026-07-31: the gate now scopes freshness to points[0] (the only point any
+  // consumer renders), so the eviction is no longer needed to keep CI green —
+  // and keeping it would quietly amputate the longitudinal tail on every build
+  // to satisfy a bar that no longer applies there. Age is preserved; citeability
+  // is still enforced. The dead-feed question is answered where it belongs:
+  // points[0] itself ages past the bar when a feed stops, and
+  // check-cost-index-series-freshness.mjs reads it independently.
   //
   // This cannot drop an ingredient. It only runs for ingredients that received
   // an incoming point THIS run, and that point already passed pointIssues() to
   // be vendored at all (:123), so at least one point always survives. Frozen
-  // series take the carry-forward branch instead, and stay visible to the
-  // staleness gate + check-cost-index-series-freshness.mjs — the dead-feed
-  // evidence is not touched here.
-  for (const p of existing || []) if (ok(ingredient, p)) byAsOf.set(p.asOf, p);
+  // series take the carry-forward branch instead.
+  for (const p of existing || []) if (okArchival(ingredient, p)) byAsOf.set(p.asOf, p);
   for (const p of incoming || []) byAsOf.set(p.asOf, p);   // incoming wins on same asOf
   return [...byAsOf.values()]
     .sort((a, b) => (a.asOf < b.asOf ? 1 : a.asOf > b.asOf ? -1 : 0))  // newest first
@@ -157,8 +173,17 @@ function main() {
   // silently re-vendored. History is re-validated WITHOUT the staleness check.
   for (const ingredient of Object.keys(existing.ingredients || {})) {
     if (out.ingredients[ingredient]) continue;
-    const kept = ((existing.ingredients[ingredient].points) || []).filter((p) => ok(ingredient, p));
-    if (!kept.length) { droppedIngredients.push(ingredient); continue; }
+    // A frozen series has no incoming read, so whichever prior point survives
+    // BECOMES the rendered current read — and therefore faces the full strict
+    // predicate, freshness included. That is how a dead feed ages out instead of
+    // freezing a stale level, and it is the behaviour the sync gate's own header
+    // promises. Points are newest-first, so the first strict pass is the head;
+    // everything behind it is archival and keeps its age (2026-07-31 — before
+    // this, the flat strict filter aged out the head AND amputated the tail).
+    const prior = (existing.ingredients[ingredient].points) || [];
+    const headIdx = prior.findIndex((p) => ok(ingredient, p));
+    if (headIdx === -1) { droppedIngredients.push(ingredient); continue; }
+    const kept = [prior[headIdx], ...prior.slice(headIdx + 1).filter((p) => okArchival(ingredient, p))];
     out.ingredients[ingredient] = { points: kept };
     const priorHist = existing.ingredients[ingredient].history;
     if (Array.isArray(priorHist) && priorHist.length && !historyIssues(ingredient, priorHist, srcIng, boundsMap).length) {
