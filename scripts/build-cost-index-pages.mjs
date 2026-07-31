@@ -252,6 +252,24 @@ const LABELS_DOC  = (() => {
 const LABELS  = LABELS_DOC.labels || {};
 const DRIVER_LABELS = LABELS_DOC.drivers || {};
 
+// Retirement archive — the last-good state of ingredients whose feed stopped
+// publishing, written by build-cost-index.mjs at the moment of the drop. Absence
+// is the normal state (nothing retired), so a missing file degrades to {}. An
+// UNREADABLE file does not: every other loader here degrades silently to {}, and
+// for this one that would quietly un-retire every terminal page and re-orphan it
+// — the exact failure this whole path exists to end. So it fails loudly instead.
+const RETIRED = (() => {
+  const p = path.join(repoRoot, 'data/cost-index-retired.json');
+  if (!fs.existsSync(p)) return {};
+  try { return JSON.parse(fs.readFileSync(p, 'utf8')).retired || {}; }
+  catch (e) {
+    console.error(`build-cost-index-pages: data/cost-index-retired.json is unreadable (${e.message}).`);
+    console.error('  It is the only record of what a dead feed last measured. Degrading to "nothing is retired" would rebuild');
+    console.error('  every terminal page as an orphan, so this is fatal. Fix the file or delete it deliberately.');
+    process.exit(1);
+  }
+})();
+
 // ---- Pressure (inferred outlook) layer -----------------------------
 const PRESSURE = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/cost-pressure.json'), 'utf8')); }
@@ -512,6 +530,42 @@ function gatedSlugs() {
     const e = COST_INDEX[slug];
     return e && Array.isArray(e.points) && e.points[0] && LABELS[slug];
   });
+}
+
+// The pages we must KEEP building after the data is gone: an ingredient whose
+// feed stopped publishing, so build-cost-index.mjs dropped it and archived its
+// last-good state. Slugs are final-forever here, so the page does not disappear
+// — it becomes terminal. Live data always wins: an ingredient that came back is
+// gated again, and the archive entry is removed by the next build.
+function retiredSlugs(gated) {
+  const live = new Set(gated);
+  return Object.keys(ING_META).filter((slug) => RETIRED[slug] && !live.has(slug) && LABELS[slug]);
+}
+
+/**
+ * A retired slug may show its last measured DOLLAR figure only if that point
+ * would have been shippable while it was live. This is the same bar
+ * emitIngredientPage() applies (`shippable()` → emitExpandingPage), and it
+ * matters most for exactly the series most likely to die: the NOAA-sourced
+ * seafood, whose level is demoted to basis:'index' precisely because import
+ * trade value runs about half of delivered wholesale. Retiring a page must not
+ * become the back door that finally prints those numbers as a price.
+ */
+function retiredReading(slug) {
+  const r = RETIRED[slug];
+  if (!r) return null;
+  const p = r.lastPoint;
+  const priced = !!p && MuntinCostConfidence.isShippable(p);
+  const hist = Array.isArray(r.history) ? r.history : [];
+  return {
+    entry: r,
+    point: p,
+    priced,
+    medianCents: priced && p.level && typeof p.level.medianCents === 'number' ? p.level.medianCents : null,
+    lastMeasured: r.lastMeasured || null,
+    retiredOn: r.retiredOn || null,
+    history: priced ? hist : [],
+  };
 }
 
 // ---- Reading helpers (level / trend / confidence) ------------------
@@ -1264,8 +1318,13 @@ function mergedSeries(slug, entry) {
   }
   return Array.from(byDate.values()).sort((a, b) => String(a.date).localeCompare(String(b.date)));
 }
-function seriesJson(slug) {
-  const entry = COST_INDEX[slug];
+// `entryOverride` is how a RETIRED slug still ships its series file: the
+// ingredient is gone from COST_INDEX, so the archived last-good entry stands in.
+// The file then carries a `retired` block and a null `asOf`, so a consumer's
+// parser learns the series ended instead of quietly reading a frozen tail as
+// current — which is the whole failure this path exists to end.
+function seriesJson(slug, entryOverride = null, retiredMeta = null) {
+  const entry = entryOverride || COST_INDEX[slug];
   const lab = LABELS[slug] || {};
   const point = entry && entry.points && entry.points[0];
   const obs = mergedSeries(slug, entry);
@@ -1279,13 +1338,18 @@ function seriesJson(slug) {
     note: 'Wholesale reference prices compiled from public U.S. market sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Values are in US dollars per unit. Not a delivered or retail price. Source: muntin.digital/cost-index/' + slug + '/',
     reconstructedNote: nRecon ? 'Observations marked reconstructed:true are a monthly backfill reconstructed from public sources after the fact — not figures published live on that date. Live points (reconstructed:false) were captured at publication.' : undefined,
     coverage: obs.length ? { start: obs[0].date, end: obs[obs.length - 1].date, points: obs.length, reconstructed: nRecon } : undefined,
-    asOf: (point && point.asOf) || null,
+    asOf: retiredMeta ? null : ((point && point.asOf) || null),
+    retired: retiredMeta ? {
+      retiredOn: retiredMeta.retiredOn || null,
+      lastMeasured: retiredMeta.lastMeasured || null,
+      note: 'This series is retired: its public source stopped publishing and the ingredient was dropped from the live index. The observations below are a closed historical record and will not be extended. asOf is null because there is no current reading. See https://muntin.digital/cost-index/' + slug + '/',
+    } : undefined,
     observations: obs.map((h) => ({ date: h.date, priceUsd: +(h.valueCents / 100).toFixed(2), source: h.source || null, reconstructed: h.reconstructed }))
   };
   return JSON.stringify(obj, null, 2) + '\n';
 }
-function seriesCsv(slug) {
-  const entry = COST_INDEX[slug];
+function seriesCsv(slug, entryOverride = null) {
+  const entry = entryOverride || COST_INDEX[slug];
   const obs = mergedSeries(slug, entry);
   const rows = ['date,price_usd,unit,basis,source,reconstructed'];
   const lab = LABELS[slug] || {};
@@ -1839,6 +1903,16 @@ main{padding-top:64px}
 
 :root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
+.ci-read--retired{border-left-color:var(--stone);background:var(--cream-2)}
+.ci-read--retired .ci-read__head{color:var(--stone)}
+.ci-retired-hist{width:100%;border-collapse:collapse;margin:14px 0 6px;font-size:14.5px;font-variant-numeric:tabular-nums}
+.ci-retired-hist__cap{caption-side:top;text-align:left;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;padding:0 0 8px}
+.ci-retired-hist th,.ci-retired-hist td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line)}
+.ci-retired-hist th{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-retired-dl{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
+.ci-retired-dl a{color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none}
+.ci-card--retired{opacity:.72;background:var(--cream-2);border-style:dashed}
+.ci-card--retired a{color:var(--ink-soft)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
 .ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
 .ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 6px}
@@ -2485,9 +2559,19 @@ function yieldBlock(slug, locale) {
   const pct = Math.round(y.yield * 100), waste = 100 - pct;
   const nm = (es ? (y.es || y.en) : y.en || slug).toLowerCase();
   const head = es ? 'Lo que sí sabemos' : 'What we do know';
-  const body = es
-    ? `Aunque todavía no publicamos un precio de <strong>${nm}</strong>, sí conocemos su <strong>rendimiento de porción comestible: ~${pct}%</strong>. Cerca del ${pct}% de lo que compras llega al plato tras la limpieza y el desperdicio (~${waste}% de merma), así que tu costo real por libra utilizable es más alto que el precio de compra.`
-    : `Even without a live price for <strong>${nm}</strong> yet, we do know its <strong>edible-portion yield: ~${pct}%</strong>. About ${pct}% of what you buy reaches the plate after trim and waste (~${waste}% loss), so your true cost per usable pound runs higher than the purchase price.`;
+  // 8 entries in data/ingredient-yields.json sit at yield 1.0 — the ground
+  // meats, the berries, shrimp P&D, scallops: items sold already trimmed. The
+  // shared sentence below ends "your true cost per usable pound runs higher than
+  // the purchase price", which at 100% yield is simply FALSE, and it was live on
+  // those pages until 2026-07-31. A no-waste item still deserves the fact; it
+  // just needs the true sentence, so it gets its own.
+  const body = y.yield >= 1
+    ? (es
+      ? `Aunque todavía no publicamos un precio de <strong>${nm}</strong>, sí conocemos su <strong>rendimiento de porción comestible: ~100%</strong>. Se compra ya limpio, así que prácticamente todo lo que pagas llega al plato y tu costo por libra utilizable es el precio de compra — sin merma que corregir.`
+      : `Even without a live price for <strong>${nm}</strong> yet, we do know its <strong>edible-portion yield: ~100%</strong>. It's bought already trimmed, so essentially everything you pay for reaches the plate and your cost per usable pound is the purchase price — there's no trim loss to correct for.`)
+    : (es
+      ? `Aunque todavía no publicamos un precio de <strong>${nm}</strong>, sí conocemos su <strong>rendimiento de porción comestible: ~${pct}%</strong>. Cerca del ${pct}% de lo que compras llega al plato tras la limpieza y el desperdicio (~${waste}% de merma), así que tu costo real por libra utilizable es más alto que el precio de compra.`
+      : `Even without a live price for <strong>${nm}</strong> yet, we do know its <strong>edible-portion yield: ~${pct}%</strong>. About ${pct}% of what you buy reaches the plate after trim and waste (~${waste}% loss), so your true cost per usable pound runs higher than the purchase price.`);
   const link = es
     ? `<a href="${base}/library/ingredient-yields/${slug}/">Ver el análisis completo de rendimiento y costo comestible <span aria-hidden="true">→</span></a>`
     : `<a href="${base}/library/ingredient-yields/${slug}/">See the full yield &amp; edible-cost analysis <span aria-hidden="true">→</span></a>`;
@@ -2499,6 +2583,140 @@ function yieldBlock(slug, locale) {
       <p class="ci-yield__link">${link}</p>
       <p class="ci-yield__src">${src}</p>
     </aside>`;
+}
+
+/**
+ * Terminal page for a retired series — the end-state of an ingredient whose
+ * public feed stopped publishing.
+ *
+ * THE DECISION IT IMPLEMENTS (ADR-021). Slugs are final-forever, so "delete the
+ * directory" was never available: it would satisfy check-cost-index-orphans.mjs
+ * silently, which is the quiet drop that gate exists to prevent. What the page
+ * does instead is say the true thing out loud — this series stopped publishing,
+ * here is when it was last measured, here is the history we still hold, and it
+ * no longer counts toward the basket. The URL keeps working for every deep link
+ * and citation pointing at it.
+ *
+ * The one number rule: the last measured DOLLAR figure renders only when that
+ * point cleared the shippable bar while it was live (retiredReading). Otherwise
+ * the page carries the date and the retirement and no price at all — the same
+ * bar the live page applies, held at the moment it would be easiest to drop.
+ *
+ * The `<!-- cost-index:retired -->` sentinel is load-bearing: the orphan gate
+ * accepts a retired slug only when the PUBLISHED page actually carries it, so an
+ * archive entry alone can never mute the gate for a page nobody rebuilt.
+ */
+function emitRetiredPage(slug, locale) {
+  const es = locale === 'es';
+  const lang = es ? 'es' : 'en';
+  const base = es ? '/es' : '';
+  const lab = LABELS[slug] || {};
+  const name = es ? (lab.es || lab.en || slug) : (lab.en || slug);
+  const lc = name.toLowerCase();
+  const unit = (es ? (lab.unit_es || lab.unit_en) : lab.unit_en) || (es ? 'unidad' : 'unit');
+  const meta = ING_META[slug] || { cat: 'pantry' };
+  const cat = CATEGORIES[meta.cat] || { en: 'Pantry', es: 'Despensa' };
+  const canonEn = `https://muntin.digital/cost-index/${slug}/`;
+  const canonEs = `https://muntin.digital/es/cost-index/${slug}/`;
+  const r = retiredReading(slug);
+
+  // "1 de mayo de 2026" / "May 1, 2026" — the date is the whole point of the
+  // page, so it renders long-form rather than as a bare ISO string.
+  const longDate = (iso) => {
+    if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null;
+    const [y, mo, d] = iso.split('-').map(Number);
+    return es ? `${d} de ${MONTHS_ES[mo]} de ${y}` : `${MONTHS_EN[mo]} ${d}, ${y}`;
+  };
+  const lastDate = longDate(r && r.lastMeasured);
+
+  const title = es
+    ? `${name} al mayoreo — serie retirada | Muntin Digital`
+    : `${name} wholesale price — series retired | Muntin Digital`;
+  const desc = es
+    ? `La serie pública de mayoreo detrás de ${lc} dejó de publicarse. Detuvimos el número en vez de congelarlo: aquí está cuándo se midió por última vez y qué historial conservamos.`
+    : `The public wholesale series behind ${lc} stopped publishing. We stopped the number rather than freeze it — here's when it was last measured and what history we still hold.`;
+
+  // Same JSON-LD shape as the expanding-coverage page: a WebPage and a
+  // breadcrumb, and deliberately no Dataset and no price. A retired series is
+  // not a dataset anyone should be pointed at as current.
+  const jsonld = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'WebPage', '@id': (es ? canonEs : canonEn) + '#page', 'url': es ? canonEs : canonEn,
+        'name': name, 'inLanguage': es ? 'es-US' : 'en-US', 'isPartOf': { '@id': 'https://muntin.digital/#website' },
+        'description': desc },
+      { '@type': 'BreadcrumbList', 'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': es ? 'Inicio' : 'Home', 'item': es ? 'https://muntin.digital/es/' : 'https://muntin.digital/' },
+        { '@type': 'ListItem', 'position': 2, 'name': es ? 'Índice de costos' : 'Cost index', 'item': (es ? 'https://muntin.digital/es' : 'https://muntin.digital') + '/cost-index/' },
+        { '@type': 'ListItem', 'position': 3, 'name': name, 'item': es ? canonEs : canonEn } ] }
+    ]
+  });
+
+  // The headline fact. Three cases, all of them stated rather than implied:
+  // a priced last read, a dated-but-unpriced one, and a series whose final read
+  // did not survive the fact gate at all.
+  const lastLine = (() => {
+    if (r && r.priced && r.medianCents != null && lastDate) {
+      return es
+        ? `La última medición fue <strong>${money(r.medianCents)} por ${unit}</strong>, al <strong>${lastDate}</strong>. Ese número es un registro con fecha, no una cotización actual — no lo uses para fijar precio hoy.`
+        : `The last measurement was <strong>${money(r.medianCents)} per ${unit}</strong>, as of <strong>${lastDate}</strong>. That figure is a dated record, not a current quote — don't price off it today.`;
+    }
+    if (lastDate) {
+      return es
+        ? `La última lectura que recibimos fue del <strong>${lastDate}</strong>. Nunca publicamos un precio en dólares para ${lc} — la lectura era direccional, no una referencia mayorista completa — así que no hay una última cifra que mostrar, y no vamos a inventar una ahora.`
+        : `The last read we received was dated <strong>${lastDate}</strong>. We never published a dollar price for ${lc} — the read was directional, not a full wholesale reference — so there is no last figure to show, and we're not going to invent one now.`;
+    }
+    return es
+      ? `La serie se detuvo y su lectura final no pasó la verificación, así que no hay una última medición que podamos respaldar. Preferimos decir eso a mostrar una cifra que no defenderíamos.`
+      : `The series stopped and its final read did not clear the fact check, so there is no last measurement we can stand behind. We'd rather say that than show a figure we wouldn't defend.`;
+  })();
+
+  // The preserved history — dollars only where the reading was shippable, so a
+  // demoted index-basis series never gains a price table by being retired.
+  const histRows = (r && r.history.length ? r.history : []).slice(-24);
+  const historyBlock = histRows.length ? `
+    <h2>${es ? 'El historial que conservamos' : 'The history we still hold'}</h2>
+    <p>${es ? `Estas son las lecturas publicadas que guardamos para ${lc}, con su fuente y fecha. Se conservan porque son un registro público con fecha; no se actualizan y no alimentan ninguna cifra actual del sitio.` : `These are the published reads we hold for ${lc}, each with its source and date. They stay because they're a dated public record; they do not update, and they feed no current figure anywhere on the site.`}</p>
+    <table class="ci-retired-hist">
+      <caption class="ci-retired-hist__cap">${es ? `Historial mayorista de ${lc} — serie retirada, sin actualizaciones` : `${name} wholesale history — retired series, no further updates`}</caption>
+      <thead><tr><th scope="col">${es ? 'Fecha' : 'Date'}</th><th scope="col">${es ? `Precio por ${unit}` : `Price per ${unit}`}</th><th scope="col">${es ? 'Fuente' : 'Source'}</th></tr></thead>
+      <tbody>${histRows.map((h) => `<tr><td>${escHtml(h.date)}</td><td>${money(h.valueCents)}</td><td>${escHtml(h.source || '—')}</td></tr>`).join('')}</tbody>
+    </table>
+    <p class="ci-retired-dl">${es ? 'Descarga la serie completa' : 'Download the full series'}: <a href="/cost-index/${slug}/series.csv" download>CSV</a> · <a href="/cost-index/${slug}/series.json">JSON</a> <span>${es ? '· dominio público (CC0)' : '· public domain (CC0)'}</span></p>` : '';
+
+  const body = `<div class="ci-body">
+    <aside class="ci-read ci-read--retired" aria-label="${es ? 'Serie retirada' : 'Retired series'}">
+      <p class="ci-read__head">${es ? 'Serie retirada' : 'Series retired'}</p>
+      <p class="ci-read__line">${es ? `La fuente pública detrás de ${lc} dejó de publicar, así que detuvimos esta lectura.` : `The public source behind ${lc} stopped publishing, so we stopped this reading.`} ${lastLine}</p>
+    </aside>
+    <h2>${es ? 'Por qué la página sigue aquí' : 'Why this page is still here'}</h2>
+    <p>${es ? 'Una serie muerta puede fallar de dos maneras. Puede congelarse — el último precio se queda en la página y con el tiempo se lee como si fuera el de hoy. O puede desaparecer, y entonces cada enlace y cada cita que apuntaba aquí se rompe sin explicación. Las dos son deshonestas de distinta forma.' : 'A dead series can fail in two ways. It can freeze — the last price sits on the page and, given enough months, reads as though it were today’s. Or it can vanish, and every link and citation pointing here breaks with no explanation. Both are dishonest, in different directions.'}</p>
+    <p>${es ? `Por eso la página se queda y lo dice: esta serie terminó${lastDate ? `, la última medición fue del ${lastDate}` : ''}. Un precio se publica solo mientras su fuente pública lo siga publicando; cuando la fuente se detiene, nosotros también.` : `So the page stays and says so: this series ended${lastDate ? `, last measured ${lastDate}` : ''}. A price ships only while its public source keeps publishing it — when the source stops, we stop.`}</p>
+    <h2>${es ? 'Qué significa para el índice' : 'What this means for the index'}</h2>
+    <p>${es ? `${name} ya no cuenta para la canasta compuesta ni para ninguna lectura actual: sale de los totales en lugar de arrastrarlos con una cifra vieja. La cobertura de la canasta baja en consecuencia, que es la forma honesta de contarlo.` : `${name} no longer counts toward the composite basket or any current reading — it drops out of the totals rather than dragging them along on an old figure. Basket coverage falls accordingly, which is the honest way to carry it.`}</p>
+    ${historyBlock}
+    <h2>${es ? 'Qué puedes hacer ahora' : 'What you can do now'}</h2>
+    <p>${es ? `Tus propias facturas siguen siendo la mejor serie que tienes para ${lc}: compara la última con las de los meses anteriores. Para los ingredientes que sí cubrimos, la ` : `Your own invoices are still the best series you have for ${lc} — check your latest against your last few months. For the ingredients we do cover, the `}<a href="${base}/tools/cost-pulse/">${es ? 'herramienta en vivo' : 'live tool'}</a>${es ? ' está al día.' : ' is current.'} ${es ? 'Si esta fuente vuelve a publicar, la página vuelve a la vida sola en la siguiente actualización.' : 'If this source starts publishing again, the page comes back to life on the next refresh by itself.'}</p>
+    ${YIELDS[slug] && YIELDS[slug].yield > 0 && YIELDS[slug].yield <= 1 ? `<p>${es ? `El precio se detuvo; el rendimiento no. La merma de <strong>${lc}</strong> no depende de ninguna fuente de mercado, así que ese análisis sigue vigente: ` : `The price stopped; the yield didn't. Trim loss on <strong>${lc}</strong> doesn't depend on any market feed, so that analysis still stands: `}<a href="${base}/library/ingredient-yields/${slug}/">${es ? 'rendimiento y costo comestible' : 'yield &amp; edible cost'} <span aria-hidden="true">→</span></a>.</p>` : ''}
+    <div class="ci-cta-row">
+      <a class="btn btn-ghost" href="${base}/cost-index/">${es ? 'Ver todas las lecturas' : 'Browse all readings'}</a>
+      <a class="btn btn-ghost" href="${base}/cost-index/methodology/">${es ? 'Cómo funciona el índice' : 'How this index works'}</a>
+    </div>
+    <p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado (USDA, BLS, FRED, EIA, NOAA). Serie retirada' : 'public market data (USDA, BLS, FRED, EIA, NOAA). Series retired'}${r && r.retiredOn ? ` ${es ? 'el' : 'on'} ${longDate(r.retiredOn) || r.retiredOn}` : ''}.</p>
+  </div>`;
+
+  return pageHead({ lang, locale, title, desc, canonEn, canonEs, jsonld }) + `
+  <!-- cost-index:retired -->
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="${base}/">${es ? 'Inicio' : 'Home'}</a> ›
+    <a href="${base}/cost-index/">${es ? 'Índice de costos' : 'Cost index'}</a> ›
+    ${escHtml(name)}
+  </nav>
+  <section class="ci-hero">
+    <p class="ci-eyebrow"><a href="${base}/cost-index/#retired">${escHtml(es ? cat.es : cat.en)}</a></p>
+    <h1>${escHtml(name)}</h1>
+  </section>
+  ${body}` + pageTail;
 }
 
 function emitExpandingPage(slug, locale) {
@@ -2801,6 +3019,23 @@ function emitHubPage(locale, slugs) {
   const pendingSection = pendingSlugs.length ? `<h2 class="ci-cat-h" id="expanding">${es ? 'Cobertura en preparación' : 'Expanding coverage'}</h2>
     <p class="ci-pending-note">${es ? 'Seguimos estos, pero aún no publicamos un precio: solo mostramos una cifra cuando los datos públicos gratuitos la sostienen.' : 'We track these, but don\'t publish a price yet — the index shows a number only when free public data supports an honest one.'}</p>
     <div class="ci-grid">${pendingSlugs.map((s) => { const l = LABELS[s] || {}; const nm = (es ? (l.es || l.en) : l.en) || s; return `<div class="ci-card ci-card--pending"><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a><span class="ci-card-note">${es ? 'cobertura en preparación' : 'coverage in progress'}</span></div>`; }).join('')}</div>` : '';
+  // Retired series — the pages whose feed stopped publishing. They are NOT in
+  // `slugs` (build-cost-index.mjs dropped them from the data), so without this
+  // block they would be published, in the sitemap, and unreachable from the hub
+  // that is supposed to be the index of the whole index. Listed with their last
+  // measured date, so the hub tells the truth about its own coverage.
+  const retiredList = retiredSlugs(slugs).sort((a, b) => {
+    const A = (RETIRED[a] || {}).lastMeasured || '', B = (RETIRED[b] || {}).lastMeasured || '';
+    return B.localeCompare(A) || a.localeCompare(b);
+  });
+  const retiredSection = retiredList.length ? `<h2 class="ci-cat-h" id="retired">${es ? 'Series retiradas' : 'Retired series'}</h2>
+    <p class="ci-pending-note">${es ? 'La fuente pública detrás de estas dejó de publicar, así que detuvimos la lectura en vez de congelarla. Las páginas siguen en línea con su última medición y su historial; no cuentan para la canasta.' : 'The public source behind these stopped publishing, so we stopped the reading rather than freeze it. The pages stay up with their last measured date and their history; they do not count toward the basket.'}</p>
+    <div class="ci-grid">${retiredList.map((s) => {
+      const l = LABELS[s] || {}; const nm = (es ? (l.es || l.en) : l.en) || s;
+      const lm = (RETIRED[s] || {}).lastMeasured;
+      const note = lm ? (es ? `última medición ${lm}` : `last measured ${lm}`) : (es ? 'serie retirada' : 'series retired');
+      return `<div class="ci-card ci-card--retired"><a href="${base}/cost-index/${s}/">${escHtml(nm)}</a><span class="ci-card-note">${note}</span></div>`;
+    }).join('')}</div>` : '';
   const crumb = es
     ? [['Inicio', 'https://muntin.digital/es/'], ['Índice de costos', baseUrl]]
     : [['Home', 'https://muntin.digital/'], ['Cost index', baseUrl]];
@@ -2859,6 +3094,7 @@ function emitHubPage(locale, slugs) {
     ${allReadingsTable(shipSlugs, locale)}
     ${sections}
     ${pendingSection}
+    ${retiredSection}
     ${driverNote}
     ${weeklySignup(locale, { anchor: true })}
     <p class="ci-source"><strong>${es ? 'Fuente' : 'Sourced'}:</strong> ${es ? 'datos públicos de mercado (USDA AMS/LMR, BLS, FRED, EIA, NOAA), vía' : 'public market data (USDA AMS/LMR, BLS, FRED, EIA, NOAA), via'} <a href="${base}/tools/cost-pulse/">${es ? 'la herramienta en vivo' : 'the live tool'}</a>.</p>
@@ -3566,9 +3802,14 @@ function emitSeasonalityHub(locale) {
 
 // ---- Write or check ------------------------------------------------
 const allGated = gatedSlugs();
+// Retired slugs are NOT gated (their data is gone) but must still be built, or
+// the terminal page never replaces the live one and the orphan gate stays red.
+const allRetired = retiredSlugs(allGated);
 const buildSlugs = ONLY ? allGated.filter((s) => ONLY.has(s)) : allGated;
+const buildRetired = ONLY ? allRetired.filter((s) => ONLY.has(s)) : allRetired;
 if (ONLY) {
-  const miss = [...ONLY].filter((s) => !allGated.includes(s));
+  const buildable = new Set([...allGated, ...allRetired]);
+  const miss = [...ONLY].filter((s) => !buildable.has(s));
   if (miss.length) console.warn(`--only: not gated/buildable, skipped: ${miss.join(', ')}`);
 }
 
@@ -3581,6 +3822,19 @@ for (const slug of buildSlugs) {
   if (shippable(slug)) {
     targets.push({ path: `cost-index/${slug}/series.json`,   content: seriesJson(slug), raw: true });
     targets.push({ path: `cost-index/${slug}/series.csv`,    content: seriesCsv(slug),  raw: true });
+  }
+}
+// Retired series: the terminal page in both locales. The series files ride
+// along ONLY when the archived last read was shippable — same bar as the live
+// path, so a demoted index-basis series can't gain a dollar download by dying.
+for (const slug of buildRetired) {
+  targets.push({ path: `cost-index/${slug}/index.html`,    content: emitRetiredPage(slug, 'en') });
+  targets.push({ path: `es/cost-index/${slug}/index.html`, content: emitRetiredPage(slug, 'es') });
+  const r = retiredReading(slug);
+  if (r && r.priced) {
+    const stand = { points: r.entry.points || [], history: r.entry.history || [] };
+    targets.push({ path: `cost-index/${slug}/series.json`, content: seriesJson(slug, stand, r.entry), raw: true });
+    targets.push({ path: `cost-index/${slug}/series.csv`,  content: seriesCsv(slug, stand),            raw: true });
   }
 }
 // Hub lists every gated ingredient regardless of the --only subset, so it
@@ -3624,5 +3878,5 @@ if (checkMode) {
   console.log(`Cost-index pages: ${drift} file(s) would change of ${targets.length}.`);
   process.exit(drift > 0 ? 1 : 0);
 } else {
-  console.log(`Cost-index pages: wrote ${targets.length} file(s) for ${buildSlugs.length} ingredient(s) + hub.`);
+  console.log(`Cost-index pages: wrote ${targets.length} file(s) for ${buildSlugs.length} ingredient(s)${buildRetired.length ? ` + ${buildRetired.length} retired` : ''} + hub.`);
 }

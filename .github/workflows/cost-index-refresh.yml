@@ -291,7 +291,15 @@ jobs:
           # then the `git checkout -- .` below discarded the freshly-rolled prev, so every
           # later checkout (the Workers deploy, any PR's check-all) saw prev != current and
           # the revisions --check went red. Stage both so prev never drifts again.
-          git add data/cost-index.json data/cost-index.js \
+          # data/cost-index-retired.json travels WITH data/cost-index.json. It is the
+          # other half of the same write: cost-index.json is where an ingredient stops
+          # being, and the archive is where it goes (ADR-021). Committing one without
+          # the other publishes terminal pages whose evidence is missing, and
+          # check-cost-index-orphans.mjs then correctly reports them as orphans on the
+          # next run — a red nobody can clear, caused by the staging list, not the data.
+          # `git checkout -- .` below cannot rescue it either: the file is untracked on
+          # the run that creates it, so an omission here loses it silently.
+          git add data/cost-index.json data/cost-index-retired.json data/cost-index.js \
             data/cost-index-health.json data/seasonality.json \
             data/cost-lockfloat.json data/cost-lockfloat.js \
             data/cost-anomaly-log.json \
@@ -337,6 +345,15 @@ jobs:
         # the good read, then go red and email the founder, exactly like the
         # heartbeat alarm below. check-all.mjs keeps this gate HARD, where a
         # human is present to act on it.
+        #
+        # UPDATE 2026-07-31 (ADR-021): "cannot be healed by it" is now only half
+        # true. The refresh archives the dropped ingredient's last-good state and
+        # the page build above renders it as a terminal page in the same run, so
+        # an ordinary retirement resolves before this step and stays green. What
+        # still reaches here is a retirement that could NOT be rendered — a slug
+        # missing its label or its ING_META entry — which is exactly the case
+        # that needs a human. Keep the step: it is now a narrower alarm, not a
+        # standing one.
         # Tied to the commit step's OUTCOME: when gates fail the commit is
         # skipped and the working tree can disagree with published state —
         # running the orphan check there would false-alarm about a file that

@@ -36,6 +36,20 @@
  * have live data. Data WITHOUT a page is fine — that is coverage in progress
  * (100 ingredients, 94 pages today).
  *
+ * THE SECOND ACCEPTED STATE (added 2026-07-31, ADR-021): a page may also be
+ * RETIRED. build-cost-index.mjs archives an ingredient's last-good state in
+ * data/cost-index-retired.json at the moment it drops it, and
+ * build-cost-index-pages.mjs rebuilds the page as a terminal render — "this
+ * series stopped publishing, last measured <date>", history preserved, out of
+ * the basket. Without that state the gate had only failing answers to offer: the
+ * note below said options 2 and 3 had no precedent, so every dead feed would
+ * red CI until someone hand-built one.
+ *
+ * The archive alone does NOT satisfy this gate. The published page must actually
+ * carry the `cost-index:retired` marker, so listing a slug in a JSON file can
+ * never mute the check for a page nobody rebuilt — that would reintroduce the
+ * silent freeze through the door meant to fix it.
+ *
  *   node scripts/check-cost-index-orphans.mjs
  *   node scripts/check-cost-index-orphans.mjs --self-test
  */
@@ -70,11 +84,40 @@ const NON_INGREDIENT = new Set([
  * @param {Set<string>} nonIngredient  editorial-surface allowlist
  * @returns {string[]} issue strings (empty when clean)
  */
-export function findOrphans(pages, ingredients, nonIngredient, labels = null, ingMeta = null) {
+export function findOrphans(pages, ingredients, nonIngredient, labels = null, ingMeta = null, retired = null, isTerminal = null) {
   const issues = [];
   for (const { rel, slug } of pages) {
     if (nonIngredient.has(slug)) continue;
     const entry = ingredients[slug];
+    const arch = retired ? retired[slug] : null;
+    const hasData = !!(entry && Array.isArray(entry.points) && entry.points[0]);
+
+    // RETIRED — the deliberate end-state (ADR-021). The data is gone on purpose,
+    // and the page has been rebuilt to say so. Accepting this state is what lets
+    // a dead feed resolve at all; the two guards below are what stop it from
+    // becoming a mute button.
+    if (arch) {
+      if (hasData) {
+        // Both states at once. build-cost-index.mjs clears the archive entry the
+        // moment an ingredient is vendored again, so this means the archive was
+        // hand-edited or a build was skipped — and while it lasts the page
+        // builder silently prefers the live render, so the "retirement" is a
+        // claim in a file that nothing on the site reflects.
+        issues.push(`${rel}: "${slug}" has BOTH live data in data/cost-index.json and an entry in data/cost-index-retired.json — it cannot be both. Re-run build-cost-index.mjs (it drops the archive entry when a feed comes back) or remove the entry by hand.`);
+      } else if (isTerminal && !isTerminal(rel)) {
+        // The archive says retired; the published bytes still say otherwise.
+        // Without this check, adding a slug to the archive would satisfy the
+        // gate while the frozen page stayed live — which is precisely the
+        // failure this gate was written to catch, re-entering through the fix.
+        issues.push(`${rel} is listed in data/cost-index-retired.json but the published page is NOT the terminal render (no cost-index:retired marker) — it is still showing its last live state as if current. Run: node scripts/build-cost-index-pages.mjs`);
+      } else if (labels && !labels[slug]) {
+        issues.push(`${rel} is retired but "${slug}" has no entry in data/cost-index-labels.json — retiredSlugs() requires a label, so the terminal page can never be rebuilt either.`);
+      } else if (ingMeta && !ingMeta.has(slug)) {
+        issues.push(`${rel} is retired but "${slug}" is not in ING_META (build-cost-index-pages.mjs) — retiredSlugs() iterates ING_META, so the terminal page can never be rebuilt either.`);
+      }
+      continue;
+    }
+
     if (!entry) {
       issues.push(`${rel} is published but "${slug}" is absent from data/cost-index.json — the page will never be regenerated again and its price is frozen.`);
     } else if (!Array.isArray(entry.points) || !entry.points[0]) {
@@ -93,6 +136,16 @@ export function findOrphans(pages, ingredients, nonIngredient, labels = null, in
   for (const slug of nonIngredient) {
     if (ingredients[slug]) {
       issues.push(`"${slug}" is on the NON_INGREDIENT allowlist but IS an ingredient in data/cost-index.json — remove it from the allowlist so its page is actually checked.`);
+    }
+  }
+  // The retired/live contradiction, checked against the ARCHIVE rather than the
+  // page list, so it is caught even for a slug that has no published page (the
+  // loop above can only see slugs that do).
+  const seen = new Set(pages.map((p) => p.slug));
+  for (const slug of Object.keys(retired || {})) {
+    if (seen.has(slug)) continue;   // already reported above, with its page path
+    if (ingredients[slug] && Array.isArray(ingredients[slug].points) && ingredients[slug].points[0]) {
+      issues.push(`"${slug}" has BOTH live data in data/cost-index.json and an entry in data/cost-index-retired.json — it cannot be both. Re-run build-cost-index.mjs.`);
     }
   }
   return issues;
@@ -188,6 +241,33 @@ function selfTest() {
     if (got !== expected) { console.error(`  ✗ ${name}: expected ${expected} issue(s), got ${got}`); failed++; }
   }
 
+  // RETIREMENT — the second accepted end-state, and the guards that keep it from
+  // becoming a way to silence the gate.
+  const dead = [{ rel: 'cost-index/scallops/index.html', slug: 'scallops' }];
+  const arch = { scallops: { retiredOn: '2026-08-29', lastMeasured: '2026-05-01' } };
+  const yes = () => true, no = () => false;
+  const ret = [
+    ['a retired slug with a terminal page passes',
+      findOrphans(dead, {}, NI, { scallops: 'Scallops' }, new Set(['scallops']), arch, yes).length, 0],
+    ['a retired slug whose page was NOT rebuilt still fails',
+      findOrphans(dead, {}, NI, { scallops: 'Scallops' }, new Set(['scallops']), arch, no).length, 1],
+    ['archived AND live at once is a contradiction',
+      findOrphans(dead, { scallops: { points: [{ asOf: '2026-07-28' }] } }, NI, { scallops: 'Scallops' }, new Set(['scallops']), arch, yes).length, 1],
+    ['the contradiction is caught even with no published page',
+      findOrphans([], { scallops: { points: [{ asOf: '2026-07-28' }] } }, NI, null, null, arch, yes).length, 1],
+    ['a retired slug that lost its label cannot be rebuilt either',
+      findOrphans(dead, {}, NI, {}, new Set(['scallops']), arch, yes).length, 1],
+    ['a retired slug dropped from ING_META cannot be rebuilt either',
+      findOrphans(dead, {}, NI, { scallops: 'Scallops' }, new Set(), arch, yes).length, 1],
+    ['an archive entry for a slug with no page is not an issue',
+      findOrphans([], {}, NI, null, null, arch, yes).length, 0],
+    ['with no archive at all, a dropped ingredient is still an orphan',
+      findOrphans(dead, {}, NI, null, null, {}, yes).length, 1],
+  ];
+  for (const [name, got, expected] of ret) {
+    if (got !== expected) { console.error(`  ✗ ${name}: expected ${expected} issue(s), got ${got}`); failed++; }
+  }
+
   // The ING_META parser must find the real keys, not the nested ones.
   const keys = parseIngMetaKeys("const ING_META = {\n  ribeye: { unit: 'lb', cut: { grade: 'choice' } },\n  'whole-crab': { unit: 'lb' },\n};\n");
   if (!keys || keys.size !== 2 || !keys.has('ribeye') || !keys.has('whole-crab')) {
@@ -196,8 +276,9 @@ function selfTest() {
   if (parseIngMetaKeys('no ING_META here') !== null) {
     console.error('  ✗ parseIngMetaKeys: a missing literal must return null so the gate fails loudly'); failed++;
   }
-  if (failed) { console.error(`✗ check-cost-index-orphans self-test: ${failed}/${cases.length} case(s) failed.`); process.exit(1); }
-  console.log(`check-cost-index-orphans self-test: ${cases.length + three.length + 2}/${cases.length + three.length + 2} passed.`);
+  const total = cases.length + three.length + ret.length + 2;
+  if (failed) { console.error(`✗ check-cost-index-orphans self-test: ${failed}/${total} case(s) failed.`); process.exit(1); }
+  console.log(`check-cost-index-orphans self-test: ${total}/${total} passed.`);
   process.exit(0);
 }
 
@@ -213,20 +294,36 @@ function main() {
     console.error('  gatedSlugs() iterates it, so skipping that term would leave a real orphan path uncovered. Update parseIngMetaKeys().');
     process.exit(1);
   }
-  const issues = findOrphans(pages, index.ingredients || {}, NON_INGREDIENT, labels, ingMeta);
+  const retiredPath = path.join(repoRoot, 'data/cost-index-retired.json');
+  let retired = {};
+  if (fs.existsSync(retiredPath)) {
+    try { retired = JSON.parse(fs.readFileSync(retiredPath, 'utf8')).retired || {}; }
+    catch (e) {
+      // Degrading to {} here would report every terminal page as an orphan —
+      // noisy but SAFE, which is the wrong instinct to encode: it trains the
+      // reader to ignore this gate. Say what is actually wrong instead.
+      console.error(`✗ check-cost-index-orphans: data/cost-index-retired.json is unreadable (${e.message}).`);
+      console.error('  It is the record of which pages are deliberately terminal. Fix the file or delete it deliberately.');
+      process.exit(1);
+    }
+  }
+  const isTerminal = (rel) => {
+    try { return fs.readFileSync(path.join(repoRoot, rel), 'utf8').includes('cost-index:retired'); }
+    catch { return false; }
+  };
+  const issues = findOrphans(pages, index.ingredients || {}, NON_INGREDIENT, labels, ingMeta, retired, isTerminal);
 
   if (issues.length) {
     console.error(`✗ Cost-index orphans: ${issues.length} published page(s) have no live data:`);
     for (const i of issues) console.error(`  - ${i}`);
     console.error('  Slugs are final-forever, so deleting the directory is NOT the remedy — it would satisfy this gate silently,');
-  console.error('  which is the quiet drop the gate exists to prevent. Pick a real disposal and record it:');
-  console.error('    1. Re-source the feed (check-cost-index-series-freshness.mjs shows whether that is even open —');
-  console.error('       a KNOWN_SOURCE_LATENT slug has no free wholesale source, so for those this branch is closed).');
-  console.error('    2. Render a terminal last-good state on the page ("this feed stopped publishing; last measured <date>"),');
-  console.error('       history preserved, excluded from the basket — the codebase already speaks this at basket level.');
-  console.error('    3. Retire the slug deliberately: a dated entry + 301 target, cross-checked against the Worker redirect map.');
-  console.error('  NOTE (2026-07-30): options 2 and 3 have no runbook or precedent yet — no cost-index ingredient page has ever');
-  console.error('  been retired. The first slug to trip this gate needs that decision made, not a quick fix.');
+    console.error('  which is the quiet drop the gate exists to prevent. Two dispositions are supported:');
+    console.error('    1. RE-SOURCE the feed. check-cost-index-series-freshness.mjs shows whether that is even open — a');
+    console.error('       KNOWN_SOURCE_LATENT slug has no free wholesale source, so for those this branch is closed.');
+    console.error('    2. RETIRE it (ADR-021). This is now built and needs no hand-authoring: a keyed refresh archives the');
+    console.error('       last-good state, and `node scripts/build-cost-index-pages.mjs` renders the terminal page ("this');
+    console.error('       series stopped publishing, last measured <date>"), history preserved, out of the basket, URL alive.');
+    console.error('       If the archive entry already exists, this gate is telling you the PAGE has not been rebuilt yet.');
     process.exit(1);
   }
   const checked = pages.filter((p) => !NON_INGREDIENT.has(p.slug)).length;

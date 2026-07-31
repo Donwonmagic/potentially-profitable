@@ -36,7 +36,20 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'
 const arg = (k) => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : null; };
 const DRY = process.argv.includes('--dry-run');
 const OUT = path.join(repoRoot, 'data/cost-index.json');
+const RETIRED_OUT = path.join(repoRoot, 'data/cost-index-retired.json');
 const MAX_POINTS = 26;            // ~6 months of weekly points per ingredient (older are discarded, not archived)
+const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
+
+/**
+ * Issue codes that mean "this read is OLD", as opposed to "this read is WRONG".
+ * The distinction decides what a retired page may show. A series that simply
+ * stopped publishing still has a real, in-bounds, cited last measurement — that
+ * number is a dated RECORD and may be rendered as one. A point that failed for a
+ * quality reason (out of bounds, lost its source, lost its provenance) was never
+ * publishable and must not resurface under a "last measured" label just because
+ * the feed also happens to be dead.
+ */
+const AGE_ONLY = new Set(['stale', 'stale-level']);
 
 function rd(p) {
   try { return JSON.parse(readFileSync(p, 'utf8')); }
@@ -100,6 +113,62 @@ function mergePoints(ingredient, existing, incoming) {
   return [...byAsOf.values()]
     .sort((a, b) => (a.asOf < b.asOf ? 1 : a.asOf > b.asOf ? -1 : 0))  // newest first
     .slice(0, MAX_POINTS);
+}
+
+/**
+ * The retirement archive — the last-good state of every ingredient this build
+ * dropped, so a dead feed ends in a published terminal page instead of a frozen
+ * one nobody notices.
+ *
+ * WHY IT IS WRITTEN HERE. This is the only moment the last-good record exists.
+ * The drop at :161 is the ONE place the prior points are still in memory; the
+ * next line of data/cost-index.json no longer contains the ingredient at all,
+ * and no other script can reconstruct what it held. An archive written anywhere
+ * else would be reconstructing history from a file that had already forgotten it.
+ *
+ * WHAT IT MAY KEEP:
+ *   - `lastPoint` only when every issue on the newest prior point is an AGE
+ *     issue. A point that was out of bounds or had lost its source is kept out;
+ *     the page then renders the retirement with no number, which is the honest
+ *     outcome and must stay representable.
+ *   - `history` only when it clears historyIssues() — the same predicate the
+ *     live path uses. A de-verified source loses its curve too.
+ * A revived ingredient is REMOVED from the archive, so "retired" can never
+ * outlive the condition that caused it.
+ */
+function buildRetiredArchive(existing, out, droppedIngredients) {
+  const prior = (() => {
+    try { return JSON.parse(readFileSync(RETIRED_OUT, 'utf8')).retired || {}; }
+    catch { return {}; }
+  })();
+  const retired = { ...prior };
+
+  for (const ingredient of droppedIngredients) {
+    const src = existing.ingredients?.[ingredient] || {};
+    const points = Array.isArray(src.points) ? src.points : [];
+    const p0 = points[0] || null;
+    const issues = p0 ? pointIssues(ingredient, p0, srcIng, boundsMap) : ['no-points'];
+    const ageOnly = issues.length > 0 && issues.every((i) => AGE_ONLY.has(i));
+    const hist = src.history;
+    const histOk = Array.isArray(hist) && hist.length && !historyIssues(ingredient, hist, srcIng, boundsMap).length;
+    retired[ingredient] = {
+      // First retirement wins: re-running the build must not keep re-stamping
+      // the date, or "retired 2026-08-29" drifts to today on every refresh.
+      retiredOn: prior[ingredient]?.retiredOn || today,
+      lastMeasured: p0 && DATE_ONLY.test(p0.asOf || '') ? p0.asOf : null,
+      issues,
+      lastPoint: ageOnly ? p0 : null,
+      points: ageOnly ? points.slice(0, MAX_POINTS) : [],
+      history: histOk ? hist.slice(-MAX_POINTS) : [],
+    };
+  }
+  // A feed that came back is not retired. Drop it, so the page builder and the
+  // orphan gate see one state, never both.
+  const revived = [];
+  for (const ingredient of Object.keys(retired)) {
+    if (out.ingredients[ingredient]) { delete retired[ingredient]; revived.push(ingredient); }
+  }
+  return { retired, revived };
 }
 
 function main() {
@@ -280,15 +349,31 @@ function main() {
   if (vendoredDrivers) out.drivers = outDrivers;
 
   out.basket = computeBasket(out);   // headline from the post-gate vendored set only
-  if (!DRY) writeFileSync(OUT, JSON.stringify(out, null, 2) + '\n');
+  const { retired, revived } = buildRetiredArchive(existing, out, droppedIngredients);
+  if (!DRY) {
+    writeFileSync(OUT, JSON.stringify(out, null, 2) + '\n');
+    if (Object.keys(retired).length || existsSync(RETIRED_OUT)) {
+      writeFileSync(RETIRED_OUT, JSON.stringify({
+        _doc: 'Last-good state of every ingredient dropped from the index because its feed stopped publishing. Written by scripts/build-cost-index.mjs at the moment of the drop (the only moment the record still exists); consumed by scripts/build-cost-index-pages.mjs to render the terminal page, and by scripts/check-cost-index-orphans.mjs to tell a retired page from an orphaned one. An entry is REMOVED when the feed comes back.',
+        _lastReviewed: today,
+        retired,
+      }, null, 2) + '\n');
+    }
+  }
   const dropMsg = Object.keys(dropped).length ? ` · dropped: ${Object.entries(dropped).map(([k, v]) => `${v} ${k}`).join(', ')}` : '';
   const histN = Object.values(out.ingredients).filter((x) => Array.isArray(x.history) && x.history.length).length;
   const bk = out.basket && out.basket.pct != null ? ` · basket ${(out.basket.pct * 100).toFixed(1)}% (${Math.round(out.basket.coverage * 100)}% covered)` : '';
   console.log(`build-cost-index: vendored ${vendored} ingredient(s), ${histN} with history, ${vendoredDrivers} driver(s)${dropMsg}${bk}.${DRY ? ' (dry-run)' : ''}`);
   if (droppedIngredients.length) {
     console.warn(`build-cost-index: ${droppedIngredients.length} ingredient(s) lost every point and were DROPPED from the index: ${droppedIngredients.join(', ')}.`);
-    console.warn('  Their published cost-index/<slug>/ pages (EN+ES) are now orphaned — frozen price, still in the sitemap, never regenerated.');
-    console.warn('  Re-source the feed or retire the page deliberately. check-cost-index-orphans.mjs fails until one of those happens.');
+    console.warn(`  Their last-good state is archived in data/cost-index-retired.json${DRY ? ' (dry-run: not written)' : ''}.`);
+    console.warn('  RUN build-cost-index-pages.mjs NEXT — it turns each archived slug into a terminal page ("this series stopped');
+    console.warn('  publishing, last measured <date>", history preserved, excluded from the basket). Until that runs, the published');
+    console.warn('  EN+ES pages still show the old render and check-cost-index-orphans.mjs fails, which is the point: the gate wants');
+    console.warn('  the terminal page, not the archive entry. Re-sourcing the feed instead clears the archive on the next build.');
+  }
+  if (revived.length) {
+    console.log(`build-cost-index: ${revived.length} previously retired ingredient(s) came back and left the archive: ${revived.join(', ')}.`);
   }
 }
 
