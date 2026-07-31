@@ -1,0 +1,815 @@
+{
+  "_doc": "Regrade of docs/handoff/discovery-run/salvaged-findings.json by scripts/regrade-discovery-findings.mjs. Rebuilds the hypothesis<->kill join the salvage lost and applies the finding engine's own survivor rule. IMPORTANT: `execOutcome` is the VERIFIER's self-report on its own execution; `grade` is the ADVERSARIAL result. A hypothesis can be execOutcome=confirmed and grade=NEVER-PANELED — that is not a finding, it is an unreviewed claim. Only grade=SURVIVOR clears the engine's bar.",
+  "_generated": "regenerate with: node scripts/regrade-discovery-findings.mjs",
+  "rule": {
+    "LENS_COUNT": 4,
+    "SCORE_FLOOR": 1,
+    "MARGIN_FLOOR": 0.25
+  },
+  "findings": [
+    {
+      "index": 0,
+      "duplicateOf": null,
+      "execOutcome": "refuted",
+      "grade": "NEVER-PANELED",
+      "claim": "For {N} of the {M} ingredients that carry both a sourced edible-yield figure and a certified seasonal window, the disagreement between the two independently sourced yield reference tables moves cost per usable pound by more than the entire seasonal saving the Cost Index certifies — i.e. picking the right yield number beats buying in the right month.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Seasonal timing dominates yield-source uncertainty for every ingredient where the Cost Index certifies a season: across the 47 ingredients carrying both a sourced edible yield and a certified seasonal window, the median certified saving is 36% of cost while the median yield-table disagreement is 0% (the two reference tables agree exactly on 66 of 112 overlapping ingredients). Only 2 ingredients invert it — corn-on-the-cob (28.6% vs 16%) and butternut-squash (20.0% vs 19%, and that one flips under a different denominator) — so the operator's cheap-month play is the larger lever wherever a cheap month exists. This is close to structural: the seasonal noise gate refuses to certify a window worth less than 15% (scripts/lib/cost-research.mjs:177), so a yield gap must clear 15% to compete, and only 14 of 112 ingredients do.\n\nThe finding that survives is the inverse one. The yield-table disagreement is concentrated precisely where the price instrument publishes nothing: 58% of withhold-posture items disagree (vs 17% of lock items), with a median gap of 9.1% and a maximum of 77.8% (octopus, 0.45 vs 0.80). For 25 of 34 joined withholds the instrument publishes neither a band nor a seasonal window, and 15 of those 25 carry a yield disagreement — octopus 77.8%, clams 50.0%, whole-crab 47.1%, squid 33.3%, whole-halibut and whole-lobster 20.0%. Every one of the 13 largest gaps is shellfish, whole fish, winter squash or a leafy green; beef, pork, roots, tubers, alliums, herbs and mushrooms agree exactly. So the Monday action is not \"weigh your yields instead of chasing a cheap month\" — it is \"on the whole-animal seafood and whole-squash items where the public price record is silent, the yield number you picked is the only variable left, and two sourced reference tables differ on it by up to 78%.\"",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 1,
+      "duplicateOf": null,
+      "execOutcome": "confirmed",
+      "grade": "NEVER-PANELED",
+      "claim": "Named culinary substitutes co-move MORE than category-matched non-substitute pairs — the shared-episode rate for the {n} substitute pairs is {X}% against {Y}% for controls drawn from the same ingredient category — meaning the standard trade advice 'swap to the cheaper one' is systematically weaker as a hedge than it is assumed to be.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Among the 30 named culinary substitute pairs that can be scored, the mean shared-episode fraction is 26.9% against 9.8% for 251 category-matched non-substitute control pairs — a 2.8x gap (permutation one-sided p = 0.0001, 0 of 10,000 null draws). The gap survives restoring the thin-pool pairs (+12.1pp, p = 0.0005), every leave-one-category-out variant (weakest +8.1pp, p = 0.0133), and collapsing to one pair per anchor (+10.3pp, p = 0.0026). But it is carried entirely by SAME-category substitutes: 32 same-category pairs run 26.8% against 12.3% for same-category controls (p = 0.0001), while the 6 cross-category substitute pairs run 8.3% against 9.2% for their controls (p = 0.45) — no detectable difference, on a sample far too small to license a rule. The operator-facing version: a named substitute drawn from the same category is about 2.8 times more likely to share this ingredient's price episodes than a random item from that same category, so the swap is weakest exactly where it is most natural to reach — chicken breast to chicken thigh sits at 0.92, and five of the ten most entangled pairs are lettuce varieties. Meanwhile 16 of the 39 scoreable substitute pairs shared zero episodes in both directions, including lemon<->lime, leek<->onion, apple<->pear and bell pepper<->poblano. This is shared timing within a ~6-week window over each ingredient's own detected episodes — co-occurrence, never a correlation coefficient, never a lead/lag, never a cause.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 2,
+      "duplicateOf": null,
+      "execOutcome": "refuted",
+      "grade": "NEVER-PANELED",
+      "claim": "The three kinds of darkness have opposite supply signatures: volatile-withheld ingredients have a higher median import-source HHI than no-series-withheld ingredients (which are MORE diversified), and no public supply attribute (origin concentration, import reliance, per-capita availability, import value) separates the no-series set from the published set at all — the no-series gap is institutional, not economic.",
+      "claimHasUnfilledSlots": false,
+      "revisedClaim": "In the Muntin 100-ingredient catalog, \"no-series\" darkness is not a supply signature — it is a category boundary. All 15 seafood/shellfish slugs are withheld for no-series and zero appear in any published bucket, so the no-series set is 15 seafood plus ground-beef by construction, and \"dark vs published\" cannot be distinguished from \"seafood vs land agriculture\" in this corpus. Measured: median import-source HHI is 0.310 for no-series (n=16) vs 0.645 for volatile (n=10), permutation p=0.0169 — but collapsing the 4 pseudo-replicate slugs that share an HS6 code with an identical HHI (shrimp/shrimp-head-on at 0.30; salmon-fillet/salmon-skin-on-fillet at 0.45) to 12 product families raises the no-series median to 0.375 and the p to 0.1013, so the volatile-vs-no-series split does not survive de-replication. The \"no attribute separates\" arm is refuted outright: HHI separates no-series (0.310) from published (0.590) at BH-adjusted p=0.0244 — though that separation is entirely a Mexico effect, since 30 of 53 published slugs source #1 from Mexico at median HHI 0.71 and against the 23 non-Mexico published slugs (median 0.38) the no-series set does not separate (p=0.2713). Two of the four pre-specified attributes were uncomputable because the public record structurally withholds them for the dark set: import_reliance_pct is present on 1 of 16 no-series slugs versus 46 of 63 published, and us_percap_lbs on 1 of 16 versus 47 of 63, with ground-beef the only non-null in both. Finally the \"exotic, low-trade\" intuition is inverted rather than merely wrong: the no-series set carries the highest median import value of any subgroup ($862,960,860 vs $119,699,128 for published), led by ground-beef at $5.34B and shrimp-pd at $3.32B. The honest operator-facing statement is narrower than the original: a no-series ingredient is dark because no US agency publishes a wholesale reference for that product class, and in this catalog that class is wild-caught and imported seafood — not because it is obscure, low-volume, or single-sourced.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 3,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "Across the tracked record, how LONG a large wholesale episode takes to clear is roughly invariant to how predictable the ingredient is, even though how BIG the episode is is not: median durationDays differs by no more than {D} days across the four lock/cushion/float/withhold classes (observed spread ~14 days on a ~77-day median), while median pctFromNormal differs by a factor of {M} across the same classes (observed ~3.7x, 45% to 167%).",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Among the 412 largest detected wholesale episodes across 76 tracked ingredients, episode DURATION does not sort by conformal predictability class while episode SIZE does. Median durationDays is 70 (lock), 70 (cushion), 80.5 (float) and 84 (withhold) — a 14-day maximum gap on a 77-day pooled median, which is exactly the median gap produced by shuffling the class labels at random (slug-level permutation, 10,000 draws, p=0.53; cluster-bootstrap 95% CI on the gap [3.5, 28] days). Median |pctFromNormal| over the same events is 47.5%, 95%, 158.5% and 128% — a 3.34x span, p=0.011. The duration null is not a merge-window artifact: re-running the detector with topN removed across mergeWeeks∈{6,12,24} × floorPct∈{15,20,30}, the pooled duration median moves 0.0–0.4 days per merge-week, the bucket spread stays inside 14–21 days, and none of the 9 cells reaches p<0.05. THREE MATERIAL QUALIFICATIONS. (1) The \"~11 weeks\" figure is a top-6 truncation artifact: uncapped, 2,583 episodes exist and the pooled median is 55 days, sliding monotonically 84→77→70→63→55 as the per-ingredient cap widens from 1 to unlimited. The stable quantity is the ~14-day BETWEEN-CLASS gap, not the 77-day level. (2) The ordering reverses between configurations — withhold is longest in the shipped file, lock is longest in all 9 uncapped sweep cells — so \"which class is longest\" has no answer. (3) The magnitude half is near-tautological, as the proposer conceded: the lock/cushion/float/withhold label is assigned from a conformal half-width computed over the same deep history the episodes are detected in, so a wider band mechanically implies larger departures. The only non-tautological result here is the duration null, and it is a null with modest power: float rests on 7 slugs and withhold on 15 of its 37 (22 contribute nothing — 16 have no deep series at all and 6 are degenerate-flat).",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 4,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "Import-source concentration and import reliance do NOT compound: across the tracked ingredients carrying both, the correlation between reliance on imports and concentration of those imports is ~0, and only N ingredients sit in the joint high-high corner (reliance ≥ 75% AND HHI ≥ 0.50) — so 'depends on imports' and 'depends on one country' are two separate structural facts about two mostly-different sets of ingredients.",
+      "claimHasUnfilledSlots": false,
+      "revisedClaim": "Across the 72 tracked ingredients carrying both a reliance figure and a source-concentration figure, import reliance and import-source concentration are statistically independent: Spearman rho = +0.085 (95% bootstrap CI [-0.157, +0.325], permutation p = 0.48), and on the item-scope subset alone — the only rows that are genuinely independent observations — rho = +0.013 (p = 0.94). The panel is large enough to rule out any association of |rho| ≥ 0.33. Thirteen ingredients sit in the joint high-high corner (reliance ≥ 75% AND HHI ≥ 0.50) — brussels sprouts, papaya, pineapple, avocado, cucumber, raspberry, the five peppers, and the two tomatoes, 12 of 13 sourced primarily from Mexico — but that is NOT a small number: independence predicts 12.2, and the observed 13 gives an odds ratio of 1.26 with Fisher p = 0.79, holding across all 20 reliance x HHI threshold combinations tested. The correct correction to the intuitive story is therefore NOT that these are \"two mostly-different sets of ingredients\" — 65% of high-reliance ingredients are also concentrated. It is that concentration is simply common in this panel (44 of 72, 61%), so high-reliance ingredients are concentrated at essentially the base rate (65% vs 61%, lift 1.06x). Knowing an ingredient is import-reliant tells you almost nothing about whether its imports are concentrated that the base rate did not already tell you. A single multiplicative \"supply risk\" score is the wrong shape because the two axes carry independent information, not because they pick out disjoint ingredients. Methodological finding of equal weight: the commodity-scope subset alone appears to show a real association (rho = +0.363, p = 0.031), but this is entirely an artifact of one group-level reliance number being stamped onto every member slug — those 35 rows carry only 11 distinct reliance values, and collapsing to the 11 independent groups returns rho = +0.146 (p = 0.67). Nothing survives Benjamini-Hochberg correction across the five tests run.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 5,
+      "duplicateOf": null,
+      "execOutcome": "confirmed",
+      "grade": "NEVER-PANELED",
+      "claim": "The public record as currently shipped CANNOT determine whether episodes are clustering more over time: the detected-events file caps each ingredient at topN=6 lifetime moves, so recent years are represented only by moves extreme enough to beat 25 years of that ingredient's own history, and after re-detecting without the cap the per-alive-series episode rate and mean cohort size show {R} — with the shipped file the apparent 2024-to-2026 jump in mean cohort size (2.00 to 6.47 on a near-constant panel) {survives / does not survive}.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "The shipped detected-events file cannot support any temporal RATE or CLUSTERING claim, for two independent reasons — one documented, one not. (1) The topN=6 cap is severely binding: 65 of 102 slugs (63.7%) sit exactly at it, only 16.4% of real episodes survive (432 of 2,634), and survival is not year-uniform (7.7% in 2016 vs 27.9% in 2026), so the shipped per-year cohort profile is largely a restatement of censoring density (Spearman rho=0.584, p=0.0017) and misses the uncapped profile by 15%+ in 26 of 26 years, worst 723%. (2) UNDOCUMENTED: because the deep history ends 2026-07-01 and the baseline is a centered ±26-week median, 100% of calendar-2026 events (68 uncapped, 19 shipped) fall inside the terminal window where that baseline is one-sided — after edge-trimming, 2026 has zero analyzable events. The apparent 2024→2026 cohort jump (2.00 → 6.47, 3.24x) DOES NOT SURVIVE: it shrinks to 1.23x uncapped (14.87 → 18.35), the panel it sits on grew 16% (86 → 102 → 100 slugs, not \"near-constant\"), and its 2026 endpoint is entirely edge-artifact. Re-detected without the cap on a balanced 61-slug panel alive every year 2001-2026, both metrics run flat-to-slightly-DOWN, not up: episode rate -0.66%/yr (RR 0.9934, 95% CI [0.9883, 0.9986]) and mean cohort size -0.71%/yr (ratio 0.9929, 95% CI [0.9906, 0.9952]). Episodes DO co-occur far more than chance (weekly active-count variance 21.893 vs surrogate median 14.188, p=0.0005 on 2,000 circular shifts) — but that alignment is not increasing (late/early variance ratio 0.9117, p=0.65). The honest deliverable is a coverage statement: this file supports per-ingredient episode SHAPE claims and supports NO temporal rate claim, plus two fixes — remove the cap, and mark the terminal 26 observations of every series as edge-censored.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 6,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "Only {N} of the 54 ingredients with a certified cheap month are actually buyable-into: the rest either cannot be held from the trough to the peak on their own documented storage life, or their seasonal saving does not clear their own measured price band — leaving a named shortlist of {N} where 'buy in month M' survives both physical and statistical scrutiny.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Of the 54 ingredients whose cheap month clears Muntin's noise gate, 26 can actually be bought into — but every one of those 26 requires a freezer. Using each item's own documented freeze life, 26 of 54 can be held from the price trough to the price peak with a saving larger than their own measured band. Using refrigerated shelf life alone, that number is 0 of 54: the longest cut/prepped life on the panel is 90 days against a median 6-month trough-to-peak gap. The failures are almost entirely physical, not statistical — 23 of 54 cannot be held long enough (bok-choy, celery, cucumber, all four lettuces, green-onion, parsley, tomato, zucchini, lime, lemon, russet and red potato, watermelon, cantaloupe, cilantro, napa-cabbage, serrano-pepper, striploin, pork-loin, pork-shoulder) and 3 more have no storage figure in the public record at all (avocado, butter, eggs), while only 2 fail on the saving being smaller than the band (cauliflower 30% vs 40.0%, corn-on-the-cob 16% vs 16.1%). The band test is close to inert here because the seasonal window is only published at all once the saving clears 15%, and the median band is 12.6%.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 7,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "The dark set is not an economically marginal residue: the 37 ingredients the instrument withholds carry $D B in nominal annual US import value after de-duplicating shared HS6 codes, versus $E B for the 63 ingredients it publishes a band for — i.e. the public price record goes dark on the higher-trade-value half of the tracked corpus.",
+      "claimHasUnfilledSlots": false,
+      "revisedClaim": "The 37 ingredients the Muntin instrument withholds are not an economically marginal residue — they carry $24.21B in nominal annual US customs import value after de-duplicating shared HS6 codes, against $21.01B for the 63 ingredients it publishes a band for. That is 53.5% of the tracked import value sitting on 37% of the slugs, and roughly twice as much import value per withheld ingredient ($654M) as per published one ($333M). But the aggregate excess is NOT robust and the \"higher-value half\" framing does not survive its own pre-registered fragility test: dropping the single largest dark code — HS 0201305085+0202305085, a NESOI (\"not elsewhere specified\") residual boneless-beef line that the repo's own crosswalk assigns wholly to ground-beef, worth $5.34B — flips the ratio to 0.898, and trimming the top three codes from both sides flips it to 0.966. The rank test on per-code values is null (Mann-Whitney one-sided p=0.209). The defensible claim is therefore \"the dark set is at least comparable in trade value to the published set, on 41% fewer ingredients,\" not \"the record goes dark on the higher-value half.\" The honest mechanism is narrower still: 70% of the dark trade value comes from the 16 'no-series' withholds and 48% comes from seafood and shellfish alone — categories with no USDA AMS terminal-market wholesale reporting at all. The blind spot is real and large, but it is shaped like \"seafood and manufacturing beef trim are import-heavy and have no public wholesale series,\" not like a value-neutral coverage failure.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 8,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "Seasonal amplitude in wholesale reference prices is NOT systematically weakening across the 2001-2026 record: of the {N} ingredients with enough history to split, {W} weakened and {S} strengthened, the median change in log-scale month-of-year amplitude is {D} (a crude first pass gives 34 weakened / 27 strengthened, median -0.025), and a sign test over the panel fails to reject no-systematic-drift.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Seasonal amplitude in wholesale reference prices shows no systematic DRIFT across 2001-2026, but it is not perfectly flat either — it took a single ~9.5% level step down after 2008 and has been trendless for the 17 years since. Measured on the 61 deep wholesale series that span 2010 through 2024 (79,854 rows, 2001-03-28 to 2026-07-01): splitting each series at its own median date, 35 weakened, 25 strengthened, 1 unchanged, median change in log-scale month-of-year amplitude -0.041 (median amplitude 0.289 -> 0.222). A two-sided sign test fails to reject (p = 0.245) and the bootstrap 95% CI on the median delta, [-0.108, +0.010], includes zero; only 6 of 61 ingredients clear BH q=0.10 (5 weakening, 1 strengthening). All three legs of the pre-registered kill condition fail, so the null survives. The weaker signals do point down — Wilcoxon on the deltas p = 0.030, per-slug year-trend slopes 39 negative / 22 positive with Wilcoxon p = 0.0045 and 13 individually-significant declines vs 3 increases — but the split-based statistic is not robust: moving the cut from 2012 to 2021 reverses it from 43-17 weakening (sign p = 0.0011) to 20-40 strengthening (sign p = 0.0135). The direct year-by-year panel settles it: over 24 years at a flat 51-53 observations per slug per year, the Theil-Sen slope of panel median amplitude is -0.0033/yr with 95% CI [-0.0067, +0.0001] and Spearman p = 0.085 — no significant trend — while 2002-2008 (mean 0.571) sits 9.5% above 2009-2025 (mean 0.517, Mann-Whitney p = 0.040) and 2009-2025 taken alone is flat (Theil-Sen -0.0011/yr, CI [-0.0066, +0.0045], Spearman p = 0.765). Operationally: the folk claim that year-round global sourcing has been progressively flattening produce seasonality is not visible in this record after 2008, and the Cost Index's 5-year trailing window is a conservative choice rather than a load-bearing correction for amplitude decay.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 9,
+      "duplicateOf": null,
+      "execOutcome": "refuted",
+      "grade": "NEVER-PANELED",
+      "claim": "Across the 69 tracked ingredients carrying both a measured conformal price band and a 2025 import-origin record, band half-width and import-source concentration are positively rank-associated (Spearman rho, permutation p): the ingredients whose next-week price reach is widest are also the ones drawn from the fewest supplier countries.",
+      "claimHasUnfilledSlots": false,
+      "revisedClaim": "On the 69 tracked ingredients that carry both a measured conformal price band and a 2025 import-origin record, band half-width and import-source concentration show a weak positive rank association (Spearman rho = 0.229) that does NOT clear a permutation null: two-sided p = 0.058 shuffling at the ingredient level, and p = 0.067 under the honest null that shuffles at the HS6 customs-stream level. The association is additionally fragile and non-monotone — removing the 3 diversified-supply ingredients drops rho to 0.155 (p = 0.212), and the most concentrated quartile (HHI 0.90–1.00) has a LOWER median band (0.060) than the third quartile (0.168), with the five single-supplier ingredients including two of the tightest bands in the panel. On this panel the tracked record does not support a stated association between supply concentration and price-band width in either direction. Notably, the confound the test was built to control ran backwards: partialling on log import value slightly STRENGTHENS the association (partial rho = 0.254), because larger import streams are less concentrated (rho = -0.216), not more.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 10,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "Triple structural exposure is rare and enumerable: of the {D} tracked ingredients carrying a trim multiplier, a measured price band, and a 2025 origin record, exactly {N} sit simultaneously in the worst tercile of all three — high trim tax, wide band, and single-source — and they are {LIST}; the compound-exposure set is far smaller than the {E} ingredients a chance-independent stacking of the three would predict.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": null,
+      "hasCode": false,
+      "recomputable": false,
+      "kills": []
+    },
+    {
+      "index": 11,
+      "duplicateOf": null,
+      "execOutcome": "refuted",
+      "grade": "NEVER-PANELED",
+      "claim": "Among the 69 tracked ingredients that have BOTH a 2025 import-origin record and a seasonality-ready price history, the ones whose seasonal cheap window is nameable are more single-sourced than the ones whose window is not: {N1} of {D1} ({P1}%) of cheap-window ingredients draw ≥75% of their tracked 2025 import VALUE from one country, versus {N0} of {D0} ({P0}%) of the ingredients with no nameable window — a difference of {DIFF} percentage points (Fisher exact two-sided p = {P}).",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Among the 69 tracked ingredients that have both a 2025 import-origin record and a seasonality-ready price history, ingredients with a nameable seasonal cheap window are NOT measurably more single-sourced than those without one. 26 of 49 (53.1%) cheap-window ingredients draw ≥75% of their tracked 2025 import value from one country, versus 7 of 20 (35.0%) with no nameable window — a difference of +18.1 percentage points that is indistinguishable from sampling noise (Fisher exact two-sided p = 0.1954; bootstrap 95% CI -8.1 to +43.1 pp; permutation p = 0.1935). The difference does not clear p=0.10 at any of the pre-registered thresholds (≥70: +19.2 pp, p=0.1872; ≥75: +18.1 pp, p=0.1954; ≥80: +5.8 pp, p=0.7877), it does not appear as a shift in the underlying distribution (Mann-Whitney on top-1 share, p=0.6011), and it reverses sign to -16.4 pp once the 42 Mexico-topped records are excluded. The only fragment that survives is a post-hoc, uncorrected within-Mexico observation: among the 42 ingredients whose largest 2025 supplier is Mexico, those with a nameable cheap window draw ≥75% from Mexico at 22/30 (73.3%) versus 4/12 (33.3%) without one (+40.0 pp, uncorrected Fisher p=0.0324) — which fails multiplicity correction across the 12 tests in this run (BH critical value 0.0083 at q=0.10) and is close to definitional, since a US ingredient supplied almost entirely by a single counter-seasonal partner has a strong seasonal price signature by construction. On this record, \"the calendar play and the concentration exposure are the same ingredients\" is not supported as a general concentration finding.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 12,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "The published 'hedge vs mirror' substitute verdict is not merely a restatement of shared seasonality: among the 72 substitute pairs where both sides carry a 12-month price normal, pairs labelled 'mirror' share a cheapest month at a median circular distance of {d_mirror} months versus {d_hedge} for 'hedge' pairs (Mann-Whitney U, permutation p = {p}) — and {S} of the 56 'hedge' pairs nonetheless trough in the same month, meaning the swap buys a co-movement hedge while offering no calendar offset.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "The hedge/mirror substitute verdict is not a restatement of shared seasonality, but the audit that shows this also surfaces a data defect and cannot settle the question outside one crop family. On the pair set as specified (72 pairs, 56 hedge / 16 mirror), the two verdicts are indistinguishable on when the two ingredients trough: identical median circular distance of 2.0 months, Mann-Whitney z=-0.78, permutation p=0.64 across 10,000 label shuffles, at a simulated power of 0.786 to detect a 2-month difference — a genuine null, not an underpowered one. That set is however contaminated: 11 of the 72 'substitute' rows in data/ingredient-depth.json point back at their own anchor slug (savoy cabbage -> cabbage, garlic powder -> garlic, canned tomatoes -> tomato, and 8 more), so both sides read the same seasonality row and the distance is 0 by construction; all 11 are labelled hedge by construction too, and 4 further rows are duplicate directed edges. Removing them (n=57, 42 hedge / 15 mirror) does produce the hypothesised direction — hedge median 3.0 months vs mirror median 2, mirror mean 1.73 vs hedge 2.86, Mann-Whitney p=0.018, and 5 of 15 mirror pairs (33.3%) share a trough month against 2 of 42 hedge pairs (4.8%), Fisher p=0.011, with the sign holding under the noise-gated trough (p=0.006). But that entire association is five lettuce varietals: all five zero-distance mirror pairs are lettuce-on-lettuce, every one troughing in month 1. Drop every lettuce-touching pair and the effect is gone — mirror mean 2.857 vs hedge mean 2.854, p=0.96, zero mirror pairs sharing a trough, at power 0.782 for a 2-month effect; permuting whole connected components instead of individual pairs gives p=0.149. The operator-facing consequence is the opposite of the one proposed: the 'hedge that buys no calendar offset' is rare, not common — 2 of 42 hedge pairs (4.8%), not 13 of 56 — and the honest caveat the substitute field needs is not about seasonality overlap but about resolution: the verdict is a bare threshold at share >= 0.5 over an episode count capped at 6, so 59 of 57 pairs' verdicts reduce to 'did 3+ of your top-6 detected episodes coincide', and 18 of the 57 slugs have a runner-up trough month within 2% of the trough itself.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 13,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "Cheapest-month calendars trained on a slug's own history hold up out of sample in only {N}% of ingredient-years (chance = 25%), and the median realized saving in the holdout is {X}% versus the {Y}% median save_pct the site publishes in-sample — i.e. the seasonal buy window shrinks by {Y-X} points once it has to predict rather than describe.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "A cheapest-month calendar refit on data ending before a 3-year holdout lands in that year's cheapest quartile in 72 of 193 ingredient-years (37.3%, chance 25%, exact binomial p = 1.0e-4, cluster-bootstrap 95% CI 30.1-44.3%) across 65 ingredients — real skill, but the median rank is still 5 of 12, and in 61 of those 193 ingredient-years (31.6%) the \"cheapest\" month actually cost more than the year's average month. The right correction is not that the seasonal window shrinks — it does not. An oracle knowing each year's true trough would have saved a median 20.7% against that year's average month, MORE than the 16.5% the same formula reports in sample. The calendar captures only 6.7% of that 20.7%, i.e. 32% of the seasonal saving genuinely on the table; the entire loss is month-selection error, not amplitude decay. Measured like-for-like (identical estimand both sides), the published-style saving falls from 16.5% in sample to 7.4% out of sample, a median paired shrinkage of 9.2 points that holds in 56 of 65 ingredients and replicates at -8.2 to -10.1 points across 2/3/4-year holdouts. Separately: the site's published save_pct (median 36.0%) is a peak-to-trough SWING, not a saving against a typical month — on the swing estimand it is only 4.5 points optimistic out of sample, but an operator who reads it as \"what I save by buying in month N\" should read 9.1% instead of 36%. Finally, no individual ingredient's calendar is defensible: 0 of 65 survive Benjamini-Hochberg at q=0.10, and only 1 of 63 ingredients had the same realized cheapest month in all three holdout years.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 14,
+      "duplicateOf": null,
+      "execOutcome": "confirmed",
+      "grade": "UNDER-COVERED",
+      "claim": "The 11 ingredients withheld for reason='flat' are not flat markets — they are dead price-discovery: their public wholesale quote changes in only {A}% of consecutive weekly observations versus {B}% for the 63 published ingredients, a gap that holds in an out-of-sample window. Separately, {C} ingredients the instrument DOES publish a posture for have a quote-change rate at or below the flat set's worst member, meaning the published lock bucket is itself contaminated by administratively sticky quotes.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Across the 80 of 100 Cost Index ingredients with >=104 weekly observations and a non-monthly cadence, the 10 testable ingredients withheld for reason='flat' are not flat markets — their public wholesale quote changes in a median of 5.9% of consecutive weekly observations in the label-independent window (rows -104..-53), versus 76.5% for the 61 testable published ingredients (permutation p < 0.0001, 0 of 10,000 relabelings). In the most recent 52 weeks the figures are 3.9% versus 72.6%, and the median flat-set ingredient holds one identical quote for 31.5 consecutive weeks (tarragon: 1075 cents, unchanged for all 52) against 4 weeks for the median published ingredient. Two published ingredients — habanero-pepper and poblano-pepper, both in the LOCK bucket, both 10 changes in 51 pairs (19.6%) — fall at or below the 25% threshold; widening to the flat set's own worst member (kale, 33.3%) puts eight ingredients there, and all eight are locks: habanero-pepper, poblano-pepper, cilantro, banana, butter-lettuce, daikon, leek, pear. No cushion or float item is that sticky. IMPORTANT QUALIFICATION the original claim gets wrong: this is a REGIME, not a structural property of the ingredient. Four of the five long-history flat members had highly active quotes 25 years ago and went dark since — carrot changed in 94% of weeks in 2001 and 15% in 2026; rutabaga 77% -> 0%; collard-greens 89% -> 0%; kale 81% -> 15%. Only button-mushroom was always sticky. The published panel is drifting the same direction more slowly (median annual change rate 94% in 2001 to 69-77% in 2025-26), so quote-change rate is a declining property of the whole USDA AMS terminal-market record, sharpest in the items the instrument already refuses to band.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": [
+        {
+          "lensName": "statistical",
+          "verdict": "survives-weakened",
+          "margin": 0.677
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "duplicateOf": null,
+      "execOutcome": "confirmed",
+      "grade": "NEVER-PANELED",
+      "claim": "Food-safety event exposure is statistically indistinguishable between the dark (withheld) and the published set of the 100-ingredient lock/float catalog — a per-ingredient recall-event rate ratio that does not survive a label-permutation null — so an operator cannot reduce recall exposure by preferring ingredients the public price record happens to cover.",
+      "claimHasUnfilledSlots": false,
+      "revisedClaim": "Food-safety event exposure is statistically indistinguishable between the dark and the published set of the Muntin lock/float catalog. 110 distinct FDA recall events touch the 37 withheld ingredients versus 172 touching the 63 published ones (39 touch both), a per-ingredient rate ratio of 1.09 — which sits at the 44th percentile of its own label-permutation null, below the null's median of 1.14, because the union-based rate is structurally biased toward the smaller group. Two-sided permutation p = 0.79 all-class, 0.84 with overlapping events excluded, 0.63 Class-I-only; an unbiased per-ingredient count statistic gives 4.76 versus 4.05 events per ingredient (ratio 1.18, p = 0.62), and the result is unchanged when the shrimp and salmon matcher-aliases are collapsed (RR 1.10, p = 0.79). Matcher coverage is not the thing being measured: 0 of 37 dark and 1 of 63 published slugs are stopword-blocked, and the two groups appear in the recall corpus at 62.2% and 60.3%. This is a bounded null, not a proof of equality — with 100 ingredients the design can only resolve a rate ratio of about 1.9× or larger, so a real difference of up to roughly 90% would be invisible here. An operator cannot reduce recall exposure by preferring ingredients the public price record happens to cover, but neither can this test rule out a moderate difference.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 16,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "Two independently sourced edible-yield reference tables in this repo disagree on 46 of 112 shared ingredients, and the disagreement is systematic within category: the sign test on ln(depthYield/manifestYield) over the disagreeing pairs gives p={p}, with {K} ingredients where the implied cost per usable pound differs by more than 20% (worst: octopus, 0.45 vs 0.80, a 1.78x swing in plate cost).",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Two independently sourced edible-yield reference tables in this repo disagree on 46 of 112 shared ingredients (41.1%), but the disagreement is bidirectional noise, not a systematic convention split: depth exceeds the manifest on 22 and falls below on 24, a two-sided sign test on ln(depthYield/manifestYield) gives p = 0.88 (Wilcoxon p = 0.85), and no category or confidence stratum survives BH correction (best raw p = 0.070 for shellfish, q = 0.28). The median disagreement implies an 8.9% difference in cost per usable pound; 9 ingredients exceed a 20% implied cost difference and 4 more sit exactly at 20%, with 4 exceeding 40% (worst: octopus, 0.45 vs 0.80, a 1.78x swing). Recomputing the site's published epCents against the second table changes 36 of 84 values, median 7.4%, max 47.1% (whole-crab). The operational conclusion is the opposite of a correctable bias: because the divergence has no direction, you cannot reconcile the two tables with a convention adjustment — for the ~9-13 high-impact ingredients a single yield number is false precision and the honest output is a band, while for the other ~99 the two tables are interchangeable within 9%.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 17,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "The lock/cushion/float/withhold posture is not a durable property of an ingredient: refitting the shipped classifier on truncated deep history at quarterly as-of dates, {C}% of consecutive ingredient-quarter pairs change bucket, and only {S} of the 84 band-eligible ingredients hold a single bucket across all quarters of the last 5 years.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Refitting the shipped lock/float classifier walk-forward at 42 quarter-end cuts (2016-03-31 .. 2026-06-30) on truncated deep history, 29.18% of consecutive ingredient-quarter pairs change bucket (1,005 of 3,444 pairs across the 84 band-eligible ingredients), and only 12 of those 84 hold a single bucket across the last 20 quarters - 16 of them visit all four buckets. The commitment framing is where it bites hardest: of the 37 ingredients shipped as \"lock\" today, only 7 read lock in all 20 quarters, and one (bok-choy) read lock in just 2 of 20. But the honest deflation is that this churn is NOT ingredient-specific in aggregate: phase-randomized surrogates preserving each series' own spectrum and marginal churn at 33.38%, only 14.4% more than the real panel - inside the pre-registered 20% void band. What does survive the control is the stable tail, not the churn: 12 real single-bucket slugs vs a surrogate maximum of 5 over 20 replicates (p = 0.048), and 53 of 84 slugs churn less than their own surrogate. So the defensible statement is narrow: posture is a property of a rolling 26-week residual window rather than of the ingredient, a same-spectrum random series churns just as much, and only about 12 of 84 ingredients carry genuine multi-year posture persistence - 41% of all observed changes are a single continuous quantity wobbling across the hard halfWidthPct=0.08 lock/cushion cut with no hysteresis.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 18,
+      "duplicateOf": null,
+      "execOutcome": "refuted",
+      "grade": "KILLED",
+      "claim": "For the 70 tracked ingredients that carry BOTH a 12-month import-value seasonal index and a ready 12-month wholesale price normal, the month of peak import VALUE sits closer on the calendar to the ingredient's PRICIEST month than to its CHEAPEST month, by a mean circular-month gap of {D_priciest} vs {D_cheapest} months (paired sign test, {k} of 70 slugs in the predicted direction, permutation p = {p}).",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Across the 68 tracked ingredients that carry both a 12-month US import-value seasonal index and a ready 12-month wholesale price normal, the month of peak import VALUE carries no measurable information about where either the priciest or the cheapest month sits. The mean circular gap from the import-value peak to the priciest month is 2.84 months and to the cheapest month is 2.91 months — a difference of 0.07 months (about two days), with 32 of 68 ingredients closer to the priciest month, 31 closer to the cheapest, and 5 exact ties (sign test p = 1.00; permutation p = 0.72 two-sided). Both figures are statistically indistinguishable from 3.00 months, the value expected if the import peak month were placed at random: the import peak falls within one month of the price peak on 18 of 68 ingredients and within one month of the price trough on 17 of 68, against 17.0 expected by chance. The panel can rule out any true phase advantage larger than about one month in either direction (MDE 0.98 months at 80% power); it cannot resolve anything smaller. A phase-randomised twin produced \"significant\" results at 4.4% (two-sided), confirming the test is calibrated rather than underpowered-by-construction. The honest label for the /open/imports/ calendar is therefore neither \"price-pressure calendar\" nor \"volume proxy\" — against this panel's price calendar, the import-value calendar is uninformative, which is exactly what the value-equals-price-times-quantity ambiguity predicts when neither component dominates.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": [
+        {
+          "lensName": "honesty-contract",
+          "verdict": "survives-weakened",
+          "margin": 0.793
+        },
+        {
+          "lensName": "statistical",
+          "verdict": "survives-weakened",
+          "margin": 0.724
+        },
+        {
+          "lensName": "prior-art",
+          "verdict": "kill",
+          "margin": 0.787
+        },
+        {
+          "lensName": "alternative-explanation",
+          "verdict": "kill",
+          "margin": 0.351
+        }
+      ]
+    },
+    {
+      "index": 19,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "KILLED",
+      "claim": "The lock/float conformal band's published walk-forward coverage does not hold uniformly across time: the band's miss rate inside a detected price episode is materially higher than outside one, meaning the instrument's stated hit rate is earned in quiet weeks and spent during the moves an operator actually needs it for.",
+      "claimHasUnfilledSlots": false,
+      "revisedClaim": "Across 65,932 scored walk-forward steps on the 63 banded ingredients, the lock/float band misses 36.56% of the time inside a detected price episode (1,416 of 3,873 weeks) versus 24.85% outside one (15,419 of 62,059) — a raw ratio of 1.47x that survives block permutation (p = 0.0001), removal of the float bucket, leave-one-slug-out, and a +26-week timing control that reverses it (0.872x, p = 0.9992). But the gap is 84.0% mechanical: both \"episode\" and \"band miss\" are large-move detectors computed from the same series, and once the size of that week's own price move is held fixed the excess falls to 1.88pp (ratio 1.054x, permutation p = 0.12 at 20 strata, 0.14 at 40) and turns NEGATIVE in the lock bucket (−2.31pp, p = 0.99). Operationally the concentration is negligible: episode weeks are 5.87% of the record and carry 8.41% of misses, worth 454 excess misses of 16,835 — if they behaved like ordinary weeks, pooled coverage would rise only from 74.47% to 75.15%. The instrument's coverage is therefore NOT \"earned in quiet weeks and spent during the moves.\" The real and much larger audit finding is uniform, not episodic: against an 80% nominal target, 62 of 63 banded items fall short, 52 of 63 have their own published confidence interval entirely below 80%, and none is above — mean coverage 74.64%, including 75.23% for the 37 \"lock\" items whose publication gate is coverageLo ≥ 0.60, not 0.80. The one place an episode effect does survive the tautology control is the ONSET only (event date ±4 weeks: 13.30pp excess, p = 0.0005, holding in lock at +6.18pp), while the sustained remainder of an episode shows essentially none (1.073x) — but that variant was chosen post hoc from five window definitions, and conditioning on absolute step size still does not condition on step-relative-to-trailing-volatility, which is literally what a miss is.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": [
+        {
+          "lensName": "honesty-contract",
+          "verdict": "kill",
+          "margin": 0.766
+        },
+        {
+          "lensName": "alternative-explanation",
+          "verdict": "kill",
+          "margin": 0.607
+        },
+        {
+          "lensName": "statistical",
+          "verdict": "kill",
+          "margin": 0.604
+        },
+        {
+          "lensName": "prior-art",
+          "verdict": "kill",
+          "margin": 0.65
+        }
+      ]
+    },
+    {
+      "index": 20,
+      "duplicateOf": null,
+      "execOutcome": "confirmed",
+      "grade": "NEVER-PANELED",
+      "claim": "The lock/cushion/float band fails disproportionately during the exact episodes it is being trusted to survive: across the 63 ingredients that carry a walk-forward replay strip, the band's miss rate inside detected event windows is {R}x its miss rate outside them ({A}% vs {B}%), and {R} > 1.0.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "The lock/float band's next-week misses are concentrated at the edges of detected price episodes, and the excess is real but roughly a third smaller than a naive read suggests. Across the 63 ingredients carrying a walk-forward replay strip (65,932 tests, 337 events), the band missed on 1,416 of 3,873 next-week prints inside detected event windows (36.56%) versus 15,419 of 62,059 outside them (24.85%) -- a pooled risk ratio of 1.47, with 61 of 63 ingredients individually above 1.0 and a circular-block-bootstrap two-sided p of 0.0005 (zero of 2,000 resamples reached it). For the lock bucket specifically -- the one an operator reads as safe to commit -- an 80%-nominal band delivers 75.34% coverage outside episodes and 63.33% inside them (R = 1.4873). Two honest qualifications: (1) shifting every event window by a whole number of years, which preserves month-of-year but destroys episode alignment, still yields R = 1.03-1.19 (mean 1.10), so a calendar/seasonal component accounts for part of the gap and the episode-specific excess is about 1.34x, not 1.47x; window-length-matched random placement returns R to 1.01. (2) The excess is an onset/offset effect, not a whole-episode effect: the first and last four weeks of each window carry R = 1.61, but stripping four weeks from each end drops R to 1.26 and stripping eight weeks drops it to 1.07 (n = 309). The operator rule this supports is therefore narrower than \"don't lock during an episode\": the band is least reliable while a price is entering or leaving a departure, and roughly recovers its normal (already sub-nominal) accuracy inside a sustained plateau. Horizon: this is a next-week reach, never contract-length drift, and every level is public wholesale reference, never delivered price.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 21,
+      "duplicateOf": null,
+      "execOutcome": "confirmed",
+      "grade": "NEVER-PANELED",
+      "claim": "For the tracked ingredients that have both a noise-gated cheap month and a 12-month import-value seasonal index, the cheap month coincides with an above-average import-VALUE month in only N of D cases — indistinguishable from the rate expected if the two calendars were unrelated — so the public trade record does NOT corroborate the folk model that a price trough lines up with the heavy-arrival window.",
+      "claimHasUnfilledSlots": false,
+      "revisedClaim": "Across the 50 tracked ingredients that carry both a noise-gated cheap month and a 12-month import-value seasonal index, the cheap month falls in an above-average import-value month in 23 of 50 cases (46.0%, 95% CI 31.8%–60.7%) — against an empirical baseline of 47.0% of all month-slots being above average, giving a two-sided exact binomial p = 1.0000. The mean circular distance between the cheap month and the peak import-value month is 2.96 months against a 3.0-month uniform expectation (permutation p = 0.93, B = 10,000). The result is stable at stricter (>1.15: 28.0% vs 22.8% baseline, p = 0.40) and looser (>0.95: 58.0% vs 55.2%, p = 0.78) thresholds. On this 50-ingredient subset the seasonal price trough and the import-value calendar are two separate facts about two separate points in the chain, and the tracked import-value record gives no support for reading a price trough off import timing. Stated with its limits: with n = 50 the test could only have detected an alignment rate at or above 62%, so this rules out a strong phase lock, not a weak one.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 22,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "The public record is blindest exactly where food spoils fastest: layer coverage (price band, seasonal normal, import reliance, detected price events) rises with shelf life — Spearman rho = {H} over the tracked corpus — and all {I} of the no-series ingredients carry at most {J} of the 4 layers, with a median prepped shelf life of {K} days against {L} days for ingredients with a published band.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": null,
+      "hasCode": false,
+      "recomputable": false,
+      "kills": []
+    },
+    {
+      "index": 23,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "Up-episodes across the tracked panel are concentrated in a small number of calendar windows beyond what each ingredient's own seasonality explains — {P}% of all up-episodes since {year} start inside the top {W} eight-week windows — which means a menu reprint timed to follow those windows catches materially more cost pressure than a reprint on a fixed calendar date.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Panel-wide up-episodes do bunch in time beyond each ingredient's own seasonality, but they bunch into one-off historical bursts, not into a repeatable calendar slot — so the finding cannot set a reprint date. Since 2015 the tracked panel logged 165 up-episodes across 72 ingredients; 32.1% of them (53) started inside just 10 of the 80 eight-week windows, and 18 windows hold half of them. Against a null that keeps every episode in its own month and reshuffles only the year, that concentration sits at the 98th percentile (H = 0.00940 vs null p95 = 0.00880, p = 0.019), and it holds across all nine window-width × start-year specifications. But two things kill the operator rule. First, the clustering is partly an artifact of the panel counting five lettuces and four pork cuts as five and four separate episodes: collapse the 43 slugs that trade as one of 14 markets, and the headline specification falls inside the null band (p = 0.13). Second, and decisively, the windows do not recur — the top ten sit in seven different start months across eight different years (the 2017 and 2022 lettuce runs, the 2020 pork run, the spring-2026 nightshade run). A fixed-month reprint rule fitted on 2015–2020 picks May and captures 18.2% of episodes in-sample, then captures 8.0% out-of-sample on 2021–2026 against a coin-flip rate of 8.3%; train and test month counts correlate r = 0.16. The honest operator conclusion is the negative one: do not move your reprint date to catch the market's calendar, because the market does not have one. Reprint against your own basket, and treat a reprint as reactive — after a burst has already printed, never in anticipation of one.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 24,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "On the dates when a tracked ingredient posts a detected UP event, the substitutes the site labels a 'hedge' are themselves running {X}% above their OWN ±26-week normal (median across {N} pairs) — meaning the binary hedge verdict, which only counts co-occurring top-6 moves clearing a 20% floor, understates how often the escape route is also expensive.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Across 41 substitute pairs the site labels a 'hedge' (204 anchor UP-event observations), the substitute's median departure from its OWN ±26-week normal on those dates is only +3.2% — small, and not distinguishable from zero by a sign test (24 pairs above / 14 below / 3 at zero, p=0.14; bootstrap 95% CI +0.0% to +10.7%). The verdict label itself is vindicated in aggregate: 'mirror'-labelled substitutes run +85.8% above their own normal on the same kind of dates (Mann-Whitney one-sided p=1.1e-07). But the binary verdict does understate FREQUENCY, by about 2.5×: the published k rule credits co-movement on 12.3% of those dates, while the continuous read at the identical 20% floor finds the substitute already ≥20% above its own normal on 30.4% — an excess of +13.8 percentage points over the substitute's own 16.6% unconditional base rate (risk ratio 1.83×, one-sided binomial p=7.4e-07). The understatement is concentrated, not uniform: 15 of 41 hedge pairs (36.6%, CI 22–51%) sit above +10% on the anchor's spike dates, led by okra→green-beans (+59.9%), yellow-squash→zucchini (+52.9%) and cabbage→napa-cabbage (+35.1%, published k/n = 0/6), while 17 of 41 sit at or below their normal and are clean hedges. A ±26-week timing control collapses the effect to −0.1% / −0.8% and the ≥20% rate to 15.2% / 13.7%, so this is not a detector artifact. Shared timing within a window, never cause. Per-pair statements are uncomputable at BH q=0.10 because the topN=6 cap floors any single pair's p-value at 0.031.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 25,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "A documented FDA recall record does NOT co-occur with import-source concentration: mean HHI is {H1} for the {N1} origin-bearing ingredients carrying at least one distinct FDA recall EVENT since 2020 versus {H0} for the {N0} carrying none, and the sign of that gap REVERSES across import-value terciles ({T0}, {T1}, {T2}) — the apparent association is a size artifact of which ingredients get recall-tagged at all, not a structural relationship.",
+      "claimHasUnfilledSlots": false,
+      "revisedClaim": "Across the 153 tracked ingredients that carry import-origin data, a documented FDA recall record does not co-occur with import-source concentration. Mean import-source HHI is 0.518 for the 87 ingredients carrying at least one distinct FDA recall event since 2020 and 0.504 for the 66 carrying none — a gap of +0.014 HHI points (95% CI -0.070 to +0.097, permutation p = 0.74, Cohen's d = 0.05). Controlling for import stream size does not change it (partial Spearman between event count and HHI, given log import value, is +0.064, p = 0.43), and the result survives deduplicating the 7 shared HS6 code-and-value pairs (gap +0.023, p = 0.59), alternate thresholds (>=2 events, >=3 events, >=1 Class-I event, raw notice counts) and quartile and quintile strata. This panel can only rule out gaps larger than about 0.12 HHI points at 80% power, so the honest statement is \"no detectable association,\" not \"no association.\" Two corrections to the original framing are required. First, the tercile sign reversal (+0.063, -0.038, +0.025) is NOT evidence of a size artifact: under a pure label-permutation null with no confound present, all three tercile gaps share a sign only 24.6% of the time, so reversal is the ordinary appearance of noise at n≈17-36 per cell. Second, the size confound is weak where the claim placed it and real where it did not — whether an ingredient gets recall-tagged at all is not significantly related to import value (p = 0.23, tag rate 41%/71%/59% across terciles, non-monotonic), but HOW MANY distinct recall events a tagged ingredient carries tracks import value strongly (Spearman +0.441, p < 0.0001 among the 87 tagged; +0.229, p = 0.0045 across all 153). Recall intensity is a co-occurrence with trade-stream size, and it cannot be separated here into a keyword-matching artifact versus genuine physical exposure.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 26,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "{P}% of the 953 Hampel point-outliers fall outside every detected sustained episode window for the same ingredient (first pass 91%), making 'lone print = artifact' a free data-quality classifier; and four ingredients withheld as 'flat' (carrot, collard-greens, kale, rutabaga) each carry 6 detected episodes and 5-7 outliers on ~1,300-read series, so the published 'no_series' label misdescribes {K} of the 27 ingredients it is applied to.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "92.6% of Hampel point-outliers (877 of 947 on the 80 event-bearing ingredients) fall outside every detected episode window — but so would ~94% by chance, because episode windows cover only 5.9% of the observation grid. Against a circular-shift null the observed excess never exceeds 1.4 percentage points at any pad from 0 to 42 days, so 'lone print = artifact' carries essentially no information and must not be published as a data-quality classifier. Two real sub-results survive: at exact-date match the enrichment is 3.9x (1.9% vs 0.5% null, p=0.0005) though tiny in absolute terms, and outliers that DO coincide with an episode score twice as high on the robust-MAD scale as lone ones (16.57 vs 8.29, permutation p=0.0003) — the reverse of the print-artifact prediction, and partly definitional since both detectors measure deviation from a local center on the same series. Separately and independently: cost-index/menu-pricing.json labels 27 ingredients 'no_series', but 11 of them have real public wholesale series of 65 to 1,314 weekly reads — kale, button-mushroom, collard-greens, carrot and rutabaga each carry 1,304-1,314 deep reads (carrot alone has 698 week-over-week price changes across a 840-3,900 cent range), and four of those five carry 6 detected 20%+ episodes. The cause is a one-line collapse at scripts/lib/cost-research.mjs:1686 keying only off coverage truthiness, whose own code comment wrongly asserts all 27 have no public series. The private lockfloat label for those 11 is 'flat', which is also a misdescription — the bands are degenerate, the prices are not.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 27,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "NEGATIVE-SPACE FINDING: of the 100 ingredients the Cost Index tracks, exactly {N} (the union of proteins[].serves in the ERS meat price chain — beef, pork, broiler) have ANY public downstream price series at all, and even for those {N} the downstream leg is national-average GROCERY retail, not a foodservice delivered price; the measured wholesale-to-retail pass-through over monthly log-differences is {b} at a lag of {L} months (effective n after autocorrelation adjustment = {nEff}).",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Of the 100 ingredients the Cost Index tracks, exactly 11 sit under a public farm→wholesale→retail price chain — the beef, pork and broiler chains of USDA ERS Meat Price Spreads — and 89 have no public downstream price at any rung. Even for those 11 the downstream leg is national-average GROCERY retail per ERS, not a delivered or foodservice price. Where the chain does exist, monthly wholesale moves reach retail only partially and with a one-to-two-month delay: over 1970-01..2025-12 (n=671 monthly log-difference pairs for beef and pork) and 1990-01..2025-12 (n=431 for broiler), cross-correlation peaks at lag 1 for beef (r=0.54, b=0.21) and pork (r=0.44, b=0.15) and lag 2 for broiler (r=0.18, b=0.06); block-bootstrap p=0.001 on each, surviving Benjamini-Yekutieli across 21 tests at a threshold of p≤0.0059. Cumulated across lags 0-6 the pass-through is 0.62 for beef [0.55, 0.69], 0.46 for pork [0.35, 0.57] and 0.16 for broiler [0.10, 0.22] — none near full. Broiler shows no measurable contemporaneous pass-through (b=0.019 at lag 0, p=0.22). This is co-movement over the tracked ERS record, never a cause and never a forecast; ERS values are cents per pound of retail equivalent and must never be differenced against the Cost Index's per-package-unit wholesale reference.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 28,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "Across the tracked ingredients with a measurable import-origin concentration, the rank correlation between import_source_hhi and realized wholesale price volatility is null — meaning single-source supply lines are no more price-volatile in the tracked record than diversified ones.",
+      "claimHasUnfilledSlots": false,
+      "revisedClaim": "Across 62 tracked ingredients with both a 2025 import-origin HHI and 5 years of weekly wholesale prints, origin concentration correlates with realized price volatility at the pooled level (Spearman rho +0.4562 on sd of log returns, permutation p = 0.0002; +0.2986 on the independently derived lock-or-float half-width, p = 0.0185; four of five proxies survive BH at q=0.10) — but the entire association is a category composition effect. Permuting HHI only within ingredient category kills it on every proxy (rho -0.2699 to +0.1613, all p >= 0.1656, none surviving BH). Concentrated origin is a proxy for \"fresh imported produce\": the 55 produce slugs carry median HHI 0.600 and median weekly volatility 9.70%, the 7 beef/pork/dairy slugs carry median HHI 0.360 and 3.89%, and across the 11 category medians HHI tracks volatility at rho +0.5273. Once you know an ingredient's category, its origin-concentration label adds no measurable price-risk information in the tracked record. The concentration label is a supply-structure fact and must not be rendered as a price-risk signal. Two further limits: the spec's own primary robust estimator (1.4826 x median absolute log return) is degenerate here — it returns exactly zero for 14 of 62 slugs because at least half of their consecutive weekly prints are identical carry-forwards — and the \"diversified\" comparison bucket that motivated the question contains only three usable ingredients (banana, cheddar cheese, pork loin), since 18 of the 21 diversified records have no wholesale price series at all.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 29,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "The 37 'lock' ingredients sit at a median {P}th percentile of their own trailing-5-year range — indistinguishable from 'float' and 'cushion' (Kruskal-Wallis p={p}) — so band-width predictability carries no information about whether a price is currently cheap. Separately, the shipped `pos` field overstates range position by a median of {D} percentile points because it ranks against a full nominal history back to 2001 with no deflation.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Across the 80 of 100 tracked ingredients whose public wholesale series is long enough to test, where a price sits inside its own trailing-5-year range is unrelated to which lock-or-float bucket it lands in: median range position is 60th percentile for the 35 testable 'lock' items, 61st for 'cushion' (n=19), 52nd for 'float' (n=7) and 48th for 'withhold' (n=19), a spread no larger than chance (Kruskal-Wallis p=0.34), and the band half-width itself correlates with range position at rho=−0.06 (p=0.60). Lock items are not measurably cheap — but they are not measurably expensive either: their median 60th percentile is indistinguishable from the 50th (sign test p=0.61, 19 above / 15 below / 1 tie). The instrument's wall between predictability and price level is doing exactly what it was built to do, and the correct standing caveat is \"predictable is not cheap, and it is not expensive either — this bucket says nothing about level,\" not a warning about a systematically costly misreading. Separately and independently, the internal `pos` field overstates range position by a median of 23 percentile points (IQR +8 to +36; 95% CI +17.5 to +30) because it ranks the latest print against up to 25 years of undeflated nominal history: ~18.5 of those points come from the window and ~0 at the median from its estimator. The contamination scales with history length — median bias +0 for series under 5 years old (n=14) versus +27 for the 61 series reaching back to 2001 (rho=+0.48, p=7e-6) — and it puts 10 of the 49 slugs with pos≥80 (grapefruit 82, banana 85, collard-greens 83, spinach 83) below the midpoint of their own recent range. A second, unrelated defect in the same function counts ties as \"below,\" printing pos=100 for tarragon, sweet-potato and rosemary, whose latest value is simply their most repeated one. `pos` is not in the public CC-BY mirror, so this is an internal-correctness finding, not a published-data error.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 30,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "NEVER-PANELED",
+      "claim": "Substitution is not an escape hatch from a dark ingredient: only {M} of the 37 withheld ingredients have any catalogued substitute that is BOTH itself priced with a published band AND scored as a price hedge rather than a mirror — a rate of {N}%, against {P}% for ingredients that already have a published band.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": null,
+      "hasCode": false,
+      "recomputable": false,
+      "kills": []
+    },
+    {
+      "index": 31,
+      "duplicateOf": 30,
+      "execOutcome": "partial",
+      "grade": "DUPLICATE",
+      "claim": "Substitution is not an escape hatch from a dark ingredient: only {M} of the 37 withheld ingredients have any catalogued substitute that is BOTH itself priced with a published band AND scored as a price hedge rather than a mirror — a rate of {N}%, against {P}% for ingredients that already have a published band.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Substitution is closed off for withheld ingredients, but not because the hedge scores badly — because the substitute is usually dark too, and for one whole category the route does not exist at all. Of the 37 ingredients the Cost Index withholds, 36 have a depth record and every one of them carries at least one catalogued substitute, but only 9 (25.0%) have a substitute that is itself priced with a published band, against 33 of 59 (55.9%) for ingredients that already have a band (Fisher p=0.0053). The collapse is concentrated entirely in seafood: all 15 seafood and shellfish ingredients in the 100-slug catalog are withheld for the same reason — no public wholesale series exists — and 0 of those 15 have a single priced substitute, because their substitutes are other seafood. Strip seafood out and the difference is no longer significant (42.9% vs 55.9%, p=0.322). The stricter \"priced AND scored as a hedge rather than a mirror\" test returns 5 of 36 dark (13.9%) against 24 of 59 published (40.7%), but that headline is confounded: the hedge score is computed against the anchor ingredient's own detected notable moves, so the 16 withheld ingredients with no public series have no moves, no hedge score, and a failing grade by construction. Among ingredients where a hedge could be scored at all, dark and published are statistically indistinguishable (41.7% vs 51.1%, p=0.748), as they are conditional on having a priced substitute (55.6% vs 72.7%, p=0.422). The honest operator conclusion survives but for a narrower reason than proposed: for a dark ingredient the public record usually cannot tell you whether a swap moves with it, and for seafood it cannot even offer you a priced thing to swap to.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 32,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "KILLED",
+      "claim": "The two independent edible-yield reference tables the repo carries disagree on 46 of 112 shared ingredients, and the disagreement is not cosmetic: swapping tables changes {F} of the top 10 most trim-expensive ingredients and moves edible-portion cost by up to {C}% on the {N} disagreeing ingredients that carry a live wholesale level.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "The site publishes one edible-yield table (data/ingredient-yields.json, mirrored CC-BY as cost-index/yields.json, sourced to the CIA YIELD_TABLE pinned in tools/plate-cost/plate-cost.js plus 5 USDA FBG rows) and carries a second sourced table nobody sees (data/ingredient-depth.json, sourced per-row to US Foods Common Product Yields, USDA FoodData Central, NCHFP and extension references, with a high/med/low confidence rating). On the 112 ingredients where both carry a yield, they disagree on 46 (41.1%). On the 36 disagreeing ingredients that also carry a live wholesale reference level, swapping tables moves edible-portion cost by a median of 7.6% and by up to 47.1% — 7 of the 36 move more than 15%. Priced in each ingredient's own trading unit: whole halibut at 929 cents per lb implies 1,858 cents per edible lb under the published table and 1,548 cents under the unpublished one; whole crab at 987 cents per lb implies 3,948 vs 5,806 cents per edible lb. The rank order of trim expense is nonetheless mostly stable (Spearman rho = 0.9329) and only 2 of the top 10 most trim-expensive ingredients swap out (top-10 overlap F = 8/10, not fragile to leave-one-out), with octopus the one violent mover (rank 8.5 -> 60.5 of 112). Neither table is systematically more generous: 22 disagreements favor depth, 24 favor the manifest, exact two-sided binomial p = 0.8830, and no confidence stratum or category stratum survives correction. Every shipped figure uses the manifest and only the manifest: all 84 epCents values in cost-index.json that could be checked reproduce exactly as level / manifest-yield, and 0 of 84 match the depth table. But at least 10 of the 36 priced disagreements are NOT a measurement dispute — the depth row's own prose names the manifest's number as a different cut, prep state, or species (cucumber peeled 0.84 vs skin-on 0.95; blue crab 0.17 vs Dungeness/king 0.25-0.27; corn kernels-cut 0.36 vs 0.28). The published table carries no cut-spec, prep-state, or species field at all, so an operator cannot tell which specification the number encodes. The honest, publishable finding is therefore the disclosure plus the missing column: the reference layer beneath every plate cost has a measured spread worth a median 7.6% and up to 47.1% of edible-portion cost, a large share of that spread is an undeclared specification difference rather than a disagreement about a fact, and the site publishes one number with no way to tell which is which.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": [
+        {
+          "lensName": "prior-art",
+          "verdict": "survives-weakened",
+          "margin": 0.431
+        },
+        {
+          "lensName": "alternative-explanation",
+          "verdict": "kill",
+          "margin": 0.268
+        },
+        {
+          "lensName": "statistical",
+          "verdict": "survives-weakened",
+          "margin": 0.499
+        },
+        {
+          "lensName": "honesty-contract",
+          "verdict": "survives-weakened",
+          "margin": 0.59
+        }
+      ]
+    },
+    {
+      "index": 33,
+      "duplicateOf": 32,
+      "execOutcome": "partial",
+      "grade": "DUPLICATE",
+      "claim": "The two independent edible-yield reference tables the repo carries disagree on 46 of 112 shared ingredients, and the disagreement is not cosmetic: swapping tables changes {F} of the top 10 most trim-expensive ingredients and moves edible-portion cost by up to {C}% on the {N} disagreeing ingredients that carry a live wholesale level.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "The site publishes one edible-yield table (data/ingredient-yields.json, mirrored CC-BY as cost-index/yields.json, sourced to the CIA YIELD_TABLE pinned in tools/plate-cost/plate-cost.js plus 5 USDA FBG rows) and carries a second sourced table nobody sees (data/ingredient-depth.json, cited per row to US Foods Common Product Yields, USDA FoodData Central, NCHFP and extension references, with a high/med/low confidence rating). On the 112 ingredients where both carry a yield, they disagree on 46 (41.1%). On the 36 disagreeing ingredients that also carry a live wholesale reference level, swapping tables moves edible-portion cost by a median of 7.6% and by up to 47.1%; 7 of the 36 move more than 15%. Priced in each ingredient's own trading unit: whole halibut at 929 cents per lb implies 1,858 cents per edible lb under the published table and 1,548 under the unpublished one; whole crab at 987 cents per lb implies 3,948 vs 5,806. The rank order of trim expense is nonetheless mostly stable — Spearman rho = 0.9329, and only 2 of the top 10 most trim-expensive ingredients swap out (top-10 overlap F = 8/10, not fragile to leave-one-out), with octopus the one violent mover (rank 8.5 -> 60.5 of 112). Neither table is systematically more generous: 22 disagreements favor depth, 24 favor the manifest, exact two-sided binomial p = 0.8830, and no confidence or category stratum survives correction. Every shipped figure uses the manifest and only the manifest: all 84 epCents values that can be checked reproduce exactly as level divided by the manifest yield, and 0 of 84 match the depth table. But at least 10 of the 36 priced disagreements are not a measurement dispute — the depth row's own prose names the manifest's number as a different cut, prep state or species (cucumber peeled 0.84 vs skin-on 0.95; blue crab 0.17 vs Dungeness/king 0.25-0.27; corn kernels-cut 0.36 vs 0.28). The published table carries no cut-spec, prep-state or species field at all, so an operator cannot tell which specification the number encodes. The honest publishable finding is therefore the disclosure plus the missing column: the reference layer beneath every plate cost has a measured spread worth a median 7.6% and up to 47.1% of edible-portion cost, a large share of that spread is an undeclared specification difference rather than a disagreement about a fact, and the site publishes one number with no way to tell which is which.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 34,
+      "duplicateOf": null,
+      "execOutcome": "confirmed",
+      "grade": "NEVER-PANELED",
+      "claim": "An FDA recall on an ingredient does not co-occur with a detected departure in that ingredient's wholesale reference series above the rate expected by chance — across {E} distinct recall events on {S} priced ingredients since 2020, the share followed within 12 weeks by a detected up-episode is {A}%, indistinguishable from the {B}% produced by a date-shuffled null.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Across 208 distinct FDA recall events touching 55 priced ingredients between February 2020 and March 2026, 9 of 362 recall-ingredient observations (2.49%) were followed within 12 weeks by a detected up-episode in that same ingredient's public wholesale reference series — below the 3.97% produced by a date-shuffled null (one-sided p = 0.86, ingredient-clustered 95% CI 0.77%-4.51%, which contains the null), and below the 3.04% produced by the same test with every recall date shifted forward two years. The corpus can detect a doubling of the null rate (effective n = 263 against 191 required at 80% power), so this is a measured absence rather than an untested one; it cannot detect a lift smaller than 1.84x. In the free public record an operator can actually see, a recall notice carries no advance warning of an ingredient's price departure. The finding is co-occurrence framing only and rests on a detection file that keeps just each ingredient's six largest lifetime moves, so it speaks to large episodes and is silent on small ones.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    },
+    {
+      "index": 35,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "KILLED",
+      "claim": "Coverage failures in the public record are CONCENTRATED, not scattered: across the 100 priced ingredients scored on five independent layers (price band, seasonal normal, edible yield, import trade stream, detected price events), {D} ingredients are missing three or more layers — more than the 95th percentile ({null95}) of a permutation null that preserves each layer's own coverage rate but breaks the correlation between layers — identifying a nameable set of ingredients the public record cannot describe from any angle.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Across the 100 priced ingredients, 21 are missing 3 of 5 public-record layers and NONE is missing 4 or 5 — the floor is 2 layers, and every one of the 100 carries an edible-yield figure. The apparent concentration (D=21 vs a 95th-percentile null of 7, p=0.0002) is almost entirely a definitional consequence of one upstream fact rather than five layers independently agreeing: the missing sets are perfectly nested (missing SEASON ⊂ missing EVENTS ⊂ missing BAND) because all three derive from data/cost-index-history.json, and 16/16 ingredients whose deep series is ≤10 observations fail all three at once. Collapsing those three into a single price-series layer and re-testing on the three genuinely independent layers (price-series, yield, trade) gives D=7 against a null of [4, 10], p=0.567 — indistinguishable from independent. The publishable finding is therefore the opposite of a \"dark set\": edible yield (φ ≤ 0.11 with every other layer) and trade (φ ≤ 0.18) fail independently of the price record, so no tracked ingredient is dark from every angle. What IS enumerable and worth publishing is a 21-item two-mechanism map: 16 ingredients (15 seafood/shellfish on 9–10 monthly NOAA points spanning 2025-02→2026-04, plus ground-beef on 4 USDA-LMR points) that have no AMS wholesale reference series at all, and 5 culinary herbs on 130 weekly USDA-AMS-Boston observations that resolve to only 2–7 distinct price levels — an administered, effectively non-varying print that zeroes the band and the event detector together, and which additionally has no HS crosswalk.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": [
+        {
+          "lensName": "statistical",
+          "verdict": "kill",
+          "margin": 0.692
+        },
+        {
+          "lensName": "honesty-contract",
+          "verdict": "kill",
+          "margin": 0.691
+        },
+        {
+          "lensName": "alternative-explanation",
+          "verdict": "kill",
+          "margin": 0.397
+        },
+        {
+          "lensName": "prior-art",
+          "verdict": "kill",
+          "margin": 0.4
+        }
+      ]
+    },
+    {
+      "index": 36,
+      "duplicateOf": null,
+      "execOutcome": "partial",
+      "grade": "KILLED",
+      "claim": "Next-week predictability and annual seasonal swing are close to orthogonal across the tracked panel: the Spearman rank correlation between an ingredient's conformal half-width and its peak-to-trough seasonal amplitude is {rho} (n = {n} banded ingredients), and {L} of the 37 'lock' ingredients swing more than three times their own band width across the calendar year.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Band width and seasonal swing are correlated but not interchangeable, and the gap bites nearly every 'lock' ingredient. Across the 63 banded ingredients with a ready 12-month baseline, the Spearman rank correlation between an ingredient's conformal next-week half-width and its peak-to-trough seasonal amplitude is 0.52 (permutation p = 0.0001, bootstrap 95% CI 0.31 to 0.69) — enough shared signal that the two are not orthogonal, but the relationship is almost entirely between posture buckets, which are themselves defined by half-width thresholds; within the lock bucket it falls to 0.30 (p = 0.07) and within cushion and float it disappears entirely (-0.08 and -0.11). The operator consequence is unambiguous: 33 of the 37 'lock' ingredients swing more than three times their own band width across the calendar year, at a median of 6.4 times, with a median lock band of 4.4% against a median annual swing of 23.7%. Whole turkey holds a 0.8% next-week band and moves 40.6% across the year; red potato 0.8% and 30.5%; banana 0.6% and 11.8%. 'Lock' is a correct statement about next week and a misleading one about the calendar. Separately, the withhold bucket does NOT carry the highest seasonal amplitude — it is the lowest of the four (median 0.199), because it fuses ten degenerate near-flat series (median 0.108) with nine genuinely volatile ones (median 0.798).",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": [
+        {
+          "lensName": "prior-art",
+          "verdict": "kill",
+          "margin": 0.772
+        },
+        {
+          "lensName": "statistical",
+          "verdict": "kill",
+          "margin": 0.831
+        },
+        {
+          "lensName": "alternative-explanation",
+          "verdict": "kill",
+          "margin": 0.552
+        },
+        {
+          "lensName": "honesty-contract",
+          "verdict": "kill",
+          "margin": 0.634
+        }
+      ]
+    },
+    {
+      "index": 37,
+      "duplicateOf": null,
+      "execOutcome": "refuted",
+      "grade": "NEVER-PANELED",
+      "claim": "Co-movement in the tracked record is anchor-persistent for a minority and episode-specific for the majority: for {A} of the 80 anchor ingredients, one neighbour shares strictly more of the anchor's own episodes than a phase-preserving null allows at BH q=0.10, while for the remaining {B} anchors the co-mover set is a different crowd each episode.",
+      "claimHasUnfilledSlots": true,
+      "revisedClaim": "Per-anchor co-mover persistence is NOT identifiable in the tracked record: zero of 78 testable anchors clear BH q=0.10 (or BY q=0.10, or BH q=0.05) against a phase-preserving null, the best anchor (iceberg-lettuce, p=0.0061) missing the rank-1 BH threshold of 0.0013 by 4.7x. The reason is that the null itself is concentrated — taking the maximum shared-episode count over ~79 candidate partners yields a mean conc of 0.37 by chance alone, so an observed 2-of-6 or 3-of-6 top partner (53 of 78 anchors) is exactly what independent episode timing produces. What IS measurable is the aggregate: mean concentration across the 78 anchors is 0.4833 against a null mean of 0.3705, omnibus permutation p = 0.00005 (1/20001, the floor at 20,000 draws), unchanged when the duplicate pair is removed. So the honest statement is population-level, not per-ingredient: co-movement is modestly but reliably more concentrated on repeat partners than chance timing allows, while 21 of 78 anchors are actually less concentrated than chance, and no individual pair can be named as a persistent partner at any defensible error rate. The site cannot convert this into a per-ingredient menu-construction rule.",
+      "hasCode": true,
+      "recomputable": true,
+      "kills": []
+    }
+  ],
+  "assignments": [
+    {
+      "killIndex": 0,
+      "lensName": "statistical",
+      "verdict": "kill",
+      "hypothesis": 35,
+      "bestScore": 64.434,
+      "runnerUp": 19.876,
+      "margin": 0.692,
+      "joined": true
+    },
+    {
+      "killIndex": 1,
+      "lensName": "prior-art",
+      "verdict": "kill",
+      "hypothesis": 36,
+      "bestScore": 75.168,
+      "runnerUp": 17.118,
+      "margin": 0.772,
+      "joined": true
+    },
+    {
+      "killIndex": 2,
+      "lensName": "prior-art",
+      "verdict": "survives-weakened",
+      "hypothesis": 32,
+      "bestScore": 48.459,
+      "runnerUp": 27.574,
+      "margin": 0.431,
+      "joined": true
+    },
+    {
+      "killIndex": 3,
+      "lensName": "alternative-explanation",
+      "verdict": "kill",
+      "hypothesis": 32,
+      "bestScore": 48.464,
+      "runnerUp": 35.453,
+      "margin": 0.268,
+      "joined": true
+    },
+    {
+      "killIndex": 4,
+      "lensName": "honesty-contract",
+      "verdict": "kill",
+      "hypothesis": 35,
+      "bestScore": 35.728,
+      "runnerUp": 11.051,
+      "margin": 0.691,
+      "joined": true
+    },
+    {
+      "killIndex": 5,
+      "lensName": "statistical",
+      "verdict": "survives-weakened",
+      "hypothesis": 32,
+      "bestScore": 78.21,
+      "runnerUp": 39.171,
+      "margin": 0.499,
+      "joined": true
+    },
+    {
+      "killIndex": 6,
+      "lensName": "honesty-contract",
+      "verdict": "kill",
+      "hypothesis": 19,
+      "bestScore": 107.566,
+      "runnerUp": 25.157,
+      "margin": 0.766,
+      "joined": true
+    },
+    {
+      "killIndex": 7,
+      "lensName": "honesty-contract",
+      "verdict": "survives-weakened",
+      "hypothesis": 18,
+      "bestScore": 104.156,
+      "runnerUp": 21.544,
+      "margin": 0.793,
+      "joined": true
+    },
+    {
+      "killIndex": 8,
+      "lensName": "statistical",
+      "verdict": "kill",
+      "hypothesis": 36,
+      "bestScore": 130.799,
+      "runnerUp": 22.059,
+      "margin": 0.831,
+      "joined": true
+    },
+    {
+      "killIndex": 9,
+      "lensName": "alternative-explanation",
+      "verdict": "kill",
+      "hypothesis": 35,
+      "bestScore": 37.598,
+      "runnerUp": 22.69,
+      "margin": 0.397,
+      "joined": true
+    },
+    {
+      "killIndex": 10,
+      "lensName": "statistical",
+      "verdict": "survives-weakened",
+      "hypothesis": 14,
+      "bestScore": 111.764,
+      "runnerUp": 36.115,
+      "margin": 0.677,
+      "joined": true
+    },
+    {
+      "killIndex": 11,
+      "lensName": "alternative-explanation",
+      "verdict": "kill",
+      "hypothesis": 19,
+      "bestScore": 80.226,
+      "runnerUp": 31.51,
+      "margin": 0.607,
+      "joined": true
+    },
+    {
+      "killIndex": 12,
+      "lensName": "statistical",
+      "verdict": "kill",
+      "hypothesis": 19,
+      "bestScore": 114.811,
+      "runnerUp": 45.442,
+      "margin": 0.604,
+      "joined": true
+    },
+    {
+      "killIndex": 13,
+      "lensName": "honesty-contract",
+      "verdict": "survives-weakened",
+      "hypothesis": 32,
+      "bestScore": 47.463,
+      "runnerUp": 19.451,
+      "margin": 0.59,
+      "joined": true
+    },
+    {
+      "killIndex": 14,
+      "lensName": "statistical",
+      "verdict": "survives-weakened",
+      "hypothesis": 18,
+      "bestScore": 89.291,
+      "runnerUp": 24.605,
+      "margin": 0.724,
+      "joined": true
+    },
+    {
+      "killIndex": 15,
+      "lensName": "alternative-explanation",
+      "verdict": "kill",
+      "hypothesis": 36,
+      "bestScore": 43.972,
+      "runnerUp": 19.71,
+      "margin": 0.552,
+      "joined": true
+    },
+    {
+      "killIndex": 16,
+      "lensName": "prior-art",
+      "verdict": "kill",
+      "hypothesis": 18,
+      "bestScore": 71.671,
+      "runnerUp": 15.301,
+      "margin": 0.787,
+      "joined": true
+    },
+    {
+      "killIndex": 17,
+      "lensName": "alternative-explanation",
+      "verdict": "kill",
+      "hypothesis": 18,
+      "bestScore": 39.451,
+      "runnerUp": 25.614,
+      "margin": 0.351,
+      "joined": true
+    },
+    {
+      "killIndex": 18,
+      "lensName": "prior-art",
+      "verdict": "kill",
+      "hypothesis": 19,
+      "bestScore": 80.289,
+      "runnerUp": 28.1,
+      "margin": 0.65,
+      "joined": true
+    },
+    {
+      "killIndex": 19,
+      "lensName": "honesty-contract",
+      "verdict": "kill",
+      "hypothesis": 36,
+      "bestScore": 68.382,
+      "runnerUp": 25.021,
+      "margin": 0.634,
+      "joined": true
+    },
+    {
+      "killIndex": 20,
+      "lensName": "prior-art",
+      "verdict": "kill",
+      "hypothesis": 35,
+      "bestScore": 40.596,
+      "runnerUp": 24.349,
+      "margin": 0.4,
+      "joined": true
+    }
+  ],
+  "dupes": [
+    [
+      30,
+      31
+    ],
+    [
+      32,
+      33
+    ]
+  ],
+  "tally": {
+    "NEVER-PANELED": 30,
+    "UNDER-COVERED": 1,
+    "KILLED": 5,
+    "DUPLICATE": 2
+  },
+  "unjoined": 0,
+  "fullyPaneled": 5,
+  "survivors": [],
+  "unfilledSlots": 29,
+  "notRecomputable": [
+    10,
+    22,
+    30
+  ]
+}
