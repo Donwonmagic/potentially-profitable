@@ -7,8 +7,8 @@
     "seasonality": "data/seasonality.json",
     "basket": "data/cost-basket-weights.json"
   },
-  "asOf": "2026-07-27",
-  "month": 7,
+  "asOf": "2026-08-03",
+  "month": 8,
   "horizonHonest": 1,
   "basket": [
     "beef-tenderloin",
@@ -28,22 +28,17 @@
     "vegetable-oil",
     "whole-chicken"
   ],
-  "weightedTilt": 0.33,
+  "weightedTilt": 0.055,
   "outlook": "building",
   "counts": {
-    "building": 8,
+    "building": 5,
     "easing": 0,
-    "steady": 3,
-    "n": 11
+    "steady": 2,
+    "n": 7
   },
   "lockCandidates": [],
   "watchCandidates": [
-    "russet-potato",
-    "onion",
-    "pork-loin",
-    "pork-shoulder",
-    "romaine-lettuce",
-    "tomato"
+    "russet-potato"
   ],
   "featureCandidates": [],
   "movers": [
@@ -51,46 +46,6 @@
       "slug": "russet-potato",
       "direction": "building",
       "confidence": "high",
-      "storable": false,
-      "action": "watch-negotiate",
-      "seasonalNote": null
-    },
-    {
-      "slug": "onion",
-      "direction": "building",
-      "confidence": "moderate",
-      "storable": false,
-      "action": "watch-negotiate",
-      "seasonalNote": null
-    },
-    {
-      "slug": "pork-loin",
-      "direction": "building",
-      "confidence": "moderate",
-      "storable": false,
-      "action": "watch-negotiate",
-      "seasonalNote": null
-    },
-    {
-      "slug": "pork-shoulder",
-      "direction": "building",
-      "confidence": "moderate",
-      "storable": false,
-      "action": "watch-negotiate",
-      "seasonalNote": null
-    },
-    {
-      "slug": "romaine-lettuce",
-      "direction": "building",
-      "confidence": "moderate",
-      "storable": false,
-      "action": "watch-negotiate",
-      "seasonalNote": null
-    },
-    {
-      "slug": "tomato",
-      "direction": "building",
-      "confidence": "moderate",
       "storable": false,
       "action": "watch-negotiate",
       "seasonalNote": null

@@ -30,7 +30,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/es/cost-index/shrimp/#page","url":"https://muntin.digital/es/cost-index/shrimp/","name":"Camarón","inLanguage":"es-US","isPartOf":{"@id":"https://muntin.digital/#website"},"description":"Aún no publicamos un precio mayorista para camarón: solo mostramos una cifra cuando los datos públicos respaldan una lectura honesta y completa.","speakable":{"@type":"SpeakableSpecification","cssSelector":["h1",".ci-read__head"]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Índice de costos","item":"https://muntin.digital/es/cost-index/"},{"@type":"ListItem","position":3,"name":"Camarón","item":"https://muntin.digital/es/cost-index/shrimp/"}]},{"@type":"FAQPage","@id":"https://muntin.digital/es/cost-index/shrimp/#faq","inLanguage":"es-US","mainEntity":[{"@type":"Question","@id":"https://muntin.digital/es/cost-index/shrimp/#faq-supply","name":"¿De dónde viene Camarón?","acceptedAnswer":{"@type":"Answer","text":"Los desembarques silvestres de EE. UU. fueron de $312M (2024), junto a $1.59B de importaciones el mismo año (2024). Dos medidas distintas — valor en muelle (primera venta) de la captura silvestre frente al valor en aduana de las importaciones — no una razón de participación en el suministro. La mayoría de las importaciones de esta especie son de cultivo (acuicultura) en el extranjero."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/es/cost-index/shrimp/#page","url":"https://muntin.digital/es/cost-index/shrimp/","name":"Camarón","inLanguage":"es-US","isPartOf":{"@id":"https://muntin.digital/#website"},"description":"Aún no publicamos un precio mayorista para camarón: solo mostramos una cifra cuando los datos públicos respaldan una lectura honesta y completa."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Índice de costos","item":"https://muntin.digital/es/cost-index/"},{"@type":"ListItem","position":3,"name":"Camarón","item":"https://muntin.digital/es/cost-index/shrimp/"}]}]}</script>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 <style>
@@ -309,6 +309,16 @@ main{padding-top:64px}
 
 :root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
+.ci-read--retired{border-left-color:var(--stone);background:var(--cream-2)}
+.ci-read--retired .ci-read__head{color:var(--stone)}
+.ci-retired-hist{width:100%;border-collapse:collapse;margin:14px 0 6px;font-size:14.5px;font-variant-numeric:tabular-nums}
+.ci-retired-hist__cap{caption-side:top;text-align:left;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;padding:0 0 8px}
+.ci-retired-hist th,.ci-retired-hist td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line)}
+.ci-retired-hist th{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-retired-dl{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
+.ci-retired-dl a{color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none}
+.ci-card--retired{opacity:.72;background:var(--cream-2);border-style:dashed}
+.ci-card--retired a{color:var(--ink-soft)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
 .ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
 .ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 6px}
@@ -403,23 +413,6 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
-/* ingredient-recalls-css:start */
-.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
-.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
-.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
-.ci-recalls__ctx p{margin:2px 0}
-.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
-.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
-.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
-.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
-/* ingredient-recalls-css:end */
-/* supply-picture-css:start */
-.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
-.ci-supply__rel strong{font-weight:700}
-.ci-supply__caveat{color:var(--ink-soft)}
-.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
-/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=a8b747b9ea6c" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=5460be180318" onload="this.onload=null;this.rel='stylesheet'">
@@ -628,25 +621,11 @@ main{padding-top:64px}
     </aside>
     <h2>Qué puedes hacer ahora</h2>
     <p>Compara tu última factura de camarón con tus facturas recientes, o abre <a href="/es/tools/cost-pulse/?from=shrimp">la herramienta en vivo</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
-<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
-    <h2 id="ci-supply-h">De dónde llega</h2>
-    <p class="ci-supply__note">El panorama de suministro público de este ingrediente — comercio, producción nacional y (para mariscos) desembarques silvestres. Contexto descriptivo, nunca un pronóstico ni tu precio de entrega. Ficha completa en el <a href="/es/cost-index/menu-pricing/#shrimp">registro del ingrediente</a>.</p>
-    <p class="ci-supply__p">El valor de importación general de EE. UU. fue de $1.62B (2025), serie 2021-2025, interanual +1.7%. Principales orígenes: 50% Ecuador · 14% Indonesia · 12% India (concentrado, HHI 0.3). Meses pico de importación: ene · nov · dic. <span class="ci-supply__caveat">Valor de aduana nominal (US Census, dominio público) — mezcla precio y cantidad, nunca volumen ni tu precio de entrega.</span> <span class="ci-supply__meta">Código HS 030617 (+16 HS10 lines).</span> <span class="ci-supply__meta">Camarón con cáscara congelado, sumado a lo largo de todos los calibres por conteo-por-kg (de cultivo + silvestre). El HS no distingue con cabeza de sin cabeza con cáscara, así que ambos slugs con cáscara comparten este flujo.</span></p>
-    <p class="ci-supply__p">Exportaciones de EE. UU.: $18M (2025). <span class="ci-supply__caveat">Valor de exportación nacional (US Census, DF=1) — valor nominal, nunca tu precio de entrega.</span></p>
-    <p class="ci-supply__p ci-supply__rel"><strong>Los desembarques silvestres de EE. UU. fueron de $312M (2024), junto a $1.59B de importaciones el mismo año (2024).</strong> <span class="ci-supply__caveat">Dos medidas distintas — valor en muelle (primera venta) de la captura silvestre frente al valor en aduana de las importaciones — no una razón de participación en el suministro. La mayoría de las importaciones de esta especie son de cultivo (acuicultura) en el extranjero.</span></p>
-  </section><!-- /supply-picture:end -->
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="/es/cost-index/">Ver todas las lecturas</a>
       <a class="btn btn-ghost" href="/es/glossary/cost-index/">Qué es un índice de costos</a>
     </div>
   </div></div>
-<!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-shrimp">
-    <h2 id="ci-recalls-h-shrimp">Historial de retiros de seguridad alimentaria</h2>
-    <p class="ci-recalls__lede">22 eventos de retiro documentados nombran este ingrediente en el texto del producto, 2 de Clase I — mostrados como co-ocurrencia, nunca una causa, nunca unidos a un precio.</p>
-    <p class="ci-recalls__stat mono">22 eventos · 41 avisos · último 2026-06-10</p>
-    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2026-06-10 · Class III · Terminated · Albertsons Companies LLC · Nationwide.</span></p><p class="ci-recalls__prod">UPC 23070400000 SHRIMP SKEWER MEDIUM RAW CILANTRO LIME This is Albertson's store-made item and sold by random weight at point of sale with grocery store's scale label.</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2026-06-10 · Class II · Terminated · Albertsons Companies LLC · Nationwide.</span></p><p class="ci-recalls__prod">UPC 23245700000 SHRIMP &amp; SURIMI CEVICHE FRESH This is Albertson's store-made item and sold by random weight at point of sale with grocery store's scale label.</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2026-02-25 · Class II · Terminated · H &amp; N Group Inc. · Product was distributed to a single retail consignee with multiple locations (~30) in the greater Houston and Gulf Coas…</span></p><p class="ci-recalls__prod">Frozen Cooked Medium Shrimp Peeled &amp; Deveined, Tail Off-White Shrimp; 1 lbs retail plastic bag. UPC: 041220333035</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2026-01-21 · Class II · Ongoing · AZ Gems, Inc. · Product was shipped nationwide and distributed exclusively under the Member's Mark label.</span></p><p class="ci-recalls__prod">Jumbo RAW SHRIMP, All Natural, Chemical Free, No artificial ingredients, NET WT. 32 OZ (2 LB) 907g UPC: 1 93968 00697 6</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2026-01-14 · Class II · Terminated · DIRECT SOURCE SEAFOOD LLC · Market 32 brand frozen raw shrimp was sold in CT, MA, NH, NY, PA, and VT. waterfront BISTRO frozen raw shrimp was sold …</span></p><p class="ci-recalls__prod">waterfront BISTRO brand Frozen Raw Shrimp EZ PEEL SHELL &amp; TAIL ON Colossal 8-12 Count per Lb. Net wt. 32oz (2LB). Product is packaged in white flexible plastic pouch with multicol…</p></li></ul>
-    <p class="ci-recalls__caveat">La etiqueta es una coincidencia de texto completo en el producto, no un vínculo de suministro ni de precio; puede incluir productos compuestos que solo mencionan el ingrediente. Los eventos son recuentos distintos, no avisos. Solo alimentos regulados por la FDA.</p>
-  </section><!-- /ingredient-recalls:end -->
 </main>
 <footer class="site-footer" id="footer"></footer>
 <!-- Newsletter signup — eager progressive enhancement. This page ships

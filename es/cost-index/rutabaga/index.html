@@ -309,6 +309,16 @@ main{padding-top:64px}
 
 :root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
+.ci-read--retired{border-left-color:var(--stone);background:var(--cream-2)}
+.ci-read--retired .ci-read__head{color:var(--stone)}
+.ci-retired-hist{width:100%;border-collapse:collapse;margin:14px 0 6px;font-size:14.5px;font-variant-numeric:tabular-nums}
+.ci-retired-hist__cap{caption-side:top;text-align:left;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;padding:0 0 8px}
+.ci-retired-hist th,.ci-retired-hist td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line)}
+.ci-retired-hist th{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-retired-dl{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
+.ci-retired-dl a{color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none}
+.ci-card--retired{opacity:.72;background:var(--cream-2);border-style:dashed}
+.ci-card--retired a{color:var(--ink-soft)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
 .ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
 .ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 6px}
@@ -403,23 +413,6 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
-/* ingredient-recalls-css:start */
-.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
-.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
-.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
-.ci-recalls__ctx p{margin:2px 0}
-.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
-.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
-.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
-.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
-/* ingredient-recalls-css:end */
-/* supply-picture-css:start */
-.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
-.ci-supply__rel strong{font-weight:700}
-.ci-supply__caveat{color:var(--ink-soft)}
-.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
-/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=a8b747b9ea6c" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=5460be180318" onload="this.onload=null;this.rel='stylesheet'">
@@ -711,12 +704,6 @@ main{padding-top:64px}
   <li>Observa la dirección unas semanas antes de re-cotizar un platillo — una sola semana es ruido.</li>
 </ol>
 <p>¿Vas a costear un platillo que lleva colinabo (rutabaga)? Usa la <a href="/es/tools/plate-cost/?from=rutabaga">Calculadora de Costo por Platillo</a>.</p>
-<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
-    <h2 id="ci-supply-h">De dónde llega</h2>
-    <p class="ci-supply__note">El panorama de suministro público de este ingrediente — comercio, producción nacional y (para mariscos) desembarques silvestres. Contexto descriptivo, nunca un pronóstico ni tu precio de entrega. Ficha completa en el <a href="/es/cost-index/menu-pricing/#rutabaga">registro del ingrediente</a>.</p>
-    <p class="ci-supply__p">El valor de importación general de EE. UU. fue de $11M (2025), serie 2023-2025, interanual -4.8%. Principales orígenes: 62% México · 23% Canadá · 8% Japón (concentrado, HHI 0.44). Meses pico de importación: ago · sep · oct. <span class="ci-supply__caveat">Valor de aduana nominal (US Census, dominio público) — mezcla precio y cantidad, nunca volumen ni tu precio de entrega.</span> <span class="ci-supply__meta">Código HS 0706904040.</span> <span class="ci-supply__meta">Salsifí y raíces comestibles similares NESOI — los nabos suecos/rutabaga caen aquí; no hay una línea específica de rutabaga.</span></p>
-    <p class="ci-supply__p">Exportaciones de EE. UU.: $21M (2025). <span class="ci-supply__caveat">Valor de exportación nacional (US Census, DF=1) — valor nominal, nunca tu precio de entrega.</span></p>
-  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="es" data-surface="cost-index-ingredient">
@@ -732,10 +719,6 @@ main{padding-top:64px}
         </form>
       </div>
     </div>
-    <!-- ingredient-recalls:start --><section class="ci-profile ci-recalls ci-recalls--none" aria-labelledby="ci-recalls-h-rutabaga">
-    <h2 id="ci-recalls-h-rutabaga">Historial de retiros de seguridad alimentaria</h2>
-    <p class="ci-recalls__none">Sin retiro en el registro de openFDA (desde 2020). Solo alimentos regulados por la FDA — los retiros de carne, aves y huevo (USDA/FSIS) no aparecen aquí, así que la ausencia no es una garantía.</p>
-  </section><!-- /ingredient-recalls:end -->
     <section class="ci-faq" aria-labelledby="ci-faq-h-rutabaga">
   <h2 id="ci-faq-h-rutabaga">Preguntas frecuentes</h2>
   <div class="ci-faq__item"><h3 class="ci-faq__q">¿Cuánto cuesta colinabo (rutabaga) al mayoreo ahora mismo?</h3><p class="ci-faq__a">Cambia semana a semana. La lectura de mercado de arriba muestra el rango típico actual y la fecha detrás del dato; compárala con tu propia factura.</p></div>

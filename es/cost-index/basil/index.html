@@ -309,6 +309,16 @@ main{padding-top:64px}
 
 :root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
+.ci-read--retired{border-left-color:var(--stone);background:var(--cream-2)}
+.ci-read--retired .ci-read__head{color:var(--stone)}
+.ci-retired-hist{width:100%;border-collapse:collapse;margin:14px 0 6px;font-size:14.5px;font-variant-numeric:tabular-nums}
+.ci-retired-hist__cap{caption-side:top;text-align:left;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;padding:0 0 8px}
+.ci-retired-hist th,.ci-retired-hist td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line)}
+.ci-retired-hist th{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-retired-dl{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
+.ci-retired-dl a{color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none}
+.ci-card--retired{opacity:.72;background:var(--cream-2);border-style:dashed}
+.ci-card--retired a{color:var(--ink-soft)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
 .ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
 .ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 6px}
@@ -403,17 +413,6 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
-/* ingredient-recalls-css:start */
-.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
-.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
-.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
-.ci-recalls__ctx p{margin:2px 0}
-.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
-.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
-.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
-.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
-/* ingredient-recalls-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=a8b747b9ea6c" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=5460be180318" onload="this.onload=null;this.rel='stylesheet'">
@@ -670,13 +669,6 @@ main{padding-top:64px}
         </form>
       </div>
     </div>
-    <!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-basil">
-    <h2 id="ci-recalls-h-basil">Historial de retiros de seguridad alimentaria</h2>
-    <p class="ci-recalls__lede">10 eventos de retiro documentados nombran este ingrediente en el texto del producto, 3 de Clase I — mostrados como co-ocurrencia, nunca una causa, nunca unidos a un precio.</p>
-    <p class="ci-recalls__stat mono">10 eventos · 10 avisos · último 2025-12-10</p>
-    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2025-12-10 · Class II · Terminated · Hale inc · KY</span></p><p class="ci-recalls__prod">Lotsa Pasta International Food Shop Fresh Basil Infused Olive Oil, Net Wt. 12 oz. (375ml), packaged in a glass bottle, UPC 736211448316, packed 12 bottles per case</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2025-08-20 · Class II · Terminated · AND GO CONCEPTS DBA SALAD AND GO · Arizona, Oklahoma, Nevada, Texas</span></p><p class="ci-recalls__prod">FG60005 Blueberry Basil Lemonade</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2024-05-22 · Class I · Terminated · Infinite Herbs, LLC · Florida, Illinois, Missouri, Virginia, Connecticut, Pennsylvania, and Massachusetts.</span></p><p class="ci-recalls__prod">Infinite Herbs Organic Basil packed in a clear 2.5 oz, 2.0 oz, and 4 oz PET clamshell container.</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2022-11-09 · Class II · Completed · Bella Brands, LLC DBA Bella Cucina Artful Food · Product was shipped to the following states: AK, AL, AR, AZ, CA, CO, CT, DE, FL, GA, IA, ID, IL, IN, KY, LA, MA, MD, ME…</span></p><p class="ci-recalls__prod">Bella Cucina Artful Food Fresh Basil Pesto Net Wt. 3 oz (84.5g) bag, UPC 6 19193 00211 3 Manufactured by Bella Cucina Artful Food Atlanta, GA 30310</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2021-08-04 · Class I · Terminated · Old Souls Farms LLC · Distributed to Ohio and Kentucky</span></p><p class="ci-recalls__prod">Old Souls Farm Basil 1 lb, 1 oz, 10 lbs,25 lbs, 3 -1 lbs, 4 oz, and Living clamshells - 1oz 18 per case, 5oz 6 per case bulk bags - 1lb is 3 per case, 10lbs 1 per case, 25lbs 1 pe…</p></li></ul>
-    <p class="ci-recalls__caveat">La etiqueta es una coincidencia de texto completo en el producto, no un vínculo de suministro ni de precio; puede incluir productos compuestos que solo mencionan el ingrediente. Los eventos son recuentos distintos, no avisos. Solo alimentos regulados por la FDA.</p>
-  </section><!-- /ingredient-recalls:end -->
     <section class="ci-faq" aria-labelledby="ci-faq-h-basil">
   <h2 id="ci-faq-h-basil">Preguntas frecuentes</h2>
   <div class="ci-faq__item"><h3 class="ci-faq__q">¿Cuánto cuesta albahaca al mayoreo ahora mismo?</h3><p class="ci-faq__a">Cambia semana a semana. La lectura de mercado de arriba muestra el rango típico actual y la fecha detrás del dato; compárala con tu propia factura.</p></div>

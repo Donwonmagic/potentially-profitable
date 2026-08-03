@@ -30,7 +30,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/cost-index/events/#page","url":"https://muntin.digital/cost-index/events/","inLanguage":"en-US","isPartOf":{"@id":"https://muntin.digital/#website"},"mainEntity":{"@id":"https://muntin.digital/cost-index/events/#dataset"},"speakable":{"@type":"SpeakableSpecification","cssSelector":["h1",".ci-answer"]},"name":"Events that moved the food-cost market"},{"@type":"Dataset","@id":"https://muntin.digital/cost-index/events/#dataset","name":"Events that moved the food-cost market","url":"https://muntin.digital/cost-index/events/","description":"A cited history of 39 events (2002–2026) that coincided with U.S. wholesale price moves — avian flu, freezes, disease — each with primary sources.","temporalCoverage":"2002/2026","license":"https://creativecommons.org/licenses/by/4.0/","creator":{"@id":"https://muntin.digital/#business"},"isAccessibleForFree":true,"distribution":{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"https://muntin.digital/cost-index/events.json"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Cost index","item":"https://muntin.digital/cost-index/"},{"@type":"ListItem","position":3,"name":"Events that moved the food-cost market","item":"https://muntin.digital/cost-index/events/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Dataset","@id":"https://muntin.digital/cost-index/events/#dataset","name":"Events that moved the food-cost market","url":"https://muntin.digital/cost-index/events/","description":"A cited history of 39 events (2002–2026) that coincided with U.S. wholesale price moves — avian flu, freezes, disease — each with primary sources.","temporalCoverage":"2002/2026","license":"https://creativecommons.org/licenses/by/4.0/","creator":{"@id":"https://muntin.digital/#business"},"isAccessibleForFree":true,"distribution":{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"https://muntin.digital/cost-index/events.json"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Cost index","item":"https://muntin.digital/cost-index/"},{"@type":"ListItem","position":3,"name":"Events that moved the food-cost market","item":"https://muntin.digital/cost-index/events/"}]}]}</script>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 <style>
@@ -309,6 +309,16 @@ main{padding-top:64px}
 
 :root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
 .ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
+.ci-read--retired{border-left-color:var(--stone);background:var(--cream-2)}
+.ci-read--retired .ci-read__head{color:var(--stone)}
+.ci-retired-hist{width:100%;border-collapse:collapse;margin:14px 0 6px;font-size:14.5px;font-variant-numeric:tabular-nums}
+.ci-retired-hist__cap{caption-side:top;text-align:left;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--stone);font-weight:600;padding:0 0 8px}
+.ci-retired-hist th,.ci-retired-hist td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line)}
+.ci-retired-hist th{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
+.ci-retired-dl{font-size:13.5px;color:var(--ink-soft);margin:8px 0 0}
+.ci-retired-dl a{color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none}
+.ci-card--retired{opacity:.72;background:var(--cream-2);border-style:dashed}
+.ci-card--retired a{color:var(--ink-soft)}
 .ci-read--pending .ci-read__head{color:#8a6d1f}
 .ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
 .ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 6px}
