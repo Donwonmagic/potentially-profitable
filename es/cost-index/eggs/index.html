@@ -30,7 +30,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/es/cost-index/eggs/#page","url":"https://muntin.digital/es/cost-index/eggs/","name":"Huevo","inLanguage":"es-US","isPartOf":{"@id":"https://muntin.digital/#website"},"description":"Aún no publicamos un precio mayorista para huevo: solo mostramos una cifra cuando los datos públicos respaldan una lectura honesta y completa."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Índice de costos","item":"https://muntin.digital/es/cost-index/"},{"@type":"ListItem","position":3,"name":"Huevo","item":"https://muntin.digital/es/cost-index/eggs/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/es/cost-index/eggs/#page","url":"https://muntin.digital/es/cost-index/eggs/","name":"Huevo","inLanguage":"es-US","isPartOf":{"@id":"https://muntin.digital/#website"},"description":"Aún no publicamos un precio mayorista para huevo: solo mostramos una cifra cuando los datos públicos respaldan una lectura honesta y completa.","speakable":{"@type":"SpeakableSpecification","cssSelector":["h1",".ci-read__head"]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://muntin.digital/es/"},{"@type":"ListItem","position":2,"name":"Índice de costos","item":"https://muntin.digital/es/cost-index/"},{"@type":"ListItem","position":3,"name":"Huevo","item":"https://muntin.digital/es/cost-index/eggs/"}]}]}</script>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 <style>
@@ -413,6 +413,23 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=a8b747b9ea6c" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=5460be180318" onload="this.onload=null;this.rel='stylesheet'">
@@ -615,11 +632,24 @@ main{padding-top:64px}
     
     <h2>Qué puedes hacer ahora</h2>
     <p>Compara tu última factura de huevo con tus facturas recientes, o abre <a href="/es/tools/cost-pulse/?from=eggs">la herramienta en vivo</a> para los ingredientes que sí cubrimos. Esta página se completará cuando lo hagan los datos.</p>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">De dónde llega</h2>
+    <p class="ci-supply__note">El panorama de suministro público de este ingrediente — comercio, producción nacional y (para mariscos) desembarques silvestres. Contexto descriptivo, nunca un pronóstico ni tu precio de entrega. Ficha completa en el <a href="/es/cost-index/menu-pricing/#eggs">registro del ingrediente</a>.</p>
+    <p class="ci-supply__p">El valor de importación general de EE. UU. fue de $116M (2025), serie 2012-2025, interanual +1745.1%. Principales orígenes: 36% Brasil · 28% México · 24% Turquía (concentrado, HHI 0.27). Meses pico de importación: abr · may · ago. <span class="ci-supply__caveat">Valor de aduana nominal (US Census, dominio público) — mezcla precio y cantidad, nunca volumen ni tu precio de entrega.</span> <span class="ci-supply__meta">Código HS 040721.</span> <span class="ci-supply__meta">Huevos de gallina frescos con cáscara (NESOI); datos desde 2012.</span></p>
+    <p class="ci-supply__p">Precio de campo: 3.75 $ / DOZEN. Exportaciones de EE. UU.: $236M (2025). <span class="ci-supply__caveat">Valor a precio de campo (USDA NASS) — lo que gana el productor, no un precio mayorista ni de entrega.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="/es/cost-index/">Ver todas las lecturas</a>
       <a class="btn btn-ghost" href="/es/glossary/cost-index/">Qué es un índice de costos</a>
     </div>
   </div></div>
+<!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-eggs">
+    <h2 id="ci-recalls-h-eggs">Historial de retiros de seguridad alimentaria</h2>
+    <p class="ci-recalls__lede">7 eventos de retiro documentados nombran este ingrediente en el texto del producto, 6 de Clase I — mostrados como co-ocurrencia, nunca una causa, nunca unidos a un precio.</p>
+    <p class="ci-recalls__stat mono">7 eventos · 13 avisos · último 2025-11-05</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2025-11-05 · Class I · Terminated · Echo Lake Foods, Inc. · CA</span></p><p class="ci-recalls__prod">EchoLakeFoods MF 3067 CNFREE Cage Free Precooked IAF Scrambled Eggs Net Wt. 28 lbs. Bulk. Keep Frozen. Manufactured by: Echo Lake Foods, Inc., 2319 Raymond Ave. Franksville, WI 53…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2025-07-09 · Class I · Ongoing · August Egg Company · AZ, CA, IL, IN, NE, NM, NV, WA, WY</span></p><p class="ci-recalls__prod">--- Shell Eggs; Brown; Various sizes - medium, large, and jumbo; Various pack sizes - 5, 12, 18, and Loose ---- Clover Organic Large Brown 12 eggs --- First Street Cage Free Large…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2025-01-01 · Class I · Terminated · Handsome Brook Farms, LLC · AL, GA, NC, SC, TN</span></p><p class="ci-recalls__prod">Kirkland Signature ORGANIC EGGS PASTURE-RAISED 24 EGGS, GRADE A LARGE, NET WEIGHT 48OZ (3 LB) 1.36 kg, UPC 0 96619 10680 6, DISTRIBUTED BY: COSTCO WHOLESALE CORPORATION 730 LAKE D…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2024-10-09 · Class I · Terminated · Milo's Poultry Farms, LLC · WI Expanded: IL, MI, WI</span></p><p class="ci-recalls__prod">Grade A Brown Chicken Eggs, in shell, Bulk 15 dozen. For Foodservice. Keep Refrigerated. Sold with the following brands: 1. Milo's Poultry Farms, N 3873 Valley Road, Bonduel, WI 5…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documentado alrededor de esta fecha</strong> — coincidencia en el tiempo, nunca una causa.</p><p class="ci-recalls__meta"><span class="mono">2024-06-26 · Class I · Terminated · New Seasons Market LLC · Distributed in Oregon and Washington.</span></p><p class="ci-recalls__prod">New Seasons Market Strawberry Rhubarb Bakewell Tart, packaged in a plastic clamshell with scale label. Contains Milk, Wheat, Eggs.</p></li></ul>
+    <p class="ci-recalls__caveat">La etiqueta es una coincidencia de texto completo en el producto, no un vínculo de suministro ni de precio; puede incluir productos compuestos que solo mencionan el ingrediente. Los eventos son recuentos distintos, no avisos. Solo alimentos regulados por la FDA.</p>
+  </section><!-- /ingredient-recalls:end -->
 </main>
 <footer class="site-footer" id="footer"></footer>
 <!-- Newsletter signup — eager progressive enhancement. This page ships

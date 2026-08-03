@@ -30,7 +30,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/cost-index/eggs/#page","url":"https://muntin.digital/cost-index/eggs/","name":"Eggs","inLanguage":"en-US","isPartOf":{"@id":"https://muntin.digital/#website"},"description":"We don't publish a wholesale price for eggs yet — the index shows a number only when public data supports an honest, complete read."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Cost index","item":"https://muntin.digital/cost-index/"},{"@type":"ListItem","position":3,"name":"Eggs","item":"https://muntin.digital/cost-index/eggs/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/cost-index/eggs/#page","url":"https://muntin.digital/cost-index/eggs/","name":"Eggs","inLanguage":"en-US","isPartOf":{"@id":"https://muntin.digital/#website"},"description":"We don't publish a wholesale price for eggs yet — the index shows a number only when public data supports an honest, complete read.","speakable":{"@type":"SpeakableSpecification","cssSelector":["h1",".ci-read__head"]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Cost index","item":"https://muntin.digital/cost-index/"},{"@type":"ListItem","position":3,"name":"Eggs","item":"https://muntin.digital/cost-index/eggs/"}]}]}</script>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 <style>
@@ -413,6 +413,23 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=a8b747b9ea6c" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=5460be180318" onload="this.onload=null;this.rel='stylesheet'">
@@ -671,11 +688,24 @@ main{padding-top:64px}
     
     <h2>What you can do now</h2>
     <p>Check your last eggs invoice against your own recent ones, or open <a href="/tools/cost-pulse/?from=eggs">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#eggs">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $116M (2025), series 2012-2025, YoY +1745.1%. Top origins: 36% Brazil · 28% Mexico · 24% Turkey (concentrated, HHI 0.27). Peak import months: Apr · May · Aug. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 040721.</span> <span class="ci-supply__meta">Fresh chicken eggs in shell (NESOI); data 2012+.</span></p>
+    <p class="ci-supply__p">Farm-gate price: 3.75 $ / DOZEN. US exports: $236M (2025). <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="/cost-index/">Browse all readings</a>
       <a class="btn btn-ghost" href="/glossary/cost-index/">What is a cost index?</a>
     </div>
   </div></div>
+<!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-eggs">
+    <h2 id="ci-recalls-h-eggs">Food-safety recall history</h2>
+    <p class="ci-recalls__lede">7 documented recall events name this ingredient in the product text, 6 Class I — shown as co-occurrence, never a cause, never joined to a price.</p>
+    <p class="ci-recalls__stat mono">7 events · 13 notices · latest 2025-11-05</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2025-11-05 · Class I · Terminated · Echo Lake Foods, Inc. · CA</span></p><p class="ci-recalls__prod">EchoLakeFoods MF 3067 CNFREE Cage Free Precooked IAF Scrambled Eggs Net Wt. 28 lbs. Bulk. Keep Frozen. Manufactured by: Echo Lake Foods, Inc., 2319 Raymond Ave. Franksville, WI 53…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2025-07-09 · Class I · Ongoing · August Egg Company · AZ, CA, IL, IN, NE, NM, NV, WA, WY</span></p><p class="ci-recalls__prod">--- Shell Eggs; Brown; Various sizes - medium, large, and jumbo; Various pack sizes - 5, 12, 18, and Loose ---- Clover Organic Large Brown 12 eggs --- First Street Cage Free Large…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2025-01-01 · Class I · Terminated · Handsome Brook Farms, LLC · AL, GA, NC, SC, TN</span></p><p class="ci-recalls__prod">Kirkland Signature ORGANIC EGGS PASTURE-RAISED 24 EGGS, GRADE A LARGE, NET WEIGHT 48OZ (3 LB) 1.36 kg, UPC 0 96619 10680 6, DISTRIBUTED BY: COSTCO WHOLESALE CORPORATION 730 LAKE D…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2024-10-09 · Class I · Terminated · Milo's Poultry Farms, LLC · WI Expanded: IL, MI, WI</span></p><p class="ci-recalls__prod">Grade A Brown Chicken Eggs, in shell, Bulk 15 dozen. For Foodservice. Keep Refrigerated. Sold with the following brands: 1. Milo's Poultry Farms, N 3873 Valley Road, Bonduel, WI 5…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2024-06-26 · Class I · Terminated · New Seasons Market LLC · Distributed in Oregon and Washington.</span></p><p class="ci-recalls__prod">New Seasons Market Strawberry Rhubarb Bakewell Tart, packaged in a plastic clamshell with scale label. Contains Milk, Wheat, Eggs.</p></li></ul>
+    <p class="ci-recalls__caveat">The tag is a whole-word text match on the product, not a supply or price link; it can include composite products that merely name the ingredient. Events are distinct counts, not notices. FDA-regulated foods only.</p>
+  </section><!-- /ingredient-recalls:end -->
 </main>
 <footer class="site-footer" id="footer"></footer>
 <!-- Newsletter signup — eager progressive enhancement. This page ships

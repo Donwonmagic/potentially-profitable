@@ -1,7 +1,6 @@
 {
   "_doc": "Last-good state of every ingredient dropped from the index because its feed stopped publishing. Written by scripts/build-cost-index.mjs at the moment of the drop (the only moment the record still exists); consumed by scripts/build-cost-index-pages.mjs to render the terminal page, and by scripts/check-cost-index-orphans.mjs to tell a retired page from an orphaned one. An entry is REMOVED when the feed comes back.",
-  "_lastReviewed": "2026-07-31",
-  "_reconstructed": "The 2026-07-31 13:38 UTC refresh ran on a main that predated ADR-021, so it dropped scallops without archiving it. This entry was rebuilt by driving buildRetiredArchive() with data/cost-index.json as of 1f4f6475 (the commit before the drop) — the same function, the same predicates, the same bytes it would have written had the code been on main. Not hand-authored.",
+  "_lastReviewed": "2026-08-03",
   "retired": {
     "scallops": {
       "retiredOn": "2026-07-31",

@@ -1,19 +1,19 @@
 {
   "_doc": "Golden render of the monthly Cost Index dispatch email. Built by scripts/build-cost-index-email-preview.mjs from the exact payload the dispatch workflow POSTs; sync-gated by its --check and content-gated by scripts/check-cost-index-email.mjs. unsubUrl is the generic endpoint (real sends carry per-subscriber tokens); postUrl is the latest published edition at build time.",
-  "asOf": "2026-07-30",
+  "asOf": "2026-07-31",
   "sinceDate": "2026-07-06",
   "wowState": "available",
   "stories": [],
   "actionItems": [],
   "postUrl": "https://muntin.digital/blog/cost-index-week-2026-07-06/",
   "subjects": {
-    "en": "Cost Index — week of 2026-07-30",
-    "es": "Índice de costos — semana del 2026-07-30"
+    "en": "Cost Index — week of 2026-07-31",
+    "es": "Índice de costos — semana del 2026-07-31"
   },
   "bytes": {
-    "enHtml": 3088,
-    "enText": 646,
-    "esHtml": 3172,
-    "esText": 728
+    "enHtml": 3081,
+    "enText": 639,
+    "esHtml": 3169,
+    "esText": 725
   }
 }
