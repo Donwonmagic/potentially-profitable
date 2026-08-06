@@ -112,6 +112,16 @@ jobs:
           # state, most recent documented event per ingredient). Reads the fresh index/history/
           # events/registry; --check-gated in CI.
           node scripts/build-cost-index-context.mjs
+          # Rebuild the ingredient state record. It was in check-idem-coverage's
+          # MANUAL registry as operator-fetched data (census/NASS), which is only
+          # half true: its `pressure` and confidence columns derive from
+          # data/cost-index.json, which THIS workflow rewrites — so it went stale on
+          # every refresh and red-lit the deploy with drift no automation could
+          # clear. Observed twice: fixed by hand 2026-07-31, drifted again by
+          # 2026-08-05 (steady/low -> easing/moderate across ~40 ingredients).
+          # Must run BEFORE inject-supply-picture below, which reads its
+          # cost-index/ingredient-state-record.json output.
+          node scripts/build-ingredient-state-record.mjs
           # Rebuild the pure-data/ committed artifacts whose inputs are all
           # final at this point (cost-index.json + seed + deep history +
           # seasonality) — each is --check-gated in check-all, so any one left
@@ -299,7 +309,17 @@ jobs:
           # next run — a red nobody can clear, caused by the staging list, not the data.
           # `git checkout -- .` below cannot rescue it either: the file is untracked on
           # the run that creates it, so an omission here loses it silently.
+          # data/cost-index-picker.js and data/ingredient-state-record.json are
+          # BUILT ABOVE and were never staged, so `git checkout -- .` below threw
+          # them away on every run since they were introduced. Both are (idem)
+          # --checked by check-all, and both derive from the data this workflow
+          # rewrites, so the discard made them drift on EVERY refresh — a red the
+          # deploy could not clear, caused by this list rather than by the data.
+          # Same shape as the data/cost-index-retired.json omission fixed on
+          # 2026-07-31, two files over. The cost-index/ingredient-state-record.*
+          # pair is already covered by the `cost-index/` entry below.
           git add data/cost-index.json data/cost-index-retired.json data/cost-index.js \
+            data/cost-index-picker.js data/ingredient-state-record.json \
             data/cost-index-health.json data/seasonality.json \
             data/cost-lockfloat.json data/cost-lockfloat.js \
             data/cost-anomaly-log.json \

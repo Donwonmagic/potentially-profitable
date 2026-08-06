@@ -71,7 +71,6 @@ const OPERATOR_DATA = {
  */
 export const MANUAL = {
   // --- operator-fetched public data (ADR-013) ------------------------------
-  'build-ingredient-state-record.mjs': OPERATOR_DATA,
   'build-eia-energy-backdrop.mjs': OPERATOR_DATA,
   'build-crop-condition-backdrop.mjs': OPERATOR_DATA,
   'build-noaa-landings.mjs': OPERATOR_DATA,
