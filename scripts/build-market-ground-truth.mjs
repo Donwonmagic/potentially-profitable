@@ -59,6 +59,16 @@
  * (default AS_OF below), never against `Date.now()`; bumping that constant is a
  * one-line edit and is the honest way to re-age the corpus.
  *
+ * SIZE, AND THE EXPOSURE THAT COMES WITH IT. The emitted corpus is ~6.8 MB — 3,625
+ * substantive claims with their text. `mention` records (61% of hits) are dropped from
+ * the per-competitor arrays for exactly this reason; the counts survive in `claimKinds`.
+ * It is NOT trimmed further, because a ground-truth corpus that drops evidence to look
+ * tidy is no longer ground truth. But note what it is: a single file naming 56
+ * companies, what this company believes about each, and where its own positioning
+ * contradicts itself — committed to a repo the 2026-08-07 audit found to be PUBLIC.
+ * Deciding whether that file belongs in this repo, in .gitignore, or behind a private
+ * remote is a founder call, and it should be made before the next push, not after.
+ *
  * DO NOT WIRE THIS INTO check-all.mjs. `--check` asserts that the emitted corpus
  * matches what the scanner currently sees; the corpus is SUPPOSED to move when
  * someone writes a new market doc. Wiring it into the deploy would turn "the founder
@@ -311,11 +321,35 @@ const BUYER_SIGNALS = [
 // Market sizing / money-at-stake detection
 // ---------------------------------------------------------------------------
 
+/**
+ * Muntin's OWN posted prices. Harvested separately because they are competitor-free
+ * lines — a line-anchored competitor scan cannot see them, and the whole point of a
+ * pricing corpus is to put what the company charges next to what it says rivals charge.
+ * A tier word plus a dollar literal on one line; the tier words are the four the repos
+ * actually use (Solo / Team / Accountant / founding-per-location).
+ */
+const OWN_PRICE_PATTERNS = [
+  // Tier name bound tightly to its number. Loose token matching pulled in Spanish "solo"
+  // (= "only") and every article that mentions a dollar amount; a tier word must sit
+  // within a few characters of the price to count.
+  { id: 'tier-solo',       re: /\b(solo)\b[^.$\n]{0,6}\$\s?\d/i },
+  { id: 'tier-team',       re: /\b(team|equipo)\b[^.$\n]{0,6}\$\s?\d/i },
+  { id: 'tier-accountant', re: /\b(accountant|contadora)\b[^.$\n]{0,6}\$\s?\d/i },
+  { id: 'per-seat',        re: /\$\s?\d[\d.,]*\s*(per seat|\/seat|por asiento)/i },
+  { id: 'per-location',    re: /\$\s?\d[\d.,]*\s*(a|per|al)\s*(month|mes)?\s*(per location|por ubicaci)/i },
+  { id: 'founding-rate',   re: /\b(founding (rate|member|price)|tarifa de fundador|price[- ]lock)\b[^\n]{0,120}\$\s?\d/i },
+  { id: 'stripe-tier',     re: /stripe[- ]tiers?[^\n]{0,120}\$\s?\d/i },
+];
+
 const SIZING_PATTERNS = [
   { id: 'tam',            re: /\b(TAM|SAM|SOM|total addressable|addressable market|market size)\b/ },
-  { id: 'install-base',   re: /~?\s?[\d.,]+\s?[KkMm]?\s+(U\.?S\.?\s+)?(restaurants|locations|operators|merchants|customers|establishments)\b/ },
-  { id: 'arr-projection', re: /\b(ARR|MRR|revenue projection|annual recurring)\b/ },
-  { id: 'burn-capital',   re: /\b(burn|founder equity|personal capital|runway|raise|seed round)\b.{0,60}\$|\$[\d.,]+\s?[kKmM]\b.{0,40}\b(burn|equity|capital|runway)\b/ },
+  // A population number, not a loop bound. "1-3 days x 1-2 locations" and "org_1
+  // locations" were the two shapes that made this pattern useless: `locations` is a
+  // code word in this product, and small integers are almost never market sizes.
+  { id: 'install-base',   re: /~?\s?(\d{3,}[\d,]*|\d+(\.\d+)?\s?[KkMm])\+?\s+(U\.?S\.?\s+)?(restaurants|independent restaurants|operators|merchants|customers|establishments|kitchens)\b/ },
+  { id: 'arr-projection', re: /\b(ARR|MRR|annual recurring revenue|revenue projection)\b/ },
+  // Money the FOUNDER puts in or lives on — not a per-request spend breaker.
+  { id: 'burn-capital',   re: /\b(net burn|monthly burn|cash burn|founder equity|personal (capital|money|savings)|runway|seed round|raise a round)\b|\$[\d.,]+\s?[kKmM]\b[^\n]{0,40}\b(burn|equity|capital|runway|of (his|her|their) own)\b/ },
   { id: 'market-share',   re: /\b\d{1,3}(\.\d+)?\s?%\s+(of\s+)?(the\s+)?(market|restaurants|operators|independents|share)\b/i },
 ];
 
@@ -495,6 +529,7 @@ function build(asOf) {
   const byCompetitor = new Map();  // id -> { claims: [] }
   const icpStatements = [];
   const sizingStatements = [];
+  const ownPricing = [];
   const perFileHits = new Map();   // "repo:rel" -> count
 
   const productPresent = fs.existsSync(REPOS.product);
@@ -523,8 +558,12 @@ function build(asOf) {
         // treating it as such silently made half the corpus look freshly researched.
         const lineISO = norm.match(ISO_RE);
         const inlineUsable = lineISO && daysBetween(lineISO[0], asOf) >= 0;
-        const claimDate = inlineUsable ? lineISO[0] : fd.date;
-        const dateBasis = inlineUsable ? 'inline' : lineISO ? `${fd.basis}(inline-date-is-future)` : fd.basis;
+        let claimDate = inlineUsable ? lineISO[0] : fd.date;
+        let dateBasis = inlineUsable ? 'inline' : lineISO ? `${fd.basis}(inline-date-is-future)` : fd.basis;
+        // Same rule for the file-level date: `runbooks/launch-plan-2026-11-13.md` is
+        // named for a target, not a write date. Dating its claims to November made the
+        // corpus report negative ages.
+        if (claimDate && daysBetween(claimDate, asOf) < 0) { claimDate = null; dateBasis = `${dateBasis}(future-target-not-write-date)`; }
         const source = `${repoName}:${rel}:${i + 1}`;
 
         // --- competitors ---
@@ -571,6 +610,17 @@ function build(asOf) {
             claimDate,
             dateBasis,
             ageDays: daysBetween(claimDate, asOf),
+          });
+        }
+
+        // --- Muntin's own posted price ---
+        const ownHits = OWN_PRICE_PATTERNS.filter((p) => p.re.test(norm)).map((p) => p.id);
+        if (ownHits.length) {
+          ownPricing.push({
+            patterns: ownHits,
+            text: norm, source, repo: repoName, file: rel, line: i + 1, surface,
+            claimDate, dateBasis, ageDays: daysBetween(claimDate, asOf),
+            priceLiterals: priceLiterals(norm),
           });
         }
 
@@ -632,6 +682,12 @@ function build(asOf) {
       claimDateEarliest: dated[0] || null,
       claimDateLatest: dated[dated.length - 1] || null,
       staleDaysAtLatestClaim: dated.length ? daysBetween(dated[dated.length - 1], asOf) : null,
+      // The two perishable kinds, dated separately. "Latest claim" flatters a competitor
+      // that an audit merely re-cited last week; the newest PRICE and the newest EVENT are
+      // what actually decay, so they get their own clocks.
+      newestPricingClaim: newestOf(claims, 'pricing'),
+      newestDislocationClaim: newestOf(claims, 'dislocation'),
+      publicPageClaimCount: claims.filter((x) => x.surface === 'public-page' && x.claimKind !== 'mention').length,
       undatedClaimCount: claims.filter((x) => !x.claimDate).length,
       verification: {
         status: tracked.length ? 'baseline-tracked' : 'asserted-never-verified',
@@ -643,13 +699,26 @@ function build(asOf) {
         verifiedAgeDays: tracked.length ? Math.max(...tracked.map((t) => t.ageDays ?? 0)) : null,
       },
       files,
-      claims,
+      // Only substantive claims are carried in full. `mention` records are presence, not
+      // knowledge, and they were 61% of the corpus and ~6 MB of the emitted file — a
+      // committed artifact that large is its own problem in a repo whose leaked-strategy
+      // exposure is already measured in megabytes. The count stays in `claimKinds`; a
+      // bounded sample stays below so the shape is still inspectable.
+      claims: substantive,
+      mentionSamples: claims.filter((x) => x.claimKind === 'mention').slice(0, 5),
     });
   }
   competitors.sort((a, b) => b.substantiveClaimCount - a.substantiveClaimCount || (a.id < b.id ? -1 : 1));
 
   // ---- derived cuts ----
-  const allClaims = competitors.flatMap((c) => c.claims.map((x) => ({ competitor: c.id, competitorName: c.name, ...x })));
+  // Derived from the UNTRIMMED harvest, not from `competitors[].claims` — that array
+  // drops `mention` records to keep the emitted file small, and every count below
+  // (claimsByKind, claimsBySurface, medians) must still be over the whole corpus.
+  const allClaims = [];
+  for (const c of COMPILED) {
+    for (const x of byCompetitor.get(c.id) || []) allClaims.push({ competitor: c.id, competitorName: c.name, ...x });
+  }
+  allClaims.sort((a, b) => (a.source < b.source ? -1 : a.source > b.source ? 1 : a.competitor < b.competitor ? -1 : 1));
   const uniqBySource = (arr) => {
     const seen = new Set(); const out = [];
     for (const x of arr) { const k = `${x.source}|${x.competitor}`; if (seen.has(k)) continue; seen.add(k); out.push(x); }
@@ -660,7 +729,10 @@ function build(asOf) {
     .sort((a, b) => (a.source < b.source ? -1 : 1));
   const whiteSpace = uniqBySource(allClaims.filter((x) => x.claimKind === 'white-space'))
     .sort((a, b) => (a.source < b.source ? -1 : 1));
-  const competitorPricing = uniqBySource(allClaims.filter((x) => x.claimKind === 'pricing' && x.priceLiterals.length))
+  // Every pricing-kind claim, literal or not: "sales-quoted" and "several hundred per
+  // location" are price claims that carry no dollar sign and were the two most
+  // load-bearing ones in the corpus.
+  const competitorPricing = uniqBySource(allClaims.filter((x) => x.claimKind === 'pricing'))
     .sort((a, b) => (a.source < b.source ? -1 : 1));
 
   // ---- ICP contradiction matrix ----
@@ -730,8 +802,15 @@ function build(asOf) {
       dirsSkipped: stats.dirsSkipped,
       filesSkippedByExtension: stats.filesSkippedExt,
       filesSkippedBySize: stats.filesSkippedSize,
+      filesSkippedAsSelfReference: stats.filesSkippedSelf,
+      selfReferenceSkipList: [...SKIP_FILES].sort(),
       oversizeFilesSkipped: stats.oversizeFiles.sort().slice(0, 40),
     },
+    /**
+     * Lexicon names the corpus never mentions. Not padding — a named blind spot. If a
+     * category leader is here, this company has never written a sentence about it.
+     */
+    neverMentioned: COMPILED.filter((c) => !byCompetitor.has(c.id)).map((c) => ({ id: c.id, name: c.name, kind: c.kind })),
     verificationMechanism: {
       baselineFile: `product:${BASELINE_REL}`,
       checker: `product:${BASELINE_CHECKER}`,
@@ -752,6 +831,9 @@ function build(asOf) {
       dislocationClaims: dislocations.length,
       whiteSpaceClaims: whiteSpace.length,
       competitorPricingClaims: competitorPricing.length,
+      ownPricingStatements: ownPricing.length,
+      ownPricingOnPublicPages: ownPricing.filter((x) => x.surface === 'public-page').length,
+      ownDistinctPriceLiterals: [...new Set(ownPricing.flatMap((x) => x.priceLiterals))].sort(),
       claimsBySurface: tally(allClaims, 'surface'),
       substantiveClaimsBySurface: tally(allClaims.filter((x) => x.claimKind !== 'mention'), 'surface'),
       claimsByKind: tally(allClaims, 'claimKind'),
@@ -777,6 +859,11 @@ function build(asOf) {
     dislocations,
     whiteSpace,
     competitorPricing,
+    ownPricing: {
+      distinctPriceLiterals: [...new Set(ownPricing.flatMap((x) => x.priceLiterals))].sort(),
+      publicPageCount: ownPricing.filter((x) => x.surface === 'public-page').length,
+      statements: ownPricing.sort((a, b) => (a.source < b.source ? -1 : 1)),
+    },
     livePublicStaleClaims,
     icp: {
       byVerticalClaim: Object.fromEntries(Object.entries(icpByVertical).sort()),
@@ -789,6 +876,12 @@ function build(asOf) {
   };
 
   return out;
+}
+
+/** Newest dated claim of one kind for a competitor, or null. */
+function newestOf(claims, kind) {
+  const c = claims.filter((x) => x.claimKind === kind && x.claimDate).sort((a, b) => (a.claimDate < b.claimDate ? 1 : -1))[0];
+  return c ? { date: c.claimDate, ageDays: c.ageDays, source: c.source, surface: c.surface } : null;
 }
 
 function median(nums) {
@@ -841,12 +934,22 @@ function selfTest() {
   eq('noise-import', isNoise(normalizeLine('import { ComparisonPage } from "../_components/ComparisonPage";')), true);
   eq('noise-short', isNoise('Toast'), true);
 
+  // Own pricing must not fire on ordinary prose that happens to carry a dollar sign.
+  const own = (t) => OWN_PRICE_PATTERNS.filter((p) => p.re.test(t)).map((p) => p.id);
+  eq('own-tiers', own('Solo $25, Team $60, Accountant $150 + $30 per seat per month.').sort(), ['per-seat', 'tier-accountant', 'tier-solo', 'tier-team']);
+  eq('own-founding', own('Founding rate — three months free, then $19 a month per location for as long as you stay.'), ['per-location', 'founding-rate']);
+  eq('own-es-solo-false', own('Solo marcamos un cambio cuando mueve tu gasto semanal en unos $25 o más.'), []);
+  eq('own-article-false', own('Un bistró costero compra halibut entero a $12 la libra'), []);
+
   // Sizing.
   eq('sizing-base', matchSizing('bundled to ~120K U.S. restaurants'), ['install-base']);
+  eq('sizing-base-false', matchSizing('Nightly cron pulling 1-3 days x 1-2 locations'), []);
   eq('sizing-arr', matchSizing('revenue projection ~$109k ARR'), ['arr-projection']);
+  eq('sizing-burn', matchSizing('Year-1 net burn ~$70-115k from founder equity'), ['burn-capital']);
+  eq('sizing-burn-false', matchSizing('Budget-burn -> daily breaker ($50/day default) returns 503'), []);
 
   if (fails.length) { console.error('SELF-TEST FAILED:\n  ' + fails.join('\n  ')); return 1; }
-  console.log(`self-test OK — ${17} assertions across matchers, classifiers, dates, prices, noise`);
+  console.log(`self-test OK — ${24} assertions across matchers, classifiers, dates, prices, noise`);
   return 0;
 }
 
