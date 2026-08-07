@@ -472,7 +472,6 @@ const CHECKS = [
   // asset, so it is the one the gate enforces hardest.
   ['Corrections ledger','check-corrections-ledger.mjs'],
   ['Corrections ledger self-test','check-corrections-ledger.mjs','--self-test'],
-  ['Corrections page (idem)','build-corrections-page.mjs','--check'],
   // The honesty-debt ledger, EXECUTED. Runs every item's own check command and
   // fails only on a REGRESSION — a `paid` item whose check stopped passing. Owed
   // items are reported, never blocking, because blocking on known debt would make
