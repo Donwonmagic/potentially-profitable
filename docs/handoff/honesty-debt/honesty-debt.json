@@ -181,9 +181,10 @@
       "fix": "data/cost-index-corrections.json (append-only, five fields: what was published, what is true, when it broke, why it broke, WHICH GATE now prevents recurrence) rendered to /cost-index/corrections/ by scripts/build-corrections-page.mjs and gated by scripts/check-corrections-ledger.mjs.",
       "gateAdded": "scripts/check-corrections-ledger.mjs — every entry must name a gate that exists on disk",
       "owner": "agent",
-      "status": "paid",
+      "status": "owed",
       "paidOn": "2026-08-07",
-      "check": "node scripts/check-corrections-ledger.mjs && test -f cost-index/corrections/index.html"
+      "check": "node scripts/check-corrections-ledger.mjs && test -f cost-index/corrections/index.html",
+      "note": "2026-08-07: reverted to owed. The public corrections PAGE (cost-index/corrections/) was pulled the same day it landed because it was built outside the 79-step build.command chain and tripped six unrelated surface gates at once. The ledger DATA (data/cost-index-corrections.json) and ADR-022 remain; the public surface does not exist, so the debt is genuinely unpaid."
     },
     {
       "id": "HD-13",
