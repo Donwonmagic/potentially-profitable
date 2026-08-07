@@ -1,0 +1,108 @@
+{
+  "_doc": "COMPILED. Every value here is measured from a named source on each run and injected into <!-- fact:KEY -->…<!-- /fact --> sentinels by scripts/build-contract-facts.mjs. Never hand-edit; never restate one of these numbers in prose without a sentinel.",
+  "_why": "CLAUDE.md governs an absolute fact gate and was itself wrong about this repo in three places on 2026-08-07 ('~70' scripts against 390; '1428 pages' against 1,327; '96 (idem) builders' and '83' in one bullet).",
+  "_asOf": "2026-08-07",
+  "_generator": "scripts/build-contract-facts.mjs",
+  "facts": {
+    "scripts.mjs": {
+      "value": 393,
+      "derivedFrom": "ls scripts/*.mjs"
+    },
+    "scripts.total": {
+      "value": 398,
+      "derivedFrom": "ls scripts/*.{mjs,js,sh,py,ts}"
+    },
+    "scripts.checks": {
+      "value": 136,
+      "derivedFrom": "ls scripts/check-*.mjs"
+    },
+    "scripts.builders": {
+      "value": 85,
+      "derivedFrom": "ls scripts/build-*.mjs"
+    },
+    "scripts.injectors": {
+      "value": 80,
+      "derivedFrom": "ls scripts/inject-*.mjs"
+    },
+    "scripts.lib": {
+      "value": 15,
+      "derivedFrom": "ls scripts/lib/"
+    },
+    "gates.checkAllEntries": {
+      "value": 328,
+      "derivedFrom": "scripts/check-all.mjs — lines matching /^\\s*\\['/ (entry tuples)"
+    },
+    "gates.idemEntries": {
+      "value": 83,
+      "derivedFrom": "scripts/check-all.mjs — entry tuples whose label contains '(idem)'"
+    },
+    "idem.manual": {
+      "value": 21,
+      "derivedFrom": "scripts/check-idem-coverage.mjs MANUAL registry keys"
+    },
+    "gates.unwired": {
+      "value": 7,
+      "derivedFrom": "scripts/check-gate-coverage.mjs UNWIRED registry keys"
+    },
+    "pages.routable": {
+      "value": 1327,
+      "derivedFrom": "data/surface-inventory.json summary.pages"
+    },
+    "pages.indexable": {
+      "value": 1066,
+      "derivedFrom": "data/surface-inventory.json summary.indexable"
+    },
+    "pages.noindex": {
+      "value": 261,
+      "derivedFrom": "data/surface-inventory.json summary.noindex"
+    },
+    "pages.orphans": {
+      "value": 126,
+      "derivedFrom": "data/surface-inventory.json summary.orphans"
+    },
+    "deploy.steps": {
+      "value": 84,
+      "derivedFrom": "data/system-graph.json summary.deployStepCount"
+    },
+    "deploy.distinctScripts": {
+      "value": 74,
+      "derivedFrom": "data/system-graph.json summary.deployDistinctScripts"
+    },
+    "scripts.orphaned": {
+      "value": 92,
+      "derivedFrom": "data/system-graph.json summary.invocation.orphan — scripts no runner invokes"
+    },
+    "docs.files": {
+      "value": 245,
+      "derivedFrom": "find docs -name \"*.md\""
+    },
+    "docs.lines": {
+      "value": 42339,
+      "derivedFrom": "wc -l on every docs/**/*.md"
+    },
+    "adrs.editorial": {
+      "value": 37,
+      "derivedFrom": "ls docs/editorial/decisions/ADR-*.md"
+    },
+    "board.lines": {
+      "value": 1505,
+      "derivedFrom": "wc -l docs/handoff/strategic-council-board.md"
+    },
+    "workingSet.budgetLines": {
+      "value": 400,
+      "derivedFrom": "docs/contracts/working-set.json budget.lines"
+    },
+    "contract.rules": {
+      "value": 26,
+      "derivedFrom": "docs/contracts/rules.json — active rules"
+    },
+    "contract.core": {
+      "value": 8,
+      "derivedFrom": "docs/contracts/rules.json — priority 0"
+    },
+    "contract.undetected": {
+      "value": 5,
+      "derivedFrom": "docs/contracts/rules.json — rules with enforcedBy \"none\""
+    }
+  }
+}

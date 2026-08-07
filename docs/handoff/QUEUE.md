@@ -18,7 +18,7 @@ node scripts/check-queue.mjs --done  Q-003 --by "session:$ID"   # runs verify; r
 node scripts/check-queue.mjs --verify --all        # re-proves every closed item; reopens what regressed
 ```
 
-**Strategy of record:** docs/editorial/decisions/ADR-022-the-queue.md
+**Strategy of record:** docs/editorial/decisions/ADR-024-the-queue.md
 
 > Muntin sells a closed month: a dated, signed statement of food cost where Beginning + Purchases - Ending = Usage foots on screen, every estimate is labeled, and any number that cannot be stood behind is withheld. $600/location/month, hand-invoiced, ~40 locations ever, no billing code for the first cohort.
 
@@ -28,70 +28,202 @@ node scripts/check-queue.mjs --verify --all        # re-proves every closed item
 
 ## Right now
 
-**Next:** `Q-001` — Founder runs one month end-to-end through his own product and records four numbers  _(HIGH, founder, 4-6h, product)_
+**Next:** `Q-002` — Written employer authorization before any real invoice data is PROCESSED — or the walk moves  _(HIGH, founder, 1h + a conversation, both)_
 
-**Gate:** 10 HIGH item(s) unclaimed → `check-queue` exits **1**.
+**Gate:** 14 HIGH item(s) unclaimed → `check-queue` exits **1**.
 
-**Board:** 27 items — 16 ready · 1 claimed · 10 blocked · 0 done.
+**Board:** 46 items — 25 ready · 1 claimed · 18 blocked · 2 done.
 
-**Needs Don (9):** `Q-001`, `Q-002`, `Q-005`, `Q-006`, `Q-009`, `Q-010`, `Q-030`, `Q-031`, `Q-053`.
-These do not move without a signature, a conversation, a credential or a judgment.
+### Needs Don — do this one
+
+**`Q-002` — Written employer authorization before any real invoice data is PROCESSED — or the walk moves**
+
+> A signature, and a conversation with an employer. No agent session can obtain consent.
+
+_2h · window M1 · ready._
+
+20 other founder item(s) exist and are deliberately not listed here. They are in the Founder ledger below. A list of nine things needing a signature is the artifact shape that closed at 26%; one thing with a receipt is not.
 
 ---
 
-## Ready (16)
+## The founder ledger
+
+Capacity is **13-26 founder-hours/month** (docs/seo-handoff-both-repos.md:23 (2026-07-05) — '~a few hours/week'.). Every window carries **2.5h** of review and deploy overhead that no item prices.
+
+| Window | What it is | Item hours | + overhead | Total | vs capacity |
+|---|---|---|---|---|---|
+| `M1` | Days 1-30 — the mandatory repairs | 14.5h | 2.5h | **17h** | over the 13h floor |
+| `M2` | Days 31-60 — correctness, deployed, then reviewed by a CPA | 8.75h | 2.5h | **11.25h** | fits the floor |
+| `M3` | Days 61-90 — the price, the conversations, the first invoice | 8.5h | 2.5h | **11h** | fits the floor |
+
+**Standing obligations: 53h/month — SUSPENDED for the duration of M1-M3 by Q-013. Without that suspension the 90-day demand is ~130h against 39-78 available (board-execution-feasibility.md), a 2.5-5x deficit, and this plan is arithmetic fiction.**
+
+> Nominal capacity is not delivered capacity. This is why the standing calendar is SUSPENDED (Q-013) rather than budgeted around. Measured payment rate: **10%** (docs/handoff/company-audit-2026-08-07.md:92 — roughly 3 of 31 maintenance-hours-due were paid in the 30 days to 2026-08-07.)
+
+**What was cut to make this fit**
+
+- The August and September Cost Index dispatches are NOT written. The cadence is paused with a dated public note (Q-015). Saves ~5h/month; costs a red check-cost-index-dispatch-fresh, which is why the pause must be published rather than merely observed.
+- The whole standing maintenance calendar is suspended in writing for M1-M3 (Q-013). Only the three trust artifacts in Q-009 are honored, and two of them are honored by RETIRING the promise, not by paying it.
+- TEN locations by day 90 becomes THREE signed locations, one signed close, one hand-sent invoice. Ten locations inside weeks 10-13 needs sales hours that do not exist at 13h/month; ten is a day-180 number.
+- The $6,000 annual prepay for the FIRST cohort becomes $600 hand-invoiced monthly. Phase 3 lands 2026-10-16..11-06, outside the stated May-August peak, and asking an independent for $6,000 into the Jan-Feb trough is the exact objection used to kill the 2026-11-13 GA. Annual-in-peak is offered at first renewal (May 2027).
+- The two pillar essays (Q-071) move out of M1 into M2. They are the first thing to drop again if M1 overruns.
+- /tools/pack-check/, /cost-index/refusals/, /close/apply/ and the taxonomy migration carry ZERO founder hours. If they slip, they slip; nothing downstream is blocked on them.
+- No billing code is written for the first cohort at all — no SKU, no checkout, no priceIdForTier branch. An invoice is a PDF and an email.
+
+**If only the floor arrives — the drop order, decided in advance**
+
+M1 totals 17h as of 2026-08-07 (it was 16h before the working-set thread added Q-082, and it will move again — that is what --budget is for). 17h fits the 26h ceiling and exceeds the 13h floor, and the floor is what the plan is supposed to be sized against. So the drop order is written down NOW, before the month is half gone and the drop is made by drift instead of by decision.
+
+| Drop | Running total |
+|---|---|
+| Q-006 (−0.5h) — the editions-spine investigation moves to M2. The measured read is live; only the frozen snapshot spine is at issue, and nothing in M1 depends on it. | 16.5h |
+| Q-009 (−0.5h) — take the RETIRE fork on all three trust artifacts rather than signing them. A warrant canary retired in public is honest; one 89 days lapsed is not. | 16h |
+| Q-010 (−1.0h) — the price call moves to M2. No price is posted before P3 in any case; what M1 needs is the five posted prices DOWN, which is the agent half. | 15h |
+| Q-001 (−2.0h) lands at its 4h lower bound rather than the 6h ceiling it is budgeted at (the estimate of record is 4-6h). | 13h |
+
+**Never dropped**
+
+- Q-002 — authorization. Without it no real invoice data may be processed at all, and Q-001 cannot legally run.
+- Q-001 — the founder walk. Fifteen months without running the product once is the root fact; the whole quarter is an argument about a number nobody has measured.
+- Q-013 — the maintenance suspension. Drop it and every other number in this plan becomes fiction.
+- Q-014 — the snapshot re-vendor. Skipping it means the walk measures a stale file rather than the product, and the day-30 kill criterion could fire on an artifact.
+
+---
+
+## Checkpoints — what would mean this is wrong
+
+> A checkpoint whose dueOn has passed with result null makes check-queue exit 1, and no amount of closed items clears it. A plan with no falsifier is a wish; a falsifier nobody is forced to read is the same wish with extra steps.
+
+### `CP-30` — Day 30 — the mandatory repairs, and the one measurement that can end the quarter
+
+**Due 2026-09-06** · pending
+
+_Did the founder run his own product on a real month, and is the storefront no longer publishing a falsehood?_
+
+**Must be true**
+
+- The founder walk is recorded with all four numbers, on consented data.
+- Nothing false is published: the basis leak is fixed, the July dispatch is corrected, llms.txt tells the truth about cadence.
+- No dollar price for the product is posted anywhere, and the six ADRs are ratified.
+- The calendar is honest: the maintenance suspension is written and the dispatch fork is taken.
+
+**Kill criteria — if any of these is true, the strategy is wrong here and stops**
+
+- **If `docs/handoff/receipts/founder-walk.json#dollarSurvivalPct < 70`** _(measurement)_ — THE PILOT DOES NOT OPEN THIS QUARTER. Fewer than 70% of invoice dollars survive into a valued Purchases leg, which means the Purchases leg is not a Purchases leg and no signed close can be honest. Rebuild it (Q-020) and re-walk before anything is sold. This is the cheapest possible way to lose — four founder-hours instead of a customer.
+- **If `docs/legal/specimen-authorization.md declares no basis by 2026-09-06`** _(founder)_ — NO REAL INVOICE DATA IS PROCESSED OR PUBLISHED, full stop. The walk and the specimen move to a consenting third restaurant or to reconstructed data, and the seven MIT-committed fixtures are removed from the product repo. The strategy survives; the evidence base changes.
+- **If `docs/handoff/receipts/founder-walk.json#legsFooted === false AND the residual is unexplained`** _(measurement)_ — The identity does not hold on real data, which is the entire product claim. Everything downstream stops until it does; nothing is sold on a promise the arithmetic does not keep.
+
+### `CP-60` — Day 60 — correctness in production, and the two judgments that decide the commercial argument
+
+**Due 2026-10-06** · pending
+
+_Do the fixes exist where a buyer can reach them, and does a working CPA accept the artifact?_
+
+**Must be true**
+
+- The five correctness fixes are landed AND deployed, with the SHAs recorded.
+- One complete specimen close is public, under a declared authorization basis.
+- Two named CPA/bookkeeper reviewers have answered both questions on the record.
+
+**Kill criteria — if any of these is true, the strategy is wrong here and stops**
+
+- **If `both reviewers record marketPriorAcceptable === false`** _(founder)_ — THE COMMERCIAL ARGUMENT COLLAPSES AS PRICED. The market prior is what shrinks the count from a full physical inventory to a verification of divergent rows; without it the operator's labour goes back to $100-150/month of floor time and 'half the labour at nearly twice the sticker' is no longer true. Do not post $600. Re-derive the price against the labour actually saved, or narrow the product to items with invoice coverage only.
+- **If `both reviewers record tiesToFoodPurchases === false`** _(founder)_ — ABANDON THE STRATEGY. The artifact does not tie to the accounting object the buyer's professional advisor calls food purchases. A statement that does not reconcile to the books is not an audit-shaped product; it is a dashboard with a signature on it, and this company has already decided it does not sell dashboards.
+- **If `the specimen close records deskMinutesPerClose > 60`** _(measurement)_ — THE CEILING IS NOT FORTY LOCATIONS. At 60 minutes per close, 40 locations is 40 founder-hours/month against a 13-26 ceiling. Either the price rises, the cohort caps well below 40, or the desk stops being one person's — and all three are decisions to make BEFORE the first customer, not after the tenth.
+
+### `CP-90` — Day 90 — the first dollar, or the falsifier
+
+**Due 2026-11-06** · pending
+
+_Did anyone pay for a closed month, and if not, was it the price, the buyer, or the object?_
+
+**Must be true**
+
+- Eight qualified conversations are on the record, with the objection in the owner's own words.
+- Three locations signed at $600/month, one close signed and delivered, one invoice sent by hand.
+- The public audit file exists: /close/, and the code-cited limits register.
+
+**Kill criteria — if any of these is true, the strategy is wrong here and stops**
+
+- **If `conversations.json records >= 8 qualified conversations and 0 outcome === 'signed'`** _(founder)_ — THE PRICE OR THE BUYER IS WRONG, AND NO MORE PRODUCT GETS BUILT UNTIL ONE OF THEM CHANGES. Read the eight recorded objections: if they cluster on money, re-price. If they cluster on 'my bookkeeper already does this', the buyer is the firm and the deferred channel (product ADR-014) reopens as the primary. Building a feature in response to this result is the failure mode.
+- **If `fewer than 2 of 8 conversations asked to see the specimen close unprompted`** _(founder)_ — THE OBJECT IS NOT WANTED, AND PRICE IS NOT THE VARIABLE. A signed monthly close is a thing this company believes operators want; six of eight declining to even look at a free worked example falsifies that belief more cleanly than any pricing test. Stop. Re-derive what the buyer asked about instead, from the recorded objections.
+- **If `3+ signed AND measured deskMinutesPerClose > 90 across delivered closes`** _(measurement)_ — THE BUSINESS IS REAL AND SMALLER THAN MODELLED. At 90 minutes a close the one-founder ceiling is roughly 9-17 locations, not 40. Re-price before cohort two and publish the revised ceiling — the honest ceiling is an asset, and discovering it at three customers is the point of a pilot.
+
+---
+
+## Ready (25)
 
 Highest first. A HIGH row here is why the gate is red.
 
 | ID | Item | Pri | Phase | Owner | Effort | Blocked by |
 |---|---|---|---|---|---|---|
-| `Q-001` | Founder runs one month end-to-end through his own product and records four numbers | HIGH | P0 | founder | 4-6h | — |
-| `Q-002` | Written employer authorization before any real invoice data is published — or the specimen moves | HIGH | P0 | founder | 1h + a conversation | — |
-| `Q-003` | The basis leak — feed.json publishes a BLS index value as $393.06/lb | HIGH | P0 | agent | 2h | — |
+| `Q-002` | Written employer authorization before any real invoice data is PROCESSED — or the walk moves | HIGH | P0 | founder | 1h + a conversation | — |
 | `Q-004` | check-all is NOT idempotent — two runs give different totals and dirty the working tree | HIGH | P0 | agent | 3h | — |
-| `Q-006` | Move FRED_KEY / BLS_KEY / AMS_KEY into GitHub Actions secrets | HIGH | P0 | founder | 20m | — |
+| `Q-005` | Green the deploy — settle whether it is actually red, from the Cloudflare build log | HIGH | P0 | both | 1h agent + Mac time for one builder | — |
+| `Q-006` | The editions spine has not advanced since 2026-07-06 — find out why, then make the refresh append it | HIGH | P0 | both | 20m | — |
 | `Q-008` | llms.txt still tells crawlers the Cost Index publishes weekly | HIGH | P0 | agent | 15m | — |
 | `Q-009` | Warrant canary, Q2 transparency report, changelog — sign them or retire them | HIGH | P0 | founder | 45m | — |
-| `Q-010` | Take down the five posted prices; post 'Pricing set at the close of the pilot' | HIGH | P0 | both | 2h | — |
-| `Q-050` | Freeze the board — the queue becomes the only place work is tracked | HIGH | RET | agent | 1h | — |
+| `Q-013` | Suspend the standing maintenance calendar, in writing, for the duration of M1-M3 | HIGH | P0 | founder | 30m | — |
+| `Q-014` | Re-vendor cost-index-snapshot.json before the founder walk — the 2026-08-27 cliff | HIGH | P0 | both | 15m | — |
+| `Q-015` | The August dispatch fork — write the edition, or publish a dated cadence pause | HIGH | P0 | founder | 30m (pause) or 4-6h (write) | — |
+| `Q-018` | --done must assert the doneWhen, not merely run the verify — the queue's own honesty defect | HIGH | P0 | agent | 3h | — |
+| `Q-019` | Ratify the six ADRs — the decisions of record that stop this being relitigated | HIGH | P0 | founder | 1h | — |
+| `Q-082` | Inject the contract at the spawn site — the harness orchestrator must call contractFor() | HIGH | P1 | both | 1-2h | — |
 | `Q-051` | Stand up the cron consumer so the four nightly Issue-openers reach a human | HIGH | RET | agent | 2h | — |
-| `Q-012` | ADR foreclosing the operator-submitter data lane — write it now, while writing it is free | MED | P0 | agent | 45m | — |
+| `Q-061` | Execute the surface disposition — 209 pages marked freeze-noindex are still indexable, 14 marked delete are still on disk | HIGH | RET | agent | 4h | — |
+| `Q-016` | Un-stub or delete .github/workflows/deploy.yml — four echo statements behind a two-person gate | MED | P1 | agent | 2h | — |
 | `Q-023` | inventory-reconcile.ts:249 — an empty `if (estimated) {}` whose comment claims a behavior the code does not perform | MED | P1 | agent | 1h | — |
+| `Q-060` | Every honesty gate must ship a mutation proof — generalize ADR-023 to the rest | MED | P1 | agent | 6h | — |
 | `Q-032` | /tools/pack-check/ — ship the dead honesty engines as the public falsifier | MED | P2 | agent | 6h | — |
+| `Q-071` | Two pillar essays in Don's voice — invoices-and-vendors, count-and-close | MED | RET | founder | 1.5h | — |
+| `Q-080` | Execute the retirement — archive 21 documents, delete 16 byte-identical duplicates | MED | RET | agent | 1h | — |
+| `Q-083` | Give the five undetected storefront rules a detector, or retire them | LOW | P1 | agent | 3-4h | — |
 | `Q-033` | /cost-index/refusals/ and /cost-index/freshness/ — publish what Muntin will not say | LOW | P2 | agent | 4h | — |
-| `Q-052` | Delete the 162 provably-dead pages — frozen AND orphaned | LOW | RET | agent | 2h | — |
+| `Q-052` | Execute the provably-dead cut — 14 pages, NOT 162 (correction of record) | LOW | RET | agent | 1h | — |
 | `Q-053` | Cross-repo PAT so the product inbox and the storefront queue are one list | LOW | RET | founder | 15m | — |
+| `Q-073` | Strip analytics from 221 pages — instrument the qualification path, not the corpus | LOW | RET | agent | 2h | — |
 
 ## In progress (1)
 
-Claims expire after 7 days and are released by the machine.
+Claims expire after 21 days and are released by the machine.
 
 | ID | Item | Pri | Phase | Owner | Effort | Blocked by |
 |---|---|---|---|---|---|---|
-| `Q-007` | 72 published falsehoods in the July dispatch — correct in place, wire check-src-sentinel | HIGH | P0 | agent | 5h | — |
+| `Q-007` | 72 published falsehoods in the July dispatch — correct in place, wire check-src-sentinel | HIGH | P0 | both | 5h | — |
 
-## Blocked (10)
+## Blocked (18)
 
 Blocked by an item that is still open. Unblocking is done by closing the blocker.
 
 | ID | Item | Pri | Phase | Owner | Effort | Blocked by |
 |---|---|---|---|---|---|---|
-| `Q-005` | Green the deploy — the 5 builders absent from build.command | HIGH | P0 | both | 1h agent + Mac time for one builder | Q-004 |
+| `Q-001` | Founder runs one month end-to-end through his own product and records four numbers | HIGH | P0 | founder | 4-6h | Q-002, Q-014 |
+| `Q-010` | Take down the five posted prices; post 'Pricing set at the close of the pilot' | HIGH | P0 | both | 2h | Q-019 |
+| `Q-017` | Founder deploys apps/api + apps/web to production and records the deployed SHA | HIGH | P1 | founder | 1.5h | Q-020, Q-021, Q-022, Q-024 |
 | `Q-020` | Purchases leg: line_item_observations was built for price intelligence and reused unchanged | HIGH | P1 | agent | 8h | Q-001 |
 | `Q-021` | Default count mode writes un-entered items at expected-on-hand, so their usage is arithmetically zero | HIGH | P1 | agent | 5h | Q-001 |
 | `Q-022` | Purchases roll-up has no location predicate while counts are per-location | HIGH | P1 | agent | 4h | Q-001 |
 | `Q-024` | Food-cost % prints against a partial POS denominator | HIGH | P1 | agent | 3h | Q-001 |
+| `Q-041` | Eight qualified conversations with owners whose vendor mix matches the corpus | HIGH | P3 | founder | 6h | Q-030, Q-031, Q-010 |
+| `Q-042` | Three locations signed at $600/month, one close signed and delivered, one invoice sent by hand | HIGH | P3 | founder | 2h | Q-041 |
 | `Q-011` | Kill the 2026-11-13 GA date and the three-months-free term everywhere they are written | MED | P0 | agent | 1h | Q-010 |
+| `Q-012` | ADR foreclosing the operator-submitter data lane — DRAFTED 2026-08-07, awaiting ratification | MED | P0 | agent | 45m | Q-019 |
 | `Q-025` | /close/limits/ — the append-only, code-cited defect register | MED | P1 | agent | 4h | Q-020, Q-021, Q-022, Q-024 |
-| `Q-030` | The specimen close — one complete month with the exceptions shown | MED | P2 | both | 6h | Q-001, Q-002, Q-020, Q-021, Q-022, Q-024 |
+| `Q-030` | The specimen close — one complete month with the exceptions shown | MED | P2 | both | 6h | Q-001, Q-002, Q-017, Q-020, Q-021, Q-022, Q-024 |
 | `Q-031` | Two CPA / bookkeeper conversations on the specimen close | MED | P2 | founder | 3h | Q-030 |
-| `Q-040` | /close/apply/ replaces all four waitlist forms | LOW | P3 | agent | 5h | Q-010, Q-030 |
+| `Q-072` | /close/ — the page that says what Muntin sells | MED | P2 | both | 5h | Q-001, Q-005, Q-010 |
+| `Q-070` | Nine topics become four — apply the taxonomy migration | MED | RET | agent | 4h | Q-005, Q-071 |
+| `Q-081` | Wire check-working-set.mjs into check-all — the forgetting gate has no teeth until it is in the deploy | MED | RET | agent | 15m | Q-080 |
+| `Q-040` | /close/apply/ replaces all four waitlist forms | LOW | P3 | both | 5h | Q-010, Q-030 |
 
-## Done (0)
+## Done (2)
 
 Closed only by a `verify` command that exited 0. Re-proved by `--verify --all`.
 
-_Nothing here._
+| ID | Item | Pri | Phase | Owner | Effort | Blocked by |
+|---|---|---|---|---|---|---|
+| `Q-003` | The basis leak — feed.json publishes a BLS index value as $393.06/lb | HIGH | P0 | agent | 2h | — |
+| `Q-050` | Freeze the board — the queue becomes the only place work is tracked | HIGH | RET | agent | 1h | — |
 
 ---
 
@@ -99,9 +231,9 @@ _Nothing here._
 
 ### `Q-001` — Founder runs one month end-to-end through his own product and records four numbers
 
-**HIGH** · ready · P0 · owner **founder** · product · 4-6h · kind `fix`
+**HIGH** · blocked · P0 · owner **founder** · product · 4-6h · kind `fix`
 
-After fifteen months the founder has never run the product once. Every independent critic named this the most valuable item in the material, and no agent session can substitute for it. Below ~70% invoice-dollar survival into a valued Purchases leg, the pilot does not open and the quarter is saved.
+After fifteen months the founder has never run the product once. Every independent critic named this the most valuable item in the material, and no agent session can substitute for it. Below ~70% invoice-dollar survival into a valued Purchases leg, the pilot does not open and the quarter is saved. Blocked on Q-002 because uploading an employer's month is itself the disclosure, and on Q-014 because a walk run after 2026-08-27 measures a dormant market prior and could abort the pilot on a stale vendored file rather than on the product.
 
 **Evidence**
 
@@ -117,20 +249,21 @@ After fifteen months the founder has never run the product once. Every independe
 node -e "const r=require('./docs/handoff/receipts/founder-walk.json');const need=['invoiceCount','countMinutes','dollarSurvivalPct','needsReviewRows','legsFooted'];for(const k of need){if(r[k]===undefined||r[k]===null)throw new Error('missing '+k)}if(!(r.invoiceCount>0))throw new Error('invoiceCount must be > 0');console.log('founder walk recorded:',JSON.stringify(r))"
 ```
 
-### `Q-002` — Written employer authorization before any real invoice data is published — or the specimen moves
+### `Q-002` — Written employer authorization before any real invoice data is PROCESSED — or the walk moves
 
 **HIGH** · ready · P0 · owner **founder** · both · 1h + a conversation · kind `fix`
 
-The winning bet proposes publishing Tacombi's complete month — vendor names, negotiated prices, food cost — permanently and publicly, signed, by an employee, to sell his own company. Zero of six strategy proposals contain the words authorization, consent, or employer. The same rule retroactively covers the real invoice fixtures committed under an MIT LICENSE in the product repo: a hygiene problem today, an incident the moment that repo opens.
+The winning bet proposes publishing Tacombi's complete month — vendor names, negotiated prices, food cost — permanently and publicly, signed, by an employee, to sell his own company. Zero of six strategy proposals contain the words authorization, consent, or employer. The same rule retroactively covers the real invoice fixtures committed under an MIT LICENSE in the product repo: a hygiene problem today, an incident the moment that repo opens. Scope corrected 2026-08-07: the consent-triggering event is INGESTION into a service the employee controls, not publication. Vendor identities and negotiated prices leave the employer's control at upload, so this blocks Q-001 rather than following it.
 
 **Evidence**
 
 - verdict:synthesis[13] — 'MY OWN GRAFT, non-negotiable'
 - verdict:killed[8] — 'Publishing Tacombi's real September in full, forever, publicly'
+- board-execution-feasibility.md — 'Q-001 moves a real employer's month of invoices into a system the employee owns, before Q-002 obtains authorization'
 
 **Only Don can do this:** A signature, and a conversation with an employer. No agent session can obtain consent.
 
-**Done when:** docs/legal/specimen-authorization.md exists in the storefront repo and declares exactly one of three bases — `written-authorization` (with a signer, a date, and a scope), `redacted` (vendor identity and contract prices generalized), or `third-party` (a consenting restaurant) — and names the fixture files it covers.
+**Done when:** docs/legal/specimen-authorization.md exists in the storefront repo and declares exactly one of three bases — `written-authorization` (with a signer, a date, and a scope covering INGESTION, storage, retention AND publication), `redacted`, or `third-party` (a consenting restaurant) — and names the fixture files it covers, including the seven already committed under MIT.
 
 ```sh
 # cwd: storefront
@@ -139,7 +272,7 @@ node -e "const fs=require('fs');const t=fs.readFileSync('docs/legal/specimen-aut
 
 ### `Q-003` — The basis leak — feed.json publishes a BLS index value as $393.06/lb
 
-**HIGH** · ready · P0 · owner **agent** · storefront · 2h · kind `fix`
+**HIGH** · done · P0 · owner **agent** · storefront · 2h · kind `fix`
 
 cost-index/feed.json ingredients[41] publishes ground-beef at priceUsd 393.06, source 'bls', basis 'wholesale', unit 'lb' — a BLS INDEX VALUE rendered as dollars per pound on the machine-readable feed built for crawlers. cost-index/index.json publishes 5.51 for the same slug. 71.3x apart, on a public site whose entire differentiation is that it does not publish numbers it cannot stand behind. Verified 2026-08-07 by direct read of both files; exactly 1 of 82 feed ingredients diverges from index.json by more than 3x.
 
@@ -155,6 +288,8 @@ cost-index/feed.json ingredients[41] publishes ground-beef at priceUsd 393.06, s
 # cwd: storefront
 node scripts/check-cost-index-basis-leak.mjs --self-test && node -e "const f=require('./cost-index/feed.json'),i=require('./cost-index/index.json');const m=Object.fromEntries(i.ingredients.map(x=>[x.slug,x.priceMedianUsd]));const bad=f.ingredients.filter(g=>{const p=(g.reference||{}).priceUsd,q=m[g.slug];return p&&q&&(p/q>3||q/p>3)});if(bad.length)throw new Error('basis leak still live: '+bad.map(b=>b.slug).join(','));console.log('feed.json: 0 of '+f.ingredients.length+' references diverge >3x from index.json')"
 ```
+
+_Closed 2026-08-07T17:51:03.672Z by session:phase-e-queue, proved by `node scripts/check-cost-index-basis-leak.mjs --self-test && node -e "const f=require('./cost-index/feed.json'),i=require('./cost-index/index.json');const m=Object.fromEntries(i.ingredients.map(x=>[x.slug,x.priceMedianUsd]));const bad=f.ingredients.filter(g=>{const p=(g.reference||{}).priceUsd,q=m[g.slug];return p&&q&&(p/q>3||q/p>3)});if(bad.length)throw new Error('basis leak still live: '+bad.map(b=>b.slug).join(','));console.log('feed.json: 0 of '+f.ingredients.length+' references diverge >3x from index.json')"`._
 
 ### `Q-004` — check-all is NOT idempotent — two runs give different totals and dirty the working tree
 
@@ -174,49 +309,51 @@ Measured 2026-08-07 in this container: three consecutive `node scripts/check-all
 test -z "$(git status --porcelain)" && node scripts/check-all.mjs > /tmp/qa.txt 2>&1; node scripts/check-all.mjs > /tmp/qb.txt 2>&1; test -z "$(git status --porcelain)" || { echo 'check-all dirtied the tree'; exit 1; }; diff <(tail -1 /tmp/qa.txt) <(tail -1 /tmp/qb.txt)
 ```
 
-### `Q-005` — Green the deploy — the 5 builders absent from build.command
+### `Q-005` — Green the deploy — settle whether it is actually red, from the Cloudflare build log
 
-**HIGH** · blocked · P0 · owner **both** · storefront · 1h agent + Mac time for one builder · kind `fix`
+**HIGH** · ready · P0 · owner **both** · storefront · 1h agent + Mac time for one builder · kind `fix`
 
-check-all runs inside the Cloudflare deploy (wrangler.jsonc build.command), so a red gate blocks the deploy and no agent session reaches production. build.command runs 75 builders THEN check-all, so in-chain drift self-heals; the true blockers are the builders absent from that chain. build-ingredient-state-record needs the founder's Mac and API keys and cannot be cleared from a container — that half is founder-only.
+check-all runs inside the Cloudflare deploy (wrangler.jsonc build.command), so a red gate blocks the deploy and no agent session reaches production. But the premise needs settling before an hour is spent on it: all five named builders return exit 0 under --check in this container, and the three archived check-all runs disagree with each other (312/317/312, different red sets). muntin-cost-index-bot pushed to main on 2026-08-03 and 2026-08-05, so two real build outcomes already exist. Read the log first; wire builders second, and only the ones the log names.
 
 **Evidence**
 
 - audit §0 fact 4 — 'the true blockers are the 5 builders absent from that chain'
 - measured 2026-08-07: Themes review board, Theme story pages, Cuisine landing pages, Cost-index picker, Ingredient state record all red
+- board-execution-feasibility.md — 'all five builders Q-005 names return exit 0 under --check here today'; 'nobody has read the actual Cloudflare Workers Builds log, a sixty-second lookup'
 
-**Only Don can do this:** build-ingredient-state-record needs the operator's Mac plus the NASS/Census/EIA keys. The container has neither.
+**Only Don can do this:** Reading the Cloudflare Workers Builds log needs his Cloudflare session. Sixty seconds, and it decides whether the next hour is worth spending.
 
-**Done when:** All five builders appear in wrangler.jsonc build.command, and check-idem-coverage classifies each as deploy-run rather than MANUAL.
+**Done when:** docs/handoff/receipts/deploy-status.json records the Cloudflare Workers Builds outcome for the latest main commit (sha, conclusion, checkedAt) AND, if that conclusion is failure, every builder the log names appears in wrangler.jsonc build.command with check-idem-coverage passing.
 
 ```sh
 # cwd: storefront
-node -e "const t=require('fs').readFileSync('wrangler.jsonc','utf8');const need=['build-themes-review-board','build-theme-story-pages','build-cuisine-landing-pages','build-cost-index-picker','build-ingredient-state-record'];const miss=need.filter(n=>!t.includes(n));if(miss.length)throw new Error('absent from build.command: '+miss.join(', '));console.log('all 5 out-of-chain builders now in build.command')" && node scripts/check-idem-coverage.mjs
+node -e "const r=require('./docs/handoff/receipts/deploy-status.json');for(const k of ['sha','conclusion','checkedAt']){if(!r[k])throw new Error('missing '+k)}if(r.conclusion!=='success'){const t=require('fs').readFileSync('wrangler.jsonc','utf8');const miss=(r.missingBuilders||[]).filter(n=>!t.includes(n));if(miss.length)throw new Error('deploy is red and these builders are still absent from build.command: '+miss.join(', '))}console.log('deploy status recorded:',r.sha,r.conclusion)" && node scripts/check-idem-coverage.mjs
 ```
 
-### `Q-006` — Move FRED_KEY / BLS_KEY / AMS_KEY into GitHub Actions secrets
+### `Q-006` — The editions spine has not advanced since 2026-07-06 — find out why, then make the refresh append it
 
-**HIGH** · ready · P0 · owner **founder** · storefront · 20m · kind `fix`
+**HIGH** · ready · P0 · owner **both** · storefront · 20m · kind `fix`
 
-The refresh workflow no-ops without the keys, holding last-good, so the editions spine stops advancing silently. The only unfabricatable asset this company owns is the 2,025 live-captured points and the dated publication chain, and it compounds ONLY if the cadence never breaks — 26 of 100 series are already frozen 58-77 days against a 120-day drop cliff. The highest-value single founder hour in the material after the walk, and the only move no agent can execute.
+The only unfabricatable asset this company owns is the live-captured points and the dated publication chain, and it compounds only if the cadence never breaks. The original diagnosis (missing keys) is falsified: cost-index-refresh.yml guards every step on steps.keys.outputs.configured == 'true' and muntin-cost-index-bot committed measured reads to main on 2026-08-03 and 2026-08-05. The keys work. What does NOT move is data/cost-index-editions.json — appended per monthly edition by build-cost-index-dispatch.mjs, absent from the workflow's git add list, last moved 2026-07-06. The spine is frozen because nothing in automation writes it.
 
 **Evidence**
 
-- verdict:synthesis[12] — 'get the live fetch off the founder's Mac'
-- audit §4 — '83,695 of 85,720 published observations are reconstructed; the genuinely unfabricatable asset is the 2,025 live-captured points'
+- board-execution-feasibility.md — 'muntin-cost-index-bot committed on 2026-08-03 and 2026-08-05, so the keys are already configured'
+- board-execution-feasibility.md — 'data/cost-index-editions.json ... is absent from the workflow's git add list, and last moved 2026-07-06'
+- verdict:synthesis[12] — 'get the live fetch off the founder's Mac' (the intent survives; the diagnosis is corrected)
 
-**Only Don can do this:** The keys exist only on the operator's Mac. Writing a repository secret requires his GitHub session.
+**Only Don can do this:** Confirming the repository secrets are present, and reading the workflow run history, needs his GitHub session.
 
-**Done when:** data/cost-index-editions.json has a commit newer than 2 days, authored by the refresh workflow rather than by hand.
+**Done when:** data/cost-index.json has advanced within the last 4 days (the measured read is live), AND docs/handoff/receipts/editions-spine.json records why data/cost-index-editions.json stopped advancing and which workflow step now appends it.
 
 ```sh
 # cwd: storefront
-node -e "const {execSync}=require('child_process');const iso=execSync('git log -1 --format=%cI -- data/cost-index-editions.json').toString().trim();const age=(Date.now()-Date.parse(iso))/86400000;if(!(age<=2))throw new Error('editions spine last advanced '+age.toFixed(1)+' days ago — the refresh workflow is still no-opping');console.log('editions spine advanced '+age.toFixed(1)+'d ago')"
+node -e "const {execSync}=require('child_process');const iso=execSync('git log -1 --format=%cI -- data/cost-index.json').toString().trim();const age=(Date.now()-Date.parse(iso))/86400000;if(!(age<=4))throw new Error('measured read last advanced '+age.toFixed(1)+'d ago');const r=require('./docs/handoff/receipts/editions-spine.json');for(const k of ['whyFrozen','appendedBy','checkedAt']){if(!r[k])throw new Error('missing '+k)}console.log('read '+age.toFixed(1)+'d old; spine append owner = '+r.appendedBy)"
 ```
 
 ### `Q-007` — 72 published falsehoods in the July dispatch — correct in place, wire check-src-sentinel
 
-**HIGH** · claimed · P0 · owner **agent** · storefront · 5h · kind `fix`
+**HIGH** · claimed · P0 · owner **both** · storefront · 5h · kind `fix`
 
 165 `<!-- src: -->` annotations in blog/cost-index-2026-07/index.html; at least 72 published claims are currently false; 61 point at files the append-only editions spine does not freeze. Every one was TRUE on publication day. Line 852 is a reader-visible cite drawer telling a skeptic the cited files are 're-checked in CI' when no such gate existed on disk — in a PUBLIC repo, verifiable in thirty seconds using the page's own instructions. Static prose cannot cite a moving file; the repair is to repoint dated prose at the frozen edition snapshot.
 
@@ -225,6 +362,8 @@ node -e "const {execSync}=require('child_process');const iso=execSync('git log -
 - audit §1.3 — 'the single most dangerous artifact in either repo is line 852'
 - verdict:synthesis[1] — 'the src-sentinel and corrections program, grafted whole and moved to Phase 0'
 - scripts/check-src-sentinel.mjs — written 2026-08-07 16:50 UTC by a concurrent session; anchored `<!-- src: edition:YYYY-MM-DD ... -->` grammar
+
+**Only Don can do this:** The line-524 sign flip — outlook 'mixed' at −0.145 published against data/cost-outlook.json 'building' at +0.055 — is an editorial judgment about a market read under his own byline. data/src-sentinel-budget.json already marks it FOUNDER-ONLY. The other 71 corrections are mechanical.
 
 **Done when:** check-src-sentinel.mjs passes with zero unanchored annotations in blog/cost-index-2026-07/, it is registered in check-gate-coverage (wired or documented), and /cost-index/corrections/ carries an entry naming the gate that now prevents recurrence.
 
@@ -275,9 +414,9 @@ node scripts/check-queue.mjs --attest Q-009
 
 ### `Q-010` — Take down the five posted prices; post 'Pricing set at the close of the pilot'
 
-**HIGH** · ready · P0 · owner **both** · both · 2h · kind `retire`
+**HIGH** · blocked · P0 · owner **both** · both · 2h · kind `retire`
 
-Five posted prices, zero coherent, one billable. pricing-constants.ts marks founding billable:false — no SKU, no priceIdForTier branch, no STRIPE_PRICE_* field — while Solo ($25) and Team ($60) are per_account with no location cap, so a three-location founding member pays $57 against an unlimited-location $25 tier, and the posted 150-invoice Solo cap is enforced nowhere. The strategy of record replaces all five with one price and, for the first cohort, no billing code at all.
+Five posted prices, zero coherent, one billable. pricing-constants.ts marks founding billable:false — no SKU, no priceIdForTier branch, no STRIPE_PRICE_* field — while Solo ($25) and Team ($60) are per_account with no location cap, so a three-location founding member pays $57 against an unlimited-location $25 tier, and the posted 150-invoice Solo cap is enforced nowhere. The strategy of record replaces all five with one price and, for the first cohort, no billing code at all. The founder call to be made here is not $600 — ADR-027 records that — it is the BILLING TERM: monthly hand-invoiced for the first cohort, annual-in-peak offered at first renewal, because Phase 3 lands outside the May-August window the annual doctrine assumes.
 
 **Evidence**
 
@@ -312,9 +451,9 @@ trial_period_days is set nowhere so the term was never implemented, and three mo
 node scripts/check-queue.mjs --grep-absent '2026-11-13' --grep-absent 'three months free'
 ```
 
-### `Q-012` — ADR foreclosing the operator-submitter data lane — write it now, while writing it is free
+### `Q-012` — ADR foreclosing the operator-submitter data lane — DRAFTED 2026-08-07, awaiting ratification
 
-**MED** · ready · P0 · owner **agent** · storefront · 45m · kind `retire`
+**MED** · blocked · P0 · owner **agent** · storefront · 45m · kind `retire`
 
 Accepting operator-submitted prices converts the index's one honest property — every number traceable to a public government series — into a permanent, undelegatable founder moderation queue, in a company already ~2.7x oversubscribed. Closing a door costs nothing today and costs everything after the first submission arrives.
 
@@ -323,11 +462,163 @@ Accepting operator-submitted prices converts the index's one honest property —
 - verdict:synthesis[7]
 - verdict:killed[11] — 'killed pre-emptively while killing it is still free'
 
-**Done when:** An ADR exists in docs/editorial/decisions/ with Status: Accepted, stating that Muntin does not accept operator-submitted price observations into the Cost Index, and naming the mechanism that would have to change for that to be revisited.
+**Done when:** docs/editorial/decisions/ADR-031-operator-submitter-lane-foreclosed.md exists and is Accepted (not Proposed), and the public methodology surface states that the Index does not accept submitted prices.
 
 ```sh
 # cwd: storefront
-node -e "const fs=require('fs');const f=fs.readdirSync('docs/editorial/decisions').find(n=>/operator-submitter|submitter-lane/.test(n));if(!f)throw new Error('no operator-submitter ADR on disk');const t=fs.readFileSync('docs/editorial/decisions/'+f,'utf8');if(!/Status:\\s*Accepted/i.test(t))throw new Error(f+' is not Accepted');console.log('foreclosed by '+f)"
+node -e "const t=require('fs').readFileSync('docs/editorial/decisions/ADR-031-operator-submitter-lane-foreclosed.md','utf8');if(/^\\*\\*Status:\\*\\*\\s*Proposed/m.test(t))throw new Error('ADR-031 is still Proposed');console.log('submitter lane foreclosed of record')"
+```
+
+### `Q-013` — Suspend the standing maintenance calendar, in writing, for the duration of M1-M3
+
+**HIGH** · ready · P0 · owner **founder** · storefront · 30m · kind `retire`
+
+This is the item that makes every other number in this plan true. Recurring obligations total ~53 founder-hours/month against 13-26 available, and roughly 10% of what was due in the 30 days to 2026-08-07 was actually paid. The 90-day plan-only load fits; the same load on top of the standing calendar is ~130h, a 2.5-5x deficit. Nothing in the queue retired the calendar, so the plan silently assumed a suspension nobody had granted. Grant it explicitly, name every obligation suspended, and give each one a resume-or-retire date — otherwise the deficit is paid the way it has always been paid: by everything decaying at once.
+
+**Evidence**
+
+- docs/handoff/company-audit-2026-08-07.md:89-91 — ~53 founder-hours/month recurring; maintenance alone 31 h/mo = 1.6x capacity
+- docs/handoff/company-audit-2026-08-07.md:92 — ~3 of 31 maintenance-hours-due paid in the 30 days to 2026-08-07
+- board-execution-feasibility.md — 'it fits only because it silently assumes the ~53h/month standing maintenance calendar is suspended, which no queue item does'
+
+**Only Don can do this:** Only the founder can decide to stop doing something he promised in public. An agent suspending a published commitment on his behalf is the fabrication the fact gate exists to forbid.
+
+**Retires**
+
+- The ~53 founder-hours/month standing maintenance calendar, for the duration of M1-M3, replaced by a dated public note per suspended promise.
+- The implicit assumption — carried by every prior plan — that the calendar is paid. It has not been paid at more than ~10% in the measured window.
+
+**Done when:** docs/handoff/maintenance-suspension.md exists, is dated, names a `from:` and `until:` covering M1-M3, and lists every suspended obligation with a `resume` or `retire` disposition — with at least the six rows the audit measured.
+
+```sh
+# cwd: storefront
+node -e "const t=require('fs').readFileSync('docs/handoff/maintenance-suspension.md','utf8');if(!/^from:\\s*20\\d\\d-\\d\\d-\\d\\d/m.test(t))throw new Error('no from: date');if(!/^until:\\s*20\\d\\d-\\d\\d-\\d\\d/m.test(t))throw new Error('no until: date');const rows=(t.match(/^\\|\\s*[a-z]/gmi)||[]).length;if(rows<6)throw new Error('fewer than six obligations dispositioned ('+rows+')');if(!/resume|retire/i.test(t))throw new Error('no resume/retire disposition');console.log('maintenance suspension recorded, '+rows+' obligations dispositioned')"
+```
+
+### `Q-014` — Re-vendor cost-index-snapshot.json before the founder walk — the 2026-08-27 cliff
+
+**HIGH** · ready · P0 · owner **both** · product · 15m · kind `fix`
+
+The market-prior fallback fails closed on stale data by design. The vendored snapshot's _asOfRange is 2026-07-18..2026-07-28 against STALE_AFTER_DAYS = 30, which puts 2 of 24 slugs at the 20-day warn line now and the last 18 over the cliff on 2026-08-27. A founder walk run after that date measures a silently dormant valuation ladder: legsFooted degrades for reasons that have nothing to do with the product, and the '<70% dollar survival, do not open the pilot' abort could fire on an artifact of a stale file. This exact lapse already happened once, from ~2026-07-18, and was closed on 2026-07-30.
+
+**Evidence**
+
+- board-execution-feasibility.md — '_asOfRange: 2026-07-18..2026-07-28 against STALE_AFTER_DAYS = 30 ... 18 over the cliff on 2026-08-27'
+- Muntin-Invoice-Decoder/CLAUDE.md — the Cost-Index snapshot refresh thread: 'Fix is one command with both repos checked out: node apps/api/scripts/vendor-cost-index.mjs'
+
+**Only Don can do this:** The re-vendor command needs both repos checked out together; the commit to the product repo is his to push.
+
+**Done when:** apps/api/src/data/cost-index-snapshot.json carries an _asOfRange whose latest date is within 20 days of today, and scripts/check-cost-index-snapshot-freshness.mjs exits 0 with no warning.
+
+```sh
+# cwd: product
+node scripts/check-cost-index-snapshot-freshness.mjs
+```
+
+### `Q-015` — The August dispatch fork — write the edition, or publish a dated cadence pause
+
+**HIGH** · ready · P0 · owner **founder** · storefront · 30m (pause) or 4-6h (write) · kind `retire`
+
+check-cost-index-dispatch-fresh.mjs prints a 27-day lag today against MAX_LAG_DAYS = 38, so it reds around 2026-08-16 — inside week two, on top of Phase 0. The gate's own header says a red there means 'write this month's edition', never 'automate this'. There is a third honest answer nobody wrote down: publish a dated pause. 83 pages promise 'first Tuesday'; the 2026-08-04 first Tuesday already came and went. Take the fork deliberately in week one instead of letting a red CI email arrive unplanned in week two and be ignored, which is how the warrant canary reached 89 days.
+
+**Evidence**
+
+- scripts/check-cost-index-dispatch-fresh.mjs:32 — MAX_LAG_DAYS = 38
+- board-execution-feasibility.md — "prints 'edition of 2026-07-09 ... 27d lag, ≤ 38' — it reds ~2026-08-16, in week 2"
+- docs/handoff/company-audit-2026-08-07.md — 'Monthly Cost Index dispatch: 2026-08-04 came and went; 83 pages promise first Tuesday'
+
+**Only Don can do this:** The dispatch is hand-written by founder call of 2026-07-09 and the byline is his. Pausing a published cadence is equally his call — an agent may not decide that a public promise stops.
+
+**Retires**
+
+- The monthly hand-written Cost Index dispatch, for the duration of M1-M3, IF the pause fork is taken — replaced by a dated public note. The DATA cadence is untouched: the refresh workflow keeps running.
+
+**Done when:** Either a new blog/cost-index-* edition exists with an asOf inside 38 days, OR data/cost-index-cadence.json declares a dated pause (pausedOn, resumeBy, reason) AND the 'first Tuesday' promise no longer appears on any indexed page — with check-cost-index-dispatch-fresh.mjs exiting 0 either way.
+
+```sh
+# cwd: storefront
+node -e "const fs=require('fs');let paused=false;try{const c=JSON.parse(fs.readFileSync('data/cost-index-cadence.json','utf8'));paused=!!(c.pausedOn&&c.resumeBy&&c.reason)}catch(e){}if(!paused){require('child_process').execSync('node scripts/check-cost-index-dispatch-fresh.mjs',{stdio:'inherit'})}else{console.log('cadence paused '+JSON.parse(fs.readFileSync('data/cost-index-cadence.json','utf8')).pausedOn)}" && node scripts/check-cost-index-dispatch-fresh.mjs
+```
+
+### `Q-016` — Un-stub or delete .github/workflows/deploy.yml — four echo statements behind a two-person gate
+
+**MED** · ready · P1 · owner **agent** · product · 2h · kind `retire`
+
+Every target in the product's deploy workflow runs echo "TODO(B-priv-6): wire ... after cosign signing pipeline lands", the web step still names Vercel where CLAUDE.md specifies OpenNext/Cloudflare, and the whole thing sits behind environment: production with 'Prevent self-review: ON' at a one-person company. A workflow that cannot run and names the wrong vendor is the same defect class as an asserted-but-absent gate: it reads as infrastructure and is theatre. Either wire it to scripts/deploy-api.sh and deploy:cf, or delete it and let the runbook be the honest single path.
+
+**Evidence**
+
+- board-execution-feasibility.md — 'every target runs echo "TODO(B-priv-6)" ... comments vercel deploy --prod while CLAUDE.md specifies OpenNext→Cloudflare'
+- Muntin-Invoice-Decoder/scripts/deploy-api.sh — the real path is a founder-run guarded local deploy requiring HEAD == origin/main
+
+**Retires**
+
+- The stubbed deploy.yml, OR its four TODO echoes — one of the two goes. A workflow that cannot deploy is retired obligation either way.
+
+**Done when:** No file under .github/workflows/ contains the string 'TODO(B-priv-6)', and no workflow references 'vercel'.
+
+```sh
+# cwd: product
+node -e "const fs=require('fs'),p='.github/workflows';for(const f of fs.readdirSync(p)){const t=fs.readFileSync(p+'/'+f,'utf8');if(t.includes('TODO(B-priv-6)'))throw new Error(f+' still stubbed');if(/vercel/i.test(t))throw new Error(f+' still names vercel')}console.log('no stubbed or misdirected deploy workflow remains')"
+```
+
+### `Q-017` — Founder deploys apps/api + apps/web to production and records the deployed SHA
+
+**HIGH** · blocked · P1 · owner **founder** · product · 1.5h · kind `fix`
+
+Twenty agent-hours of correctness fixes reach zero customers until this happens, and no queue item covered it. A pushed branch is not live; merged is not shipped. The product repo's own CLAUDE.md says so and the plan still assumed it away. The specimen close (Q-030) must be produced from a build a buyer could actually obtain, or the headline promise is demonstrated on software that does not exist in production.
+
+**Evidence**
+
+- board-execution-feasibility.md — 'nothing in the queue deploys the product'
+- Muntin-Invoice-Decoder/CLAUDE.md — 'A pushed branch is not live ... do not let "pushed" read as "shipped"'
+
+**Only Don can do this:** deploy-api.sh and deploy:cf run from his Mac against credentials only he holds, and the workflow that would do it is four echo statements behind a two-person approval gate at a one-person company.
+
+**Done when:** docs/handoff/receipts/production-deploy.json records apiSha, webSha, deployedAt and a live /health probe result, with both SHAs present in origin/main's history.
+
+```sh
+# cwd: product
+node -e "const {execSync}=require('child_process');const r=require('./docs/handoff/receipts/production-deploy.json');for(const k of ['apiSha','webSha','deployedAt','healthOk']){if(r[k]===undefined||r[k]===null)throw new Error('missing '+k)}if(r.healthOk!==true)throw new Error('health probe did not pass');for(const s of [r.apiSha,r.webSha]){execSync('git merge-base --is-ancestor '+s+' origin/main')}console.log('production deploy recorded: api '+r.apiSha.slice(0,8)+' web '+r.webSha.slice(0,8))"
+```
+
+### `Q-018` — --done must assert the doneWhen, not merely run the verify — the queue's own honesty defect
+
+**HIGH** · ready · P0 · owner **agent** · storefront · 3h · kind `fix`
+
+The queue's one novel claim over every prior 26%-closing audit is that closure is machine-proved. On the honesty-debt headline that claim is already false: check-src-sentinel.mjs exits 0 today reporting UNANCHORED=138 DRIFT=21 (ratchet holding) while Q-007's doneWhen demands zero unanchored annotations — and --done runs verify, not doneWhen. 'Pay the honesty debt IN FULL' would be certified as paid at roughly 1% paid, by the mechanism built to cure exactly that. Every item sharing that verify shape inherits the defect, so the audit is part of the fix.
+
+**Evidence**
+
+- board-execution-feasibility.md — '[DISQUALIFYING] The verify contract does not test the doneWhen. Q-007 — the honesty-debt headline — closes green with the debt unpaid.'
+- scripts/check-queue.mjs — cmdDone() runs item.verify.cmd and nothing else
+
+**Done when:** Every item declares verify.provesDoneWhen: true|false; --done refuses to close any item whose flag is false; --self-test asserts that refusal; and an audit pass records, per item, whether its verify command actually tests its stated done-condition.
+
+```sh
+# cwd: storefront
+node scripts/check-queue.mjs --self-test && node -e "const q=require('./data/queue.json');const bad=q.items.filter(i=>i.verify.provesDoneWhen===undefined);if(bad.length)throw new Error(bad.length+' item(s) have not declared whether verify proves doneWhen: '+bad.map(i=>i.id).join(','));console.log('all '+q.items.length+' items declare provesDoneWhen')"
+```
+
+### `Q-019` — Ratify the six ADRs — the decisions of record that stop this being relitigated
+
+**HIGH** · ready · P0 · owner **founder** · both · 1h · kind `decision`
+
+Six ADRs are drafted as Proposed: one price and no billing code (ADR-030 storefront / ADR-013 product), the submitter lane foreclosed (ADR-031), the ratchets released (ADR-032), the ninety days and their falsifiers (ADR-033), and the bookkeeper channel deferred (product ADR-014). An agent may draft a decision; it may not make one. Until the Status line says Accepted with his name on it, the next session relitigates the price — which is the other half of the 26% close rate. Reading six one-paragraph Decision blockquotes and writing Accepted or Rejected on each is the whole task.
+
+**Evidence**
+
+- docs/editorial/decisions/ADR-030..033 — Status: Proposed
+- Muntin-Invoice-Decoder/docs/ux/decisions/ADR-013, ADR-014 — Status: Proposed
+- ADR-024 — 'an unrecorded decision gets relitigated by the next session'
+
+**Only Don can do this:** A decision of record is a judgment with a name on it. This is the single hour that converts an agent's draft into the company's position.
+
+**Done when:** All six ADRs carry Status: Accepted (or Rejected, with a dated reason) and a founder-signed date line; none remains Proposed.
+
+```sh
+# cwd: storefront
+node -e "const fs=require('fs');const A=['docs/editorial/decisions/ADR-030-one-price-one-cohort-no-billing-code.md','docs/editorial/decisions/ADR-031-operator-submitter-lane-foreclosed.md','docs/editorial/decisions/ADR-032-ratchets-released.md','docs/editorial/decisions/ADR-033-the-ninety-days-and-its-falsifiers.md','../Muntin-Invoice-Decoder/docs/ux/decisions/ADR-013-no-billing-code-for-the-first-cohort.md','../Muntin-Invoice-Decoder/docs/ux/decisions/ADR-014-the-bookkeeper-channel-is-deferred.md'];const missing=A.filter(f=>!fs.existsSync(f));if(missing.length)throw new Error('missing ADR: '+missing.join(', '));const open=A.filter(f=>/^\\*\\*Status:\\*\\*\\s*Proposed/m.test(fs.readFileSync(f,'utf8')));if(open.length)throw new Error(open.length+' ADR(s) still Proposed: '+open.join(', '));console.log('all 6 ADRs ratified')"
 ```
 
 ### `Q-020` — Purchases leg: line_item_observations was built for price intelligence and reused unchanged
@@ -443,7 +734,7 @@ node scripts/check-limits-register.mjs
 
 **MED** · blocked · P2 · owner **both** · storefront · 6h · kind `fix`
 
-Nobody in this category publishes a complete worked close with its exceptions visible. It is the single artifact that converts a forty-minute read into a recommendation, and it is the storefront's whole job under the qualification doctrine.
+Nobody in this category publishes a complete worked close with its exceptions visible. It is the single artifact that converts a forty-minute read into a recommendation, and it is the storefront's whole job under the qualification doctrine. Blocked on Q-017 because a specimen produced from a build no buyer can obtain is a demonstration of a thing that does not exist in production.
 
 **Evidence**
 
@@ -514,7 +805,7 @@ node scripts/build-refusals-page.mjs --check && node scripts/build-freshness-pag
 
 ### `Q-040` — /close/apply/ replaces all four waitlist forms
 
-**LOW** · blocked · P3 · owner **agent** · storefront · 5h · kind `retire`
+**LOW** · blocked · P3 · owner **both** · storefront · 5h · kind `retire`
 
 Exactly 4 of 1,368 pages carry action="/api/waitlist". At forty customers ever, qualification IS the funnel: an application with five qualifying questions (locations, active vendor count, broadliner yes/no, who does the count today, who reviews the number) beats a waitlist that collects an address and produces a founding-lead enum nobody reads.
 
@@ -522,6 +813,8 @@ Exactly 4 of 1,368 pages carry action="/api/waitlist". At forty customers ever, 
 
 - audit §0 fact 2 — 'exactly 4 of 1,368 pages carry action="/api/waitlist"'
 - audit §2 item 7 — 'listFounding() has no callers'
+
+**Only Don can do this:** Approving the five qualifying questions an application asks. Who gets told no is a founder call, not a copy edit.
 
 **Retires**
 
@@ -534,9 +827,51 @@ Exactly 4 of 1,368 pages carry action="/api/waitlist". At forty customers ever, 
 node -e "const {execSync}=require('child_process');const n=execSync('grep -rl \\\"/api/waitlist\\\" --include=*.html . || true').toString().trim();if(n)throw new Error('waitlist forms still live:\\n'+n);console.log('0 waitlist forms')"
 ```
 
+### `Q-041` — Eight qualified conversations with owners whose vendor mix matches the corpus
+
+**HIGH** · blocked · P3 · owner **founder** · none · 6h · kind `decision`
+
+The buyer is defined by vendor mix, not seat count: 8-12 active specialty vendors, zero or one broadliner, 1-3 locations, DMV-clustered because marginal cost scales with distinct vendor layouts. That buyer is reached by a person, not a page — at forty customers ever, qualification IS the funnel and the storefront is what they read AFTER the conversation. Eight conversations at roughly 45 minutes each is the whole day-90 acquisition budget, and it is what the day-90 falsifier is measured against: zero signed after eight qualified conversations means the price or the buyer is wrong, and no further product gets built.
+
+**Evidence**
+
+- verdict:theCompany — 'the owner of a 1-3 location independent defined by vendor mix, not seat count'
+- verdict:theCompany — 'at forty customers ever, qualification IS the funnel'
+- verdict:synthesis[9] — 'credibility ... converts consideration into signature'
+
+**Only Don can do this:** A relationship, a phone call, and the standing of a working FOH manager talking to another operator about his own floor. No agent session has any of the three.
+
+**Done when:** docs/handoff/receipts/conversations.json records at least 8 entries, each with a date, a location count, a vendor-mix qualification (vendorCount, hasBroadliner), the objection in the owner's own words, and an outcome of signed | declined | pending.
+
+```sh
+# cwd: storefront
+node -e "const r=require('./docs/handoff/receipts/conversations.json');const c=r.conversations||[];const q=c.filter(x=>x.vendorCount>=8&&x.locations>=1&&x.locations<=3);for(const x of c){for(const k of ['date','locations','vendorCount','hasBroadliner','objection','outcome']){if(x[k]===undefined||x[k]===null)throw new Error('entry missing '+k)}}if(q.length<8)throw new Error('only '+q.length+' qualified conversations recorded (need 8)');console.log(q.length+' qualified conversations, '+c.filter(x=>x.outcome==='signed').length+' signed')"
+```
+
+### `Q-042` — Three locations signed at $600/month, one close signed and delivered, one invoice sent by hand
+
+**HIGH** · blocked · P3 · owner **founder** · none · 2h · kind `decision`
+
+The day-90 proof point, and deliberately not ten locations: ten inside weeks 10-13 needs sales hours that do not exist at 13h/month. Three signed, one signed close delivered, one invoice actually sent is the smallest fact that distinguishes a business from a plan. The invoice is a PDF and an email — no SKU, no checkout, no billing code, by ADR-027 — and the term is monthly rather than $6,000 annual because Phase 3 lands outside the May-August peak and asking an independent for six thousand dollars into the January trough is the exact objection that killed the previous launch date.
+
+**Evidence**
+
+- verdict:theCompany — '$600/location/month, hand-invoiced'; 'ten locations' re-scoped to three by the capacity cut of record
+- verdict:killed[0] — the Jan/Feb cash trough (Census MARTS medians Jan 0.913 / Feb 0.917) that killed the 2026-11-13 GA
+- data/queue.json#capacity.cuts
+
+**Only Don can do this:** A signature on a statement of food cost is an opinion he is personally answerable for, and the invoice goes out under his name. This is the one thing in the company that can never be delegated to any workforce, agent or human.
+
+**Done when:** docs/handoff/receipts/first-revenue.json records at least 3 signed locations with dates and monthly amounts, at least 1 signed close (period, signedOn, statementUrl), and at least 1 invoice with sentOn and amount.
+
+```sh
+# cwd: storefront
+node -e "const r=require('./docs/handoff/receipts/first-revenue.json');const L=r.locations||[],C=r.closes||[],I=r.invoices||[];if(L.length<3)throw new Error('only '+L.length+' locations signed');if(!C.length)throw new Error('no signed close');if(!I.length)throw new Error('no invoice sent');for(const l of L){if(!(l.monthlyUsd===600))throw new Error('a signed location is not at $600/month')}for(const c of C){for(const k of ['period','signedOn','statementUrl']){if(!c[k])throw new Error('close missing '+k)}}for(const i of I){if(!i.sentOn||!(i.amountUsd>0))throw new Error('invoice missing sentOn/amount')}console.log(L.length+' locations, '+C.length+' signed close(s), '+I.length+' invoice(s)')"
+```
+
 ### `Q-050` — Freeze the board — the queue becomes the only place work is tracked
 
-**HIGH** · ready · RET · owner **agent** · storefront · 1h · kind `retire`
+**HIGH** · done · RET · owner **agent** · storefront · 1h · kind `retire`
 
 docs/handoff/strategic-council-board.md is 1,488 lines and board-archive.md is 993, and the measured close rate of work recorded on them is 26% with ZERO closures ever coming from anyone working the list. The board is an excellent narrative history and a failed tracker. It keeps the first job and loses the second. This is the retirement that pays for the queue: two tracking surfaces become one, and the queue is machine-read at session start rather than hoped-for.
 
@@ -551,12 +886,14 @@ docs/handoff/strategic-council-board.md is 1,488 lines and board-archive.md is 9
 - Section 2 of docs/handoff/company-audit-2026-08-07.md as a live to-do list — the audit is frozen as a dated finding document.
 - Ad-hoc 'next steps' sections in the other handoff docs, which become pointers.
 
-**Done when:** The board's header states that work tracking has moved to the queue and links it; no NEW open-item list is appended to the board after this date; the audit's section 2 carries a dated pointer to the queue items that absorbed it.
+**Done when:** The board header declares itself frozen as a tracker, links QUEUE.md and cites ADR-024; and section 2 of the 2026-08-07 audit is marked superseded and points at the queue.
 
 ```sh
 # cwd: storefront
-node scripts/check-queue.mjs --retirement Q-050
+node -e "const fs=require('fs');const b=fs.readFileSync('docs/handoff/strategic-council-board.md','utf8');if(!/FROZEN AS A TRACKER/.test(b))throw new Error('the board does not declare itself frozen as a tracker');if(!/QUEUE\\.md/.test(b))throw new Error('the board does not link the queue');if(!/ADR-024/.test(b))throw new Error('the board does not cite the decision of record');const a=fs.readFileSync('docs/handoff/company-audit-2026-08-07.md','utf8');if(!/SUPERSEDED 2026-08-07 as a live to-do list/.test(a))throw new Error('audit section 2 is still presented as a live to-do list');if(!/QUEUE\\.md/.test(a))throw new Error('audit section 2 does not point at the queue');console.log('board frozen as a tracker; audit section 2 superseded; both point at the queue')"
 ```
+
+_Closed 2026-08-07T17:55:11.641Z by session:phase-e-queue, proved by `node -e "const fs=require('fs');const b=fs.readFileSync('docs/handoff/strategic-council-board.md','utf8');if(!/FROZEN AS A TRACKER/.test(b))throw new Error('the board does not declare itself frozen as a tracker');if(!/QUEUE\\.md/.test(b))throw new Error('the board does not link the queue');if(!/ADR-024/.test(b))throw new Error('the board does not cite the decision of record');const a=fs.readFileSync('docs/handoff/company-audit-2026-08-07.md','utf8');if(!/SUPERSEDED 2026-08-07 as a live to-do list/.test(a))throw new Error('audit section 2 is still presented as a live to-do list');if(!/QUEUE\\.md/.test(a))throw new Error('audit section 2 does not point at the queue');console.log('board frozen as a tracker; audit section 2 superseded; both point at the queue')"`._
 
 ### `Q-051` — Stand up the cron consumer so the four nightly Issue-openers reach a human
 
@@ -580,21 +917,27 @@ mutmut-nightly, flake-tracker and competitor-claims open Issues into a queue not
 node scripts/check-queue.mjs --heartbeat
 ```
 
-### `Q-052` — Delete the 162 provably-dead pages — frozen AND orphaned
+### `Q-052` — Execute the provably-dead cut — 14 pages, NOT 162 (correction of record)
 
-**LOW** · ready · RET · owner **agent** · storefront · 2h · kind `retire`
+**LOW** · ready · RET · owner **agent** · storefront · 1h · kind `retire`
 
-Already noindexed AND already unlinked: no crawler sees them, no internal link leads to them. The one deletion that risks nothing and needs no traffic data. Explicitly NOT counted as the retirement that pays for a new mechanism — retiring what nothing reaches retires zero obligation. That honest accounting is the difference between motion and closure.
+CORRECTED 2026-08-07 with measurement. This item said "162 provably-dead pages, frozen AND orphaned". That number is data/content-intent.json#summary.deadWeight.total, which counts frozen AND OFF-THESIS pages — a different predicate. 142 of those 162 are still linked (median rendered in-degree 12); deleting them breaks live internal links. Measured: 24 pages are noindex AND absent from the sitemap AND carry no editorial inbound link AND are unreachable by any walk from either home. 10 of the 24 are runtime machinery (/404.html, the /admin/* harness, /brand/og/preview.html, the two embed.html iframe targets) — nothing links to a 404 page on purpose. 14 are deletable: the seven retired-line operator sheets in EN and ES, 8,840 words. The trap worth recording: each of the 14 has rendered in-degree 1, from its own hreflang counterpart, so they form closed EN-ES pairs no walk can enter. An in-degree test scores them "linked" and hides them; only a reachability test finds them — the same class of error as the three 2026-07-28 root-list bugs in CLAUDE.md. The verdict's honest accounting still stands: retiring what nothing reaches retires zero obligation. This is 1.1% of the corpus.
 
 **Evidence**
 
-- verdict:synthesis[9] — 'the provably-dead cut as the only Phase-0 deletion'
+- data/surface-disposition.json#phase0 — noindexAndUnreachable 24, ofWhichRuntime 10, deletable 14, deletableWords 8840
+- data/content-intent.json#summary.deadWeight.total = 162 — the number this item previously carried, measuring frozen AND off-thesis
+- docs/editorial/decisions/ADR-025-the-storefront-is-an-audit-file.md §3
 
-**Done when:** The pages are gone or 301'd, data/link-graph.json rebuilds with no dangling edges, and the sitemap count drops by the same number.
+**Retires**
+
+- 14 page files, 8,840 words, 7 build fragments and their entries in 5 data manifests. Explicitly NOT counted as the retirement that pays for a new mechanism — nothing reaches these pages, so nothing is relieved of anything.
+
+**Done when:** The 14 routes in data/surface-disposition.json#phase0.deletableRoutes are gone from disk, each 301s to its redirectTo, their entries are pruned from data/sheets.json, data/sheets.es.json, data/cross-surface-map.json, data/sheet-releases.json and scripts/sheets-fragments/, and check-surface-disposition.mjs reports no violations of check "deleted".
 
 ```sh
 # cwd: storefront
-node scripts/build-link-graph.mjs --check && node scripts/build-sitemap.mjs --check
+node scripts/build-link-graph.mjs --check && node scripts/check-surface-disposition.mjs --summary
 ```
 
 ### `Q-053` — Cross-repo PAT so the product inbox and the storefront queue are one list
@@ -614,5 +957,244 @@ The queue lives in the public storefront; the four crons live in the private pro
 ```sh
 # cwd: storefront
 node scripts/check-queue.mjs --attest Q-053
+```
+
+### `Q-060` — Every honesty gate must ship a mutation proof — generalize ADR-023 to the rest
+
+**MED** · ready · P1 · owner **agent** · storefront · 6h · kind `mechanism`
+
+ADR-023 established the rule while fixing the basis leak: a gate that has never been SHOWN to fail is not evidence. check-cost-index-basis-leak passed for months while naming feed.json as covered, because it cross-referenced at the ingredient level and never at the observation rendered. The audit measured the general form: 27 of 40 hand-classified gates assert the PRESENCE OF A SHAPE, and 56 of check-all's entries are tautologies where the deploy runs a builder then asks the builder whether its own output matches. Green means nothing until a gate has been watched going red on a seeded defect.
+
+**Evidence**
+
+- docs/editorial/decisions/ADR-023-basis-is-a-property-of-an-observation.md — "every honesty gate must ship a mutation proof"
+- audit §1.2 — '27 of 40 assert a SHAPE'; '56 of check-all's 320 entries are tautologies'
+
+**Retires**
+
+- The unstated assumption that a passing gate is evidence. A gate with no mutation proof stops counting as protection and is reported as advisory.
+
+**Done when:** Every gate in the honesty family — fabrications, audio-fabrications, src-sentinel, basis-leak, corrections-ledger, claim-usage, editors-note — ships a --self-test that seeds its own defect class and asserts the gate goes red.
+
+```sh
+# cwd: storefront
+for g in check-fabrications check-audio-fabrications check-src-sentinel check-cost-index-basis-leak check-corrections-ledger check-claim-usage check-cost-index-editors-note; do node scripts/$g.mjs --self-test >/dev/null 2>&1 || { echo "$g has no passing --self-test"; exit 1; }; done; echo 'every honesty gate has a mutation proof'
+```
+
+### `Q-061` — Execute the surface disposition — 209 pages marked freeze-noindex are still indexable, 14 marked delete are still on disk
+
+**HIGH** · ready · RET · owner **agent** · storefront · 4h · kind `retire`
+
+data/surface-disposition.json gives all 1,327 routable pages a disposition and check-surface-disposition.mjs is the teeth. It fails by construction on the day it was written — 223 violations — because the manifest is a decision the site has not executed. Under the qualification doctrine the storefront needs ~400 qualified readers, not 1,327 defended promises, and ~460 pages of explanatory prose freeze: read-only, no dated cites to re-verify, no audio, no parity ratchet. Executing this is what lets the gate be wired and its UNWIRED entry deleted.
+
+**Evidence**
+
+- scripts/check-surface-disposition.mjs --summary — 'surface-disposition: 1327 pages · 223 violations { noindexed: 209, deleted: 14 }', measured 2026-08-07
+- scripts/check-gate-coverage.mjs UNWIRED[check-surface-disposition.mjs] — names this queue item as the work that clears it
+- verdict:theCompany — 'roughly 460 pages of explanatory prose freeze'
+
+**Retires**
+
+- The maintenance obligation on ~460 explanatory pages: no re-verified dated cites, no audio, no EN↔ES parity ratchet, and analytics on ~50 pages instead of 1,327.
+
+**Done when:** check-surface-disposition exits 0, and its UNWIRED entry in check-gate-coverage is gone because the gate is wired into check-all.
+
+```sh
+# cwd: storefront
+node scripts/check-surface-disposition.mjs && node scripts/check-gate-coverage.mjs
+```
+
+### `Q-070` — Nine topics become four — apply the taxonomy migration
+
+**MED** · blocked · RET · owner **agent** · storefront · 4h · kind `retire`
+
+data/topics.json is the smallest file on the site with the largest reach: eight scripts read it, and through them it is stamped into the topic chip on every glossary term, the ItemList on /learn/topics/, the eyebrow on every article and the DefinedTermSet. It is the first thing a crawler or a language model reads to decide what this company is about — and six of its nine topics name the retired web-design line. Five of those six hub pages are ALREADY noindex and every one still holds 27-46 inbound editorial links, because freezing a page did not remove it from the taxonomy that generates the links to it. Four JSON objects decide how 1,327 pages are understood. No slug is renamed: operations-margin keeps its slug (70 inbound links) and changes only its display name to 'Food Cost & Margin'.
+
+**Evidence**
+
+- data/topics.proposed.json — the full proposal; node scripts/migrate-topics.mjs --preflight passes
+- data/surface-inventory.json — /learn/topics/local-seo/ indexable:false, inboundInternalLinks:46; brand-design 38; conversions 38; speed-mobile 34; trust-reviews 28
+- data/surface-inventory.json#summary.retiredLine — 3,611 hits across 419 pages, localGbp 1,688
+- docs/editorial/decisions/ADR-026-the-taxonomy-under-the-close.md
+
+**Retires**
+
+- 5 topic hub pages stop being regenerated by build-library.mjs (URLs and files kept, external backlinks intact).
+- 7 topics' pillar essays leave data/topic-essays.json's review surface.
+- The generation of retired-line topic chips onto 344 glossary pages and every library article.
+
+**Done when:** data/topics.json holds exactly 4 topics and a _retired array of 7, data/library-tags.json is remapped, the builders in data/topics.proposed.json#_ordering have been re-run, and node scripts/check-all.mjs exits 0.
+
+```sh
+# cwd: storefront
+node scripts/migrate-topics.mjs --preflight && node scripts/check-pillar-coverage.mjs && node scripts/build-tools-index.mjs --check
+```
+
+### `Q-071` — Two pillar essays in Don's voice — invoices-and-vendors, count-and-close
+
+**MED** · ready · RET · owner **founder** · storefront · 1.5h · kind `fix`
+
+data/topic-essays.json holds one 600-900 word pillar essay per topic, injected by inject-topic-pillar-essay.mjs, and its own _status block says Don must read every essay for voice and claim accuracy before promoting. The taxonomy migration adds two topics and cannot ship without theirs. The invoices-and-vendors essay has to name the vendor mix he actually receives — that is the buyer definition, and it is the sentence a prospect recognises himself in.
+
+**Evidence**
+
+- data/topic-essays.json#_status.review_required — 'Don should read for voice + claim accuracy before promoting'
+- data/topics.proposed.json#_ordering step 2
+- docs/voice-canon-library.md — first-person 'I' only when naming personal operator practice
+
+**Only Don can do this:** The essays are in his register about his floor, and the vendor essay names suppliers only he receives invoices from. An agent can draft the structure; it cannot supply the voice or the standing to make the claim.
+
+**Done when:** data/topic-essays.json contains entries for invoices-and-vendors and count-and-close in EN and ES, each 600-900 words, and node scripts/check-fabrications.mjs exits 0.
+
+```sh
+# cwd: storefront
+node -e "const e=require('./data/topic-essays.json');for(const k of ['invoices-and-vendors','count-and-close']){if(!e[k])throw new Error('missing pillar essay: '+k)}console.log('both pillar essays present')" && node scripts/check-fabrications.mjs
+```
+
+### `Q-072` — /close/ — the page that says what Muntin sells
+
+**MED** · blocked · P2 · owner **both** · storefront · 5h · kind `mechanism`
+
+The company sells a closed month and no page on the storefront says so. data/surface-disposition.json#_toBuild lists eight pages the doctrine requires and this is the one the other seven hang off: what a close guarantees, what it withholds, what it costs, and the plain-language disclosure that the exception desk produces RULES and never numbers. It cannot ship before the founder walk (Q-001) has produced four real numbers or before the five posted prices come down (Q-010), or it publishes a promise nobody has tested at a price that has been withdrawn.
+
+**Evidence**
+
+- data/surface-disposition.json#_toBuild[0]
+- data/surface-disposition.json#summary.byClassAndDisposition — marketing 12 pages, none of which name the deliverable
+- verdict:theCompany — 'New center: /close/ (what a close guarantees, what it withholds, what it costs)'
+
+**Only Don can do this:** The page that says what Muntin sells is a promise in his voice, under his signature. An agent drafts it; he decides it is true.
+
+**Retires**
+
+- The homepage's job of explaining what the company sells — it becomes a pointer.
+- /ledger/ as the primary product explainer — it reverts to being the app's own page, not the pitch.
+- The four scattered waitlist forms as the only conversion surface (Q-040 finishes the removal).
+
+**Done when:** /close/ and /es/close/ exist, are indexable, are dispositioned keep by a rebuilt data/surface-disposition.json, carry no number absent from data/sourced-claims.json, and node scripts/check-all.mjs exits 0.
+
+```sh
+# cwd: storefront
+node scripts/build-surface-disposition.mjs --check && node scripts/check-fabrications.mjs && node scripts/check-positioning-drift.mjs
+```
+
+### `Q-073` — Strip analytics from 221 pages — instrument the qualification path, not the corpus
+
+**LOW** · ready · RET · owner **agent** · storefront · 2h · kind `retire`
+
+274 pages carry an analytics tag. The verdict abolishes sessions as a measure — the storefront's measure is qualified applications and whether the CPA said yes. data/surface-disposition.json marks 72 pages as the qualification path (marketing, product, trust, tools, the Cost Index hubs); the other 221 tags measure something nobody will act on, on pages that are being frozen, and each is a third-party request on a site that promises privacy architecture.
+
+**Evidence**
+
+- data/surface-disposition.json#summary — analyticsTagsToRemove 221, instrumentedPages 72
+- data/surface-inventory.json#summary — withAnalytics 274, withoutAnalytics 1053
+- verdict:theCompany — 'Analytics on ~50 pages, not 1,327'
+
+**Retires**
+
+- The measurement obligation on 221 pages, and 221 third-party requests from pages that promise privacy architecture.
+
+**Done when:** data/surface-inventory.json rebuilds with withAnalytics at or below 80, and every page still carrying analytics has maintain.analytics true in its data/surface-disposition.json record.
+
+```sh
+# cwd: storefront
+node scripts/build-surface-inventory.mjs && node scripts/build-surface-disposition.mjs --check
+```
+
+### `Q-080` — Execute the retirement — archive 21 documents, delete 16 byte-identical duplicates
+
+**MED** · ready · RET · owner **agent** · storefront · 1h · kind `retire`
+
+The working set a session is told to read is 2,398 lines against a 1,400 budget, and the board is 87% log (1,314 of 1,505 lines) against a 35% ceiling. The board was already compacted to 252 lines on 2026-07-17 and regrew to 1,504 within fourteen days across three further manual compactions — decay as a chore loses to write pressure 3 out of 3 times measured. This is the move, not another compaction: nothing is rewritten, summarised or condensed, because a summary is a new document with a new decay curve.
+
+**Evidence**
+
+- node scripts/check-working-set.mjs — exits 1: 2,398/1,400 lines; board 87% log
+- docs/contracts/retirement-2026-08-07.json — 21 files / 5,668 lines to archive, 16 files / 1,374 lines to delete, each with a reason
+- docs/editorial/decisions/ADR-028-the-working-set-budget.md
+- md5 over every file under docs/ — the 16 deletions are byte-identical duplicates under docs/handoff/bones/panels/
+
+**Retires**
+
+- docs/handoff/strategic-council-board.md and board-archive.md from the working set (2,497 lines).
+- 19 further superseded, course-era or retired-line documents (3,171 lines) from the working set.
+- 16 duplicate files (1,374 lines) from the repository entirely.
+
+**Done when:** Every path in docs/contracts/retirement-2026-08-07.json#archive exists at its `to` location under docs/archive/ and not at its old path; every path in #delete is gone; docs/contracts/working-set.json is updated so those files are classified `archive`; and `node scripts/check-working-set.mjs` exits 0.
+
+```sh
+# cwd: storefront
+node -e "const r=require('./docs/contracts/retirement-2026-08-07.json'),fs=require('fs');for(const a of r.archive){if(fs.existsSync(a.path))throw new Error('still at old path: '+a.path);if(!fs.existsSync(a.to))throw new Error('not archived: '+a.to)}for(const x of r.delete){if(fs.existsSync(x.path))throw new Error('not deleted: '+x.path)}console.log('retirement executed: '+r.archive.length+' archived, '+r.delete.length+' deleted')" && node scripts/check-working-set.mjs
+```
+
+### `Q-081` — Wire check-working-set.mjs into check-all — the forgetting gate has no teeth until it is in the deploy
+
+**MED** · blocked · RET · owner **agent** · storefront · 15m · kind `mechanism`
+
+ADR-028 is honest that the gate's odds depend on this: a gate in the deploy is paid, a gate in a hook is read. It is UNWIRED today because it fails by construction and CLAUDE.md:50 forbids wiring a currently-failing gate into a command the Cloudflare deploy runs. Once Q-080 clears it, wiring is the whole difference between a budget and a suggestion.
+
+**Evidence**
+
+- scripts/check-gate-coverage.mjs UNWIRED['check-working-set.mjs'] — 'FAILS BY DESIGN … Q-072 wires this'
+- CLAUDE.md:50 — 'never wire a gate that is currently failing'
+- docs/editorial/decisions/ADR-028 §Consequences — 'the single change that would most improve its odds is this landing'
+
+**Retires**
+
+- The UNWIRED registry entry for check-working-set.mjs, and the working set's dependence on anyone feeling tidy.
+
+**Done when:** check-working-set.mjs appears in scripts/check-all.mjs's CHECKS list, its UNWIRED entry is gone, and both check-gate-coverage.mjs and check-working-set.mjs exit 0.
+
+```sh
+# cwd: storefront
+node -e "const s=require('fs').readFileSync('scripts/check-all.mjs','utf8');if(!s.includes('check-working-set.mjs'))throw new Error('not wired into check-all');const {UNWIRED}=require('url');" ; grep -q "check-working-set.mjs" scripts/check-all.mjs && ! grep -q "'check-working-set.mjs': {" scripts/check-gate-coverage.mjs && node scripts/check-gate-coverage.mjs && node scripts/check-working-set.mjs
+```
+
+### `Q-082` — Inject the contract at the spawn site — the harness orchestrator must call contractFor()
+
+**HIGH** · ready · P1 · owner **both** · both · 1-2h · kind `mechanism`
+
+1 of 108 agent transcripts in the 2026-08 engagement carried a CLAUDE.md; 37 ran with cwd = the storefront repo and got none. The registry, the selector and the gate all exist now, and the SessionStart hook delivers the CORE rules — but the workflow orchestrator that actually spawns subagents lives in the harness, outside both repos, so check-contract-injection's assertion C is currently VACUOUS and says so on every run. Until a spawner is committed and calls contractFor(paths), scoped rules still reach a subagent only if a human pastes them.
+
+**Evidence**
+
+- node scripts/check-contract-injection.mjs — 'VACUOUS: assertion C found 0 subagent spawners across 432 scanned files'
+- docs/handoff/bones/os-claude-md.md — 56 unique agents, 1 with a CLAUDE.md; rule text reached agents via 41/56, 14/56, 16/56 task prompts
+- docs/editorial/decisions/ADR-027-the-contract-loads-through-the-hook.md §Walk receipt, 'Honest limits'
+
+**Only Don can do this:** Only Don can decide where the orchestrator lives and commit it into a repo. The harness is his environment, not the container's.
+
+**Retires**
+
+- Hand-copying rules into task prompts as the delivery mechanism for scoped rules. The hook already retired it for CORE.
+
+**Done when:** At least one committed file under .claude/, workflows/ or scripts/ in either repo spawns a subagent AND builds its prompt through contractFor(...), and `node scripts/check-contract-injection.mjs` reports a non-zero spawner count with zero problems.
+
+```sh
+# cwd: storefront
+node scripts/check-contract-injection.mjs --verbose 2>&1 | tee /dev/stderr | grep -qv 'VACUOUS' && node scripts/check-contract-injection.mjs
+```
+
+### `Q-083` — Give the five undetected storefront rules a detector, or retire them
+
+**LOW** · ready · P1 · owner **agent** · both · 3-4h · kind `mechanism`
+
+Five active storefront rules and eleven product rules carry enforcedBy 'none' and render as 'NO DETECTOR — this rule is obeyed only if you obey it'. That label is honest, but the measured lesson of this company is that the rules reliably obeyed are the ones with a test behind them, not the ones in bold: the EN<->ES copy-parity rule scores 95% over 90 days because a shape-parity test enforces it. SF-ROOT-LIST is the highest-value candidate — a scanner that walks the site without a declared skip list is mechanically detectable.
+
+**Evidence**
+
+- node scripts/check-contract-injection.mjs --verbose — 5 storefront rules with NO detector, 11 in the product registry
+- docs/handoff/bones/os-claude-md.md — 'the rules that ARE reliably obeyed are the ones with a test behind them'
+- docs/contracts/rules.json — SF-ROOT-LIST, SF-SLUGS-FINAL, SF-ADR, SF-BYLINE, SF-NO-PACKAGE-JSON
+
+**Retires**
+
+- At least one rule per registry that no detector can be written for and that no session has been in scope of — a rule nobody can check and nobody hits is attention spent for nothing.
+
+**Done when:** The count of active rules with enforcedBy 'none' is at most 3 in docs/contracts/rules.json and at most 7 in the product registry, with each remaining one carrying a `why` explaining what makes it undetectable.
+
+```sh
+# cwd: storefront
+node -e "const a=require('./docs/contracts/rules.json'),b=require('../Muntin-Invoice-Decoder/docs/contracts/rules.json');const n=r=>r.rules.filter(x=>x.status!=='retired'&&x.enforcedBy==='none');const A=n(a),B=n(b);if(A.length>3)throw new Error('storefront still has '+A.length+' undetected rules');if(B.length>7)throw new Error('product still has '+B.length+' undetected rules');for(const r of A.concat(B))if(!r.why)throw new Error(r.id+' has no detector AND no why');console.log('undetected: storefront '+A.length+', product '+B.length)" && node scripts/check-contract-injection.mjs
 ```
 

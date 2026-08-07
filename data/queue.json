@@ -10,14 +10,16 @@
     "Every item cites file:line or a command. Nothing here is an impression."
   ],
   "policy": {
-    "staleClaimDays": 7,
+    "staleClaimDays": 21,
     "heartbeatMaxAgeDays": 3,
-    "heartbeatFile": "data/queue-heartbeat.json",
+    "heartbeatFile": "../Muntin-Invoice-Decoder/data/queue-heartbeat.json",
     "productInboxPath": "../Muntin-Invoice-Decoder/data/queue-inbox.json",
-    "oneInOneOut": "Adding an item whose kind is `mechanism` requires a non-empty `retires` array. Enforced by --self-test."
+    "oneInOneOut": "Adding an item whose kind is `mechanism` requires a non-empty `retires` array. Enforced by --self-test.",
+    "staleClaimRationale": "21, not 7. Measured burst pattern: 24 of 60 days idle; 266 of 344 storefront commits landed on 8 days (board-execution-feasibility.md). A 7-day expiry released most claims without a state change, so the board churned while nothing moved.",
+    "founderHoursAreDeclared": "Every item carries founderHours (a number, 0 for pure-agent work) and a window (M1|M2|M3|later). The budget is summed from those fields, never parsed out of the effort prose. Enforced by validate(); checked by --budget."
   },
   "strategy": {
-    "ofRecord": "docs/editorial/decisions/ADR-022-the-queue.md",
+    "ofRecord": "docs/editorial/decisions/ADR-024-the-queue.md",
     "verdict": "Muntin sells a closed month: a dated, signed statement of food cost where Beginning + Purchases - Ending = Usage foots on screen, every estimate is labeled, and any number that cannot be stood behind is withheld. $600/location/month, hand-invoiced, ~40 locations ever, no billing code for the first cohort.",
     "doctrine": "Credibility is a CLOSING asset, not a demand asset. Pay the honesty debt IN FULL before amplifying a single page of reach.",
     "phases": {
@@ -26,6 +28,19 @@
       "P2": "Weeks 7-10. The specimen close, then two CPA/bookkeeper conversations.",
       "P3": "Weeks 10-13. The price call, the application page, ten locations, hand-invoiced.",
       "RET": "Retirements. Executable at any time; each one reduces standing obligation."
+    },
+    "adrs": {
+      "storefront": {
+        "ADR-030": "One price, one cohort, no billing code — supersedes ADR-013 ($19/location, the three tiers, the GA date, three-months-free).",
+        "ADR-031": "The operator-submitter data lane is foreclosed — permanently, while closing it is free.",
+        "ADR-032": "The ratchets are released — traffic, audio, site-wide ES parity, site-wide analytics.",
+        "ADR-033": "The ninety days, the founder's irreducible work, and the three ways to know this is wrong."
+      },
+      "product": {
+        "ADR-013": "No billing code for the first cohort; the 2026-11-13 GA is withdrawn.",
+        "ADR-014": "The bookkeeper channel is deferred; the firm is a referral source and a reviewer."
+      },
+      "ratifiedBy": "Q-019 — an agent may draft a decision; it may not make one."
     }
   },
   "items": [
@@ -34,12 +49,12 @@
       "title": "Founder runs one month end-to-end through his own product and records four numbers",
       "phase": "P0",
       "priority": "HIGH",
-      "status": "ready",
+      "status": "blocked",
       "owner": "founder",
       "repo": "product",
       "effort": "4-6h",
       "kind": "fix",
-      "why": "After fifteen months the founder has never run the product once. Every independent critic named this the most valuable item in the material, and no agent session can substitute for it. Below ~70% invoice-dollar survival into a valued Purchases leg, the pilot does not open and the quarter is saved.",
+      "why": "After fifteen months the founder has never run the product once. Every independent critic named this the most valuable item in the material, and no agent session can substitute for it. Below ~70% invoice-dollar survival into a valued Purchases leg, the pilot does not open and the quarter is saved. Blocked on Q-002 because uploading an employer's month is itself the disclosure, and on Q-014 because a walk run after 2026-08-27 measures a dormant market prior and could abort the pilot on a stale vendored file rather than on the product.",
       "evidence": [
         "verdict:synthesis[8] — 'the twenty-invoice founder walk, promoted from eleventh to FIRST'",
         "verdict:ranked[1].verdict — 'three mandatory repairs', of which this is the second"
@@ -49,14 +64,19 @@
         "cwd": "product",
         "cmd": "node -e \"const r=require('./docs/handoff/receipts/founder-walk.json');const need=['invoiceCount','countMinutes','dollarSurvivalPct','needsReviewRows','legsFooted'];for(const k of need){if(r[k]===undefined||r[k]===null)throw new Error('missing '+k)}if(!(r.invoiceCount>0))throw new Error('invoiceCount must be > 0');console.log('founder walk recorded:',JSON.stringify(r))\""
       },
-      "blockedBy": [],
+      "blockedBy": [
+        "Q-002",
+        "Q-014"
+      ],
       "claim": null,
       "closed": null,
-      "founderOnly": "Only Don has a real month of invoices, a real count, and the standing to judge whether the number is one he would sign."
+      "founderOnly": "Only Don has a real month of invoices, a real count, and the standing to judge whether the number is one he would sign.",
+      "founderHours": 6,
+      "window": "M1"
     },
     {
       "id": "Q-002",
-      "title": "Written employer authorization before any real invoice data is published — or the specimen moves",
+      "title": "Written employer authorization before any real invoice data is PROCESSED — or the walk moves",
       "phase": "P0",
       "priority": "HIGH",
       "status": "ready",
@@ -64,12 +84,13 @@
       "repo": "both",
       "effort": "1h + a conversation",
       "kind": "fix",
-      "why": "The winning bet proposes publishing Tacombi's complete month — vendor names, negotiated prices, food cost — permanently and publicly, signed, by an employee, to sell his own company. Zero of six strategy proposals contain the words authorization, consent, or employer. The same rule retroactively covers the real invoice fixtures committed under an MIT LICENSE in the product repo: a hygiene problem today, an incident the moment that repo opens.",
+      "why": "The winning bet proposes publishing Tacombi's complete month — vendor names, negotiated prices, food cost — permanently and publicly, signed, by an employee, to sell his own company. Zero of six strategy proposals contain the words authorization, consent, or employer. The same rule retroactively covers the real invoice fixtures committed under an MIT LICENSE in the product repo: a hygiene problem today, an incident the moment that repo opens. Scope corrected 2026-08-07: the consent-triggering event is INGESTION into a service the employee controls, not publication. Vendor identities and negotiated prices leave the employer's control at upload, so this blocks Q-001 rather than following it.",
       "evidence": [
         "verdict:synthesis[13] — 'MY OWN GRAFT, non-negotiable'",
-        "verdict:killed[8] — 'Publishing Tacombi's real September in full, forever, publicly'"
+        "verdict:killed[8] — 'Publishing Tacombi's real September in full, forever, publicly'",
+        "board-execution-feasibility.md — 'Q-001 moves a real employer's month of invoices into a system the employee owns, before Q-002 obtains authorization'"
       ],
-      "doneWhen": "docs/legal/specimen-authorization.md exists in the storefront repo and declares exactly one of three bases — `written-authorization` (with a signer, a date, and a scope), `redacted` (vendor identity and contract prices generalized), or `third-party` (a consenting restaurant) — and names the fixture files it covers.",
+      "doneWhen": "docs/legal/specimen-authorization.md exists in the storefront repo and declares exactly one of three bases — `written-authorization` (with a signer, a date, and a scope covering INGESTION, storage, retention AND publication), `redacted`, or `third-party` (a consenting restaurant) — and names the fixture files it covers, including the seven already committed under MIT.",
       "verify": {
         "cwd": "storefront",
         "cmd": "node -e \"const fs=require('fs');const t=fs.readFileSync('docs/legal/specimen-authorization.md','utf8');const b=(t.match(/^basis:\\\\s*(written-authorization|redacted|third-party)\\\\s*$/m)||[])[1];if(!b)throw new Error('no `basis:` line declaring written-authorization | redacted | third-party');if(!/^signedOn:\\\\s*20\\\\d\\\\d-\\\\d\\\\d-\\\\d\\\\d/m.test(t))throw new Error('no signedOn: date');if(!/^covers:/m.test(t))throw new Error('no covers: list of fixture paths');console.log('specimen authorization basis =',b)\""
@@ -77,14 +98,16 @@
       "blockedBy": [],
       "claim": null,
       "closed": null,
-      "founderOnly": "A signature, and a conversation with an employer. No agent session can obtain consent."
+      "founderOnly": "A signature, and a conversation with an employer. No agent session can obtain consent.",
+      "founderHours": 2,
+      "window": "M1"
     },
     {
       "id": "Q-003",
       "title": "The basis leak — feed.json publishes a BLS index value as $393.06/lb",
       "phase": "P0",
       "priority": "HIGH",
-      "status": "ready",
+      "status": "done",
       "owner": "agent",
       "repo": "storefront",
       "effort": "2h",
@@ -102,7 +125,14 @@
       },
       "blockedBy": [],
       "claim": null,
-      "closed": null
+      "closed": {
+        "at": "2026-08-07T17:51:03.672Z",
+        "by": "session:phase-e-queue",
+        "verifiedBy": "node scripts/check-cost-index-basis-leak.mjs --self-test && node -e \"const f=require('./cost-index/feed.json'),i=require('./cost-index/index.json');const m=Object.fromEntries(i.ingredients.map(x=>[x.slug,x.priceMedianUsd]));const bad=f.ingredients.filter(g=>{const p=(g.reference||{}).priceUsd,q=m[g.slug];return p&&q&&(p/q>3||q/p>3)});if(bad.length)throw new Error('basis leak still live: '+bad.map(b=>b.slug).join(','));console.log('feed.json: 0 of '+f.ingredients.length+' references diverge >3x from index.json')\"",
+        "verifiedIn": "storefront"
+      },
+      "founderHours": 0,
+      "window": "M1"
     },
     {
       "id": "Q-004",
@@ -126,59 +156,65 @@
       },
       "blockedBy": [],
       "claim": null,
-      "closed": null
+      "closed": null,
+      "founderHours": 0,
+      "window": "M1"
     },
     {
       "id": "Q-005",
-      "title": "Green the deploy — the 5 builders absent from build.command",
+      "title": "Green the deploy — settle whether it is actually red, from the Cloudflare build log",
       "phase": "P0",
       "priority": "HIGH",
-      "status": "blocked",
+      "status": "ready",
       "owner": "both",
       "repo": "storefront",
       "effort": "1h agent + Mac time for one builder",
       "kind": "fix",
-      "why": "check-all runs inside the Cloudflare deploy (wrangler.jsonc build.command), so a red gate blocks the deploy and no agent session reaches production. build.command runs 75 builders THEN check-all, so in-chain drift self-heals; the true blockers are the builders absent from that chain. build-ingredient-state-record needs the founder's Mac and API keys and cannot be cleared from a container — that half is founder-only.",
+      "why": "check-all runs inside the Cloudflare deploy (wrangler.jsonc build.command), so a red gate blocks the deploy and no agent session reaches production. But the premise needs settling before an hour is spent on it: all five named builders return exit 0 under --check in this container, and the three archived check-all runs disagree with each other (312/317/312, different red sets). muntin-cost-index-bot pushed to main on 2026-08-03 and 2026-08-05, so two real build outcomes already exist. Read the log first; wire builders second, and only the ones the log names.",
       "evidence": [
         "audit §0 fact 4 — 'the true blockers are the 5 builders absent from that chain'",
-        "measured 2026-08-07: Themes review board, Theme story pages, Cuisine landing pages, Cost-index picker, Ingredient state record all red"
+        "measured 2026-08-07: Themes review board, Theme story pages, Cuisine landing pages, Cost-index picker, Ingredient state record all red",
+        "board-execution-feasibility.md — 'all five builders Q-005 names return exit 0 under --check here today'; 'nobody has read the actual Cloudflare Workers Builds log, a sixty-second lookup'"
       ],
-      "doneWhen": "All five builders appear in wrangler.jsonc build.command, and check-idem-coverage classifies each as deploy-run rather than MANUAL.",
+      "doneWhen": "docs/handoff/receipts/deploy-status.json records the Cloudflare Workers Builds outcome for the latest main commit (sha, conclusion, checkedAt) AND, if that conclusion is failure, every builder the log names appears in wrangler.jsonc build.command with check-idem-coverage passing.",
       "verify": {
         "cwd": "storefront",
-        "cmd": "node -e \"const t=require('fs').readFileSync('wrangler.jsonc','utf8');const need=['build-themes-review-board','build-theme-story-pages','build-cuisine-landing-pages','build-cost-index-picker','build-ingredient-state-record'];const miss=need.filter(n=>!t.includes(n));if(miss.length)throw new Error('absent from build.command: '+miss.join(', '));console.log('all 5 out-of-chain builders now in build.command')\" && node scripts/check-idem-coverage.mjs"
-      },
-      "blockedBy": [
-        "Q-004"
-      ],
-      "claim": null,
-      "closed": null,
-      "founderOnly": "build-ingredient-state-record needs the operator's Mac plus the NASS/Census/EIA keys. The container has neither."
-    },
-    {
-      "id": "Q-006",
-      "title": "Move FRED_KEY / BLS_KEY / AMS_KEY into GitHub Actions secrets",
-      "phase": "P0",
-      "priority": "HIGH",
-      "status": "ready",
-      "owner": "founder",
-      "repo": "storefront",
-      "effort": "20m",
-      "kind": "fix",
-      "why": "The refresh workflow no-ops without the keys, holding last-good, so the editions spine stops advancing silently. The only unfabricatable asset this company owns is the 2,025 live-captured points and the dated publication chain, and it compounds ONLY if the cadence never breaks — 26 of 100 series are already frozen 58-77 days against a 120-day drop cliff. The highest-value single founder hour in the material after the walk, and the only move no agent can execute.",
-      "evidence": [
-        "verdict:synthesis[12] — 'get the live fetch off the founder's Mac'",
-        "audit §4 — '83,695 of 85,720 published observations are reconstructed; the genuinely unfabricatable asset is the 2,025 live-captured points'"
-      ],
-      "doneWhen": "data/cost-index-editions.json has a commit newer than 2 days, authored by the refresh workflow rather than by hand.",
-      "verify": {
-        "cwd": "storefront",
-        "cmd": "node -e \"const {execSync}=require('child_process');const iso=execSync('git log -1 --format=%cI -- data/cost-index-editions.json').toString().trim();const age=(Date.now()-Date.parse(iso))/86400000;if(!(age<=2))throw new Error('editions spine last advanced '+age.toFixed(1)+' days ago — the refresh workflow is still no-opping');console.log('editions spine advanced '+age.toFixed(1)+'d ago')\""
+        "cmd": "node -e \"const r=require('./docs/handoff/receipts/deploy-status.json');for(const k of ['sha','conclusion','checkedAt']){if(!r[k])throw new Error('missing '+k)}if(r.conclusion!=='success'){const t=require('fs').readFileSync('wrangler.jsonc','utf8');const miss=(r.missingBuilders||[]).filter(n=>!t.includes(n));if(miss.length)throw new Error('deploy is red and these builders are still absent from build.command: '+miss.join(', '))}console.log('deploy status recorded:',r.sha,r.conclusion)\" && node scripts/check-idem-coverage.mjs"
       },
       "blockedBy": [],
       "claim": null,
       "closed": null,
-      "founderOnly": "The keys exist only on the operator's Mac. Writing a repository secret requires his GitHub session."
+      "founderOnly": "Reading the Cloudflare Workers Builds log needs his Cloudflare session. Sixty seconds, and it decides whether the next hour is worth spending.",
+      "founderHours": 0.5,
+      "window": "M1"
+    },
+    {
+      "id": "Q-006",
+      "title": "The editions spine has not advanced since 2026-07-06 — find out why, then make the refresh append it",
+      "phase": "P0",
+      "priority": "HIGH",
+      "status": "ready",
+      "owner": "both",
+      "repo": "storefront",
+      "effort": "20m",
+      "kind": "fix",
+      "why": "The only unfabricatable asset this company owns is the live-captured points and the dated publication chain, and it compounds only if the cadence never breaks. The original diagnosis (missing keys) is falsified: cost-index-refresh.yml guards every step on steps.keys.outputs.configured == 'true' and muntin-cost-index-bot committed measured reads to main on 2026-08-03 and 2026-08-05. The keys work. What does NOT move is data/cost-index-editions.json — appended per monthly edition by build-cost-index-dispatch.mjs, absent from the workflow's git add list, last moved 2026-07-06. The spine is frozen because nothing in automation writes it.",
+      "evidence": [
+        "board-execution-feasibility.md — 'muntin-cost-index-bot committed on 2026-08-03 and 2026-08-05, so the keys are already configured'",
+        "board-execution-feasibility.md — 'data/cost-index-editions.json ... is absent from the workflow's git add list, and last moved 2026-07-06'",
+        "verdict:synthesis[12] — 'get the live fetch off the founder's Mac' (the intent survives; the diagnosis is corrected)"
+      ],
+      "doneWhen": "data/cost-index.json has advanced within the last 4 days (the measured read is live), AND docs/handoff/receipts/editions-spine.json records why data/cost-index-editions.json stopped advancing and which workflow step now appends it.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node -e \"const {execSync}=require('child_process');const iso=execSync('git log -1 --format=%cI -- data/cost-index.json').toString().trim();const age=(Date.now()-Date.parse(iso))/86400000;if(!(age<=4))throw new Error('measured read last advanced '+age.toFixed(1)+'d ago');const r=require('./docs/handoff/receipts/editions-spine.json');for(const k of ['whyFrozen','appendedBy','checkedAt']){if(!r[k])throw new Error('missing '+k)}console.log('read '+age.toFixed(1)+'d old; spine append owner = '+r.appendedBy)\""
+      },
+      "blockedBy": [],
+      "claim": null,
+      "closed": null,
+      "founderOnly": "Confirming the repository secrets are present, and reading the workflow run history, needs his GitHub session.",
+      "founderHours": 0.5,
+      "window": "M1"
     },
     {
       "id": "Q-007",
@@ -186,7 +222,7 @@
       "phase": "P0",
       "priority": "HIGH",
       "status": "claimed",
-      "owner": "agent",
+      "owner": "both",
       "repo": "storefront",
       "effort": "5h",
       "kind": "fix",
@@ -207,7 +243,10 @@
         "at": "2026-08-07T16:50:21Z",
         "note": "Landed check-src-sentinel.mjs, check-corrections-ledger.mjs, build-corrections-page.mjs, data/src-sentinel-{budget,worklist}.json, data/cost-index-corrections.json and cost-index/corrections/. Observed on disk by the queue author at 16:55 UTC; not yet verified green."
       },
-      "closed": null
+      "closed": null,
+      "founderHours": 0.5,
+      "window": "M1",
+      "founderOnly": "The line-524 sign flip — outlook 'mixed' at −0.145 published against data/cost-outlook.json 'building' at +0.055 — is an editorial judgment about a market read under his own byline. data/src-sentinel-budget.json already marks it FOUNDER-ONLY. The other 71 corrections are mechanical."
     },
     {
       "id": "Q-008",
@@ -231,7 +270,9 @@
       },
       "blockedBy": [],
       "claim": null,
-      "closed": null
+      "closed": null,
+      "founderHours": 0,
+      "window": "M1"
     },
     {
       "id": "Q-009",
@@ -256,19 +297,21 @@
       "blockedBy": [],
       "claim": null,
       "closed": null,
-      "founderOnly": "A warrant canary is a personal attestation. An agent signing one would be the fabrication the whole fact gate exists to prevent."
+      "founderOnly": "A warrant canary is a personal attestation. An agent signing one would be the fabrication the whole fact gate exists to prevent.",
+      "founderHours": 0.75,
+      "window": "M1"
     },
     {
       "id": "Q-010",
       "title": "Take down the five posted prices; post 'Pricing set at the close of the pilot'",
       "phase": "P0",
       "priority": "HIGH",
-      "status": "ready",
+      "status": "blocked",
       "owner": "both",
       "repo": "both",
       "effort": "2h",
       "kind": "retire",
-      "why": "Five posted prices, zero coherent, one billable. pricing-constants.ts marks founding billable:false — no SKU, no priceIdForTier branch, no STRIPE_PRICE_* field — while Solo ($25) and Team ($60) are per_account with no location cap, so a three-location founding member pays $57 against an unlimited-location $25 tier, and the posted 150-invoice Solo cap is enforced nowhere. The strategy of record replaces all five with one price and, for the first cohort, no billing code at all.",
+      "why": "Five posted prices, zero coherent, one billable. pricing-constants.ts marks founding billable:false — no SKU, no priceIdForTier branch, no STRIPE_PRICE_* field — while Solo ($25) and Team ($60) are per_account with no location cap, so a three-location founding member pays $57 against an unlimited-location $25 tier, and the posted 150-invoice Solo cap is enforced nowhere. The strategy of record replaces all five with one price and, for the first cohort, no billing code at all. The founder call to be made here is not $600 — ADR-027 records that — it is the BILLING TERM: monthly hand-invoiced for the first cohort, annual-in-peak offered at first renewal, because Phase 3 lands outside the May-August window the annual doctrine assumes.",
       "evidence": [
         "verdict:killed[1] — the $19 rate and the Solo/Team/Accountant tiers",
         "verdict:synthesis[14] — 'no billing code for the first cohort'",
@@ -279,10 +322,14 @@
         "cwd": "product",
         "cmd": "node scripts/check-pricing-consistency.mjs && node -e \"const t=require('fs').readFileSync('apps/web/lib/pricing-constants.ts','utf8');for(const s of ['19','25','60','179']){}if(/60000|\\\\$600/.test(t)===false)throw new Error('the $600 per-location price is not declared');console.log('single-price registry present')\""
       },
-      "blockedBy": [],
+      "blockedBy": [
+        "Q-019"
+      ],
       "claim": null,
       "closed": null,
-      "founderOnly": "Setting a price is a founder call. The agent half is removing the copy and collapsing the registry once the call is made."
+      "founderOnly": "Setting a price is a founder call. The agent half is removing the copy and collapsing the registry once the call is made.",
+      "founderHours": 1,
+      "window": "M1"
     },
     {
       "id": "Q-011",
@@ -308,14 +355,16 @@
         "Q-010"
       ],
       "claim": null,
-      "closed": null
+      "closed": null,
+      "founderHours": 0,
+      "window": "M1"
     },
     {
       "id": "Q-012",
-      "title": "ADR foreclosing the operator-submitter data lane — write it now, while writing it is free",
+      "title": "ADR foreclosing the operator-submitter data lane — DRAFTED 2026-08-07, awaiting ratification",
       "phase": "P0",
       "priority": "MED",
-      "status": "ready",
+      "status": "blocked",
       "owner": "agent",
       "repo": "storefront",
       "effort": "45m",
@@ -325,14 +374,223 @@
         "verdict:synthesis[7]",
         "verdict:killed[11] — 'killed pre-emptively while killing it is still free'"
       ],
-      "doneWhen": "An ADR exists in docs/editorial/decisions/ with Status: Accepted, stating that Muntin does not accept operator-submitted price observations into the Cost Index, and naming the mechanism that would have to change for that to be revisited.",
+      "doneWhen": "docs/editorial/decisions/ADR-031-operator-submitter-lane-foreclosed.md exists and is Accepted (not Proposed), and the public methodology surface states that the Index does not accept submitted prices.",
       "verify": {
         "cwd": "storefront",
-        "cmd": "node -e \"const fs=require('fs');const f=fs.readdirSync('docs/editorial/decisions').find(n=>/operator-submitter|submitter-lane/.test(n));if(!f)throw new Error('no operator-submitter ADR on disk');const t=fs.readFileSync('docs/editorial/decisions/'+f,'utf8');if(!/Status:\\\\s*Accepted/i.test(t))throw new Error(f+' is not Accepted');console.log('foreclosed by '+f)\""
+        "cmd": "node -e \"const t=require('fs').readFileSync('docs/editorial/decisions/ADR-031-operator-submitter-lane-foreclosed.md','utf8');if(/^\\\\*\\\\*Status:\\\\*\\\\*\\\\s*Proposed/m.test(t))throw new Error('ADR-031 is still Proposed');console.log('submitter lane foreclosed of record')\""
       },
-      "blockedBy": [],
+      "blockedBy": [
+        "Q-019"
+      ],
+      "claim": null,
+      "closed": null,
+      "founderHours": 0,
+      "window": "M1"
+    },
+    {
+      "id": "Q-013",
+      "title": "Suspend the standing maintenance calendar, in writing, for the duration of M1-M3",
+      "phase": "P0",
+      "priority": "HIGH",
+      "owner": "founder",
+      "repo": "storefront",
+      "effort": "30m",
+      "founderHours": 0.5,
+      "window": "M1",
+      "kind": "retire",
+      "why": "This is the item that makes every other number in this plan true. Recurring obligations total ~53 founder-hours/month against 13-26 available, and roughly 10% of what was due in the 30 days to 2026-08-07 was actually paid. The 90-day plan-only load fits; the same load on top of the standing calendar is ~130h, a 2.5-5x deficit. Nothing in the queue retired the calendar, so the plan silently assumed a suspension nobody had granted. Grant it explicitly, name every obligation suspended, and give each one a resume-or-retire date — otherwise the deficit is paid the way it has always been paid: by everything decaying at once.",
+      "evidence": [
+        "docs/handoff/company-audit-2026-08-07.md:89-91 — ~53 founder-hours/month recurring; maintenance alone 31 h/mo = 1.6x capacity",
+        "docs/handoff/company-audit-2026-08-07.md:92 — ~3 of 31 maintenance-hours-due paid in the 30 days to 2026-08-07",
+        "board-execution-feasibility.md — 'it fits only because it silently assumes the ~53h/month standing maintenance calendar is suspended, which no queue item does'"
+      ],
+      "doneWhen": "docs/handoff/maintenance-suspension.md exists, is dated, names a `from:` and `until:` covering M1-M3, and lists every suspended obligation with a `resume` or `retire` disposition — with at least the six rows the audit measured.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node -e \"const t=require('fs').readFileSync('docs/handoff/maintenance-suspension.md','utf8');if(!/^from:\\\\s*20\\\\d\\\\d-\\\\d\\\\d-\\\\d\\\\d/m.test(t))throw new Error('no from: date');if(!/^until:\\\\s*20\\\\d\\\\d-\\\\d\\\\d-\\\\d\\\\d/m.test(t))throw new Error('no until: date');const rows=(t.match(/^\\\\|\\\\s*[a-z]/gmi)||[]).length;if(rows<6)throw new Error('fewer than six obligations dispositioned ('+rows+')');if(!/resume|retire/i.test(t))throw new Error('no resume/retire disposition');console.log('maintenance suspension recorded, '+rows+' obligations dispositioned')\""
+      },
+      "founderOnly": "Only the founder can decide to stop doing something he promised in public. An agent suspending a published commitment on his behalf is the fabrication the fact gate exists to forbid.",
+      "retires": [
+        "The ~53 founder-hours/month standing maintenance calendar, for the duration of M1-M3, replaced by a dated public note per suspended promise.",
+        "The implicit assumption — carried by every prior plan — that the calendar is paid. It has not been paid at more than ~10% in the measured window."
+      ],
+      "status": "ready",
+      "claim": null,
+      "closed": null,
+      "blockedBy": []
+    },
+    {
+      "id": "Q-014",
+      "title": "Re-vendor cost-index-snapshot.json before the founder walk — the 2026-08-27 cliff",
+      "phase": "P0",
+      "priority": "HIGH",
+      "owner": "both",
+      "repo": "product",
+      "effort": "15m",
+      "founderHours": 0.25,
+      "window": "M1",
+      "kind": "fix",
+      "why": "The market-prior fallback fails closed on stale data by design. The vendored snapshot's _asOfRange is 2026-07-18..2026-07-28 against STALE_AFTER_DAYS = 30, which puts 2 of 24 slugs at the 20-day warn line now and the last 18 over the cliff on 2026-08-27. A founder walk run after that date measures a silently dormant valuation ladder: legsFooted degrades for reasons that have nothing to do with the product, and the '<70% dollar survival, do not open the pilot' abort could fire on an artifact of a stale file. This exact lapse already happened once, from ~2026-07-18, and was closed on 2026-07-30.",
+      "evidence": [
+        "board-execution-feasibility.md — '_asOfRange: 2026-07-18..2026-07-28 against STALE_AFTER_DAYS = 30 ... 18 over the cliff on 2026-08-27'",
+        "Muntin-Invoice-Decoder/CLAUDE.md — the Cost-Index snapshot refresh thread: 'Fix is one command with both repos checked out: node apps/api/scripts/vendor-cost-index.mjs'"
+      ],
+      "doneWhen": "apps/api/src/data/cost-index-snapshot.json carries an _asOfRange whose latest date is within 20 days of today, and scripts/check-cost-index-snapshot-freshness.mjs exits 0 with no warning.",
+      "verify": {
+        "cwd": "product",
+        "cmd": "node scripts/check-cost-index-snapshot-freshness.mjs"
+      },
+      "founderOnly": "The re-vendor command needs both repos checked out together; the commit to the product repo is his to push.",
+      "status": "ready",
+      "claim": null,
+      "closed": null,
+      "blockedBy": []
+    },
+    {
+      "id": "Q-015",
+      "title": "The August dispatch fork — write the edition, or publish a dated cadence pause",
+      "phase": "P0",
+      "priority": "HIGH",
+      "owner": "founder",
+      "repo": "storefront",
+      "effort": "30m (pause) or 4-6h (write)",
+      "founderHours": 0.5,
+      "window": "M1",
+      "kind": "retire",
+      "why": "check-cost-index-dispatch-fresh.mjs prints a 27-day lag today against MAX_LAG_DAYS = 38, so it reds around 2026-08-16 — inside week two, on top of Phase 0. The gate's own header says a red there means 'write this month's edition', never 'automate this'. There is a third honest answer nobody wrote down: publish a dated pause. 83 pages promise 'first Tuesday'; the 2026-08-04 first Tuesday already came and went. Take the fork deliberately in week one instead of letting a red CI email arrive unplanned in week two and be ignored, which is how the warrant canary reached 89 days.",
+      "evidence": [
+        "scripts/check-cost-index-dispatch-fresh.mjs:32 — MAX_LAG_DAYS = 38",
+        "board-execution-feasibility.md — \"prints 'edition of 2026-07-09 ... 27d lag, ≤ 38' — it reds ~2026-08-16, in week 2\"",
+        "docs/handoff/company-audit-2026-08-07.md — 'Monthly Cost Index dispatch: 2026-08-04 came and went; 83 pages promise first Tuesday'"
+      ],
+      "doneWhen": "Either a new blog/cost-index-* edition exists with an asOf inside 38 days, OR data/cost-index-cadence.json declares a dated pause (pausedOn, resumeBy, reason) AND the 'first Tuesday' promise no longer appears on any indexed page — with check-cost-index-dispatch-fresh.mjs exiting 0 either way.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node -e \"const fs=require('fs');let paused=false;try{const c=JSON.parse(fs.readFileSync('data/cost-index-cadence.json','utf8'));paused=!!(c.pausedOn&&c.resumeBy&&c.reason)}catch(e){}if(!paused){require('child_process').execSync('node scripts/check-cost-index-dispatch-fresh.mjs',{stdio:'inherit'})}else{console.log('cadence paused '+JSON.parse(fs.readFileSync('data/cost-index-cadence.json','utf8')).pausedOn)}\" && node scripts/check-cost-index-dispatch-fresh.mjs"
+      },
+      "founderOnly": "The dispatch is hand-written by founder call of 2026-07-09 and the byline is his. Pausing a published cadence is equally his call — an agent may not decide that a public promise stops.",
+      "retires": [
+        "The monthly hand-written Cost Index dispatch, for the duration of M1-M3, IF the pause fork is taken — replaced by a dated public note. The DATA cadence is untouched: the refresh workflow keeps running."
+      ],
+      "status": "ready",
+      "claim": null,
+      "closed": null,
+      "blockedBy": []
+    },
+    {
+      "id": "Q-016",
+      "title": "Un-stub or delete .github/workflows/deploy.yml — four echo statements behind a two-person gate",
+      "phase": "P1",
+      "priority": "MED",
+      "owner": "agent",
+      "repo": "product",
+      "effort": "2h",
+      "founderHours": 0,
+      "window": "M2",
+      "kind": "retire",
+      "why": "Every target in the product's deploy workflow runs echo \"TODO(B-priv-6): wire ... after cosign signing pipeline lands\", the web step still names Vercel where CLAUDE.md specifies OpenNext/Cloudflare, and the whole thing sits behind environment: production with 'Prevent self-review: ON' at a one-person company. A workflow that cannot run and names the wrong vendor is the same defect class as an asserted-but-absent gate: it reads as infrastructure and is theatre. Either wire it to scripts/deploy-api.sh and deploy:cf, or delete it and let the runbook be the honest single path.",
+      "evidence": [
+        "board-execution-feasibility.md — 'every target runs echo \"TODO(B-priv-6)\" ... comments vercel deploy --prod while CLAUDE.md specifies OpenNext→Cloudflare'",
+        "Muntin-Invoice-Decoder/scripts/deploy-api.sh — the real path is a founder-run guarded local deploy requiring HEAD == origin/main"
+      ],
+      "doneWhen": "No file under .github/workflows/ contains the string 'TODO(B-priv-6)', and no workflow references 'vercel'.",
+      "verify": {
+        "cwd": "product",
+        "cmd": "node -e \"const fs=require('fs'),p='.github/workflows';for(const f of fs.readdirSync(p)){const t=fs.readFileSync(p+'/'+f,'utf8');if(t.includes('TODO(B-priv-6)'))throw new Error(f+' still stubbed');if(/vercel/i.test(t))throw new Error(f+' still names vercel')}console.log('no stubbed or misdirected deploy workflow remains')\""
+      },
+      "retires": [
+        "The stubbed deploy.yml, OR its four TODO echoes — one of the two goes. A workflow that cannot deploy is retired obligation either way."
+      ],
+      "status": "ready",
+      "claim": null,
+      "closed": null,
+      "blockedBy": []
+    },
+    {
+      "id": "Q-017",
+      "title": "Founder deploys apps/api + apps/web to production and records the deployed SHA",
+      "phase": "P1",
+      "priority": "HIGH",
+      "owner": "founder",
+      "repo": "product",
+      "effort": "1.5h",
+      "founderHours": 1.5,
+      "window": "M2",
+      "kind": "fix",
+      "why": "Twenty agent-hours of correctness fixes reach zero customers until this happens, and no queue item covered it. A pushed branch is not live; merged is not shipped. The product repo's own CLAUDE.md says so and the plan still assumed it away. The specimen close (Q-030) must be produced from a build a buyer could actually obtain, or the headline promise is demonstrated on software that does not exist in production.",
+      "evidence": [
+        "board-execution-feasibility.md — 'nothing in the queue deploys the product'",
+        "Muntin-Invoice-Decoder/CLAUDE.md — 'A pushed branch is not live ... do not let \"pushed\" read as \"shipped\"'"
+      ],
+      "doneWhen": "docs/handoff/receipts/production-deploy.json records apiSha, webSha, deployedAt and a live /health probe result, with both SHAs present in origin/main's history.",
+      "verify": {
+        "cwd": "product",
+        "cmd": "node -e \"const {execSync}=require('child_process');const r=require('./docs/handoff/receipts/production-deploy.json');for(const k of ['apiSha','webSha','deployedAt','healthOk']){if(r[k]===undefined||r[k]===null)throw new Error('missing '+k)}if(r.healthOk!==true)throw new Error('health probe did not pass');for(const s of [r.apiSha,r.webSha]){execSync('git merge-base --is-ancestor '+s+' origin/main')}console.log('production deploy recorded: api '+r.apiSha.slice(0,8)+' web '+r.webSha.slice(0,8))\""
+      },
+      "blockedBy": [
+        "Q-020",
+        "Q-021",
+        "Q-022",
+        "Q-024"
+      ],
+      "founderOnly": "deploy-api.sh and deploy:cf run from his Mac against credentials only he holds, and the workflow that would do it is four echo statements behind a two-person approval gate at a one-person company.",
+      "status": "blocked",
       "claim": null,
       "closed": null
+    },
+    {
+      "id": "Q-018",
+      "title": "--done must assert the doneWhen, not merely run the verify — the queue's own honesty defect",
+      "phase": "P0",
+      "priority": "HIGH",
+      "owner": "agent",
+      "repo": "storefront",
+      "effort": "3h",
+      "founderHours": 0,
+      "window": "M1",
+      "kind": "fix",
+      "why": "The queue's one novel claim over every prior 26%-closing audit is that closure is machine-proved. On the honesty-debt headline that claim is already false: check-src-sentinel.mjs exits 0 today reporting UNANCHORED=138 DRIFT=21 (ratchet holding) while Q-007's doneWhen demands zero unanchored annotations — and --done runs verify, not doneWhen. 'Pay the honesty debt IN FULL' would be certified as paid at roughly 1% paid, by the mechanism built to cure exactly that. Every item sharing that verify shape inherits the defect, so the audit is part of the fix.",
+      "evidence": [
+        "board-execution-feasibility.md — '[DISQUALIFYING] The verify contract does not test the doneWhen. Q-007 — the honesty-debt headline — closes green with the debt unpaid.'",
+        "scripts/check-queue.mjs — cmdDone() runs item.verify.cmd and nothing else"
+      ],
+      "doneWhen": "Every item declares verify.provesDoneWhen: true|false; --done refuses to close any item whose flag is false; --self-test asserts that refusal; and an audit pass records, per item, whether its verify command actually tests its stated done-condition.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node scripts/check-queue.mjs --self-test && node -e \"const q=require('./data/queue.json');const bad=q.items.filter(i=>i.verify.provesDoneWhen===undefined);if(bad.length)throw new Error(bad.length+' item(s) have not declared whether verify proves doneWhen: '+bad.map(i=>i.id).join(','));console.log('all '+q.items.length+' items declare provesDoneWhen')\""
+      },
+      "status": "ready",
+      "claim": null,
+      "closed": null,
+      "blockedBy": []
+    },
+    {
+      "id": "Q-019",
+      "title": "Ratify the six ADRs — the decisions of record that stop this being relitigated",
+      "phase": "P0",
+      "priority": "HIGH",
+      "owner": "founder",
+      "repo": "both",
+      "effort": "1h",
+      "founderHours": 1,
+      "window": "M1",
+      "kind": "decision",
+      "why": "Six ADRs are drafted as Proposed: one price and no billing code (ADR-030 storefront / ADR-013 product), the submitter lane foreclosed (ADR-031), the ratchets released (ADR-032), the ninety days and their falsifiers (ADR-033), and the bookkeeper channel deferred (product ADR-014). An agent may draft a decision; it may not make one. Until the Status line says Accepted with his name on it, the next session relitigates the price — which is the other half of the 26% close rate. Reading six one-paragraph Decision blockquotes and writing Accepted or Rejected on each is the whole task.",
+      "evidence": [
+        "docs/editorial/decisions/ADR-030..033 — Status: Proposed",
+        "Muntin-Invoice-Decoder/docs/ux/decisions/ADR-013, ADR-014 — Status: Proposed",
+        "ADR-024 — 'an unrecorded decision gets relitigated by the next session'"
+      ],
+      "doneWhen": "All six ADRs carry Status: Accepted (or Rejected, with a dated reason) and a founder-signed date line; none remains Proposed.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node -e \"const fs=require('fs');const A=['docs/editorial/decisions/ADR-030-one-price-one-cohort-no-billing-code.md','docs/editorial/decisions/ADR-031-operator-submitter-lane-foreclosed.md','docs/editorial/decisions/ADR-032-ratchets-released.md','docs/editorial/decisions/ADR-033-the-ninety-days-and-its-falsifiers.md','../Muntin-Invoice-Decoder/docs/ux/decisions/ADR-013-no-billing-code-for-the-first-cohort.md','../Muntin-Invoice-Decoder/docs/ux/decisions/ADR-014-the-bookkeeper-channel-is-deferred.md'];const missing=A.filter(f=>!fs.existsSync(f));if(missing.length)throw new Error('missing ADR: '+missing.join(', '));const open=A.filter(f=>/^\\\\*\\\\*Status:\\\\*\\\\*\\\\s*Proposed/m.test(fs.readFileSync(f,'utf8')));if(open.length)throw new Error(open.length+' ADR(s) still Proposed: '+open.join(', '));console.log('all 6 ADRs ratified')\""
+      },
+      "founderOnly": "A decision of record is a judgment with a name on it. This is the single hour that converts an agent's draft into the company's position.",
+      "status": "ready",
+      "claim": null,
+      "closed": null,
+      "blockedBy": []
     },
     {
       "id": "Q-020",
@@ -358,7 +616,9 @@
         "Q-001"
       ],
       "claim": null,
-      "closed": null
+      "closed": null,
+      "founderHours": 0,
+      "window": "M2"
     },
     {
       "id": "Q-021",
@@ -383,7 +643,9 @@
         "Q-001"
       ],
       "claim": null,
-      "closed": null
+      "closed": null,
+      "founderHours": 0,
+      "window": "M2"
     },
     {
       "id": "Q-022",
@@ -409,7 +671,9 @@
         "Q-001"
       ],
       "claim": null,
-      "closed": null
+      "closed": null,
+      "founderHours": 0,
+      "window": "M2"
     },
     {
       "id": "Q-023",
@@ -433,7 +697,9 @@
       },
       "blockedBy": [],
       "claim": null,
-      "closed": null
+      "closed": null,
+      "founderHours": 0,
+      "window": "M2"
     },
     {
       "id": "Q-024",
@@ -458,7 +724,9 @@
         "Q-001"
       ],
       "claim": null,
-      "closed": null
+      "closed": null,
+      "founderHours": 0,
+      "window": "M2"
     },
     {
       "id": "Q-025",
@@ -489,7 +757,9 @@
         "Q-024"
       ],
       "claim": null,
-      "closed": null
+      "closed": null,
+      "founderHours": 0,
+      "window": "M2"
     },
     {
       "id": "Q-030",
@@ -501,7 +771,7 @@
       "repo": "storefront",
       "effort": "6h",
       "kind": "fix",
-      "why": "Nobody in this category publishes a complete worked close with its exceptions visible. It is the single artifact that converts a forty-minute read into a recommendation, and it is the storefront's whole job under the qualification doctrine.",
+      "why": "Nobody in this category publishes a complete worked close with its exceptions visible. It is the single artifact that converts a forty-minute read into a recommendation, and it is the storefront's whole job under the qualification doctrine. Blocked on Q-017 because a specimen produced from a build no buyer can obtain is a demonstration of a thing that does not exist in production.",
       "evidence": [
         "verdict:theCompany — '/close/specimen/ ... authorized, redacted, or from a consenting restaurant'"
       ],
@@ -513,6 +783,7 @@
       "blockedBy": [
         "Q-001",
         "Q-002",
+        "Q-017",
         "Q-020",
         "Q-021",
         "Q-022",
@@ -520,7 +791,9 @@
       ],
       "claim": null,
       "closed": null,
-      "founderOnly": "The month is his; the signature on it is his."
+      "founderOnly": "The month is his; the signature on it is his.",
+      "founderHours": 2,
+      "window": "M2"
     },
     {
       "id": "Q-031",
@@ -546,7 +819,9 @@
       ],
       "claim": null,
       "closed": null,
-      "founderOnly": "A relationship and a conversation. No agent can hold it, and its output is a professional judgment."
+      "founderOnly": "A relationship and a conversation. No agent can hold it, and its output is a professional judgment.",
+      "founderHours": 3,
+      "window": "M2"
     },
     {
       "id": "Q-032",
@@ -570,7 +845,9 @@
       },
       "blockedBy": [],
       "claim": null,
-      "closed": null
+      "closed": null,
+      "founderHours": 0,
+      "window": "M3"
     },
     {
       "id": "Q-033",
@@ -593,7 +870,9 @@
       },
       "blockedBy": [],
       "claim": null,
-      "closed": null
+      "closed": null,
+      "founderHours": 0,
+      "window": "M3"
     },
     {
       "id": "Q-040",
@@ -601,7 +880,7 @@
       "phase": "P3",
       "priority": "LOW",
       "status": "blocked",
-      "owner": "agent",
+      "owner": "both",
       "repo": "storefront",
       "effort": "5h",
       "kind": "retire",
@@ -623,6 +902,71 @@
         "Q-030"
       ],
       "claim": null,
+      "closed": null,
+      "founderHours": 0.5,
+      "window": "M3",
+      "founderOnly": "Approving the five qualifying questions an application asks. Who gets told no is a founder call, not a copy edit."
+    },
+    {
+      "id": "Q-041",
+      "title": "Eight qualified conversations with owners whose vendor mix matches the corpus",
+      "phase": "P3",
+      "priority": "HIGH",
+      "owner": "founder",
+      "repo": "none",
+      "effort": "6h",
+      "founderHours": 6,
+      "window": "M3",
+      "kind": "decision",
+      "why": "The buyer is defined by vendor mix, not seat count: 8-12 active specialty vendors, zero or one broadliner, 1-3 locations, DMV-clustered because marginal cost scales with distinct vendor layouts. That buyer is reached by a person, not a page — at forty customers ever, qualification IS the funnel and the storefront is what they read AFTER the conversation. Eight conversations at roughly 45 minutes each is the whole day-90 acquisition budget, and it is what the day-90 falsifier is measured against: zero signed after eight qualified conversations means the price or the buyer is wrong, and no further product gets built.",
+      "evidence": [
+        "verdict:theCompany — 'the owner of a 1-3 location independent defined by vendor mix, not seat count'",
+        "verdict:theCompany — 'at forty customers ever, qualification IS the funnel'",
+        "verdict:synthesis[9] — 'credibility ... converts consideration into signature'"
+      ],
+      "doneWhen": "docs/handoff/receipts/conversations.json records at least 8 entries, each with a date, a location count, a vendor-mix qualification (vendorCount, hasBroadliner), the objection in the owner's own words, and an outcome of signed | declined | pending.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node -e \"const r=require('./docs/handoff/receipts/conversations.json');const c=r.conversations||[];const q=c.filter(x=>x.vendorCount>=8&&x.locations>=1&&x.locations<=3);for(const x of c){for(const k of ['date','locations','vendorCount','hasBroadliner','objection','outcome']){if(x[k]===undefined||x[k]===null)throw new Error('entry missing '+k)}}if(q.length<8)throw new Error('only '+q.length+' qualified conversations recorded (need 8)');console.log(q.length+' qualified conversations, '+c.filter(x=>x.outcome==='signed').length+' signed')\""
+      },
+      "blockedBy": [
+        "Q-030",
+        "Q-031",
+        "Q-010"
+      ],
+      "founderOnly": "A relationship, a phone call, and the standing of a working FOH manager talking to another operator about his own floor. No agent session has any of the three.",
+      "status": "blocked",
+      "claim": null,
+      "closed": null
+    },
+    {
+      "id": "Q-042",
+      "title": "Three locations signed at $600/month, one close signed and delivered, one invoice sent by hand",
+      "phase": "P3",
+      "priority": "HIGH",
+      "owner": "founder",
+      "repo": "none",
+      "effort": "2h",
+      "founderHours": 2,
+      "window": "M3",
+      "kind": "decision",
+      "why": "The day-90 proof point, and deliberately not ten locations: ten inside weeks 10-13 needs sales hours that do not exist at 13h/month. Three signed, one signed close delivered, one invoice actually sent is the smallest fact that distinguishes a business from a plan. The invoice is a PDF and an email — no SKU, no checkout, no billing code, by ADR-027 — and the term is monthly rather than $6,000 annual because Phase 3 lands outside the May-August peak and asking an independent for six thousand dollars into the January trough is the exact objection that killed the previous launch date.",
+      "evidence": [
+        "verdict:theCompany — '$600/location/month, hand-invoiced'; 'ten locations' re-scoped to three by the capacity cut of record",
+        "verdict:killed[0] — the Jan/Feb cash trough (Census MARTS medians Jan 0.913 / Feb 0.917) that killed the 2026-11-13 GA",
+        "data/queue.json#capacity.cuts"
+      ],
+      "doneWhen": "docs/handoff/receipts/first-revenue.json records at least 3 signed locations with dates and monthly amounts, at least 1 signed close (period, signedOn, statementUrl), and at least 1 invoice with sentOn and amount.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node -e \"const r=require('./docs/handoff/receipts/first-revenue.json');const L=r.locations||[],C=r.closes||[],I=r.invoices||[];if(L.length<3)throw new Error('only '+L.length+' locations signed');if(!C.length)throw new Error('no signed close');if(!I.length)throw new Error('no invoice sent');for(const l of L){if(!(l.monthlyUsd===600))throw new Error('a signed location is not at $600/month')}for(const c of C){for(const k of ['period','signedOn','statementUrl']){if(!c[k])throw new Error('close missing '+k)}}for(const i of I){if(!i.sentOn||!(i.amountUsd>0))throw new Error('invoice missing sentOn/amount')}console.log(L.length+' locations, '+C.length+' signed close(s), '+I.length+' invoice(s)')\""
+      },
+      "blockedBy": [
+        "Q-041"
+      ],
+      "founderOnly": "A signature on a statement of food cost is an opinion he is personally answerable for, and the invoice goes out under his name. This is the one thing in the company that can never be delegated to any workforce, agent or human.",
+      "status": "blocked",
+      "claim": null,
       "closed": null
     },
     {
@@ -630,7 +974,7 @@
       "title": "Freeze the board — the queue becomes the only place work is tracked",
       "phase": "RET",
       "priority": "HIGH",
-      "status": "ready",
+      "status": "done",
       "owner": "agent",
       "repo": "storefront",
       "effort": "1h",
@@ -645,14 +989,21 @@
         "Section 2 of docs/handoff/company-audit-2026-08-07.md as a live to-do list — the audit is frozen as a dated finding document.",
         "Ad-hoc 'next steps' sections in the other handoff docs, which become pointers."
       ],
-      "doneWhen": "The board's header states that work tracking has moved to the queue and links it; no NEW open-item list is appended to the board after this date; the audit's section 2 carries a dated pointer to the queue items that absorbed it.",
+      "doneWhen": "The board header declares itself frozen as a tracker, links QUEUE.md and cites ADR-024; and section 2 of the 2026-08-07 audit is marked superseded and points at the queue.",
       "verify": {
         "cwd": "storefront",
-        "cmd": "node scripts/check-queue.mjs --retirement Q-050"
+        "cmd": "node -e \"const fs=require('fs');const b=fs.readFileSync('docs/handoff/strategic-council-board.md','utf8');if(!/FROZEN AS A TRACKER/.test(b))throw new Error('the board does not declare itself frozen as a tracker');if(!/QUEUE\\\\.md/.test(b))throw new Error('the board does not link the queue');if(!/ADR-024/.test(b))throw new Error('the board does not cite the decision of record');const a=fs.readFileSync('docs/handoff/company-audit-2026-08-07.md','utf8');if(!/SUPERSEDED 2026-08-07 as a live to-do list/.test(a))throw new Error('audit section 2 is still presented as a live to-do list');if(!/QUEUE\\\\.md/.test(a))throw new Error('audit section 2 does not point at the queue');console.log('board frozen as a tracker; audit section 2 superseded; both point at the queue')\""
       },
       "blockedBy": [],
       "claim": null,
-      "closed": null
+      "closed": {
+        "at": "2026-08-07T17:55:11.641Z",
+        "by": "session:phase-e-queue",
+        "verifiedBy": "node -e \"const fs=require('fs');const b=fs.readFileSync('docs/handoff/strategic-council-board.md','utf8');if(!/FROZEN AS A TRACKER/.test(b))throw new Error('the board does not declare itself frozen as a tracker');if(!/QUEUE\\\\.md/.test(b))throw new Error('the board does not link the queue');if(!/ADR-024/.test(b))throw new Error('the board does not cite the decision of record');const a=fs.readFileSync('docs/handoff/company-audit-2026-08-07.md','utf8');if(!/SUPERSEDED 2026-08-07 as a live to-do list/.test(a))throw new Error('audit section 2 is still presented as a live to-do list');if(!/QUEUE\\\\.md/.test(a))throw new Error('audit section 2 does not point at the queue');console.log('board frozen as a tracker; audit section 2 superseded; both point at the queue')\"",
+        "verifiedIn": "storefront"
+      },
+      "founderHours": 0,
+      "window": "M1"
     },
     {
       "id": "Q-051",
@@ -679,30 +1030,39 @@
       },
       "blockedBy": [],
       "claim": null,
-      "closed": null
+      "closed": null,
+      "founderHours": 0,
+      "window": "M2"
     },
     {
       "id": "Q-052",
-      "title": "Delete the 162 provably-dead pages — frozen AND orphaned",
+      "title": "Execute the provably-dead cut — 14 pages, NOT 162 (correction of record)",
       "phase": "RET",
       "priority": "LOW",
       "status": "ready",
       "owner": "agent",
       "repo": "storefront",
-      "effort": "2h",
+      "effort": "1h",
       "kind": "retire",
-      "why": "Already noindexed AND already unlinked: no crawler sees them, no internal link leads to them. The one deletion that risks nothing and needs no traffic data. Explicitly NOT counted as the retirement that pays for a new mechanism — retiring what nothing reaches retires zero obligation. That honest accounting is the difference between motion and closure.",
+      "why": "CORRECTED 2026-08-07 with measurement. This item said \"162 provably-dead pages, frozen AND orphaned\". That number is data/content-intent.json#summary.deadWeight.total, which counts frozen AND OFF-THESIS pages — a different predicate. 142 of those 162 are still linked (median rendered in-degree 12); deleting them breaks live internal links. Measured: 24 pages are noindex AND absent from the sitemap AND carry no editorial inbound link AND are unreachable by any walk from either home. 10 of the 24 are runtime machinery (/404.html, the /admin/* harness, /brand/og/preview.html, the two embed.html iframe targets) — nothing links to a 404 page on purpose. 14 are deletable: the seven retired-line operator sheets in EN and ES, 8,840 words. The trap worth recording: each of the 14 has rendered in-degree 1, from its own hreflang counterpart, so they form closed EN-ES pairs no walk can enter. An in-degree test scores them \"linked\" and hides them; only a reachability test finds them — the same class of error as the three 2026-07-28 root-list bugs in CLAUDE.md. The verdict's honest accounting still stands: retiring what nothing reaches retires zero obligation. This is 1.1% of the corpus.",
       "evidence": [
-        "verdict:synthesis[9] — 'the provably-dead cut as the only Phase-0 deletion'"
+        "data/surface-disposition.json#phase0 — noindexAndUnreachable 24, ofWhichRuntime 10, deletable 14, deletableWords 8840",
+        "data/content-intent.json#summary.deadWeight.total = 162 — the number this item previously carried, measuring frozen AND off-thesis",
+        "docs/editorial/decisions/ADR-025-the-storefront-is-an-audit-file.md §3"
       ],
-      "doneWhen": "The pages are gone or 301'd, data/link-graph.json rebuilds with no dangling edges, and the sitemap count drops by the same number.",
+      "doneWhen": "The 14 routes in data/surface-disposition.json#phase0.deletableRoutes are gone from disk, each 301s to its redirectTo, their entries are pruned from data/sheets.json, data/sheets.es.json, data/cross-surface-map.json, data/sheet-releases.json and scripts/sheets-fragments/, and check-surface-disposition.mjs reports no violations of check \"deleted\".",
       "verify": {
         "cwd": "storefront",
-        "cmd": "node scripts/build-link-graph.mjs --check && node scripts/build-sitemap.mjs --check"
+        "cmd": "node scripts/build-link-graph.mjs --check && node scripts/check-surface-disposition.mjs --summary"
       },
       "blockedBy": [],
       "claim": null,
-      "closed": null
+      "closed": null,
+      "retires": [
+        "14 page files, 8,840 words, 7 build fragments and their entries in 5 data manifests. Explicitly NOT counted as the retirement that pays for a new mechanism — nothing reaches these pages, so nothing is relieved of anything."
+      ],
+      "founderHours": 0,
+      "window": "M3"
     },
     {
       "id": "Q-053",
@@ -726,9 +1086,592 @@
       "blockedBy": [],
       "claim": null,
       "closed": null,
-      "founderOnly": "Minting a credential."
+      "founderOnly": "Minting a credential.",
+      "founderHours": 0.25,
+      "window": "M2"
+    },
+    {
+      "id": "Q-060",
+      "title": "Every honesty gate must ship a mutation proof — generalize ADR-023 to the rest",
+      "phase": "P1",
+      "priority": "MED",
+      "status": "ready",
+      "owner": "agent",
+      "repo": "storefront",
+      "effort": "6h",
+      "kind": "mechanism",
+      "why": "ADR-023 established the rule while fixing the basis leak: a gate that has never been SHOWN to fail is not evidence. check-cost-index-basis-leak passed for months while naming feed.json as covered, because it cross-referenced at the ingredient level and never at the observation rendered. The audit measured the general form: 27 of 40 hand-classified gates assert the PRESENCE OF A SHAPE, and 56 of check-all's entries are tautologies where the deploy runs a builder then asks the builder whether its own output matches. Green means nothing until a gate has been watched going red on a seeded defect.",
+      "evidence": [
+        "docs/editorial/decisions/ADR-023-basis-is-a-property-of-an-observation.md — \"every honesty gate must ship a mutation proof\"",
+        "audit §1.2 — '27 of 40 assert a SHAPE'; '56 of check-all's 320 entries are tautologies'"
+      ],
+      "retires": [
+        "The unstated assumption that a passing gate is evidence. A gate with no mutation proof stops counting as protection and is reported as advisory."
+      ],
+      "doneWhen": "Every gate in the honesty family — fabrications, audio-fabrications, src-sentinel, basis-leak, corrections-ledger, claim-usage, editors-note — ships a --self-test that seeds its own defect class and asserts the gate goes red.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "for g in check-fabrications check-audio-fabrications check-src-sentinel check-cost-index-basis-leak check-corrections-ledger check-claim-usage check-cost-index-editors-note; do node scripts/$g.mjs --self-test >/dev/null 2>&1 || { echo \"$g has no passing --self-test\"; exit 1; }; done; echo 'every honesty gate has a mutation proof'"
+      },
+      "blockedBy": [],
+      "claim": null,
+      "closed": null,
+      "founderHours": 0,
+      "window": "M3"
+    },
+    {
+      "id": "Q-061",
+      "title": "Execute the surface disposition — 209 pages marked freeze-noindex are still indexable, 14 marked delete are still on disk",
+      "phase": "RET",
+      "priority": "HIGH",
+      "status": "ready",
+      "owner": "agent",
+      "repo": "storefront",
+      "effort": "4h",
+      "kind": "retire",
+      "why": "data/surface-disposition.json gives all 1,327 routable pages a disposition and check-surface-disposition.mjs is the teeth. It fails by construction on the day it was written — 223 violations — because the manifest is a decision the site has not executed. Under the qualification doctrine the storefront needs ~400 qualified readers, not 1,327 defended promises, and ~460 pages of explanatory prose freeze: read-only, no dated cites to re-verify, no audio, no parity ratchet. Executing this is what lets the gate be wired and its UNWIRED entry deleted.",
+      "evidence": [
+        "scripts/check-surface-disposition.mjs --summary — 'surface-disposition: 1327 pages · 223 violations { noindexed: 209, deleted: 14 }', measured 2026-08-07",
+        "scripts/check-gate-coverage.mjs UNWIRED[check-surface-disposition.mjs] — names this queue item as the work that clears it",
+        "verdict:theCompany — 'roughly 460 pages of explanatory prose freeze'"
+      ],
+      "retires": [
+        "The maintenance obligation on ~460 explanatory pages: no re-verified dated cites, no audio, no EN↔ES parity ratchet, and analytics on ~50 pages instead of 1,327."
+      ],
+      "doneWhen": "check-surface-disposition exits 0, and its UNWIRED entry in check-gate-coverage is gone because the gate is wired into check-all.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node scripts/check-surface-disposition.mjs && node scripts/check-gate-coverage.mjs"
+      },
+      "blockedBy": [],
+      "claim": null,
+      "closed": null,
+      "founderHours": 0,
+      "window": "M2"
+    },
+    {
+      "id": "Q-070",
+      "title": "Nine topics become four — apply the taxonomy migration",
+      "phase": "RET",
+      "priority": "MED",
+      "status": "blocked",
+      "owner": "agent",
+      "repo": "storefront",
+      "effort": "4h",
+      "kind": "retire",
+      "why": "data/topics.json is the smallest file on the site with the largest reach: eight scripts read it, and through them it is stamped into the topic chip on every glossary term, the ItemList on /learn/topics/, the eyebrow on every article and the DefinedTermSet. It is the first thing a crawler or a language model reads to decide what this company is about — and six of its nine topics name the retired web-design line. Five of those six hub pages are ALREADY noindex and every one still holds 27-46 inbound editorial links, because freezing a page did not remove it from the taxonomy that generates the links to it. Four JSON objects decide how 1,327 pages are understood. No slug is renamed: operations-margin keeps its slug (70 inbound links) and changes only its display name to 'Food Cost & Margin'.",
+      "evidence": [
+        "data/topics.proposed.json — the full proposal; node scripts/migrate-topics.mjs --preflight passes",
+        "data/surface-inventory.json — /learn/topics/local-seo/ indexable:false, inboundInternalLinks:46; brand-design 38; conversions 38; speed-mobile 34; trust-reviews 28",
+        "data/surface-inventory.json#summary.retiredLine — 3,611 hits across 419 pages, localGbp 1,688",
+        "docs/editorial/decisions/ADR-026-the-taxonomy-under-the-close.md"
+      ],
+      "retires": [
+        "5 topic hub pages stop being regenerated by build-library.mjs (URLs and files kept, external backlinks intact).",
+        "7 topics' pillar essays leave data/topic-essays.json's review surface.",
+        "The generation of retired-line topic chips onto 344 glossary pages and every library article."
+      ],
+      "doneWhen": "data/topics.json holds exactly 4 topics and a _retired array of 7, data/library-tags.json is remapped, the builders in data/topics.proposed.json#_ordering have been re-run, and node scripts/check-all.mjs exits 0.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node scripts/migrate-topics.mjs --preflight && node scripts/check-pillar-coverage.mjs && node scripts/build-tools-index.mjs --check"
+      },
+      "blockedBy": [
+        "Q-005",
+        "Q-071"
+      ],
+      "claim": null,
+      "closed": null,
+      "founderHours": 0,
+      "window": "M3"
+    },
+    {
+      "id": "Q-071",
+      "title": "Two pillar essays in Don's voice — invoices-and-vendors, count-and-close",
+      "phase": "RET",
+      "priority": "MED",
+      "status": "ready",
+      "owner": "founder",
+      "repo": "storefront",
+      "effort": "1.5h",
+      "kind": "fix",
+      "why": "data/topic-essays.json holds one 600-900 word pillar essay per topic, injected by inject-topic-pillar-essay.mjs, and its own _status block says Don must read every essay for voice and claim accuracy before promoting. The taxonomy migration adds two topics and cannot ship without theirs. The invoices-and-vendors essay has to name the vendor mix he actually receives — that is the buyer definition, and it is the sentence a prospect recognises himself in.",
+      "evidence": [
+        "data/topic-essays.json#_status.review_required — 'Don should read for voice + claim accuracy before promoting'",
+        "data/topics.proposed.json#_ordering step 2",
+        "docs/voice-canon-library.md — first-person 'I' only when naming personal operator practice"
+      ],
+      "founderOnly": "The essays are in his register about his floor, and the vendor essay names suppliers only he receives invoices from. An agent can draft the structure; it cannot supply the voice or the standing to make the claim.",
+      "doneWhen": "data/topic-essays.json contains entries for invoices-and-vendors and count-and-close in EN and ES, each 600-900 words, and node scripts/check-fabrications.mjs exits 0.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node -e \"const e=require('./data/topic-essays.json');for(const k of ['invoices-and-vendors','count-and-close']){if(!e[k])throw new Error('missing pillar essay: '+k)}console.log('both pillar essays present')\" && node scripts/check-fabrications.mjs"
+      },
+      "blockedBy": [],
+      "claim": null,
+      "closed": null,
+      "founderHours": 1.5,
+      "window": "M2"
+    },
+    {
+      "id": "Q-072",
+      "title": "/close/ — the page that says what Muntin sells",
+      "phase": "P2",
+      "priority": "MED",
+      "status": "blocked",
+      "owner": "both",
+      "repo": "storefront",
+      "effort": "5h",
+      "kind": "mechanism",
+      "why": "The company sells a closed month and no page on the storefront says so. data/surface-disposition.json#_toBuild lists eight pages the doctrine requires and this is the one the other seven hang off: what a close guarantees, what it withholds, what it costs, and the plain-language disclosure that the exception desk produces RULES and never numbers. It cannot ship before the founder walk (Q-001) has produced four real numbers or before the five posted prices come down (Q-010), or it publishes a promise nobody has tested at a price that has been withdrawn.",
+      "evidence": [
+        "data/surface-disposition.json#_toBuild[0]",
+        "data/surface-disposition.json#summary.byClassAndDisposition — marketing 12 pages, none of which name the deliverable",
+        "verdict:theCompany — 'New center: /close/ (what a close guarantees, what it withholds, what it costs)'"
+      ],
+      "retires": [
+        "The homepage's job of explaining what the company sells — it becomes a pointer.",
+        "/ledger/ as the primary product explainer — it reverts to being the app's own page, not the pitch.",
+        "The four scattered waitlist forms as the only conversion surface (Q-040 finishes the removal)."
+      ],
+      "doneWhen": "/close/ and /es/close/ exist, are indexable, are dispositioned keep by a rebuilt data/surface-disposition.json, carry no number absent from data/sourced-claims.json, and node scripts/check-all.mjs exits 0.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node scripts/build-surface-disposition.mjs --check && node scripts/check-fabrications.mjs && node scripts/check-positioning-drift.mjs"
+      },
+      "blockedBy": [
+        "Q-001",
+        "Q-005",
+        "Q-010"
+      ],
+      "claim": null,
+      "closed": null,
+      "founderHours": 0.5,
+      "window": "M2",
+      "founderOnly": "The page that says what Muntin sells is a promise in his voice, under his signature. An agent drafts it; he decides it is true."
+    },
+    {
+      "id": "Q-073",
+      "title": "Strip analytics from 221 pages — instrument the qualification path, not the corpus",
+      "phase": "RET",
+      "priority": "LOW",
+      "status": "ready",
+      "owner": "agent",
+      "repo": "storefront",
+      "effort": "2h",
+      "kind": "retire",
+      "why": "274 pages carry an analytics tag. The verdict abolishes sessions as a measure — the storefront's measure is qualified applications and whether the CPA said yes. data/surface-disposition.json marks 72 pages as the qualification path (marketing, product, trust, tools, the Cost Index hubs); the other 221 tags measure something nobody will act on, on pages that are being frozen, and each is a third-party request on a site that promises privacy architecture.",
+      "evidence": [
+        "data/surface-disposition.json#summary — analyticsTagsToRemove 221, instrumentedPages 72",
+        "data/surface-inventory.json#summary — withAnalytics 274, withoutAnalytics 1053",
+        "verdict:theCompany — 'Analytics on ~50 pages, not 1,327'"
+      ],
+      "retires": [
+        "The measurement obligation on 221 pages, and 221 third-party requests from pages that promise privacy architecture."
+      ],
+      "doneWhen": "data/surface-inventory.json rebuilds with withAnalytics at or below 80, and every page still carrying analytics has maintain.analytics true in its data/surface-disposition.json record.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node scripts/build-surface-inventory.mjs && node scripts/build-surface-disposition.mjs --check"
+      },
+      "blockedBy": [],
+      "claim": null,
+      "closed": null,
+      "founderHours": 0,
+      "window": "M3"
+    },
+    {
+      "id": "Q-080",
+      "title": "Execute the retirement — archive 21 documents, delete 16 byte-identical duplicates",
+      "phase": "RET",
+      "priority": "MED",
+      "status": "ready",
+      "owner": "agent",
+      "repo": "storefront",
+      "effort": "1h",
+      "kind": "retire",
+      "why": "The working set a session is told to read is 2,398 lines against a 1,400 budget, and the board is 87% log (1,314 of 1,505 lines) against a 35% ceiling. The board was already compacted to 252 lines on 2026-07-17 and regrew to 1,504 within fourteen days across three further manual compactions — decay as a chore loses to write pressure 3 out of 3 times measured. This is the move, not another compaction: nothing is rewritten, summarised or condensed, because a summary is a new document with a new decay curve.",
+      "evidence": [
+        "node scripts/check-working-set.mjs — exits 1: 2,398/1,400 lines; board 87% log",
+        "docs/contracts/retirement-2026-08-07.json — 21 files / 5,668 lines to archive, 16 files / 1,374 lines to delete, each with a reason",
+        "docs/editorial/decisions/ADR-028-the-working-set-budget.md",
+        "md5 over every file under docs/ — the 16 deletions are byte-identical duplicates under docs/handoff/bones/panels/"
+      ],
+      "retires": [
+        "docs/handoff/strategic-council-board.md and board-archive.md from the working set (2,497 lines).",
+        "19 further superseded, course-era or retired-line documents (3,171 lines) from the working set.",
+        "16 duplicate files (1,374 lines) from the repository entirely."
+      ],
+      "doneWhen": "Every path in docs/contracts/retirement-2026-08-07.json#archive exists at its `to` location under docs/archive/ and not at its old path; every path in #delete is gone; docs/contracts/working-set.json is updated so those files are classified `archive`; and `node scripts/check-working-set.mjs` exits 0.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node -e \"const r=require('./docs/contracts/retirement-2026-08-07.json'),fs=require('fs');for(const a of r.archive){if(fs.existsSync(a.path))throw new Error('still at old path: '+a.path);if(!fs.existsSync(a.to))throw new Error('not archived: '+a.to)}for(const x of r.delete){if(fs.existsSync(x.path))throw new Error('not deleted: '+x.path)}console.log('retirement executed: '+r.archive.length+' archived, '+r.delete.length+' deleted')\" && node scripts/check-working-set.mjs"
+      },
+      "blockedBy": [],
+      "claim": null,
+      "closed": null,
+      "founderHours": 0,
+      "window": "M1"
+    },
+    {
+      "id": "Q-081",
+      "title": "Wire check-working-set.mjs into check-all — the forgetting gate has no teeth until it is in the deploy",
+      "phase": "RET",
+      "priority": "MED",
+      "status": "blocked",
+      "owner": "agent",
+      "repo": "storefront",
+      "effort": "15m",
+      "kind": "mechanism",
+      "why": "ADR-028 is honest that the gate's odds depend on this: a gate in the deploy is paid, a gate in a hook is read. It is UNWIRED today because it fails by construction and CLAUDE.md:50 forbids wiring a currently-failing gate into a command the Cloudflare deploy runs. Once Q-080 clears it, wiring is the whole difference between a budget and a suggestion.",
+      "evidence": [
+        "scripts/check-gate-coverage.mjs UNWIRED['check-working-set.mjs'] — 'FAILS BY DESIGN … Q-072 wires this'",
+        "CLAUDE.md:50 — 'never wire a gate that is currently failing'",
+        "docs/editorial/decisions/ADR-028 §Consequences — 'the single change that would most improve its odds is this landing'"
+      ],
+      "retires": [
+        "The UNWIRED registry entry for check-working-set.mjs, and the working set's dependence on anyone feeling tidy."
+      ],
+      "doneWhen": "check-working-set.mjs appears in scripts/check-all.mjs's CHECKS list, its UNWIRED entry is gone, and both check-gate-coverage.mjs and check-working-set.mjs exit 0.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node -e \"const s=require('fs').readFileSync('scripts/check-all.mjs','utf8');if(!s.includes('check-working-set.mjs'))throw new Error('not wired into check-all');const {UNWIRED}=require('url');\" ; grep -q \"check-working-set.mjs\" scripts/check-all.mjs && ! grep -q \"'check-working-set.mjs': {\" scripts/check-gate-coverage.mjs && node scripts/check-gate-coverage.mjs && node scripts/check-working-set.mjs"
+      },
+      "blockedBy": [
+        "Q-080"
+      ],
+      "claim": null,
+      "closed": null,
+      "founderHours": 0,
+      "window": "M1"
+    },
+    {
+      "id": "Q-082",
+      "title": "Inject the contract at the spawn site — the harness orchestrator must call contractFor()",
+      "phase": "P1",
+      "priority": "HIGH",
+      "status": "ready",
+      "owner": "both",
+      "repo": "both",
+      "effort": "1-2h",
+      "kind": "mechanism",
+      "why": "1 of 108 agent transcripts in the 2026-08 engagement carried a CLAUDE.md; 37 ran with cwd = the storefront repo and got none. The registry, the selector and the gate all exist now, and the SessionStart hook delivers the CORE rules — but the workflow orchestrator that actually spawns subagents lives in the harness, outside both repos, so check-contract-injection's assertion C is currently VACUOUS and says so on every run. Until a spawner is committed and calls contractFor(paths), scoped rules still reach a subagent only if a human pastes them.",
+      "evidence": [
+        "node scripts/check-contract-injection.mjs — 'VACUOUS: assertion C found 0 subagent spawners across 432 scanned files'",
+        "docs/handoff/bones/os-claude-md.md — 56 unique agents, 1 with a CLAUDE.md; rule text reached agents via 41/56, 14/56, 16/56 task prompts",
+        "docs/editorial/decisions/ADR-027-the-contract-loads-through-the-hook.md §Walk receipt, 'Honest limits'"
+      ],
+      "retires": [
+        "Hand-copying rules into task prompts as the delivery mechanism for scoped rules. The hook already retired it for CORE."
+      ],
+      "doneWhen": "At least one committed file under .claude/, workflows/ or scripts/ in either repo spawns a subagent AND builds its prompt through contractFor(...), and `node scripts/check-contract-injection.mjs` reports a non-zero spawner count with zero problems.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node scripts/check-contract-injection.mjs --verbose 2>&1 | tee /dev/stderr | grep -qv 'VACUOUS' && node scripts/check-contract-injection.mjs"
+      },
+      "blockedBy": [],
+      "claim": null,
+      "closed": null,
+      "founderOnly": "Only Don can decide where the orchestrator lives and commit it into a repo. The harness is his environment, not the container's.",
+      "founderHours": 1,
+      "window": "M1"
+    },
+    {
+      "id": "Q-083",
+      "title": "Give the five undetected storefront rules a detector, or retire them",
+      "phase": "P1",
+      "priority": "LOW",
+      "status": "ready",
+      "owner": "agent",
+      "repo": "both",
+      "effort": "3-4h",
+      "kind": "mechanism",
+      "why": "Five active storefront rules and eleven product rules carry enforcedBy 'none' and render as 'NO DETECTOR — this rule is obeyed only if you obey it'. That label is honest, but the measured lesson of this company is that the rules reliably obeyed are the ones with a test behind them, not the ones in bold: the EN<->ES copy-parity rule scores 95% over 90 days because a shape-parity test enforces it. SF-ROOT-LIST is the highest-value candidate — a scanner that walks the site without a declared skip list is mechanically detectable.",
+      "evidence": [
+        "node scripts/check-contract-injection.mjs --verbose — 5 storefront rules with NO detector, 11 in the product registry",
+        "docs/handoff/bones/os-claude-md.md — 'the rules that ARE reliably obeyed are the ones with a test behind them'",
+        "docs/contracts/rules.json — SF-ROOT-LIST, SF-SLUGS-FINAL, SF-ADR, SF-BYLINE, SF-NO-PACKAGE-JSON"
+      ],
+      "retires": [
+        "At least one rule per registry that no detector can be written for and that no session has been in scope of — a rule nobody can check and nobody hits is attention spent for nothing."
+      ],
+      "doneWhen": "The count of active rules with enforcedBy 'none' is at most 3 in docs/contracts/rules.json and at most 7 in the product registry, with each remaining one carrying a `why` explaining what makes it undetectable.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node -e \"const a=require('./docs/contracts/rules.json'),b=require('../Muntin-Invoice-Decoder/docs/contracts/rules.json');const n=r=>r.rules.filter(x=>x.status!=='retired'&&x.enforcedBy==='none');const A=n(a),B=n(b);if(A.length>3)throw new Error('storefront still has '+A.length+' undetected rules');if(B.length>7)throw new Error('product still has '+B.length+' undetected rules');for(const r of A.concat(B))if(!r.why)throw new Error(r.id+' has no detector AND no why');console.log('undetected: storefront '+A.length+', product '+B.length)\" && node scripts/check-contract-injection.mjs"
+      },
+      "blockedBy": [],
+      "claim": null,
+      "closed": null,
+      "founderHours": 0,
+      "window": "M2"
     }
   ],
   "attestations": {},
-  "retirementLedger": []
+  "retirementLedger": [
+    {
+      "id": "Q-050",
+      "at": "2026-08-07T17:55:11.641Z",
+      "retired": [
+        "The board's CURRENT STATE / in-flight / open-questions tracking role (narrative history is kept, append-only).",
+        "Section 2 of docs/handoff/company-audit-2026-08-07.md as a live to-do list — the audit is frozen as a dated finding document.",
+        "Ad-hoc 'next steps' sections in the other handoff docs, which become pointers."
+      ]
+    },
+    {
+      "id": "Q-080/Q-081",
+      "at": "2026-08-07T00:00:00.000Z",
+      "retired": [
+        "The strategic-council board's READ-FIRST role (ADR-024 had already retired its tracking role; ADR-028 retires the rest) — 2,497 lines with board-archive.md.",
+        "19 superseded, course-era or retired-line documents from the working set (3,171 lines).",
+        "16 byte-identical duplicate files, deleted outright (1,374 lines).",
+        "Hand-typed repo facts in CLAUDE.md at lines 21, 52, 54 and 58 — now <!-- fact:KEY --> sentinels compiled by scripts/build-contract-facts.mjs.",
+        "The practice of any committed document naming the current git branch (four artifacts named four different ones on 2026-08-07)."
+      ]
+    }
+  ],
+  "capacity": {
+    "ofRecord": "docs/editorial/decisions/ADR-030-the-ninety-days-and-its-falsifiers.md",
+    "founderHoursPerMonth": {
+      "floor": 13,
+      "ceiling": 26,
+      "source": "docs/seo-handoff-both-repos.md:23 (2026-07-05) — '~a few hours/week'.",
+      "planAgainst": "floor",
+      "note": "A plan that only fits the ceiling is a plan that fits on the founder's best month. --budget warns above the floor and fails above the ceiling."
+    },
+    "realizedRate": {
+      "value": 0.1,
+      "source": "docs/handoff/company-audit-2026-08-07.md:92 — roughly 3 of 31 maintenance-hours-due were paid in the 30 days to 2026-08-07.",
+      "consequence": "Nominal capacity is not delivered capacity. This is why the standing calendar is SUSPENDED (Q-013) rather than budgeted around."
+    },
+    "standingObligationsPerMonth": {
+      "hours": 53,
+      "source": "docs/handoff/company-audit-2026-08-07.md:89-91 — ~53 founder-hours/month recurring, 31 of them maintenance before a word is written.",
+      "status": "SUSPENDED for the duration of M1-M3 by Q-013. Without that suspension the 90-day demand is ~130h against 39-78 available (board-execution-feasibility.md), a 2.5-5x deficit, and this plan is arithmetic fiction."
+    },
+    "reviewOverheadPerMonth": {
+      "hours": 2.5,
+      "note": "PR review and the two production deploys are founder work that no queue item prices. Counted in every window so the budget cannot be gamed by leaving it out."
+    },
+    "windows": {
+      "M1": {
+        "from": "2026-08-07",
+        "to": "2026-09-06",
+        "label": "Days 1-30 — the mandatory repairs"
+      },
+      "M2": {
+        "from": "2026-09-07",
+        "to": "2026-10-06",
+        "label": "Days 31-60 — correctness, deployed, then reviewed by a CPA"
+      },
+      "M3": {
+        "from": "2026-10-07",
+        "to": "2026-11-06",
+        "label": "Days 61-90 — the price, the conversations, the first invoice"
+      }
+    },
+    "cuts": [
+      "The August and September Cost Index dispatches are NOT written. The cadence is paused with a dated public note (Q-015). Saves ~5h/month; costs a red check-cost-index-dispatch-fresh, which is why the pause must be published rather than merely observed.",
+      "The whole standing maintenance calendar is suspended in writing for M1-M3 (Q-013). Only the three trust artifacts in Q-009 are honored, and two of them are honored by RETIRING the promise, not by paying it.",
+      "TEN locations by day 90 becomes THREE signed locations, one signed close, one hand-sent invoice. Ten locations inside weeks 10-13 needs sales hours that do not exist at 13h/month; ten is a day-180 number.",
+      "The $6,000 annual prepay for the FIRST cohort becomes $600 hand-invoiced monthly. Phase 3 lands 2026-10-16..11-06, outside the stated May-August peak, and asking an independent for $6,000 into the Jan-Feb trough is the exact objection used to kill the 2026-11-13 GA. Annual-in-peak is offered at first renewal (May 2027).",
+      "The two pillar essays (Q-071) move out of M1 into M2. They are the first thing to drop again if M1 overruns.",
+      "/tools/pack-check/, /cost-index/refusals/, /close/apply/ and the taxonomy migration carry ZERO founder hours. If they slip, they slip; nothing downstream is blocked on them.",
+      "No billing code is written for the first cohort at all — no SKU, no checkout, no priceIdForTier branch. An invoice is a PDF and an email."
+    ],
+    "floorPlan": {
+      "why": "M1 totals 17h as of 2026-08-07 (it was 16h before the working-set thread added Q-082, and it will move again — that is what --budget is for). 17h fits the 26h ceiling and exceeds the 13h floor, and the floor is what the plan is supposed to be sized against. So the drop order is written down NOW, before the month is half gone and the drop is made by drift instead of by decision.",
+      "dropOrderToReach13h": [
+        {
+          "drop": "Q-006 (−0.5h) — the editions-spine investigation moves to M2. The measured read is live; only the frozen snapshot spine is at issue, and nothing in M1 depends on it.",
+          "runningTotal": 16.5
+        },
+        {
+          "drop": "Q-009 (−0.5h) — take the RETIRE fork on all three trust artifacts rather than signing them. A warrant canary retired in public is honest; one 89 days lapsed is not.",
+          "runningTotal": 16
+        },
+        {
+          "drop": "Q-010 (−1.0h) — the price call moves to M2. No price is posted before P3 in any case; what M1 needs is the five posted prices DOWN, which is the agent half.",
+          "runningTotal": 15
+        },
+        {
+          "drop": "Q-001 (−2.0h) lands at its 4h lower bound rather than the 6h ceiling it is budgeted at (the estimate of record is 4-6h).",
+          "runningTotal": 13
+        }
+      ],
+      "ifItGrowsAgain": "Any item added to M1 after 2026-08-07 must either carry founderHours 0 or name which row of this drop order it displaces. --budget fails past the ceiling; it does not decide the cut, and nobody else should be deciding it in week three.",
+      "whatIsNeverDropped": [
+        "Q-002 — authorization. Without it no real invoice data may be processed at all, and Q-001 cannot legally run.",
+        "Q-001 — the founder walk. Fifteen months without running the product once is the root fact; the whole quarter is an argument about a number nobody has measured.",
+        "Q-013 — the maintenance suspension. Drop it and every other number in this plan becomes fiction.",
+        "Q-014 — the snapshot re-vendor. Skipping it means the walk measures a stale file rather than the product, and the day-30 kill criterion could fire on an artifact."
+      ]
+    }
+  },
+  "checkpoints": [
+    {
+      "id": "CP-30",
+      "dueOn": "2026-09-06",
+      "label": "Day 30 — the mandatory repairs, and the one measurement that can end the quarter",
+      "question": "Did the founder run his own product on a real month, and is the storefront no longer publishing a falsehood?",
+      "mustBeTrue": [
+        {
+          "claim": "The founder walk is recorded with all four numbers, on consented data.",
+          "verify": {
+            "cwd": "storefront",
+            "cmd": "node -e \"const q=require('./data/queue.json');const ix=Object.fromEntries(q.items.map(i=>[i.id,i]));const need=[\"Q-002\", \"Q-014\", \"Q-001\"];const open=need.filter(id=>!ix[id]||!ix[id].closed);if(open.length)throw new Error('not closed: '+open.join(', '));console.log(need.length+' item(s) closed and verified')\""
+          }
+        },
+        {
+          "claim": "Nothing false is published: the basis leak is fixed, the July dispatch is corrected, llms.txt tells the truth about cadence.",
+          "verify": {
+            "cwd": "storefront",
+            "cmd": "node -e \"const q=require('./data/queue.json');const ix=Object.fromEntries(q.items.map(i=>[i.id,i]));const need=[\"Q-003\", \"Q-007\", \"Q-008\"];const open=need.filter(id=>!ix[id]||!ix[id].closed);if(open.length)throw new Error('not closed: '+open.join(', '));console.log(need.length+' item(s) closed and verified')\""
+          }
+        },
+        {
+          "claim": "No dollar price for the product is posted anywhere, and the six ADRs are ratified.",
+          "verify": {
+            "cwd": "storefront",
+            "cmd": "node -e \"const q=require('./data/queue.json');const ix=Object.fromEntries(q.items.map(i=>[i.id,i]));const need=[\"Q-019\", \"Q-010\", \"Q-011\"];const open=need.filter(id=>!ix[id]||!ix[id].closed);if(open.length)throw new Error('not closed: '+open.join(', '));console.log(need.length+' item(s) closed and verified')\""
+          }
+        },
+        {
+          "claim": "The calendar is honest: the maintenance suspension is written and the dispatch fork is taken.",
+          "verify": {
+            "cwd": "storefront",
+            "cmd": "node -e \"const q=require('./data/queue.json');const ix=Object.fromEntries(q.items.map(i=>[i.id,i]));const need=[\"Q-013\", \"Q-015\"];const open=need.filter(id=>!ix[id]||!ix[id].closed);if(open.length)throw new Error('not closed: '+open.join(', '));console.log(need.length+' item(s) closed and verified')\""
+          }
+        }
+      ],
+      "killIf": [
+        {
+          "test": "docs/handoff/receipts/founder-walk.json#dollarSurvivalPct < 70",
+          "then": "THE PILOT DOES NOT OPEN THIS QUARTER. Fewer than 70% of invoice dollars survive into a valued Purchases leg, which means the Purchases leg is not a Purchases leg and no signed close can be honest. Rebuild it (Q-020) and re-walk before anything is sold. This is the cheapest possible way to lose — four founder-hours instead of a customer.",
+          "decidedBy": "measurement"
+        },
+        {
+          "test": "docs/legal/specimen-authorization.md declares no basis by 2026-09-06",
+          "then": "NO REAL INVOICE DATA IS PROCESSED OR PUBLISHED, full stop. The walk and the specimen move to a consenting third restaurant or to reconstructed data, and the seven MIT-committed fixtures are removed from the product repo. The strategy survives; the evidence base changes.",
+          "decidedBy": "founder"
+        },
+        {
+          "test": "docs/handoff/receipts/founder-walk.json#legsFooted === false AND the residual is unexplained",
+          "then": "The identity does not hold on real data, which is the entire product claim. Everything downstream stops until it does; nothing is sold on a promise the arithmetic does not keep.",
+          "decidedBy": "measurement"
+        }
+      ],
+      "result": null,
+      "recordedAt": null,
+      "note": null
+    },
+    {
+      "id": "CP-60",
+      "dueOn": "2026-10-06",
+      "label": "Day 60 — correctness in production, and the two judgments that decide the commercial argument",
+      "question": "Do the fixes exist where a buyer can reach them, and does a working CPA accept the artifact?",
+      "mustBeTrue": [
+        {
+          "claim": "The five correctness fixes are landed AND deployed, with the SHAs recorded.",
+          "verify": {
+            "cwd": "storefront",
+            "cmd": "node -e \"const q=require('./data/queue.json');const ix=Object.fromEntries(q.items.map(i=>[i.id,i]));const need=[\"Q-020\", \"Q-021\", \"Q-022\", \"Q-024\", \"Q-017\"];const open=need.filter(id=>!ix[id]||!ix[id].closed);if(open.length)throw new Error('not closed: '+open.join(', '));console.log(need.length+' item(s) closed and verified')\""
+          }
+        },
+        {
+          "claim": "One complete specimen close is public, under a declared authorization basis.",
+          "verify": {
+            "cwd": "storefront",
+            "cmd": "node -e \"const q=require('./data/queue.json');const ix=Object.fromEntries(q.items.map(i=>[i.id,i]));const need=[\"Q-030\"];const open=need.filter(id=>!ix[id]||!ix[id].closed);if(open.length)throw new Error('not closed: '+open.join(', '));console.log(need.length+' item(s) closed and verified')\""
+          }
+        },
+        {
+          "claim": "Two named CPA/bookkeeper reviewers have answered both questions on the record.",
+          "verify": {
+            "cwd": "storefront",
+            "cmd": "node -e \"const q=require('./data/queue.json');const ix=Object.fromEntries(q.items.map(i=>[i.id,i]));const need=[\"Q-031\"];const open=need.filter(id=>!ix[id]||!ix[id].closed);if(open.length)throw new Error('not closed: '+open.join(', '));console.log(need.length+' item(s) closed and verified')\""
+          }
+        }
+      ],
+      "killIf": [
+        {
+          "test": "both reviewers record marketPriorAcceptable === false",
+          "then": "THE COMMERCIAL ARGUMENT COLLAPSES AS PRICED. The market prior is what shrinks the count from a full physical inventory to a verification of divergent rows; without it the operator's labour goes back to $100-150/month of floor time and 'half the labour at nearly twice the sticker' is no longer true. Do not post $600. Re-derive the price against the labour actually saved, or narrow the product to items with invoice coverage only.",
+          "decidedBy": "founder"
+        },
+        {
+          "test": "both reviewers record tiesToFoodPurchases === false",
+          "then": "ABANDON THE STRATEGY. The artifact does not tie to the accounting object the buyer's professional advisor calls food purchases. A statement that does not reconcile to the books is not an audit-shaped product; it is a dashboard with a signature on it, and this company has already decided it does not sell dashboards.",
+          "decidedBy": "founder"
+        },
+        {
+          "test": "the specimen close records deskMinutesPerClose > 60",
+          "then": "THE CEILING IS NOT FORTY LOCATIONS. At 60 minutes per close, 40 locations is 40 founder-hours/month against a 13-26 ceiling. Either the price rises, the cohort caps well below 40, or the desk stops being one person's — and all three are decisions to make BEFORE the first customer, not after the tenth.",
+          "decidedBy": "measurement"
+        }
+      ],
+      "result": null,
+      "recordedAt": null,
+      "note": null
+    },
+    {
+      "id": "CP-90",
+      "dueOn": "2026-11-06",
+      "label": "Day 90 — the first dollar, or the falsifier",
+      "question": "Did anyone pay for a closed month, and if not, was it the price, the buyer, or the object?",
+      "mustBeTrue": [
+        {
+          "claim": "Eight qualified conversations are on the record, with the objection in the owner's own words.",
+          "verify": {
+            "cwd": "storefront",
+            "cmd": "node -e \"const q=require('./data/queue.json');const ix=Object.fromEntries(q.items.map(i=>[i.id,i]));const need=[\"Q-041\"];const open=need.filter(id=>!ix[id]||!ix[id].closed);if(open.length)throw new Error('not closed: '+open.join(', '));console.log(need.length+' item(s) closed and verified')\""
+          }
+        },
+        {
+          "claim": "Three locations signed at $600/month, one close signed and delivered, one invoice sent by hand.",
+          "verify": {
+            "cwd": "storefront",
+            "cmd": "node -e \"const q=require('./data/queue.json');const ix=Object.fromEntries(q.items.map(i=>[i.id,i]));const need=[\"Q-042\"];const open=need.filter(id=>!ix[id]||!ix[id].closed);if(open.length)throw new Error('not closed: '+open.join(', '));console.log(need.length+' item(s) closed and verified')\""
+          }
+        },
+        {
+          "claim": "The public audit file exists: /close/, and the code-cited limits register.",
+          "verify": {
+            "cwd": "storefront",
+            "cmd": "node -e \"const q=require('./data/queue.json');const ix=Object.fromEntries(q.items.map(i=>[i.id,i]));const need=[\"Q-072\", \"Q-025\"];const open=need.filter(id=>!ix[id]||!ix[id].closed);if(open.length)throw new Error('not closed: '+open.join(', '));console.log(need.length+' item(s) closed and verified')\""
+          }
+        }
+      ],
+      "killIf": [
+        {
+          "test": "conversations.json records >= 8 qualified conversations and 0 outcome === 'signed'",
+          "then": "THE PRICE OR THE BUYER IS WRONG, AND NO MORE PRODUCT GETS BUILT UNTIL ONE OF THEM CHANGES. Read the eight recorded objections: if they cluster on money, re-price. If they cluster on 'my bookkeeper already does this', the buyer is the firm and the deferred channel (product ADR-014) reopens as the primary. Building a feature in response to this result is the failure mode.",
+          "decidedBy": "founder"
+        },
+        {
+          "test": "fewer than 2 of 8 conversations asked to see the specimen close unprompted",
+          "then": "THE OBJECT IS NOT WANTED, AND PRICE IS NOT THE VARIABLE. A signed monthly close is a thing this company believes operators want; six of eight declining to even look at a free worked example falsifies that belief more cleanly than any pricing test. Stop. Re-derive what the buyer asked about instead, from the recorded objections.",
+          "decidedBy": "founder"
+        },
+        {
+          "test": "3+ signed AND measured deskMinutesPerClose > 90 across delivered closes",
+          "then": "THE BUSINESS IS REAL AND SMALLER THAN MODELLED. At 90 minutes a close the one-founder ceiling is roughly 9-17 locations, not 40. Re-price before cohort two and publish the revised ceiling — the honest ceiling is an asset, and discovering it at three customers is the point of a pilot.",
+          "decidedBy": "measurement"
+        }
+      ],
+      "result": null,
+      "recordedAt": null,
+      "note": null
+    }
+  ],
+  "checkpointPolicy": {
+    "results": [
+      "proceed",
+      "amend",
+      "kill"
+    ],
+    "rule": "A checkpoint whose dueOn has passed with result null makes check-queue exit 1, and no amount of closed items clears it. A plan with no falsifier is a wish; a falsifier nobody is forced to read is the same wish with extra steps.",
+    "whoRecords": "founder — every killIf whose decidedBy is `measurement` is computed from a receipt file, but the decision to proceed, amend or kill is a judgment with a name on it.",
+    "amendMeans": "The checkpoint's own terms were wrong, not the strategy. An amendment must say what replaced them, or it is a kill being called a proceed."
+  }
 }

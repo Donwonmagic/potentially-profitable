@@ -1,0 +1,247 @@
+{
+  "_doc": "The retirement list of 2026-08-07. ARCHIVE means the file moves under docs/archive/ — retrievable, out of the working set, nothing rewritten. DELETE is reserved for content that provably loses nothing: here, byte-identical duplicates. ADRs are decisions of record and appear in neither list.",
+  "_doctrine": [
+    "Archive is the default and delete is the exception, for the same reason CLAUDE.md:32 says freezing a page beats deleting it: the artifact costs nothing to keep and something to re-derive; what costs is MAINTENANCE and ATTENTION, and archiving removes both.",
+    "Nothing here is rewritten, summarised or condensed. A summary is a new document with a new decay curve; a move is not.",
+    "ADRs never retire. docs/editorial/decisions/**, docs/design/decisions/** and docs/brand/decisions/** are excluded by rule.",
+    "Logs need not survive as documents. git log holds the same events with authorship, diffs and dates, and is the one memory in this company that has never gone false."
+  ],
+  "generated": "2026-08-07",
+  "executedBy": "queue items Q-070 (board) and Q-071 (the rest). Nothing here happens because this file says so — it happens when a session runs the queue item and its verify command exits 0.",
+  "summary": {
+    "archiveFiles": 21,
+    "archiveLines": 5668,
+    "deleteFiles": 16,
+    "deleteLines": 1374,
+    "docsBefore": {
+      "files": 180,
+      "linesUnderRoots": null
+    }
+  },
+  "archive": [
+    {
+      "path": "docs/handoff/strategic-council-board.md",
+      "lines": 1504,
+      "to": "docs/archive/handoff/strategic-council-board.md",
+      "why": "The working set's single largest document and 87% log by measurement (1,314 of 1,505 lines; run `node scripts/check-working-set.mjs --report`). CLAUDE.md:30 already declares it FROZEN as a tracker on 2026-08-07 — this makes the freeze structural instead of honorary. Its six stacked CURRENT STATE blocks are narrative history; git log holds the same events with authorship and diffs. Nothing is lost: the file moves, it is not rewritten."
+    },
+    {
+      "path": "docs/handoff/board-archive.md",
+      "lines": 993,
+      "to": "docs/archive/handoff/board-archive.md",
+      "why": "993 lines that its own header already calls an archive. It is the archive; it should live in docs/archive/."
+    },
+    {
+      "path": "docs/handoff/every-surface-map.md",
+      "lines": 234,
+      "to": "docs/archive/handoff/every-surface-map.md",
+      "why": "Superseded by data/surface-inventory.json, whose _doc says so verbatim: \"Replaces docs/handoff/every-surface-map.md, which could go stale; this cannot.\" A hand-written map beside a generated one is a fork in the truth."
+    },
+    {
+      "path": "docs/course-audio-runbook.md",
+      "lines": 328,
+      "to": "docs/archive/course-audio-runbook.md",
+      "why": "The /course/ subsystem was torn out 2026-07-28 (CLAUDE.md:9). A runbook for a deleted subsystem reads as current and is a trap."
+    },
+    {
+      "path": "docs/course-instructional-audit.md",
+      "lines": 540,
+      "to": "docs/archive/course-instructional-audit.md",
+      "why": "540 lines auditing the retired course. Off-funnel by CLAUDE.md:9."
+    },
+    {
+      "path": "docs/window-backend-handoff.md",
+      "lines": 101,
+      "to": "docs/archive/window-backend-handoff.md",
+      "why": "Near-duplicate of docs/handoff/window-backend-handoff.md (101 vs 87 lines, same thread). Two copies of one handoff means a reader picks the wrong one; the docs/handoff/ copy stays."
+    },
+    {
+      "path": "docs/phase-3-watch-cutover.md",
+      "lines": 310,
+      "to": "docs/archive/phase-3-watch-cutover.md",
+      "why": "A completed cutover. Referenced by nothing in either repo (measured 2026-08-07 by grepping every docs/**.md path across the tree)."
+    },
+    {
+      "path": "docs/handoff/2026-07-18-corpus-expansion-overnight.md",
+      "lines": 267,
+      "to": "docs/archive/handoff/2026-07-18-corpus-expansion-overnight.md",
+      "why": "Dated overnight-run log. Episodic by construction."
+    },
+    {
+      "path": "docs/handoff/2026-07-17-menu-pricing-pressure-roadmap.md",
+      "lines": 170,
+      "to": "docs/archive/handoff/2026-07-17-menu-pricing-pressure-roadmap.md",
+      "why": "Superseded by ADR-016 (menu-pricing playbook consolidation), which is the decision of record."
+    },
+    {
+      "path": "docs/handoff/bolder-launch-session-2026-07-02.md",
+      "lines": 35,
+      "to": "docs/archive/handoff/bolder-launch-session-2026-07-02.md",
+      "why": "Session log for a shipped design pass."
+    },
+    {
+      "path": "docs/handoff/redesign-execution-plan.md",
+      "lines": 75,
+      "to": "docs/archive/handoff/redesign-execution-plan.md",
+      "why": "Execution plan for the v3 redesign, marked COMPLETE on the board."
+    },
+    {
+      "path": "docs/handoff/demo-redesign-plan.md",
+      "lines": 83,
+      "to": "docs/archive/handoff/demo-redesign-plan.md",
+      "why": "Plan for a shipped demo redesign."
+    },
+    {
+      "path": "docs/handoff/warmth-cohesion-plan.md",
+      "lines": 196,
+      "to": "docs/archive/handoff/warmth-cohesion-plan.md",
+      "why": "Plan for a shipped pass."
+    },
+    {
+      "path": "docs/handoff/reinvention-master-plan.md",
+      "lines": 140,
+      "to": "docs/archive/handoff/reinvention-master-plan.md",
+      "why": "Superseded by the 2026-08-07 verdict and ADR-025 (the storefront is an audit file)."
+    },
+    {
+      "path": "docs/handoff/site-reinvention-blueprint.md",
+      "lines": 212,
+      "to": "docs/archive/handoff/site-reinvention-blueprint.md",
+      "why": "Same — superseded by ADR-025."
+    },
+    {
+      "path": "docs/handoff/retention-strategy.md",
+      "lines": 104,
+      "to": "docs/archive/handoff/retention-strategy.md",
+      "why": "Retention-as-a-metric was killed by the 2026-08-07 verdict: traffic as an objective and list growth as a metric are both out."
+    },
+    {
+      "path": "docs/handoff/tools-strategy.md",
+      "lines": 65,
+      "to": "docs/archive/handoff/tools-strategy.md",
+      "why": "Superseded: the tool roadmap was cut 2026-06-17 (CLAUDE.md:10) and the surviving tools are qualification surfaces, not a strategy."
+    },
+    {
+      "path": "docs/handoff/founder-vision.md",
+      "lines": 156,
+      "to": "docs/archive/handoff/founder-vision.md",
+      "why": "Superseded by docs/handoff/bones/phase-d-verdict.json, which is the strategy of record."
+    },
+    {
+      "path": "docs/seo-drafts/off-site-foundation.md",
+      "lines": 46,
+      "to": "docs/archive/seo-drafts/off-site-foundation.md",
+      "why": "Draft for the retired web-design/local-SEO line. 12 retired-line phrase hits in 46 lines."
+    },
+    {
+      "path": "docs/seo-drafts/restaurant-local-seo-pillar.md",
+      "lines": 48,
+      "to": "docs/archive/seo-drafts/restaurant-local-seo-pillar.md",
+      "why": "Same — 9 hits in 48 lines."
+    },
+    {
+      "path": "docs/seo-drafts/restaurant-website-platforms-comparison.md",
+      "lines": 61,
+      "to": "docs/archive/seo-drafts/restaurant-website-platforms-comparison.md",
+      "why": "Same — 7 hits in 61 lines."
+    }
+  ],
+  "delete": [
+    {
+      "path": "docs/handoff/bones/panels/greats-activation-retention.md",
+      "lines": 108,
+      "identicalTo": "docs/handoff/bones/greats-activation-retention.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/greats-activation-retention.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/greats-branded-index.md",
+      "lines": 105,
+      "identicalTo": "docs/handoff/bones/greats-branded-index.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/greats-branded-index.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/greats-category-creation.md",
+      "lines": 105,
+      "identicalTo": "docs/handoff/bones/greats-category-creation.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/greats-category-creation.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/greats-craft-legible.md",
+      "lines": 105,
+      "identicalTo": "docs/handoff/bones/greats-craft-legible.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/greats-craft-legible.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/greats-emotional-brand.md",
+      "lines": 105,
+      "identicalTo": "docs/handoff/bones/greats-emotional-brand.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/greats-emotional-brand.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/greats-free-authority.md",
+      "lines": 97,
+      "identicalTo": "docs/handoff/bones/greats-free-authority.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/greats-free-authority.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/greats-restaurant-gtm.md",
+      "lines": 102,
+      "identicalTo": "docs/handoff/bones/greats-restaurant-gtm.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/greats-restaurant-gtm.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/greats-small-team-scale.md",
+      "lines": 106,
+      "identicalTo": "docs/handoff/bones/greats-small-team-scale.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/greats-small-team-scale.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/greats-traffic-engine.md",
+      "lines": 102,
+      "identicalTo": "docs/handoff/bones/greats-traffic-engine.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/greats-traffic-engine.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/greats-trust-rituals.md",
+      "lines": 94,
+      "identicalTo": "docs/handoff/bones/greats-trust-rituals.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/greats-trust-rituals.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/operator-domain-correctness.md",
+      "lines": 59,
+      "identicalTo": "docs/handoff/bones/operator-domain-correctness.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/operator-domain-correctness.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/operator-incumbent-customer.md",
+      "lines": 59,
+      "identicalTo": "docs/handoff/bones/operator-incumbent-customer.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/operator-incumbent-customer.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/operator-spanish-operator.md",
+      "lines": 54,
+      "identicalTo": "docs/handoff/bones/operator-spanish-operator.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/operator-spanish-operator.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/operator-the-day.md",
+      "lines": 59,
+      "identicalTo": "docs/handoff/bones/operator-the-day.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/operator-the-day.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/operator-the-decision.md",
+      "lines": 58,
+      "identicalTo": "docs/handoff/bones/operator-the-decision.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/operator-the-decision.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    },
+    {
+      "path": "docs/handoff/bones/panels/operator-the-money.md",
+      "lines": 56,
+      "identicalTo": "docs/handoff/bones/operator-the-money.md",
+      "why": "Byte-identical duplicate of docs/handoff/bones/operator-the-money.md (md5 verified 2026-08-07). Deleting a byte-identical copy loses nothing and removes a fork in the truth; the original stays."
+    }
+  ]
+}

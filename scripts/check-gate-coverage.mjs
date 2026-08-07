@@ -102,6 +102,30 @@ export const UNWIRED = {
       'check-idem-coverage. QUEUE.md cannot silently drift because every write path in check-queue ' +
       're-renders it; the hook additionally runs --check. See ADR-022.',
   },
+  'check-surface-disposition.mjs': {
+    since: '2026-08-07',
+    status: 'FAILS — 223 violations (209 pages dispositioned freeze-noindex that are still indexable, 14 dispositioned delete that are still on disk)',
+    why:
+      'The teeth on data/surface-disposition.json (ADR-025): every routable page has a disposition, nothing marked delete survives on disk, ' +
+      'every freeze-noindex page actually carries noindex, and every keep page that is not runtime machinery stays indexable. It fails BY ' +
+      'CONSTRUCTION on the day it is written, because the manifest is a decision the site has not executed yet — that is the whole point of ' +
+      'emitting the decision as data. Wiring it now would red the Cloudflare deploy (check-all runs in build.command) and teach everyone to ' +
+      'ignore the deploy, which is the disease this repo already diagnosed in check-queue and check-idem-coverage. Queue item Q-061 does the ' +
+      'work; wire this and delete this entry when it exits 0. Run it any time with --summary for the remaining count.',
+  },
+  'check-working-set.mjs': {
+    since: '2026-08-07',
+    status: 'FAILS BY DESIGN — working set is 2,398 lines against a 1,400 budget, and the board is 87% log against a 35% ceiling',
+    why:
+      'The forgetting gate (ADR-028). It declares which documents a session is told to read, budgets them, and fails when the budget is ' +
+      'exceeded without a retirement — the same one-in-one-out policy data/queue.json already applies to mechanisms, applied to memory. ' +
+      'It fails on the day it is written BY CONSTRUCTION, because the retirement it demands has not been executed yet: 21 files / 5,668 ' +
+      'lines to archive and 16 byte-identical duplicates to delete, all enumerated in docs/contracts/retirement-2026-08-07.json. Wiring ' +
+      'it now would red the Cloudflare deploy (check-all runs in build.command) and teach everyone to ignore the deploy — the exact disease ' +
+      'this repo already diagnosed in check-queue, check-idem-coverage and check-surface-disposition. It is invoked instead by ' +
+      '.claude/hooks/session-start.sh, which runs whether or not CLAUDE.md loads. Queue items Q-070 and Q-071 do the work; Q-072 wires ' +
+      'this and deletes this entry once it exits 0. Run `node scripts/check-working-set.mjs --report` for the full classification.',
+  },
 };
 
 export function findCheckScripts(names) {

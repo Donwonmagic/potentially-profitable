@@ -1,0 +1,431 @@
+{
+  "_doc": "The contract as data. One record per rule, with the CLAUDE.md line it came from, the glob scope it applies to, and the gate that enforces it. scripts/lib/contract.mjs selects from this by scope and renders it into a subagent prompt; scripts/check-contract-injection.mjs verifies that every spawner calls it and that every `source` line still says what the rule claims. CLAUDE.md prose stays for humans — this is what reaches the workforce.",
+  "_why": "Measured 2026-08-07: 1 of 108 agent transcripts in this engagement carried a CLAUDE.md. Every rule that was obeyed was obeyed because a human hand-copied it into a prompt. Routing the contract is a larger lever than pruning it.",
+  "_fields": {
+    "id": "Stable. Referenced by queue items, ADRs and adherence measurement. Never renamed — same doctrine as slugs.",
+    "scope": "Glob(s), repo-relative. `**` alone means always-on core. Matching is scripts/lib/contract.mjs matchGlob (**, *, ?, {a,b}; no negation).",
+    "priority": "0 = CORE, always rendered, capped at CORE_MAX=8. 1 = MUST, rendered when in scope. 2 = SHOULD, first to be dropped under a token budget.",
+    "source": "file:line the rule is written at in prose. check-contract-injection asserts the line still contains `anchor`.",
+    "anchor": "A short verbatim substring that must still be present at `source`. This is what makes prose and registry unable to drift apart.",
+    "enforcedBy": "`gate:<script>` when a detector exists, `hook` when a session-start hook carries it, `none` when the rule is obeyed only if obeyed. `none` is allowed and is the honest label — it is not a placeholder.",
+    "status": "active | retired. Retired rules stay for the record and are never rendered."
+  },
+  "version": 1,
+  "generated": "2026-08-07",
+  "repo": "storefront",
+  "coreMax": 8,
+  "rules": [
+    {
+      "id": "SF-FACT-GATE",
+      "priority": 0,
+      "scope": [
+        "**"
+      ],
+      "text": "The fact gate is absolute. Every number, date, name, anecdote and percentage must be (a) registered in `data/sourced-claims.json`, (b) cited inline via `<details class=\"cite\">`, or (c) labeled illustrative in the prose. Zero inventions. This binds prose, data manifests, commit messages and anything you tell the founder — a number you cannot cite is a number you withhold.",
+      "source": "CLAUDE.md:47",
+      "anchor": "the absolute fact gate",
+      "why": "72 published falsehoods currently sit in blog/cost-index-2026-07/index.html, every one true at publication, in a PUBLIC repo behind a reader-visible cite drawer inviting verification.",
+      "enforcedBy": "gate:scripts/check-fabrications.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-BIO",
+      "priority": 0,
+      "scope": [
+        "**"
+      ],
+      "text": "The operator is Don Goldstein, full-time Front-of-House Manager at Tacombi — ONE restaurant brand, TWO locations (Bethesda MD, Arlington VA). \"Bethesda and Arlington\", \"both locations\" and \"DMV locations\" are all true. Never frame him as running a second restaurant or multiple distinct restaurants. Never invent operator data, cohort sizes, percentages, or restaurants he does not run.",
+      "source": "CLAUDE.md:49",
+      "anchor": "one restaurant brand, two locations",
+      "why": "The May-2026 fabrication incident. If a bio drift slips the gate, the audio renderer speaks it aloud.",
+      "enforcedBy": "gate:scripts/check-fabrications.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-QUEUE-FIRST",
+      "priority": 0,
+      "scope": [
+        "**"
+      ],
+      "text": "Read the queue before starting new work: `node scripts/check-queue.mjs`. Open work lives in `data/queue.json` and nowhere else (ADR-024). Claim with `--claim Q-0NN --by \"session:$ID\"`; close with `--done`, which runs the item's own verify command and refuses to write a closure unless it exits 0. Do not invent work while a HIGH item is unclaimed, and do not add a to-do list to any document.",
+      "source": "CLAUDE.md:29",
+      "anchor": "THE QUEUE",
+      "why": "Prior audits closed at 26% and zero closures in company history came from anyone working a list. Only an agent session produces work, and none had ever been pointed at a backlog.",
+      "enforcedBy": "gate:scripts/check-queue.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-ROOT-LIST",
+      "priority": 0,
+      "scope": [
+        "**"
+      ],
+      "text": "A scanner is only as good as its root list. Any script that scans the site walks EVERYTHING and carries an explicit skip list where every entry states why that root is not reader-facing prose. Narrow scope is fine when it is the subject; SILENT scope is not. When widening a scan explodes the finding count, fix the cause rather than tolerating the noise.",
+      "source": "CLAUDE.md:55",
+      "anchor": "declare roots, justify omissions",
+      "why": "Learned three times on 2026-07-28, each time by shipping the bug first — including a glossary link-graph that froze 4 pages a live page still linked.",
+      "enforcedBy": "none",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-NEVER-WIRE-RED",
+      "priority": 0,
+      "scope": [
+        "**"
+      ],
+      "text": "`scripts/check-all.mjs` runs inside the Cloudflare deploy (`wrangler.jsonc` build.command), so a failing gate blocks the deploy. NEVER wire a currently-failing gate. Fix the violations first, then wire it, then delete its `UNWIRED` entry. A new `check-*.mjs` is either wired into check-all or listed in `check-gate-coverage.mjs`'s UNWIRED registry with a date, its current pass/fail status, and a reason. There is no third state.",
+      "source": "CLAUDE.md:53",
+      "anchor": "never wire a gate that is currently failing",
+      "why": "A red that is normal is a red nobody reads. The founder has already merged a PR 'with three reds accepted'.",
+      "enforcedBy": "gate:scripts/check-gate-coverage.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-SLUGS-FINAL",
+      "priority": 0,
+      "scope": [
+        "**"
+      ],
+      "text": "Slugs are final-forever. Renaming a published path breaks deep links, external citations and AI-Overview rotation. To revise content, rewrite in place and bump `dateModified`. This extends to rule ids, queue ids and ADR numbers: rename nothing that something else may already cite.",
+      "source": "CLAUDE.md:107",
+      "anchor": "Slugs are final-forever",
+      "why": "The `cost-index-week-` slug family survives a cadence change to monthly purely because of this rule.",
+      "enforcedBy": "none",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-ADR",
+      "priority": 0,
+      "scope": [
+        "**"
+      ],
+      "text": "Record every non-trivial decision as an ADR under `docs/editorial/decisions/ADR-NNN-*.md` (context -> decision -> consequences). ADRs are decisions of record and survive every retirement. Before proposing a change, check whether an ADR already decided it — `data/../docs/handoff/bones/prior-decisions.json` holds 178 compiled decisions with measured status.",
+      "source": "CLAUDE.md:34",
+      "anchor": "Architecture Decision Records",
+      "why": "Four ADR numbers were duplicated (010/011/012/013 each used twice) because nobody checked before writing.",
+      "enforcedBy": "none",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-RETIRE-ONE",
+      "priority": 0,
+      "scope": [
+        "**"
+      ],
+      "text": "Every new mechanism is a new obligation in a company already 2-4x over capacity. If you add a gate, a script, a manifest, a cron or a document, state in the same commit what it RETIRES. A queue item of kind `mechanism` requires a non-empty `retires` array. Net obligation must not rise.",
+      "source": "data/queue.json#policy.oneInOneOut",
+      "anchor": "oneInOneOut",
+      "why": "90 -> 320 gates in 33 days, ~70 runbooks, 239 docs, 1,504 board lines, and nothing has ever been retired.",
+      "enforcedBy": "gate:scripts/check-queue.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-ARTICLE-FIGURES",
+      "priority": 1,
+      "scope": [
+        "library/**",
+        "blog/**",
+        "es/library/**",
+        "es/blog/**"
+      ],
+      "text": "Every article carries >=2 content figures in >=2 distinct viz-* families. Every content figure carries `data-audio-alt` of >=80 characters (full narration, not alt text), a `<figcaption>` with a one-sentence takeaway, and a `<details class=\"cite\">` drawer when the data is sourced.",
+      "source": "CLAUDE.md:64",
+      "anchor": "9 rules per article",
+      "why": null,
+      "enforcedBy": "gate:scripts/check-article-graphics.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-VIZ-SIGNED",
+      "priority": 1,
+      "scope": [
+        "library/**",
+        "blog/**",
+        "es/library/**",
+        "es/blog/**",
+        "cost-index/**",
+        "es/cost-index/**"
+      ],
+      "text": "Signed data may not ride a one-directional `viz-bars`. Labels mixing + and - must use `viz-diverge`, where length is magnitude and SIDE is direction. Detection keys on the numeric labels, never `data-tone` — ~60 figures legitimately use rust/teal for pass/fail categories over all-positive values.",
+      "source": "CLAUDE.md:77",
+      "anchor": "Same-sign values only",
+      "why": null,
+      "enforcedBy": "gate:scripts/check-article-graphics.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-AUTOLINK-ATTR",
+      "priority": 1,
+      "scope": [
+        "library/**",
+        "blog/**",
+        "es/library/**",
+        "es/blog/**"
+      ],
+      "text": "Never copy body text — including `<!-- LIBRARY:autolink:start -->` markers — into `data-audio-alt` or any other attribute value. Autolink sentinels inside an attribute are file corruption, not decoration.",
+      "source": "CLAUDE.md:110",
+      "anchor": "must NOT live inside attribute values",
+      "why": null,
+      "enforcedBy": "gate:scripts/check-article-graphics.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-BYLINE",
+      "priority": 1,
+      "scope": [
+        "library/**",
+        "blog/**",
+        "es/library/**",
+        "es/blog/**"
+      ],
+      "text": "Library articles ship under **The Muntin Desk** (JSON-LD `author` still references Don Goldstein); first-person \"I\" only when naming personal operator practice. Blog dispatches ship under **Don Goldstein**, where first-person \"I\" is the narrator's seat. The site-wide voice contract at `/methods/index.html#voice-contract` governs, including the banned-words list and the POV-by-page-type table. The banned-words half is gated by `scripts/check-banned-words.mjs`; the byline half has no detector.",
+      "source": "CLAUDE.md:44",
+      "anchor": "The Muntin Desk",
+      "why": null,
+      "enforcedBy": "none",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-POSITIONING",
+      "priority": 1,
+      "scope": [
+        "**/*.html"
+      ],
+      "text": "This is a cost-intelligence company. Any INDEXED page whose prose carries >=3 retired-line web-design phrases must be frozen (`noindex, follow`) or listed in `check-positioning-drift.mjs`'s ALLOW with a dated reason. The gate does not auto-classify; it guarantees the judgement is made and written down.",
+      "source": "CLAUDE.md:59",
+      "anchor": "must be frozen",
+      "why": "The gate written to catch retired-line content originally scanned only library/blog and so could not see /learn/start-here/, the worst offender on the site.",
+      "enforcedBy": "gate:scripts/check-positioning-drift.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-DISPOSITION",
+      "priority": 1,
+      "scope": [
+        "**/index.html",
+        "**/*.html"
+      ],
+      "text": "Before adding a page or reinvesting in one, read its record in `data/surface-disposition.json` (ADR-025). Every routable page is `keep`, `freeze`, `freeze-noindex`, `merge` or `delete`. The storefront's job is QUALIFICATION, not traffic — its measure is qualified applications, never sessions. Freezing is the default and deletion is the exception, because a URL costs nothing and its inbound links are real; what costs is maintenance.",
+      "source": "CLAUDE.md:35",
+      "anchor": "what every page is FOR",
+      "why": null,
+      "enforcedBy": "gate:scripts/check-surface-disposition.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-GATE-REGISTRY",
+      "priority": 1,
+      "scope": [
+        "scripts/check-*.mjs"
+      ],
+      "text": "A new `check-*.mjs` is wired into `check-all.mjs` in the same commit, or listed in `check-gate-coverage.mjs`'s `UNWIRED` registry with a date, its measured pass/fail status today, and a reason. Being unwired is a legitimate outcome; being unwired ACCIDENTALLY is not.",
+      "source": "CLAUDE.md:61",
+      "anchor": "There is no third state",
+      "why": "A gate nobody runs is the appearance of protection, not protection. An audit found 5 of 38 running nowhere in the product repo, among them the funnel-PII and view-RLS gates.",
+      "enforcedBy": "gate:scripts/check-gate-coverage.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-IDEM-REGISTRY",
+      "priority": 1,
+      "scope": [
+        "scripts/build-*.mjs",
+        "scripts/inject-*.mjs"
+      ],
+      "text": "Every `(idem)` builder that `check-all` `--check`s must be run by the deploy, run by a named workflow, or listed in `check-idem-coverage.mjs`'s `MANUAL` registry with WHO runs it and WHEN it drifts. A builder verified by the gate but re-run by nothing turns drift into a red deploy no automation can clear.",
+      "source": "CLAUDE.md:57",
+      "anchor": "Idem coverage",
+      "why": "PR #530 deleted 13 course builders and staleManual failed until the registry caught up — the gate demanded its own cleanup.",
+      "enforcedBy": "gate:scripts/check-idem-coverage.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-BASIS",
+      "priority": 1,
+      "scope": [
+        "cost-index/**",
+        "es/cost-index/**",
+        "data/cost-index*.json",
+        "scripts/build-cost-index*.mjs"
+      ],
+      "text": "Basis is a property of an OBSERVATION, not of an ingredient (ADR-023). Never publish an index value in a field whose unit is dollars. Every rendered observation carries the basis it was measured in, and a page that cannot state the basis withholds the number.",
+      "source": "docs/editorial/decisions/ADR-023-basis-is-a-property-of-an-observation.md",
+      "anchor": "basis",
+      "why": "LIVE FALSEHOOD verified 2026-08-07: cost-index/feed.json publishes ground-beef at priceUsd 393.06 source 'bls' (a BLS index value as dollars per pound) while cost-index/index.json publishes $5.51/lb for the same slug — 71x apart. check-cost-index-basis-leak.mjs PASSES and names feed.json as covered, because it cross-references at the INGREDIENT level and never at the observation rendered.",
+      "enforcedBy": "gate:scripts/check-cost-index-basis-leak.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-COST-HONESTY",
+      "priority": 1,
+      "scope": [
+        "blog/cost-index-week-*/**",
+        "cost-index/**",
+        "es/cost-index/**",
+        "data/cost-index*.json"
+      ],
+      "text": "The honesty contract is inviolable: public wholesale levels are never delivered price. Publish a read vs each ingredient's own baseline window, not week-over-week, unless the archive backs it. Honest week-over-week is computed ONLY across commensurable editions (same weights, refreshed anchor) and is WITHHELD with a stated reason across a re-anchor or re-weight. Reconstructed seed editions never anchor a per-ingredient WoW.",
+      "source": "CLAUDE.md:97",
+      "anchor": "The honesty contract is inviolable",
+      "why": null,
+      "enforcedBy": "gate:scripts/check-cost-index-sync.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-DRIVERS",
+      "priority": 1,
+      "scope": [
+        "data/cost-index-drivers.json",
+        "blog/cost-index-week-*/**"
+      ],
+      "text": "Drivers are standing, public-sourced correlations — never invented dated events. Attach one to a flagged mover only when its measured direction agrees with `directionExpected`. Every line reads as association, not a measured cause. Never a magnitude, never a causation claim, never a forecast.",
+      "source": "CLAUDE.md:100",
+      "anchor": "never invented dated events",
+      "why": null,
+      "enforcedBy": "gate:scripts/check-cost-index-drivers.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-DISPATCH-CADENCE",
+      "priority": 1,
+      "scope": [
+        "blog/cost-index-week-*/**",
+        ".github/workflows/cost-index-*.yml",
+        "scripts/build-cost-index-dispatch.mjs"
+      ],
+      "text": "The dispatch is MONTHLY and HAND-WRITTEN (founder call 2026-07-09; the workflow header is the source of truth). No cron generates or publishes a post. DO NOT ADD A PUBLISH CRON — its absence is a decision, not an oversight. `check-cost-index-dispatch-fresh.mjs` reding CI at 38 days IS the intended reminder: the machine reminds, humans write. A red there means \"write this month's edition\", never \"automate this\".",
+      "source": "CLAUDE.md:95",
+      "anchor": "Do not add a publish cron",
+      "why": null,
+      "enforcedBy": "gate:scripts/check-cost-index-dispatch-fresh.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-EDITORS-NOTE",
+      "priority": 2,
+      "scope": [
+        "data/cost-index-editors-notes.json"
+      ],
+      "text": "The \"From the floor — Don Goldstein\" block is optional and ABSENT BY DEFAULT. It may not add a number, an ingredient or a forecast; every number in it must trace to the edition snapshot or `sourced-claims.json`.",
+      "source": "CLAUDE.md:101",
+      "anchor": "absent by default",
+      "why": null,
+      "enforcedBy": "gate:scripts/check-cost-index-editors-note.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-AUDIO-VERBATIM",
+      "priority": 1,
+      "scope": [
+        "**/audio.json",
+        "**/audio.{en,es,fr,it,pt,zh}.json",
+        "data/article-audio.json"
+      ],
+      "text": "Audio script `text` is read aloud VERBATIM. It is subject to the same fact gate as prose, per spoken language, and a translation must not speak a number absent from the source article. NO NEW AUDIO WORK: the pipeline is retired for new articles by the 2026-08-07 verdict — maintain existing tracks, render nothing new.",
+      "source": "CLAUDE.md:91",
+      "anchor": "read aloud verbatim",
+      "why": "A fabrication that slips the prose gate gets spoken aloud in six languages.",
+      "enforcedBy": "gate:scripts/check-audio-fabrications.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-COUNT-SENTINEL",
+      "priority": 2,
+      "scope": [
+        "**/*.html",
+        "_includes/**",
+        "data/site-counts.json"
+      ],
+      "text": "Counts in page copy are never typed. Use `<!-- count:KEY -->N<!-- /count -->` sentinels; the source of truth is `data/site-counts.json`, built by `build-site-counts.mjs` and injected by `inject-site-counts.mjs`. An unknown key fails the build loudly rather than shipping a blank.",
+      "source": "CLAUDE.md:68",
+      "anchor": "count:KEY",
+      "why": null,
+      "enforcedBy": "gate:scripts/inject-site-counts.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-CONTRACT-FACTS",
+      "priority": 1,
+      "scope": [
+        "CLAUDE.md",
+        "docs/contracts/**",
+        "scripts/build-contract-facts.mjs"
+      ],
+      "text": "Factual claims about this repo's own size — script counts, page counts, gate counts, builder counts — are COMPILED, never typed. Write them as `<!-- fact:KEY -->N<!-- /fact -->` sentinels and add the key to `scripts/build-contract-facts.mjs`. Do not state a branch name as \"the current branch\" in any committed file; write the command instead.",
+      "source": "docs/editorial/decisions/ADR-027-the-contract-loads-through-the-hook.md",
+      "anchor": "compiled",
+      "why": "CLAUDE.md said '~70' scripts against 390 on disk (5.6x), cited '1428 pages' against 1,327 measured, and contradicted itself inside one bullet ('96 (idem) builders' then '83'). A file that publishes wrong numbers cannot be the enforcement instrument for a fact gate.",
+      "enforcedBy": "gate:scripts/build-contract-facts.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-WORKING-SET",
+      "priority": 1,
+      "scope": [
+        "docs/**",
+        "CLAUDE.md"
+      ],
+      "text": "The working set — the documents a session is told to read — has a declared line budget in `docs/contracts/working-set.json`. Adding to it requires retiring from it in the same commit. Prefer ARCHIVE (move under `docs/archive/`, retrievable, out of the working set) to DELETE. ADRs are decisions of record and are never retired. Logs need not survive: git already holds them.",
+      "source": "docs/editorial/decisions/ADR-028-the-working-set-budget.md",
+      "anchor": "working set",
+      "why": "The board was compacted to 252 lines on 2026-07-17 and regrew to 1,504 within fourteen days across three further manual compactions. Decay implemented as a chore loses to write pressure 3 out of 3 times measured.",
+      "enforcedBy": "gate:scripts/check-working-set.mjs",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-NO-PACKAGE-JSON",
+      "priority": 2,
+      "scope": [
+        "package.json",
+        "package-lock.json"
+      ],
+      "text": "`package.json` is gitignored by convention. Contributors maintain their own for npm-dependent scripts. Do not commit it, and do not add an npm dependency to a build or check script — everything under `scripts/` runs on stock Node.",
+      "source": "CLAUDE.md:111",
+      "anchor": "gitignored by convention",
+      "why": null,
+      "enforcedBy": "none",
+      "addedOn": "2026-08-07",
+      "status": "active"
+    },
+    {
+      "id": "SF-ES-PARITY",
+      "priority": 2,
+      "scope": [
+        "es/**",
+        "data/i18n-slug-map.json"
+      ],
+      "text": "RETIRED 2026-08-07 by the phase-D verdict: site-wide EN<->ES parity is no longer a ratchet. Existing ES surfaces stay and stay correct; new work does not owe a Spanish mirror. `check-locale-parity.mjs` remains for the pages already paired.",
+      "source": "CLAUDE.md:66",
+      "anchor": "Locale parity",
+      "why": "Killed as an obligation by the 2026-08-07 verdict. Kept in the registry as the record of a retirement, per SF-SLUGS-FINAL.",
+      "enforcedBy": "gate:scripts/check-locale-parity.mjs",
+      "addedOn": "2026-08-07",
+      "status": "retired"
+    }
+  ]
+}

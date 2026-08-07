@@ -163,6 +163,63 @@ export function unclaimedHigh(items, staleClaimDays, now) {
   return actionable(items, staleClaimDays, now).filter((i) => i.priority === 'HIGH');
 }
 
+// ── the founder budget ───────────────────────────────────────────────────────
+//
+// The failure mode this whole engagement diagnosed is a plan that exceeds
+// capacity. ~53 founder-hours/month of standing obligation against 13-26
+// available, at a measured ~10% payment rate, is not a scheduling problem — it
+// is arithmetic. So the budget is computed from DECLARED numbers on each item
+// (`founderHours`, `window`), never parsed out of the `effort` prose, and the
+// review overhead nobody prices is added to every window so it cannot be
+// gamed by omission.
+
+/** Founder hours per window, including the standing review overhead. */
+export function budget(queue) {
+  const cap = queue.capacity || {};
+  const windows = Object.keys(cap.windows || {});
+  const overhead = (cap.reviewOverheadPerMonth && cap.reviewOverheadPerMonth.hours) || 0;
+  const floor = (cap.founderHoursPerMonth && cap.founderHoursPerMonth.floor) || 0;
+  const ceiling = (cap.founderHoursPerMonth && cap.founderHoursPerMonth.ceiling) || 0;
+  const rows = windows.map((w) => {
+    const items = queue.items.filter((i) => i.window === w);
+    const itemHours = items.reduce((s, i) => s + (Number(i.founderHours) || 0), 0);
+    const total = itemHours + overhead;
+    return {
+      window: w,
+      label: (cap.windows[w] || {}).label || w,
+      itemHours: Math.round(itemHours * 100) / 100,
+      overhead,
+      total: Math.round(total * 100) / 100,
+      floor,
+      ceiling,
+      // over the CEILING is a fail: the plan does not fit on his best month.
+      // over the FLOOR is a warning: it fits only if the month goes well.
+      verdict: total > ceiling ? 'over-ceiling' : total > floor ? 'over-floor' : 'fits',
+      items: items.filter((i) => (Number(i.founderHours) || 0) > 0).map((i) => i.id),
+    };
+  });
+  const unwindowed = queue.items.filter((i) => !i.window && (Number(i.founderHours) || 0) > 0);
+  return { rows, unwindowed: unwindowed.map((i) => i.id), overhead, floor, ceiling };
+}
+
+// ── the falsifier ────────────────────────────────────────────────────────────
+//
+// A plan with no falsifier is a wish. A falsifier nobody is forced to read is
+// the same wish with extra steps — which is how the warrant canary reached 89
+// days. So a checkpoint whose date has passed with no recorded result reds the
+// gate, and no amount of closed items clears it.
+
+export function checkpointStatus(cp, now) {
+  if (cp.result) return 'recorded';
+  const due = Date.parse(cp.dueOn + 'T00:00:00Z');
+  if (!Number.isFinite(due)) return 'malformed';
+  return now >= due ? 'overdue' : 'pending';
+}
+
+export function overdueCheckpoints(queue, now) {
+  return (queue.checkpoints || []).filter((c) => checkpointStatus(c, now) === 'overdue');
+}
+
 /**
  * Structural validation. A malformed queue is worse than no queue: it is a
  * tracking surface that silently drops work.
@@ -184,6 +241,17 @@ export function validate(queue) {
     if (!it.verify || !it.verify.cmd) at('every item needs a verify.cmd — done is proven, not claimed');
     if (it.verify && !['storefront', 'product'].includes(it.verify.cwd)) at('verify.cwd must be storefront|product');
     if (!Array.isArray(it.blockedBy)) at('blockedBy must be an array (empty is fine)');
+    // The budget is summed from declared numbers, never parsed out of prose.
+    if (typeof it.founderHours !== 'number' || !(it.founderHours >= 0)) {
+      at('founderHours must be a number (0 for pure-agent work) — the budget is declared, not inferred');
+    }
+    if (it.founderHours > 0 && it.owner === 'agent') {
+      at('an item with founderHours > 0 cannot be owner:agent');
+    }
+    if (it.window && !['M1', 'M2', 'M3', 'later'].includes(it.window)) {
+      at('window must be M1|M2|M3|later');
+    }
+    if (it.founderHours > 0 && !it.window) at('a founder-costing item must sit in a window, or it is unbudgeted');
     if (!Array.isArray(it.evidence) || !it.evidence.length) at('every item cites evidence — file:line, a command, or a source');
     if (it.owner !== 'agent' && !it.founderOnly && it.kind !== 'retire' && it.kind !== 'mechanism') {
       at('a founder-owned item must say what only the founder can do (founderOnly)');
@@ -199,6 +267,26 @@ export function validate(queue) {
     for (const b of it.blockedBy || []) {
       if (!ids.has(b)) errs.push(`${it.id}: blockedBy references unknown item ${b}`);
     }
+  }
+  // Checkpoints: a falsifier that cannot be evaluated is decoration.
+  const allowed = (queue.checkpointPolicy && queue.checkpointPolicy.results) || ['proceed', 'amend', 'kill'];
+  for (const cp of queue.checkpoints || []) {
+    const at = (m) => errs.push(`${cp.id || '<no id>'}: ${m}`);
+    if (!cp.id || !/^CP-\d{2}$/.test(cp.id)) at('id must match CP-NN');
+    if (!/^20\d\d-\d\d-\d\d$/.test(cp.dueOn || '')) at('dueOn must be an ISO date');
+    if (!Array.isArray(cp.mustBeTrue) || !cp.mustBeTrue.length) at('a checkpoint states what must be true');
+    for (const m of cp.mustBeTrue || []) {
+      if (!m.claim || !m.verify || !m.verify.cmd) at('every mustBeTrue needs a claim and a verify.cmd');
+    }
+    if (!Array.isArray(cp.killIf) || !cp.killIf.length) {
+      at('a checkpoint with no killIf is a milestone, not a falsifier — a bet you cannot kill is a bet you cannot learn from');
+    }
+    for (const k of cp.killIf || []) {
+      if (!k.test || !k.then) at('every killIf needs a `test` and a `then` that says what stops');
+      if (!['founder', 'measurement'].includes(k.decidedBy)) at('killIf.decidedBy must be founder|measurement');
+    }
+    if (cp.result && !allowed.includes(cp.result)) at(`result must be one of ${allowed.join('|')}`);
+    if (cp.result && !cp.recordedAt) at('a recorded result must carry recordedAt');
   }
   return errs;
 }
@@ -281,14 +369,120 @@ export function render(queue, now) {
   const counts = STATUSES.map((s) => `${by(s).length} ${s}`).join(' · ');
   L.push(`**Board:** ${items.length} items — ${counts}.`);
   L.push('');
-  const founderItems = items.filter((i) => i.owner !== 'agent' && isOpen(i));
+  // ONE founder item at a time. Nine founder items delivered as a list is the
+  // same artifact shape that closed at 26%; one item with a receipt is not.
+  const founderItems = items
+    .filter((i) => i.owner !== 'agent' && isOpen(i))
+    .sort((a, b) => {
+      const [ap, aph, aid] = rank(a);
+      const [bp, bph, bid] = rank(b);
+      const aw = ['M1', 'M2', 'M3', 'later'].indexOf(a.window || 'later');
+      const bw = ['M1', 'M2', 'M3', 'later'].indexOf(b.window || 'later');
+      return aw - bw || ap - bp || aph - bph || (aid < bid ? -1 : aid > bid ? 1 : 0);
+    });
+  const founderReady = founderItems.filter(
+    (i) => effectiveStatus(i, items, d, now) === 'ready',
+  );
   if (founderItems.length) {
-    L.push(`**Needs Don (${founderItems.length}):** ` + founderItems.map((i) => `\`${i.id}\``).join(', ') + '.');
-    L.push('These do not move without a signature, a conversation, a credential or a judgment.');
+    const one = founderReady[0] || founderItems[0];
+    L.push(`### Needs Don — do this one`);
+    L.push('');
+    L.push(`**\`${one.id}\` — ${one.title}**`);
+    L.push('');
+    L.push(`> ${one.founderOnly || 'Founder-owned.'}`);
+    L.push('');
+    L.push(`_${one.founderHours}h · window ${one.window || 'unscheduled'} · ${effectiveStatus(one, items, d, now)}._`);
+    L.push('');
+    L.push(
+      `${founderItems.length - 1} other founder item(s) exist and are deliberately not listed here. ` +
+        'They are in the Founder ledger below. A list of nine things needing a signature is the ' +
+        'artifact shape that closed at 26%; one thing with a receipt is not.',
+    );
     L.push('');
   }
   L.push('---');
   L.push('');
+
+  // ── the founder budget ─────────────────────────────────────────────────────
+  if (queue.capacity) {
+    const b = budget(queue);
+    L.push('## The founder ledger');
+    L.push('');
+    L.push(
+      `Capacity is **${b.floor}-${b.ceiling} founder-hours/month** ` +
+        `(${queue.capacity.founderHoursPerMonth.source}). ` +
+        `Every window carries **${b.overhead}h** of review and deploy overhead that no item prices.`,
+    );
+    L.push('');
+    L.push('| Window | What it is | Item hours | + overhead | Total | vs capacity |');
+    L.push('|---|---|---|---|---|---|');
+    for (const r of b.rows) {
+      const mark = r.verdict === 'over-ceiling' ? '**OVER CEILING**' : r.verdict === 'over-floor' ? `over the ${r.floor}h floor` : 'fits the floor';
+      L.push(`| \`${r.window}\` | ${fence(r.label)} | ${r.itemHours}h | ${r.overhead}h | **${r.total}h** | ${mark} |`);
+    }
+    L.push('');
+    L.push(
+      `**Standing obligations: ${queue.capacity.standingObligationsPerMonth.hours}h/month — ` +
+        `${queue.capacity.standingObligationsPerMonth.status}**`,
+    );
+    L.push('');
+    L.push(`> ${queue.capacity.realizedRate.consequence} Measured payment rate: **${Math.round(queue.capacity.realizedRate.value * 100)}%** (${queue.capacity.realizedRate.source})`);
+    L.push('');
+    L.push('**What was cut to make this fit**');
+    L.push('');
+    for (const c of queue.capacity.cuts) L.push(`- ${c}`);
+    L.push('');
+    if (queue.capacity.floorPlan) {
+      const fp = queue.capacity.floorPlan;
+      L.push('**If only the floor arrives — the drop order, decided in advance**');
+      L.push('');
+      L.push(fp.why);
+      L.push('');
+      L.push('| Drop | Running total |');
+      L.push('|---|---|');
+      for (const d of fp.dropOrderToReach13h) L.push(`| ${fence(d.drop)} | ${d.runningTotal}h |`);
+      L.push('');
+      L.push('**Never dropped**');
+      L.push('');
+      for (const n of fp.whatIsNeverDropped) L.push(`- ${n}`);
+      L.push('');
+    }
+    L.push('---');
+    L.push('');
+  }
+
+  // ── the falsifiers ─────────────────────────────────────────────────────────
+  if ((queue.checkpoints || []).length) {
+    L.push('## Checkpoints — what would mean this is wrong');
+    L.push('');
+    L.push(`> ${queue.checkpointPolicy.rule}`);
+    L.push('');
+    for (const cp of queue.checkpoints) {
+      const st = checkpointStatus(cp, now);
+      L.push(`### \`${cp.id}\` — ${cp.label}`);
+      L.push('');
+      L.push(`**Due ${cp.dueOn}** · ${st}${cp.result ? ` · result **${cp.result}**` : ''}`);
+      L.push('');
+      L.push(`_${cp.question}_`);
+      L.push('');
+      L.push('**Must be true**');
+      L.push('');
+      for (const m of cp.mustBeTrue) L.push(`- ${m.claim}`);
+      L.push('');
+      L.push('**Kill criteria — if any of these is true, the strategy is wrong here and stops**');
+      L.push('');
+      for (const k of cp.killIf) {
+        L.push(`- **If \`${fence(k.test)}\`** _(${k.decidedBy})_ — ${k.then}`);
+      }
+      L.push('');
+      if (cp.note) {
+        L.push(`_Recorded ${cp.recordedAt}: ${cp.note}_`);
+        L.push('');
+      }
+    }
+    L.push('---');
+    L.push('');
+  }
 
   const section = (heading, list, note) => {
     L.push(`## ${heading} (${list.length})`);
@@ -538,8 +732,17 @@ function cmdVerify(q, argv, now) {
 }
 
 function cmdHeartbeat(q, now) {
-  const hb = path.join(REPO, q.policy.heartbeatFile);
+  const hb = path.resolve(REPO, q.policy.heartbeatFile);
   const max = q.policy.heartbeatMaxAgeDays;
+  // The consumer lives in the PRIVATE product repo. If it is not checked out beside us we
+  // cannot see the heartbeat — and "cannot see" is not "alive". Fail, do not shrug.
+  if (!fs.existsSync(path.dirname(hb))) {
+    console.error(
+      `check-queue --heartbeat: ${path.dirname(hb)} is not checked out, so the consumer's liveness cannot be observed from here.\n` +
+        `  Unverifiable is not verified. Re-run where both repos are present.`,
+    );
+    process.exit(1);
+  }
   if (!fs.existsSync(hb)) {
     console.error(
       `check-queue --heartbeat: ${q.policy.heartbeatFile} does not exist. The cron consumer has never run.\n` +
@@ -653,13 +856,69 @@ function cmdGrepAbsent(argv) {
   process.exit(0);
 }
 
+function cmdBudget(q) {
+  const b = budget(q);
+  const lines = [];
+  lines.push(`founder capacity: ${b.floor}-${b.ceiling} h/month · overhead counted every window: ${b.overhead}h`);
+  let over = 0;
+  for (const r of b.rows) {
+    if (r.verdict === 'over-ceiling') over++;
+    const tag = r.verdict === 'over-ceiling' ? '✗ OVER CEILING' : r.verdict === 'over-floor' ? '⚠ over floor' : '✓ fits floor';
+    lines.push(`  ${r.window}  ${String(r.total).padStart(6)}h  ${tag}  — ${r.label}`);
+    lines.push(`         items: ${r.items.join(', ') || '—'}`);
+  }
+  if (b.unwindowed.length) {
+    lines.push(`✗ unbudgeted founder work (no window): ${b.unwindowed.join(', ')}`);
+  }
+  console.log(lines.join('\n'));
+  if (over || b.unwindowed.length) {
+    console.error(
+      '\ncheck-queue --budget: the plan exceeds the founder ceiling. Cut something and record the cut in\n' +
+        '  data/queue.json#capacity.cuts. A plan that exceeds capacity is the failure mode this company measured.',
+    );
+    process.exit(1);
+  }
+  process.exit(0);
+}
+
+function cmdCheckpoints(q, now, exitOnClean = true) {
+  const late = overdueCheckpoints(q, now);
+  for (const cp of q.checkpoints || []) {
+    const st = checkpointStatus(cp, now);
+    console.log(`${cp.id}  due ${cp.dueOn}  ${st}${cp.result ? ` → ${cp.result}` : ''}  — ${cp.label}`);
+  }
+  if (late.length) {
+    console.error(
+      `\ncheck-queue --checkpoints: ${late.length} checkpoint(s) are past due with no recorded result.\n` +
+        late
+          .map(
+            (c) =>
+              `  ${c.id} (due ${c.dueOn}) — ${c.question}\n` +
+              `    record one of ${(q.checkpointPolicy.results || []).join(' | ')} in data/queue.json, with recordedAt and a note.\n` +
+              `    kill criteria:\n` +
+              c.killIf.map((k) => `      - if ${k.test} → ${k.then.split('.')[0]}.`).join('\n'),
+          )
+          .join('\n'),
+    );
+    process.exit(1);
+  }
+  if (exitOnClean) process.exit(0);
+  return 0;
+}
+
 function cmdBrief(q, now) {
   // Session-start view. NEVER exits non-zero: a hook that breaks the session
   // gets deleted, and a deleted hook points nobody at anything.
   const d = q.policy.staleClaimDays;
   const top = topItem(q.items, d, now);
   const highs = unclaimedHigh(q.items, d, now);
-  const openFounder = q.items.filter((i) => i.owner !== 'agent' && isOpen(i)).length;
+  const openFounderItems = q.items.filter((i) => i.owner !== 'agent' && isOpen(i));
+  const openFounder = openFounderItems.length;
+  const nextFounder =
+    openFounderItems
+      .filter((i) => effectiveStatus(i, q.items, d, now) === 'ready')
+      .sort((a, b) => ['M1', 'M2', 'M3', 'later'].indexOf(a.window || 'later') - ['M1', 'M2', 'M3', 'later'].indexOf(b.window || 'later'))[0] || null;
+  const lateCps = overdueCheckpoints(q, now);
   const lines = [];
   lines.push('── MUNTIN QUEUE ──────────────────────────────────────────────');
   lines.push(`Strategy of record: ${q.strategy.ofRecord}`);
@@ -678,6 +937,16 @@ function cmdBrief(q, now) {
     lines.push('');
     lines.push(`      claim it:  node scripts/check-queue.mjs --claim ${top.id} --by "session:$SESSION"`);
     lines.push(`      close it:  node scripts/check-queue.mjs --done  ${top.id} --by "session:$SESSION"`);
+  }
+  if (lateCps.length) {
+    lines.push('');
+    lines.push(`CHECKPOINT PAST DUE: ${lateCps.map((c) => `${c.id} (due ${c.dueOn})`).join(', ')}`);
+    lines.push('      Nothing else clears this. Record proceed | amend | kill in data/queue.json#checkpoints.');
+  }
+  if (nextFounder) {
+    lines.push('');
+    lines.push(`NEEDS DON (one, not a list): ${nextFounder.id} — ${nextFounder.title}`);
+    lines.push(`      ${nextFounder.founderHours}h · ${nextFounder.window || 'unscheduled'} · ${nextFounder.founderOnly || ''}`);
   }
   lines.push('');
   lines.push(
@@ -711,6 +980,7 @@ function selfTest() {
     blockedBy: [],
     claim: null,
     closed: null,
+    founderHours: 0,
     ...o,
   });
 
@@ -775,6 +1045,62 @@ function selfTest() {
   eq(v([mk({ closed: { at: 'x', by: 'y' } })]).length > 0, true, 'a closure with no proof command is rejected');
   eq(v([mk({ blockedBy: ['Q-404'] })]).length > 0, true, 'a dangling blocker reference is rejected');
 
+  eq(v([mk({ founderHours: undefined })]).length > 0, true, 'an item with no declared founderHours is rejected');
+  eq(v([mk({ founderHours: 2, owner: 'agent' })]).length > 0, true, 'agent-owned work cannot cost founder hours');
+  eq(
+    v([mk({ founderHours: 2, owner: 'founder', founderOnly: 'a signature' })]).length > 0,
+    true,
+    'founder hours with no window are unbudgeted and rejected',
+  );
+  eq(
+    v([mk({ founderHours: 2, owner: 'founder', founderOnly: 'a signature', window: 'M1' })]).length,
+    0,
+    'founder hours in a window validate',
+  );
+
+  // the budget: declared hours + the overhead nobody prices
+  const cap = {
+    founderHoursPerMonth: { floor: 13, ceiling: 26, source: 's' },
+    reviewOverheadPerMonth: { hours: 2.5 },
+    windows: { M1: { label: 'one' }, M2: { label: 'two' } },
+  };
+  const bq = {
+    capacity: cap,
+    items: [
+      mk({ id: 'Q-001', owner: 'founder', founderOnly: 'x', founderHours: 6, window: 'M1' }),
+      mk({ id: 'Q-002', owner: 'founder', founderOnly: 'x', founderHours: 4, window: 'M1' }),
+      mk({ id: 'Q-003', owner: 'agent', founderHours: 0, window: 'M2' }),
+    ],
+  };
+  const b = budget(bq);
+  eq(b.rows[0].total, 12.5, 'a window totals declared hours plus the unpriced overhead');
+  eq(b.rows[0].verdict, 'fits', '12.5h fits the 13h floor');
+  eq(b.rows[1].total, 2.5, 'a window of pure-agent work still carries the overhead');
+  eq(b.unwindowed, [], 'nothing is unbudgeted here');
+  const bq2 = { capacity: cap, items: [mk({ id: 'Q-001', owner: 'founder', founderOnly: 'x', founderHours: 30, window: 'M1' })] };
+  eq(budget(bq2).rows[0].verdict, 'over-ceiling', '30h in one month exceeds the ceiling and fails');
+  const bq3 = { capacity: cap, items: [mk({ id: 'Q-001', owner: 'founder', founderOnly: 'x', founderHours: 15, window: 'M1' })] };
+  eq(budget(bq3).rows[0].verdict, 'over-floor', 'above the floor and below the ceiling is a warning, not a failure');
+
+  // the falsifier
+  const cpOpen = { id: 'CP-30', dueOn: '2026-09-06', result: null };
+  const cpLate = { id: 'CP-30', dueOn: '2026-08-01', result: null };
+  const cpDone = { id: 'CP-30', dueOn: '2026-08-01', result: 'proceed', recordedAt: '2026-08-02' };
+  eq(checkpointStatus(cpOpen, NOW), 'pending', 'a future checkpoint is pending');
+  eq(checkpointStatus(cpLate, NOW), 'overdue', 'a passed date with no result is overdue');
+  eq(checkpointStatus(cpDone, NOW), 'recorded', 'a recorded result clears it');
+  eq(
+    overdueCheckpoints({ checkpoints: [cpOpen, cpLate, cpDone] }, NOW).map((c) => c.dueOn),
+    ['2026-08-01'],
+    'only the unrecorded past-due one reds the gate',
+  );
+  const badCp = {
+    items: [mk({})],
+    policy: { staleClaimDays: 7 },
+    checkpoints: [{ id: 'CP-99', dueOn: '2026-09-06', mustBeTrue: [{ claim: 'c', verify: { cmd: 'true' } }], killIf: [] }],
+  };
+  eq(validate(badCp).length > 0, true, 'a checkpoint with no killIf is rejected — a milestone is not a falsifier');
+
   // reconcile writes the truth back
   const q = { policy: { staleClaimDays: 7 }, items: [mk({ claim: { by: 's', at: '2026-06-01T00:00:00Z' }, status: 'claimed' })] };
   const rec = reconcileStatuses(q, NOW);
@@ -823,6 +1149,8 @@ function main(argv) {
   const now = Date.now();
   const q = readQueue();
 
+  if (argv.includes('--budget')) return cmdBudget(q);
+  if (argv.includes('--checkpoints')) return cmdCheckpoints(q, now);
   if (argv.includes('--grep-absent')) return cmdGrepAbsent(argv);
   if (argv.includes('--attest')) return cmdAttest(q, argv, now);
   if (argv.includes('--retirement')) return cmdRetirement(q, argv);
@@ -880,12 +1208,43 @@ function main(argv) {
     process.exit(highs.length ? 1 : 0);
   }
 
-  if (!highs.length) {
+  // A past-due checkpoint reds the gate on its own. Closed items do not clear
+  // it: the falsifier is the point, and a falsifier nobody must read is how the
+  // warrant canary reached 89 days.
+  const late = overdueCheckpoints(q, now);
+  const over = budget(q).rows.filter((r) => r.verdict === 'over-ceiling');
+
+  if (!highs.length && !late.length && !over.length) {
     console.log(
-      `check-queue: ${q.items.length} item(s), ${openCount} open — 0 unclaimed HIGH.` +
+      `check-queue: ${q.items.length} item(s), ${openCount} open — 0 unclaimed HIGH, 0 checkpoints past due, budget fits.` +
         (top ? ` Next up: ${top.id} — ${top.title} (${top.priority}).` : ' Nothing actionable.'),
     );
     process.exit(0);
+  }
+
+  if (late.length) {
+    console.error(`check-queue: ${late.length} CHECKPOINT(S) PAST DUE with no recorded result.\n`);
+    for (const c of late) {
+      console.error(`  ${c.id} — due ${c.dueOn} — ${c.question}`);
+      for (const k of c.killIf) console.error(`      kill if: ${k.test}`);
+    }
+    console.error('\n  Record proceed | amend | kill in data/queue.json#checkpoints, with recordedAt and a note.');
+    console.error('  A plan with no falsifier is a wish. This is the falsifier.\n');
+  }
+
+  if (over.length) {
+    console.error(
+      `check-queue: ${over.length} window(s) exceed the founder ceiling — ` +
+        over.map((r) => `${r.window} ${r.total}h > ${r.ceiling}h`).join(', ') +
+        '.\n  Cut something and record the cut in data/queue.json#capacity.cuts.\n',
+    );
+  }
+
+  if (!highs.length) {
+    console.error(
+      `check-queue: 0 unclaimed HIGH items, but the gate is red for the reasons above.`,
+    );
+    process.exit(1);
   }
 
   console.error(`check-queue: ${highs.length} HIGH item(s) with nobody's name on them.\n`);

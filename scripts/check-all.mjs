@@ -33,6 +33,14 @@ const CHECKS = [
   // protection. Found 5 such scripts on 2026-07-28, two of them failing.
   ['Gate coverage self-test','check-gate-coverage.mjs','--self-test'],
   ['Gate coverage',       'check-gate-coverage.mjs'],
+  // The third meta-gate, and the newest (ADR-027). Gate coverage asks "is every
+  // check script run?"; idem coverage asks "is every builder re-run?"; this asks
+  // "does the CONTRACT reach the session at all?" — because 1 of 108 agent
+  // transcripts in the 2026-08 engagement carried a CLAUDE.md, and a rule that
+  // loads 1% of the time is not a rule. It verifies both repos' rule registries,
+  // that .claude/hooks/session-start.sh still renders the contract, and that any
+  // committed subagent spawner builds its prompt through contractFor().
+  ['Contract injection', 'check-contract-injection.mjs'],
   // The other half of the same question. Gate coverage asks "is every check
   // script run?"; this asks "is every (idem) builder this file --checks
   // actually re-run by something?". check-all runs at the END of the deploy

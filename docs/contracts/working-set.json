@@ -1,0 +1,613 @@
+{
+  "_doc": "The working set: which documents a session is told to read, which are retrievable on demand, and which have left. Enforced by scripts/check-working-set.mjs. Three states only — working / reference / archive — and an unclassified document fails the gate, the same shape as check-gate-coverage.mjs's wired/UNWIRED/nothing-else.",
+  "_why": "The board was compacted to 252 lines on 2026-07-17 and regrew to 1,504 within fourteen days across three further manual compactions. Decay implemented as a chore loses to write pressure 3 out of 3 times measured. A budget that fails CI does not depend on anyone feeling tidy.",
+  "_states": {
+    "working": "A session is pointed at it unconditionally. Counted against budget.lines. Keep this list SHORT — every line here is read before any work happens.",
+    "reference": "Retrievable on demand and cited by something (a rule's scope, an ADR, a gate). Not read by default, not budgeted. This is where most documents belong.",
+    "archive": "Moved under docs/archive/. Out of the working set; git and the archive both still hold it. Nothing is deleted for being old."
+  },
+  "version": 1,
+  "generated": "2026-08-07",
+  "budget": {
+    "lines": 400,
+    "_linesWhy": "Authored lines only. CLAUDE.md is 117; the rest is headroom for a contract that has to fit in a session's first read. GENERATED working documents (docs/handoff/QUEUE.md) are reported but not budgeted — their length is a function of how much open work exists, and budgeting them would punish the one mechanism in this company that turns a finding into work. Raising this number requires an ADR, because a budget a session can raise is not a budget.",
+    "maxLogRatio": 0.35,
+    "_maxLogRatioWhy": "A working-set document may be at most 35% episodic narration. Logs belong in git log, which holds them better and with diffs. Measured 2026-08-07: the board is 87.8% log by line — this ceiling is what makes that a failure rather than an observation.",
+    "logRatioAllow": {
+      "docs/handoff/QUEUE.md": "Generated from data/queue.json. Its `evidence` and `closed` fields legitimately cite commit SHAs and PR numbers, which the line-level log heuristic counts as narration. Re-render, never hand-edit."
+    }
+  },
+  "defaults": {
+    "docs/editorial/decisions/": {
+      "set": "reference",
+      "why": "ADR — a decision of record (ADR-028 §6). Excluded by RULE, not by enumeration: if writing an ADR redded this gate, people would stop writing ADRs."
+    },
+    "docs/design/decisions/": {
+      "set": "reference",
+      "why": "Design ADR. Decision of record."
+    },
+    "docs/brand/decisions/": {
+      "set": "reference",
+      "why": "Brand ADR. Decision of record."
+    }
+  },
+  "classification": {
+    "CLAUDE.md": {
+      "set": "working",
+      "why": "The contract. Loads in ~1 of 108 agent sessions but is the human entry point and the source `docs/contracts/rules.json` cites."
+    },
+    "docs/DEPLOY-CHECKPOINTS.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/account-delete-cutover.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/audio-pipeline.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/auth-cutover.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/brand/cohesion-scorecard.md": {
+      "set": "reference",
+      "why": "Brand reference. Read when touching brand surfaces."
+    },
+    "docs/brand/cross-repo-seams.md": {
+      "set": "reference",
+      "why": "Brand reference. Read when touching brand surfaces."
+    },
+    "docs/brand/graphic-asset-audit-2026-05.md": {
+      "set": "reference",
+      "why": "Brand reference. Read when touching brand surfaces."
+    },
+    "docs/brand/ground-truth-pack.md": {
+      "set": "reference",
+      "why": "Brand reference. Read when touching brand surfaces."
+    },
+    "docs/brand/loop-charter.md": {
+      "set": "reference",
+      "why": "Brand reference. Read when touching brand surfaces."
+    },
+    "docs/brand/token-spine.md": {
+      "set": "reference",
+      "why": "Brand reference. Read when touching brand surfaces."
+    },
+    "docs/brand/visual-system.md": {
+      "set": "reference",
+      "why": "Brand reference. Read when touching brand surfaces."
+    },
+    "docs/brand/voice-and-naming-architecture.md": {
+      "set": "reference",
+      "why": "Brand reference. Read when touching brand surfaces."
+    },
+    "docs/brand/window-mark-geometry.md": {
+      "set": "reference",
+      "why": "Brand reference. Read when touching brand surfaces."
+    },
+    "docs/cloudflare-pages-setup.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cloudflare-worker-forms.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-adapter-specs.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-audit-2026-06-14.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-confidence-canon.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-confidence-plan.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-connected-run-runbook.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-coverage-expansion.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-depth-roadmap.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-excellence-audit.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-experience-map.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-history-map.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-master-plan.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-methodology-hardening.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-methodology.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-progress.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-promotion-runbook.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-publication-spec.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-refresh-audit.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-runbook.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-seafood-sourcing.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-sourcing-master.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-status.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-ux-plan.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-value-strategy.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-verify-runbook.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-index-wakeup-runbook.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/cost-pressure-runbook.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/course-audio-runbook.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): The /course/ subsystem was torn out 2026-07-28 (CLAUDE.md:9). A runbook for a deleted subsystem is a trap: it reads as current. Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/course-instructional-audit.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): Same — an audit of the retired course. 540 lines about a subsystem that no longer exists. Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/design-system.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/design/craft-scorecard.md": {
+      "set": "reference",
+      "why": "Design-system reference. Read when touching design tokens or layout."
+    },
+    "docs/design/depth-immersion-dream-backlog.md": {
+      "set": "reference",
+      "why": "Design-system reference. Read when touching design tokens or layout."
+    },
+    "docs/design/elevation-dream-backlog.md": {
+      "set": "reference",
+      "why": "Design-system reference. Read when touching design tokens or layout."
+    },
+    "docs/design/ground-truth-pack.md": {
+      "set": "reference",
+      "why": "Design-system reference. Read when touching design tokens or layout."
+    },
+    "docs/design/loop-charter.md": {
+      "set": "reference",
+      "why": "Design-system reference. Read when touching design tokens or layout."
+    },
+    "docs/editorial/furniture-variation-spec.md": {
+      "set": "reference",
+      "why": "Editorial reference and canon detail. Scope-gated by docs/contracts/rules.json (SF-BYLINE, SF-FACT-GATE), not read by default."
+    },
+    "docs/editorial/ground-truth-pack.md": {
+      "set": "reference",
+      "why": "Editorial reference and canon detail. Scope-gated by docs/contracts/rules.json (SF-BYLINE, SF-FACT-GATE), not read by default."
+    },
+    "docs/editorial/loop-charter.md": {
+      "set": "reference",
+      "why": "Editorial reference and canon detail. Scope-gated by docs/contracts/rules.json (SF-BYLINE, SF-FACT-GATE), not read by default."
+    },
+    "docs/editorial/the-hundred.md": {
+      "set": "reference",
+      "why": "Editorial reference and canon detail. Scope-gated by docs/contracts/rules.json (SF-BYLINE, SF-FACT-GATE), not read by default."
+    },
+    "docs/editorial/voice-scorecard.md": {
+      "set": "reference",
+      "why": "Editorial reference and canon detail. Scope-gated by docs/contracts/rules.json (SF-BYLINE, SF-FACT-GATE), not read by default."
+    },
+    "docs/email-drip/01-welcome.md": {
+      "set": "reference",
+      "why": "Email sequence copy. Read only when touching the drip."
+    },
+    "docs/email-drip/02-audit-prompt.md": {
+      "set": "reference",
+      "why": "Email sequence copy. Read only when touching the drip."
+    },
+    "docs/email-drip/03-case-study.md": {
+      "set": "reference",
+      "why": "Email sequence copy. Read only when touching the drip."
+    },
+    "docs/email-drip/04-pricing.md": {
+      "set": "reference",
+      "why": "Email sequence copy. Read only when touching the drip."
+    },
+    "docs/email-drip/05-care-plan.md": {
+      "set": "reference",
+      "why": "Email sequence copy. Read only when touching the drip."
+    },
+    "docs/email-drip/06-direct-ask.md": {
+      "set": "reference",
+      "why": "Email sequence copy. Read only when touching the drip."
+    },
+    "docs/email-drip/README.md": {
+      "set": "reference",
+      "why": "Email sequence copy. Read only when touching the drip."
+    },
+    "docs/fact-check.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/handoff-bolder-pass.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/handoff/2026-07-17-menu-pricing-pressure-roadmap.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): Superseded by ADR-016 (menu-pricing playbook consolidation). Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/handoff/2026-07-18-corpus-expansion-overnight.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): Dated overnight-run log. Episodic; git log holds it. Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/handoff/FINDING-seasonal-nominal-drag.md": {
+      "set": "reference",
+      "why": "Handoff note for a specific thread. Read only if resuming that thread."
+    },
+    "docs/handoff/QUEUE.md": {
+      "set": "working",
+      "why": "THE QUEUE (ADR-024). Generated from data/queue.json. Open work lives here and nowhere else; every session is pointed at it by .claude/hooks/session-start.sh.",
+      "generated": true
+    },
+    "docs/handoff/board-archive.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): 993 lines of narrative history already declared archival by its own header. It is the archive; it should live in docs/archive/. Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/handoff/bolder-launch-session-2026-07-02.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): Session log for a shipped design pass. Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/handoff/company-audit-2026-08-07.md": {
+      "set": "reference",
+      "why": "Handoff note for a specific thread. Read only if resuming that thread."
+    },
+    "docs/handoff/company-audit-2026-08-07/lens-audit-to-edge.md": {
+      "set": "reference",
+      "why": "A lens of the frozen 2026-08-07 audit. Dated finding document, not an instruction."
+    },
+    "docs/handoff/company-audit-2026-08-07/lens-capacity.md": {
+      "set": "reference",
+      "why": "A lens of the frozen 2026-08-07 audit. Dated finding document, not an instruction."
+    },
+    "docs/handoff/company-audit-2026-08-07/lens-completeness.md": {
+      "set": "reference",
+      "why": "A lens of the frozen 2026-08-07 audit. Dated finding document, not an instruction."
+    },
+    "docs/handoff/company-audit-2026-08-07/lens-cross-repo.md": {
+      "set": "reference",
+      "why": "A lens of the frozen 2026-08-07 audit. Dated finding document, not an instruction."
+    },
+    "docs/handoff/company-audit-2026-08-07/lens-gate-epistemics.md": {
+      "set": "reference",
+      "why": "A lens of the frozen 2026-08-07 audit. Dated finding document, not an instruction."
+    },
+    "docs/handoff/company-audit-2026-08-07/lens-honesty-integrity.md": {
+      "set": "reference",
+      "why": "A lens of the frozen 2026-08-07 audit. Dated finding document, not an instruction."
+    },
+    "docs/handoff/company-audit-2026-08-07/lens-premortem.md": {
+      "set": "reference",
+      "why": "A lens of the frozen 2026-08-07 audit. Dated finding document, not an instruction."
+    },
+    "docs/handoff/company-audit-2026-08-07/lens-upside.md": {
+      "set": "reference",
+      "why": "A lens of the frozen 2026-08-07 audit. Dated finding document, not an instruction."
+    },
+    "docs/handoff/content-bridge/README.md": {
+      "set": "reference",
+      "why": "Content-bridge working notes for a shipped thread."
+    },
+    "docs/handoff/content-bridge/article-draft.md": {
+      "set": "reference",
+      "why": "Content-bridge working notes for a shipped thread."
+    },
+    "docs/handoff/content-bridge/b-landing-brief.md": {
+      "set": "reference",
+      "why": "Content-bridge working notes for a shipped thread."
+    },
+    "docs/handoff/content-bridge/publisher-brief.md": {
+      "set": "reference",
+      "why": "Content-bridge working notes for a shipped thread."
+    },
+    "docs/handoff/demo-quality-loop.md": {
+      "set": "reference",
+      "why": "Handoff note for a specific thread. Read only if resuming that thread."
+    },
+    "docs/handoff/demo-redesign-plan.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): Plan for a shipped demo redesign. Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/handoff/every-surface-map.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): Superseded by data/surface-inventory.json, whose own _doc says so verbatim: \"Replaces docs/handoff/every-surface-map.md, which could go stale; this cannot.\" Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/handoff/founder-vision.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): Superseded by docs/handoff/bones/phase-d-verdict.json, which is the decided strategy of record. Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/handoff/ledger-audit.md": {
+      "set": "reference",
+      "why": "Handoff note for a specific thread. Read only if resuming that thread."
+    },
+    "docs/handoff/library-audit-full.md": {
+      "set": "reference",
+      "why": "Handoff note for a specific thread. Read only if resuming that thread."
+    },
+    "docs/handoff/redesign-execution-plan.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): Execution plan for the v3 redesign, marked COMPLETE on the board. Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/handoff/redesign-v3-system.md": {
+      "set": "reference",
+      "why": "Handoff note for a specific thread. Read only if resuming that thread."
+    },
+    "docs/handoff/reinvention-master-plan.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): Superseded by the 2026-08-07 verdict and ADR-025. Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/handoff/retention-strategy.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): Retention as a metric was killed by the 2026-08-07 verdict (traffic and list growth are no longer objectives). Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/handoff/site-coverage-ledger.md": {
+      "set": "reference",
+      "why": "Handoff note for a specific thread. Read only if resuming that thread."
+    },
+    "docs/handoff/site-reinvention-blueprint.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): Superseded by the 2026-08-07 verdict and ADR-025. Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/handoff/strategic-council-board.md": {
+      "set": "working",
+      "why": "RETIREMENT PENDING (Q-070). Still named \"read first\" by muscle memory and still 1,504 lines of stacked CURRENT STATE blocks. Classified `working` deliberately so this gate fails until it is archived — see docs/contracts/retirement-2026-08-07.json."
+    },
+    "docs/handoff/tools-strategy.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): Superseded: the tool roadmap was cut 2026-06-17 and the remaining tools are qualification surfaces, not a strategy. Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/handoff/vb-world-class-roadmap.md": {
+      "set": "reference",
+      "why": "Handoff note for a specific thread. Read only if resuming that thread."
+    },
+    "docs/handoff/warmth-cohesion-plan.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): Plan for a shipped pass. Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/handoff/window-backend-handoff.md": {
+      "set": "reference",
+      "why": "Handoff note for a specific thread. Read only if resuming that thread."
+    },
+    "docs/hiring/project-manager-scope.md": {
+      "set": "reference",
+      "why": "Hiring note. No hiring is planned at one person."
+    },
+    "docs/invoice-decoder-gold-standard-audit.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/invoice-decoder-gold-standard-plan.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/invoice-decoder-ocr-overhaul-runbook.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/invoice-decoder-upgrade-plan.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/leads/lead-boundaries-map.md": {
+      "set": "reference",
+      "why": "Lead list. Operational data, not guidance."
+    },
+    "docs/library-letter/2026-q2-may-wave.md": {
+      "set": "reference",
+      "why": "Outreach letter drafts."
+    },
+    "docs/library-letter/README.md": {
+      "set": "reference",
+      "why": "Outreach letter drafts."
+    },
+    "docs/phase-3-watch-cutover.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): A completed cutover. Cited by nothing (measured 2026-08-07 across the whole repo). Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/plans/README.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/dispatch-email-upgrade.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/ledger-demo-transform.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/monthly-dispatch-site-edition.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/muntin-bench.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/muntin-cost-convergence.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/muntin-cost-history.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/muntin-cost-index.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/muntin-insight-layer.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/muntin-ledger-launch.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/muntin-plate-insight-catalog.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/muntin-plate-modularity-audit.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/muntin-plate.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/muntin-refresh-product-company.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/open-data-explore-surfaces-plan.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/plans/website-heartbeat-and-prune.md": {
+      "set": "reference",
+      "why": "A dated plan. Read only if the thread it plans is being resumed; most are shipped or superseded."
+    },
+    "docs/search-console-setup.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/seo-handoff-both-repos.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/start-here-canon.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/strategy-anti-factura-positioning.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/strategy-cost-intelligence-app.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/strategy/2026-07-28-corpus-index-reconciliation.md": {
+      "set": "reference",
+      "why": "Strategy memo. Superseded as an instruction by the 2026-08-07 verdict; kept as the record of what was believed when."
+    },
+    "docs/strategy/2026-07-28-frontier-north-star.md": {
+      "set": "reference",
+      "why": "Strategy memo. Superseded as an instruction by the 2026-08-07 verdict; kept as the record of what was believed when."
+    },
+    "docs/strategy/2026-07-28-knowledge-graph-review.md": {
+      "set": "reference",
+      "why": "Strategy memo. Superseded as an instruction by the 2026-08-07 verdict; kept as the record of what was believed when."
+    },
+    "docs/strategy/2026-07-28-legitimately-useful.md": {
+      "set": "reference",
+      "why": "Strategy memo. Superseded as an instruction by the 2026-08-07 verdict; kept as the record of what was believed when."
+    },
+    "docs/tool-merge-plan.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/tool-suite-perf-a11y.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/turnstile-wiring.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/voice-canon-blog.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/voice-canon-library.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/voice-canon-sheets.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/window-backend-handoff.md": {
+      "set": "reference",
+      "why": "ARCHIVE PENDING (Q-071): Near-duplicate of docs/handoff/window-backend-handoff.md (101 vs 87 lines, same thread). Two copies of one handoff means a reader picks the wrong one. Classified `reference` until the move lands, so this gate is not blocked on a filesystem change it cannot make."
+    },
+    "docs/window-provisioning-runbook.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/window-redesign-plan.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    },
+    "docs/workbench-save-pattern.md": {
+      "set": "reference",
+      "why": "Subject-specific reference doc. Read when its subject comes up; scope-gated, never read by default."
+    }
+  }
+}

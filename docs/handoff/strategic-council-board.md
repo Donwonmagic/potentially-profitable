@@ -1,18 +1,34 @@
-<!-- Orchestrator resume point. Committed so any future session (yours or mine) can pick
-     up the queue without the founder re-explaining anything. The environment is ephemeral;
-     only what's in the repo survives. Keep THIS file loadable in one read — append current
-     state + open threads here; when a thread is fully shipped and superseded, summarize it
-     to a line and let the detail live in the archive. -->
+<!-- FROZEN AS A TRACKER 2026-08-07 (ADR-024, queue item Q-050). This file is now NARRATIVE
+     HISTORY ONLY, append-only. Open work lives in data/queue.json, rendered to
+     docs/handoff/QUEUE.md. Do NOT append a new open-items / in-flight / next-steps list here
+     — add a queue item with a doneWhen and a verify command instead. -->
 
-# Strategic-council board — resume here
+# Strategic-council board — history, not the tracker
 
-**What this is:** the running state of the "strategic council / orchestrator" work across
-both repos, externalized so a fresh session resumes in one read. Update this file as threads
-move. Full pre-2026-07-16 history (every shipped-pass log, resolved reds, the P0 Actions
-outage, the /try demo, the 06-27 audits, prior branch states) is frozen verbatim in
+> **Work tracking moved to the queue on 2026-08-07.**
+>
+> - **Open work:** [`docs/handoff/QUEUE.md`](./QUEUE.md) — rendered from `data/queue.json`.
+> - **Start here in a fresh session:** `node scripts/check-queue.mjs` (or just let
+>   `.claude/hooks/session-start.sh` print the top item; it runs whether or not CLAUDE.md loads).
+> - **Decision of record:** `docs/editorial/decisions/ADR-024-the-queue.md`.
+>
+> **Why.** This board is 1,488 lines and its archive another 993, and the measured close rate
+> of work recorded on them is **26%** — with **zero closures in company history coming from
+> anyone working the list.** The board is an excellent narrative history and a failed tracker.
+> It keeps the first job and loses the second. A queue item cannot be closed by claiming it;
+> `check-queue.mjs --done` runs the item's own verify command and refuses to write a closure
+> unless it exits 0.
+>
+> Everything below this line is retained verbatim as the record of how the company got here.
+> Nothing new is appended.
+
+**What this was:** the running state of the "strategic council / orchestrator" work across
+both repos, externalized so a fresh session resumes in one read. Full pre-2026-07-16 history
+(every shipped-pass log, resolved reds, the P0 Actions outage, the /try demo, the 06-27
+audits, prior branch states) is frozen verbatim in
 **`docs/handoff/board-archive.md`** — read it only for the detail behind a summarized line.
 
-**Branches:** both repos develop on `claude/muntin-strategic-council-exsghc`
+**Branch:** whatever `git branch --show-current` reports. A branch name is not a fact a document can hold — on 2026-08-07 four artifacts named four different "current" branches and none matched HEAD (ADR-027).
 (storefront `potentially-profitable`, product `Muntin-Invoice-Decoder`). Prior
 council branches `-rqdehe` (PR #489) and `-fzdd1j` (PRs #493–#503 storefront,
 #234–#239 product) are merged to main and closed.

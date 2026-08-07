@@ -177,6 +177,12 @@ resume-here board, so **the resume protocol lost the company's own sharpest find
 
 ## 2. Do these seven things first
 
+> **SUPERSEDED 2026-08-07 as a live to-do list (ADR-024, queue item Q-050).** These seven are
+> now queue items with objective done-conditions and verify commands — see
+> [`docs/handoff/QUEUE.md`](./QUEUE.md) (`Q-001`…`Q-061`), or run `node scripts/check-queue.mjs`.
+> This document is frozen as a dated findings record and is not edited again. The table below
+> is kept verbatim because it is what was true on 2026-08-07.
+
 Ordered by (damage prevented) ÷ (founder-minutes). Every one is small; five are one line.
 
 | # | Change | Where | Est. |

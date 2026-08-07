@@ -1,0 +1,86 @@
+{
+  "_doc": "PROPOSED replacement for data/topics.json under the closed-month doctrine. NOT LIVE. Nine topics become four. The taxonomy is what a crawler and a language model read first — it is stamped into the topic chip on every glossary term, the ItemList on /learn/topics/, the DefinedTermSet, the eyebrow on every article and the cluster ids in data/tools.json — so it is the single highest-leverage correction on the storefront and the cheapest: four JSON objects decide how 1,327 pages are understood. Apply with `node scripts/migrate-topics.mjs --apply --force` ONCE the deploy is green (queue Q-005), never before.",
+  "_asOf": "2026-08-07",
+  "_decisionOfRecord": "docs/editorial/decisions/ADR-026-the-taxonomy-under-the-close.md",
+  "_problem": {
+    "measured": "data/topics.json ships 9 topics. 6 of them name the retired web-design/SEO line (speed-mobile, conversions, local-seo, trust-reviews, brand-design, ai-search). 5 of those 6 topic HUB pages already carry noindex — and every one of them still holds 27-46 inbound editorial links, because freezing the page did not remove it from the taxonomy that generates those links. The site therefore tells a crawler, in structured data, that a cost-intelligence company is mostly about local SEO and brand design.",
+    "citations": [
+      "data/topics.json — topics[] length 9",
+      "data/surface-inventory.json — /learn/topics/local-seo/ indexable:false, inboundInternalLinks:46; /learn/topics/brand-design/ false, 38; /learn/topics/conversions/ false, 38; /learn/topics/speed-mobile/ false, 34; /learn/topics/trust-reviews/ false, 28",
+      "data/content-intent.json#summary.thesis.allPages — retiredLine 200 pages, neither 295",
+      "data/surface-inventory.json#summary.retiredLine — 3,611 hits across 419 pages; localGbp 1,688, webBuild 1,050, seo 741"
+    ]
+  },
+  "_slugRule": "SLUGS ARE FINAL-FOREVER (CLAUDE.md). Nothing here renames a slug. `operations-margin` keeps its slug and changes only name/blurb/intent, because /learn/topics/operations-margin/ carries 70 inbound editorial links and is the parent of the site's three highest-value pages. The two additions take new slugs. The seven retirements keep their URLs and their files — they leave the taxonomy, not the web.",
+  "_esRule": "Topic assignment is inherited from EN, per scripts/build-library.mjs:279 — 'Inherit topics + date from EN tagsDoc (those are facts, not language)'. The EN/ES asymmetry visible in data/content-intent.json#topicCluster (count-and-close scores 12 EN / 158 ES) is a classifier artefact of that generated file, not a content difference, and the migration must not read it per-locale.",
+
+  "topics": [
+    {
+      "slug": "cost-data",
+      "name": "Cost Data & Sources",
+      "name_es": "Datos y fuentes de costos",
+      "blurb": "Where every number in the Cost Index comes from — the public agency behind each reading, the method that turns a wholesale series into a figure you can defend, and what the Index refuses to say.",
+      "blurb_es": "De dónde sale cada número del Índice de Costos — la agencia pública detrás de cada lectura, el método que convierte una serie mayorista en una cifra defendible, y lo que el Índice se niega a decir.",
+      "intent": "A reader landing here is checking the basis. Usually a bookkeeper or a CPA deciding whether a market prior is acceptable as a disclosed management estimate — the exact question that decides whether the close is buyable.",
+      "change": "kept — slug, name and role unchanged; blurb extended to name the refusals surface",
+      "enPagesToday": 189
+    },
+    {
+      "slug": "operations-margin",
+      "name": "Food Cost & Margin",
+      "name_es": "Costo de alimentos y margen",
+      "blurb": "The honest math of an independent restaurant — what a plate costs, what a price change actually recovers, and which of the four legs of the food-cost identity you are allowed to estimate.",
+      "blurb_es": "Las cuentas honestas de un restaurante independiente — lo que cuesta un plato, lo que realmente recupera un cambio de precio, y cuál de las cuatro patas de la identidad de costo puedes estimar.",
+      "intent": "A reader landing here is making a money decision about pricing, delivery, or vendor mix. This is where the site's three highest-value pages live and it is the only retired-line topic whose subject survived the pivot intact.",
+      "change": "SLUG UNCHANGED, display renamed from 'Operations & Margin'. The old name was written for a website-services company ('the website's role in protecting margin'); the new blurb drops that clause. 70 inbound editorial links make a slug change a self-inflicted wound.",
+      "enPagesToday": 144
+    },
+    {
+      "slug": "invoices-and-vendors",
+      "name": "Invoices & Vendors",
+      "name_es": "Facturas y proveedores",
+      "blurb": "Reading what a supplier actually sent you — pack sizes, credit memos, promo lines, price drift — for an operator running eight to twelve specialty vendors and no broadliner.",
+      "blurb_es": "Leer lo que el proveedor realmente te mandó — presentaciones, notas de crédito, líneas promocionales, deriva de precios — para un operador con ocho a doce proveedores especializados y ningún distribuidor grande.",
+      "intent": "A reader landing here is the buyer. The vendor mix IS the buyer definition: the 919-document corpus contains zero Sysco/US Foods/PFG invoices and its top ten are I. Halper, Chefs' Warehouse, Baldor, Pat LaFrieda, Edward Don, Fresco, Montgomery County DLC, Cintas, Staples, Cozzini Bros.",
+      "change": "NEW. Absorbs the invoices (26) and vendors (89) clusters that today have no topic of their own and are scattered under local-seo and operations-margin.",
+      "enPagesToday": 34
+    },
+    {
+      "slug": "count-and-close",
+      "name": "Counting & the Close",
+      "name_es": "El conteo y el cierre",
+      "blurb": "Beginning + Purchases − Ending = Usage. What each leg is, which one you have to count by hand, what a signed close guarantees, and what it withholds.",
+      "blurb_es": "Inicial + Compras − Final = Uso. Qué es cada pata, cuál tienes que contar a mano, qué garantiza un cierre firmado y qué retiene.",
+      "intent": "A reader landing here has already had the conversation and is checking the deliverable before signing. This is the smallest topic today (12 EN pages) and the only one that grows: /close/, /close/specimen/, /close/limits/ and /close/apply/ all land here.",
+      "change": "NEW. Absorbs the inventory/food-cost cluster (179 pages) and becomes the parent of the close spine.",
+      "enPagesToday": 12
+    }
+  ],
+
+  "retiredTopics": [
+    { "slug": "speed-mobile", "retiredOn": "2026-08-07", "hubIndexableToday": false, "inboundEditorialLinks": 34, "reason": "Core Web Vitals for a website-services line that no longer exists. The hub was already frozen; this removes it from the taxonomy that still generates its 34 inbound links." },
+    { "slug": "conversions", "retiredOn": "2026-08-07", "hubIndexableToday": false, "inboundEditorialLinks": 38, "reason": "Reservation-funnel optimisation. Retired line. Hub already frozen." },
+    { "slug": "local-seo", "retiredOn": "2026-08-07", "hubIndexableToday": false, "inboundEditorialLinks": 46, "reason": "Google Business Profile and the map pack — 1,688 of the site's 3,611 retired-line hits sit in this category. Hub already frozen; the largest single inbound-link generator for retired-line content." },
+    { "slug": "trust-reviews", "retiredOn": "2026-08-07", "hubIndexableToday": false, "inboundEditorialLinks": 28, "reason": "Review acquisition and response. Retired line. Hub already frozen. NOTE: 'trust' as a company property does not retire — it moves to the /security/, /methods/, /claims/ and /close/limits/ surfaces, which are dispositioned keep." },
+    { "slug": "brand-design", "retiredOn": "2026-08-07", "hubIndexableToday": false, "inboundEditorialLinks": 38, "reason": "Type, palette, logo. Retired line, and CLAUDE.md already names the brand/design operator-sheet pack a prune candidate. Hub already frozen." },
+    { "slug": "ai-search", "retiredOn": "2026-08-07", "hubIndexableToday": true, "inboundEditorialLinks": 12, "reason": "THE ONE STILL-INDEXED RETIREMENT, and the hardest call. Its subject — earning citation in ChatGPT/Perplexity answers — is a TRAFFIC objective, and traffic is killed as an objective. Keeping a topic whose entire purpose is reach, on a site whose doctrine is that credibility does not convert into demand, is the contradiction the taxonomy exists to remove. Its 8 EN + ES blog posts stay at their URLs and go noindex under disposition rule R7." },
+    { "slug": "information-security", "retiredOn": "2026-08-07", "hubIndexableToday": true, "inboundEditorialLinks": 13, "reason": "Subject survives, topic does not. 'Should I type real numbers into a free tool' is a trust question, and trust now lives on the company surfaces (/security/, /privacy/, /methods/, /close/limits/) which are dispositioned keep and which a reviewer actually reads. A library topic was the wrong container for it — a CPA checks /security/, not a learn hub." }
+  ],
+
+  "_retiredTopicDisposition": "Each retired topic's /learn/topics/<slug>/ and /es/learn/topics/<slug>/ page KEEPS its URL and its file. It stops being regenerated by scripts/build-library.mjs (which writes only topicsDoc.topics), stops receiving topic chips from articles and glossary terms, and becomes an internal orphan that still answers to any external backlink. Five of the seven are already noindex; ai-search and information-security are set noindex by this migration. Nothing is deleted, because a deletion that burns inbound-link equity for tidiness is a bad trade.",
+
+  "_consumers": [
+    { "file": "scripts/build-library.mjs", "line": 24, "effect": "reads topicsDoc.topics — writes /learn/topics/ hub + one page per topic, the article footer 'See also' blocks and the glossary topic chips. Four hub cards instead of nine; two new pages appear; five stop regenerating." },
+    { "file": "scripts/check-pillar-coverage.mjs", "line": 42, "effect": "pillars = topics[].slug. Will flag every article tagged to a retired topic until data/library-tags.json is remapped in the same commit." },
+    { "file": "scripts/wire-glossary-topics.mjs", "line": 32, "effect": "stamps data-topics on each gloss-term article. Terms whose only topic retires need a new assignment or they lose their chip." },
+    { "file": "scripts/wire-glossary-knit.mjs", "line": 59, "effect": "topic names in the knit rail." },
+    { "file": "scripts/build-tools-index.mjs", "line": 47, "effect": "Validates every data/tools.json cluster id against topics[].slug and throws on a miss. MEASURED: data/tools.json has exactly ONE cluster, id 'operations-margin', which survives the migration — so this is safe. Its label_en/label_es ('Operations & Margin') must be updated to match the new display name in the same commit or the tools index and the topic page disagree." },
+    { "file": "scripts/inject-tool-knit.mjs", "line": 42, "effect": "same cluster-id validation on the tool knit rail." },
+    { "file": "scripts/inject-topic-eyebrow.mjs", "line": 29, "effect": "the eyebrow above each article's title." },
+    { "file": "scripts/build-sheets-index.mjs", "line": 9, "effect": "sheets carry an independent organizing scheme; reads topics only for labels. Lowest risk." },
+    { "file": "data/library-tags.json", "line": null, "effect": "glossary_section_to_topics maps 10 glossary sections to topics; 6 of the 10 point at retiring topics (basics/mobile/conversions/trust/findability → conversions, speed-mobile, trust-reviews, local-seo; data-literacy → brand-design). glossary_term_overrides adds per-term exceptions. Both must be remapped in the same commit." },
+    { "file": "data/topic-essays.json", "line": null, "effect": "one 600-900 word pillar essay per topic, injected by inject-topic-pillar-essay.mjs. The four surviving topics need theirs re-read for retired-line vocabulary; the two new topics need essays written (founder voice — this is the only part of the migration an agent cannot finish alone)." }
+  ],
+
+  "_ordering": "1) remap data/library-tags.json (glossary_section_to_topics + glossary_term_overrides) and update the data/tools.json cluster label; 2) write topic-essays for the two new topics — founder voice, the only part an agent cannot finish alone; 3) swap data/topics.json; 4) re-run build-library, wire-glossary-topics, wire-glossary-knit, build-tools-index, inject-tool-knit, inject-topic-eyebrow, inject-topic-pillar-essay, inject-knit-rail (CLAUDE.md: the highest-churn manual idem builder — run it after any freeze or retire); 5) node scripts/check-all.mjs. Step 1 before step 3 is not optional: build-tools-index.mjs:47 throws on an unknown cluster id, and check-pillar-coverage.mjs:42 flags every article still tagged to a retired pillar."
+}

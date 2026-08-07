@@ -150,7 +150,7 @@ Ship on A a cornerstone library article (Muntin Desk byline), e.g. *"Privacy-for
 - **Voice canons:** library = **The Muntin Desk** byline; blog = **Don Goldstein**. See `/methods/#voice-contract`, `docs/voice-canon-*.md`.
 - **CTA/analytics gates:** `check-cta-canon.mjs --strict`, `check-button-vocabulary.mjs`, `check-analytics-vocabulary.mjs`, `check-event-prop-cardinality.mjs`, `check-intent-param-targets.mjs` — a new CTA + event must satisfy all.
 - **Don't rename slugs** (breaks deep links + AI-Overview rotation). Don't break CWV/AEO scaffolding. **`package.json` is gitignored** — maintain your own for sharp/Playwright.
-- **Branch:** development happens on `claude/intelligent-meitner-Stp1X` for this repo.
+- **Branch:** see `git branch --show-current` (ADR-027 — a document may not name the current branch).
 
 ---
 
