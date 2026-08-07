@@ -1,0 +1,2139 @@
+{
+  "_doc": "HARVESTED PRIOR DECISIONS — the input manifest for scripts/build-prior-decisions.mjs. Each row records WHAT was decided, WHERE (file:line) and WHEN, plus the probes that MEASURE whether it is true in the working tree today. This file never records status; status is computed every run. Edit this file and re-run `node scripts/build-prior-decisions.mjs`; never hand-edit the emitted ledger. Probe roles: `ship` (decides shipped/partial/never) and `contradiction` (a passing contradiction probe forces status=contradicted). A probe whose repo/file is absent reports UNMEASURABLE and is excluded from the ratio rather than silently scored as a failure.",
+  "version": "1.0.0",
+  "harvestedOn": "2026-08-07",
+  "sources": [
+    "docs/handoff/founder-vision.md",
+    "docs/handoff/site-reinvention-blueprint.md",
+    "docs/handoff/every-surface-map.md",
+    "docs/handoff/reinvention-master-plan.md",
+    "docs/handoff/redesign-execution-plan.md",
+    "docs/handoff/redesign-v3-system.md",
+    "docs/handoff/warmth-cohesion-plan.md",
+    "docs/handoff/retention-strategy.md",
+    "docs/handoff/tools-strategy.md",
+    "docs/handoff/vb-world-class-roadmap.md",
+    "docs/handoff/site-coverage-ledger.md",
+    "docs/handoff/demo-redesign-plan.md",
+    "docs/handoff/strategic-council-board.md",
+    "docs/strategy/2026-07-28-frontier-north-star.md",
+    "docs/strategy/2026-07-28-legitimately-useful.md",
+    "docs/strategy/2026-07-28-knowledge-graph-review.md",
+    "docs/strategy/2026-07-28-corpus-index-reconciliation.md",
+    "docs/editorial/decisions/ADR-000..ADR-021 (26 files, 4 numbers duplicated)"
+  ],
+  "decisions": [
+    {
+      "id": "ADR-000",
+      "theme": "governance",
+      "date": "2026-06-07",
+      "source": "docs/editorial/decisions/ADR-000-editorial-doctrine.md:8",
+      "decision": "Adopt ADRs for every non-trivial editorial decision; record the doctrine the Editorial Lead operates by, because prose here is spoken aloud verbatim in six languages.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "adr-dir", "type": "files", "root": "docs/editorial/decisions", "ext": [".md"], "pattern": "^# ADR-", "expect": { "min": 20 } }
+      ]
+    },
+    {
+      "id": "ADR-001",
+      "theme": "honesty-gates",
+      "date": "2026-06-08",
+      "source": "docs/editorial/decisions/ADR-001-per-language-audio-fact-gate.md:9",
+      "decision": "Extend the absolute fact gate to the audio narration JSON the renderer speaks verbatim — a language-aware gate over every audio.<lang>.json.",
+      "principle": true,
+      "encodedIn": "scripts/check-audio-fabrications.mjs",
+      "probes": [
+        { "id": "gate-exists", "type": "path", "path": "scripts/check-audio-fabrications.mjs", "expect": "present" },
+        { "id": "gate-wired", "type": "count", "path": "scripts/check-all.mjs", "pattern": "check-audio-fabrications", "expect": { "min": 1 } },
+        { "id": "shared-registry", "type": "path", "path": "scripts/lib/fabrication-patterns.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "ADR-002",
+      "theme": "honesty-gates",
+      "date": "2026-06-08",
+      "source": "docs/editorial/decisions/ADR-002-email-and-es-mx-gates.md:9",
+      "decision": "Bring the product's transactional + digest email under the banned-phrase and reading-grade gates, and machine-check the es-MX tuteo register.",
+      "probes": [
+        { "id": "email-in-verboten", "type": "count", "repo": "product", "path": "scripts/check-verboten-phrases.mjs", "pattern": "email", "expect": { "min": 1 } },
+        { "id": "es-mx-gate", "type": "path", "repo": "product", "path": "scripts/check-voice-es-mx.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "ADR-003",
+      "theme": "honesty-gates",
+      "date": "2026-06-08",
+      "source": "docs/editorial/decisions/ADR-003-studio-voice-boundary.md:9",
+      "decision": "Machine-block the fake-team 'our team / our engineers' voice on the storefront's own marketing surfaces — the mirror of the product's 'Don' check.",
+      "principle": true,
+      "encodedIn": "scripts/check-studio-voice-boundary.mjs",
+      "probes": [
+        { "id": "gate-exists", "type": "path", "path": "scripts/check-studio-voice-boundary.mjs", "expect": "present" },
+        { "id": "gate-wired", "type": "count", "path": "scripts/check-all.mjs", "pattern": "check-studio-voice-boundary", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "ADR-004",
+      "theme": "honesty-gates",
+      "date": "2026-06-08",
+      "source": "docs/editorial/decisions/ADR-004-PROPOSAL-shared-banned-vocab-catalog.md:8",
+      "decision": "PROPOSAL: replace the two parallel inline banned-vocab lists (storefront check-banned-words, product check-verboten-phrases) with one shared, vendored, hash-locked catalog read by both gates.",
+      "probes": [
+        { "id": "shared-catalog", "type": "files", "root": "scripts/lib", "ext": [".mjs", ".json"], "pattern": "banned|verboten", "expect": { "min": 1 } },
+        { "id": "product-reads-shared", "type": "count", "repo": "product", "path": "scripts/check-verboten-phrases.mjs", "pattern": "banned-vocab|shared-banned|vendored", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "ADR-005",
+      "theme": "content-craft",
+      "date": "2026-06-20",
+      "source": "docs/editorial/decisions/ADR-005-PROPOSAL-article-enrichment-initiative.md:9",
+      "decision": "PROPOSAL: convene a standing enrichment review of the ~48 EN article corpus and run it entirely through the ADR log; the graphics gate's rules 1–2 are the homogenizer under review.",
+      "probes": [
+        { "id": "child-adrs", "type": "files", "root": "docs/editorial/decisions", "ext": [".md"], "pattern": "ADR-005 \\(convening\\)", "expect": { "min": 3 } },
+        { "id": "rules-relaxed", "type": "count", "path": "scripts/check-article-graphics.mjs", "pattern": "ADR-006", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "ADR-006",
+      "theme": "content-craft",
+      "date": "2026-06-20",
+      "source": "docs/editorial/decisions/ADR-006-PROPOSAL-enrichment-element-taxonomy.md:9",
+      "decision": "PROPOSAL: widen 'content figure' beyond the ten viz-* families to an enrichment taxonomy (photos, scans, tables, maps, annotated screenshots) that counts toward the two-figure floor.",
+      "probes": [
+        { "id": "gate-admits-nonviz", "type": "count", "path": "scripts/check-article-graphics.mjs", "pattern": "ENRICHMENT_KINDS", "expect": { "min": 2 } },
+        { "id": "kind-detector", "type": "count", "path": "scripts/check-article-graphics.mjs", "pattern": "detectNonVizKinds", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "ADR-007",
+      "theme": "content-craft",
+      "date": "2026-06-20",
+      "source": "docs/editorial/decisions/ADR-007-PROPOSAL-imagery-priority-and-taste.md:9",
+      "decision": "PROPOSAL: rank image sources — first-party operator evidence first, licensed/archival public-domain only when it has a job, generic stock never.",
+      "probes": [
+        { "id": "credits-registry", "type": "path", "path": "data/image-credits.json", "expect": "present" }
+      ]
+    },
+    {
+      "id": "ADR-008",
+      "theme": "content-craft",
+      "date": "2026-06-20",
+      "source": "docs/editorial/decisions/ADR-008-PROPOSAL-image-provenance-registry.md:9",
+      "decision": "PROPOSAL: mirror sourced-claims.json for pictures — data/image-credits.json plus scripts/check-image-credits.mjs wired into check-all, or photographs are not admitted.",
+      "probes": [
+        { "id": "registry", "type": "path", "path": "data/image-credits.json", "expect": "present" },
+        { "id": "gate", "type": "path", "path": "scripts/check-image-credits.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "ADR-009",
+      "theme": "content-craft",
+      "date": "2026-06-20",
+      "source": "docs/editorial/decisions/ADR-009-PROPOSAL-rendered-literal-illustrations.md:9",
+      "decision": "PROPOSAL: recognise a third visual lane — literal illustrations authored as SVG/HTML and rendered to images at build time, reusing the OG-card render pipeline.",
+      "probes": [
+        { "id": "render-kind-admitted", "type": "count", "path": "scripts/check-article-graphics.mjs", "pattern": "ENRICHMENT_KINDS = \\['render'", "expect": { "min": 1 } },
+        { "id": "render-pipeline", "type": "files", "root": "scripts", "ext": [".mjs"], "pattern": "build-article-illustration|renderIllustration", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "ADR-010-GRAMMAR",
+      "theme": "cost-index",
+      "date": "2026-06-26",
+      "source": "docs/editorial/decisions/ADR-010-PROPOSAL-cost-index-insight-grammar.md:15",
+      "decision": "Define the insight grammar: magnitude with a reference frame, observed persistence, the labelled why with its source, one action — and never a prediction. A 2026-07-06 extension lets the site edition carry the h=1 one-print outlook, policed by check-cost-index-forward-grammar.mjs, kept out of the email.",
+      "conflictsWith": ["ADR-010-CITABLE"],
+      "conflictNote": "Two live ADRs numbered 010. Both are cited by later ADRs by bare number; a reference to 'ADR-010' is ambiguous in this repo.",
+      "probes": [
+        { "id": "drivers-gate", "type": "path", "path": "scripts/check-cost-index-drivers.mjs", "expect": "present" },
+        { "id": "forward-grammar-gate", "type": "path", "path": "scripts/check-cost-index-forward-grammar.mjs", "expect": "present" },
+        { "id": "outlook-data", "type": "path", "path": "data/cost-outlook.json", "expect": "present" }
+      ]
+    },
+    {
+      "id": "ADR-010-CITABLE",
+      "theme": "cost-index",
+      "date": "2026-07-10",
+      "source": "docs/editorial/decisions/ADR-010-cost-index-citable-publication.md:9",
+      "decision": "Elevate the dispatch into a citable of-record publication: an append-only editions spine, a standing cited driver layer, a gated human seat, per-edition Dataset JSON-LD, a CC0 per-week snapshot and the EN+ES edition archive.",
+      "conflictsWith": ["ADR-010-GRAMMAR"],
+      "probes": [
+        { "id": "spine", "type": "path", "path": "data/cost-index-editions.json", "expect": "present" },
+        { "id": "drivers", "type": "path", "path": "data/cost-index-drivers.json", "expect": "present" },
+        { "id": "editors-note", "type": "path", "path": "data/cost-index-editors-notes.json", "expect": "present" },
+        { "id": "archive", "type": "path", "path": "cost-index/weekly/index.html", "expect": "present" },
+        { "id": "week-snapshots", "type": "files", "root": "cost-index", "ext": [".json"], "pattern": "\"asOf\"", "expect": { "min": 2 } }
+      ]
+    },
+    {
+      "id": "ADR-011-CADENCE",
+      "theme": "cost-index",
+      "date": "2026-07-06",
+      "source": "docs/editorial/decisions/ADR-011-monthly-cadence-pivot.md:12",
+      "decision": "The dispatch moves weekly → MONTHLY (first Tuesday); the data refresh moves daily → Mon/Wed/Fri 13:00 UTC. Every promise surface states exactly this and no more.",
+      "conflictsWith": ["ADR-011-EVENTS", "NS-R0-LLMSTXT"],
+      "conflictNote": "Two live ADRs numbered 011. Separately, llms.txt still tells every crawler the index publishes WEEKLY — the cadence pivot never reached the one file whose job is telling a machine what this domain is.",
+      "probes": [
+        { "id": "workflow-monthly", "type": "count", "path": ".github/workflows/cost-index-dispatch.yml", "pattern": "MANUAL-ONLY|monthly", "flags": "i", "expect": { "min": 1 } },
+        { "id": "freshness-38d", "type": "count", "path": "scripts/check-cost-index-dispatch-fresh.mjs", "pattern": "MAX_LAG_DAYS\\s*=\\s*38", "expect": { "eq": 1 } },
+        { "id": "llms-txt-still-weekly", "role": "contradiction", "type": "count", "path": "llms.txt", "pattern": "publishes weekly wholesale reference prices", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "ADR-011-EVENTS",
+      "theme": "cost-index",
+      "date": "2026-07-09",
+      "source": "docs/editorial/decisions/ADR-011-notable-price-events-surface.md:9",
+      "decision": "Surface notable price events as two honest halves joined at render time — a deterministic detection engine × the cited curated registry — shown as co-occurrence, never causation.",
+      "principle": true,
+      "encodedIn": "scripts/check-cost-index-events.mjs",
+      "conflictsWith": ["ADR-011-CADENCE"],
+      "probes": [
+        { "id": "detection", "type": "path", "path": "data/cost-index-events.json", "expect": "present" },
+        { "id": "registry", "type": "path", "path": "cost-index/events.json", "expect": "present" },
+        { "id": "gate", "type": "path", "path": "scripts/check-cost-index-events.mjs", "expect": "present" },
+        { "id": "hub", "type": "path", "path": "cost-index/events/index.html", "expect": "present" }
+      ]
+    },
+    {
+      "id": "ADR-012-MANUAL",
+      "theme": "cost-index",
+      "date": "2026-07-09",
+      "source": "docs/editorial/decisions/ADR-012-manual-authorship-of-the-dispatch.md:11",
+      "decision": "Monthly editions are HAND-WRITTEN and HAND-PUBLISHED. No cron generates or publishes posts; the red freshness gate IS the reminder. Do not add a publish cron.",
+      "conflictsWith": ["ADR-012-VB", "LU-A1"],
+      "conflictNote": "Two live ADRs numbered 012. And LU-A1 (2026-07-28) proposes restoring an auto-published day-30 fallback edition — a direct reversal of this founder call, never adjudicated.",
+      "probes": [
+        { "id": "no-cron", "type": "count", "path": ".github/workflows/cost-index-dispatch.yml", "pattern": "^\\s*schedule:", "flags": "m", "expect": { "eq": 0 } },
+        { "id": "manual-header", "type": "count", "path": ".github/workflows/cost-index-dispatch.yml", "pattern": "MANUAL-ONLY", "expect": { "min": 1 } },
+        { "id": "scaffolder-kept", "type": "path", "path": "scripts/build-cost-index-dispatch.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "ADR-012-VB",
+      "theme": "tools",
+      "date": "2026-07-09",
+      "source": "docs/editorial/decisions/ADR-012-vendor-benchmark-market-context.md:9",
+      "decision": "Vendor Benchmark may add ONE line about the market REFERENCE's own state (elevated/depressed vs its trailing-year normal + the most recent documented co-occurring event), and may never make a claim about the operator's own price.",
+      "conflictsWith": ["ADR-012-MANUAL"],
+      "probes": [
+        { "id": "context-data", "type": "path", "path": "data/cost-index-context.js", "expect": "present" },
+        { "id": "orphaned-panel-removed", "type": "path", "path": "tools/vendor-benchmark/market-gap-panel.js", "expect": "absent" },
+        { "id": "context-read-by-vb", "type": "files", "root": "tools/vendor-benchmark", "pattern": "MUNTIN_COST_CONTEXT|cost-index-context", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "ADR-013-PRICING",
+      "theme": "commercial",
+      "date": "2026-07-09",
+      "source": "docs/editorial/decisions/ADR-013-commercial-posture-pricing-and-enterprise.md:11",
+      "decision": "The Ledger founding rate is $19/month PER LOCATION, posted in writing; no enterprise tier — enterprise is parked post-GA, gated on real founding-list demand.",
+      "supersededBy": "ADR-020",
+      "conflictsWith": [],
+      "probes": [
+        { "id": "registry", "type": "path", "repo": "product", "path": "apps/web/lib/pricing-constants.ts", "expect": "present" },
+        { "id": "gate", "type": "path", "repo": "product", "path": "scripts/check-pricing-consistency.mjs", "expect": "present" },
+        { "id": "per-location-copy", "type": "files", "root": "ledger", "ext": [".html"], "pattern": "per location|\\$19", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "ADR-013-GOVDATA",
+      "theme": "cost-index",
+      "date": "2026-07-09",
+      "source": "docs/editorial/decisions/ADR-013-gov-data-sources-policy.md:10",
+      "decision": "NASS/Census/EIA are US-gov public-domain and redistributable; use only the honest subset. Nothing from them touches the measured price tier or the Vendor Benchmark reference. The live fetch runs on the operator's Mac.",
+      "principle": true,
+      "encodedIn": "scripts/check-pressure-honesty.mjs",
+      "probes": [
+        { "id": "specs", "type": "path", "path": "data/pressure-source-specs.json", "expect": "present" },
+        { "id": "honesty-gate", "type": "path", "path": "scripts/check-pressure-honesty.mjs", "expect": "present" },
+        { "id": "manual-registry", "type": "count", "path": "scripts/check-idem-coverage.mjs", "pattern": "OPERATOR_DATA", "expect": { "min": 2 } }
+      ]
+    },
+    {
+      "id": "ADR-014",
+      "theme": "cost-index",
+      "date": "2026-07-09",
+      "source": "docs/editorial/decisions/ADR-014-nass-cold-storage-deseasonalization.md:10",
+      "decision": "Cold storage reads as a same-month deviation from the trailing 5-year same-month median, emits null on thin history, and only pork (labelled coincident) and butter cast a directional vote.",
+      "probes": [
+        { "id": "specs-coldstorage", "type": "count", "path": "data/pressure-source-specs.json", "pattern": "cold-storage", "expect": { "min": 1 } },
+        { "id": "nass-transform", "type": "files", "root": "tools/_shared", "pattern": "nassSeries|windowChange", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "ADR-015-OPENDATA",
+      "theme": "cost-index",
+      "date": "2026-07-11",
+      "source": "docs/editorial/decisions/ADR-015-open-data-explore-surfaces.md:12",
+      "decision": "The Cost Index becomes partly a data company and an open-source library: events, yields, seasonality, lock-or-float and anomaly datasets ship as explorable surfaces AND downloadable open datasets under an explicit per-file CC0/CC-BY split; co-movement is directed, bounded, anchored — co-occurrence, never cause.",
+      "principle": true,
+      "encodedIn": "scripts/check-headers-license.mjs",
+      "conflictsWith": ["KG-ADR015"],
+      "conflictNote": "docs/strategy/2026-07-28-knowledge-graph-review.md:33 opens a SECOND document titled 'ADR-015' ('repair the graph we have') that claims to be 'the single ADR-015'. The number is already taken by this accepted ADR.",
+      "probes": [
+        { "id": "open-surfaces", "type": "dirs", "root": "open", "requireFile": "index.html", "expect": { "min": 5 } },
+        { "id": "license-gate", "type": "path", "path": "scripts/check-headers-license.mjs", "expect": "present" },
+        { "id": "cc0-declared", "type": "files", "root": "cost-index", "ext": [".json"], "pattern": "CC0|creativecommons", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "ADR-016",
+      "theme": "content-prune",
+      "date": "2026-07-11",
+      "source": "docs/editorial/decisions/ADR-016-menu-pricing-playbook-consolidation.md:1",
+      "decision": "Retire the seven thin 'educated-inference' research pages + hub and fold their kernels into one interactive menu-pricing playbook at /cost-index/menu-pricing/ (EN+ES).",
+      "probes": [
+        { "id": "research-retired", "type": "path", "path": "cost-index/research/index.html", "expect": "absent" },
+        { "id": "playbook-live", "type": "path", "path": "cost-index/menu-pricing/index.html", "expect": "present" },
+        { "id": "playbook-es", "type": "path", "path": "es/cost-index/menu-pricing/index.html", "expect": "present" }
+      ]
+    },
+    {
+      "id": "ADR-017",
+      "theme": "cost-index",
+      "date": "2026-07-18",
+      "source": "docs/editorial/decisions/ADR-017-ingredient-state-record-fused-corpus.md:1",
+      "decision": "Build the Ingredient State Record — a fused, per-ingredient, public-domain multi-source dossier (imports, domestic supply, yields, events) in descriptive tiers, kept out of the measured price band.",
+      "probes": [
+        { "id": "builder", "type": "path", "path": "scripts/build-ingredient-state-record.mjs", "expect": "present" },
+        { "id": "gate", "type": "path", "path": "scripts/check-ingredient-state-record.mjs", "expect": "present" },
+        { "id": "hs-codes", "type": "path", "path": "data/ingredient-hs-codes.json", "expect": "present" }
+      ]
+    },
+    {
+      "id": "ADR-018",
+      "theme": "cost-index",
+      "date": "2026-07-18",
+      "source": "docs/editorial/decisions/ADR-018-chain-presentation-architecture.md:1",
+      "decision": "The CHAIN presentation architecture: make the fused corpus visible via four cross-source harmony seams (supplyshape, reliance, persistence, catchpair), menu-pricing island first.",
+      "probes": [
+        { "id": "harmony", "type": "files", "root": "scripts", "ext": [".mjs"], "pattern": "harmonyFor|supplyshape|catchpair", "expect": { "min": 1 } },
+        { "id": "island", "type": "count", "path": "cost-index/menu-pricing/index.html", "pattern": "supplyshape|reliance|persistence|catchpair", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "ADR-019",
+      "theme": "cost-index",
+      "date": "2026-07-24",
+      "source": "docs/editorial/decisions/ADR-019-seasonality-events-corpus-fusion.md:1",
+      "decision": "Fuse the corpus into the two CC-BY reference surfaces (/open/seasonality/ and /cost-index/events/); import VALUE seasonality may never be relabelled as supply volume.",
+      "probes": [
+        { "id": "seasonality", "type": "path", "path": "open/seasonality/index.html", "expect": "present" },
+        { "id": "events-detail-pages", "type": "dirs", "root": "cost-index/events", "requireFile": "index.html", "expect": { "min": 20 } },
+        { "id": "fusion-lib", "type": "path", "path": "scripts/lib/seasonality-fusion.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "ADR-020",
+      "theme": "commercial",
+      "date": "2026-07-30",
+      "source": "docs/editorial/decisions/ADR-020-ledger-launch-deferred-data-company-first.md:13",
+      "decision": "Muntin Ledger's paid launch moves from 2026-11-13 to 2027. Build the reliable data-information company (Cost Index + free tools) FIRST; the Ledger launches on top of an established data line, not alongside it.",
+      "conflictsWith": ["NS-LAUNCH-SEQ", "XP-PHASE0"],
+      "conflictNote": "The 2026-07-28 north star sequences every rung against a 2026-11-13 paid GA that ADR-020 deleted two days later. Any plan reading the north star's 'T-30 / T-7 / 108 days' arithmetic is reading a dead calendar.",
+      "probes": [
+        { "id": "launch-null", "type": "count", "repo": "product", "path": "apps/web/lib/launch.ts", "pattern": "LAUNCH_DATE_ISO: string \\| null = null", "expect": { "eq": 1 } },
+        { "id": "claims-gate", "type": "path", "repo": "product", "path": "scripts/check-launch-date-claims.mjs", "expect": "present" },
+        { "id": "storefront-no-ga-date", "role": "contradiction", "type": "files", "root": "ledger", "ext": [".html"], "pattern": "November 13, 2026", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "ADR-021",
+      "theme": "cost-index",
+      "date": "2026-07-31",
+      "source": "docs/editorial/decisions/ADR-021-cost-index-retired-series-terminal-render.md:11",
+      "decision": "A dead public feed ends in a TERMINAL ingredient page ('this series stopped publishing, last measured <date>') with history preserved and URL alive — archived automatically at the moment the builder drops it, accepted by CI only once the published page says so.",
+      "probes": [
+        { "id": "marker", "type": "files", "root": "scripts", "ext": [".mjs"], "pattern": "cost-index:retired", "expect": { "min": 1 } },
+        { "id": "orphan-gate", "type": "path", "path": "scripts/check-cost-index-orphans.mjs", "expect": "present" },
+        { "id": "series-freshness-gate", "type": "path", "path": "scripts/check-cost-index-series-freshness.mjs", "expect": "present" }
+      ]
+    },
+
+    {
+      "id": "FV-01",
+      "theme": "positioning",
+      "date": "2026-07-11",
+      "source": "docs/handoff/founder-vision.md:13",
+      "decision": "The storefront reads emotionless and must be made to feel more trustworthy than MarginEdge/R365/Toast, with execution — not brand legacy — as the proof.",
+      "probes": [
+        { "id": "v3-shipped", "type": "path", "path": "docs/handoff/redesign-v3-system.md", "expect": "present" },
+        { "id": "home-instrument", "type": "count", "path": "index.html", "pattern": "cost-index", "expect": { "min": 3 } }
+      ]
+    },
+    {
+      "id": "FV-02",
+      "theme": "positioning",
+      "date": "2026-07-11",
+      "source": "docs/handoff/founder-vision.md:19",
+      "decision": "Lever 1 — lead on genuine differentiation: no per-order rake, no LLM in the invoice path (build-gated), data stays yours, pricing in writing, the public sourced Cost Index.",
+      "probes": [
+        { "id": "no-llm-gate-product", "type": "path", "repo": "product", "path": "scripts/no-llm-ci.sh", "expect": "present" },
+        { "id": "no-llm-storefront", "type": "path", "path": "scripts/no-llm-ci.sh", "expect": "present" },
+        { "id": "ai-page-names-gate", "type": "count", "path": "ai/index.html", "pattern": "no-LLM|no LLM|no-llm", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "FV-03",
+      "theme": "trust",
+      "date": "2026-07-11",
+      "source": "docs/handoff/founder-vision.md:22",
+      "decision": "Lever 2 — make PII/data competence unmistakable and visceral on the storefront.",
+      "probes": [
+        { "id": "promises-onsite", "type": "count", "path": "security/index.html", "pattern": "viz-flow", "expect": { "min": 1 } },
+        { "id": "seal-strip", "type": "count", "path": "security/index.html", "pattern": "RFC 9116|SHA-256|CSP", "expect": { "min": 2 } }
+      ]
+    },
+    {
+      "id": "FV-04",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/founder-vision.md:46",
+      "decision": "North star already in hand — extend the real app's financial-grade design system (slate ramp, electric-blue #3b68f5, Inter + tabular numerics, serif retired from chrome, dark-first) site-wide.",
+      "supersededBy": "V3-ACCENT",
+      "conflictsWith": ["V3-SERIF"],
+      "conflictNote": "The audit's own §3 correction says the 'two design languages' fork is CLOSED and the token spine is hash-locked. What actually shipped (V3) kept Fraunces globally on h1–h4 and kept the accent at #2A50C8 renamed 'blue' — so the decision as written was never executed, and the doc that says it is open is stale about a different thing.",
+      "probes": [
+        { "id": "electric-blue-token", "type": "count", "path": "assets/site.css", "pattern": "3b68f5", "expect": { "min": 1 } },
+        { "id": "serif-retired-from-chrome", "type": "count", "path": "assets/site.css", "pattern": "h1,h2,h3,h4\\{font-family:var\\(--font-display\\)", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "FV-05",
+      "theme": "cost-index",
+      "date": "2026-07-11",
+      "source": "docs/handoff/founder-vision.md:53",
+      "decision": "CORRECTION — the Cost Index is MONTHLY, so do NOT build retention on a weekly ritual. Re-weight to free tools (everyday) + cost-movement alerts (triggered) + the monthly edition as the email event.",
+      "probes": [
+        { "id": "cadence-monthly", "type": "count", "path": "cost-index/index.html", "pattern": "monthly|first Tuesday", "flags": "i", "expect": { "min": 1 } },
+        { "id": "alerts-shipped", "type": "files", "root": "src", "ext": [".js"], "pattern": "spike-alert|movement alert|costAlert", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "FV-06",
+      "theme": "positioning",
+      "date": "2026-07-11",
+      "source": "docs/handoff/founder-vision.md:67",
+      "decision": "THE EMOTIONAL PIVOT — stop making the site defend itself. Trust goes AMBIENT (stated once, quietly); 'published failure as identity' is RETIRED as a headline. The axis is the operator's experience, not our virtue.",
+      "conflictsWith": ["BP-DISTINCT"],
+      "conflictNote": "site-reinvention-blueprint.md:34 names 'published failure as visual identity' as one of the two ownable moats to protect in every phase. founder-vision.md:93 retires it as a headline nine lines of doc later. Both documents are still cited as sources of truth by reinvention-master-plan.md.",
+      "probes": [
+        { "id": "trust-strip-once", "type": "count", "path": "index.html", "pattern": "trust-strip|ambient", "expect": { "min": 1 } },
+        { "id": "trust-cluster-collapsed", "type": "path", "path": "receipts/index.html", "expect": "absent" }
+      ]
+    },
+    {
+      "id": "FV-07",
+      "theme": "positioning",
+      "date": "2026-07-11",
+      "source": "docs/handoff/founder-vision.md:125",
+      "decision": "THE POSITIONING PIVOT — present as a capable company, not a solo face. No founder photo, no 'it's one person' as the credibility; lead with product capability and craft in the company voice.",
+      "conflictsWith": ["BP-FOUNDER-BAND", "SM-STUDIO"],
+      "conflictNote": "The blueprint (l.136) and the surface map (l.21) both make a founder band with a real headshot, first-person one-liner and Person JSON-LD the centrepiece of /studio/. The positioning pivot removed exactly that. Neither doc was updated; both are still listed as feeds of the master plan.",
+      "probes": [
+        { "id": "no-portrait-on-studio", "type": "count", "path": "studio/index.html", "pattern": "portrait/don", "expect": { "eq": 0 } },
+        { "id": "company-voice-gate", "type": "path", "path": "scripts/check-studio-voice-boundary.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "FV-08",
+      "theme": "trust",
+      "date": "2026-07-11",
+      "source": "docs/handoff/founder-vision.md:144",
+      "decision": "THE HONESTY BOUNDARY (hard line) — we may project capability, use the company 'we' and decline to publish headcount, but may NEVER fabricate a team, invent 'our engineers', or claim a scale that does not exist.",
+      "principle": true,
+      "encodedIn": "scripts/check-studio-voice-boundary.mjs",
+      "probes": [
+        { "id": "gate-exists", "type": "path", "path": "scripts/check-studio-voice-boundary.mjs", "expect": "present" },
+        { "id": "gate-wired", "type": "count", "path": "scripts/check-all.mjs", "pattern": "check-studio-voice-boundary", "expect": { "min": 1 } },
+        { "id": "fabrication-gate", "type": "count", "path": "scripts/check-all.mjs", "pattern": "check-fabrications", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "FV-09",
+      "theme": "governance",
+      "date": "2026-07-11",
+      "source": "docs/handoff/founder-vision.md:120",
+      "decision": "Guardrails the reinvention must never break: the absolute fact/honesty gates, EN↔ES parity, performance budgets, accessibility, the CI gate suite.",
+      "principle": true,
+      "encodedIn": "scripts/check-all.mjs",
+      "probes": [
+        { "id": "gate-count", "type": "files", "root": "scripts", "ext": [".mjs"], "pattern": "^#!/usr/bin/env node|^import ", "expect": { "min": 100 } },
+        { "id": "parity-gate-exists", "type": "path", "path": "scripts/check-locale-parity.mjs", "expect": "present" },
+        { "id": "parity-gate-enforces", "type": "count", "path": "scripts/check-locale-parity.mjs", "pattern": "warn-only mode during initial rollout", "expect": { "eq": 0 } }
+      ]
+    },
+
+    {
+      "id": "BP-DISTINCT",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-reinvention-blueprint.md:31",
+      "decision": "The two ownable, uncopyable identity assets are (a) the muntin/window-grille promoted from a load flourish to the STRUCTURAL layout grammar and (b) published failure as visual identity. Protect both in every phase.",
+      "conflictsWith": ["FV-06"],
+      "probes": [
+        { "id": "grille-exported", "type": "files", "root": ".", "ext": [".html"], "pattern": "class=\"muntin\"", "expect": { "min": 20 } },
+        { "id": "miss-rate-designed", "type": "count", "path": "cost-index/index.html", "pattern": "miss rate|realized coverage|withheld", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BP-ACCENT",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-reinvention-blueprint.md:60",
+      "decision": "One electric-blue accent #3b68f5 (light) / #5b82ff (dark); retire warm teal #2A50C8 as the accent; KILL the warm layer — goldenhour gradient, marigold #FFB020, coral, amber, peach, #FAF7F2 chrome.",
+      "supersededBy": "V3-ACCENT",
+      "conflictsWith": ["WC-GOLDENHOUR"],
+      "conflictNote": "The blueprint orders the goldenhour gradient killed; the warmth plan (2026-07-17) makes that exact token layer 'the sanctioned warmth vehicle' and ships a Golden-Hour whisper on top of it.",
+      "probes": [
+        { "id": "teal-retired", "type": "count", "path": "assets/site.css", "pattern": "--teal:#2A50C8", "expect": { "eq": 0 } },
+        { "id": "marigold-killed", "type": "files", "root": "assets", "ext": [".css"], "pattern": "FFB020", "flags": "i", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "BP-CONTRAST",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-reinvention-blueprint.md:66",
+      "decision": "Mandatory contrast fixes: small-text links use --accent-text #2a50c8 (because #3b68f5 fails AA on white), and status may never rely on hue alone — every verdict and signed delta carries a glyph.",
+      "probes": [
+        { "id": "accent-text-token", "type": "count", "path": "assets/site.css", "pattern": "--accent-text", "expect": { "min": 1 } },
+        { "id": "contrast-gate", "type": "path", "path": "scripts/check-contrast.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "BP-DARK",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-reinvention-blueprint.md:70",
+      "decision": "Dark-first is canon — site-article.css has ZERO dark rules and hardcodes gold/green; ship a real dark pass so the viz-* families are pixel-perfect in both themes.",
+      "probes": [
+        { "id": "article-css-dark", "type": "count", "path": "assets/site-article.css", "pattern": "prefers-color-scheme", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BP-SERIF",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-reinvention-blueprint.md:72",
+      "decision": "Demote Fraunces to editorial only; move the nav logo, footer headings and tool/price figures to Inter — '$19 in serif reads boutique; in tabular Inter it reads software'.",
+      "supersededBy": "V3-SERIF",
+      "probes": [
+        { "id": "global-serif-rule-gone", "type": "count", "path": "assets/site.css", "pattern": "h1,h2,h3,h4\\{font-family:var\\(--font-display\\)", "expect": { "eq": 0 } },
+        { "id": "price-in-inter", "type": "count", "path": "ledger/index.html", "pattern": "lg-pricing", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "BP-PILLS",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-reinvention-blueprint.md:80",
+      "decision": "Import the 4px/8px scale; three width measures (560/760/1200); buttons become 6px rects — retire the 999px pills except for chips and status.",
+      "probes": [
+        { "id": "pills-retired", "type": "count", "path": "assets/site.css", "pattern": "999px", "expect": { "max": 20 } },
+        { "id": "radius-tokens", "type": "count", "path": "assets/site.css", "pattern": "--r-sm:6px", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BP-TWO-LANE",
+      "theme": "trust",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-reinvention-blueprint.md:99",
+      "decision": "Two-lane reframe on /security/ and /trust/: free tools and sheets HOLD NOTHING (verify in DevTools) vs Ledger/billing HOLD REAL DATA — here is exactly how. Pull the Ledger /promises PII proof on-site.",
+      "probes": [
+        { "id": "two-lane", "type": "count", "path": "security/index.html", "pattern": "hold nothing|holds nothing|two lanes", "flags": "i", "expect": { "min": 1 } },
+        { "id": "promises-onsite", "type": "count", "path": "security/index.html", "pattern": "ledger.muntin.digital/promises", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "BP-SEALS",
+      "theme": "trust",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-reinvention-blueprint.md:107",
+      "decision": "Ship an honest seal strip designed to the incumbents' visual bar where EVERY seal links to its proof — DevTools-verifiable, cookieless, CC0, SHA-256, RFC 9116, the no-LLM CI gate, 72h breach notice, plus the shipped CSP/HSTS headers and a link to the public Actions run.",
+      "probes": [
+        { "id": "seal-strip", "type": "count", "path": "security/index.html", "pattern": "RFC 9116", "expect": { "min": 1 } },
+        { "id": "actions-link", "type": "count", "path": "security/index.html", "pattern": "github.com/.*actions", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BP-STATUS",
+      "theme": "trust",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-reinvention-blueprint.md:116",
+      "decision": "A real /status/ board — live Cost-Index last-refresh, gate state, backtest calibration, uptime — measured, never asserted. A published SLA you don't measure is the exact lie the company exists not to tell.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "status-live-refresh", "type": "count", "path": "status/index.html", "pattern": "last refresh|last-refresh|asOf", "flags": "i", "expect": { "min": 1 } },
+        { "id": "status-injector", "type": "files", "root": "scripts", "ext": [".mjs"], "pattern": "status/index.html", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BP-FEEDLLM",
+      "theme": "trust",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-reinvention-blueprint.md:121",
+      "decision": "Reconcile feed-llm.json against 'no LLM reads your documents' with one line (public content feed ≠ private-doc processing) before a skeptic screenshots it.",
+      "probes": [
+        { "id": "reconciliation-line", "type": "files", "root": "ai", "ext": [".html"], "pattern": "public content feed|content feed is not|feed .{0,30}not .{0,30}your documents", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BP-FORMS",
+      "theme": "trust",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-reinvention-blueprint.md:124",
+      "decision": "P0 — the founding-list and newsletter handlers flip to success on ANY resolved response and swallow errors; a form that fabricates 'check your inbox' on a 500 is off-brand for an honesty company. Rewrite to the window.js gold standard (res.ok + body, real error element, aria-busy, in-flight guard).",
+      "probes": [
+        { "id": "res-ok-gating", "type": "files", "root": "assets", "ext": [".js"], "pattern": "res\\.ok|response\\.ok", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BP-FOUNDER-BAND",
+      "theme": "positioning",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-reinvention-blueprint.md:136",
+      "decision": "Put a founder band on /studio/ — real headshot (/about/portrait/don.avif), first-person one-liner, '— Don' signature, the 4-hour promise, and Person JSON-LD (#person-don).",
+      "supersededBy": "FV-07",
+      "conflictsWith": ["FV-07"],
+      "probes": [
+        { "id": "portrait", "type": "count", "path": "studio/index.html", "pattern": "portrait/don", "expect": { "min": 1 } },
+        { "id": "person-jsonld", "type": "count", "path": "studio/index.html", "pattern": "\"@type\"\\s*:\\s*\"Person\"", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BP-SECURITY-COUNT",
+      "theme": "trust",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-reinvention-blueprint.md:129",
+      "decision": "Precision fix — /security/ miscounts its own claims (H2 'ten' vs headline 'nine' vs ItemList 9→11) and /trust/'s WebPage schema description is the AI page's text. An honesty brand cannot miscount itself.",
+      "probes": [
+        { "id": "single-count-word", "type": "count", "path": "security/index.html", "pattern": "\\bnine\\b", "flags": "i", "expect": { "eq": 0 } }
+      ]
+    },
+
+    {
+      "id": "SM-REGISTERS",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:19",
+      "decision": "Give every surface class its own distinct register in one system — home = live control room, about = origin dossier, studio = operating prospectus, learn = reading room, for/restaurants = category field-guide.",
+      "probes": [
+        { "id": "registers-in-css", "type": "files", "root": "assets", "ext": [".css"], "pattern": "control-room|register--|pane-register", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "SM-TRUST-COLLAPSE",
+      "theme": "trust",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:28",
+      "decision": "Collapse the nine gray trust walls into one visual hub plus a few genuinely distinct panes; merge /receipts/ into /status/; demote /never/ to ambient chips at point-of-input.",
+      "probes": [
+        { "id": "receipts-merged", "type": "path", "path": "receipts/index.html", "expect": "absent" },
+        { "id": "never-demoted", "type": "path", "path": "never/index.html", "expect": "absent" }
+      ]
+    },
+    {
+      "id": "SM-STUDIO",
+      "theme": "positioning",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:21",
+      "decision": "/studio/ becomes the operating prospectus — investor-grade fact sheet, founder band (real face, first-person, 4-hour promise, Person JSON-LD) and the no-LLM CI build-gate as a designed hero artifact.",
+      "supersededBy": "FV-07",
+      "conflictsWith": ["FV-07"],
+      "probes": [
+        { "id": "founder-band", "type": "count", "path": "studio/index.html", "pattern": "portrait/don|\"@type\"\\s*:\\s*\"Person\"", "expect": { "min": 1 } },
+        { "id": "no-llm-artifact", "type": "count", "path": "studio/index.html", "pattern": "no-LLM|no-llm", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "SM-COURSE",
+      "theme": "content-prune",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:97",
+      "decision": "The 27-page /course/ cluster is KEPT FROZEN and demoted from the funnel — explicitly do NOT redirect it (real ranking/backlink equity; a 301 would burn it).",
+      "supersededBy": "BD-COURSE-RETIRED",
+      "conflictsWith": ["BD-COURSE-RETIRED"],
+      "conflictNote": "The surface map says freeze-don't-redirect on backlink-equity grounds; 17 days later the whole subsystem was torn out and 301'd to /cost-index/. The equity argument was never rebutted in writing — it was simply overtaken.",
+      "probes": [
+        { "id": "course-alive", "type": "path", "path": "course/index.html", "expect": "present" }
+      ]
+    },
+    {
+      "id": "SM-LEARN-301",
+      "theme": "content-prune",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:98",
+      "decision": "Retire /learn/ and /learn/start-here/ with a 301 to /library/ (duplicate hubs carrying live honesty defects), and 301 the five /learn/research/ external notes to /methods/ (cited-in-0).",
+      "probes": [
+        { "id": "learn-hub-gone", "type": "path", "path": "learn/index.html", "expect": "absent" },
+        { "id": "research-gone", "type": "path", "path": "learn/research/index.html", "expect": "absent" }
+      ]
+    },
+    {
+      "id": "SM-METHOD-301",
+      "theme": "content-prune",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:103",
+      "decision": "Retire the /method/ manifesto + workshop + 18 widgets (20 pages) with a 301 to /studio/, salvaging the widget gallery as a craft exhibit plus the three tenets.",
+      "probes": [
+        { "id": "method-gone", "type": "path", "path": "method/index.html", "expect": "absent" },
+        { "id": "redirect-exists", "type": "count", "path": "src/worker.js", "pattern": "/method/", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "SM-SHEETS-PRUNE",
+      "theme": "content-prune",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:88",
+      "decision": "Sheets disposition — 301 the local-seo pack (5), the conversions remainder (3) and the brand-design pack (6); freeze/delink the 15 course-bootcamp companions; reclaim third-party-channel-pnl and daypart-traffic-map into Operations & Margin.",
+      "probes": [
+        { "id": "course-sheets-gone", "type": "dirs", "root": "sheets", "requireFile": "index.html", "expect": { "max": 45 } },
+        { "id": "brand-pack-gone", "type": "files", "root": "sheets", "ext": [".html"], "pattern": "brand-design|local-seo", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "SM-GLOSSARY-DEMOTE",
+      "theme": "content-prune",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:79",
+      "decision": "Glossary — keep and PROMOTE the ~45 cost-core terms (wire each to a live number and a one-tap tool); demote and freeze the ~108 retired web/SEO/design terms into a collapsed legacy band; merge ~10 near-duplicates.",
+      "probes": [
+        { "id": "terms-count", "type": "dirs", "root": "glossary", "requireFile": "index.html", "expect": { "max": 150 } },
+        { "id": "live-number-wired", "type": "files", "root": "glossary", "ext": [".html"], "pattern": "href=\"/cost-index/[a-z][a-z-]+/\"", "expect": { "min": 30 } }
+      ]
+    },
+    {
+      "id": "SM-GLOSSARY-INTEGRITY",
+      "theme": "content-prune",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:110",
+      "decision": "Fix glossary integrity — 120 of 171 terms render 'Used in: Nothing yet' and some links 404.",
+      "probes": [
+        { "id": "nothing-yet", "type": "files", "root": "glossary", "ext": [".html"], "pattern": "Nothing yet", "expect": { "max": 20 } }
+      ]
+    },
+    {
+      "id": "SM-BLOG-HUB",
+      "theme": "content-prune",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:72",
+      "decision": "Rebuild /blog/ as a market-desk front page with the live Cost Index read as the hero tile and a separate 'getting-found archive' shelf for the 7 retired SEO posts.",
+      "probes": [
+        { "id": "live-read-hero", "type": "count", "path": "blog/index.html", "pattern": "cost-index", "expect": { "min": 3 } },
+        { "id": "archive-shelf", "type": "count", "path": "blog/index.html", "pattern": "archive|getting found", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "SM-P0-FATHERSDAY",
+      "theme": "trust",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:183",
+      "decision": "P0 — remove the stale hard-coded 'Father's Day weekend 2026' batch banner globally (it points at a retired SEO dispatch and was live on nearly every surface).",
+      "probes": [
+        { "id": "banner-gone", "type": "files", "root": ".", "ext": [".html"], "pattern": "Father's Day|Fathers Day", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "SM-P0-CADENCE",
+      "theme": "cost-index",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:185",
+      "decision": "P0 — reconcile the cadence stated four different ways at once ('Mon/Wed/Fri', 'weekly read', 'four notes a quarter', 'monthly first Tuesday') to: publication = monthly, source cadence = each series' native rhythm, plus spike alerts.",
+      "probes": [
+        { "id": "no-quarterly-promise", "type": "files", "root": ".", "ext": [".html"], "pattern": "four notes a quarter", "expect": { "eq": 0 } },
+        { "id": "llms-txt-reconciled", "type": "count", "path": "llms.txt", "pattern": "publishes weekly", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "SM-P0-ANCHOR",
+      "theme": "cost-index",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:186",
+      "decision": "P0 — the hub must never render a stale anchor. Feed the composite from the freshest edition and render a designed 'held — here's why' state instead of a silent stale number.",
+      "probes": [
+        { "id": "held-state", "type": "count", "path": "cost-index/index.html", "pattern": "held|withheld", "flags": "i", "expect": { "min": 1 } },
+        { "id": "hero-builder", "type": "files", "root": "scripts", "ext": [".mjs"], "pattern": "cost-index-hero|inject-cost-index", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "SM-COUNT-DRIFT",
+      "theme": "trust",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:198",
+      "decision": "One reconciliation pass on number/count drift — security counts its claims four ways, topic counts run 6/7/8/9, widgets '19/19' vs 18, 'six languages' audio after fr/it/pt/zh were cut, operator experience '14 years / a decade / ~9.5 yrs', sheets '31/30/thirty-one'.",
+      "probes": [
+        { "id": "six-languages-gone", "type": "files", "root": ".", "ext": [".html"], "pattern": "six languages", "flags": "i", "expect": { "eq": 0 } },
+        { "id": "counts-sentinelled", "type": "path", "path": "data/site-counts.json", "expect": "present" }
+      ]
+    },
+    {
+      "id": "SM-LIBRARY-HREFS",
+      "theme": "content-prune",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:204",
+      "decision": "Teach the EN blog hub and glossary 'Read' column to emit canonical /library/ hrefs instead of /blog/<slug>/ hrefs that only work through a hand-maintained 182-line Worker redirect map.",
+      "probes": [
+        { "id": "canonical-hrefs", "type": "count", "path": "blog/index.html", "pattern": "href=\"/library/", "expect": { "min": 5 } }
+      ]
+    },
+    {
+      "id": "SM-CALL-CTAS",
+      "theme": "content-prune",
+      "date": "2026-07-11",
+      "source": "docs/handoff/every-surface-map.md:196",
+      "decision": "Remove the 'book a call / 20 minutes' CTAs that contradict the Window's async 4-hour-reply model; reconcile everything to the CTA canon.",
+      "probes": [
+        { "id": "no-call-ctas", "type": "files", "root": ".", "ext": [".html"], "pattern": "book a (20-minute )?call|20-minute call", "flags": "i", "expect": { "eq": 0 } }
+      ]
+    },
+
+    {
+      "id": "MP-VERDICT",
+      "theme": "content-prune",
+      "date": "2026-07-11",
+      "source": "docs/handoff/reinvention-master-plan.md:26",
+      "decision": "The strategic verdict is PRUNE → REFOCUS → ELEVATE, not a re-skin: the site is a cost-intelligence company buried under a retired web-agency's content mountain.",
+      "probes": [
+        { "id": "positioning-gate", "type": "path", "path": "scripts/check-positioning-drift.mjs", "expect": "present" },
+        { "id": "agency-mass-pruned", "type": "path", "path": "learn/index.html", "expect": "absent" }
+      ]
+    },
+    {
+      "id": "MP-BRIEF",
+      "theme": "retention",
+      "date": "2026-07-11",
+      "source": "docs/handoff/reinvention-master-plan.md:64",
+      "decision": "Build 'The Operator's Brief' — a monthly curated multi-desk digest (Market / Supply / Distributor / Policy-labor / From the Floor / eventually the Ledger flywheel desk) in which the index is ONE desk, not the show. Build the format now; prove it in the August edition.",
+      "probes": [
+        { "id": "brief-named-anywhere", "type": "files", "root": ".", "ext": [".html", ".json", ".mjs", ".yml"], "pattern": "Operator.s Brief", "expect": { "min": 1 } },
+        { "id": "multi-desk-structure", "type": "files", "root": "scripts", "ext": [".mjs"], "pattern": "The Move|On the Horizon|desk", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "MP-ALERTS",
+      "theme": "retention",
+      "date": "2026-07-11",
+      "source": "docs/handoff/reinvention-master-plan.md:72",
+      "decision": "Event-spike alerts are the real return engine — 'a thing YOU buy moved enough to matter': materiality-gated, magnitude-honest, and sometimes 'no change — you're fine'.",
+      "probes": [
+        { "id": "alert-engine", "type": "files", "root": "src", "ext": [".js"], "pattern": "spikeAlert|spike_alert|movement alert", "expect": { "min": 1 } },
+        { "id": "alert-optin", "type": "files", "root": ".", "ext": [".html"], "pattern": "alert me when|tell me when it moves", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "MP-CUT-CONSUMER",
+      "theme": "retention",
+      "date": "2026-07-11",
+      "source": "docs/handoff/reinvention-master-plan.md:78",
+      "decision": "Cut the cargo-culted consumer mechanics — streak counter, tribe framing, countdown-to-next-edition, continue-where-you-left-off. Ruthless scope is itself the strategy for a one-person shop.",
+      "probes": [
+        { "id": "no-streak", "type": "files", "root": ".", "ext": [".html", ".js"], "pattern": "publish streak|streak counter|countdown to (the )?next edition", "flags": "i", "expect": { "eq": 0 } },
+        { "id": "no-anon-continue", "type": "files", "root": "assets", "ext": [".js", ".css"], "pattern": "continue where you left off|welcome back", "flags": "i", "expect": { "eq": 0 } },
+        { "id": "chip-still-styled", "role": "contradiction", "type": "count", "path": "assets/site.css", "pattern": "Continue where you left off", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "MP-LIBRARY-DISP",
+      "theme": "content-prune",
+      "date": "2026-07-11",
+      "source": "docs/handoff/reinvention-master-plan.md:109",
+      "decision": "Library disposition of the 39 articles: KEEP 13 cost-spine pieces, UPGRADE 14, REWRITE 3 onto the funnel, RETIRE→301 9 (menu-design hubs + pure web-agency), FREEZE 3 high-equity SEO pieces; re-thread the internal link graph toward the funnel.",
+      "probes": [
+        { "id": "library-count-fell", "type": "dirs", "root": "library", "requireFile": "index.html", "expect": { "max": 35 } },
+        { "id": "menu-design-retired", "type": "path", "path": "library/menu-design-cuisines/index.html", "expect": "absent" }
+      ]
+    },
+    {
+      "id": "MP-PHASES",
+      "theme": "governance",
+      "date": "2026-07-11",
+      "source": "docs/handoff/reinvention-master-plan.md:119",
+      "decision": "Seven-phase roadmap in order: 0 correctness/staleness → 1 the prune → 2 re-pigment + design system → 3 retention engine → 4 trust destination + the human → 5 content refocus → 6 signature craft.",
+      "conflictsWith": ["XP-ORDER", "BP-PHASES"],
+      "conflictNote": "Three different phase ladders were written for the same reinvention within one day (master plan 0–6, blueprint 0–6, execution plan 0/A/B/C/D) with different contents in the same-numbered phases. None was ever marked as the survivor.",
+      "probes": [
+        { "id": "phase0-forms", "type": "files", "root": "assets", "ext": [".js"], "pattern": "res\\.ok", "expect": { "min": 1 } },
+        { "id": "phase1-prune", "type": "path", "path": "method/index.html", "expect": "absent" },
+        { "id": "phase3-retention", "type": "files", "root": ".", "ext": [".html"], "pattern": "Operator.s Brief", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BP-PHASES",
+      "theme": "governance",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-reinvention-blueprint.md:151",
+      "decision": "Blueprint's own seven-phase roadmap: 0 correctness/precision → 1 the one-move re-pigment (incl. re-rendering 287 OG cards, 404s, email templates, print CSS, favicons) → 2 make the proof visible → 3 the trust destination → 4 the human → 5 content polish → 6 signature craft.",
+      "conflictsWith": ["MP-PHASES", "XP-ORDER"],
+      "probes": [
+        { "id": "og-card-set-exists-NOT-a-rerender-proof", "type": "files", "root": "brand/og", "ext": [".png", ".avif", ".webp", ".svg"], "pattern": ".", "expect": { "min": 100 } },
+        { "id": "email-templates-repigmented", "type": "files", "root": "src", "ext": [".js"], "pattern": "3b68f5|5b82ff", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "XP-ORDER",
+      "theme": "governance",
+      "date": "2026-07-11",
+      "source": "docs/handoff/redesign-execution-plan.md:42",
+      "decision": "Founder directive: fold both plans together and execute the whole redesign autonomously overnight in a build → audit → iterate cadence, macro-first — Phase 0 correctness, Phase A lock the macro system, Phase B home, Phase C pane archetypes, Phase D components + long tail.",
+      "conflictsWith": ["MP-PHASES", "BP-PHASES"],
+      "probes": [
+        { "id": "phaseA-spec", "type": "path", "path": "docs/handoff/redesign-v3-system.md", "expect": "present" },
+        { "id": "phaseC-panes", "type": "files", "root": "assets", "ext": [".css"], "pattern": "pane-register|register--", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "XP-PHASE0",
+      "theme": "governance",
+      "date": "2026-07-11",
+      "source": "docs/handoff/redesign-execution-plan.md:44",
+      "decision": "Phase 0 open items: generator-owned pages still carry the old forms handler; the cost-index cadence contradiction → monthly everywhere + kill the stale-anchor open; /security/ claim-count + schema bugs.",
+      "probes": [
+        { "id": "security-count-fixed", "type": "count", "path": "security/index.html", "pattern": "\\bnine\\b", "flags": "i", "expect": { "eq": 0 } },
+        { "id": "cadence-everywhere", "type": "count", "path": "llms.txt", "pattern": "publishes weekly", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "XP-ACCENT",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/redesign-execution-plan.md:21",
+      "decision": "The locked macro accent is #2a50c8 on light / #5b82ff on dark (AA-safe), with a tabular mono carrying the data personality and Fraunces retired from chrome.",
+      "conflictsWith": ["BP-ACCENT"],
+      "conflictNote": "Written the same day as the blueprint, which locks #3b68f5 light / #5b82ff dark and calls #2A50C8 the warm accent to retire. The execution plan quietly restores #2a50c8 as THE accent. Nothing records which superseded which.",
+      "probes": [
+        { "id": "accent-light", "type": "count", "path": "assets/site.css", "pattern": "--teal:#2A50C8", "flags": "i", "expect": { "min": 1 } },
+        { "id": "accent-dark", "type": "count", "path": "assets/site.css", "pattern": "5b82ff", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+
+    {
+      "id": "V3-ACCENT",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/redesign-v3-system.md:26",
+      "decision": "SHIPPED v3: --teal IS the blue (#2A50C8 light / #7AA7FF dark) with cool neutrals and full dark mode. There is one accent token; do not introduce a parallel palette.",
+      "probes": [
+        { "id": "light", "type": "count", "path": "assets/site.css", "pattern": "--teal:#2A50C8", "expect": { "min": 1 } },
+        { "id": "dark", "type": "count", "path": "assets/site.css", "pattern": "--teal:\\s*#7AA7FF", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "V3-SERIF",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/redesign-v3-system.md:18",
+      "decision": "SHIPPED v3: the global h1,h2,h3,h4 → Fraunces rule is KEPT (splitting it would demote every article heading); only tight product-UI component titles opt down to Inter via scoped overrides.",
+      "conflictsWith": ["FV-04", "BP-SERIF"],
+      "conflictNote": "Directly reverses the blueprint's 'serif demoted to editorial only, move nav logo / footer headings / price figures to Inter'. V3 is the shipped reality; the blueprint and founder-vision still read as live instructions.",
+      "probes": [
+        { "id": "global-rule-kept", "type": "count", "path": "assets/site.css", "pattern": "h1,h2,h3,h4\\{font-family:var\\(--font-display\\)", "expect": { "eq": 1 } },
+        { "id": "mono-token", "type": "count", "path": "assets/site.css", "pattern": "--font-mono", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "V3-RADIUS",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/redesign-v3-system.md:15",
+      "decision": "SHIPPED v3: unified 6px hairline radius (--r-sm/--r-md/--r-input 6px, --r-lg 8px). Literal 999px pills and 50% circles are intentional and untouched.",
+      "conflictsWith": ["BP-PILLS"],
+      "conflictNote": "The blueprint orders the 999px pills retired; v3 declares them a deliberate keep. 73 occurrences remain in site.css.",
+      "probes": [
+        { "id": "radius", "type": "count", "path": "assets/site.css", "pattern": "--r-sm:6px", "expect": { "min": 1 } },
+        { "id": "pills-kept", "type": "count", "path": "assets/site.css", "pattern": "999px", "expect": { "min": 10 } }
+      ]
+    },
+    {
+      "id": "V3-EDITORIAL",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/redesign-v3-system.md:41",
+      "decision": "SHIPPED v3: editorial surfaces (library/blog articles, /about/, /studio/, viz-* graphics) keep Fraunces headings AND the Fraunces numeric voice — do not app-grade them. The glossary .gloss-term headwords stay Fraunces too.",
+      "conflictsWith": ["BP-DARK"],
+      "conflictNote": "v3 froze the editorial layer as a deliberate keep while the blueprint's mandatory dark pass for that same layer (site-article.css) was never done — it still has zero dark rules.",
+      "probes": [
+        { "id": "display-token", "type": "count", "path": "assets/site.css", "pattern": "--font-display", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "V3-NOHEX",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/redesign-v3-system.md:38",
+      "decision": "SHIPPED v3: tints come from color-mix on the accent token — never a new hardcoded hex. The css-drift gate holds the baseline.",
+      "principle": true,
+      "encodedIn": "scripts/check-css-drift.mjs",
+      "probes": [
+        { "id": "gate-exists", "type": "path", "path": "scripts/check-css-drift.mjs", "expect": "present" },
+        { "id": "gate-wired", "type": "count", "path": "scripts/check-all.mjs", "pattern": "check-css-drift", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "V3-EXTEND",
+      "theme": "design-system",
+      "date": "2026-07-11",
+      "source": "docs/handoff/redesign-v3-system.md:76",
+      "decision": "Checklist for any NEW surface: use the tokens, pick app-vs-editorial grammar, token-only colour, regenerate all three CSS shells, preserve sentinels, mirror EN→ES, and edit the INJECTOR template rather than the output.",
+      "principle": true,
+      "encodedIn": "scripts/build-css-shells.mjs",
+      "probes": [
+        { "id": "shell-builder", "type": "path", "path": "scripts/build-css-shells.mjs", "expect": "present" },
+        { "id": "shells-checked", "type": "count", "path": "scripts/check-all.mjs", "pattern": "build-css-shells", "expect": { "min": 1 } }
+      ]
+    },
+
+    {
+      "id": "WC-ONDEVICE",
+      "theme": "warmth",
+      "date": "2026-07-17",
+      "source": "docs/handoff/warmth-cohesion-plan.md:11",
+      "decision": "Warmth is light through the pane, not paint on the wall: every warm signal is computed on the reader's OWN device from what the browser already knows and is sent NOWHERE. The personalization IS the privacy moat.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "warmth-module", "type": "path", "path": "assets/js/warmth.js", "expect": "present" },
+        { "id": "no-fetch-in-warmth", "type": "count", "path": "assets/js/warmth.js", "pattern": "fetch\\(|XMLHttpRequest|sendBeacon", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "WC-SUBSTRATE",
+      "theme": "warmth",
+      "date": "2026-07-17",
+      "source": "docs/handoff/warmth-cohesion-plan.md:36",
+      "decision": "Move 2 — ship warmth.js as one fetch-free footer module composing only on-device signals and decorating opt-in [data-warmth-*] mounts, no-op when a signal or mount is absent.",
+      "probes": [
+        { "id": "module", "type": "path", "path": "assets/js/warmth.js", "expect": "present" },
+        { "id": "in-footer-template", "type": "count", "path": "_includes/footer.html", "pattern": "warmth\\.js", "expect": { "min": 1 } },
+        { "id": "in-es-footer", "type": "count", "path": "_includes/es/footer.html", "pattern": "warmth\\.js", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "WC-GOLDENHOUR",
+      "theme": "warmth",
+      "date": "2026-07-17",
+      "source": "docs/handoff/warmth-cohesion-plan.md:106",
+      "decision": "Founder decision 1 — Golden-Hour loudness is a WHISPER: warmth.js leans the empty hero corner a hair warmer toward evening via --gh-eve, byte-identical to certified at midday and with JS off.",
+      "conflictsWith": ["BP-ACCENT"],
+      "probes": [
+        { "id": "gh-eve-token", "type": "count", "path": "assets/site.css", "pattern": "gh-eve", "expect": { "min": 1 } },
+        { "id": "goldenhour-layer", "type": "count", "path": "assets/site-core.css", "pattern": "goldenhour", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "WC-CONTINUITY",
+      "theme": "warmth",
+      "date": "2026-07-17",
+      "source": "docs/handoff/warmth-cohesion-plan.md:110",
+      "decision": "Founder decision 2 — the 'where you left off' continuity cue ships ONLY for signed-in Workshop users. Anonymous visitors keep the 'no welcome back' promise (published Claim 8) intact.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "no-anon-welcome", "type": "files", "root": "assets", "ext": [".js", ".css"], "pattern": "welcome back|where you left off", "flags": "i", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "WC-NOCOOKIE",
+      "theme": "warmth",
+      "date": "2026-07-17",
+      "source": "docs/handoff/warmth-cohesion-plan.md:113",
+      "decision": "Founder decision 3 — CUT the cross-subdomain mun_pref cookie. Each property independently honours the OS theme and system language; consistency comes from the user's machine, not a carried cookie.",
+      "probes": [
+        { "id": "no-mun-pref", "type": "files", "root": ".", "ext": [".js", ".html"], "pattern": "mun_pref", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "WC-CI-HERO",
+      "theme": "warmth",
+      "date": "2026-07-17",
+      "source": "docs/handoff/warmth-cohesion-plan.md:129",
+      "decision": "The /cost-index/<key>/ ingredient pages use .ci-hero — a data-first text block with no warm pane — and deliberately get NO Golden-Hour gradient; they express warmth through cohesion (breadcrumbs, reference links, dispatch cross-links) instead.",
+      "probes": [
+        { "id": "ci-hero-class", "type": "files", "root": "cost-index", "ext": [".html"], "pattern": "ci-hero", "expect": { "min": 50 } },
+        { "id": "no-gh-on-ci-hero", "type": "count", "path": "assets/site.css", "pattern": "\\.ci-hero::after", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "WC-REGEN-RULE",
+      "theme": "governance",
+      "date": "2026-07-17",
+      "source": "docs/handoff/warmth-cohesion-plan.md:67",
+      "decision": "Always run the cost-index post-generator injector chain (inject-cost-index-{basket-weights,calibration,dataset-date,speakable}) after build-cost-index-pages — the spec's regen sequence omitted it and briefly red-flagged two gates.",
+      "probes": [
+        { "id": "injectors-exist", "type": "files", "root": "scripts", "ext": [".mjs"], "pattern": "^/\\*|^#!", "expect": { "min": 100 } },
+        { "id": "chain-in-wrangler", "type": "count", "path": "wrangler.jsonc", "pattern": "inject-cost-index-", "expect": { "min": 3 } }
+      ]
+    },
+
+    {
+      "id": "RT-TRUTH",
+      "theme": "retention",
+      "date": "2026-07-11",
+      "source": "docs/handoff/retention-strategy.md:13",
+      "decision": "The deep truth: honesty and frequency are in direct conflict, because honest cost data is mostly boring. A frequent bare index cannot be the habit — retention lives at monthly + event-driven spikes.",
+      "probes": [
+        { "id": "monthly-everywhere", "type": "count", "path": "cost-index/index.html", "pattern": "monthly", "flags": "i", "expect": { "min": 1 } },
+        { "id": "spike-channel", "type": "files", "root": "src", "ext": [".js"], "pattern": "spike", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "RT-EMAIL",
+      "theme": "retention",
+      "date": "2026-07-11",
+      "source": "docs/handoff/retention-strategy.md:70",
+      "decision": "One email — default MONTHLY digest plus opt-in event-spike alerts, captured inline at the point of value; weekly only as an explicit power-user upgrade.",
+      "probes": [
+        { "id": "capture-at-value", "type": "files", "root": ".", "ext": [".html"], "pattern": "action=\"/api/(waitlist|subscribe)\"", "expect": { "min": 30 } },
+        { "id": "broadcast-source-filter", "type": "count", "path": "src/worker.js", "pattern": "sub\\.source !== 'cost-index'", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "RT-SAVE-LOOP",
+      "theme": "retention",
+      "date": "2026-07-11",
+      "source": "docs/handoff/retention-strategy.md:41",
+      "decision": "The tools' honest save is the bridge: 'save this, we'll tell you when it moves' — no signup, local-first, feeding the alerts and personalising the Brief.",
+      "probes": [
+        { "id": "shared-bus", "type": "files", "root": "tools", "ext": [".js", ".html"], "pattern": "MuntinContext", "expect": { "min": 5 } },
+        { "id": "save-to-alert-wired", "type": "files", "root": "tools", "ext": [".js"], "pattern": "watchList|saveAndWatch|alertOn", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "RT-MEASURE",
+      "theme": "retention",
+      "date": "2026-07-11",
+      "source": "docs/handoff/retention-strategy.md:93",
+      "decision": "Measure return-that-drives-action (tool re-runs, Ledger logins, basket edits), never open rate. Retention theater is a beautiful honest machine nobody opens.",
+      "probes": [
+        { "id": "kpis-are-retention", "type": "count", "path": "data/kpis.json", "pattern": "re-run|rerun|basket edit|return", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+
+    {
+      "id": "TS-MIGRATION",
+      "theme": "tools",
+      "date": "2026-07-11",
+      "source": "docs/handoff/tools-strategy.md:7",
+      "decision": "The tools work is MIGRATION + DELETION, not construction: the five calculators are good, the save→watch→alert→Brief loop is ~90% already coded but unwired, broken, sign-in-gated or pointed at retired tools.",
+      "probes": [
+        { "id": "five-tools", "type": "dirs", "root": "tools", "requireFile": "index.html", "expect": { "eq": 5 } },
+        { "id": "loop-wired", "type": "files", "root": "tools", "ext": [".js"], "pattern": "watchList|saveAndWatch", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "TS-CUT-MUSEUM",
+      "theme": "tools",
+      "date": "2026-07-11",
+      "source": "docs/handoff/tools-strategy.md:24",
+      "decision": "CUT /tools/start/ (a museum claiming '17 calculators' that routes to ~15 retired ends) and /tools/audits/ (off-funnel SEO register, broken primary CTA, banned 'coming soon' cards) — 301 both to the tools hub.",
+      "probes": [
+        { "id": "start-gone", "type": "path", "path": "tools/start/index.html", "expect": "absent" },
+        { "id": "audits-gone", "type": "path", "path": "tools/audits/index.html", "expect": "absent" }
+      ]
+    },
+    {
+      "id": "TS-UNIFY",
+      "theme": "tools",
+      "date": "2026-07-11",
+      "source": "docs/handoff/tools-strategy.md:27",
+      "decision": "Cost Pulse and Vendor Benchmark do DIFFERENT jobs — do not merge them; UNIFY them on one market-window engine, one verdict vocabulary, one save.",
+      "probes": [
+        { "id": "both-alive", "type": "path", "path": "tools/cost-pulse/index.html", "expect": "present" },
+        { "id": "shared-engine", "type": "files", "root": "tools/_shared", "ext": [".js"], "pattern": "cost-lockfloat|cost-conformal", "expect": { "min": 2 } }
+      ]
+    },
+    {
+      "id": "TS-P0-MENU",
+      "theme": "tools",
+      "date": "2026-07-11",
+      "source": "docs/handoff/tools-strategy.md:57",
+      "decision": "P0 live defect — the Menu Engineering 'Menu Converter' CTA destroys the operator's typed menu. Remove it.",
+      "probes": [
+        { "id": "converter-cta-gone", "type": "files", "root": "tools/menu-engineering", "ext": [".html", ".js"], "pattern": "menu-converter", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "TS-P0-OCR",
+      "theme": "tools",
+      "date": "2026-07-11",
+      "source": "docs/handoff/tools-strategy.md:58",
+      "decision": "P0 live defect — Plate Cost loads ~3MB of Tesseract wasm from cdn.jsdelivr.net, breaking the page's own 'no CDN / nothing leaves your browser' claim. Remove it.",
+      "probes": [
+        { "id": "tesseract-gone", "type": "files", "root": "tools", "ext": [".html", ".js"], "pattern": "tesseract", "flags": "i", "expect": { "eq": 0 } },
+        { "id": "no-fetch-gate", "type": "path", "path": "scripts/check-tool-no-fetch.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "TS-KILL-LIST",
+      "theme": "tools",
+      "date": "2026-07-11",
+      "source": "docs/handoff/tools-strategy.md:42",
+      "decision": "Delete the dead code shipping as liability: cascade.js (broken in Margin Math + Menu Engineering), cost-anomaly.js (never referenced), the regimeBreakBlock stub, the duplicated plate-advice.js include, export sprawl, and the Vendor Benchmark conformal-forecast block.",
+      "probes": [
+        { "id": "cascade-gone", "type": "files", "root": "tools", "ext": [".js", ".html"], "pattern": "cascade\\.js", "expect": { "eq": 0 } },
+        { "id": "cost-anomaly-gone", "type": "path", "path": "tools/_shared/cost-anomaly.js", "expect": "absent" },
+        { "id": "plate-advice-once", "type": "count", "path": "tools/plate-cost/index.html", "pattern": "plate-advice\\.js", "expect": { "max": 2 } }
+      ]
+    },
+
+    {
+      "id": "VB-DIRECTIVE",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:3",
+      "decision": "Founder directive — make Vendor Benchmark rival the biggest SaaS companies in power, UX and cutting-edge feel WITHIN the honest / on-device / no-backend / private-prices moat. Everything stays static HTML + vanilla JS, dual-locale, honesty-gated.",
+      "probes": [
+        { "id": "vb-alive", "type": "path", "path": "tools/vendor-benchmark/index.html", "expect": "present" },
+        { "id": "vb-es", "type": "path", "path": "es/tools/vendor-benchmark/index.html", "expect": "present" },
+        { "id": "no-backend", "type": "path", "path": "scripts/check-tool-no-fetch.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "VB-01-MOBILE",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:11",
+      "decision": "Rank 1 — mobile floor: 16px inputs (kill iOS zoom-on-focus) and a --vb-touch:44px target token applied to every control, clearing WCAG 2.5.5.",
+      "probes": [
+        { "id": "touch-token", "type": "files", "root": "tools/vendor-benchmark", "ext": [".html", ".css"], "pattern": "--vb-touch", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "VB-02-SHARD",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:18",
+      "decision": "Rank 2 — shard the 360KB history seed into one ~6KB file per item (data/ci-history/<item>.js), load only the picked item's shard, add an immutable cache rule and intent-gated prefetch.",
+      "probes": [
+        { "id": "shards", "type": "path", "path": "data/ci-history", "expect": "present" }
+      ]
+    },
+    {
+      "id": "VB-03-MOTION",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:25",
+      "decision": "Rank 3 — a render-epoch motion gate plus unified --vb-* motion tokens: animate on identity change, SNAP on keystroke recompute. Hard prerequisite for any signature motion.",
+      "probes": [
+        { "id": "motion-tokens", "type": "files", "root": "tools/vendor-benchmark", "ext": [".html", ".css", ".js"], "pattern": "--vb-ease|lastSig|identityChanged", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "VB-04-RING",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:32",
+      "decision": "Rank 4 — journal history spine: a capped newest-first ring per key instead of overwrite, so 'since your last check' reads durable storage rather than an in-memory variable lost on refresh.",
+      "probes": [
+        { "id": "ring-schema", "type": "files", "root": "tools/vendor-benchmark", "ext": [".js", ".html"], "pattern": "checks:\\s*\\[|checks\\[", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "VB-05-CONTEXT",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:39",
+      "decision": "Rank 5 — wire the loaded-but-never-read MUNTIN_COST_CONTEXT into a neutral ADR-012 context line, and mine the on-device 3-year series for an honest same-calendar-period seasonality baseline that withholds under two clean prior years.",
+      "probes": [
+        { "id": "context-read", "type": "files", "root": "tools/vendor-benchmark", "ext": [".js", ".html"], "pattern": "MUNTIN_COST_CONTEXT", "expect": { "min": 1 } },
+        { "id": "seasonality-module", "type": "path", "path": "tools/_shared/market-seasonality.js", "expect": "present" }
+      ]
+    },
+    {
+      "id": "VB-06-A11Y",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:46",
+      "decision": "Rank 6 — accessibility core: a real <h2> verdict heading reachable by heading navigation, aria-describedby on the bad-price hint, and an SVG aria-label built from the chart model so a blind user HEARS the withhold a sighted user sees.",
+      "probes": [
+        { "id": "verdict-heading", "type": "files", "root": "tools/vendor-benchmark", "ext": [".html", ".js"], "pattern": "vbVerdictH", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "VB-07-COUNTER",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:53",
+      "decision": "Rank 7 — the differentiated centrepiece: a live 'Prices on this device: N · Requests carrying them: 0' readout where the 0 is measured by a fetch/XHR/sendBeacon shim, plus a four-cell provenance nutrition strip (SOURCE / BASIS / AS OF / SCOPE) before the input.",
+      "probes": [
+        { "id": "live-counter", "type": "files", "root": "tools/vendor-benchmark", "ext": [".html", ".js"], "pattern": "Requests carrying|carrying your prices", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "VB-08-FIRSTRUN",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:60",
+      "decision": "Rank 8 — first-run aha: a singular 'See it work →' CTA, a ghost/skeleton readout using em-dashes never numerals, and a three-scenario switcher whose third scenario is 'Thin data — we hold the call', so onboarding demos the withhold.",
+      "probes": [
+        { "id": "scenario-switcher", "type": "files", "root": "tools/vendor-benchmark", "ext": [".html", ".js"], "pattern": "loadExample\\(\\s*['\"]|scenarioKey", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "VB-09-MEMORY",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:67",
+      "decision": "Rank 9 — activate memory: a 'while you were away' cold-load re-read of the wholesale reference's move since each journal entry, a pinned 'Your items' group in the picker, and vendor/volume recall on reopen.",
+      "probes": [
+        { "id": "away-digest", "type": "files", "root": "tools/vendor-benchmark", "ext": [".js", ".html"], "pattern": "while you were away|seenAt", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "VB-10-POWER",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:74",
+      "decision": "Rank 10 — power-user layer: paste-a-table, Enter-to-advance, single-key shortcuts, a '?' sheet, and a VB-scoped ⌘K palette registered in the capture phase so the site-wide Pagefind ⌘K is untouched elsewhere.",
+      "probes": [
+        { "id": "palette", "type": "files", "root": "tools/vendor-benchmark", "ext": [".js", ".html"], "pattern": "stopImmediatePropagation|cheat-sheet|vbPalette", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "VB-11-BOOK",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:81",
+      "decision": "Rank 11 — Your Book dashboard: a sortable portfolio table with per-item sparklines, a book-level header, drill-to-source, and an earned significance read that can only ever make VB more cautious.",
+      "probes": [
+        { "id": "book-table", "type": "files", "root": "tools/vendor-benchmark", "ext": [".js", ".html"], "pattern": "renderJournalRail|Your Book", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "VB-12-MOTION2",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:88",
+      "decision": "Rank 12 — signature motion: draw the divergence open via stroke-dashoffset, tween the hero gap, native view transitions — all gated on the rank-3 epoch flag, with no wedge when the data is thin.",
+      "probes": [
+        { "id": "dashoffset", "type": "files", "root": "tools/vendor-benchmark", "ext": [".js", ".html", ".css"], "pattern": "stroke-dashoffset", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "VB-13-SHARE",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:95",
+      "decision": "Rank 13 — a URL-fragment share codec storing integer cents, inbound hydration, a privacy-graduated 'Copy link' with the honest 'anyone you send this to can read these prices' disclosure, and local export/import.",
+      "probes": [
+        { "id": "codec", "type": "path", "path": "tools/_shared/vendor-benchmark-share.js", "expect": "present" }
+      ]
+    },
+    {
+      "id": "VB-14-PWA",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:102",
+      "decision": "Rank 14 — field + offline finish: navigator.share, a sticky thumb-arc verdict chip, a legible mobile chart, and an installable offline PWA caching only own static files and public shards.",
+      "probes": [
+        { "id": "share-api", "type": "files", "root": "tools/vendor-benchmark", "ext": [".js", ".html"], "pattern": "navigator\\.share", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "VB-15-CAPSTONE",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:109",
+      "decision": "Rank 15 — craft + conformance capstone: tactile :active states, --vb-signal formalised as the 'instrument is live' colour kept strictly separate from verdict tones, direction glyphs so over/under is never colour-only, a density mode, and a published a11y statement locked by a CI gate.",
+      "probes": [
+        { "id": "a11y-gate", "type": "files", "root": "scripts", "ext": [".mjs"], "pattern": "vendor-benchmark", "expect": { "min": 1 } },
+        { "id": "signal-token", "type": "files", "root": "tools/vendor-benchmark", "ext": [".html", ".css"], "pattern": "--vb-signal", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "VB-REJECT",
+      "theme": "vendor-benchmark",
+      "date": "2026-07-10",
+      "source": "docs/handoff/vb-world-class-roadmap.md:116",
+      "decision": "REJECTED for the moat, with an honest on-device alternative recorded for each: account-based cross-device sync; server-rendered per-link OG unfurls; a crowd-sourced vendor price database; server-side usage/price analytics and cloud email of the brief; realtime multiplayer; runtime cloud TTS/AI narration and server-side PDF.",
+      "principle": true,
+      "encodedIn": "scripts/check-tool-no-fetch.mjs",
+      "probes": [
+        { "id": "no-fetch-gate", "type": "path", "path": "scripts/check-tool-no-fetch.mjs", "expect": "present" },
+        { "id": "no-crowd-db", "type": "files", "root": "tools", "ext": [".js", ".html"], "pattern": "what other restaurants pay|peer prices", "flags": "i", "expect": { "eq": 0 } }
+      ]
+    },
+
+    {
+      "id": "CL-METHOD",
+      "theme": "governance",
+      "date": "2026-07-11",
+      "source": "docs/handoff/site-coverage-ledger.md:60",
+      "decision": "Methodological call for generated corpora (glossary 172 / cost-index 100 / sheets 55 / course 27): complete knowledge comes from reading the builder + template + driving data + verifying uniformity + sampling — NOT a line-by-line read of every generated clone.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "ledger-exists", "type": "path", "path": "docs/handoff/site-coverage-ledger.md", "expect": "present" },
+        { "id": "status-column-driven-to-100", "type": "count", "path": "docs/handoff/site-coverage-ledger.md", "pattern": "☐ pending", "expect": { "eq": 0 } }
+      ]
+    },
+
+    {
+      "id": "DM-DEVICE",
+      "theme": "product-demo",
+      "date": "2026-07-10",
+      "source": "docs/handoff/demo-redesign-plan.md:11",
+      "decision": "The Ledger demo gets three device-aware compositions (phone ≤600 / tablet 601–1023 / desktop ≥1024) selected by media query only, replacing the density lattice — one DOM so ES stays byte-parallel.",
+      "probes": [
+        { "id": "device-tiers", "type": "count", "path": "ledger/demo/index.html", "pattern": "max-width:\\s*600px|min-width:\\s*1024px", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "DM-TOUR",
+      "theme": "product-demo",
+      "date": "2026-07-10",
+      "source": "docs/handoff/demo-redesign-plan.md:48",
+      "decision": "Extend the demo to eight beats, appending 'My guy, or the market?', 'The plate re-costs itself' and 'Why a platform can't copy it' AFTER the flag climax at index 3, with the CTA moving to the last index.",
+      "probes": [
+        { "id": "cta-moved-to-step7", "type": "count", "path": "ledger/demo/index.html", "pattern": "ld-step7", "expect": { "min": 1 } },
+        { "id": "market-check-beat", "type": "count", "path": "ledger/demo/index.html", "pattern": "my guy, or the market", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "DM-IMMUTABLE",
+      "theme": "product-demo",
+      "date": "2026-07-10",
+      "source": "docs/handoff/demo-redesign-plan.md:22",
+      "decision": "Non-negotiable — the demo's immutable numbers stay byte-intact ($24.10/$24.35/$29.45, median $24.22, ▲$5.23/+21.6%, $115.80, '$19 a month per location'), every artifact is labelled illustrative, and the FLOOR holds: no internal scroll, no page bounce, no horizontal overflow across the viewport matrix.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "numbers-intact", "type": "count", "path": "ledger/demo/index.html", "pattern": "115\\.80", "expect": { "min": 1 } },
+        { "id": "illustrative-label", "type": "count", "path": "ledger/demo/index.html", "pattern": "Illustrative|illustrative", "expect": { "min": 1 } },
+        { "id": "no-live-request-claim", "type": "count", "path": "ledger/demo/index.html", "pattern": "fires no requests", "expect": { "min": 1 } }
+      ]
+    },
+
+    {
+      "id": "NS-NORTHSTAR",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:71",
+      "decision": "North star: SHIP NOTHING THAT CAN'T GET QUIETER ON ITS OWN. The test for any decision is whether it adds a surface that needs attention to stay true, or one that degrades toward silence.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "recorded-as-adr", "type": "files", "root": "docs/editorial/decisions", "ext": [".md"], "pattern": "quieter on its own|Ship nothing that", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "NS-R0-SENTINEL",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:79",
+      "decision": "Rung 0 (do this Monday) — write scripts/check-src-sentinel.mjs, promoting the <!-- src: --> comment convention to an enforced, MONOTONE-DOWNWARD sentinel: on disagreement it may stamp as-of, freeze the citation, or flag superseded, and may never restate a number upward or author prose.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "gate-exists", "type": "path", "path": "scripts/check-src-sentinel.mjs", "expect": "present" },
+        { "id": "gate-wired", "type": "count", "path": "scripts/check-all.mjs", "pattern": "check-src-sentinel", "expect": { "min": 1 } },
+        { "id": "sentinels-present", "type": "count", "path": "blog/cost-index-2026-07/index.html", "pattern": "<!-- src:", "expect": { "min": 100 } }
+      ]
+    },
+    {
+      "id": "NS-R0-CERTIFIED",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:160",
+      "decision": "Rung 0 — delete 'the certified conformal band' from data/cost-lockfloat.json AND data/cost-lockfloat.js (the .js is loaded by es/tools/cost-pulse, so the overclaim ships to browsers today), replacing it with the backtested band and its realized 0.767 pooled coverage.",
+      "probes": [
+        { "id": "json-clean", "type": "count", "path": "data/cost-lockfloat.json", "pattern": "certified", "expect": { "eq": 0 } },
+        { "id": "js-clean", "type": "count", "path": "data/cost-lockfloat.js", "pattern": "certified", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "NS-R0-LLMSTXT",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:163",
+      "decision": "Rung 0 — llms.txt:25 'weekly' → 'monthly', matching the 2026-07-09 founder call.",
+      "conflictsWith": ["ADR-011-CADENCE"],
+      "probes": [
+        { "id": "monthly", "type": "count", "path": "llms.txt", "pattern": "publishes weekly", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "NS-R0-DISPATCH",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:159",
+      "decision": "Rung 0 — correct the four drifted numbers in blog/cost-index-2026-07 ('73 of 100' → 37; blueberry float ±24.8% → withhold ±30.1%; eggs ±65.2% → ±57.1%; chicken breast 0.581 → 0.595), or better, repoint the citations at the frozen week-2026-07-06.json.",
+      "probes": [
+        { "id": "seventythree-gone", "type": "count", "path": "blog/cost-index-2026-07/index.html", "pattern": "73 of 100", "expect": { "eq": 0 } },
+        { "id": "citations-frozen", "type": "count", "path": "blog/cost-index-2026-07/index.html", "pattern": "week-2026-07-06\\.json", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "NS-R1-ACCURACY",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:84",
+      "decision": "Rung 1 — ship /cost-index/accuracy/, one static sentinel-synced page LEADING WITH THE MISS (bands target 80% and hold 76.7% over 79,086 steps; direction beats a coin flip by 0.4 points; the seasonal model loses to naive persistence), with n printed beside every figure. Build it in July, publish it at the launch announcement window.",
+      "probes": [
+        { "id": "page", "type": "path", "path": "cost-index/accuracy/index.html", "expect": "present" },
+        { "id": "calibration-source", "type": "path", "path": "cost-index/calibration.json", "expect": "present" }
+      ]
+    },
+    {
+      "id": "NS-R1-CORS",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:86",
+      "decision": "Rung 1 — add Access-Control-Allow-Origin: * to /cost-index/* in _headers, which also makes llms.txt's 'open data you may use freely' true, since today no browser can read it.",
+      "probes": [
+        { "id": "cors-present", "type": "count", "path": "_headers", "pattern": "Access-Control-Allow-Origin", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "NS-R2-CEILING",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:89",
+      "decision": "Rung 2 — scripts/check-confidence-ceiling.mjs: a machine may only ever LOWER a published confidence label or descriptive adjective to match its measured record; raising one requires a human. If it can only be written by loosening another gate, the rung dies, not the gate.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "gate", "type": "path", "path": "scripts/check-confidence-ceiling.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "NS-R3-RUNG",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:93",
+      "decision": "Rung 3 — name the valuation rung beside every food-cost % in Ledger (override / WAC / prior-count carry / Cost-Index market prior / withheld), and wire the vendor-cost-index re-vendoring into CI so the 30-day fail-closed window stops being an open thread.",
+      "probes": [
+        { "id": "valuation-source-ui", "type": "files", "repo": "product", "root": "apps/web", "ext": [".tsx", ".ts"], "pattern": "valuationSource", "expect": { "min": 1 } },
+        { "id": "revendor-in-ci", "type": "files", "repo": "product", "root": ".github/workflows", "ext": [".yml"], "pattern": "vendor-cost-index", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "NS-R456",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:100",
+      "decision": "Rungs 4–6 are explicitly POST-LAUNCH: forward-only revisedAt + per-item coverage (Q1 2027), static machine-readable answer files (2027-Q2, gated on log evidence that anything fetches the CC0 files at all), and the as-of resolver (late 2027 at the earliest, conditional on ~12 real editions).",
+      "probes": [
+        { "id": "revisedAt-absent-as-planned", "type": "count", "path": "data/cost-revisions.json", "pattern": "revisedAt", "expect": { "eq": 0 } },
+        { "id": "answer-files-not-built", "type": "path", "path": "scripts/build-cost-answers.mjs", "expect": "absent" },
+        { "id": "asof-resolver-not-built", "type": "path", "path": "scripts/build-cost-index-asof.mjs", "expect": "absent" }
+      ]
+    },
+    {
+      "id": "NS-REJECT",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:111",
+      "decision": "REJECTED with reasons: the Withhold Set / abstention benchmark; the standards / answer-contract governance rung; the Instrument Register pre-registration chain (extract only the monotone-downward rule); IOSCO statements of compliance; an MCP server now; payment rails (x402/AP2/ACP/RSL/pay-per-crawl); C2PA, zkTLS, a self-hosted transparency log, a second manifest, NLWeb, and widening the basket toward 30,000 series.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "no-mcp-server", "type": "files", "root": "src", "ext": [".js"], "pattern": "modelcontextprotocol|mcp-server", "flags": "i", "expect": { "eq": 0 } },
+        { "id": "no-payment-rails", "type": "files", "root": "src", "ext": [".js"], "pattern": "x402|pay-per-crawl", "flags": "i", "expect": { "eq": 0 } },
+        { "id": "no-withhold-set", "type": "path", "path": "cost-index/withhold/index.html", "expect": "absent" }
+      ]
+    },
+    {
+      "id": "NS-TRUE-1",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:131",
+      "decision": "MUST STAY TRUE #1 — the fact gate is absolute and no rung may loosen it. If a rung requires a waiver, an undated allowlist entry or a gate exception to ship, the rung dies, not the gate.",
+      "principle": true,
+      "encodedIn": "scripts/check-fabrications.mjs",
+      "probes": [
+        { "id": "gate-exists", "type": "path", "path": "scripts/check-fabrications.mjs", "expect": "present" },
+        { "id": "gate-wired", "type": "count", "path": "scripts/check-all.mjs", "pattern": "check-fabrications", "expect": { "min": 1 } },
+        { "id": "claims-registry", "type": "path", "path": "data/sourced-claims.json", "expect": "present" }
+      ]
+    },
+    {
+      "id": "NS-TRUE-2",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:132",
+      "decision": "MUST STAY TRUE #2 — machines may only LOWER a claim. Any automation touching published confidence, labels, adjectives or numbers may withhold, cap, demote or stamp-as-of; raising a claim requires a human plus a source.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "ceiling-gate", "type": "path", "path": "scripts/check-confidence-ceiling.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "NS-TRUE-3",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:133",
+      "decision": "MUST STAY TRUE #3 — published prose is bound to its cited source: every <!-- src: --> resolves, and disagreement triggers demotion, never silent restatement.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "sentinel-gate", "type": "path", "path": "scripts/check-src-sentinel.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "NS-TRUE-4",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:134",
+      "decision": "MUST STAY TRUE #4 — no timestamp is ever constructed. revisedAt is forward-only; historical rows are null with a stated reason. Inferring a publication date from git history is fabrication.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "no-backfilled-revisedAt", "type": "count", "path": "data/cost-revisions.json", "pattern": "revisedAt", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "NS-TRUE-5",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:135",
+      "decision": "MUST STAY TRUE #5 — no language model touches a customer number, and the gate must live where the model would. no-llm-ci.sh exists only in the product repo; before any agent-facing storefront work, PORT IT, plus an import-boundary gate.",
+      "principle": true,
+      "encodedIn": "Muntin-Invoice-Decoder/scripts/no-llm-ci.sh",
+      "probes": [
+        { "id": "product-gate", "type": "path", "repo": "product", "path": "scripts/no-llm-ci.sh", "expect": "present" },
+        { "id": "storefront-gate", "type": "path", "path": "scripts/no-llm-ci.sh", "expect": "present" }
+      ]
+    },
+    {
+      "id": "NS-TRUE-6",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:136",
+      "decision": "MUST STAY TRUE #6 — never an LLM judge, anywhere in any scoring or acceptance path. It would make every gate feel stronger while being strictly weaker, silently.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "no-sdk-in-scripts", "type": "files", "root": "scripts", "ext": [".mjs", ".js", ".sh"], "pattern": "@anthropic-ai|openai|ANTHROPIC_API_KEY", "flags": "i", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "NS-TRUE-7",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:137",
+      "decision": "MUST STAY TRUE #7 — no forecast, ever. Direction beats baseline only at h=1 by +0.004 and is worse than a coin flip beyond. Withholding the forecast IS the product.",
+      "principle": true,
+      "encodedIn": "scripts/check-cost-index-events.mjs",
+      "probes": [
+        { "id": "forecast-regex", "type": "count", "path": "scripts/check-cost-index-events.mjs", "pattern": "FORECAST_RE", "expect": { "min": 1 } },
+        { "id": "events-gate-wired", "type": "count", "path": "scripts/check-all.mjs", "pattern": "check-cost-index-events", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "NS-TRUE-8",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:138",
+      "decision": "MUST STAY TRUE #8 — the confidence label is a PROVENANCE descriptor, not a skill claim (scoreSeparatesSkill: false), and any machine-readable object carrying it must carry that marker in the same object or must not carry the label.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "marker-present", "type": "files", "root": "cost-index", "ext": [".json"], "pattern": "scoreSeparatesSkill|provenance descriptor", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "NS-TRUE-9",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:139",
+      "decision": "MUST STAY TRUE #9 — every accuracy figure ships with its n and its answer rate. Abstention must never be able to flatter a number, and n=2 must never headline.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "n-in-calibration", "type": "count", "path": "cost-index/calibration.json", "pattern": "scoredSteps|items", "expect": { "min": 1 } },
+        { "id": "accuracy-page", "type": "path", "path": "cost-index/accuracy/index.html", "expect": "present" }
+      ]
+    },
+    {
+      "id": "NS-TRUE-10",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:140",
+      "decision": "MUST STAY TRUE #10 — absence reasons are 'searched and did not find', never 'does not exist', and no machine ever authors one.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "absence-register", "type": "files", "root": "data", "ext": [".json"], "pattern": "structurallyAbsent|coverage.*gaps|absentBecause", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "NS-LAUNCH-SEQ",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-frontier-north-star.md:150",
+      "decision": "Sequencing call: do less strategy until the product ships. ledger-cta.json 12 → 25–30 posts, the ingredient-page Ledger banners, founding-member terms, the Stripe price ID and counsel all OUTRANK every rung on the ladder.",
+      "supersededBy": "ADR-020",
+      "conflictsWith": ["ADR-020"],
+      "probes": [
+        { "id": "cta-target", "type": "json", "path": "data/ledger-cta.json", "pointer": "posts", "mode": "keys", "expect": { "min": 25 } },
+        { "id": "ingredient-banners", "type": "files", "root": "cost-index", "ext": [".html"], "pattern": "ledger-banner|ledger-cta", "expect": { "min": 50 } }
+      ]
+    },
+
+    {
+      "id": "LU-POSITION",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-legitimately-useful.md:122",
+      "decision": "The one open position, in one line: every free food-cost tool asks what your ingredients cost; Muntin TELLS you — from a dated public price, kept unbroken, with every correction published and every gap it can't measure named — so you can hold it against the invoice in your hand.",
+      "probes": [
+        { "id": "line-on-home", "type": "count", "path": "index.html", "pattern": "invoice in your hand|tells you what|dated public price", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "LU-TEST",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-legitimately-useful.md:92",
+      "decision": "The usefulness test any new page must pass: name the person, the decision and the week-slot; name the number that flips them from A to B and the threshold it crosses; name the free thing they'd use instead and its specific defect; name what would prove us wrong and where they'd see it.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "test-encoded", "type": "files", "root": "docs/editorial", "ext": [".md"], "pattern": "week-slot|threshold it crosses", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "LU-A0",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-legitimately-useful.md:148",
+      "decision": "A0 first move — one day, mostly looking: export Search Console pages + links, build the Plausible entry-page → cost-index/ledger segment, and write data/corpus-disposition.json with the measured numbers pasted in and a tier per slug.",
+      "probes": [
+        { "id": "disposition-file", "type": "path", "path": "data/corpus-disposition.json", "expect": "present" }
+      ]
+    },
+    {
+      "id": "LU-A1",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-legitimately-useful.md:156",
+      "decision": "A1 — convert the biggest commitment in the repo back into a machine: restore auto-publication as a DAY-30 FALLBACK, so a withheld machine edition preserves the spine when no hand-written edition has landed. 'A red gate during finals gets ignored, and once you merge past a red honesty gate the discipline is gone.'",
+      "conflictsWith": ["ADR-012-MANUAL"],
+      "probes": [
+        { "id": "fallback-exists", "type": "files", "root": ".github/workflows", "ext": [".yml"], "pattern": "fallback|day-30|day 30", "flags": "i", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "LU-A3",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-legitimately-useful.md:160",
+      "decision": "A3 — dry-run the down-move rule offline before building anything: count how many ingredients have ever printed three consecutive reads below their own band. If near zero, /cost-index/down/ dies for free in an afternoon.",
+      "probes": [
+        { "id": "down-surface", "type": "path", "path": "cost-index/down/index.html", "expect": "present" }
+      ]
+    },
+    {
+      "id": "LU-A5",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-legitimately-useful.md:164",
+      "decision": "A5 — hand-write ~20 ingredient links into four articles (keep-plate-cost-honest, restaurant-prime-cost, restaurant-menu-engineering, what-beef-prices-mean). One hour, no injector.",
+      "probes": [
+        { "id": "links-placed", "type": "files", "root": "library", "ext": [".html"], "pattern": "href=\"/cost-index/[a-z][a-z-]+/\"", "expect": { "min": 4 } }
+      ]
+    },
+    {
+      "id": "LU-A6",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-legitimately-useful.md:166",
+      "decision": "A6 — publish the absence register (/cost-index/coverage.json plus a page): cheap, and it backs a claim /cost-index/ currently makes without evidence.",
+      "probes": [
+        { "id": "coverage-json", "type": "path", "path": "cost-index/coverage.json", "expect": "present" }
+      ]
+    },
+    {
+      "id": "LU-STOP",
+      "theme": "content-prune",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-legitimately-useful.md:183",
+      "decision": "Four hard retirements plus a permanent stop: merge the three delivery-economics pieces into commission-free-online-ordering, retire library/ingredient-yields as an article (it's a tool input), and stop net-new writing in procedural how-to, yes/no framing, product comparison from public specs, definitional glossary, restatements of official docs and roundups.",
+      "probes": [
+        { "id": "yields-retired", "type": "path", "path": "library/ingredient-yields/index.html", "expect": "absent" },
+        { "id": "delivery-merged", "type": "path", "path": "library/third-party-delivery-comparison/index.html", "expect": "absent" }
+      ]
+    },
+    {
+      "id": "LU-LLMSTXT-BUG",
+      "theme": "content-prune",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-legitimately-useful.md:192",
+      "decision": "Correct the freeze mechanism BEFORE the loop runs: build-llms-txt.mjs's readMeta() never inspects the robots meta, so a noindex stamp does not drop a page from llms.txt — the one file whose whole job is telling a crawling model what this domain is. Three-line fix plus a gate.",
+      "probes": [
+        { "id": "noindex-honored", "type": "count", "path": "scripts/build-llms-txt.mjs", "pattern": "noindex", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "LU-NO-HOURS",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-legitimately-useful.md:194",
+      "decision": "Drop the hours-saved argument entirely — it isn't true. check-locale-parity skips blog/ and library/ on the forward check and exits 0 on drift, so the ES mirrors cost zero CI today. PRUNE FOR SIGNAL, NOT FOR HOURS.",
+      "probes": [
+        { "id": "parity-still-warn-only", "type": "count", "path": "scripts/check-locale-parity.mjs", "pattern": "warn-only mode during initial rollout", "expect": { "eq": 0 } },
+        { "id": "parity-skips-corpora", "type": "count", "path": "scripts/check-locale-parity.mjs", "pattern": "SKIP_PATH_PREFIXES = \\['blog/', 'library/'\\]", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "LU-NO-301",
+      "theme": "content-prune",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-legitimately-useful.md:196",
+      "decision": "Do not 301 or delete anything else until the GSC export is in hand. Freeze is reversible in an hour; a 301 that lands someone citing your schema-markup guide on a cost page is not.",
+      "principle": true,
+      "encodedIn": "scripts/check-removed-slugs.mjs",
+      "probes": [
+        { "id": "removed-slug-gate", "type": "path", "path": "scripts/check-removed-slugs.mjs", "expect": "present" },
+        { "id": "gate-wired", "type": "count", "path": "scripts/check-all.mjs", "pattern": "check-removed-slugs", "expect": { "min": 1 } }
+      ]
+    },
+
+    {
+      "id": "KG-ADR015",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-knowledge-graph-review.md:33",
+      "decision": "Plan of record: repair and gate the entity graph the site already publishes and build ONE unshipped LLM-free integrity graph under docs/. Do not build GraphRAG retrieval, do not publish a new entity mesh, do not stand up a graph database, and never let a model write an edge.",
+      "conflictsWith": ["ADR-015-OPENDATA"],
+      "conflictNote": "This document titles itself 'ADR-015' and claims to be 'the single ADR-015'. docs/editorial/decisions/ADR-015-open-data-explore-surfaces.md already holds that number and is Accepted. The knowledge-graph plan was never filed as an ADR at all.",
+      "probes": [
+        { "id": "filed-as-adr", "type": "files", "root": "docs/editorial/decisions", "ext": [".md"], "pattern": "knowledge graph|GraphRAG", "flags": "i", "expect": { "min": 1 } },
+        { "id": "entity-gate", "type": "path", "path": "scripts/check-entity-resolve.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "KG-P1",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-knowledge-graph-review.md:95",
+      "decision": "Phase 1 (the shippable-in-a-day increment) — scripts/check-entity-resolve.mjs parsing every JSON-LD block in all 1,358 HTML files, fail-CI from day one against a scoped assertion, closing 542 machine-readable references that resolve to nothing.",
+      "probes": [
+        { "id": "gate", "type": "path", "path": "scripts/check-entity-resolve.mjs", "expect": "present" },
+        { "id": "wired", "type": "count", "path": "scripts/check-all.mjs", "pattern": "check-entity-resolve", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "KG-P2",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-knowledge-graph-review.md:116",
+      "decision": "Phase 2 — scripts/check-claim-provenance.mjs over sourced-claims.json, fail-CI on the bare-slug lane; the inverse direction ships as a report, not a gate, until the registry linkage convention exists.",
+      "probes": [
+        { "id": "gate", "type": "path", "path": "scripts/check-claim-provenance.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "KG-P4",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-knowledge-graph-review.md:141",
+      "decision": "Phase 4 (conditional on Phase 3 items being CLOSED, not found) — build-desk-graph.mjs → docs/graph/desk-graph.json, every edge carrying derivation ∈ {rendered, declared}, a closed enum with no third value, because a quarantine lane is a promotion path.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "builder", "type": "path", "path": "scripts/build-desk-graph.mjs", "expect": "present" },
+        { "id": "gate", "type": "path", "path": "scripts/check-desk-graph.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "KG-NOT",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-knowledge-graph-review.md:170",
+      "decision": "EXPLICITLY NOT DOING: Neo4j or any hosted graph DB (connect-src 'self' forbids it); a nightly agent that mutates the graph; LLM entity/relation extraction anywhere in the build, CI or publish path (≈1 in 4 relations wrong); GraphRAG retrieval and embeddings; publishing a derived about/mentions mesh across ~800 pages; a CC0 graph.json export.",
+      "principle": true,
+      "encodedIn": "_headers",
+      "probes": [
+        { "id": "csp-self", "type": "count", "path": "_headers", "pattern": "connect-src 'self'", "expect": { "min": 1 } },
+        { "id": "no-llm-in-scripts", "type": "files", "root": "scripts", "ext": [".mjs"], "pattern": "@anthropic-ai|openai|ANTHROPIC_API_KEY", "flags": "i", "expect": { "eq": 0 } },
+        { "id": "no-graph-export", "type": "path", "path": "cost-index/graph.json", "expect": "absent" }
+      ]
+    },
+    {
+      "id": "KG-BARRED",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-knowledge-graph-review.md:46",
+      "decision": "The viral post's two unsourced headline statistics (a bonus figure and a productivity-uplift percentage, both quoted only inside the strategy review that bars them) are BARRED from the rest of this repo entirely — not in an ADR, not on the resume-here board, not as motivating context. That is how a fabrication reaches audio.<lang>.json and gets spoken in two languages. This registry deliberately does not restate them.",
+      "principle": true,
+      "encodedIn": "scripts/check-fabrications.mjs",
+      "probes": [
+        { "id": "not-in-adrs", "type": "files", "root": "docs/editorial/decisions", "ext": [".md"], "pattern": "viral post|LinkedIn post", "flags": "i", "expect": { "eq": 0 } },
+        { "id": "not-on-the-board", "type": "count", "path": "docs/handoff/strategic-council-board.md", "pattern": "viral post", "flags": "i", "expect": { "eq": 0 } },
+        { "id": "handoff-not-in-fact-gate-skiplist", "type": "count", "path": "scripts/check-fabrications.mjs", "pattern": "docs\\\\/handoff", "expect": { "eq": 0 } },
+        { "id": "editorial-is-in-skiplist", "type": "count", "path": "scripts/check-fabrications.mjs", "pattern": "docs\\\\/editorial", "expect": { "min": 1 } }
+      ]
+    },
+
+    {
+      "id": "CR-P0",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-corpus-index-reconciliation.md:147",
+      "decision": "Phase 0 (≈1 hour, blocking) — two hand fixes that need no system and are worth more than anything else in the plan: unblock check-all and hand-fix the one live contradiction.",
+      "probes": [
+        { "id": "claim-usage-gate", "type": "path", "path": "scripts/check-claim-usage.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "CR-P1",
+      "theme": "strategy",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-corpus-index-reconciliation.md:172",
+      "decision": "Phase 1 (one day) — a STANDALONE data/article-cost-index-map.json keyed '<library|blog>/<slug>' (not library-tags.json, which the dispatch builder whole-object-replaces on every publish), its fail-CI gate check-article-cost-index-map.mjs, and hand-placed links in ~6 articles EN+ES.",
+      "probes": [
+        { "id": "map-file", "type": "path", "path": "data/article-cost-index-map.json", "expect": "present" },
+        { "id": "gate", "type": "path", "path": "scripts/check-article-cost-index-map.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "CR-FIREWALL",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-corpus-index-reconciliation.md:216",
+      "decision": "The volatility firewall (non-negotiable) — the corpus↔index gate reads ONLY the map, the key list and filesystem existence. It must never read a level, trend, flag or confidence, so a Mon/Wed/Fri refresh can never redden a local check-all run.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "gate", "type": "path", "path": "scripts/check-article-cost-index-map.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "CR-NOVALUES",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-corpus-index-reconciliation.md:258",
+      "decision": "The outward-facing live-value-in-article version is mechanically possible and we are NOT doing it: it would freeze stale cents into committed /library/ HTML that no gate re-verifies, creating a fact-gate surface where a number in committed prose has no gate tying it to data. A hand-placed <a href> carries no value and no (idem) question.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "no-value-injector", "type": "files", "root": "scripts", "ext": [".mjs"], "pattern": "inject-library-cost-value|inject-article-price", "expect": { "eq": 0 } }
+      ]
+    },
+    {
+      "id": "CR-QUEUE-RULE",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "docs/strategy/2026-07-28-corpus-index-reconciliation.md:287",
+      "decision": "GOVERNING RULE — this system produces a REVIEW QUEUE, never a verdict. It may say 'the ground truth under this article has moved, a human should look'; it may never assert an article is wrong, auto-edit prose, present co-occurrence as cause, or publish a machine-made claim.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "no-machine-prose", "type": "files", "root": "scripts", "ext": [".mjs"], "pattern": "autoRewrite|rewriteProse|generateParagraph", "expect": { "eq": 0 } }
+      ]
+    },
+
+    {
+      "id": "BD-COURSE-RETIRED",
+      "theme": "content-prune",
+      "date": "2026-07-28",
+      "source": "CLAUDE.md:11",
+      "decision": "Retired 2026-07-28 — the build-a-website course (/course/), the method-manifesto + Workshop-Kit pages (/method/) and the 30 course-companion sheets. The whole 'Open the Doors' subsystem was torn out (CI gates, 4 rail injectors, 4 data manifests, the RSS course lane) and all paths 301 to the funnel.",
+      "conflictsWith": ["SM-COURSE"],
+      "probes": [
+        { "id": "course-gone", "type": "path", "path": "course/index.html", "expect": "absent" },
+        { "id": "method-gone", "type": "path", "path": "method/index.html", "expect": "absent" },
+        { "id": "sheets-gone", "type": "files", "root": "sheets", "ext": [".html"], "pattern": "course-bootcamp", "expect": { "eq": 0 } },
+        { "id": "redirects-live", "type": "count", "path": "src/worker.js", "pattern": "pathname\\.startsWith\\('/course/'\\)", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BD-DORMANT",
+      "theme": "content-prune",
+      "date": "2026-07-28",
+      "source": "CLAUDE.md:11",
+      "decision": "Left DORMANT for a follow-up rather than deleted: the /api/course/* KV runtime + src/lib/course.js, the /account/ course-progress tile, the lifecycleCourse* email lifecycle and the /window/ course-contact JS branch — all invisible with no course pages to feed them.",
+      "probes": [
+        { "id": "still-dormant", "type": "files", "root": "src", "ext": [".js"], "pattern": "lifecycleCourse|api/course", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BD-ROOTLIST",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "CLAUDE.md:44",
+      "decision": "A scanner is only as good as its root list — declare roots, justify omissions. A script that scans the site walks EVERYTHING and carries an explicit skip list where every entry says why it is not reader-facing prose. Learned three times in one day, each time by shipping the bug first.",
+      "principle": true,
+      "encodedIn": "scripts/check-gate-coverage.mjs",
+      "probes": [
+        { "id": "gate-coverage", "type": "path", "path": "scripts/check-gate-coverage.mjs", "expect": "present" },
+        { "id": "gate-coverage-first", "type": "count", "path": "scripts/check-all.mjs", "pattern": "check-gate-coverage", "expect": { "min": 1 } },
+        { "id": "idem-coverage", "type": "path", "path": "scripts/check-idem-coverage.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "BD-NOWIRE-RED",
+      "theme": "principle",
+      "date": "2026-07-28",
+      "source": "CLAUDE.md:56",
+      "decision": "Never resolve a FAILING unwired gate by wiring it — check-all runs inside the Cloudflare deploy command, so wiring a currently-failing gate turns every deploy red. Fix the violations first, then wire, then delete the UNWIRED entry.",
+      "principle": true,
+      "encodedIn": "scripts/check-gate-coverage.mjs",
+      "probes": [
+        { "id": "unwired-registry", "type": "count", "path": "scripts/check-gate-coverage.mjs", "pattern": "UNWIRED", "expect": { "min": 2 } },
+        { "id": "checkall-in-deploy", "type": "count", "path": "wrangler.jsonc", "pattern": "check-all", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BD-SLUGS",
+      "theme": "principle",
+      "date": "2026-06-01",
+      "source": "CLAUDE.md:118",
+      "decision": "Slugs are final-forever. Renaming a post breaks deep links from smart-next blocks, external citations and AI Overview rotation. To revise content, rewrite in place and bump dateModified.",
+      "principle": true,
+      "encodedIn": "scripts/check-removed-slugs.mjs",
+      "probes": [
+        { "id": "gate", "type": "path", "path": "scripts/check-removed-slugs.mjs", "expect": "present" },
+        { "id": "wired", "type": "count", "path": "scripts/check-all.mjs", "pattern": "check-removed-slugs", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BD-FACTGATE",
+      "theme": "principle",
+      "date": "2026-06-01",
+      "source": "CLAUDE.md:38",
+      "decision": "The absolute fact gate: every number, date, name, anecdote and percentage must be registered in sourced-claims.json, cited inline via <details class=\"cite\">, or labelled illustrative in the prose. Zero inventions.",
+      "principle": true,
+      "encodedIn": "scripts/check-fabrications.mjs",
+      "probes": [
+        { "id": "gate", "type": "path", "path": "scripts/check-fabrications.mjs", "expect": "present" },
+        { "id": "registry", "type": "path", "path": "data/sourced-claims.json", "expect": "present" },
+        { "id": "published-claims", "type": "path", "path": "claims.json", "expect": "present" },
+        { "id": "usage-gate", "type": "path", "path": "scripts/check-claim-usage.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "BD-HONESTY-CONTRACT",
+      "theme": "principle",
+      "date": "2026-07-10",
+      "source": "CLAUDE.md:150",
+      "decision": "The Cost Index honesty contract is inviolable: public wholesale levels are never a delivered price, and the read is against each ingredient's own baseline window, not week-over-week unless the archive backs it. Honest WoW is computed only across commensurable editions and withheld with a stated reason otherwise.",
+      "principle": true,
+      "encodedIn": "scripts/check-cost-index-sync.mjs",
+      "probes": [
+        { "id": "spine", "type": "path", "path": "data/cost-index-editions.json", "expect": "present" },
+        { "id": "sync-gate", "type": "path", "path": "scripts/check-cost-index-sync.mjs", "expect": "present" },
+        { "id": "wholesale-disclaimer", "type": "files", "root": "cost-index", "ext": [".html"], "pattern": "wholesale", "expect": { "min": 50 } }
+      ]
+    },
+    {
+      "id": "BD-CC0",
+      "theme": "principle",
+      "date": "2026-07-11",
+      "source": "CLAUDE.md:158",
+      "decision": "Citability — per-edition Dataset JSON-LD, a 'Cite this edition' block, a CC0 per-week snapshot at cost-index/week-<asOf>.json/.csv, and the EN+ES edition archive at /cost-index/weekly/.",
+      "principle": true,
+      "encodedIn": "scripts/check-headers-license.mjs",
+      "probes": [
+        { "id": "license-gate", "type": "path", "path": "scripts/check-headers-license.mjs", "expect": "present" },
+        { "id": "gate-wired", "type": "count", "path": "scripts/check-all.mjs", "pattern": "check-headers-license", "expect": { "min": 1 } },
+        { "id": "archive", "type": "path", "path": "cost-index/weekly/index.html", "expect": "present" }
+      ]
+    },
+    {
+      "id": "BD-ESPARITY",
+      "theme": "principle",
+      "date": "2026-06-01",
+      "source": "CLAUDE.md:98",
+      "decision": "EN↔ES surface parity is a standing invariant enforced by check-locale-parity.mjs and check-hreflang-orphans.mjs; every change ships in both locales.",
+      "principle": true,
+      "encodedIn": "scripts/check-locale-parity.mjs",
+      "probes": [
+        { "id": "gate-exists", "type": "path", "path": "scripts/check-locale-parity.mjs", "expect": "present" },
+        { "id": "gate-enforces", "type": "count", "path": "scripts/check-locale-parity.mjs", "pattern": "warn-only mode during initial rollout", "expect": { "eq": 0 } },
+        { "id": "hreflang-gate", "type": "path", "path": "scripts/check-hreflang-orphans.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "BD-NO-CRON",
+      "theme": "principle",
+      "date": "2026-07-09",
+      "source": "CLAUDE.md:148",
+      "decision": "Do NOT add a publish cron for the dispatch — its absence is a decision, not an oversight, and a red check-cost-index-dispatch-fresh IS the intended reminder. The machine reminds; humans write.",
+      "principle": true,
+      "encodedIn": "scripts/check-cost-index-dispatch-fresh.mjs",
+      "conflictsWith": ["LU-A1"],
+      "probes": [
+        { "id": "no-schedule", "type": "count", "path": ".github/workflows/cost-index-dispatch.yml", "pattern": "^\\s*schedule:", "flags": "m", "expect": { "eq": 0 } },
+        { "id": "reminder-gate", "type": "path", "path": "scripts/check-cost-index-dispatch-fresh.mjs", "expect": "present" }
+      ]
+    },
+    {
+      "id": "BD-NO-SYNC-INCLUDES",
+      "theme": "governance",
+      "date": "2026-07-11",
+      "source": "CLAUDE.md:161",
+      "decision": "Do NOT run sync-includes in the cost-index workflows — the _includes footer template drifts against live count sentinels and would regress them.",
+      "probes": [
+        { "id": "not-invoked", "type": "count", "path": ".github/workflows/cost-index-refresh.yml", "pattern": "^\\s*node scripts/sync-includes\\.mjs", "flags": "m", "expect": { "eq": 0 } },
+        { "id": "invoked-anyway", "role": "contradiction", "type": "count", "path": ".github/workflows/cost-index-refresh.yml", "pattern": "^\\s*node scripts/sync-includes\\.mjs", "flags": "m", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BD-AUDIT-BOTTLENECK",
+      "theme": "governance",
+      "date": "2026-08-07",
+      "source": "docs/handoff/company-audit-2026-08-07.md:47",
+      "decision": "The measured meta-finding: auditing here closes at 26% and ZERO closures in company history came from anyone working an audit's list. Fixes only happen inside the session that finds them. The company converts findings into REGISTRIES faster than into FIXES, and a registry entry has exactly the enforcement power of the document it replaced.",
+      "principle": true,
+      "encodedIn": null,
+      "probes": [
+        { "id": "audit-committed", "type": "path", "path": "docs/handoff/company-audit-2026-08-07.md", "expect": "present" },
+        { "id": "findings-machine-readable", "type": "path", "path": "docs/handoff/company-audit-2026-08-07/findings.json", "expect": "present" },
+        { "id": "backlog-has-a-runner", "type": "files", "root": ".github/workflows", "ext": [".yml"], "pattern": "findings.json|audit-backlog", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BD-PLANS-AS-DATA",
+      "theme": "governance",
+      "date": "2026-08-07",
+      "source": "docs/handoff/company-audit-2026-08-07.md:52",
+      "decision": "The diagnosis behind the 26%: prose plans go stale and nothing can consume them. This repo's working architecture is manifest → injector → gate. Therefore any future plan is emitted as DATA plus a generator, never as a document.",
+      "principle": true,
+      "encodedIn": "scripts/build-prior-decisions.mjs",
+      "probes": [
+        { "id": "this-generator", "type": "path", "path": "scripts/build-prior-decisions.mjs", "expect": "present" },
+        { "id": "registry", "type": "path", "path": "docs/handoff/bones/prior-decisions-registry.json", "expect": "present" }
+      ]
+    },
+    {
+      "id": "BD-HOSTNAME",
+      "theme": "commercial",
+      "date": "2026-08-07",
+      "source": "docs/handoff/company-audit-2026-08-07.md:37",
+      "decision": "Audit item 2 — resolve ledger.muntin.digital. 547 occurrences across 405 storefront files point at a hostname neither repo routes, and the product ships it as its own canonical URL, sitemap host, metadataBase and Organization @id because NEXT_PUBLIC_SITE_URL is set nowhere.",
+      "probes": [
+        { "id": "cta-hostname-resolved", "type": "files", "root": ".", "ext": [".html"], "pattern": "ledger\\.muntin\\.digital", "expect": { "eq": 0 } },
+        { "id": "env-guarded", "type": "count", "repo": "product", "path": "scripts/guard-web-deploy-env.mjs", "pattern": "NEXT_PUBLIC_SITE_URL", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BD-BROADCAST",
+      "theme": "retention",
+      "date": "2026-08-07",
+      "source": "docs/handoff/company-audit-2026-08-07.md:32",
+      "decision": "Audit item 1 — align the subscribe source with the broadcast filter. src/worker.js sends only where sub.source === 'cost-index'; the live values are 613 footer, 162 cost-index-ingredient and 2 cost-index, so 775 of 777 signup forms produce a source the monthly broadcast skips.",
+      "probes": [
+        { "id": "filter-widened", "type": "count", "path": "src/worker.js", "pattern": "sub\\.source !== 'cost-index'", "expect": { "eq": 0 } },
+        { "id": "footer-source-accepted", "type": "count", "path": "src/worker.js", "pattern": "SUBSCRIBE_SOURCES", "expect": { "min": 1 } }
+      ]
+    },
+    {
+      "id": "BD-FOUNDING-ENUM",
+      "theme": "commercial",
+      "date": "2026-08-07",
+      "source": "docs/handoff/company-audit-2026-08-07.md:44",
+      "decision": "Audit item 7 — fix the founding-lead enum: 100% of founding signups are relabelled 'studio' (the retired web-studio line's name) because neither the storefront allowlist nor the product enum contains home-founding or ledger-pricing. Then give listFounding() its first caller.",
+      "probes": [
+        { "id": "enum-fixed", "type": "count", "path": "src/worker.js", "pattern": "home-founding|ledger-pricing", "expect": { "min": 1 } }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,677 @@
+{
+  "_doc": "Roll-up of docs/handoff/bones/prior-decisions.json. Regenerate both with `node scripts/build-prior-decisions.mjs`. Status is MEASURED from the working tree every run — never edit these files by hand; edit the registry and re-run.",
+  "registryVersion": "1.0.0",
+  "sourceDocuments": [
+    "docs/handoff/founder-vision.md",
+    "docs/handoff/site-reinvention-blueprint.md",
+    "docs/handoff/every-surface-map.md",
+    "docs/handoff/reinvention-master-plan.md",
+    "docs/handoff/redesign-execution-plan.md",
+    "docs/handoff/redesign-v3-system.md",
+    "docs/handoff/warmth-cohesion-plan.md",
+    "docs/handoff/retention-strategy.md",
+    "docs/handoff/tools-strategy.md",
+    "docs/handoff/vb-world-class-roadmap.md",
+    "docs/handoff/site-coverage-ledger.md",
+    "docs/handoff/demo-redesign-plan.md",
+    "docs/handoff/strategic-council-board.md",
+    "docs/strategy/2026-07-28-frontier-north-star.md",
+    "docs/strategy/2026-07-28-legitimately-useful.md",
+    "docs/strategy/2026-07-28-knowledge-graph-review.md",
+    "docs/strategy/2026-07-28-corpus-index-reconciliation.md",
+    "docs/editorial/decisions/ADR-000..ADR-021 (26 files, 4 numbers duplicated)"
+  ],
+  "totals": {
+    "decisions": 178,
+    "byStatus": {
+      "shipped": 77,
+      "partial": 35,
+      "never": 55,
+      "contradicted": 3,
+      "superseded": 8
+    },
+    "shipRate": 0.4326
+  },
+  "byTheme": {
+    "governance": {
+      "total": 11,
+      "shipped": 2,
+      "partial": 7,
+      "contradicted": 1,
+      "never": 1
+    },
+    "honesty-gates": {
+      "total": 4,
+      "shipped": 3,
+      "partial": 1
+    },
+    "content-craft": {
+      "total": 5,
+      "shipped": 2,
+      "never": 2,
+      "partial": 1
+    },
+    "cost-index": {
+      "total": 15,
+      "shipped": 11,
+      "partial": 2,
+      "contradicted": 1,
+      "never": 1
+    },
+    "tools": {
+      "total": 7,
+      "shipped": 3,
+      "never": 4
+    },
+    "commercial": {
+      "total": 4,
+      "superseded": 1,
+      "shipped": 1,
+      "never": 2
+    },
+    "content-prune": {
+      "total": 17,
+      "shipped": 6,
+      "never": 7,
+      "partial": 3,
+      "superseded": 1
+    },
+    "retention": {
+      "total": 8,
+      "partial": 4,
+      "never": 2,
+      "contradicted": 1,
+      "shipped": 1
+    },
+    "principle": {
+      "total": 23,
+      "shipped": 17,
+      "partial": 3,
+      "never": 3
+    },
+    "design-system": {
+      "total": 15,
+      "superseded": 3,
+      "partial": 5,
+      "never": 2,
+      "shipped": 5
+    },
+    "trust": {
+      "total": 11,
+      "never": 7,
+      "shipped": 2,
+      "partial": 2
+    },
+    "positioning": {
+      "total": 6,
+      "superseded": 2,
+      "shipped": 2,
+      "partial": 2
+    },
+    "strategy": {
+      "total": 26,
+      "shipped": 5,
+      "never": 17,
+      "superseded": 1,
+      "partial": 3
+    },
+    "product-demo": {
+      "total": 3,
+      "shipped": 2,
+      "partial": 1
+    },
+    "vendor-benchmark": {
+      "total": 17,
+      "shipped": 10,
+      "never": 6,
+      "partial": 1
+    },
+    "warmth": {
+      "total": 6,
+      "shipped": 5,
+      "never": 1
+    }
+  },
+  "conflicts": [
+    {
+      "key": "ADR-010-CITABLE|ADR-010-GRAMMAR",
+      "pair": "ADR-010-GRAMMAR ↔ ADR-010-CITABLE",
+      "a": "ADR-010-GRAMMAR",
+      "aStatus": "partial",
+      "b": "ADR-010-CITABLE",
+      "bStatus": "shipped",
+      "note": "Two live ADRs numbered 010. Both are cited by later ADRs by bare number; a reference to 'ADR-010' is ambiguous in this repo."
+    },
+    {
+      "key": "ADR-011-CADENCE|ADR-011-EVENTS",
+      "pair": "ADR-011-CADENCE ↔ ADR-011-EVENTS",
+      "a": "ADR-011-CADENCE",
+      "aStatus": "contradicted",
+      "b": "ADR-011-EVENTS",
+      "bStatus": "shipped",
+      "note": "Two live ADRs numbered 011. Separately, llms.txt still tells every crawler the index publishes WEEKLY — the cadence pivot never reached the one file whose job is telling a machine what this domain is."
+    },
+    {
+      "key": "ADR-011-CADENCE|NS-R0-LLMSTXT",
+      "pair": "ADR-011-CADENCE ↔ NS-R0-LLMSTXT",
+      "a": "ADR-011-CADENCE",
+      "aStatus": "contradicted",
+      "b": "NS-R0-LLMSTXT",
+      "bStatus": "never",
+      "note": "Two live ADRs numbered 011. Separately, llms.txt still tells every crawler the index publishes WEEKLY — the cadence pivot never reached the one file whose job is telling a machine what this domain is."
+    },
+    {
+      "key": "ADR-012-MANUAL|ADR-012-VB",
+      "pair": "ADR-012-MANUAL ↔ ADR-012-VB",
+      "a": "ADR-012-MANUAL",
+      "aStatus": "shipped",
+      "b": "ADR-012-VB",
+      "bStatus": "shipped",
+      "note": "Two live ADRs numbered 012. And LU-A1 (2026-07-28) proposes restoring an auto-published day-30 fallback edition — a direct reversal of this founder call, never adjudicated."
+    },
+    {
+      "key": "ADR-012-MANUAL|LU-A1",
+      "pair": "ADR-012-MANUAL ↔ LU-A1",
+      "a": "ADR-012-MANUAL",
+      "aStatus": "shipped",
+      "b": "LU-A1",
+      "bStatus": "never",
+      "note": "Two live ADRs numbered 012. And LU-A1 (2026-07-28) proposes restoring an auto-published day-30 fallback edition — a direct reversal of this founder call, never adjudicated."
+    },
+    {
+      "key": "ADR-015-OPENDATA|KG-ADR015",
+      "pair": "ADR-015-OPENDATA ↔ KG-ADR015",
+      "a": "ADR-015-OPENDATA",
+      "aStatus": "shipped",
+      "b": "KG-ADR015",
+      "bStatus": "never",
+      "note": "docs/strategy/2026-07-28-knowledge-graph-review.md:33 opens a SECOND document titled 'ADR-015' ('repair the graph we have') that claims to be 'the single ADR-015'. The number is already taken by this accepted ADR."
+    },
+    {
+      "key": "ADR-020|NS-LAUNCH-SEQ",
+      "pair": "ADR-020 ↔ NS-LAUNCH-SEQ",
+      "a": "ADR-020",
+      "aStatus": "shipped",
+      "b": "NS-LAUNCH-SEQ",
+      "bStatus": "superseded",
+      "note": "The 2026-07-28 north star sequences every rung against a 2026-11-13 paid GA that ADR-020 deleted two days later. Any plan reading the north star's 'T-30 / T-7 / 108 days' arithmetic is reading a dead calendar."
+    },
+    {
+      "key": "ADR-020|XP-PHASE0",
+      "pair": "ADR-020 ↔ XP-PHASE0",
+      "a": "ADR-020",
+      "aStatus": "shipped",
+      "b": "XP-PHASE0",
+      "bStatus": "never",
+      "note": "The 2026-07-28 north star sequences every rung against a 2026-11-13 paid GA that ADR-020 deleted two days later. Any plan reading the north star's 'T-30 / T-7 / 108 days' arithmetic is reading a dead calendar."
+    },
+    {
+      "key": "FV-04|V3-SERIF",
+      "pair": "FV-04 ↔ V3-SERIF",
+      "a": "FV-04",
+      "aStatus": "superseded",
+      "b": "V3-SERIF",
+      "bStatus": "shipped",
+      "note": "The audit's own §3 correction says the 'two design languages' fork is CLOSED and the token spine is hash-locked. What actually shipped (V3) kept Fraunces globally on h1–h4 and kept the accent at #2A50C8 renamed 'blue' — so the decision as written was never executed, and the doc that says it is open is stale about a different thing."
+    },
+    {
+      "key": "BP-DISTINCT|FV-06",
+      "pair": "FV-06 ↔ BP-DISTINCT",
+      "a": "FV-06",
+      "aStatus": "partial",
+      "b": "BP-DISTINCT",
+      "bStatus": "partial",
+      "note": "site-reinvention-blueprint.md:34 names 'published failure as visual identity' as one of the two ownable moats to protect in every phase. founder-vision.md:93 retires it as a headline nine lines of doc later. Both documents are still cited as sources of truth by reinvention-master-plan.md."
+    },
+    {
+      "key": "BP-FOUNDER-BAND|FV-07",
+      "pair": "FV-07 ↔ BP-FOUNDER-BAND",
+      "a": "FV-07",
+      "aStatus": "shipped",
+      "b": "BP-FOUNDER-BAND",
+      "bStatus": "superseded",
+      "note": "The blueprint (l.136) and the surface map (l.21) both make a founder band with a real headshot, first-person one-liner and Person JSON-LD the centrepiece of /studio/. The positioning pivot removed exactly that. Neither doc was updated; both are still listed as feeds of the master plan."
+    },
+    {
+      "key": "FV-07|SM-STUDIO",
+      "pair": "FV-07 ↔ SM-STUDIO",
+      "a": "FV-07",
+      "aStatus": "shipped",
+      "b": "SM-STUDIO",
+      "bStatus": "superseded",
+      "note": "The blueprint (l.136) and the surface map (l.21) both make a founder band with a real headshot, first-person one-liner and Person JSON-LD the centrepiece of /studio/. The positioning pivot removed exactly that. Neither doc was updated; both are still listed as feeds of the master plan."
+    },
+    {
+      "key": "BP-ACCENT|WC-GOLDENHOUR",
+      "pair": "BP-ACCENT ↔ WC-GOLDENHOUR",
+      "a": "BP-ACCENT",
+      "aStatus": "superseded",
+      "b": "WC-GOLDENHOUR",
+      "bStatus": "shipped",
+      "note": "The blueprint orders the goldenhour gradient killed; the warmth plan (2026-07-17) makes that exact token layer 'the sanctioned warmth vehicle' and ships a Golden-Hour whisper on top of it."
+    },
+    {
+      "key": "BD-COURSE-RETIRED|SM-COURSE",
+      "pair": "SM-COURSE ↔ BD-COURSE-RETIRED",
+      "a": "SM-COURSE",
+      "aStatus": "superseded",
+      "b": "BD-COURSE-RETIRED",
+      "bStatus": "shipped",
+      "note": "The surface map says freeze-don't-redirect on backlink-equity grounds; 17 days later the whole subsystem was torn out and 301'd to /cost-index/. The equity argument was never rebutted in writing — it was simply overtaken."
+    },
+    {
+      "key": "MP-PHASES|XP-ORDER",
+      "pair": "MP-PHASES ↔ XP-ORDER",
+      "a": "MP-PHASES",
+      "aStatus": "partial",
+      "b": "XP-ORDER",
+      "bStatus": "partial",
+      "note": "Three different phase ladders were written for the same reinvention within one day (master plan 0–6, blueprint 0–6, execution plan 0/A/B/C/D) with different contents in the same-numbered phases. None was ever marked as the survivor."
+    },
+    {
+      "key": "BP-PHASES|MP-PHASES",
+      "pair": "MP-PHASES ↔ BP-PHASES",
+      "a": "MP-PHASES",
+      "aStatus": "partial",
+      "b": "BP-PHASES",
+      "bStatus": "partial",
+      "note": "Three different phase ladders were written for the same reinvention within one day (master plan 0–6, blueprint 0–6, execution plan 0/A/B/C/D) with different contents in the same-numbered phases. None was ever marked as the survivor."
+    },
+    {
+      "key": "BP-PHASES|XP-ORDER",
+      "pair": "BP-PHASES ↔ XP-ORDER",
+      "a": "BP-PHASES",
+      "aStatus": "partial",
+      "b": "XP-ORDER",
+      "bStatus": "partial",
+      "note": ""
+    },
+    {
+      "key": "BP-ACCENT|XP-ACCENT",
+      "pair": "XP-ACCENT ↔ BP-ACCENT",
+      "a": "XP-ACCENT",
+      "aStatus": "partial",
+      "b": "BP-ACCENT",
+      "bStatus": "superseded",
+      "note": "Written the same day as the blueprint, which locks #3b68f5 light / #5b82ff dark and calls #2A50C8 the warm accent to retire. The execution plan quietly restores #2a50c8 as THE accent. Nothing records which superseded which."
+    },
+    {
+      "key": "BP-SERIF|V3-SERIF",
+      "pair": "V3-SERIF ↔ BP-SERIF",
+      "a": "V3-SERIF",
+      "aStatus": "shipped",
+      "b": "BP-SERIF",
+      "bStatus": "superseded",
+      "note": "Directly reverses the blueprint's 'serif demoted to editorial only, move nav logo / footer headings / price figures to Inter'. V3 is the shipped reality; the blueprint and founder-vision still read as live instructions."
+    },
+    {
+      "key": "BP-PILLS|V3-RADIUS",
+      "pair": "V3-RADIUS ↔ BP-PILLS",
+      "a": "V3-RADIUS",
+      "aStatus": "shipped",
+      "b": "BP-PILLS",
+      "bStatus": "partial",
+      "note": "The blueprint orders the 999px pills retired; v3 declares them a deliberate keep. 73 occurrences remain in site.css."
+    },
+    {
+      "key": "BP-DARK|V3-EDITORIAL",
+      "pair": "V3-EDITORIAL ↔ BP-DARK",
+      "a": "V3-EDITORIAL",
+      "aStatus": "shipped",
+      "b": "BP-DARK",
+      "bStatus": "never",
+      "note": "v3 froze the editorial layer as a deliberate keep while the blueprint's mandatory dark pass for that same layer (site-article.css) was never done — it still has zero dark rules."
+    },
+    {
+      "key": "BD-NO-CRON|LU-A1",
+      "pair": "BD-NO-CRON ↔ LU-A1",
+      "a": "BD-NO-CRON",
+      "aStatus": "shipped",
+      "b": "LU-A1",
+      "bStatus": "never",
+      "note": ""
+    }
+  ],
+  "principles": [
+    {
+      "id": "ADR-000",
+      "decision": "Adopt ADRs for every non-trivial editorial decision; record the doctrine the Editorial Lead operates by, because prose here is spoken aloud verbatim in six languages.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "shipped"
+    },
+    {
+      "id": "ADR-001",
+      "decision": "Extend the absolute fact gate to the audio narration JSON the renderer speaks verbatim — a language-aware gate over every audio.<lang>.json.",
+      "encodedIn": "scripts/check-audio-fabrications.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "ADR-003",
+      "decision": "Machine-block the fake-team 'our team / our engineers' voice on the storefront's own marketing surfaces — the mirror of the product's 'Don' check.",
+      "encodedIn": "scripts/check-studio-voice-boundary.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "ADR-011-EVENTS",
+      "decision": "Surface notable price events as two honest halves joined at render time — a deterministic detection engine × the cited curated registry — shown as co-occurrence, never causation.",
+      "encodedIn": "scripts/check-cost-index-events.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "ADR-013-GOVDATA",
+      "decision": "NASS/Census/EIA are US-gov public-domain and redistributable; use only the honest subset. Nothing from them touches the measured price tier or the Vendor Benchmark reference. The live fetch runs on the operator's Mac.",
+      "encodedIn": "scripts/check-pressure-honesty.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "ADR-015-OPENDATA",
+      "decision": "The Cost Index becomes partly a data company and an open-source library: events, yields, seasonality, lock-or-float and anomaly datasets ship as explorable surfaces AND downloadable open datasets under an explicit per-file CC0/CC-BY split; co-movement is directed, bounded, anchored — co-occurrence, never cause.",
+      "encodedIn": "scripts/check-headers-license.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "BD-AUDIT-BOTTLENECK",
+      "decision": "The measured meta-finding: auditing here closes at 26% and ZERO closures in company history came from anyone working an audit's list. Fixes only happen inside the session that finds them. The company converts findings into REGISTRIES faster than into FIXES, and a registry entry has exactly the enforcement power of the document it replaced.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "partial"
+    },
+    {
+      "id": "BD-CC0",
+      "decision": "Citability — per-edition Dataset JSON-LD, a 'Cite this edition' block, a CC0 per-week snapshot at cost-index/week-<asOf>.json/.csv, and the EN+ES edition archive at /cost-index/weekly/.",
+      "encodedIn": "scripts/check-headers-license.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "BD-ESPARITY",
+      "decision": "EN↔ES surface parity is a standing invariant enforced by check-locale-parity.mjs and check-hreflang-orphans.mjs; every change ships in both locales.",
+      "encodedIn": "scripts/check-locale-parity.mjs",
+      "enforcement": "gate",
+      "status": "partial"
+    },
+    {
+      "id": "BD-FACTGATE",
+      "decision": "The absolute fact gate: every number, date, name, anecdote and percentage must be registered in sourced-claims.json, cited inline via <details class=\"cite\">, or labelled illustrative in the prose. Zero inventions.",
+      "encodedIn": "scripts/check-fabrications.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "BD-HONESTY-CONTRACT",
+      "decision": "The Cost Index honesty contract is inviolable: public wholesale levels are never a delivered price, and the read is against each ingredient's own baseline window, not week-over-week unless the archive backs it. Honest WoW is computed only across commensurable editions and withheld with a stated reason otherwise.",
+      "encodedIn": "scripts/check-cost-index-sync.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "BD-NO-CRON",
+      "decision": "Do NOT add a publish cron for the dispatch — its absence is a decision, not an oversight, and a red check-cost-index-dispatch-fresh IS the intended reminder. The machine reminds; humans write.",
+      "encodedIn": "scripts/check-cost-index-dispatch-fresh.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "BD-NOWIRE-RED",
+      "decision": "Never resolve a FAILING unwired gate by wiring it — check-all runs inside the Cloudflare deploy command, so wiring a currently-failing gate turns every deploy red. Fix the violations first, then wire, then delete the UNWIRED entry.",
+      "encodedIn": "scripts/check-gate-coverage.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "BD-PLANS-AS-DATA",
+      "decision": "The diagnosis behind the 26%: prose plans go stale and nothing can consume them. This repo's working architecture is manifest → injector → gate. Therefore any future plan is emitted as DATA plus a generator, never as a document.",
+      "encodedIn": "scripts/build-prior-decisions.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "BD-ROOTLIST",
+      "decision": "A scanner is only as good as its root list — declare roots, justify omissions. A script that scans the site walks EVERYTHING and carries an explicit skip list where every entry says why it is not reader-facing prose. Learned three times in one day, each time by shipping the bug first.",
+      "encodedIn": "scripts/check-gate-coverage.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "BD-SLUGS",
+      "decision": "Slugs are final-forever. Renaming a post breaks deep links from smart-next blocks, external citations and AI Overview rotation. To revise content, rewrite in place and bump dateModified.",
+      "encodedIn": "scripts/check-removed-slugs.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "BP-STATUS",
+      "decision": "A real /status/ board — live Cost-Index last-refresh, gate state, backtest calibration, uptime — measured, never asserted. A published SLA you don't measure is the exact lie the company exists not to tell.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "partial"
+    },
+    {
+      "id": "CL-METHOD",
+      "decision": "Methodological call for generated corpora (glossary 172 / cost-index 100 / sheets 55 / course 27): complete knowledge comes from reading the builder + template + driving data + verifying uniformity + sampling — NOT a line-by-line read of every generated clone.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "partial"
+    },
+    {
+      "id": "CR-FIREWALL",
+      "decision": "The volatility firewall (non-negotiable) — the corpus↔index gate reads ONLY the map, the key list and filesystem existence. It must never read a level, trend, flag or confidence, so a Mon/Wed/Fri refresh can never redden a local check-all run.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "never"
+    },
+    {
+      "id": "CR-NOVALUES",
+      "decision": "The outward-facing live-value-in-article version is mechanically possible and we are NOT doing it: it would freeze stale cents into committed /library/ HTML that no gate re-verifies, creating a fact-gate surface where a number in committed prose has no gate tying it to data. A hand-placed <a href> carries no value and no (idem) question.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "shipped"
+    },
+    {
+      "id": "CR-QUEUE-RULE",
+      "decision": "GOVERNING RULE — this system produces a REVIEW QUEUE, never a verdict. It may say 'the ground truth under this article has moved, a human should look'; it may never assert an article is wrong, auto-edit prose, present co-occurrence as cause, or publish a machine-made claim.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "shipped"
+    },
+    {
+      "id": "DM-IMMUTABLE",
+      "decision": "Non-negotiable — the demo's immutable numbers stay byte-intact ($24.10/$24.35/$29.45, median $24.22, ▲$5.23/+21.6%, $115.80, '$19 a month per location'), every artifact is labelled illustrative, and the FLOOR holds: no internal scroll, no page bounce, no horizontal overflow across the viewport matrix.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "shipped"
+    },
+    {
+      "id": "FV-08",
+      "decision": "THE HONESTY BOUNDARY (hard line) — we may project capability, use the company 'we' and decline to publish headcount, but may NEVER fabricate a team, invent 'our engineers', or claim a scale that does not exist.",
+      "encodedIn": "scripts/check-studio-voice-boundary.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "FV-09",
+      "decision": "Guardrails the reinvention must never break: the absolute fact/honesty gates, EN↔ES parity, performance budgets, accessibility, the CI gate suite.",
+      "encodedIn": "scripts/check-all.mjs",
+      "enforcement": "gate",
+      "status": "partial"
+    },
+    {
+      "id": "KG-BARRED",
+      "decision": "The viral post's two unsourced headline statistics (a bonus figure and a productivity-uplift percentage, both quoted only inside the strategy review that bars them) are BARRED from the rest of this repo entirely — not in an ADR, not on the resume-here board, not as motivating context. That is how a fabrication reaches audio.<lang>.json and gets spoken in two languages. This registry deliberately does not restate them.",
+      "encodedIn": "scripts/check-fabrications.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "KG-NOT",
+      "decision": "EXPLICITLY NOT DOING: Neo4j or any hosted graph DB (connect-src 'self' forbids it); a nightly agent that mutates the graph; LLM entity/relation extraction anywhere in the build, CI or publish path (≈1 in 4 relations wrong); GraphRAG retrieval and embeddings; publishing a derived about/mentions mesh across ~800 pages; a CC0 graph.json export.",
+      "encodedIn": "_headers",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "KG-P4",
+      "decision": "Phase 4 (conditional on Phase 3 items being CLOSED, not found) — build-desk-graph.mjs → docs/graph/desk-graph.json, every edge carrying derivation ∈ {rendered, declared}, a closed enum with no third value, because a quarantine lane is a promotion path.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "never"
+    },
+    {
+      "id": "LU-NO-301",
+      "decision": "Do not 301 or delete anything else until the GSC export is in hand. Freeze is reversible in an hour; a 301 that lands someone citing your schema-markup guide on a cost page is not.",
+      "encodedIn": "scripts/check-removed-slugs.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "LU-TEST",
+      "decision": "The usefulness test any new page must pass: name the person, the decision and the week-slot; name the number that flips them from A to B and the threshold it crosses; name the free thing they'd use instead and its specific defect; name what would prove us wrong and where they'd see it.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "never"
+    },
+    {
+      "id": "NS-NORTHSTAR",
+      "decision": "North star: SHIP NOTHING THAT CAN'T GET QUIETER ON ITS OWN. The test for any decision is whether it adds a surface that needs attention to stay true, or one that degrades toward silence.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "never"
+    },
+    {
+      "id": "NS-R0-SENTINEL",
+      "decision": "Rung 0 (do this Monday) — write scripts/check-src-sentinel.mjs, promoting the <!-- src: --> comment convention to an enforced, MONOTONE-DOWNWARD sentinel: on disagreement it may stamp as-of, freeze the citation, or flag superseded, and may never restate a number upward or author prose.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "partial"
+    },
+    {
+      "id": "NS-R2-CEILING",
+      "decision": "Rung 2 — scripts/check-confidence-ceiling.mjs: a machine may only ever LOWER a published confidence label or descriptive adjective to match its measured record; raising one requires a human. If it can only be written by loosening another gate, the rung dies, not the gate.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "never"
+    },
+    {
+      "id": "NS-REJECT",
+      "decision": "REJECTED with reasons: the Withhold Set / abstention benchmark; the standards / answer-contract governance rung; the Instrument Register pre-registration chain (extract only the monotone-downward rule); IOSCO statements of compliance; an MCP server now; payment rails (x402/AP2/ACP/RSL/pay-per-crawl); C2PA, zkTLS, a self-hosted transparency log, a second manifest, NLWeb, and widening the basket toward 30,000 series.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "shipped"
+    },
+    {
+      "id": "NS-TRUE-1",
+      "decision": "MUST STAY TRUE #1 — the fact gate is absolute and no rung may loosen it. If a rung requires a waiver, an undated allowlist entry or a gate exception to ship, the rung dies, not the gate.",
+      "encodedIn": "scripts/check-fabrications.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "NS-TRUE-10",
+      "decision": "MUST STAY TRUE #10 — absence reasons are 'searched and did not find', never 'does not exist', and no machine ever authors one.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "shipped"
+    },
+    {
+      "id": "NS-TRUE-2",
+      "decision": "MUST STAY TRUE #2 — machines may only LOWER a claim. Any automation touching published confidence, labels, adjectives or numbers may withhold, cap, demote or stamp-as-of; raising a claim requires a human plus a source.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "never"
+    },
+    {
+      "id": "NS-TRUE-3",
+      "decision": "MUST STAY TRUE #3 — published prose is bound to its cited source: every <!-- src: --> resolves, and disagreement triggers demotion, never silent restatement.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "never"
+    },
+    {
+      "id": "NS-TRUE-4",
+      "decision": "MUST STAY TRUE #4 — no timestamp is ever constructed. revisedAt is forward-only; historical rows are null with a stated reason. Inferring a publication date from git history is fabrication.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "shipped"
+    },
+    {
+      "id": "NS-TRUE-5",
+      "decision": "MUST STAY TRUE #5 — no language model touches a customer number, and the gate must live where the model would. no-llm-ci.sh exists only in the product repo; before any agent-facing storefront work, PORT IT, plus an import-boundary gate.",
+      "encodedIn": "Muntin-Invoice-Decoder/scripts/no-llm-ci.sh",
+      "enforcement": "gate",
+      "status": "partial"
+    },
+    {
+      "id": "NS-TRUE-6",
+      "decision": "MUST STAY TRUE #6 — never an LLM judge, anywhere in any scoring or acceptance path. It would make every gate feel stronger while being strictly weaker, silently.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "shipped"
+    },
+    {
+      "id": "NS-TRUE-7",
+      "decision": "MUST STAY TRUE #7 — no forecast, ever. Direction beats baseline only at h=1 by +0.004 and is worse than a coin flip beyond. Withholding the forecast IS the product.",
+      "encodedIn": "scripts/check-cost-index-events.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "NS-TRUE-8",
+      "decision": "MUST STAY TRUE #8 — the confidence label is a PROVENANCE descriptor, not a skill claim (scoreSeparatesSkill: false), and any machine-readable object carrying it must carry that marker in the same object or must not carry the label.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "shipped"
+    },
+    {
+      "id": "NS-TRUE-9",
+      "decision": "MUST STAY TRUE #9 — every accuracy figure ships with its n and its answer rate. Abstention must never be able to flatter a number, and n=2 must never headline.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "partial"
+    },
+    {
+      "id": "V3-EXTEND",
+      "decision": "Checklist for any NEW surface: use the tokens, pick app-vs-editorial grammar, token-only colour, regenerate all three CSS shells, preserve sentinels, mirror EN→ES, and edit the INJECTOR template rather than the output.",
+      "encodedIn": "scripts/build-css-shells.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "V3-NOHEX",
+      "decision": "SHIPPED v3: tints come from color-mix on the accent token — never a new hardcoded hex. The css-drift gate holds the baseline.",
+      "encodedIn": "scripts/check-css-drift.mjs",
+      "enforcement": "gate",
+      "status": "partial"
+    },
+    {
+      "id": "VB-REJECT",
+      "decision": "REJECTED for the moat, with an honest on-device alternative recorded for each: account-based cross-device sync; server-rendered per-link OG unfurls; a crowd-sourced vendor price database; server-side usage/price analytics and cloud email of the brief; realtime multiplayer; runtime cloud TTS/AI narration and server-side PDF.",
+      "encodedIn": "scripts/check-tool-no-fetch.mjs",
+      "enforcement": "gate",
+      "status": "shipped"
+    },
+    {
+      "id": "WC-CONTINUITY",
+      "decision": "Founder decision 2 — the 'where you left off' continuity cue ships ONLY for signed-in Workshop users. Anonymous visitors keep the 'no welcome back' promise (published Claim 8) intact.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "never"
+    },
+    {
+      "id": "WC-ONDEVICE",
+      "decision": "Warmth is light through the pane, not paint on the wall: every warm signal is computed on the reader's OWN device from what the browser already knows and is sent NOWHERE. The personalization IS the privacy moat.",
+      "encodedIn": null,
+      "enforcement": "prose-only",
+      "status": "shipped"
+    }
+  ],
+  "registryDefects": {
+    "danglingReferences": []
+  },
+  "unmeasurableProbes": []
+}
