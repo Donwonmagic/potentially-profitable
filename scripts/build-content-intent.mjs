@@ -59,7 +59,9 @@
  *             marketing-class page carrying at least one CTA target.
  *   trust     Proves the company is real and honest: surfaceClass 'trust'
  *             (methods/claims/receipts/security/status/changelog/system/legal/404),
- *             or surfaceRoot about|studio.
+ *             or surfaceRoot about|studio. Checked BEFORE the marketing-CTA half of
+ *             convert — /about/ and /studio/ carry the same CTA every page does, and
+ *             on a confidence storefront they ARE the confidence.
  *   acquire   An indexable ENTRY POINT a stranger can land on and immediately use or
  *             be routed by: an interactive calculator, or a hub (see isHub below).
  *   reference A LOOKUP surface: DefinedTerm JSON-LD, or surfaceClass glossary|sheet,
@@ -211,6 +213,28 @@ const CLAIM_FLOOR = 3;
 const RETIRED_MARGIN = 3;
 const RETIRED_DENSITY = 3.0;
 
+/* ------------------------------------------------------- functional noindex routes */
+
+/**
+ * Pages that are noindex AND carry no inbound editorial link, and are nonetheless
+ * doing their job. Without this list the "noindex and unreachable" rule — which is
+ * otherwise correct, and catches 16 genuinely stranded frozen sheets — files the 404
+ * page and the Cost Index embed widgets as dead weight.
+ *
+ * Same discipline as the BOM's SKIP_TOP and the gate registries: an exemption exists
+ * only with a stated reason. Anything not listed here is judged by the rule.
+ */
+const FUNCTIONAL_NOINDEX = [
+  [/^\/(?:es\/)?404\.html$/, 'served by the edge on any unmatched path; it is reached by the server, never by a link, and noindex is correct for it'],
+  [/\/embed\.html$/, 'an iframe widget embedded on OTHER sites; its inbound links are external by design and noindex is correct for an embed'],
+];
+
+/** The matching exemption's reason, or null. */
+export function functionalNoindexReason(route) {
+  for (const [re, why] of FUNCTIONAL_NOINDEX) if (re.test(route)) return why;
+  return null;
+}
+
 /* -------------------------------------------------------------- topic lexicons */
 
 /**
@@ -271,7 +295,14 @@ const LEXICON = {
     'broadline', 'sysco', 'us foods', 'performance food group', 'vendor benchmark',
     'vendor price', 'vendor quote', 'delivery minimum', 'order guide', 'rebate',
     'purveyor', 'produce distributor',
+    // Delivery marketplaces are filed here, not under invoices. A third party that
+    // takes a cut of every order is a supplier relationship; the invoice is only the
+    // paperwork. Before this, four of the site's strongest essays — the DoorDash and
+    // Uber Eats economics pieces — were filed as invoice content.
+    'doordash', 'uber eats', 'grubhub', 'third-party delivery', 'delivery app',
+    'delivery apps', 'commission rate', 'aggregator', 'marketplace commission',
     'proveedor', 'proveedores', 'distribuidor', 'distribuidores', 'guía de pedidos',
+    'aplicación de entrega', 'comisión de entrega',
   ],
 };
 
@@ -420,15 +451,23 @@ export function intentOf(p, ctx) {
   if (p.shadowedByRedirect) return ['dead', `a 301 (${p.shadowedByRedirect}) already answers this route`];
   if (p.surfaceClass === 'legacy') return ['dead', 'unpublished draft — never shipped to a reader'];
   if (p.surfaceClass === 'admin') return ['dead', 'operator render harness, noindex by design — not reader content'];
-  if (!p.indexable && p.isOrphanEvenViaRedirect) return ['dead', 'noindex AND no inbound editorial link — no crawler sees it, no reader reaches it'];
+  if (!p.indexable && p.isOrphanEvenViaRedirect && !ctx.functionalNoindexReason) {
+    return ['dead', 'noindex AND no inbound editorial link — no crawler sees it, no reader reaches it'];
+  }
   if (!p.indexable && ctx.cluster === 'retired-web-SEO') return ['dead', 'frozen retired-line content — off-thesis and already out of the index'];
 
   if (p.surfaceClass === 'product') return ['convert', 'product surface — the ask IS the page'];
   if (p.hasWaitlistFormInBody) return ['convert', 'carries the waitlist form in the body'];
-  if (p.surfaceClass === 'marketing' && p.ctaTargets.length) return ['convert', `marketing page with ${p.ctaTargets.length} in-content CTA target(s)`];
 
+  // trust is checked BEFORE the marketing-CTA convert rule, and the order matters:
+  // /about/ and /studio/ are marketing-class and carry the same CTA every page does,
+  // which filed the two pages a reader visits to decide whether the company is real
+  // as conversion surfaces. On a storefront whose job is confidence, they are the
+  // confidence.
   if (p.surfaceClass === 'trust') return ['trust', 'integrity surface — methods, claims, receipts, status, or legal'];
   if (p.surfaceRoot === 'about' || p.surfaceRoot === 'studio') return ['trust', 'company page — who is behind this'];
+
+  if (p.surfaceClass === 'marketing' && p.ctaTargets.length) return ['convert', `marketing page with ${p.ctaTargets.length} in-content CTA target(s)`];
 
   if (p.indexable && ctx.interactivity === 'calculator') return ['acquire', 'indexable interactive calculator — a stranger can land and use it immediately'];
   if (p.indexable && ctx.isHub) return ['acquire', `indexable hub — routes readers onward (${p.outboundInternalLinks} outbound, ${ctx.childRoutes} child routes)`];
@@ -490,11 +529,30 @@ export function verdictOf(p, ctx) {
   if (p.shadowedByRedirect) return ['retire', `a 301 (${p.shadowedByRedirect}) already answers this route — the file is unreachable`];
   if (p.surfaceClass === 'legacy') return ['retire', 'unpublished draft — it has never been a page'];
   if (p.surfaceClass === 'admin') return ['keep', 'operator render harness — noindex by design, not content to judge'];
-  if (!p.indexable && p.isOrphanEvenViaRedirect && ctx.cluster === 'retired-web-SEO') {
-    return ['retire', 'frozen, unlinked and off-thesis — nothing reaches it and nothing should'];
+  if (ctx.functionalNoindexReason) return ['keep', `noindex and unlinked, but functional — ${ctx.functionalNoindexReason}`];
+  if (!p.indexable && p.isOrphanEvenViaRedirect) {
+    return ['retire', 'frozen AND unreachable — no crawler sees it and no internal link leads to it, whatever it is about'];
   }
+  // Two structural exemptions from freeze, both on the positioning gate's own
+  // precedent (its ALLOW entries for blog/index.html and glossary/index.html):
+  //
+  //   a HUB's vocabulary is the vocabulary of the pages it LISTS, not its own subject,
+  //   and freeze-don't-delete means a frozen page stays reachable — so freezing the
+  //   hub that reaches it hides a live page instead of retiring a dead one;
+  //
+  //   a TRUST surface's job IS the record. /changelog/ names what the company built
+  //   and retired; that is the honesty surface working, not positioning drift.
+  //
+  // Both still carry the measured retired-line score in `signals`, so neither is
+  // hidden — they are exempted from the REMEDY, not from the measurement.
   if (p.indexable && ctx.cluster === 'retired-web-SEO' && !ctx.positioningAllowKey) {
-    return ['freeze', `INDEXED retired-line content (${ctx.retiredBodyHits} retired-line phrase(s) in the body) — the positioning gate's own remedy`];
+    if (ctx.isHub) {
+      return ['keep', `hub listing retired-line entries (${ctx.retiredBodyHits} phrase(s)) — its vocabulary is its children's; freezing it would hide live pages, per check-positioning-drift's own blog/glossary hub allowance`];
+    }
+    if (p.surfaceClass === 'trust') {
+      return ['keep', `trust surface carrying ${ctx.retiredBodyHits} retired-line phrase(s) — an integrity record naming what was retired is the honesty surface working, not drift`];
+    }
+    return ['freeze', `INDEXED retired-line content (${ctx.retiredBodyHits} retired-line phrase(s), ${retiredDensity(ctx.retiredBodyHits, ctx.bodyWords)}/1k words) — the positioning gate's own remedy`];
   }
   if (p.indexable && p.wordCount < MERGE_WORDS && p.inboundInternalLinks <= MERGE_INBOUND) {
     return ['merge', `${p.wordCount} words and ${p.inboundInternalLinks} inbound link(s) — too thin to rank alone, worth more folded into a parent`];
@@ -612,6 +670,7 @@ function build() {
     });
     ctx.cluster = cluster;
     ctx.retiredDemoted = retiredDemoted;
+    ctx.functionalNoindexReason = functionalNoindexReason(p.route);
     ctx.positioningAllowKey = allowKeyFor(p.filePath);
 
     const [primaryIntent, intentReason] = intentOf(p, ctx);
@@ -664,6 +723,7 @@ function build() {
         retiredWebBuildHits: p.retiredLineByCategory.webBuild,
         retiredDemoted: ctx.retiredDemoted,
         positioningAllowKey: ctx.positioningAllowKey,
+        functionalNoindexReason: ctx.functionalNoindexReason,
         dateModifiedDaysAgo: p.dateModifiedDaysAgo,
         counterpartRoute: p.counterpartRoute,
       },
@@ -717,6 +777,22 @@ function build() {
     esCounterpart: r.signals.counterpartRoute,
   }));
 
+  /**
+   * The flagship list is a ranking of PAGES, and pages built from one template repeat.
+   * Reporting the top 30 without saying that would hide the single most useful fact in
+   * it — that a large share of the site's highest-value assets are one builder's output.
+   */
+  const flagshipFamilies = (() => {
+    const o = {};
+    for (const f of flagships) {
+      const fam = f.route.replace(/^\/es\//, '/').split('/').filter(Boolean)[0] || '(home)';
+      (o[fam] ||= { pages: 0, routes: [] });
+      o[fam].pages++;
+      o[fam].routes.push(f.route);
+    }
+    return Object.fromEntries(Object.entries(o).sort((a, b) => b[1].pages - a[1].pages));
+  })();
+
   const freezeCandidates = records.filter((r) => r.keepVerdict === 'freeze');
   const indexable = records.filter((r) => r.signals.indexable);
 
@@ -756,6 +832,11 @@ function build() {
       })),
       indexablePagesAtOrOverGateThreshold: indexable.filter((r) => r.signals.retiredWebBuildHits >= 3).length,
       ofThoseAllowlisted: indexable.filter((r) => r.signals.retiredWebBuildHits >= 3 && r.signals.positioningAllowKey).length,
+      retiredDemoted: records.filter((r) => r.signals.retiredDemoted).map((r) => ({
+        route: r.route, landedIn: r.topicCluster, indexable: r.signals.indexable,
+        ...r.signals.retiredDemoted,
+      })),
+      retiredDemotedCount: records.filter((r) => r.signals.retiredDemoted).length,
       gateSkipsThisManifestScans: ['brand/og/preview.html'],
       gateSkipNote: 'check-positioning-drift skips the brand/ tree at depth 0; the surface BOM walks it (brand/og/preview.html, an OG-card render harness, classified admin -> dead here). That single page is the whole difference in scanned population: 1,066 indexable + 260 frozen = 1,326 seen by the gate vs 1,327 pages here.',
     },
@@ -763,6 +844,48 @@ function build() {
     intentByClass: cross(records, (r) => r.surfaceClass, (r) => r.primaryIntent),
     verdictByCluster: cross(records, (r) => r.topicCluster, (r) => r.keepVerdict),
     clusterByLang: cross(records, (r) => r.topicCluster, (r) => r.lang),
+
+    /**
+     * EN and ES counterparts are the SAME article. Whenever they land in different
+     * clusters the difference is the lexicons, not the pages — this is the honest
+     * self-measurement of how much thinner the Spanish vocabulary is. It is a known
+     * limit of this manifest, published rather than hidden.
+     */
+    localeClusterParity: (() => {
+      const byRoute = new Map(records.map((r) => [r.route, r]));
+      const pairs = [];
+      const mismatches = [];
+      for (const r of records) {
+        if (r.lang !== 'en') continue;
+        const mate = r.signals.counterpartRoute && byRoute.get(r.signals.counterpartRoute);
+        if (!mate) continue;
+        pairs.push(r.route);
+        if (mate.topicCluster !== r.topicCluster) {
+          mismatches.push({ en: r.route, enCluster: r.topicCluster, es: mate.route, esCluster: mate.topicCluster });
+        }
+      }
+      return {
+        pairsCompared: pairs.length,
+        mismatched: mismatches.length,
+        rate: pairs.length ? Math.round((mismatches.length / pairs.length) * 1000) / 10 : 0,
+        sample: mismatches.slice(0, 20),
+      };
+    })(),
+
+    thin: {
+      _doc: 'Indexable pages under MERGE_WORDS words. Only the subset that is ALSO under MERGE_INBOUND inbound links gets a merge verdict; a thin page a family cross-links is not automatically a merge, but it is still thin.',
+      indexableUnderMergeWords: indexable.filter((r) => r.signals.wordCount < MERGE_WORDS).length,
+      ofThoseVerdictMerge: indexable.filter((r) => r.signals.wordCount < MERGE_WORDS && r.keepVerdict === 'merge').length,
+      largestThinFamilies: (() => {
+        const o = {};
+        for (const r of indexable) {
+          if (r.signals.wordCount >= MERGE_WORDS) continue;
+          const parent = r.route.replace(/[^/]+\/?$/, '');
+          o[parent] = (o[parent] || 0) + 1;
+        }
+        return Object.fromEntries(Object.entries(o).sort((a, b) => b[1] - a[1]).slice(0, 12));
+      })(),
+    },
 
     interactivity: tally(records, (r) => r.signals.interactivity),
     hubs: {
@@ -790,8 +913,11 @@ function build() {
       acquirePagesNoAnalytics: indexable.filter((r) => r.primaryIntent === 'acquire' && !r.signals.hasAnalytics).length,
     },
 
+    flagshipFamilies,
+
     thresholds: {
-      MERGE_WORDS, MERGE_INBOUND, ELEVATE_AT, FLAGSHIP_N, HUB_OUTBOUND, HUB_WORDS, HUB_CHILDREN,
+      MERGE_WORDS, MERGE_INBOUND, ELEVATE_AT, FLAGSHIP_N, HUB_OUTBOUND, HUB_WORDS,
+      HUB_CHILDREN, CLAIM_FLOOR, RETIRED_MARGIN, RETIRED_DENSITY,
     },
   };
 
@@ -835,9 +961,13 @@ function report(doc) {
   console.log(`  valueScore      p50=${s.valueScore.p50} p75=${s.valueScore.p75} p90=${s.valueScore.p90} p99=${s.valueScore.p99} max=${s.valueScore.max}; ${s.valueScore.zero} score 0 (noindex); ${s.valueScore.atOrOverElevateThreshold} at/over the ${s.thresholds.ELEVATE_AT} elevate line`);
   console.log(`  funnel gaps     on-thesis indexed=${s.funnelGaps.onThesisIndexable}; no CTA=${s.funnelGaps.onThesisNoCta}; no analytics=${s.funnelGaps.onThesisNoAnalytics}; orphan=${s.funnelGaps.onThesisOrphan}; not linked from any hub=${s.funnelGaps.onThesisNotLinkedFromAnyHub}`);
   console.log(`  positioning     ${s.positioningCrossCheck.indexablePagesAtOrOverGateThreshold} indexed pages at/over the gate threshold, ${s.positioningCrossCheck.ofThoseAllowlisted} allowlisted; ${s.positioningCrossCheck.gateVisibleViolations.length} gate-visible freeze candidate(s), ${s.positioningCrossCheck.gateBlindCandidates.length} gate-blind`);
+  console.log(`  retired demoted ${s.positioningCrossCheck.retiredDemotedCount} page(s) failed the retired-line margin/density bar and were filed topically instead`);
+  console.log(`  thin            ${s.thin.indexableUnderMergeWords} indexable pages under ${s.thresholds.MERGE_WORDS} words (${s.thin.ofThoseVerdictMerge} verdict=merge)`);
+  console.log(`  EN/ES parity    ${s.localeClusterParity.mismatched}/${s.localeClusterParity.pairsCompared} counterpart pairs land in different clusters (${s.localeClusterParity.rate}%) — a lexicon-coverage limit, not a page difference`);
+  console.log(`  flagship famil. ${Object.entries(s.flagshipFamilies).map(([k, v]) => `${k}=${v.pages}`).join('  ')}`);
   console.log('\n  FLAGSHIPS (top 30, EN/ES pairs de-duplicated)');
   for (const f of doc.flagships) {
-    console.log(`   ${String(f.rank).padStart(2)}. ${String(f.valueScore).padStart(5)}  ${f.primaryIntent.padEnd(9)} ${f.topicCluster.padEnd(20)} ${f.route}`);
+    console.log(`   ${String(f.rank).padStart(2)}. ${String(f.valueScore).padStart(5)}  ${f.primaryIntent.padEnd(10)} ${f.topicCluster.padEnd(20)} ${f.route}`);
   }
 }
 
@@ -884,9 +1014,27 @@ function selfTest() {
     [pickCluster({}, 'company/trust').cluster, 'company/trust', 'an all-zero page falls back to its structural cluster'],
     [pickCluster({}).cluster, 'other', 'an all-zero page with no structure is "other", which is a real answer'],
     [pickCluster({ 'retired-web-SEO': 2 }).cluster, 'other', 'a score of 2 is a mention, not a subject — CLAIM_FLOOR rejects it'],
-    [pickCluster({ 'retired-web-SEO': 3 }).cluster, 'retired-web-SEO', 'a score of 3 clears the floor, matching the positioning gate threshold'],
+    [pickCluster({ 'retired-web-SEO': 30 }, null, { retiredHits: 30, bodyWords: 300 }).cluster, 'retired-web-SEO', 'a dense, unopposed retired page is claimed'],
     [pickCluster({ 'retired-web-SEO': 2 }, 'company/trust').cluster, 'company/trust', 'below the floor the structural cluster wins'],
     [pickCluster({ vendors: 2 }).score, 2, 'the top score is still reported even when nothing is claimed'],
+
+    // the asymmetric retired-line bar
+    [retiredDensity(8, 4531), 1.77, 'density is hits per 1,000 body words'],
+    [retiredDensity(5, 0), 0, 'a wordless page has 0 density, not a divide-by-zero'],
+    [pickCluster({ 'retired-web-SEO': 9, invoices: 5 }, null, { retiredHits: 8, bodyWords: 4531 }).cluster, 'invoices',
+      'a long article that names GBP eight times is NOT retired-line — 1.77 hits/1k fails the density bar'],
+    [pickCluster({ 'retired-web-SEO': 9, invoices: 5 }, null, { retiredHits: 8, bodyWords: 4531 }).retiredDemoted.why.startsWith('density'), true,
+      'the demotion states which bar it failed'],
+    [pickCluster({ 'retired-web-SEO': 10, invoices: 7 }, null, { retiredHits: 10, bodyWords: 2199 }).cluster, 'retired-web-SEO',
+      '4.5 hits/1k with a 3-point margin IS retired-line'],
+    [pickCluster({ 'retired-web-SEO': 5, invoices: 4 }, null, { retiredHits: 40, bodyWords: 300 }).cluster, 'invoices',
+      'dense but only 1 point clear of a topical cluster — the margin bar demotes it'],
+    [pickCluster({ 'retired-web-SEO': 5, invoices: 4 }, null, { retiredHits: 40, bodyWords: 300 }).retiredDemoted.why.startsWith('margin'), true,
+      'a margin failure names the margin'],
+    [pickCluster({ 'retired-web-SEO': 4, vendors: 2 }, 'company/trust', { retiredHits: 4, bodyWords: 300 }).cluster, 'company/trust',
+      'a demoted retired page with no topical cluster above the floor falls to its structural cluster, never back to retired'],
+    [pickCluster({ 'retired-web-SEO': 40 }, null, { retiredHits: 40, bodyWords: 300 }).retiredDemoted, null,
+      'an unopposed dense retired page is not demoted'],
     [clusterScores({ route: '/library/plate-cost/', titleText: '', bodyText: '', retiredBodyHits: 0 })['menu-pricing'], 8, 'a route hit is worth 8'],
     [clusterScores({ route: '/x/', titleText: 'plate cost', bodyText: '', retiredBodyHits: 0 })['menu-pricing'], 5, 'a title hit is worth 5'],
     [clusterScores({ route: '/x/', titleText: '', bodyText: 'plate cost', retiredBodyHits: 0 })['menu-pricing'], 1, 'a body hit is worth 1'],
@@ -897,18 +1045,26 @@ function selfTest() {
     [intentOf(P({ surfaceClass: 'legacy' }), C())[0], 'dead', 'a draft is dead'],
     [intentOf(P({ surfaceClass: 'admin' }), C())[0], 'dead', 'an operator harness is dead for storefront purposes'],
     [intentOf(P({ indexable: false, isOrphanEvenViaRedirect: true }), C())[0], 'dead', 'noindex plus unreachable is dead'],
+    [intentOf(P({ route: '/404.html', surfaceClass: 'trust', indexable: false, isOrphanEvenViaRedirect: true }), C({ functionalNoindexReason: 'served by the edge' }))[0], 'trust', 'the 404 page is noindex and unlinked BY DESIGN — not dead weight'],
+    [functionalNoindexReason('/404.html') !== null, true, 'the 404 page is exempt'],
+    [functionalNoindexReason('/es/404.html') !== null, true, 'the ES 404 page is exempt'],
+    [functionalNoindexReason('/cost-index/ribeye/embed.html') !== null, true, 'an iframe embed widget is exempt — its inbound links are external by design'],
+    [functionalNoindexReason('/sheets/holiday-hours-planner/'), null, 'a stranded frozen sheet is NOT exempt'],
     [intentOf(P({ indexable: false }), C({ cluster: 'retired-web-SEO' }))[0], 'dead', 'frozen retired-line content is dead'],
     [intentOf(P({ indexable: false }), C({ cluster: 'cost-intelligence' }))[0], 'educate', 'frozen but linked ON-thesis prose still teaches — not dead'],
     [intentOf(P({ surfaceClass: 'product' }), C())[0], 'convert', 'a product surface converts'],
     [intentOf(P({ hasWaitlistFormInBody: true }), C())[0], 'convert', 'a waitlist form in the body converts'],
     [intentOf(P({ surfaceClass: 'marketing' }), C())[0], 'convert', 'a marketing page with a CTA converts'],
+    [intentOf(P({ surfaceClass: 'marketing', surfaceRoot: 'about' }), C())[0], 'trust', 'the about page is trust even though it is marketing-class and carries a CTA'],
+    [intentOf(P({ surfaceClass: 'marketing', surfaceRoot: 'studio' }), C())[0], 'trust', 'the company page is trust, not a conversion surface'],
     [intentOf(P({ surfaceClass: 'marketing', ctaTargets: [] }), C())[0], 'educate', 'a marketing page with NO CTA is not a conversion surface'],
     [intentOf(P({ surfaceClass: 'trust' }), C())[0], 'trust', 'an integrity surface is trust'],
     [intentOf(P({ surfaceRoot: 'about' }), C())[0], 'trust', 'the company page is trust'],
     [intentOf(P(), C({ interactivity: 'calculator' }))[0], 'acquire', 'an indexable calculator acquires'],
     [intentOf(P({ indexable: false }), C({ interactivity: 'calculator', cluster: 'cost-intelligence' }))[0], 'educate', 'a NOINDEX calculator cannot acquire'],
     [intentOf(P(), C({ isHub: true }))[0], 'acquire', 'an indexable hub acquires'],
-    [intentOf(P({ jsonLdTypes: ['DefinedTerm'] }), C())[0], 'reference', 'a DefinedTerm is a lookup'],
+    [intentOf(P({ jsonLdTypes: ['DefinedTerm', 'Article'] }), C())[0], 'educate', 'DefinedTerm alone does NOT make a page a lookup — it rides 310 library articles as autolink schema'],
+    [intentOf(P({ surfaceClass: 'glossary', jsonLdTypes: ['DefinedTerm'] }), C())[0], 'reference', 'a glossary term is a lookup'],
     [intentOf(P({ surfaceClass: 'sheet', jsonLdTypes: [] }), C())[0], 'reference', 'an operator sheet is a lookup'],
     [intentOf(P({ surfaceClass: 'cost-index', jsonLdTypes: [] }), C())[0], 'reference', 'a cost-index data page is a lookup'],
     [intentOf(P({ jsonLdTypes: [] }), C())[0], 'educate', '1,200 words with no schema still educates'],
@@ -936,7 +1092,10 @@ function selfTest() {
     [verdictOf(P({ surfaceClass: 'admin' }), C())[0], 'keep', 'an operator harness is kept, not judged as content'],
     [verdictOf(P(), C({ cluster: 'retired-web-SEO' }))[0], 'freeze', 'INDEXED retired-line content is frozen'],
     [verdictOf(P(), C({ cluster: 'retired-web-SEO', positioningAllowKey: 'x' }))[0], 'keep', 'an allowlisted page is NOT re-flagged — the gate already ruled'],
-    [verdictOf(P({ indexable: false, isOrphanEvenViaRedirect: true }), C({ cluster: 'retired-web-SEO' }))[0], 'retire', 'frozen + unlinked + off-thesis is retired'],
+    [verdictOf(P(), C({ cluster: 'retired-web-SEO', isHub: true }))[0], 'keep', 'a HUB is never frozen — its vocabulary is its children\'s, and freezing it would hide live pages'],
+    [verdictOf(P({ surfaceClass: 'trust' }), C({ cluster: 'retired-web-SEO' }))[0], 'keep', 'a trust surface naming what was retired is the record working, not drift'],
+    [verdictOf(P({ indexable: false, isOrphanEvenViaRedirect: true }), C({ cluster: 'retired-web-SEO' }))[0], 'retire', 'frozen + unlinked is retired whatever it is about'],
+    [verdictOf(P({ indexable: false, isOrphanEvenViaRedirect: true }), C({ functionalNoindexReason: 'served by the edge' }))[0], 'keep', 'a functional noindex page is kept, not retired'],
     [verdictOf(P({ wordCount: 120, inboundInternalLinks: 1 }), C())[0], 'merge', 'thin and barely linked is a merge'],
     [verdictOf(P({ wordCount: 120, inboundInternalLinks: 50 }), C())[0], 'keep', 'thin but heavily linked is load-bearing, not a merge'],
     [verdictOf(P(), C({ valueScore: 80 }))[0], 'elevate', 'a high-scoring on-thesis page is elevated'],
@@ -962,6 +1121,12 @@ function selfTest() {
   }
   for (const k of ON_THESIS) {
     if (!declared.has(k)) { console.error(`x self-test: ON_THESIS "${k}" is not in CLUSTER_ORDER`); process.exit(2); }
+    pass++;
+  }
+  // Every functional-noindex exemption needs a substantive reason, for the same
+  // reason the BOM's SKIP_TOP entries do: an unexplained exemption is a blind spot.
+  for (const [re, why] of FUNCTIONAL_NOINDEX) {
+    if (!why || why.length < 40) { console.error(`x self-test: FUNCTIONAL_NOINDEX ${re} needs a substantive reason`); process.exit(2); }
     pass++;
   }
   // A lexicon phrase that also appears in another cluster's lexicon makes the score

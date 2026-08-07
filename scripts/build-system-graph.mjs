@@ -832,8 +832,12 @@ function build() {
     // ("run `node x --check`") is advice, not a mode, and must not be counted as one.
     node.hasCheckMode = /(['"])--check\1/.test(stripped);
     node.hasSelfTest = /(['"])--self-test\1/.test(stripped);
-    node.usesNetwork = /\bfetch\s*\(|node:https|require\(['"]https['"]\)|\bhttps\.get\b/.test(stripped);
-    node.secretsUsed = dedupe([...stripped.matchAll(/process\.env\.([A-Z0-9_]*(?:KEY|SECRET|TOKEN|PASSWORD)[A-Z0-9_]*)/g)].map((m) => m[1])).sort();
+    // Masked, not raw: prune-dist-data.mjs contains `fetch("/data/…")` inside a self-test
+    // STRING, and reading it as a network call would make rebuild-all skip a step that
+    // needs no network at all.
+    const maskedSrc = maskStrings(stripped);
+    node.usesNetwork = /\bfetch\s*\(|node:https|\bhttps\.get\b/.test(maskedSrc);
+    node.secretsUsed = dedupe([...maskedSrc.matchAll(/process\.env\.([A-Z0-9_]*(?:KEY|SECRET|TOKEN|PASSWORD)[A-Z0-9_]*)/g)].map((m) => m[1])).sort();
 
     for (const m of stripped.matchAll(/\bfrom\s+'(\.[^']+)'/g)) {
       const target = normalizeRel(path.posix.join(path.posix.dirname(node.id), m[1]));
@@ -916,7 +920,9 @@ function build() {
   /* --- artifacts ---------------------------------------------------------- */
   const artifacts = new Map();
   const touch = (id, tree) => {
-    if (!artifacts.has(id)) artifacts.set(id, { id, tree, kind: artifactKind(id), writtenBy: [], readBy: [], walkedBy: [], onDisk: fs.existsSync(path.join(REPO, id)) });
+    // This file's own output counts as present: it is written at the end of this run, so
+    // reporting it missing would make --check flip between two states forever.
+    if (!artifacts.has(id)) artifacts.set(id, { id, tree, kind: artifactKind(id), writtenBy: [], readBy: [], walkedBy: [], onDisk: fs.existsSync(path.join(REPO, id)) || id === 'data/system-graph.json' });
     return artifacts.get(id);
   };
   for (const n of scripts) {
@@ -1086,8 +1092,29 @@ function build() {
     return { script: e.script, label: e.label, ...healers, commentOnlyIn: commentOnly, healed: healers.deploy || healers.workflows.length > 0 };
   }).filter((e) => !e.healed);
 
+  /* --- builders whose only healer throws the result away ------------------ */
+  // The sharpest class of all, and invisible to every existing gate: a workflow RUNS the
+  // builder (so check-idem-coverage calls it healed), the git-add allowlist omits the
+  // output, `git checkout -- .` deletes it, and a check-all gate then reads the stale
+  // committed copy and reds the deploy. check-cost-index-picker fails today for exactly
+  // this reason. These belong at the very front of the plan: they produce data other
+  // steps read, and nothing else will ever produce it.
+  const discardedFeeders = [];
+  for (const u of unstagedWorkflowOutputs) {
+    if (!u.discardedByGitCheckout) continue;
+    const consumers = [];
+    for (const w of u.unstagedWrites) {
+      const a = artifacts.get(w);
+      if (!a) continue;
+      for (const r of a.readBy) {
+        if (checkAllScripts.has(r) || deployScripts.has(r)) consumers.push({ artifact: w, reader: r, gate: checkAllScripts.has(r) });
+      }
+    }
+    if (consumers.length) discardedFeeders.push({ ...u, consumers });
+  }
+
   /* --- the executable plan ------------------------------------------------ */
-  const plan = buildPlan({ deploy, scripts: byId, outOfChain, idemUnhealed });
+  const plan = buildPlan({ deploy, scripts: byId, outOfChain, idemUnhealed, discardedFeeders });
 
   /* --- rollups ------------------------------------------------------------ */
   const byKind = {};
@@ -1235,7 +1262,7 @@ function artifactKind(id) {
  * of being guessed at — running it in either position is defensible and the graph should
  * say so rather than pick silently.
  */
-function buildPlan({ deploy, scripts, outOfChain, idemUnhealed }) {
+function buildPlan({ deploy, scripts, outOfChain, idemUnhealed, discardedFeeders }) {
   const steps = [];
   const notes = [];
   const contested = [];
@@ -1252,6 +1279,21 @@ function buildPlan({ deploy, scripts, outOfChain, idemUnhealed }) {
     for (const s of n.secretsUsed) req.push('secret:' + s);
     return req;
   };
+
+  // PRE-0: builders whose only automated healer discards their output. First, because
+  // they produce inputs the rest of the plan reads.
+  for (const f of discardedFeeders) {
+    if (spineScripts.has(f.script) || seenPre.has(f.script)) continue;
+    seenPre.add(f.script);
+    steps.push({
+      phase: 'pre',
+      script: f.script,
+      args: [],
+      why: `${f.workflow} runs it, omits ${f.unstagedWrites.join(' + ')} from its git-add allowlist, then discards it with \`git checkout -- .\`. `
+        + `${f.consumers.length} step(s) read the stale committed copy — e.g. ${f.consumers[0].reader}.`,
+      requires: requirementsFor(f.script),
+    });
+  }
 
   // PRE-1: the builders check-all --checks that no runner re-runs. These are the true
   // deploy blockers — the deploy heals its own chain, so a red can only survive here.
