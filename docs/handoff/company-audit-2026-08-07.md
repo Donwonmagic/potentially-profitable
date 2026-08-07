@@ -45,6 +45,24 @@ Four facts, each independently reproduced:
    `build-themes-review-board`, `build-theme-story-pages`, `build-cuisine-landing-pages`,
    `build-cost-index-picker`, `build-ingredient-state-record`.
 
+**ADDED 2026-08-07 (found by the Phase-D blind adversarial pass, after this audit shipped) — the
+worst live falsehood on the site, and the purest instance of the disease:**
+
+> `cost-index/feed.json` publishes **ground-beef at `priceUsd: 393.06`, `source: "bls"`** — a BLS
+> *index value* rendered as dollars per pound on the machine-readable feed built for AI crawlers and
+> journalists. `cost-index/index.json` publishes **$5.51/lb** for the same slug. **Two published
+> surfaces disagree by 71×.**
+>
+> And `scripts/check-cost-index-basis-leak.mjs` — the gate written for exactly this — **passes**,
+> printing "every rendered $ (seed, index.json, **feed.json**, …) traces to a dollar-basis level in
+> the source; no index/farm-gate/customs basis leaks a price." It names the leaking file as covered.
+> The gate cross-references at the INGREDIENT level (ground-beef does have one $5.51 wholesale
+> level) and never checks the basis of the specific observation rendered. Its own docstring names
+> this failure mode and cites a salmon-fillet precedent.
+>
+> This is the strongest single argument in the audit that green means nothing here — and it was
+> found only once a verifier was denied the maker's reasoning.
+
 **The single most important finding is not on that list.** It is this:
 
 > **Auditing at Muntin has a 26% close rate, and zero closures in the company's entire history
@@ -163,7 +181,7 @@ Ordered by (damage prevented) ÷ (founder-minutes). Every one is small; five are
 
 | # | Change | Where | Est. |
 |---|---|---|---|
-| 1 | **Align the subscribe source with the broadcast filter.** Accept `footer` and `cost-index-ingredient`, or widen the filter at `src/worker.js:8793`. Today the monthly dispatch reaches 2 pages' worth of subscribers. | storefront | 15 min |
+| 1 | **Align the subscribe source with the broadcast filter — AND raise the send cap.** Accept `footer` and `cost-index-ingredient`, or widen the filter at `src/worker.js:8793`. **CORRECTED 2026-08-07:** this alone is NOT a 15-minute fix. `src/worker.js:8789` sets `const CAP = 90; // Resend free tier is 100/day`, and line 8782 stamps `cost-index:broadcast:<asOf>` so a re-fire returns `already-sent`. Widening the filter without batching would reach 90 of 775 and then record the edition as delivered. Needs batching or a paid Resend tier. | storefront | 3 h |
 | 2 | **Resolve the hostname.** `curl -sI https://ledger.muntin.digital` decides it. If it does not resolve, 547 CTAs across 405 pages are dead and so is the product's own canonical URL. Then set `NEXT_PUBLIC_SITE_URL` and add it to `guard-web-deploy-env.mjs` beside its sibling. | both | 30 min |
 | 3 | **Green the deploy.** Run the 5 out-of-chain builders and commit; then add them to `wrangler.jsonc` `build.command` so nothing re-stales them. Note `build-ingredient-state-record` needs your Mac + API keys — it cannot be cleared from a container. | storefront | 1 h |
 | 4 | **Fix the staging pattern, not the case.** Replace the `git add` allowlist in `cost-index-refresh.yml:302-311` with a path-scoped `git add -A` plus a denylist, and narrow or delete `git checkout -- .` on line 313. Retires the bug class instead of its third instance. | storefront | 30 min |
