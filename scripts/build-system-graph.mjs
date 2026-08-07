@@ -597,6 +597,22 @@ const BUILDER_PREFIXES = ['build', 'seed', 'calibrate', 'backtest', 'render', 'g
 const INJECTOR_PREFIXES = ['inject', 'wire', 'stamp', 'sync', 'migrate', 'fix', 'add', 'rewire', 'normalize', 'dedupe', 'promote', 'tone', 'update', 'enrich', 'minify', 'prune', 'vendor', 'reconcile', 'voice'];
 const CHECK_PREFIXES = ['check', 'verify', 'probe', 'expected', 'test', 'run'];
 
+/**
+ * Finer grain inside a kind, because the rollup lies without it: 37 of the 169 `check`
+ * scripts are node:test harnesses and 34 of those are run by nobody — which reads as "34
+ * orphaned gates" unless the two are told apart. It also explains why this file counts
+ * 169 checks where check-gate-coverage counts 127: that gate globs `check-*.mjs`, so
+ * `probe-*` and `verify-*` fall outside its root list.
+ */
+export function subkindOf(rel) {
+  const base = path.basename(rel);
+  if (/^(test|run)-/.test(base)) return 'test-harness';
+  if (/^check-/.test(base)) return 'gate';
+  if (/^(probe|verify|expected)-/.test(base)) return 'gate-shaped';
+  if (/^fetch-/.test(base)) return 'fetcher';
+  return null;
+}
+
 export function classifyScript(rel) {
   if (rel.startsWith('scripts/lib/')) return 'lib';
   const base = path.basename(rel);
@@ -792,6 +808,7 @@ function build() {
     const node = {
       id: rel,
       kind: classifyScript(rel),
+      subkind: subkindOf(rel),
       lang: ext === '.py' ? 'python' : ext === '.sh' ? 'shell' : 'js',
       parsed: !UNPARSED_SCRIPT_EXT.has(ext),
       bytes: Buffer.byteLength(src),
@@ -1107,6 +1124,9 @@ function build() {
       const a = artifacts.get(w);
       if (!a) continue;
       for (const r of a.readBy) {
+        // A builder that reads back its own output is not a consumer of it; naming
+        // itself as the injured party would make the reason line nonsense.
+        if (r === u.script) continue;
         if (checkAllScripts.has(r) || deployScripts.has(r)) consumers.push({ artifact: w, reader: r, gate: checkAllScripts.has(r) });
       }
     }
@@ -1123,7 +1143,7 @@ function build() {
     byKind[n.kind].total++;
     byKind[n.kind][n.invocation]++;
   }
-  const orphans = scripts.filter((n) => n.invocation === 'orphan').map((n) => ({ id: n.id, kind: n.kind, lines: n.lines, writes: n.writes.length, lang: n.lang }));
+  const orphans = scripts.filter((n) => n.invocation === 'orphan').map((n) => ({ id: n.id, kind: n.kind, subkind: n.subkind, lines: n.lines, writes: n.writes.length, lang: n.lang }));
 
   const dataArtifacts = [...artifacts.values()].filter((a) => a.id.startsWith('data/') && !a.tree);
   const manifestRollup = {
@@ -1202,6 +1222,7 @@ function build() {
         outOfChainWriters: outOfChain.size,
       },
       unstagedWorkflowOutputs: unstagedWorkflowOutputs.length,
+      discardedFeeders: discardedFeeders.length,
       unrunCheckMode: unrunCheckMode.length,
       unrunCheckModeBuilders: unrunCheckMode.filter((u) => u.kind === 'builder').length,
       idemEntriesUnhealed: idemUnhealed.length,
@@ -1232,6 +1253,7 @@ function build() {
     unrunCheckMode,
     idemUnhealed,
     unstagedWorkflowOutputs,
+    discardedFeeders,
     writeOnlyManifests: writeOnly,
     orphans,
     plan,
@@ -1388,7 +1410,9 @@ function report(d) {
       + `  workflow:${String(v.workflow).padStart(3)}  via-script:${String(v.script + v['script-of-runner']).padStart(3)}  ORPHAN:${String(v.orphan).padStart(3)}`);
   }
   L('');
-  L('ORPHANS — invoked by no runner and no script');
+  const orphGate = d.orphans.filter((o) => o.subkind === 'gate' || o.subkind === 'gate-shaped').length;
+  const orphTest = d.orphans.filter((o) => o.subkind === 'test-harness').length;
+  L(`ORPHANS — ${d.orphans.length} invoked by no runner and no script (${orphTest} node:test harnesses, ${orphGate} gate-shaped, ${d.orphans.length - orphTest - orphGate} builders/injectors/libs)`);
   for (const o of d.orphans.slice(0, 40)) L(`  ${o.kind.padEnd(9)} ${String(o.lines).padStart(5)}L  writes:${String(o.writes).padStart(2)}  ${o.id}`);
   if (d.orphans.length > 40) L(`  … and ${d.orphans.length - 40} more`);
   L('');
@@ -1477,6 +1501,9 @@ function selfTest() {
     [classifyScript('scripts/check-all.mjs'), 'check', 'check-* is a check'],
     [classifyScript('scripts/lib/translate.py'), 'lib', 'anything under lib/ is a lib regardless of its name'],
     [classifyScript('scripts/audio-post-process.mjs'), 'other', 'an unrecognised prefix is other, never silently a builder'],
+    [subkindOf('scripts/test-margin-math.mjs'), 'test-harness', 'a node:test harness is not a gate'],
+    [subkindOf('scripts/check-all.mjs'), 'gate', 'check-* is a gate'],
+    [subkindOf('scripts/verify-cost-index-sources.mjs'), 'gate-shaped', 'verify-* is gate-shaped but outside check-gate-coverage\'s glob'],
     [JSON.stringify(ioEdges("fs.writeFileSync(path.join(REPO,'data/a.json'), x); const s = fs.readFileSync(path.join(REPO,'data/b.json'),'utf8');", {}, 'scripts/a.mjs').writes), '["data/a.json"]', 'writes are separated from reads'],
     [ioEdges("fs.readFileSync(someVar,'utf8')", {}, 'scripts/a.mjs').unresolved.read, 1, 'an unresolvable read is counted, not dropped silently'],
     [workflowRefs('  # run: node scripts/build-x.mjs\n  - run: node scripts/build-y.mjs').runs.join(), 'scripts/build-y.mjs', 'only non-comment lines count as runs'],

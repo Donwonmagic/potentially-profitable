@@ -4,7 +4,7 @@
   "_honesty": {
     "method": "Static scan. Comments stripped, const bindings resolved, fs call arguments evaluated by a small path interpreter.",
     "resolvedIoArgs": {
-      "read": 525,
+      "read": 526,
       "walk": 53,
       "write": 150
     },
@@ -14,7 +14,7 @@
       "write": 96,
       "unbalanced": 0
     },
-    "unresolvedShare": 0.4033,
+    "unresolvedShare": 0.4029,
     "cannotSee": ["A path built from a loop variable, function parameter or computed slug resolves to `*`. Its resolvable prefix becomes a tree edge; a pattern with no resolvable prefix is dropped and counted in unresolvedIoArgs.","Dynamic dispatch: a script invoked through a variable command name is not detected.","Whether a workflow keeps a builder's output. A `runs` hit proves the command is in the YAML, not that the result is committed — the audit found cost-index-refresh.yml running a builder and then discarding the file with `git checkout -- .`.","Runtime behaviour of any kind. Nothing here is executed."],
     "symbolShadowing": "The first `const NAME =` binding in a file wins; a same-named binding in an inner scope is not modelled."
   },
@@ -46,7 +46,7 @@
     }
   ],
   "summary": {
-    "scripts": 396,
+    "scripts": 397,
     "byKind": {
       "injector": {
         "total": 111,
@@ -58,13 +58,13 @@
         "orphan": 33
       },
       "other": {
-        "total": 3,
+        "total": 4,
         "deploy": 0,
         "workflow": 0,
         "check-all": 0,
         "script": 1,
         "script-of-runner": 0,
-        "orphan": 2
+        "orphan": 3
       },
       "builder": {
         "total": 100,
@@ -80,9 +80,9 @@
         "deploy": 1,
         "workflow": 1,
         "check-all": 125,
-        "script": 0,
+        "script": 2,
         "script-of-runner": 6,
-        "orphan": 36
+        "orphan": 34
       },
       "lib": {
         "total": 13,
@@ -99,8 +99,8 @@
       "checkAll": 195,
       "workflow": 14,
       "scriptOfRunner": 17,
-      "script": 3,
-      "orphan": 93
+      "script": 5,
+      "orphan": 92
     },
     "deployStepCount": 84,
     "deployScriptSteps": 79,
@@ -119,9 +119,9 @@
       "onDiskMissing": 1
     },
     "chain": {
-      "nodes": 100,
-      "edges": 110,
-      "topologicallyOrdered": 92,
+      "nodes": 102,
+      "edges": 111,
+      "topologicallyOrdered": 94,
       "inCycles": 8,
       "mutualPairs": 4,
       "deployOrderDeviations": 2,
@@ -129,12 +129,13 @@
       "outOfChainWriters": 4
     },
     "unstagedWorkflowOutputs": 4,
+    "discardedFeeders": 1,
     "unrunCheckMode": 38,
     "unrunCheckModeBuilders": 17,
     "idemEntriesUnhealed": 21,
     "writeOnlyManifests": 91,
-    "planSteps": 102,
-    "planPreSteps": 23,
+    "planSteps": 103,
+    "planPreSteps": 24,
     "planStepsNeedingNetworkOrSecrets": 2
   },
   "runners": {
@@ -2659,6 +2660,7 @@
     {
       "id": "scripts/add-glossary-knit-sentinels.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 2346,
@@ -2690,6 +2692,7 @@
     {
       "id": "scripts/add-tool-knit-sentinels.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 2306,
@@ -2721,6 +2724,7 @@
     {
       "id": "scripts/audio-fact-check-rerender.sh",
       "kind": "other",
+      "subkind": null,
       "lang": "shell",
       "parsed": false,
       "bytes": 14695,
@@ -2752,6 +2756,7 @@
     {
       "id": "scripts/audio-post-process.mjs",
       "kind": "other",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 18258,
@@ -2783,6 +2788,7 @@
     {
       "id": "scripts/backtest-cost-forecast.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 13488,
@@ -2814,6 +2820,7 @@
     {
       "id": "scripts/build-anomaly-open-data.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6011,
@@ -2845,6 +2852,7 @@
     {
       "id": "scripts/build-article-graphics.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 9336,
@@ -2876,6 +2884,7 @@
     {
       "id": "scripts/build-blog-index.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6053,
@@ -2907,6 +2916,7 @@
     {
       "id": "scripts/build-claims-json.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 2957,
@@ -2938,6 +2948,7 @@
     {
       "id": "scripts/build-conformal-vectors.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6004,
@@ -2969,10 +2980,11 @@
     {
       "id": "scripts/build-content-intent.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
-      "bytes": 59869,
-      "lines": 1016,
+      "bytes": 70868,
+      "lines": 1176,
       "hasCheckMode": true,
       "hasSelfTest": true,
       "usesNetwork": false,
@@ -3000,6 +3012,7 @@
     {
       "id": "scripts/build-cost-anomaly-log.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6246,
@@ -3031,6 +3044,7 @@
     {
       "id": "scripts/build-cost-confidence-calibration.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8376,
@@ -3062,6 +3076,7 @@
     {
       "id": "scripts/build-cost-confidence-shadow.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 9369,
@@ -3093,6 +3108,7 @@
     {
       "id": "scripts/build-cost-index-archive.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 10841,
@@ -3124,6 +3140,7 @@
     {
       "id": "scripts/build-cost-index-audit.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 16584,
@@ -3155,6 +3172,7 @@
     {
       "id": "scripts/build-cost-index-calibration-report.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6624,
@@ -3186,6 +3204,7 @@
     {
       "id": "scripts/build-cost-index-context.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 9862,
@@ -3217,6 +3236,7 @@
     {
       "id": "scripts/build-cost-index-dispatch.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 165762,
@@ -3248,6 +3268,7 @@
     {
       "id": "scripts/build-cost-index-email-preview.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5512,
@@ -3279,6 +3300,7 @@
     {
       "id": "scripts/build-cost-index-embed.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8755,
@@ -3310,6 +3332,7 @@
     {
       "id": "scripts/build-cost-index-events.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 13076,
@@ -3341,6 +3364,7 @@
     {
       "id": "scripts/build-cost-index-feed.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6387,
@@ -3372,6 +3396,7 @@
     {
       "id": "scripts/build-cost-index-from-titles.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 2859,
@@ -3403,6 +3428,7 @@
     {
       "id": "scripts/build-cost-index-health.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 10075,
@@ -3434,6 +3460,7 @@
     {
       "id": "scripts/build-cost-index-history-seed.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5188,
@@ -3465,6 +3492,7 @@
     {
       "id": "scripts/build-cost-index-methodology.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5396,
@@ -3496,6 +3524,7 @@
     {
       "id": "scripts/build-cost-index-pages.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 285679,
@@ -3527,6 +3556,7 @@
     {
       "id": "scripts/build-cost-index-picker.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6954,
@@ -3558,6 +3588,7 @@
     {
       "id": "scripts/build-cost-index-provenance.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8057,
@@ -3589,6 +3620,7 @@
     {
       "id": "scripts/build-cost-index-proxies.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6475,
@@ -3620,6 +3652,7 @@
     {
       "id": "scripts/build-cost-index-reproduce.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4275,
@@ -3651,6 +3684,7 @@
     {
       "id": "scripts/build-cost-index-seed.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 12851,
@@ -3682,6 +3716,7 @@
     {
       "id": "scripts/build-cost-index.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 21412,
@@ -3713,6 +3748,7 @@
     {
       "id": "scripts/build-cost-lockfloat.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 10525,
@@ -3744,6 +3780,7 @@
     {
       "id": "scripts/build-cost-outlook.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6083,
@@ -3775,6 +3812,7 @@
     {
       "id": "scripts/build-cost-plate-drift.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 14591,
@@ -3806,6 +3844,7 @@
     {
       "id": "scripts/build-cost-pressure.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8340,
@@ -3837,6 +3876,7 @@
     {
       "id": "scripts/build-cost-revisions.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8736,
@@ -3868,6 +3908,7 @@
     {
       "id": "scripts/build-crop-condition-backdrop.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8627,
@@ -3899,6 +3940,7 @@
     {
       "id": "scripts/build-css-shells.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 9424,
@@ -3930,6 +3972,7 @@
     {
       "id": "scripts/build-cuisine-landing-pages.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 35545,
@@ -3961,6 +4004,7 @@
     {
       "id": "scripts/build-dark-mode.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 15422,
@@ -3992,6 +4036,7 @@
     {
       "id": "scripts/build-eia-energy-backdrop.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6358,
@@ -4023,6 +4068,7 @@
     {
       "id": "scripts/build-ers-availability.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5368,
@@ -4054,6 +4100,7 @@
     {
       "id": "scripts/build-ers-food-dollar.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5038,
@@ -4085,6 +4132,7 @@
     {
       "id": "scripts/build-ers-meat-chain.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 7528,
@@ -4116,6 +4164,7 @@
     {
       "id": "scripts/build-events-open-data.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 9048,
@@ -4147,6 +4196,7 @@
     {
       "id": "scripts/build-image-formats.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6090,
@@ -4178,6 +4228,7 @@
     {
       "id": "scripts/build-ingredient-state-record.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 46390,
@@ -4209,6 +4260,7 @@
     {
       "id": "scripts/build-ingredient-yield-pages.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 85691,
@@ -4240,6 +4292,7 @@
     {
       "id": "scripts/build-library-recent.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 13159,
@@ -4271,6 +4324,7 @@
     {
       "id": "scripts/build-library.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 91462,
@@ -4302,6 +4356,7 @@
     {
       "id": "scripts/build-link-graph.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 48086,
@@ -4333,6 +4388,7 @@
     {
       "id": "scripts/build-llms-full.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 12751,
@@ -4364,6 +4420,7 @@
     {
       "id": "scripts/build-llms-txt.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 26851,
@@ -4395,6 +4452,7 @@
     {
       "id": "scripts/build-lockfloat-open-data.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5356,
@@ -4426,6 +4484,7 @@
     {
       "id": "scripts/build-marts-open-data.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6773,
@@ -4457,6 +4516,7 @@
     {
       "id": "scripts/build-noaa-landings.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 7404,
@@ -4488,6 +4548,7 @@
     {
       "id": "scripts/build-og-cards.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 57038,
@@ -4519,6 +4580,7 @@
     {
       "id": "scripts/build-open-data-catalog.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 16798,
@@ -4550,6 +4612,7 @@
     {
       "id": "scripts/build-open-demand-page.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 31271,
@@ -4581,6 +4644,7 @@
     {
       "id": "scripts/build-open-labor-page.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 29547,
@@ -4612,6 +4676,7 @@
     {
       "id": "scripts/build-open-recalls-page.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 44672,
@@ -4643,6 +4708,7 @@
     {
       "id": "scripts/build-pdf-fonts.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3743,
@@ -4674,6 +4740,7 @@
     {
       "id": "scripts/build-people-pages.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 13882,
@@ -4705,6 +4772,7 @@
     {
       "id": "scripts/build-prior-decisions.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 23850,
@@ -4736,6 +4804,7 @@
     {
       "id": "scripts/build-qcew-open-data.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6336,
@@ -4767,6 +4836,7 @@
     {
       "id": "scripts/build-recalls-open-data.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 12065,
@@ -4798,6 +4868,7 @@
     {
       "id": "scripts/build-rss.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 11904,
@@ -4829,6 +4900,7 @@
     {
       "id": "scripts/build-seasonality-open-data.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5800,
@@ -4860,6 +4932,7 @@
     {
       "id": "scripts/build-seasonality.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 17693,
@@ -4891,6 +4964,7 @@
     {
       "id": "scripts/build-sheet-benchmarks.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5165,
@@ -4922,6 +4996,7 @@
     {
       "id": "scripts/build-sheet-pages.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 17542,
@@ -4953,6 +5028,7 @@
     {
       "id": "scripts/build-sheets-index.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 11675,
@@ -4984,6 +5060,7 @@
     {
       "id": "scripts/build-site-counts.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8109,
@@ -5015,6 +5092,7 @@
     {
       "id": "scripts/build-sitemap.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 10014,
@@ -5046,6 +5124,7 @@
     {
       "id": "scripts/build-study-dataset.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 25438,
@@ -5077,6 +5156,7 @@
     {
       "id": "scripts/build-surface-inventory.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 50444,
@@ -5108,16 +5188,17 @@
     {
       "id": "scripts/build-system-graph.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
-      "bytes": 74953,
-      "lines": 1510,
+      "bytes": 78413,
+      "lines": 1573,
       "hasCheckMode": true,
       "hasSelfTest": true,
       "usesNetwork": true,
       "secretsUsed": [],
       "imports": ["scripts/prune-dist-data.mjs"],
-      "invokes": ["scripts/audio-post-process.mjs","scripts/build-rss.mjs","scripts/check-all.mjs","scripts/inject-site-counts.mjs"],
+      "invokes": ["scripts/audio-post-process.mjs","scripts/build-rss.mjs","scripts/check-all.mjs","scripts/inject-site-counts.mjs","scripts/test-margin-math.mjs","scripts/verify-cost-index-sources.mjs"],
       "reads": ["data/system-graph.json"],
       "walks": [".github/workflows/"],
       "writes": ["data/system-graph.json"],
@@ -5139,6 +5220,7 @@
     {
       "id": "scripts/build-theme-story-pages.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 27968,
@@ -5170,6 +5252,7 @@
     {
       "id": "scripts/build-themes-review-board.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 26827,
@@ -5201,6 +5284,7 @@
     {
       "id": "scripts/build-tools-index.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 17416,
@@ -5232,6 +5316,7 @@
     {
       "id": "scripts/build-ui-translations.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6937,
@@ -5263,6 +5348,7 @@
     {
       "id": "scripts/build-yields-open-data.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6170,
@@ -5294,6 +5380,7 @@
     {
       "id": "scripts/calibrate-pressure.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 70381,
@@ -5325,6 +5412,7 @@
     {
       "id": "scripts/check-all.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 69693,
@@ -5349,13 +5437,14 @@
         "workflows": [],
         "workflowCommentOnly": ["cost-index-refresh.yml","freshness-heartbeat.yml"],
         "checkAll": false,
-        "scripts": ["scripts/build-system-graph.mjs","scripts/check-gate-coverage.mjs","scripts/check-idem-coverage.mjs"]
+        "scripts": ["scripts/build-system-graph.mjs","scripts/check-gate-coverage.mjs","scripts/check-idem-coverage.mjs","scripts/rebuild-all.mjs"]
       },
       "invocation": "deploy"
     },
     {
       "id": "scripts/check-analytics-vocabulary.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3747,
@@ -5387,6 +5476,7 @@
     {
       "id": "scripts/check-article-graphics.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 34674,
@@ -5418,6 +5508,7 @@
     {
       "id": "scripts/check-article-tldr.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4306,
@@ -5449,6 +5540,7 @@
     {
       "id": "scripts/check-audio-coverage.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 12168,
@@ -5480,6 +5572,7 @@
     {
       "id": "scripts/check-audio-fabrications.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 14237,
@@ -5511,6 +5604,7 @@
     {
       "id": "scripts/check-audit-fetch-timeouts.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5180,
@@ -5542,6 +5636,7 @@
     {
       "id": "scripts/check-band-coverage.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 7019,
@@ -5573,6 +5668,7 @@
     {
       "id": "scripts/check-banned-words.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 6770,
@@ -5604,6 +5700,7 @@
     {
       "id": "scripts/check-blog-index-links.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5697,
@@ -5635,6 +5732,7 @@
     {
       "id": "scripts/check-breadcrumb-separator.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3203,
@@ -5666,6 +5764,7 @@
     {
       "id": "scripts/check-bridge-cointegration.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4705,
@@ -5697,6 +5796,7 @@
     {
       "id": "scripts/check-button-vocabulary.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 8386,
@@ -5728,6 +5828,7 @@
     {
       "id": "scripts/check-claim-usage.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 11458,
@@ -5759,6 +5860,7 @@
     {
       "id": "scripts/check-cls-animation.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4564,
@@ -5790,6 +5892,7 @@
     {
       "id": "scripts/check-content-guardrails.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5548,
@@ -5821,6 +5924,7 @@
     {
       "id": "scripts/check-contrast.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3752,
@@ -5852,6 +5956,7 @@
     {
       "id": "scripts/check-cost-index-basis-leak.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 22063,
@@ -5883,6 +5988,7 @@
     {
       "id": "scripts/check-cost-index-calibration.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 12243,
@@ -5914,6 +6020,7 @@
     {
       "id": "scripts/check-cost-index-confidence.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4847,
@@ -5945,6 +6052,7 @@
     {
       "id": "scripts/check-cost-index-dispatch-fresh.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 6355,
@@ -5976,6 +6084,7 @@
     {
       "id": "scripts/check-cost-index-drivers.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4563,
@@ -6007,6 +6116,7 @@
     {
       "id": "scripts/check-cost-index-editors-note.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4734,
@@ -6038,6 +6148,7 @@
     {
       "id": "scripts/check-cost-index-email.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 10902,
@@ -6069,6 +6180,7 @@
     {
       "id": "scripts/check-cost-index-events.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 14529,
@@ -6100,6 +6212,7 @@
     {
       "id": "scripts/check-cost-index-freshness.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4690,
@@ -6131,6 +6244,7 @@
     {
       "id": "scripts/check-cost-index-independence.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4504,
@@ -6162,6 +6276,7 @@
     {
       "id": "scripts/check-cost-index-orphans.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 19008,
@@ -6193,6 +6308,7 @@
     {
       "id": "scripts/check-cost-index-picker.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 20738,
@@ -6224,6 +6340,7 @@
     {
       "id": "scripts/check-cost-index-seasonal.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 8102,
@@ -6255,6 +6372,7 @@
     {
       "id": "scripts/check-cost-index-series-freshness.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 15804,
@@ -6286,6 +6404,7 @@
     {
       "id": "scripts/check-cost-index-sources.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5349,
@@ -6317,6 +6436,7 @@
     {
       "id": "scripts/check-cost-index-sync.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 20678,
@@ -6348,6 +6468,7 @@
     {
       "id": "scripts/check-cost-research.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 13802,
@@ -6379,6 +6500,7 @@
     {
       "id": "scripts/check-count-sentinel-escape.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 2963,
@@ -6410,6 +6532,7 @@
     {
       "id": "scripts/check-counts-coherence.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4666,
@@ -6441,6 +6564,7 @@
     {
       "id": "scripts/check-crop-condition-backdrop.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 6705,
@@ -6472,6 +6596,7 @@
     {
       "id": "scripts/check-css-drift.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 8836,
@@ -6503,6 +6628,7 @@
     {
       "id": "scripts/check-css-shells.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 7949,
@@ -6534,6 +6660,7 @@
     {
       "id": "scripts/check-cta-canon.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 7066,
@@ -6565,6 +6692,7 @@
     {
       "id": "scripts/check-dark-contrast.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5580,
@@ -6596,6 +6724,7 @@
     {
       "id": "scripts/check-data-promise-rail.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 2750,
@@ -6627,6 +6756,7 @@
     {
       "id": "scripts/check-eia-energy-backdrop.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5035,
@@ -6658,6 +6788,7 @@
     {
       "id": "scripts/check-ers-availability.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5385,
@@ -6689,6 +6820,7 @@
     {
       "id": "scripts/check-ers-food-dollar.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4457,
@@ -6720,6 +6852,7 @@
     {
       "id": "scripts/check-ers-meat-chain.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5598,
@@ -6751,6 +6884,7 @@
     {
       "id": "scripts/check-event-prop-cardinality.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4573,
@@ -6782,6 +6916,7 @@
     {
       "id": "scripts/check-experiments-parity.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 2243,
@@ -6813,6 +6948,7 @@
     {
       "id": "scripts/check-fabrications.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 7359,
@@ -6844,6 +6980,7 @@
     {
       "id": "scripts/check-fieldnote-attribution.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3392,
@@ -6875,6 +7012,7 @@
     {
       "id": "scripts/check-fieldnotes-allowlist.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 1653,
@@ -6906,6 +7044,7 @@
     {
       "id": "scripts/check-footer-payload.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3887,
@@ -6937,6 +7076,7 @@
     {
       "id": "scripts/check-gate-coverage.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 8326,
@@ -6968,6 +7108,7 @@
     {
       "id": "scripts/check-glossary-hub.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4207,
@@ -6999,6 +7140,7 @@
     {
       "id": "scripts/check-headers-license.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 11869,
@@ -7030,6 +7172,7 @@
     {
       "id": "scripts/check-hidden-attribute.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4410,
@@ -7061,6 +7204,7 @@
     {
       "id": "scripts/check-hreflang-orphans.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3732,
@@ -7092,6 +7236,7 @@
     {
       "id": "scripts/check-idem-coverage.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 12936,
@@ -7123,6 +7268,7 @@
     {
       "id": "scripts/check-image-dimensions.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3817,
@@ -7154,6 +7300,7 @@
     {
       "id": "scripts/check-image-formats.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 2891,
@@ -7185,6 +7332,7 @@
     {
       "id": "scripts/check-include-coverage.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3433,
@@ -7216,6 +7364,7 @@
     {
       "id": "scripts/check-ingredient-aliases.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 6630,
@@ -7247,6 +7396,7 @@
     {
       "id": "scripts/check-ingredient-jsonld.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3861,
@@ -7278,6 +7428,7 @@
     {
       "id": "scripts/check-ingredient-state-record.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 12537,
@@ -7309,6 +7460,7 @@
     {
       "id": "scripts/check-ingredient-yields.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5618,
@@ -7340,6 +7492,7 @@
     {
       "id": "scripts/check-intent-param-targets.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5017,
@@ -7371,6 +7524,7 @@
     {
       "id": "scripts/check-kind-registry.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4832,
@@ -7402,6 +7556,7 @@
     {
       "id": "scripts/check-knit-coverage.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3590,
@@ -7433,6 +7588,7 @@
     {
       "id": "scripts/check-kpi-doc.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 1547,
@@ -7464,6 +7620,7 @@
     {
       "id": "scripts/check-lazy-images.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3578,
@@ -7495,6 +7652,7 @@
     {
       "id": "scripts/check-lifecycle-locale-parity.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 2490,
@@ -7526,6 +7684,7 @@
     {
       "id": "scripts/check-locale-parity.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 10342,
@@ -7557,6 +7716,7 @@
     {
       "id": "scripts/check-lockfloat-copy.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 6116,
@@ -7588,6 +7748,7 @@
     {
       "id": "scripts/check-mark-geometry.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3679,
@@ -7619,6 +7780,7 @@
     {
       "id": "scripts/check-menu-pricing-render.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 12314,
@@ -7650,6 +7812,7 @@
     {
       "id": "scripts/check-meta-description-length.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 7980,
@@ -7681,6 +7844,7 @@
     {
       "id": "scripts/check-name-coherence.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4062,
@@ -7712,6 +7876,7 @@
     {
       "id": "scripts/check-newsletter-copy.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4056,
@@ -7743,6 +7908,7 @@
     {
       "id": "scripts/check-no-calendly-references.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3070,
@@ -7774,6 +7940,7 @@
     {
       "id": "scripts/check-no-fixed-min-width.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 6536,
@@ -7805,6 +7972,7 @@
     {
       "id": "scripts/check-no-innerhtml.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 7074,
@@ -7836,6 +8004,7 @@
     {
       "id": "scripts/check-no-third-party-plausible.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4048,
@@ -7867,6 +8036,7 @@
     {
       "id": "scripts/check-noaa-landings.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5895,
@@ -7898,6 +8068,7 @@
     {
       "id": "scripts/check-og-accents.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3347,
@@ -7929,6 +8100,7 @@
     {
       "id": "scripts/check-og-coverage.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 6818,
@@ -7960,6 +8132,7 @@
     {
       "id": "scripts/check-og-images.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3879,
@@ -7991,6 +8164,7 @@
     {
       "id": "scripts/check-og-locale-parity.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5333,
@@ -8022,6 +8196,7 @@
     {
       "id": "scripts/check-og-template-grid.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 2436,
@@ -8053,6 +8228,7 @@
     {
       "id": "scripts/check-open-data-catalog.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5283,
@@ -8084,6 +8260,7 @@
     {
       "id": "scripts/check-open-lane-honesty.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 12286,
@@ -8115,6 +8292,7 @@
     {
       "id": "scripts/check-overview-quality.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 12213,
@@ -8146,6 +8324,7 @@
     {
       "id": "scripts/check-pillar-coverage.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4345,
@@ -8177,6 +8356,7 @@
     {
       "id": "scripts/check-positioning-drift.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 16584,
@@ -8208,6 +8388,7 @@
     {
       "id": "scripts/check-pressure-freshness.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4512,
@@ -8239,6 +8420,7 @@
     {
       "id": "scripts/check-pressure-honesty.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 6806,
@@ -8270,6 +8452,7 @@
     {
       "id": "scripts/check-pressure-sources.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4830,
@@ -8301,6 +8484,7 @@
     {
       "id": "scripts/check-pricing-consistency.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 7161,
@@ -8332,6 +8516,7 @@
     {
       "id": "scripts/check-removed-slugs.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 6154,
@@ -8363,6 +8548,7 @@
     {
       "id": "scripts/check-reply-time-canon.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5366,
@@ -8394,6 +8580,7 @@
     {
       "id": "scripts/check-retired-links.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5598,
@@ -8425,6 +8612,7 @@
     {
       "id": "scripts/check-rss-coverage.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 2256,
@@ -8456,6 +8644,7 @@
     {
       "id": "scripts/check-seasonality-education.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5367,
@@ -8487,6 +8676,7 @@
     {
       "id": "scripts/check-seasonality-fusion.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 11669,
@@ -8518,6 +8708,7 @@
     {
       "id": "scripts/check-security-claims.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 2569,
@@ -8549,6 +8740,7 @@
     {
       "id": "scripts/check-security-locale-parity.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 2404,
@@ -8580,6 +8772,7 @@
     {
       "id": "scripts/check-share-snapshot-kinds.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 2137,
@@ -8611,6 +8804,7 @@
     {
       "id": "scripts/check-sheet-help-cadence.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5807,
@@ -8642,6 +8836,7 @@
     {
       "id": "scripts/check-sheet-no-fetch.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5990,
@@ -8673,6 +8868,7 @@
     {
       "id": "scripts/check-sheets-parity.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5145,
@@ -8704,6 +8900,7 @@
     {
       "id": "scripts/check-shippable-bar.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 2623,
@@ -8735,6 +8932,7 @@
     {
       "id": "scripts/check-snippet-shape.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4953,
@@ -8766,6 +8964,7 @@
     {
       "id": "scripts/check-source-tier.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3856,
@@ -8797,6 +8996,7 @@
     {
       "id": "scripts/check-staleness-honesty.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4126,
@@ -8828,6 +9028,7 @@
     {
       "id": "scripts/check-stone-2-usage.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3247,
@@ -8859,6 +9060,7 @@
     {
       "id": "scripts/check-studio-voice-boundary.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5486,
@@ -8890,6 +9092,7 @@
     {
       "id": "scripts/check-study-datapackage.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 7846,
@@ -8921,6 +9124,7 @@
     {
       "id": "scripts/check-study-engine-parity.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 16305,
@@ -8952,6 +9156,7 @@
     {
       "id": "scripts/check-svg-dimensions.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4146,
@@ -8983,6 +9188,7 @@
     {
       "id": "scripts/check-table-scroll-wrap.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 5342,
@@ -9014,6 +9220,7 @@
     {
       "id": "scripts/check-tests.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3117,
@@ -9045,6 +9252,7 @@
     {
       "id": "scripts/check-text-content-rendering.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3732,
@@ -9076,6 +9284,7 @@
     {
       "id": "scripts/check-tokens-sync.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 6902,
@@ -9107,6 +9316,7 @@
     {
       "id": "scripts/check-tool-header.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 4061,
@@ -9138,6 +9348,7 @@
     {
       "id": "scripts/check-tool-no-fetch.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 6947,
@@ -9169,6 +9380,7 @@
     {
       "id": "scripts/check-tool-verified-stamp.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 2568,
@@ -9200,6 +9412,7 @@
     {
       "id": "scripts/check-trend-skill.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 7207,
@@ -9231,6 +9444,7 @@
     {
       "id": "scripts/check-turnstile-singleton.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3466,
@@ -9262,6 +9476,7 @@
     {
       "id": "scripts/check-vb-scenarios.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 3591,
@@ -9293,6 +9508,7 @@
     {
       "id": "scripts/check-window-locale-parity.mjs",
       "kind": "check",
+      "subkind": "gate",
       "lang": "js",
       "parsed": true,
       "bytes": 2391,
@@ -9324,6 +9540,7 @@
     {
       "id": "scripts/dedupe-blog-breadcrumbs.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 1600,
@@ -9355,6 +9572,7 @@
     {
       "id": "scripts/enrich-post-seo-v2.py",
       "kind": "injector",
+      "subkind": null,
       "lang": "python",
       "parsed": false,
       "bytes": 12022,
@@ -9386,6 +9604,7 @@
     {
       "id": "scripts/enrich-post-seo.py",
       "kind": "injector",
+      "subkind": null,
       "lang": "python",
       "parsed": false,
       "bytes": 14916,
@@ -9417,6 +9636,7 @@
     {
       "id": "scripts/fetch-cost-index-sources.mjs",
       "kind": "builder",
+      "subkind": "fetcher",
       "lang": "js",
       "parsed": true,
       "bytes": 36319,
@@ -9448,6 +9668,7 @@
     {
       "id": "scripts/fetch-food-recalls.mjs",
       "kind": "builder",
+      "subkind": "fetcher",
       "lang": "js",
       "parsed": true,
       "bytes": 12833,
@@ -9479,6 +9700,7 @@
     {
       "id": "scripts/fetch-marts-sales.mjs",
       "kind": "builder",
+      "subkind": "fetcher",
       "lang": "js",
       "parsed": true,
       "bytes": 5454,
@@ -9510,6 +9732,7 @@
     {
       "id": "scripts/fetch-nass-aquaculture.mjs",
       "kind": "builder",
+      "subkind": "fetcher",
       "lang": "js",
       "parsed": true,
       "bytes": 7891,
@@ -9541,6 +9764,7 @@
     {
       "id": "scripts/fetch-pressure-observations.mjs",
       "kind": "builder",
+      "subkind": "fetcher",
       "lang": "js",
       "parsed": true,
       "bytes": 28250,
@@ -9572,6 +9796,7 @@
     {
       "id": "scripts/fetch-qcew-wages.mjs",
       "kind": "builder",
+      "subkind": "fetcher",
       "lang": "js",
       "parsed": true,
       "bytes": 6862,
@@ -9603,6 +9828,7 @@
     {
       "id": "scripts/fix-bare-include-sentinels.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4940,
@@ -9634,6 +9860,7 @@
     {
       "id": "scripts/fix-library-lang-toggles.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4183,
@@ -9665,6 +9892,7 @@
     {
       "id": "scripts/generate-glossary-cards.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 7385,
@@ -9696,6 +9924,7 @@
     {
       "id": "scripts/inject-about-cost-read.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 14358,
@@ -9727,6 +9956,7 @@
     {
       "id": "scripts/inject-article-abstract-mentions.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4858,
@@ -9758,6 +9988,7 @@
     {
       "id": "scripts/inject-article-author-card.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6868,
@@ -9789,6 +10020,7 @@
     {
       "id": "scripts/inject-article-author-chip.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 2474,
@@ -9820,6 +10052,7 @@
     {
       "id": "scripts/inject-article-fieldnote-form.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8622,
@@ -9851,6 +10084,7 @@
     {
       "id": "scripts/inject-article-fieldnotes.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8562,
@@ -9882,6 +10116,7 @@
     {
       "id": "scripts/inject-article-howto-schema.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3992,
@@ -9913,6 +10148,7 @@
     {
       "id": "scripts/inject-article-listen.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4371,
@@ -9944,6 +10180,7 @@
     {
       "id": "scripts/inject-article-sheet-callouts.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6780,
@@ -9975,6 +10212,7 @@
     {
       "id": "scripts/inject-article-tldr.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6952,
@@ -10006,6 +10244,7 @@
     {
       "id": "scripts/inject-batch-banner.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 9610,
@@ -10037,6 +10276,7 @@
     {
       "id": "scripts/inject-blog-breadcrumbs.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4726,
@@ -10068,6 +10308,7 @@
     {
       "id": "scripts/inject-checklist-script.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3977,
@@ -10099,6 +10340,7 @@
     {
       "id": "scripts/inject-claims-rows.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4434,
@@ -10130,6 +10372,7 @@
     {
       "id": "scripts/inject-companion-kit.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 27674,
@@ -10161,6 +10404,7 @@
     {
       "id": "scripts/inject-cost-index-basket-weights.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4969,
@@ -10192,6 +10436,7 @@
     {
       "id": "scripts/inject-cost-index-calibration.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6670,
@@ -10223,6 +10468,7 @@
     {
       "id": "scripts/inject-cost-index-dataset-date.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5256,
@@ -10254,6 +10500,7 @@
     {
       "id": "scripts/inject-cost-index-speakable.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5268,
@@ -10285,6 +10532,7 @@
     {
       "id": "scripts/inject-critical-css-nav.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4403,
@@ -10316,6 +10564,7 @@
     {
       "id": "scripts/inject-critical-fonts.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 15969,
@@ -10347,6 +10596,7 @@
     {
       "id": "scripts/inject-critical-link-color.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5051,
@@ -10378,6 +10628,7 @@
     {
       "id": "scripts/inject-css-cache-bust.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4942,
@@ -10409,6 +10660,7 @@
     {
       "id": "scripts/inject-css-shells.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 12288,
@@ -10440,6 +10692,7 @@
     {
       "id": "scripts/inject-data-audio-alt-polish.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5947,
@@ -10471,6 +10724,7 @@
     {
       "id": "scripts/inject-esl-bridge.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3988,
@@ -10502,6 +10756,7 @@
     {
       "id": "scripts/inject-event-exposure.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5121,
@@ -10533,6 +10788,7 @@
     {
       "id": "scripts/inject-feed-discovery.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4464,
@@ -10564,6 +10820,7 @@
     {
       "id": "scripts/inject-glossary-article-backlinks.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6429,
@@ -10595,6 +10852,7 @@
     {
       "id": "scripts/inject-glossary-article-schema.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8480,
@@ -10626,6 +10884,7 @@
     {
       "id": "scripts/inject-glossary-autolinks.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 14872,
@@ -10657,6 +10916,7 @@
     {
       "id": "scripts/inject-glossary-deep-anchors.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3443,
@@ -10688,6 +10948,7 @@
     {
       "id": "scripts/inject-glossary-explainers.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 11702,
@@ -10719,6 +10980,7 @@
     {
       "id": "scripts/inject-glossary-faq.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5780,
@@ -10750,6 +11012,7 @@
     {
       "id": "scripts/inject-glossary-fieldnotes.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4366,
@@ -10781,6 +11044,7 @@
     {
       "id": "scripts/inject-glossary-glyphs.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4619,
@@ -10812,6 +11076,7 @@
     {
       "id": "scripts/inject-glossary-og.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3900,
@@ -10843,6 +11108,7 @@
     {
       "id": "scripts/inject-glossary-recent.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6145,
@@ -10874,6 +11140,7 @@
     {
       "id": "scripts/inject-glossary-script.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4268,
@@ -10905,6 +11172,7 @@
     {
       "id": "scripts/inject-glossary-seo.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3413,
@@ -10936,6 +11204,7 @@
     {
       "id": "scripts/inject-glossary-sheet-sidecar.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8063,
@@ -10967,6 +11236,7 @@
     {
       "id": "scripts/inject-glossary-sitemap.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6986,
@@ -10998,6 +11268,7 @@
     {
       "id": "scripts/inject-glossary-term-examples.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 2774,
@@ -11029,6 +11300,7 @@
     {
       "id": "scripts/inject-glossary-tool-sidecar.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4414,
@@ -11060,6 +11332,7 @@
     {
       "id": "scripts/inject-glossary-verified-stamp.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4742,
@@ -11091,6 +11364,7 @@
     {
       "id": "scripts/inject-h2-anchor-ids.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5923,
@@ -11122,6 +11396,7 @@
     {
       "id": "scripts/inject-homepage-fieldnotes-rail.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 7048,
@@ -11153,6 +11428,7 @@
     {
       "id": "scripts/inject-hub-collection-schema.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5123,
@@ -11184,6 +11460,7 @@
     {
       "id": "scripts/inject-hub-modified-time.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4214,
@@ -11215,6 +11492,7 @@
     {
       "id": "scripts/inject-ingredient-recalls.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3799,
@@ -11246,6 +11524,7 @@
     {
       "id": "scripts/inject-italic-font-preloads.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4642,
@@ -11277,6 +11556,7 @@
     {
       "id": "scripts/inject-knit-rail.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 14318,
@@ -11308,6 +11588,7 @@
     {
       "id": "scripts/inject-lazy-script-loader.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5978,
@@ -11339,6 +11620,7 @@
     {
       "id": "scripts/inject-ledger-cta.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 7122,
@@ -11370,6 +11652,7 @@
     {
       "id": "scripts/inject-library-cost-index-hero.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5517,
@@ -11401,6 +11684,7 @@
     {
       "id": "scripts/inject-listen-btn.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 12380,
@@ -11432,6 +11716,7 @@
     {
       "id": "scripts/inject-open-cards.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 13391,
@@ -11463,6 +11748,7 @@
     {
       "id": "scripts/inject-page-glyphs.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8143,
@@ -11494,6 +11780,7 @@
     {
       "id": "scripts/inject-picture-tags.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5675,
@@ -11525,6 +11812,7 @@
     {
       "id": "scripts/inject-post-end-cta.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 7821,
@@ -11556,6 +11844,7 @@
     {
       "id": "scripts/inject-post-end-mark.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 2908,
@@ -11587,6 +11876,7 @@
     {
       "id": "scripts/inject-receipts-kpis.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3868,
@@ -11618,6 +11908,7 @@
     {
       "id": "scripts/inject-security-page-schema.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8252,
@@ -11649,6 +11940,7 @@
     {
       "id": "scripts/inject-sheet-glossary-popovers.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 13338,
@@ -11680,6 +11972,7 @@
     {
       "id": "scripts/inject-sheet-worked-examples.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5528,
@@ -11711,6 +12004,7 @@
     {
       "id": "scripts/inject-site-counts.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3686,
@@ -11742,6 +12036,7 @@
     {
       "id": "scripts/inject-smart-next-cta.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8618,
@@ -11773,6 +12068,7 @@
     {
       "id": "scripts/inject-study-cite.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4325,
@@ -11804,6 +12100,7 @@
     {
       "id": "scripts/inject-supply-picture.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 9628,
@@ -11835,6 +12132,7 @@
     {
       "id": "scripts/inject-tool-data-promise.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4148,
@@ -11866,6 +12164,7 @@
     {
       "id": "scripts/inject-tool-howto.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6438,
@@ -11897,6 +12196,7 @@
     {
       "id": "scripts/inject-tool-knit.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 12336,
@@ -11928,6 +12228,7 @@
     {
       "id": "scripts/inject-tool-sheet-rail.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6220,
@@ -11959,6 +12260,7 @@
     {
       "id": "scripts/inject-tool-verified-stamp.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5774,
@@ -11990,6 +12292,7 @@
     {
       "id": "scripts/inject-topic-card-links.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4855,
@@ -12021,6 +12324,7 @@
     {
       "id": "scripts/inject-topic-eyebrow.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5091,
@@ -12052,6 +12356,7 @@
     {
       "id": "scripts/inject-topic-page-schema.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5634,
@@ -12083,6 +12388,7 @@
     {
       "id": "scripts/inject-topic-pillar-essay.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3461,
@@ -12114,6 +12420,7 @@
     {
       "id": "scripts/inject-topic-sheets-rail.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6118,
@@ -12145,6 +12452,7 @@
     {
       "id": "scripts/inject-window-fieldnotes-rail.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4782,
@@ -12176,6 +12484,7 @@
     {
       "id": "scripts/lib/co-occurrence-patterns.mjs",
       "kind": "lib",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 1761,
@@ -12207,6 +12516,7 @@
     {
       "id": "scripts/lib/cost-events-analysis.mjs",
       "kind": "lib",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6950,
@@ -12238,6 +12548,7 @@
     {
       "id": "scripts/lib/cost-index-categories.mjs",
       "kind": "lib",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6007,
@@ -12269,6 +12580,7 @@
     {
       "id": "scripts/lib/cost-research.mjs",
       "kind": "lib",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 193106,
@@ -12300,6 +12612,7 @@
     {
       "id": "scripts/lib/event-exposure.mjs",
       "kind": "lib",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 14728,
@@ -12331,6 +12644,7 @@
     {
       "id": "scripts/lib/f5_render.py",
       "kind": "lib",
+      "subkind": null,
       "lang": "python",
       "parsed": false,
       "bytes": 7733,
@@ -12362,6 +12676,7 @@
     {
       "id": "scripts/lib/fabrication-patterns.mjs",
       "kind": "lib",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 13315,
@@ -12393,6 +12708,7 @@
     {
       "id": "scripts/lib/kokoro_render.py",
       "kind": "lib",
+      "subkind": null,
       "lang": "python",
       "parsed": false,
       "bytes": 4525,
@@ -12424,6 +12740,7 @@
     {
       "id": "scripts/lib/library-skips.mjs",
       "kind": "lib",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 786,
@@ -12455,6 +12772,7 @@
     {
       "id": "scripts/lib/recall-roster.mjs",
       "kind": "lib",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 12926,
@@ -12486,6 +12804,7 @@
     {
       "id": "scripts/lib/seasonality-fusion.mjs",
       "kind": "lib",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 18202,
@@ -12517,6 +12836,7 @@
     {
       "id": "scripts/lib/supply-picture.mjs",
       "kind": "lib",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 14972,
@@ -12548,6 +12868,7 @@
     {
       "id": "scripts/lib/translate.py",
       "kind": "lib",
+      "subkind": null,
       "lang": "python",
       "parsed": false,
       "bytes": 34742,
@@ -12579,6 +12900,7 @@
     {
       "id": "scripts/migrate-blog-to-library.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 24644,
@@ -12610,6 +12932,7 @@
     {
       "id": "scripts/migrate-count-literals.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5866,
@@ -12641,6 +12964,7 @@
     {
       "id": "scripts/migrate-dispatch-diverging-figures.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 13797,
@@ -12672,6 +12996,7 @@
     {
       "id": "scripts/migrate-warm-palette.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 10843,
@@ -12703,6 +13028,7 @@
     {
       "id": "scripts/minify-css.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5915,
@@ -12734,6 +13060,7 @@
     {
       "id": "scripts/new-article-skeleton.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 14367,
@@ -12765,6 +13092,7 @@
     {
       "id": "scripts/normalize-further-reading.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3115,
@@ -12796,6 +13124,7 @@
     {
       "id": "scripts/print-weekly-read.mjs",
       "kind": "other",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3625,
@@ -12827,6 +13156,7 @@
     {
       "id": "scripts/probe-cost-index-new-sources.mjs",
       "kind": "check",
+      "subkind": "gate-shaped",
       "lang": "js",
       "parsed": true,
       "bytes": 11211,
@@ -12858,6 +13188,7 @@
     {
       "id": "scripts/promote-batch.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3542,
@@ -12889,6 +13220,7 @@
     {
       "id": "scripts/prune-dist-data.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8264,
@@ -12920,6 +13252,7 @@
     {
       "id": "scripts/publish-el-nino.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4561,
@@ -12951,6 +13284,7 @@
     {
       "id": "scripts/publish-explorers.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 6536,
@@ -12980,8 +13314,41 @@
       "invocation": "orphan"
     },
     {
+      "id": "scripts/rebuild-all.mjs",
+      "kind": "other",
+      "subkind": null,
+      "lang": "js",
+      "parsed": true,
+      "bytes": 11590,
+      "lines": 230,
+      "hasCheckMode": false,
+      "hasSelfTest": true,
+      "usesNetwork": false,
+      "secretsUsed": [],
+      "imports": [],
+      "invokes": ["scripts/check-all.mjs"],
+      "reads": ["data/system-graph.json"],
+      "walks": [],
+      "writes": [],
+      "unresolved": {
+        "read": 0,
+        "walk": 0,
+        "write": 0,
+        "unbalanced": 0
+      },
+      "invokedBy": {
+        "deployStepIndexes": [],
+        "workflows": [],
+        "workflowCommentOnly": [],
+        "checkAll": false,
+        "scripts": []
+      },
+      "invocation": "orphan"
+    },
+    {
       "id": "scripts/reconcile-cost-index-trends.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4152,
@@ -13013,6 +13380,7 @@
     {
       "id": "scripts/render-bespoke-og-cost-storm.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8037,
@@ -13044,6 +13412,7 @@
     {
       "id": "scripts/render-bespoke-og-el-nino.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 7718,
@@ -13075,6 +13444,7 @@
     {
       "id": "scripts/render-og-pngs.py",
       "kind": "builder",
+      "subkind": null,
       "lang": "python",
       "parsed": false,
       "bytes": 6141,
@@ -13106,6 +13476,7 @@
     {
       "id": "scripts/render-post-audio.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 81343,
@@ -13137,6 +13508,7 @@
     {
       "id": "scripts/rewire-og-cards.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4098,
@@ -13168,6 +13540,7 @@
     {
       "id": "scripts/run-article-graphics-tests.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 966,
@@ -13199,6 +13572,7 @@
     {
       "id": "scripts/scaffold-es-draft.py",
       "kind": "builder",
+      "subkind": null,
       "lang": "python",
       "parsed": false,
       "bytes": 12715,
@@ -13230,6 +13604,7 @@
     {
       "id": "scripts/scaffold-overview-body.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 11792,
@@ -13261,6 +13636,7 @@
     {
       "id": "scripts/seed-field-notes-sentinels.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4164,
@@ -13292,6 +13668,7 @@
     {
       "id": "scripts/seed-glossary-og.mjs",
       "kind": "builder",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 8570,
@@ -13323,6 +13700,7 @@
     {
       "id": "scripts/stamp-hreflang.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 9390,
@@ -13354,6 +13732,7 @@
     {
       "id": "scripts/stamp-release-gate.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4520,
@@ -13385,6 +13764,7 @@
     {
       "id": "scripts/sync-approved-fieldnotes.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3114,
@@ -13416,6 +13796,7 @@
     {
       "id": "scripts/sync-includes.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 21058,
@@ -13447,6 +13828,7 @@
     {
       "id": "scripts/sync-sheet-og-cards.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 7171,
@@ -13478,6 +13860,7 @@
     {
       "id": "scripts/test-article-graphics.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 16779,
@@ -13509,6 +13892,7 @@
     {
       "id": "scripts/test-audio-fabrications.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 5443,
@@ -13540,6 +13924,7 @@
     {
       "id": "scripts/test-audit-cache.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 9846,
@@ -13571,6 +13956,7 @@
     {
       "id": "scripts/test-audit-snapshots.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 16346,
@@ -13602,6 +13988,7 @@
     {
       "id": "scripts/test-benchmark-metadata.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 6187,
@@ -13633,6 +14020,7 @@
     {
       "id": "scripts/test-cards-qa.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 11862,
@@ -13664,6 +14052,7 @@
     {
       "id": "scripts/test-confidence-widening.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 8050,
@@ -13695,6 +14084,7 @@
     {
       "id": "scripts/test-crawl-url-extraction.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 8586,
@@ -13726,6 +14116,7 @@
     {
       "id": "scripts/test-email-templates.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 24204,
@@ -13757,6 +14148,7 @@
     {
       "id": "scripts/test-freshness-bucket.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 3806,
@@ -13788,6 +14180,7 @@
     {
       "id": "scripts/test-handoff-doc.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 15795,
@@ -13819,6 +14212,7 @@
     {
       "id": "scripts/test-i18n-coverage.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 5615,
@@ -13850,6 +14244,7 @@
     {
       "id": "scripts/test-ingredient-state-record.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 8133,
@@ -13881,6 +14276,7 @@
     {
       "id": "scripts/test-margin-health.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 8850,
@@ -13912,6 +14308,7 @@
     {
       "id": "scripts/test-margin-math.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 34290,
@@ -13936,13 +14333,14 @@
         "workflows": [],
         "workflowCommentOnly": [],
         "checkAll": false,
-        "scripts": []
+        "scripts": ["scripts/build-system-graph.mjs"]
       },
-      "invocation": "orphan"
+      "invocation": "script"
     },
     {
       "id": "scripts/test-menu-engineering.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 24647,
@@ -13974,6 +14372,7 @@
     {
       "id": "scripts/test-open-hours.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 29115,
@@ -14005,6 +14404,7 @@
     {
       "id": "scripts/test-plate-cost.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 39721,
@@ -14036,6 +14436,7 @@
     {
       "id": "scripts/test-pressure-calibrate.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 6875,
@@ -14067,6 +14468,7 @@
     {
       "id": "scripts/test-price-level-multiplier.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 4757,
@@ -14098,6 +14500,7 @@
     {
       "id": "scripts/test-rank-actionables.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 5746,
@@ -14129,6 +14532,7 @@
     {
       "id": "scripts/test-rate-limit.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 4800,
@@ -14160,6 +14564,7 @@
     {
       "id": "scripts/test-rate-limiter-do.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 6611,
@@ -14191,6 +14596,7 @@
     {
       "id": "scripts/test-read-text-capped.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 5105,
@@ -14222,6 +14628,7 @@
     {
       "id": "scripts/test-readiness-scorer.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 2693,
@@ -14253,6 +14660,7 @@
     {
       "id": "scripts/test-review-count-multiplier.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 5630,
@@ -14284,6 +14692,7 @@
     {
       "id": "scripts/test-review-responsiveness.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 7234,
@@ -14315,6 +14724,7 @@
     {
       "id": "scripts/test-shared-analytics.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 3990,
@@ -14346,6 +14756,7 @@
     {
       "id": "scripts/test-shared-fetch-error.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 5419,
@@ -14377,6 +14788,7 @@
     {
       "id": "scripts/test-shared-fragment.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 5945,
@@ -14408,6 +14820,7 @@
     {
       "id": "scripts/test-shared-parsing.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 7812,
@@ -14439,6 +14852,7 @@
     {
       "id": "scripts/test-snapshot-meta-overrides.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 6047,
@@ -14470,6 +14884,7 @@
     {
       "id": "scripts/test-subtype-owner-defaults.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 6864,
@@ -14501,6 +14916,7 @@
     {
       "id": "scripts/test-tool-redirects.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 2014,
@@ -14532,6 +14948,7 @@
     {
       "id": "scripts/test-validation-aliases.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 3837,
@@ -14563,6 +14980,7 @@
     {
       "id": "scripts/test-watch-checks.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 9130,
@@ -14594,6 +15012,7 @@
     {
       "id": "scripts/test-window-clients.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lang": "js",
       "parsed": true,
       "bytes": 2744,
@@ -14625,6 +15044,7 @@
     {
       "id": "scripts/tone-edit-library-bylines.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 3807,
@@ -14656,6 +15076,7 @@
     {
       "id": "scripts/tone-edit-library-titles.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4860,
@@ -14687,6 +15108,7 @@
     {
       "id": "scripts/update-blog-breadcrumb-schema.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 2938,
@@ -14718,6 +15140,7 @@
     {
       "id": "scripts/vendor-pin.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 38042,
@@ -14749,6 +15172,7 @@
     {
       "id": "scripts/vendor-tokens.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5459,
@@ -14780,6 +15204,7 @@
     {
       "id": "scripts/verify-cost-index-sources.mjs",
       "kind": "check",
+      "subkind": "gate-shaped",
       "lang": "js",
       "parsed": true,
       "bytes": 30270,
@@ -14804,13 +15229,14 @@
         "workflows": [],
         "workflowCommentOnly": [],
         "checkAll": false,
-        "scripts": []
+        "scripts": ["scripts/build-system-graph.mjs"]
       },
-      "invocation": "orphan"
+      "invocation": "script"
     },
     {
       "id": "scripts/wire-glossary-knit.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 25162,
@@ -14842,6 +15268,7 @@
     {
       "id": "scripts/wire-glossary-research.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 7212,
@@ -14873,6 +15300,7 @@
     {
       "id": "scripts/wire-glossary-topics.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 5089,
@@ -14904,6 +15332,7 @@
     {
       "id": "scripts/wire-research-citations.mjs",
       "kind": "injector",
+      "subkind": null,
       "lang": "js",
       "parsed": true,
       "bytes": 4691,
@@ -19475,11 +19904,11 @@
       "tree": false,
       "kind": "data",
       "writtenBy": ["scripts/build-system-graph.mjs"],
-      "readBy": ["scripts/build-system-graph.mjs"],
+      "readBy": ["scripts/build-system-graph.mjs","scripts/rebuild-all.mjs"],
       "walkedBy": [],
       "onDisk": true,
       "coveredByTree": ["data/"],
-      "contentReadBy": ["scripts/build-system-graph.mjs"],
+      "contentReadBy": ["scripts/build-system-graph.mjs","scripts/rebuild-all.mjs"],
       "enumeratedBy": ["scripts/check-open-data-catalog.mjs"],
       "derivedWriters": ["scripts/build-system-graph.mjs"],
       "publicReason": null,
@@ -21229,6 +21658,11 @@
         "artifact": "sitemap.xml"
       },
       {
+        "writer": "scripts/build-system-graph.mjs",
+        "reader": "scripts/rebuild-all.mjs",
+        "artifact": "data/system-graph.json"
+      },
+      {
         "writer": "scripts/migrate-blog-to-library.mjs",
         "reader": "scripts/check-audio-coverage.mjs",
         "artifact": "data/article-audio.json"
@@ -21344,7 +21778,7 @@
         "artifact": "glossary/index.html"
       }
     ],
-    "topoOrder": ["scripts/build-cost-anomaly-log.mjs","scripts/build-anomaly-open-data.mjs","scripts/build-cost-confidence-calibration.mjs","scripts/build-cost-index-calibration-report.mjs","scripts/build-cost-index-dispatch.mjs","scripts/build-blog-index.mjs","scripts/build-cost-index-events.mjs","scripts/build-cost-index-seed.mjs","scripts/build-cost-index-history-seed.mjs","scripts/build-cost-index-picker.mjs","scripts/build-cost-index.mjs","scripts/build-cost-lockfloat.mjs","scripts/build-cost-pressure.mjs","scripts/build-crop-condition-backdrop.mjs","scripts/build-dark-mode.mjs","scripts/build-css-shells.mjs","scripts/build-eia-energy-backdrop.mjs","scripts/build-ers-availability.mjs","scripts/build-ers-food-dollar.mjs","scripts/build-ers-meat-chain.mjs","scripts/build-library-recent.mjs","scripts/build-lockfloat-open-data.mjs","scripts/build-noaa-landings.mjs","scripts/build-open-data-catalog.mjs","scripts/build-site-counts.mjs","scripts/build-surface-inventory.mjs","scripts/build-content-intent.mjs","scripts/check-button-vocabulary.mjs","scripts/check-contrast.mjs","scripts/check-cost-index-basis-leak.mjs","scripts/check-cost-index-email.mjs","scripts/check-cost-index-picker.mjs","scripts/check-counts-coherence.mjs","scripts/check-crop-condition-backdrop.mjs","scripts/check-css-shells.mjs","scripts/check-dark-contrast.mjs","scripts/check-eia-energy-backdrop.mjs","scripts/check-ers-availability.mjs","scripts/check-ers-food-dollar.mjs","scripts/check-ers-meat-chain.mjs","scripts/check-hidden-attribute.mjs","scripts/check-knit-coverage.mjs","scripts/check-noaa-landings.mjs","scripts/check-open-data-catalog.mjs","scripts/check-pillar-coverage.mjs","scripts/check-pressure-freshness.mjs","scripts/check-pressure-honesty.mjs","scripts/check-tokens-sync.mjs","scripts/check-vb-scenarios.mjs","scripts/inject-cost-index-calibration.mjs","scripts/inject-cost-index-dataset-date.mjs","scripts/inject-glossary-tool-sidecar.mjs","scripts/inject-library-cost-index-hero.mjs","scripts/inject-security-page-schema.mjs","scripts/check-security-claims.mjs","scripts/inject-site-counts.mjs","scripts/inject-topic-card-links.mjs","scripts/lib/cost-events-analysis.mjs","scripts/migrate-blog-to-library.mjs","scripts/check-audio-coverage.mjs","scripts/inject-listen-btn.mjs","scripts/promote-batch.mjs","scripts/inject-batch-banner.mjs","scripts/reconcile-cost-index-trends.mjs","scripts/build-cost-index-health.mjs","scripts/build-ingredient-yield-pages.mjs","scripts/build-seasonality.mjs","scripts/build-cost-index-pages.mjs","scripts/build-seasonality-open-data.mjs","scripts/check-cost-index-calibration.mjs","scripts/check-cost-index-dispatch-fresh.mjs","scripts/check-cost-index-freshness.mjs","scripts/check-cost-index-orphans.mjs","scripts/check-cost-index-seasonal.mjs","scripts/check-cost-index-series-freshness.mjs","scripts/check-shippable-bar.mjs","scripts/inject-about-cost-read.mjs","scripts/print-weekly-read.mjs","scripts/stamp-release-gate.mjs","scripts/sync-approved-fieldnotes.mjs","scripts/build-people-pages.mjs","scripts/check-fieldnote-attribution.mjs","scripts/check-fieldnotes-allowlist.mjs","scripts/inject-article-fieldnotes.mjs","scripts/inject-homepage-fieldnotes-rail.mjs","scripts/inject-window-fieldnotes-rail.mjs","scripts/verify-cost-index-sources.mjs","scripts/check-ingredient-aliases.mjs","scripts/check-source-tier.mjs","scripts/wire-glossary-knit.mjs","scripts/wire-glossary-research.mjs","scripts/wire-glossary-topics.mjs"],
+    "topoOrder": ["scripts/build-cost-anomaly-log.mjs","scripts/build-anomaly-open-data.mjs","scripts/build-cost-confidence-calibration.mjs","scripts/build-cost-index-calibration-report.mjs","scripts/build-cost-index-dispatch.mjs","scripts/build-blog-index.mjs","scripts/build-cost-index-events.mjs","scripts/build-cost-index-seed.mjs","scripts/build-cost-index-history-seed.mjs","scripts/build-cost-index-picker.mjs","scripts/build-cost-index.mjs","scripts/build-cost-lockfloat.mjs","scripts/build-cost-pressure.mjs","scripts/build-crop-condition-backdrop.mjs","scripts/build-dark-mode.mjs","scripts/build-css-shells.mjs","scripts/build-eia-energy-backdrop.mjs","scripts/build-ers-availability.mjs","scripts/build-ers-food-dollar.mjs","scripts/build-ers-meat-chain.mjs","scripts/build-library-recent.mjs","scripts/build-lockfloat-open-data.mjs","scripts/build-noaa-landings.mjs","scripts/build-open-data-catalog.mjs","scripts/build-site-counts.mjs","scripts/build-surface-inventory.mjs","scripts/build-content-intent.mjs","scripts/build-system-graph.mjs","scripts/check-button-vocabulary.mjs","scripts/check-contrast.mjs","scripts/check-cost-index-basis-leak.mjs","scripts/check-cost-index-email.mjs","scripts/check-cost-index-picker.mjs","scripts/check-counts-coherence.mjs","scripts/check-crop-condition-backdrop.mjs","scripts/check-css-shells.mjs","scripts/check-dark-contrast.mjs","scripts/check-eia-energy-backdrop.mjs","scripts/check-ers-availability.mjs","scripts/check-ers-food-dollar.mjs","scripts/check-ers-meat-chain.mjs","scripts/check-hidden-attribute.mjs","scripts/check-knit-coverage.mjs","scripts/check-noaa-landings.mjs","scripts/check-open-data-catalog.mjs","scripts/check-pillar-coverage.mjs","scripts/check-pressure-freshness.mjs","scripts/check-pressure-honesty.mjs","scripts/check-tokens-sync.mjs","scripts/check-vb-scenarios.mjs","scripts/inject-cost-index-calibration.mjs","scripts/inject-cost-index-dataset-date.mjs","scripts/inject-glossary-tool-sidecar.mjs","scripts/inject-library-cost-index-hero.mjs","scripts/inject-security-page-schema.mjs","scripts/check-security-claims.mjs","scripts/inject-site-counts.mjs","scripts/inject-topic-card-links.mjs","scripts/lib/cost-events-analysis.mjs","scripts/migrate-blog-to-library.mjs","scripts/check-audio-coverage.mjs","scripts/inject-listen-btn.mjs","scripts/promote-batch.mjs","scripts/inject-batch-banner.mjs","scripts/rebuild-all.mjs","scripts/reconcile-cost-index-trends.mjs","scripts/build-cost-index-health.mjs","scripts/build-ingredient-yield-pages.mjs","scripts/build-seasonality.mjs","scripts/build-cost-index-pages.mjs","scripts/build-seasonality-open-data.mjs","scripts/check-cost-index-calibration.mjs","scripts/check-cost-index-dispatch-fresh.mjs","scripts/check-cost-index-freshness.mjs","scripts/check-cost-index-orphans.mjs","scripts/check-cost-index-seasonal.mjs","scripts/check-cost-index-series-freshness.mjs","scripts/check-shippable-bar.mjs","scripts/inject-about-cost-read.mjs","scripts/print-weekly-read.mjs","scripts/stamp-release-gate.mjs","scripts/sync-approved-fieldnotes.mjs","scripts/build-people-pages.mjs","scripts/check-fieldnote-attribution.mjs","scripts/check-fieldnotes-allowlist.mjs","scripts/inject-article-fieldnotes.mjs","scripts/inject-homepage-fieldnotes-rail.mjs","scripts/inject-window-fieldnotes-rail.mjs","scripts/verify-cost-index-sources.mjs","scripts/check-ingredient-aliases.mjs","scripts/check-source-tier.mjs","scripts/wire-glossary-knit.mjs","scripts/wire-glossary-research.mjs","scripts/wire-glossary-topics.mjs"],
     "inCycles": ["scripts/build-sitemap.mjs","scripts/check-og-accents.mjs","scripts/check-og-images.mjs","scripts/check-og-locale-parity.mjs","scripts/generate-glossary-cards.mjs","scripts/inject-glossary-sitemap.mjs","scripts/seed-glossary-og.mjs","scripts/sync-sheet-og-cards.mjs"],
     "mutualPairs": [
       {
@@ -21954,6 +22388,21 @@
       "discardedByGitCheckout": true
     }
   ],
+  "discardedFeeders": [
+    {
+      "workflow": "cost-index-refresh.yml",
+      "script": "scripts/build-cost-index-picker.mjs",
+      "unstagedWrites": ["data/cost-index-picker.js"],
+      "discardedByGitCheckout": true,
+      "consumers": [
+        {
+          "artifact": "data/cost-index-picker.js",
+          "reader": "scripts/check-cost-index-picker.mjs",
+          "gate": true
+        }
+      ]
+    }
+  ],
   "writeOnlyManifests": [
     {
       "id": "data/cost-index-editions.json",
@@ -22506,6 +22955,7 @@
     {
       "id": "scripts/add-glossary-knit-sentinels.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 63,
       "writes": 1,
       "lang": "js"
@@ -22513,6 +22963,7 @@
     {
       "id": "scripts/add-tool-knit-sentinels.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 62,
       "writes": 0,
       "lang": "js"
@@ -22520,6 +22971,7 @@
     {
       "id": "scripts/audio-fact-check-rerender.sh",
       "kind": "other",
+      "subkind": null,
       "lines": 305,
       "writes": 0,
       "lang": "shell"
@@ -22527,13 +22979,15 @@
     {
       "id": "scripts/build-content-intent.mjs",
       "kind": "builder",
-      "lines": 1016,
+      "subkind": null,
+      "lines": 1176,
       "writes": 1,
       "lang": "js"
     },
     {
       "id": "scripts/build-cost-index-from-titles.mjs",
       "kind": "builder",
+      "subkind": null,
       "lines": 62,
       "writes": 1,
       "lang": "js"
@@ -22541,6 +22995,7 @@
     {
       "id": "scripts/build-cost-index-history-seed.mjs",
       "kind": "builder",
+      "subkind": null,
       "lines": 97,
       "writes": 2,
       "lang": "js"
@@ -22548,6 +23003,7 @@
     {
       "id": "scripts/build-library.mjs",
       "kind": "builder",
+      "subkind": null,
       "lines": 2151,
       "writes": 0,
       "lang": "js"
@@ -22555,6 +23011,7 @@
     {
       "id": "scripts/build-link-graph.mjs",
       "kind": "builder",
+      "subkind": null,
       "lines": 976,
       "writes": 1,
       "lang": "js"
@@ -22562,6 +23019,7 @@
     {
       "id": "scripts/build-llms-full.mjs",
       "kind": "builder",
+      "subkind": null,
       "lines": 326,
       "writes": 1,
       "lang": "js"
@@ -22569,6 +23027,7 @@
     {
       "id": "scripts/build-prior-decisions.mjs",
       "kind": "builder",
+      "subkind": null,
       "lines": 539,
       "writes": 2,
       "lang": "js"
@@ -22576,13 +23035,15 @@
     {
       "id": "scripts/build-system-graph.mjs",
       "kind": "builder",
-      "lines": 1510,
+      "subkind": null,
+      "lines": 1573,
       "writes": 1,
       "lang": "js"
     },
     {
       "id": "scripts/build-ui-translations.mjs",
       "kind": "builder",
+      "subkind": null,
       "lines": 198,
       "writes": 1,
       "lang": "js"
@@ -22590,6 +23051,7 @@
     {
       "id": "scripts/dedupe-blog-breadcrumbs.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 39,
       "writes": 1,
       "lang": "js"
@@ -22597,6 +23059,7 @@
     {
       "id": "scripts/enrich-post-seo-v2.py",
       "kind": "injector",
+      "subkind": null,
       "lines": 342,
       "writes": 0,
       "lang": "python"
@@ -22604,6 +23067,7 @@
     {
       "id": "scripts/enrich-post-seo.py",
       "kind": "injector",
+      "subkind": null,
       "lines": 393,
       "writes": 0,
       "lang": "python"
@@ -22611,6 +23075,7 @@
     {
       "id": "scripts/fix-library-lang-toggles.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 100,
       "writes": 1,
       "lang": "js"
@@ -22618,6 +23083,7 @@
     {
       "id": "scripts/generate-glossary-cards.mjs",
       "kind": "builder",
+      "subkind": null,
       "lines": 217,
       "writes": 1,
       "lang": "js"
@@ -22625,6 +23091,7 @@
     {
       "id": "scripts/inject-article-author-card.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 117,
       "writes": 1,
       "lang": "js"
@@ -22632,6 +23099,7 @@
     {
       "id": "scripts/inject-blog-breadcrumbs.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 115,
       "writes": 0,
       "lang": "js"
@@ -22639,6 +23107,7 @@
     {
       "id": "scripts/inject-critical-css-nav.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 90,
       "writes": 0,
       "lang": "js"
@@ -22646,6 +23115,7 @@
     {
       "id": "scripts/inject-data-audio-alt-polish.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 80,
       "writes": 0,
       "lang": "js"
@@ -22653,6 +23123,7 @@
     {
       "id": "scripts/inject-esl-bridge.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 100,
       "writes": 1,
       "lang": "js"
@@ -22660,6 +23131,7 @@
     {
       "id": "scripts/inject-feed-discovery.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 107,
       "writes": 1,
       "lang": "js"
@@ -22667,6 +23139,7 @@
     {
       "id": "scripts/inject-glossary-autolinks.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 398,
       "writes": 0,
       "lang": "js"
@@ -22674,6 +23147,7 @@
     {
       "id": "scripts/inject-glossary-explainers.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 280,
       "writes": 0,
       "lang": "js"
@@ -22681,6 +23155,7 @@
     {
       "id": "scripts/inject-glossary-glyphs.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 96,
       "writes": 0,
       "lang": "js"
@@ -22688,6 +23163,7 @@
     {
       "id": "scripts/inject-glossary-recent.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 151,
       "writes": 0,
       "lang": "js"
@@ -22695,6 +23171,7 @@
     {
       "id": "scripts/inject-glossary-sitemap.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 167,
       "writes": 1,
       "lang": "js"
@@ -22702,6 +23179,7 @@
     {
       "id": "scripts/inject-hub-modified-time.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 100,
       "writes": 1,
       "lang": "js"
@@ -22709,6 +23187,7 @@
     {
       "id": "scripts/inject-listen-btn.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 276,
       "writes": 1,
       "lang": "js"
@@ -22716,6 +23195,7 @@
     {
       "id": "scripts/inject-page-glyphs.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 175,
       "writes": 0,
       "lang": "js"
@@ -22723,6 +23203,7 @@
     {
       "id": "scripts/inject-post-end-mark.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 85,
       "writes": 0,
       "lang": "js"
@@ -22730,6 +23211,7 @@
     {
       "id": "scripts/lib/f5_render.py",
       "kind": "lib",
+      "subkind": null,
       "lines": 206,
       "writes": 0,
       "lang": "python"
@@ -22737,6 +23219,7 @@
     {
       "id": "scripts/lib/kokoro_render.py",
       "kind": "lib",
+      "subkind": null,
       "lines": 133,
       "writes": 0,
       "lang": "python"
@@ -22744,6 +23227,7 @@
     {
       "id": "scripts/lib/seasonality-fusion.mjs",
       "kind": "lib",
+      "subkind": null,
       "lines": 295,
       "writes": 0,
       "lang": "js"
@@ -22751,6 +23235,7 @@
     {
       "id": "scripts/lib/translate.py",
       "kind": "lib",
+      "subkind": null,
       "lines": 853,
       "writes": 0,
       "lang": "python"
@@ -22758,6 +23243,7 @@
     {
       "id": "scripts/migrate-blog-to-library.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 507,
       "writes": 3,
       "lang": "js"
@@ -22765,6 +23251,7 @@
     {
       "id": "scripts/migrate-count-literals.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 137,
       "writes": 0,
       "lang": "js"
@@ -22772,6 +23259,7 @@
     {
       "id": "scripts/migrate-dispatch-diverging-figures.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 234,
       "writes": 0,
       "lang": "js"
@@ -22779,6 +23267,7 @@
     {
       "id": "scripts/normalize-further-reading.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 72,
       "writes": 0,
       "lang": "js"
@@ -22786,6 +23275,7 @@
     {
       "id": "scripts/print-weekly-read.mjs",
       "kind": "other",
+      "subkind": null,
       "lines": 75,
       "writes": 0,
       "lang": "js"
@@ -22793,6 +23283,7 @@
     {
       "id": "scripts/probe-cost-index-new-sources.mjs",
       "kind": "check",
+      "subkind": "gate-shaped",
       "lines": 184,
       "writes": 0,
       "lang": "js"
@@ -22800,6 +23291,7 @@
     {
       "id": "scripts/promote-batch.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 93,
       "writes": 1,
       "lang": "js"
@@ -22807,6 +23299,7 @@
     {
       "id": "scripts/publish-el-nino.mjs",
       "kind": "builder",
+      "subkind": null,
       "lines": 94,
       "writes": 0,
       "lang": "js"
@@ -22814,13 +23307,23 @@
     {
       "id": "scripts/publish-explorers.mjs",
       "kind": "builder",
+      "subkind": null,
       "lines": 119,
       "writes": 1,
       "lang": "js"
     },
     {
+      "id": "scripts/rebuild-all.mjs",
+      "kind": "other",
+      "subkind": null,
+      "lines": 230,
+      "writes": 0,
+      "lang": "js"
+    },
+    {
       "id": "scripts/render-bespoke-og-cost-storm.mjs",
       "kind": "builder",
+      "subkind": null,
       "lines": 153,
       "writes": 2,
       "lang": "js"
@@ -22828,6 +23331,7 @@
     {
       "id": "scripts/render-bespoke-og-el-nino.mjs",
       "kind": "builder",
+      "subkind": null,
       "lines": 138,
       "writes": 1,
       "lang": "js"
@@ -22835,6 +23339,7 @@
     {
       "id": "scripts/render-og-pngs.py",
       "kind": "builder",
+      "subkind": null,
       "lines": 180,
       "writes": 0,
       "lang": "python"
@@ -22842,6 +23347,7 @@
     {
       "id": "scripts/rewire-og-cards.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 85,
       "writes": 0,
       "lang": "js"
@@ -22849,6 +23355,7 @@
     {
       "id": "scripts/scaffold-es-draft.py",
       "kind": "builder",
+      "subkind": null,
       "lines": 352,
       "writes": 0,
       "lang": "python"
@@ -22856,6 +23363,7 @@
     {
       "id": "scripts/scaffold-overview-body.mjs",
       "kind": "builder",
+      "subkind": null,
       "lines": 250,
       "writes": 0,
       "lang": "js"
@@ -22863,6 +23371,7 @@
     {
       "id": "scripts/seed-field-notes-sentinels.mjs",
       "kind": "builder",
+      "subkind": null,
       "lines": 104,
       "writes": 1,
       "lang": "js"
@@ -22870,6 +23379,7 @@
     {
       "id": "scripts/stamp-release-gate.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 115,
       "writes": 0,
       "lang": "js"
@@ -22877,6 +23387,7 @@
     {
       "id": "scripts/test-audio-fabrications.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 123,
       "writes": 0,
       "lang": "js"
@@ -22884,6 +23395,7 @@
     {
       "id": "scripts/test-audit-cache.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 223,
       "writes": 0,
       "lang": "js"
@@ -22891,6 +23403,7 @@
     {
       "id": "scripts/test-audit-snapshots.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 385,
       "writes": 0,
       "lang": "js"
@@ -22898,6 +23411,7 @@
     {
       "id": "scripts/test-benchmark-metadata.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 137,
       "writes": 0,
       "lang": "js"
@@ -22905,6 +23419,7 @@
     {
       "id": "scripts/test-cards-qa.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 256,
       "writes": 0,
       "lang": "js"
@@ -22912,6 +23427,7 @@
     {
       "id": "scripts/test-confidence-widening.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 182,
       "writes": 0,
       "lang": "js"
@@ -22919,6 +23435,7 @@
     {
       "id": "scripts/test-crawl-url-extraction.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 223,
       "writes": 0,
       "lang": "js"
@@ -22926,6 +23443,7 @@
     {
       "id": "scripts/test-freshness-bucket.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 99,
       "writes": 0,
       "lang": "js"
@@ -22933,6 +23451,7 @@
     {
       "id": "scripts/test-handoff-doc.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 255,
       "writes": 0,
       "lang": "js"
@@ -22940,6 +23459,7 @@
     {
       "id": "scripts/test-i18n-coverage.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 160,
       "writes": 0,
       "lang": "js"
@@ -22947,6 +23467,7 @@
     {
       "id": "scripts/test-ingredient-state-record.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 135,
       "writes": 0,
       "lang": "js"
@@ -22954,20 +23475,15 @@
     {
       "id": "scripts/test-margin-health.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 226,
-      "writes": 0,
-      "lang": "js"
-    },
-    {
-      "id": "scripts/test-margin-math.mjs",
-      "kind": "check",
-      "lines": 805,
       "writes": 0,
       "lang": "js"
     },
     {
       "id": "scripts/test-menu-engineering.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 533,
       "writes": 0,
       "lang": "js"
@@ -22975,6 +23491,7 @@
     {
       "id": "scripts/test-open-hours.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 682,
       "writes": 0,
       "lang": "js"
@@ -22982,6 +23499,7 @@
     {
       "id": "scripts/test-plate-cost.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 762,
       "writes": 0,
       "lang": "js"
@@ -22989,6 +23507,7 @@
     {
       "id": "scripts/test-price-level-multiplier.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 97,
       "writes": 0,
       "lang": "js"
@@ -22996,6 +23515,7 @@
     {
       "id": "scripts/test-rank-actionables.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 167,
       "writes": 0,
       "lang": "js"
@@ -23003,6 +23523,7 @@
     {
       "id": "scripts/test-rate-limit.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 135,
       "writes": 0,
       "lang": "js"
@@ -23010,6 +23531,7 @@
     {
       "id": "scripts/test-rate-limiter-do.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 184,
       "writes": 0,
       "lang": "js"
@@ -23017,6 +23539,7 @@
     {
       "id": "scripts/test-read-text-capped.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 127,
       "writes": 0,
       "lang": "js"
@@ -23024,6 +23547,7 @@
     {
       "id": "scripts/test-readiness-scorer.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 83,
       "writes": 0,
       "lang": "js"
@@ -23031,6 +23555,7 @@
     {
       "id": "scripts/test-review-count-multiplier.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 132,
       "writes": 0,
       "lang": "js"
@@ -23038,6 +23563,7 @@
     {
       "id": "scripts/test-review-responsiveness.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 183,
       "writes": 0,
       "lang": "js"
@@ -23045,6 +23571,7 @@
     {
       "id": "scripts/test-shared-analytics.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 87,
       "writes": 0,
       "lang": "js"
@@ -23052,6 +23579,7 @@
     {
       "id": "scripts/test-shared-fetch-error.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 124,
       "writes": 0,
       "lang": "js"
@@ -23059,6 +23587,7 @@
     {
       "id": "scripts/test-shared-fragment.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 126,
       "writes": 0,
       "lang": "js"
@@ -23066,6 +23595,7 @@
     {
       "id": "scripts/test-shared-parsing.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 158,
       "writes": 0,
       "lang": "js"
@@ -23073,6 +23603,7 @@
     {
       "id": "scripts/test-snapshot-meta-overrides.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 144,
       "writes": 0,
       "lang": "js"
@@ -23080,6 +23611,7 @@
     {
       "id": "scripts/test-subtype-owner-defaults.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 156,
       "writes": 0,
       "lang": "js"
@@ -23087,6 +23619,7 @@
     {
       "id": "scripts/test-tool-redirects.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 50,
       "writes": 0,
       "lang": "js"
@@ -23094,6 +23627,7 @@
     {
       "id": "scripts/test-validation-aliases.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 133,
       "writes": 0,
       "lang": "js"
@@ -23101,6 +23635,7 @@
     {
       "id": "scripts/test-watch-checks.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 274,
       "writes": 0,
       "lang": "js"
@@ -23108,6 +23643,7 @@
     {
       "id": "scripts/test-window-clients.mjs",
       "kind": "check",
+      "subkind": "test-harness",
       "lines": 57,
       "writes": 0,
       "lang": "js"
@@ -23115,6 +23651,7 @@
     {
       "id": "scripts/tone-edit-library-bylines.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 84,
       "writes": 1,
       "lang": "js"
@@ -23122,6 +23659,7 @@
     {
       "id": "scripts/tone-edit-library-titles.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 125,
       "writes": 1,
       "lang": "js"
@@ -23129,20 +23667,15 @@
     {
       "id": "scripts/update-blog-breadcrumb-schema.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 67,
-      "writes": 1,
-      "lang": "js"
-    },
-    {
-      "id": "scripts/verify-cost-index-sources.mjs",
-      "kind": "check",
-      "lines": 428,
       "writes": 1,
       "lang": "js"
     },
     {
       "id": "scripts/wire-glossary-research.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 145,
       "writes": 0,
       "lang": "js"
@@ -23150,6 +23683,7 @@
     {
       "id": "scripts/wire-research-citations.mjs",
       "kind": "injector",
+      "subkind": null,
       "lines": 124,
       "writes": 0,
       "lang": "js"
@@ -23157,6 +23691,13 @@
   ],
   "plan": {
     "steps": [
+      {
+        "phase": "pre",
+        "script": "scripts/build-cost-index-picker.mjs",
+        "args": [],
+        "why": "cost-index-refresh.yml runs it, omits data/cost-index-picker.js from its git-add allowlist, then discards it with `git checkout -- .`. 1 step(s) read the stale committed copy — e.g. scripts/check-cost-index-picker.mjs.",
+        "requires": []
+      },
       {
         "phase": "pre",
         "script": "scripts/inject-receipts-kpis.mjs",
