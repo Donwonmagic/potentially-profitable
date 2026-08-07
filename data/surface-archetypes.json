@@ -1,0 +1,6194 @@
+{
+ "_doc": "Every routable page belongs to exactly one archetype. The archetype is the design unit: build one specimen per surviving archetype and the site is covered, provably.",
+ "_asOf": "2026-08-07",
+ "_asOfBasis": "Newest commit date in the repo. Deliberately NOT wall-clock: lastCommitDaysAgo is measured against this so the manifest is byte-stable until a commit lands and --check does not red on the calendar.",
+ "_generator": "scripts/build-surface-archetypes.mjs",
+ "_inputs": [
+  "data/surface-inventory.json",
+  "data/content-intent.json",
+  "data/link-graph.json",
+  "data/surface-disposition.json",
+  "data/ingredient-yields.json"
+ ],
+ "_verdicts": {
+  "survives": "the template is right; the specimen redesigns it",
+  "absorbs": "survives AND takes over another archetype's job",
+  "merges": "stops being its own template; its pages re-render under another archetype",
+  "becomes": "the URL survives but the UNIT changes — a different thing lives at that route",
+  "retires": "stops existing; 301 to the funnel"
+ },
+ "summary": {
+  "pages": 1327,
+  "archetypes": 15,
+  "assigned": 1327,
+  "unassigned": 0,
+  "unclassified": 0,
+  "coverageProven": true,
+  "pagesByVerdict": {
+   "retires": 442,
+   "survives": 110,
+   "becomes": 311,
+   "absorbs": 208,
+   "merges": 256
+  },
+  "specimensToBuild": 10,
+  "pagesRetiredOrMerged": 698
+ },
+ "archetypes": [
+  {
+   "id": "harness",
+   "order": "A01",
+   "name": "Operator harness",
+   "rule": "route is under /admin/ or /brand/ — an operator render surface, noindex by design",
+   "members": 6,
+   "share": 0.5,
+   "langSplit": {
+    "en": 4,
+    "es": 2
+   },
+   "exemplars": [
+    "/admin/kpis/",
+    "/admin/submissions/",
+    "/admin/window/",
+    "/brand/og/preview.html"
+   ],
+   "producedBy": "hand-authored",
+   "producedByKind": "hand",
+   "structure": {
+    "medianInboundLinks": 0,
+    "medianOutboundLinks": 1,
+    "orphans": 6,
+    "orphanRate": 100,
+    "medianClickDepthFromHome": null,
+    "indexable": 0,
+    "withCta": 2,
+    "withAnalytics": 0,
+    "withWaitlistForm": 0,
+    "withAudio": 0,
+    "medianRetiredLineScore": 0,
+    "retiredLineOverThreshold3": 0,
+    "medianWordCount": 117,
+    "medianFigures": 0,
+    "medianAgeDays": 10
+   },
+   "intent": {
+    "onThesis": 0,
+    "byPrimaryIntent": {
+     "dead": 6
+    },
+    "byTopicCluster": {
+     "other": 6
+    }
+   },
+   "currentDisposition": {
+    "keep": 6
+   },
+   "verdict": "retires",
+   "becomes": "leaves the public route tree entirely; /admin/submissions/ goes with the lane it served",
+   "forcedBy": "6 pages, 6 orphans, 0 indexable, 117 median words. /admin/submissions/ serves the operator-submitter data lane that ADR-031 forecloses forever, so it is a route maintained for a decision already reversed."
+  },
+  {
+   "id": "app-surface",
+   "order": "A02",
+   "name": "Product app surface",
+   "rule": "surfaceClass === \"product\" — a storefront stub that hands off to app.muntin.digital",
+   "members": 12,
+   "share": 0.9,
+   "langSplit": {
+    "en": 6,
+    "es": 6
+   },
+   "exemplars": [
+    "/account/",
+    "/ledger/",
+    "/ledger/demo/",
+    "/sign-in/"
+   ],
+   "producedBy": "hand-authored",
+   "producedByKind": "hand",
+   "structure": {
+    "medianInboundLinks": 21,
+    "medianOutboundLinks": 5,
+    "orphans": 0,
+    "orphanRate": 0,
+    "medianClickDepthFromHome": 2,
+    "indexable": 6,
+    "withCta": 8,
+    "withAnalytics": 4,
+    "withWaitlistForm": 2,
+    "withAudio": 0,
+    "medianRetiredLineScore": 0,
+    "retiredLineOverThreshold3": 2,
+    "medianWordCount": 239,
+    "medianFigures": 0,
+    "medianAgeDays": 10
+   },
+   "intent": {
+    "onThesis": 4,
+    "byPrimaryIntent": {
+     "convert": 10,
+     "dead": 2
+    },
+    "byTopicCluster": {
+     "other": 6,
+     "invoices": 4,
+     "retired-web-SEO": 2
+    }
+   },
+   "currentDisposition": {
+    "keep": 12
+   },
+   "verdict": "survives",
+   "becomes": "the seam between storefront and product; unchanged in shape, but /ledger/demo/ becomes the specimen close rather than a feature tour",
+   "forcedBy": "12 pages, 239 median words, only 6 of 12 indexable, and 396 of the site's CTA targets already point at ledger.muntin.digital. The handoff is load-bearing and thin."
+  },
+  {
+   "id": "institutional-record",
+   "order": "A03",
+   "name": "Institutional record",
+   "rule": "surfaceClass === \"trust\" — the standing statements a reviewer checks (methods, claims, receipts, security, status, changelog, legal)",
+   "members": 26,
+   "share": 2,
+   "langSplit": {
+    "en": 13,
+    "es": 13
+   },
+   "exemplars": [
+    "/404.html",
+    "/accessibility.html",
+    "/changelog/",
+    "/claims/"
+   ],
+   "producedBy": "hand-authored + inject-* stamps",
+   "producedByKind": "hand",
+   "structure": {
+    "medianInboundLinks": 6,
+    "medianOutboundLinks": 8,
+    "orphans": 2,
+    "orphanRate": 7.7,
+    "medianClickDepthFromHome": 2,
+    "indexable": 24,
+    "withCta": 13,
+    "withAnalytics": 25,
+    "withWaitlistForm": 0,
+    "withAudio": 0,
+    "medianRetiredLineScore": 0,
+    "retiredLineOverThreshold3": 8,
+    "medianWordCount": 971,
+    "medianFigures": 0,
+    "medianAgeDays": 10
+   },
+   "intent": {
+    "onThesis": 15,
+    "byPrimaryIntent": {
+     "trust": 26
+    },
+    "byTopicCluster": {
+     "company/trust": 9,
+     "retired-web-SEO": 2,
+     "cost-intelligence": 7,
+     "vendors": 6,
+     "invoices": 2
+    }
+   },
+   "currentDisposition": {
+    "keep": 26
+   },
+   "verdict": "survives",
+   "becomes": "promoted from footer legal to the primary surface. Under the closing-asset doctrine this archetype IS the product demo for the reviewer who signs off.",
+   "forcedBy": "26 pages, 25 of 26 carrying analytics — the highest instrumentation rate on the site — median 6 inbound links and 971 words. It is measured and unlinked: an audit file nobody is routed to."
+  },
+  {
+   "id": "instrument-record",
+   "order": "A04",
+   "name": "Market-event record",
+   "rule": "route matches /cost-index/events/<slug>/ — one dated, cited historical market event",
+   "members": 78,
+   "share": 5.9,
+   "langSplit": {
+    "en": 39,
+    "es": 39
+   },
+   "exemplars": [
+    "/cost-index/events/african-swine-fever-china-2018/",
+    "/cost-index/events/autumn-freeze-us-potato-2019/",
+    "/cost-index/events/california-citrus-freeze-2007/",
+    "/cost-index/events/cattle-herd-contraction-2011/"
+   ],
+   "producedBy": "committed HTML; only inject-event-exposure.mjs touches it",
+   "producedByKind": "no-generator",
+   "structure": {
+    "medianInboundLinks": 0,
+    "medianOutboundLinks": 12,
+    "orphans": 78,
+    "orphanRate": 100,
+    "medianClickDepthFromHome": null,
+    "indexable": 78,
+    "withCta": 0,
+    "withAnalytics": 0,
+    "withWaitlistForm": 0,
+    "withAudio": 0,
+    "medianRetiredLineScore": 0,
+    "retiredLineOverThreshold3": 0,
+    "medianWordCount": 628,
+    "medianFigures": 0,
+    "medianAgeDays": 9
+   },
+   "intent": {
+    "onThesis": 78,
+    "byPrimaryIntent": {
+     "reference": 78
+    },
+    "byTopicCluster": {
+     "cost-intelligence": 78
+    }
+   },
+   "currentDisposition": {
+    "keep": 78
+   },
+   "verdict": "becomes",
+   "becomes": "a render target of cost-index/events.json emitted by build-cost-index-pages.mjs, at the same URLs, with the detail route reserved for events carrying a measured co-occurrence and the rest folding into the hub",
+   "forcedBy": "78 pages; 78 of 78 are orphans (zero internal inbound links); 0 carry a CTA; 0 carry a figure; 0 carry analytics. inject-event-exposure.mjs states in its own header that these pages \"run AHEAD of the in-container build engine\" and a rebuild \"would regress them\" — 78 indexable pages with no live generator and no reader path."
+  },
+  {
+   "id": "instrument-reading",
+   "order": "A05",
+   "name": "Ingredient reading",
+   "rule": "route matches /cost-index/<slug>/ where <slug> is not apparatus — one ingredient measured against its own baseline window",
+   "members": 188,
+   "share": 14.2,
+   "langSplit": {
+    "en": 94,
+    "es": 94
+   },
+   "exemplars": [
+    "/cost-index/acorn-squash/",
+    "/cost-index/apple/",
+    "/cost-index/artichoke/",
+    "/cost-index/asparagus/"
+   ],
+   "producedBy": "scripts/build-cost-index-pages.mjs",
+   "producedByKind": "generated",
+   "structure": {
+    "medianInboundLinks": 73,
+    "medianOutboundLinks": 79,
+    "orphans": 0,
+    "orphanRate": 0,
+    "medianClickDepthFromHome": 3,
+    "indexable": 188,
+    "withCta": 162,
+    "withAnalytics": 0,
+    "withWaitlistForm": 0,
+    "withAudio": 0,
+    "medianRetiredLineScore": 0,
+    "retiredLineOverThreshold3": 0,
+    "medianWordCount": 1835,
+    "medianFigures": 2,
+    "medianAgeDays": 2
+   },
+   "intent": {
+    "onThesis": 188,
+    "byPrimaryIntent": {
+     "reference": 188
+    },
+    "byTopicCluster": {
+     "cost-intelligence": 188
+    }
+   },
+   "currentDisposition": {
+    "keep": 188
+   },
+   "verdict": "absorbs",
+   "becomes": "the atom of the company. One ingredient, one page, absorbing the yield table, the event records that touch it, and the seasonality band — the page a bookkeeper opens to check one line of the close.",
+   "forcedBy": "188 pages, median 73 inbound links and 79 outbound — the densest node class in the graph — 0 orphans, 0 retired-line hits, median 2 days since last commit (rebuilt daily), 162 of 188 already carrying a CTA. It is the only archetype that is simultaneously fresh, on-thesis and linked."
+  },
+  {
+   "id": "instrument-apparatus",
+   "order": "A06",
+   "name": "Instrument apparatus",
+   "rule": "any remaining /cost-index/ route — the hub, basket, methodology, sources, weekly archive, pressure lab, events hub, embeds",
+   "members": 20,
+   "share": 1.5,
+   "langSplit": {
+    "en": 10,
+    "es": 10
+   },
+   "exemplars": [
+    "/cost-index/",
+    "/cost-index/basket/",
+    "/cost-index/events/",
+    "/cost-index/lab/"
+   ],
+   "producedBy": "scripts/build-cost-index-pages.mjs + build-cost-index-archive.mjs + build-cost-index-methodology.mjs",
+   "producedByKind": "generated",
+   "structure": {
+    "medianInboundLinks": 3,
+    "medianOutboundLinks": 15,
+    "orphans": 4,
+    "orphanRate": 20,
+    "medianClickDepthFromHome": 3,
+    "indexable": 18,
+    "withCta": 0,
+    "withAnalytics": 2,
+    "withWaitlistForm": 0,
+    "withAudio": 0,
+    "medianRetiredLineScore": 0,
+    "retiredLineOverThreshold3": 0,
+    "medianWordCount": 1291,
+    "medianFigures": 0,
+    "medianAgeDays": 7
+   },
+   "intent": {
+    "onThesis": 20,
+    "byPrimaryIntent": {
+     "acquire": 6,
+     "reference": 14
+    },
+    "byTopicCluster": {
+     "cost-intelligence": 18,
+     "inventory/food-cost": 2
+    }
+   },
+   "currentDisposition": {
+    "keep": 20
+   },
+   "verdict": "absorbs",
+   "becomes": "one evidence spine that also absorbs open-dataset: methodology, sources, basket, corrections, weekly archive and the 18 open datasets are the same claim (\"here is what we measured and how\") rendered by two unrelated builders today",
+   "forcedBy": "20 apparatus pages + 20 open-dataset pages = 40 routes carrying the credibility argument, of which 13 open-data pages are orphans and 0 of the 40 carry a CTA. The doctrine says credibility is a CLOSING asset; 40 unlinked pages cannot close anything."
+  },
+  {
+   "id": "open-dataset",
+   "order": "A07",
+   "name": "Open dataset explorer",
+   "rule": "route is under /open/ — a public-domain source series published as a browsable, downloadable dataset",
+   "members": 20,
+   "share": 1.5,
+   "langSplit": {
+    "en": 18,
+    "es": 2
+   },
+   "exemplars": [
+    "/open/",
+    "/open/availability/",
+    "/open/crop-condition/",
+    "/open/demand/"
+   ],
+   "producedBy": "scripts/build-open-{demand,labor,recalls}-page.mjs + build-*-open-data.mjs family",
+   "producedByKind": "generated",
+   "structure": {
+    "medianInboundLinks": 0,
+    "medianOutboundLinks": 4,
+    "orphans": 13,
+    "orphanRate": 65,
+    "medianClickDepthFromHome": 3,
+    "indexable": 20,
+    "withCta": 0,
+    "withAnalytics": 0,
+    "withWaitlistForm": 0,
+    "withAudio": 0,
+    "medianRetiredLineScore": 0,
+    "retiredLineOverThreshold3": 0,
+    "medianWordCount": 1163,
+    "medianFigures": 0,
+    "medianAgeDays": 11
+   },
+   "intent": {
+    "onThesis": 17,
+    "byPrimaryIntent": {
+     "reference": 19,
+     "acquire": 1
+    },
+    "byTopicCluster": {
+     "cost-intelligence": 16,
+     "other": 3,
+     "vendors": 1
+    }
+   },
+   "currentDisposition": {
+    "keep": 20
+   },
+   "verdict": "merges",
+   "becomes": "merged into instrument-apparatus as the \"sources\" leg — same template, same job",
+   "forcedBy": "20 pages, 18 EN / 2 ES — the worst locale asymmetry on the site — 13 of 20 orphaned, 0 CTA, 0 analytics, median 1,163 words. Real data, published into a room with no door."
+  },
+  {
+   "id": "yield-table",
+   "order": "A08",
+   "name": "Ingredient yield table",
+   "rule": "/library/ingredient-yields/<slug>/ where <slug> is a row in data/ingredient-yields.json",
+   "members": 236,
+   "share": 17.8,
+   "langSplit": {
+    "en": 118,
+    "es": 118
+   },
+   "exemplars": [
+    "/library/ingredient-yields/acorn-squash/",
+    "/library/ingredient-yields/apple/",
+    "/library/ingredient-yields/artichoke/",
+    "/library/ingredient-yields/arugula/"
+   ],
+   "producedBy": "scripts/build-ingredient-yield-pages.mjs",
+   "producedByKind": "generated",
+   "structure": {
+    "medianInboundLinks": 9,
+    "medianOutboundLinks": 15,
+    "orphans": 0,
+    "orphanRate": 0,
+    "medianClickDepthFromHome": 4,
+    "indexable": 236,
+    "withCta": 236,
+    "withAnalytics": 0,
+    "withWaitlistForm": 0,
+    "withAudio": 0,
+    "medianRetiredLineScore": 0,
+    "retiredLineOverThreshold3": 0,
+    "medianWordCount": 510,
+    "medianFigures": 0,
+    "medianAgeDays": 2
+   },
+   "intent": {
+    "onThesis": 236,
+    "byPrimaryIntent": {
+     "acquire": 158,
+     "educate": 78
+    },
+    "byTopicCluster": {
+     "inventory/food-cost": 118,
+     "menu-pricing": 118
+    }
+   },
+   "currentDisposition": {
+    "freeze": 236
+   },
+   "verdict": "merges",
+   "becomes": "a section inside instrument-reading. Yield % is an input to plate cost, not a separate subject; the 28 yield-only slugs become rows on the yields collection page until they earn a reading.",
+   "forcedBy": "236 pages, 118 EN ingredients — and 90 of those 118 slugs ALREADY have a page at /cost-index/<same-slug>/. Two URLs about tomato is not a corpus, it is a fork. Median 510 words, 0 figures, 0 analytics, median 9 inbound vs the reading page's 73."
+  },
+  {
+   "id": "menu-design-showcase",
+   "order": "A09",
+   "name": "Menu-design showcase",
+   "rule": "/library/menu-design-themes/<slug>/ or /library/menu-design-cuisines/<slug>/ — a rendered menu specimen or a cuisine landing for the retired design line",
+   "members": 94,
+   "share": 7.1,
+   "langSplit": {
+    "en": 47,
+    "es": 47
+   },
+   "exemplars": [
+    "/library/menu-design-cuisines/american-bbq/",
+    "/library/menu-design-cuisines/asian/",
+    "/library/menu-design-cuisines/cafe-bakery/",
+    "/library/menu-design-cuisines/food-truck/"
+   ],
+   "producedBy": "scripts/build-theme-story-pages.mjs + build-cuisine-landing-pages.mjs",
+   "producedByKind": "generated",
+   "structure": {
+    "medianInboundLinks": 2,
+    "medianOutboundLinks": 4,
+    "orphans": 0,
+    "orphanRate": 0,
+    "medianClickDepthFromHome": null,
+    "indexable": 94,
+    "withCta": 94,
+    "withAnalytics": 0,
+    "withWaitlistForm": 0,
+    "withAudio": 0,
+    "medianRetiredLineScore": 0,
+    "retiredLineOverThreshold3": 0,
+    "medianWordCount": 230,
+    "medianFigures": 0,
+    "medianAgeDays": 10
+   },
+   "intent": {
+    "onThesis": 0,
+    "byPrimaryIntent": {
+     "reference": 94
+    },
+    "byTopicCluster": {
+     "other": 94
+    }
+   },
+   "currentDisposition": {
+    "freeze-noindex": 92,
+    "freeze": 2
+   },
+   "verdict": "retires",
+   "becomes": "nothing. 301 to /cost-index/.",
+   "forcedBy": "94 pages serving the retired web-design line. Median 235 words (themes) and 190 (cuisines), median 2 inbound links, 0 figures, 0 analytics on any of the 94. The Menu Design Suite tool they market was itself retired in 2026-06."
+  },
+  {
+   "id": "definition-card",
+   "order": "A10",
+   "name": "Definition card",
+   "rule": "/glossary/<term>/ — one page per term",
+   "members": 342,
+   "share": 25.8,
+   "langSplit": {
+    "en": 171,
+    "es": 171
+   },
+   "exemplars": [
+    "/glossary/above-the-fold/",
+    "/glossary/accessible-pair/",
+    "/glossary/aggregator/",
+    "/glossary/ai-overview/"
+   ],
+   "producedBy": "hand-authored shells + 17 inject-glossary-*.mjs injectors",
+   "producedByKind": "hand+injected",
+   "structure": {
+    "medianInboundLinks": 11,
+    "medianOutboundLinks": 18,
+    "orphans": 3,
+    "orphanRate": 0.9,
+    "medianClickDepthFromHome": 3,
+    "indexable": 196,
+    "withCta": 0,
+    "withAnalytics": 0,
+    "withWaitlistForm": 0,
+    "withAudio": 0,
+    "medianRetiredLineScore": 1,
+    "retiredLineOverThreshold3": 133,
+    "medianWordCount": 469,
+    "medianFigures": 0,
+    "medianAgeDays": 10
+   },
+   "intent": {
+    "onThesis": 121,
+    "byPrimaryIntent": {
+     "reference": 258,
+     "dead": 84
+    },
+    "byTopicCluster": {
+     "vendors": 42,
+     "retired-web-SEO": 112,
+     "other": 109,
+     "cost-intelligence": 44,
+     "menu-pricing": 22,
+     "inventory/food-cost": 13
+    }
+   },
+   "currentDisposition": {
+    "freeze": 143,
+    "freeze-noindex": 199
+   },
+   "verdict": "retires",
+   "becomes": "not a page type. ~60 cost terms become entries on one glossary page plus the autolink popover that inject-glossary-autolinks.mjs already renders inline; the rest go.",
+   "forcedBy": "342 pages — 26% of the entire site — with 0 of 342 carrying an in-content CTA, 0 carrying analytics, 0 carrying a figure, median 469 words. 133 score >=3 on retired-line vocabulary and only 98 of 171 EN terms are still indexable. 53 of 171 EN terms sit in the retired-web-SEO cluster and 51 more in \"other\". A definition is a tooltip, and this site already ships the tooltip."
+  },
+  {
+   "id": "worksheet",
+   "order": "A11",
+   "name": "Operator worksheet",
+   "rule": "surfaceClass === \"sheet\" below the index, or a /learn/checklists/ leaf — a downloadable form the operator fills in by hand",
+   "members": 82,
+   "share": 6.2,
+   "langSplit": {
+    "en": 41,
+    "es": 41
+   },
+   "exemplars": [
+    "/learn/checklists/audit-any-tool/",
+    "/learn/checklists/restaurant-website-checklist/",
+    "/sheets/allergen-matrix/",
+    "/sheets/brand-asset-inventory/"
+   ],
+   "producedBy": "scripts/build-sheet-pages.mjs",
+   "producedByKind": "generated",
+   "structure": {
+    "medianInboundLinks": 2,
+    "medianOutboundLinks": 6,
+    "orphans": 14,
+    "orphanRate": 17.1,
+    "medianClickDepthFromHome": 3,
+    "indexable": 44,
+    "withCta": 2,
+    "withAnalytics": 82,
+    "withWaitlistForm": 0,
+    "withAudio": 2,
+    "medianRetiredLineScore": 0,
+    "retiredLineOverThreshold3": 26,
+    "medianWordCount": 652,
+    "medianFigures": 0,
+    "medianAgeDays": 10
+   },
+   "intent": {
+    "onThesis": 40,
+    "byPrimaryIntent": {
+     "educate": 3,
+     "reference": 40,
+     "acquire": 14,
+     "dead": 25
+    },
+    "byTopicCluster": {
+     "other": 22,
+     "vendors": 7,
+     "inventory/food-cost": 19,
+     "retired-web-SEO": 20,
+     "invoices": 2,
+     "menu-pricing": 11,
+     "cost-intelligence": 1
+    }
+   },
+   "currentDisposition": {
+    "freeze": 37,
+    "freeze-noindex": 31,
+    "delete": 14
+   },
+   "verdict": "becomes",
+   "becomes": "the manual half of the close. Keep the ~6 that feed Beginning + Purchases - Ending = Usage (count sheet, recipe cost card, prime cost, monthly P&L); every worksheet that duplicates something Muntin Ledger now computes stops being published.",
+   "forcedBy": "82 pages, 18 of 39 EN sheets off-thesis by measurement (brand-asset-inventory, gbp-monthly-audit, local-keyword-map, nap-consistency-tracker, photo-shot-list, social-content-calendar...), 14 orphans, only 44 of 80 indexable, median 2 inbound links. A worksheet is a pre-product; the product shipped."
+  },
+  {
+   "id": "calculator",
+   "order": "A12",
+   "name": "Interactive calculator",
+   "rule": "/tools/<slug>/ — client-side arithmetic the reader runs on their own numbers",
+   "members": 14,
+   "share": 1.1,
+   "langSplit": {
+    "en": 7,
+    "es": 7
+   },
+   "exemplars": [
+    "/tools/audits/",
+    "/tools/cost-pulse/",
+    "/tools/margin-math/",
+    "/tools/menu-engineering/"
+   ],
+   "producedBy": "hand-authored + inject-tool-*.mjs rails",
+   "producedByKind": "hand+injected",
+   "structure": {
+    "medianInboundLinks": 47,
+    "medianOutboundLinks": 17,
+    "orphans": 2,
+    "orphanRate": 14.3,
+    "medianClickDepthFromHome": 2,
+    "indexable": 12,
+    "withCta": 8,
+    "withAnalytics": 10,
+    "withWaitlistForm": 0,
+    "withAudio": 0,
+    "medianRetiredLineScore": 0,
+    "retiredLineOverThreshold3": 2,
+    "medianWordCount": 885,
+    "medianFigures": 0,
+    "medianAgeDays": 10
+   },
+   "intent": {
+    "onThesis": 12,
+    "byPrimaryIntent": {
+     "reference": 4,
+     "educate": 6,
+     "acquire": 4
+    },
+    "byTopicCluster": {
+     "other": 2,
+     "invoices": 2,
+     "inventory/food-cost": 2,
+     "menu-pricing": 4,
+     "vendors": 4
+    }
+   },
+   "currentDisposition": {
+    "keep": 14
+   },
+   "verdict": "becomes",
+   "becomes": "the qualification instrument. Each calculator runs the SAME arithmetic the closed month runs, on the reader's numbers, and ends by naming what it could not stand behind — a preview of the deliverable rather than a free giveaway.",
+   "forcedBy": "16 pages with median 37 inbound links — the highest of any archetype except the ingredient reading — 12 of 16 instrumented, 10 of 16 carrying a CTA, and the only interactive surface on the site. Highest leverage per page and the smallest count."
+  },
+  {
+   "id": "essay",
+   "order": "A13",
+   "name": "Long-form essay",
+   "rule": "a hand-written article: /library/<slug>/, /blog/<slug>/, /learn/research/<slug>/, /learn/topics/<topic>/<slug>/",
+   "members": 123,
+   "share": 9.3,
+   "langSplit": {
+    "en": 65,
+    "es": 58
+   },
+   "exemplars": [
+    "/blog/30-days-after-leaving-doordash-restaurant-case-study/",
+    "/blog/ai-local-pack-restaurant-phone-calls-2026/",
+    "/blog/ai-search-restaurant-website-platform-recommendations-2026/",
+    "/blog/cost-index-2026-07/"
+   ],
+   "producedBy": "hand-authored + scripts/build-library.mjs (autolinks, rails, graphics)",
+   "producedByKind": "hand+injected",
+   "structure": {
+    "medianInboundLinks": 13,
+    "medianOutboundLinks": 17,
+    "orphans": 2,
+    "orphanRate": 1.6,
+    "medianClickDepthFromHome": 2,
+    "indexable": 74,
+    "withCta": 73,
+    "withAnalytics": 123,
+    "withWaitlistForm": 0,
+    "withAudio": 107,
+    "medianRetiredLineScore": 6,
+    "retiredLineOverThreshold3": 72,
+    "medianWordCount": 3053,
+    "medianFigures": 3,
+    "medianAgeDays": 10
+   },
+   "intent": {
+    "onThesis": 56,
+    "byPrimaryIntent": {
+     "educate": 87,
+     "dead": 36
+    },
+    "byTopicCluster": {
+     "vendors": 23,
+     "retired-web-SEO": 47,
+     "cost-intelligence": 10,
+     "other": 20,
+     "menu-pricing": 10,
+     "invoices": 8,
+     "inventory/food-cost": 5
+    }
+   },
+   "currentDisposition": {
+    "freeze-noindex": 77,
+    "keep": 28,
+    "freeze": 18
+   },
+   "verdict": "becomes",
+   "becomes": "the worked example. One essay per recurring exception in a real close — not a topic, an incident: what the invoice said, what the count said, what we withheld and why. Cut to the ~18 EN library essays and ~11 EN dispatches that are on-thesis.",
+   "forcedBy": "123 pages and the highest craft on the site (median 3,742 words, 3 figures for library essays) pointed largely at the retired line: only 18 of 37 EN library essays are on-thesis, only 16 of 37 still indexable, 54 of 80 score >=3 on retired-line vocabulary. This archetype is where the design investment already exists and where the subject is most wrong."
+  },
+  {
+   "id": "pitch",
+   "order": "A14",
+   "name": "Positioning page",
+   "rule": "surfaceClass === \"marketing\", or /learn/start-here/ — a page whose only job is to say what the company is",
+   "members": 14,
+   "share": 1.1,
+   "langSplit": {
+    "en": 7,
+    "es": 7
+   },
+   "exemplars": [
+    "/",
+    "/about/",
+    "/ai/",
+    "/for/restaurants/"
+   ],
+   "producedBy": "hand-authored",
+   "producedByKind": "hand",
+   "structure": {
+    "medianInboundLinks": 13,
+    "medianOutboundLinks": 10,
+    "orphans": 2,
+    "orphanRate": 14.3,
+    "medianClickDepthFromHome": 2,
+    "indexable": 14,
+    "withCta": 12,
+    "withAnalytics": 14,
+    "withWaitlistForm": 2,
+    "withAudio": 0,
+    "medianRetiredLineScore": 0,
+    "retiredLineOverThreshold3": 3,
+    "medianWordCount": 967,
+    "medianFigures": 0,
+    "medianAgeDays": 10
+   },
+   "intent": {
+    "onThesis": 14,
+    "byPrimaryIntent": {
+     "convert": 8,
+     "trust": 4,
+     "educate": 2
+    },
+    "byTopicCluster": {
+     "cost-intelligence": 5,
+     "invoices": 7,
+     "inventory/food-cost": 1,
+     "vendors": 1
+    }
+   },
+   "currentDisposition": {
+    "keep": 12,
+    "freeze": 2
+   },
+   "verdict": "becomes",
+   "becomes": "one page that states the offer and shows the specimen close, plus /about/. /never/ and /studio/ are residue of the retired services line and stop being pitches.",
+   "forcedBy": "14 pages for a company with one price and ~40 customers ever. 4 pages on the entire site carry a waitlist form; the home page is one of them. 3 of 14 score >=3 on retired-line vocabulary."
+  },
+  {
+   "id": "collection-index",
+   "order": "A15",
+   "name": "Collection index",
+   "rule": "a page whose body is a list of other pages: every corpus hub (/library/, /glossary/, /blog/, /sheets/, /tools/, /learn/), the nine /learn/topics/ hubs, the yield category pages, the yield/theme/cuisine hubs",
+   "members": 72,
+   "share": 5.4,
+   "langSplit": {
+    "en": 36,
+    "es": 36
+   },
+   "exemplars": [
+    "/blog/",
+    "/glossary/",
+    "/learn/",
+    "/learn/checklists/"
+   ],
+   "producedBy": "mixed: build-library.mjs, build-sheets-index.mjs, build-tools-index.mjs, build-blog-index.mjs, build-ingredient-yield-pages.mjs",
+   "producedByKind": "generated",
+   "structure": {
+    "medianInboundLinks": 12,
+    "medianOutboundLinks": 15,
+    "orphans": 0,
+    "orphanRate": 0,
+    "medianClickDepthFromHome": 3,
+    "indexable": 62,
+    "withCta": 6,
+    "withAnalytics": 14,
+    "withWaitlistForm": 0,
+    "withAudio": 0,
+    "medianRetiredLineScore": 1,
+    "retiredLineOverThreshold3": 24,
+    "medianWordCount": 307,
+    "medianFigures": 0,
+    "medianAgeDays": 10
+   },
+   "intent": {
+    "onThesis": 31,
+    "byPrimaryIntent": {
+     "acquire": 22,
+     "reference": 34,
+     "educate": 7,
+     "dead": 9
+    },
+    "byTopicCluster": {
+     "retired-web-SEO": 17,
+     "other": 24,
+     "cost-intelligence": 4,
+     "vendors": 5,
+     "inventory/food-cost": 19,
+     "menu-pricing": 2,
+     "invoices": 1
+    }
+   },
+   "currentDisposition": {
+    "freeze-noindex": 39,
+    "freeze": 31,
+    "keep": 2
+   },
+   "verdict": "survives",
+   "becomes": "one template, five instances instead of thirty-six. When yield-table merges, definition-card retires and menu-design-showcase goes, 19 of the 36 EN collection pages lose their corpus and go with it.",
+   "forcedBy": "72 pages whose entire body is a list of children — 36 EN, of which 15 are yield category pages and 9 are /learn/topics/ hubs for a taxonomy where ADR-026 records that 6 of 9 topics name the retired line. A collection page cannot survive its collection."
+  }
+ ],
+ "assignment": [
+  {
+   "route": "/",
+   "archetype": "pitch"
+  },
+  {
+   "route": "/404.html",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/about/",
+   "archetype": "pitch"
+  },
+  {
+   "route": "/accessibility.html",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/account/",
+   "archetype": "app-surface"
+  },
+  {
+   "route": "/admin/kpis/",
+   "archetype": "harness"
+  },
+  {
+   "route": "/admin/submissions/",
+   "archetype": "harness"
+  },
+  {
+   "route": "/admin/window/",
+   "archetype": "harness"
+  },
+  {
+   "route": "/ai/",
+   "archetype": "pitch"
+  },
+  {
+   "route": "/blog/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/blog/30-days-after-leaving-doordash-restaurant-case-study/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/ai-local-pack-restaurant-phone-calls-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/ai-search-restaurant-website-platform-recommendations-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/cost-index-2026-07/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/cost-index-week-2026-06-05/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/cost-index-week-2026-06-16/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/cost-index-week-2026-06-18/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/cost-index-week-2026-07-06/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/el-nino-food-prices-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/gemini-ai-referral-traffic-restaurants-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/get-found-fathers-day-weekend-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/google-ai-mode-restaurant-local-results-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/how-to-appear-in-ai-search-restaurant-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/instagram-as-restaurant-seo-strategy-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/may-2026-discovery-changed-under-you/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/may-2026-wave-publishing-for-citation/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/menu-pricing-grounded-100-ingredients-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/restaurant-cost-pressure-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/blog/restaurant-menu-inflation-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/brand/og/preview.html",
+   "archetype": "harness"
+  },
+  {
+   "route": "/changelog/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/claims/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/cookies.html",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/cost-index/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/cost-index/acorn-squash/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/apple/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/artichoke/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/asparagus/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/avocado/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/banana/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/basil/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/basket/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/cost-index/beef-tenderloin/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/beet/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/bell-pepper/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/blueberry/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/bok-choy/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/broccoli/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/brussels-sprouts/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/butter-lettuce/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/butter/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/butternut-squash/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/button-mushroom/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/cabbage/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/cantaloupe/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/carrot/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/cauliflower/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/celery/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/cheddar-cheese/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/cherry-tomato/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/chicken-breast/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/chicken-thigh/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/cilantro/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/collard-greens/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/corn-on-the-cob/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/cucumber/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/daikon/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/dill/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/eggplant/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/eggs/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/events/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/cost-index/events/african-swine-fever-china-2018/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/autumn-freeze-us-potato-2019/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/california-citrus-freeze-2007/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/cattle-herd-contraction-2011/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/cattle-herd-contraction-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/chilean-salmon-isa-virus-2007/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/covid-dairy-supply-chain-2020/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/covid-meatpacking-closures-2020/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/deepwater-horizon-fishery-closures-2010/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/desert-southwest-freeze-2013/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/exotic-newcastle-disease-california-2002/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/first-us-bse-case-export-bans-2003/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/florida-citrus-greening-hlb-2005/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/florida-hurricanes-2004/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/florida-winter-freeze-2010/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/global-food-price-crisis-2007/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/hpai-outbreak-2014/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/hpai-outbreak-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/hurricane-ian-florida-citrus-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/hurricane-irma-florida-citrus-2017/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/indonesia-palm-oil-export-ban-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/insv-salinas-lettuce-2020/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/insv-salinas-lettuce-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/jensen-farms-cantaloupe-listeria-2011/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/low-us-butter-cold-storage-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/mexican-avocado-suspension-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/mexican-lime-shortfall-2014/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/northwestern-mexico-freeze-2011/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/pedv-outbreak-2013/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/russia-ukraine-black-sea-grain-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/russian-drought-grain-export-ban-2010/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/salinas-pajaro-flooding-2023/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/salmonella-saintpaul-produce-2008/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/shrimp-antidumping-duties-2004/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/thomson-onion-recall-salmonella-2020/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/us-midwest-drought-2012/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/virulent-newcastle-disease-california-2018/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/winter-avian-influenza-surge-2024/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/events/winter-storm-uri-texas-citrus-2021/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/cost-index/garlic/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/ginger/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/grapefruit/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/green-beans/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/green-leaf-lettuce/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/green-onion/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/ground-beef/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/habanero-pepper/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/iceberg-lettuce/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/jalapeno/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/kale/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/lab/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/cost-index/leek/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/lemon/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/lime/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/menu-pricing/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/cost-index/menu-pricing/study/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/cost-index/methodology/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/cost-index/mint/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/napa-cabbage/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/octopus/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/okra/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/onion/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/oregano/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/parsley/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/pear/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/pineapple/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/poblano-pepper/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/pork-loin/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/pork-shoulder/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/raspberry/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/red-leaf-lettuce/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/red-onion/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/red-potato/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/ribeye/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/ribeye/embed.html",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/cost-index/romaine-lettuce/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/rosemary/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/russet-potato/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/rutabaga/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/salmon-fillet/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/salmon-skin-on-fillet/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/scallops/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/serrano-pepper/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/short-rib/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/shrimp/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/snow-peas/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/sources/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/cost-index/spinach/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/sweet-potato/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/tarragon/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/thyme/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/tomato/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/tuna-loin/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/vegetable-oil/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/watermelon/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/weekly/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/cost-index/whole-chicken/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/whole-crab/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/whole-halibut/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/whole-lobster/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/whole-salmon/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/whole-trout/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/whole-turkey/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/yellow-squash/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/cost-index/zucchini/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/",
+   "archetype": "pitch"
+  },
+  {
+   "route": "/es/404.html",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/es/about/",
+   "archetype": "pitch"
+  },
+  {
+   "route": "/es/accessibility.html",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/es/account/",
+   "archetype": "app-surface"
+  },
+  {
+   "route": "/es/admin/submissions/",
+   "archetype": "harness"
+  },
+  {
+   "route": "/es/admin/window/",
+   "archetype": "harness"
+  },
+  {
+   "route": "/es/ai/",
+   "archetype": "pitch"
+  },
+  {
+   "route": "/es/blog/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/blog/como-aparecer-en-busqueda-ai-restaurante-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/blog/dia-del-padre-que-te-encuentren-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/blog/el-nino-y-precios-de-alimentos-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/blog/fijar-precios-con-datos-100-ingredientes-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/blog/google-ai-mode-resultados-locales-restaurante-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/blog/inflacion-de-menu-de-restaurante-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/blog/instagram-como-seo-para-restaurante-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/blog/la-busqueda-cambio-bajo-tus-pies-mayo-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/blog/lanzamiento-mayo-2026-publicar-para-citacion/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/blog/paquete-local-ai-llamadas-restaurante-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/blog/trafico-referido-gemini-restaurantes-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/changelog/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/es/claims/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/es/cookies.html",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/es/cost-index/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/es/cost-index/acorn-squash/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/apple/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/artichoke/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/asparagus/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/avocado/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/banana/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/basil/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/basket/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/es/cost-index/beef-tenderloin/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/beet/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/bell-pepper/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/blueberry/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/bok-choy/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/broccoli/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/brussels-sprouts/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/butter-lettuce/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/butter/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/butternut-squash/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/button-mushroom/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/cabbage/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/cantaloupe/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/carrot/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/cauliflower/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/celery/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/cheddar-cheese/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/cherry-tomato/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/chicken-breast/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/chicken-thigh/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/cilantro/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/collard-greens/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/corn-on-the-cob/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/cucumber/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/daikon/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/dill/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/eggplant/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/eggs/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/events/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/es/cost-index/events/african-swine-fever-china-2018/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/autumn-freeze-us-potato-2019/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/california-citrus-freeze-2007/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/cattle-herd-contraction-2011/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/cattle-herd-contraction-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/chilean-salmon-isa-virus-2007/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/covid-dairy-supply-chain-2020/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/covid-meatpacking-closures-2020/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/deepwater-horizon-fishery-closures-2010/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/desert-southwest-freeze-2013/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/exotic-newcastle-disease-california-2002/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/first-us-bse-case-export-bans-2003/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/florida-citrus-greening-hlb-2005/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/florida-hurricanes-2004/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/florida-winter-freeze-2010/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/global-food-price-crisis-2007/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/hpai-outbreak-2014/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/hpai-outbreak-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/hurricane-ian-florida-citrus-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/hurricane-irma-florida-citrus-2017/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/indonesia-palm-oil-export-ban-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/insv-salinas-lettuce-2020/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/insv-salinas-lettuce-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/jensen-farms-cantaloupe-listeria-2011/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/low-us-butter-cold-storage-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/mexican-avocado-suspension-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/mexican-lime-shortfall-2014/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/northwestern-mexico-freeze-2011/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/pedv-outbreak-2013/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/russia-ukraine-black-sea-grain-2022/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/russian-drought-grain-export-ban-2010/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/salinas-pajaro-flooding-2023/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/salmonella-saintpaul-produce-2008/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/shrimp-antidumping-duties-2004/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/thomson-onion-recall-salmonella-2020/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/us-midwest-drought-2012/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/virulent-newcastle-disease-california-2018/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/winter-avian-influenza-surge-2024/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/events/winter-storm-uri-texas-citrus-2021/",
+   "archetype": "instrument-record"
+  },
+  {
+   "route": "/es/cost-index/garlic/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/ginger/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/grapefruit/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/green-beans/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/green-leaf-lettuce/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/green-onion/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/ground-beef/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/habanero-pepper/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/iceberg-lettuce/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/jalapeno/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/kale/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/lab/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/es/cost-index/leek/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/lemon/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/lime/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/menu-pricing/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/es/cost-index/menu-pricing/study/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/es/cost-index/methodology/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/es/cost-index/mint/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/napa-cabbage/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/octopus/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/okra/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/onion/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/oregano/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/parsley/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/pear/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/pineapple/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/poblano-pepper/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/pork-loin/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/pork-shoulder/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/raspberry/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/red-leaf-lettuce/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/red-onion/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/red-potato/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/ribeye/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/ribeye/embed.html",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/es/cost-index/romaine-lettuce/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/rosemary/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/russet-potato/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/rutabaga/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/salmon-fillet/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/salmon-skin-on-fillet/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/scallops/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/serrano-pepper/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/short-rib/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/shrimp/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/snow-peas/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/sources/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/es/cost-index/spinach/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/sweet-potato/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/tarragon/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/thyme/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/tomato/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/tuna-loin/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/vegetable-oil/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/watermelon/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/weekly/",
+   "archetype": "instrument-apparatus"
+  },
+  {
+   "route": "/es/cost-index/whole-chicken/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/whole-crab/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/whole-halibut/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/whole-lobster/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/whole-salmon/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/whole-trout/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/whole-turkey/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/yellow-squash/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/cost-index/zucchini/",
+   "archetype": "instrument-reading"
+  },
+  {
+   "route": "/es/for/restaurants/",
+   "archetype": "pitch"
+  },
+  {
+   "route": "/es/glossary/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/glossary/above-the-fold/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/accessible-pair/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/aggregator/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/ai-overview/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/alt-text/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/analogous-colors/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/apple-bing-maps/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/aspect-ratio/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/assessed-benchmark/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/average-check/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/basics/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/bls/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/body-text-size/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/bounce-rate/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/brand-design/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/brand-identity/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/breadcrumb/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/break-even/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/calibration/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/canonical-url/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/catering-page/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/cdn/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/charm-pricing/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/clearspace/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/click-to-call/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/click-to-directions/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/client-side-tool/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/client-side/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/cls/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/cme/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/color-blindness/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/color-harmony/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/color-palette/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/commission/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/complementary-colors/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/contribution-margin/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/conversion-rate/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/conversions/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/cookie-banner/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/copyable-address/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/core-web-vitals/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/cost-data/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/cost-index/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/cover/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/cta/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/cuisine-pitch/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/data-literacy/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/data-tiering/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/delivery-presence/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/design-token/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/dietary-markers/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/direct-ordering/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/domain-name/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/edible-portion/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/eia/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/elasticity/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/favicon/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/fcp/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/fda/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/fetch-request/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/findability/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/fixed-costs/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/food-cost/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/form-abandonment/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/fred/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/freshness/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/funnel/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/gbp-hours-mismatch/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/gbp-photo-count/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/gbp/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/gift-card-checkout/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/hero-shot/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/hero/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/holiday-hours/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/honest-pricing/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/hosting/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/hours-of-operation/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/hours-visibility/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/hreflang/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/html-menu/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/https/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/incident-response/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/inp/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/labor-cost/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/last-updated-signal/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/lazy-loading/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/lcp/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/lighthouse/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/logo-lockup/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/map-pack/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/margin-math/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/margin/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/measured-derived-absent/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/menu-copy/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/menu-engineering/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/menu-mix/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/meta-description/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/mobile-first-indexing/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/mobile/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/monochromatic-palette/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/monochrome-variant/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/nap-consistency/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/newsletter-capture/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/noaa-fisheries/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/og-share-preview/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/oklab/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/online-ordering/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/open-graph/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/opening-hours-specification/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/owned-channel/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/pagespeed-insights/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/photo-brief/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/pii/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/plate-cost/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/prediction-band/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/pressure-overlay/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/price-confidence/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/prime-cost/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/privacy-policy/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/professional-email/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/ratio-bridge/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/real-photos/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/reservation-link/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/responsive-design/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/restaurant-numbers/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/review-responsiveness/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/revisions/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/rich-results/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/robots-txt/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/schema/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/search-console/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/sensory-adjective/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/service-charge/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/shippable-bar/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/sitemap/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/social-proof/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/special-hours/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/ssl-certificate/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/stale-copyright/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/sticky-footer/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/structured-data/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/subtype-bakery/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/subtype-bar-pub/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/subtype-cafe/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/subtype-casual-dining/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/subtype-catering-only/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/subtype-fast-casual/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/subtype-fine-dining/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/subtype-food-truck/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/subtype-ghost-kitchen/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/subtype-pizzeria/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/subtypes/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/tap-targets/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/terms-of-service/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/third-party-marketplace/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/title-tag/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/transport-security/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/trust/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/ttfb/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/typography-pairing/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/url-fragment-vs-query/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/url-fragment/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/usda-dairy/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/usda-lmr/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/usda-market-news/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/variable-costs/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/viewport-meta/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/wcag-contrast/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/wholesale/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/working-contact-form/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/glossary/yield-percent/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/es/learn/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/learn/checklists/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/learn/checklists/audit-any-tool/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/learn/checklists/restaurant-website-checklist/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/learn/research/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/learn/research/cart-abandonment-rate/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/learn/research/dmv-restaurant-gbp-audit-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/learn/research/fittss-law/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/learn/research/lighthouse-performance-scoring/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/learn/research/local-business-websites/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/learn/research/mobile-page-speed-3-second-rule/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/learn/start-here/",
+   "archetype": "pitch"
+  },
+  {
+   "route": "/es/learn/topics/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/learn/topics/ai-search/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/learn/topics/brand-design/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/learn/topics/brand-design/menu-redesign-no-software/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/learn/topics/conversions/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/learn/topics/cost-data/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/learn/topics/information-security/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/learn/topics/local-seo/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/learn/topics/operations-margin/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/learn/topics/speed-mobile/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/learn/topics/trust-reviews/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/ledger/",
+   "archetype": "app-surface"
+  },
+  {
+   "route": "/es/ledger/demo/",
+   "archetype": "app-surface"
+  },
+  {
+   "route": "/es/library/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/checklist-de-seo-tecnico-para-sitios-de-restaurantes/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/como-configurar-google-business-profile-para-tu-restaurante/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/como-conseguir-mas-resenas-google-para-tu-restaurante/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/como-contratar-a-un-disenador-web-para-restaurantes/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/como-hacer-sitio-web-para-mi-restaurante/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/como-leer-google-search-console-de-tu-restaurante/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/como-lograr-que-google-cite-tu-restaurante-en-ai-overview/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/como-responder-resenas-google-restaurante-playbook-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/como-saber-si-una-herramienta-de-restaurante-es-segura/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/como-salir-de-doordash-mi-restaurante/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/como-subir-precios-de-menu-sin-perder-reservas/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/contabilidad-de-restaurante-con-privacidad/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/costo-del-plato-cuando-cambian-los-precios/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/costo-primo-de-restaurante/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/cuando-rehacer-tu-sitio-web-de-restaurante/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/cuanto-cuesta-una-pagina-web-para-restaurante-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/decision-app-restaurante/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/especificaciones-de-fotos-para-restaurantes/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/guia-conversion-reservas/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/ingenieria-de-menu-para-restaurantes/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/ingredient-yields/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/acorn-squash/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/allium/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/apple/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/artichoke/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/arugula/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/asparagus/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/avocado/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/banana/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/basil/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/beef-tenderloin/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/beef/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/beet/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/bell-pepper/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/blueberry/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/bok-choy/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/broccoli/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/brussels-sprouts/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/butter-lettuce/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/butternut-squash/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/button-mushroom/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/cabbage/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/cantaloupe/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/carrot/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/cauliflower/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/celery/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/cherry-tomato/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/chicken-breast/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/chicken-thigh/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/cilantro/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/citrus/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/clams/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/collard-greens/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/corn-on-the-cob/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/cremini-mushroom/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/cruciferous/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/cucumber/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/daikon/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/dill/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/eggplant/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/fennel/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/fruit/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/fruiting/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/garlic/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/ginger/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/grapefruit/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/green-beans/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/green-leaf-lettuce/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/green-onion/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/greens/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/ground-beef/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/ground-pork/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/ground-turkey/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/habanero-pepper/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/herbs/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/iceberg-lettuce/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/jalapeno/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/kale/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/lamb-shoulder/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/leek/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/leg-of-lamb/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/lemon/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/lime/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/mango/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/meat/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/mint/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/mushroom/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/mussels/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/napa-cabbage/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/octopus/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/okra/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/onion/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/orange/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/oregano/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/oyster-mushroom/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/parsley/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/parsnip/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/pear/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/pineapple/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/poblano-pepper/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/pork-belly/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/pork-loin/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/pork-shoulder/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/portobello-mushroom/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/pumpkin/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/radish/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/raspberry/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/red-leaf-lettuce/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/red-onion/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/red-potato/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/ribeye/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/romaine-lettuce/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/root/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/rosemary/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/russet-potato/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/rutabaga/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/salmon-fillet/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/salmon-skin-on-fillet/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/scallops/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/seafood/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/serrano-pepper/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/shallot/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/shellfish/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/shiitake-mushroom/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/short-rib/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/shrimp-head-on/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/shrimp-pd/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/shrimp/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/snow-peas/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/spinach/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/squid/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/stalks/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/strawberry/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/striploin/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/sweet-potato/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/swiss-chard/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/tarragon/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/thyme/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/tomato/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/tuber/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/ingredient-yields/tuna-loin/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/turnip/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/watermelon/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/whole-branzino/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/whole-chicken/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/whole-crab/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/whole-halibut/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/whole-lobster/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/whole-salmon/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/whole-trout/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/whole-turkey/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/yellow-squash/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/yukon-potato/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/ingredient-yields/zucchini/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/es/library/los-6-tipos-de-schema-markup-que-google-usa/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/mejor-plataforma-de-sitio-web-para-restaurantes/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/mejores-practicas-del-menu-en-linea-para-restaurantes/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/menu-design-cuisines/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/menu-design-cuisines/american-bbq/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-cuisines/asian/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-cuisines/cafe-bakery/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-cuisines/food-truck/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-cuisines/french-bistro/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-cuisines/italian/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-cuisines/mexican/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-cuisines/seafood/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-cuisines/specialty-bar-tasting/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-cuisines/vegan-plant-forward/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/library/menu-design-themes/asian-table/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/bagel-grid/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/bakery-coffee/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/bbq-smoke/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/bistro-paris/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/brasserie/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/brewpub-slate/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/cafe-counter/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/cantina/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/cheese-butcher/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/chef-counter/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/coastal-raw-bar/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/cocktail-deco/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/deli-counter/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/dessert-only/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/dim-sum-rose/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/diner-counter/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/filipino-feast/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/food-truck/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/gastropub-oak/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/izakaya-lantern/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/kids-bright/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/korean-bbq-counter/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/levantine-mezze/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/modern-indian/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/modern-minimal/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/persian-saffron/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/peruvian-coastal/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/pizza-counter/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/plant-forward/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/ramen-counter/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/room-service-hotel/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/steakhouse/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/tapas-rustic/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/tasting-omakase/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/trattoria/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/menu-design-themes/wine-list-formal/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/es/library/mi-restaurante-no-aparece-en-google-maps/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/pedidos-en-linea-sin-comision-para-restaurantes/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/precios-de-la-carne-de-res-para-tu-restaurante/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/programas-de-lealtad-para-restaurantes-independientes-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/puede-chatgpt-escribir-tu-sitio-web-de-restaurante/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/que-debe-tener-un-sitio-web-de-restaurante/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/requisitos-legales-del-sitio-web-de-tu-restaurante/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/reserva-en-google-ai-mode-restaurante-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/seo-local-para-restaurantes/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/sistema-de-marca-para-restaurantes-color-tipografia-logo/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/toast-vs-square-vs-clover-para-restaurantes/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/library/wix-vs-custom-para-restaurantes/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/es/methods/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/es/never/",
+   "archetype": "pitch"
+  },
+  {
+   "route": "/es/open/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/es/open/seasonality/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/es/privacy.html",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/es/receipts/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/es/security/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/es/sheets/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/sheets/allergen-matrix/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/brand-asset-inventory/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/cash-handling-log/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/complaint-root-cause-tracker/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/daily-sales-recap/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/daily-sales-recap/why/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/daypart-traffic-map/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/email-list-growth-log/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/gbp-monthly-audit/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/gbp-monthly-audit/why/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/health-inspection-prep/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/holiday-hours-planner/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/incident-report/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/inventory-count-sheet/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/invoice-receiving-checklist/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/line-check-sheet/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/local-keyword-map/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/menu-redesign-brief/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/monthly-pnl-snapshot/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/monthly-pnl-snapshot/why/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/nap-consistency-tracker/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/photo-refresh-tracker/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/photo-shot-list/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/recipe-cost-card/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/recipe-cost-card/why/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/reservation-no-show-log/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/review-response-log/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/signage-spec-sheet/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/social-content-calendar/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/staff-onboarding-checklist/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/start-here/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/third-party-channel-pnl/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/third-party-channel-pnl/why/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/vendor-contact-sheet/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/waste-log/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/website-conversion-checklist/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/weekly-prime-cost-worksheet/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/weekly-prime-cost-worksheet/why/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sheets/why/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/es/sign-in/",
+   "archetype": "app-surface"
+  },
+  {
+   "route": "/es/status/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/es/studio/",
+   "archetype": "pitch"
+  },
+  {
+   "route": "/es/system/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/es/terms.html",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/es/tools/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/es/tools/audits/",
+   "archetype": "calculator"
+  },
+  {
+   "route": "/es/tools/cost-pulse/",
+   "archetype": "calculator"
+  },
+  {
+   "route": "/es/tools/margin-math/",
+   "archetype": "calculator"
+  },
+  {
+   "route": "/es/tools/menu-engineering/",
+   "archetype": "calculator"
+  },
+  {
+   "route": "/es/tools/plate-cost/",
+   "archetype": "calculator"
+  },
+  {
+   "route": "/es/tools/start/",
+   "archetype": "calculator"
+  },
+  {
+   "route": "/es/tools/vendor-benchmark/",
+   "archetype": "calculator"
+  },
+  {
+   "route": "/es/trust/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/es/window/",
+   "archetype": "app-surface"
+  },
+  {
+   "route": "/es/workbench/",
+   "archetype": "app-surface"
+  },
+  {
+   "route": "/for/restaurants/",
+   "archetype": "pitch"
+  },
+  {
+   "route": "/glossary/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/glossary/above-the-fold/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/accessible-pair/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/aggregator/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/ai-overview/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/alt-text/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/analogous-colors/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/apple-bing-maps/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/aspect-ratio/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/assessed-benchmark/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/average-check/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/basics/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/bls/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/body-text-size/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/bounce-rate/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/brand-design/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/brand-identity/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/breadcrumb/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/break-even/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/calibration/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/canonical-url/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/catering-page/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/cdn/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/charm-pricing/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/clearspace/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/click-to-call/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/click-to-directions/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/client-side-tool/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/client-side/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/cls/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/cme/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/color-blindness/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/color-harmony/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/color-palette/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/commission/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/complementary-colors/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/contribution-margin/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/conversion-rate/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/conversions/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/cookie-banner/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/copyable-address/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/core-web-vitals/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/cost-data/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/cost-index/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/cover/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/cta/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/cuisine-pitch/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/data-literacy/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/data-tiering/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/delivery-presence/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/design-token/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/dietary-markers/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/direct-ordering/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/domain-name/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/edible-portion/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/eia/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/elasticity/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/favicon/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/fcp/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/fda/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/fetch-request/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/findability/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/fixed-costs/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/food-cost/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/form-abandonment/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/fred/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/freshness/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/funnel/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/gbp-hours-mismatch/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/gbp-photo-count/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/gbp/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/gift-card-checkout/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/hero-shot/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/hero/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/holiday-hours/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/honest-pricing/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/hosting/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/hours-of-operation/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/hours-visibility/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/hreflang/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/html-menu/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/https/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/incident-response/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/inp/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/labor-cost/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/last-updated-signal/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/lazy-loading/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/lcp/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/lighthouse/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/logo-lockup/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/map-pack/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/margin-math/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/margin/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/measured-derived-absent/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/menu-copy/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/menu-engineering/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/menu-mix/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/meta-description/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/mobile-first-indexing/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/mobile/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/monochromatic-palette/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/monochrome-variant/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/nap-consistency/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/newsletter-capture/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/noaa-fisheries/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/og-share-preview/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/oklab/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/online-ordering/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/open-graph/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/opening-hours-specification/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/owned-channel/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/pagespeed-insights/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/photo-brief/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/pii/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/plate-cost/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/prediction-band/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/pressure-overlay/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/price-confidence/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/prime-cost/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/privacy-policy/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/professional-email/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/ratio-bridge/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/real-photos/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/reservation-link/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/responsive-design/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/restaurant-numbers/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/review-responsiveness/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/revisions/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/rich-results/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/robots-txt/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/schema/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/search-console/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/sensory-adjective/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/service-charge/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/shippable-bar/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/sitemap/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/social-proof/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/special-hours/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/ssl-certificate/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/stale-copyright/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/sticky-footer/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/structured-data/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/subtype-bakery/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/subtype-bar-pub/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/subtype-cafe/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/subtype-casual-dining/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/subtype-catering-only/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/subtype-fast-casual/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/subtype-fine-dining/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/subtype-food-truck/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/subtype-ghost-kitchen/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/subtype-pizzeria/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/subtypes/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/tap-targets/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/terms-of-service/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/third-party-marketplace/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/title-tag/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/transport-security/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/trust/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/ttfb/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/typography-pairing/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/url-fragment-vs-query/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/url-fragment/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/usda-dairy/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/usda-lmr/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/usda-market-news/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/variable-costs/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/viewport-meta/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/wcag-contrast/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/wholesale/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/working-contact-form/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/glossary/yield-percent/",
+   "archetype": "definition-card"
+  },
+  {
+   "route": "/learn/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/learn/checklists/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/learn/checklists/audit-any-tool/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/learn/checklists/restaurant-website-checklist/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/learn/research/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/learn/research/cart-abandonment-rate/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/learn/research/dmv-restaurant-gbp-audit-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/learn/research/fittss-law/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/learn/research/lighthouse-performance-scoring/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/learn/research/local-business-websites/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/learn/research/mobile-page-speed-3-second-rule/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/learn/start-here/",
+   "archetype": "pitch"
+  },
+  {
+   "route": "/learn/topics/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/learn/topics/ai-search/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/learn/topics/brand-design/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/learn/topics/brand-design/menu-redesign-no-software/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/learn/topics/conversions/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/learn/topics/cost-data/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/learn/topics/information-security/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/learn/topics/local-seo/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/learn/topics/operations-margin/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/learn/topics/speed-mobile/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/learn/topics/trust-reviews/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/ledger/",
+   "archetype": "app-surface"
+  },
+  {
+   "route": "/ledger/demo/",
+   "archetype": "app-surface"
+  },
+  {
+   "route": "/library/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ai-mode-reservation-strategy/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/best-restaurant-website-platform/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/can-chatgpt-write-your-restaurant-website/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/commission-free-online-ordering-restaurants/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/custom-restaurant-website-pricing/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/does-my-restaurant-need-a-website/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/google-review-response-playbook/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/how-to-get-cited-in-google-ai-overviews-restaurant/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/how-to-get-more-google-reviews-for-your-restaurant/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/how-to-hire-a-restaurant-web-designer/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/how-to-raise-restaurant-menu-prices-without-losing-reservations/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/how-to-read-restaurant-google-search-console/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/how-to-set-up-google-business-profile-for-your-restaurant/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/how-to-tell-if-a-restaurant-tool-is-safe/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/ingredient-yields/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/acorn-squash/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/allium/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/apple/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/artichoke/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/arugula/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/asparagus/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/avocado/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/banana/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/basil/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/beef-tenderloin/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/beef/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/beet/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/bell-pepper/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/blueberry/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/bok-choy/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/broccoli/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/brussels-sprouts/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/butter-lettuce/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/butternut-squash/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/button-mushroom/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/cabbage/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/cantaloupe/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/carrot/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/cauliflower/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/celery/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/cherry-tomato/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/chicken-breast/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/chicken-thigh/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/cilantro/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/citrus/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/clams/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/collard-greens/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/corn-on-the-cob/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/cremini-mushroom/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/cruciferous/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/cucumber/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/daikon/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/dill/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/eggplant/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/fennel/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/fruit/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/fruiting/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/garlic/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/ginger/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/grapefruit/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/green-beans/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/green-leaf-lettuce/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/green-onion/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/greens/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/ground-beef/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/ground-pork/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/ground-turkey/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/habanero-pepper/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/herbs/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/iceberg-lettuce/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/jalapeno/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/kale/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/lamb-shoulder/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/leek/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/leg-of-lamb/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/lemon/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/lime/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/mango/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/meat/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/mint/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/mushroom/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/mussels/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/napa-cabbage/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/octopus/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/okra/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/onion/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/orange/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/oregano/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/oyster-mushroom/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/parsley/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/parsnip/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/pear/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/pineapple/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/poblano-pepper/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/pork-belly/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/pork-loin/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/pork-shoulder/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/portobello-mushroom/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/pumpkin/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/radish/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/raspberry/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/red-leaf-lettuce/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/red-onion/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/red-potato/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/ribeye/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/romaine-lettuce/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/root/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/rosemary/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/russet-potato/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/rutabaga/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/salmon-fillet/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/salmon-skin-on-fillet/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/scallops/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/seafood/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/serrano-pepper/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/shallot/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/shellfish/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/shiitake-mushroom/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/short-rib/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/shrimp-head-on/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/shrimp-pd/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/shrimp/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/snow-peas/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/spinach/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/squid/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/stalks/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/strawberry/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/striploin/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/sweet-potato/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/swiss-chard/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/tarragon/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/thyme/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/tomato/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/tuber/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/ingredient-yields/tuna-loin/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/turnip/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/watermelon/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/whole-branzino/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/whole-chicken/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/whole-crab/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/whole-halibut/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/whole-lobster/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/whole-salmon/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/whole-trout/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/whole-turkey/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/yellow-squash/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/yukon-potato/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/ingredient-yields/zucchini/",
+   "archetype": "yield-table"
+  },
+  {
+   "route": "/library/keep-plate-cost-honest-when-prices-change/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/loyalty-program-roi/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/menu-design-cuisines/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/menu-design-cuisines/american-bbq/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-cuisines/asian/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-cuisines/cafe-bakery/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-cuisines/food-truck/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-cuisines/french-bistro/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-cuisines/italian/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-cuisines/mexican/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-cuisines/seafood/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-cuisines/specialty-bar-tasting/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-cuisines/vegan-plant-forward/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/library/menu-design-themes/asian-table/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/bagel-grid/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/bakery-coffee/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/bbq-smoke/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/bistro-paris/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/brasserie/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/brewpub-slate/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/cafe-counter/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/cantina/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/cheese-butcher/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/chef-counter/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/coastal-raw-bar/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/cocktail-deco/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/deli-counter/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/dessert-only/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/dim-sum-rose/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/diner-counter/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/filipino-feast/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/food-truck/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/gastropub-oak/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/izakaya-lantern/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/kids-bright/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/korean-bbq-counter/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/levantine-mezze/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/modern-indian/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/modern-minimal/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/persian-saffron/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/peruvian-coastal/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/pizza-counter/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/plant-forward/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/ramen-counter/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/room-service-hotel/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/steakhouse/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/tapas-rustic/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/tasting-omakase/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/trattoria/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/menu-design-themes/wine-list-formal/",
+   "archetype": "menu-design-showcase"
+  },
+  {
+   "route": "/library/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/privacy-forward-restaurant-bookkeeping/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/reservation-conversion-guide/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/restaurant-app-decision/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/restaurant-brand-system-colors-type-logo/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/restaurant-local-seo/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/restaurant-menu-engineering/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/restaurant-online-menu-best-practices/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/restaurant-photo-spec-sheet/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/restaurant-prime-cost/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/restaurant-schema-markup-guide/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/restaurant-website-legal-essentials/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/restaurant-website-technical-seo-checklist/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/service-charge-vs-tipping-model/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/third-party-delivery-comparison/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/third-party-delivery-economics/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/toast-vs-square-vs-clover-for-restaurants/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/what-beef-prices-mean-for-your-restaurant/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/what-should-be-on-a-restaurant-website/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/when-to-rebuild-your-restaurant-website/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/library/wix-vs-custom-for-restaurants/",
+   "archetype": "essay"
+  },
+  {
+   "route": "/methods/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/never/",
+   "archetype": "pitch"
+  },
+  {
+   "route": "/open/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/availability/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/crop-condition/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/demand/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/energy/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/exports/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/food-dollar/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/imports/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/labor/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/landings/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/meat-chain/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/nass-domestic/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/oni/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/origins/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/recalls/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/record/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/seasonality/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/open/weather/",
+   "archetype": "open-dataset"
+  },
+  {
+   "route": "/privacy.html",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/receipts/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/security/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/sheets/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/sheets/allergen-matrix/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/brand-asset-inventory/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/cash-handling-log/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/complaint-root-cause-tracker/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/daily-sales-recap/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/daily-sales-recap/why/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/daypart-traffic-map/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/email-list-growth-log/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/gbp-monthly-audit/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/gbp-monthly-audit/why/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/health-inspection-prep/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/holiday-hours-planner/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/incident-report/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/inventory-count-sheet/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/invoice-receiving-checklist/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/line-check-sheet/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/local-keyword-map/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/menu-redesign-brief/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/monthly-pnl-snapshot/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/monthly-pnl-snapshot/why/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/nap-consistency-tracker/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/photo-refresh-tracker/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/photo-shot-list/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/recipe-cost-card/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/recipe-cost-card/why/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/reservation-no-show-log/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/review-response-log/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/signage-spec-sheet/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/social-content-calendar/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/staff-onboarding-checklist/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/start-here/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/third-party-channel-pnl/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/third-party-channel-pnl/why/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/vendor-contact-sheet/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/waste-log/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/website-conversion-checklist/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/weekly-prime-cost-worksheet/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/weekly-prime-cost-worksheet/why/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sheets/why/",
+   "archetype": "worksheet"
+  },
+  {
+   "route": "/sign-in/",
+   "archetype": "app-surface"
+  },
+  {
+   "route": "/status/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/studio/",
+   "archetype": "pitch"
+  },
+  {
+   "route": "/system/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/terms.html",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/tools/",
+   "archetype": "collection-index"
+  },
+  {
+   "route": "/tools/audits/",
+   "archetype": "calculator"
+  },
+  {
+   "route": "/tools/cost-pulse/",
+   "archetype": "calculator"
+  },
+  {
+   "route": "/tools/margin-math/",
+   "archetype": "calculator"
+  },
+  {
+   "route": "/tools/menu-engineering/",
+   "archetype": "calculator"
+  },
+  {
+   "route": "/tools/plate-cost/",
+   "archetype": "calculator"
+  },
+  {
+   "route": "/tools/start/",
+   "archetype": "calculator"
+  },
+  {
+   "route": "/tools/vendor-benchmark/",
+   "archetype": "calculator"
+  },
+  {
+   "route": "/trust/",
+   "archetype": "institutional-record"
+  },
+  {
+   "route": "/window/",
+   "archetype": "app-surface"
+  },
+  {
+   "route": "/workbench/",
+   "archetype": "app-surface"
+  }
+ ]
+}
