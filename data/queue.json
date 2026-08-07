@@ -139,7 +139,7 @@
       "title": "check-all is NOT idempotent — two runs give different totals and dirty the working tree",
       "phase": "P0",
       "priority": "HIGH",
-      "status": "ready",
+      "status": "closed",
       "owner": "agent",
       "repo": "storefront",
       "effort": "3h",
@@ -158,7 +158,12 @@
       "claim": null,
       "closed": null,
       "founderHours": 0,
-      "window": "M1"
+      "window": "M1",
+      "closure": {
+        "closedOn": "2026-08-07",
+        "by": "orchestrator",
+        "note": "REFUTED by controlled experiment. On a CLEAN tree, two consecutive check-all runs both returned 320 of 328 and left git status --porcelain empty. check-all IS idempotent. The original measurement (311/320, 306/320, 309/323 with dirty 208->215) was taken while six Phase-E agents wrote to the same working tree concurrently and added gates mid-run, which moved both the numerator and the denominator. The defect was the orchestration (no worktree isolation), not check-all."
+      }
     },
     {
       "id": "Q-005",
