@@ -1,0 +1,325 @@
+Cohesion checks
+───────────────
+  ✓ Gate coverage self-test  check-gate-coverage --self-test: OK (13 assertions)
+  ✓ Gate coverage           check-gate-coverage: 127 check script(s) — 123 wired into check-all, 4 documente
+  ✓ Idem coverage self-test  check-idem-coverage --self-test: OK (31 assertions)
+  ✓ Idem coverage           check-idem-coverage: 83 (idem) builder(s) — 56 run by the deploy, 6 by a workflo
+  ✓ Name coherence          Name-coherence: clean.
+  ✓ Counts coherence        Counts coherence: clean.
+  ✓ Fabrication blocklist   check-fabrications: 0 blocklist hits.
+  ✓ Claim usage             check-claim-usage: 149 used_in edge(s) across the registry all resolve. 0 violat
+  ✓ Blog index links        check-blog-index-links: 62 index link(s) all resolve (post on disk or 301 in the
+  ✓ Positioning drift self-test  check-positioning-drift --self-test: OK (38 assertions)
+  ✓ Positioning drift       check-positioning-drift: 1066 indexed article(s) scanned (260 frozen, skipped) —
+  ✓ Audio fabrication blocklist  check-audio-fabrications: 0 pattern hits across 115 narration file(s).
+  ✓ Retired-link guard      check-retired-links: chrome/funnel surfaces clean. 193 in-content page(s) still 
+  ✓ Count sentinel escape   Count sentinel escape: clean.
+  ✓ Hreflang orphans        Hreflang orphans: clean. (1326 HTML pages scanned.)
+  ✓ CTA canon               CTA canon: clean.
+  ✓ Footer payload          Footer payload: clean. (1326 pages scanned.)
+  ✓ Breadcrumb separator    Breadcrumb separator: clean. (1326 pages scanned.)
+  ✓ No 3p Plausible         No third-party Plausible: clean. (1326 pages scanned.)
+  ✓ CSS shells                sum:     498.1 KB (overhead = file headers)
+  ✓ Token sync              ✓ token sync: site.css :root matches the editorial register in muntin.tokens.jso
+  ✓ Token vendor            ✓ token spine: vendored copy matches the pinned hash (3681742a5d58…)
+  ✓ Warm-palette purge      ✓ warm-palette purge: no retired warm hex in muntin chrome across 2045 HTML file
+  ✓ Mark geometry           ✓ mark geometry: 6 studio mark(s) carry the canonical Pane geometry
+  ✓ Dark-mode block         build-dark-mode: block already up to date.
+  ✓ Dark contrast           ✓ dark-contrast: 17 dark-mode token pairs pass WCAG AA (text 4.5:1, borders 3:1)
+  ✓ Section contrast        ✓ contrast: 24 text/surface pairs pass WCAG AA across light + dark; section toke
+  ✓ Banned words            Banned words: clean.
+  ✓ Studio voice boundary   Studio voice boundary: clean (no fake-team "we" on studio surfaces).
+  ✓ Removed slugs           ✓ No retired slug references found in scanned surfaces.
+  ✓ Knit coverage           Knit coverage: clean.
+  ✓ Pillar coverage (warn)  Source of truth: data/library-tags.json#blog_posts (topics[0] = canonical pillar
+  ✓ Overview quality        Overview quality: 4 batch overview(s) clean.
+  ✓ Article graphics        check-article-graphics: 105 article(s) + 2 generated data page(s) with figures s
+  ✓ Article graphics tests  # duration_ms 141.866288
+  ✓ Snippet shape (warn)    don't add new claims. (warn-only; pass --check to enforce.)
+  ✓ H2 anchor IDs (idem)    inject-h2-anchor-ids: no changes (393 files scanned).
+  ✓ Italic font preloads (idem)  inject-italic-font-preloads: no changes (1360 files scanned).
+  ✓ Button vocabulary         7 canonical classes; 24 registered exceptions.
+  ✓ No new innerHTML        check-no-innerhtml: 121 usage(s) across 13 file(s); baseline 523 — within budget
+  ✓ Tool header             Tool header: clean. (12 tool pages checked.)
+  ✓ Hidden attribute            … and 8 more
+  ✓ OG image refs           ✓ 1175 og:image / twitter:image references resolve (across 1363 HTML pages)
+  ✓ OG coverage             OG coverage: clean. (75 pages checked.)
+  ✓ OG locale parity        OG locale parity: 52/52 ES pages serve a native-Spanish card matching their EN s
+  ✓ OG accents              OG accents: clean across 575 card(s). Valid set: coral, cream, dim, gold, ink, m
+  ✓ Meta description length  Meta description length: clean. (1066 indexable pages, all 50-155 chars.)
+  ✓ Analytics vocab         Trim from the registry once the call sites are confirmed retired.
+  ✓ Unit tests              Total: 511 pass, 0 fail across 49 file(s) in 7863ms
+  ✓ Glossary knit (idem)    would update 0 term page(s); 294 unchanged.
+  ✓ Fieldnotes (idem)       would update 0 file(s); 10 unchanged.
+  ✓ Post-end CTA (idem)     would update 0 file(s); 57 unchanged.
+  ✓ Library Cost-Index hero (idem)  cost-index-hero: 0 file(s) would change; pointing at cost-index-week-2026-07-06.
+  ✓ Article sheet callouts (idem)  would update 0 article(s); 0 unchanged.
+  ✓ Glossary OG seed (idem)  Glossary OG seed: 320 entries already up to date.
+  ✓ Glossary OG meta (idem)  would update 0 file(s); 320 unchanged.
+  ✓ Receipts KPIs (idem)    receipts KPIs: 0 file(s) would change — registry has 4 KPI(s).
+  ✓ OG template grid        OG template grid: 2 renderer(s) compliant.
+  ✓ Kind registry           Kind registry: 20 kinds (6 watchable) agreed across server + EN + ES.
+  ✓ Operator Sheets parity    All clean.
+  ✓ Sheets index (idem)     would update 0 of 2 sheets index page(s).
+  ✓ Intent param targets    Intent-param targets: 174 link(s) across 1328 HTML files all resolve.
+  ✓ Article fieldnotes (idem)  would update 0 file(s); 0 unchanged.
+  ✓ Article listen (idem)   inject-article-listen: 0 of 1368 file(s) would change.
+  ✓ Checklist script (idem)  inject-checklist-script: 0 of 2 file(s) would change.
+  ✓ Glossary script (idem)  inject-glossary-script: 0 of 1368 file(s) would change.
+  ✓ Include coverage        Include coverage: 1328 HTML page(s) scanned; no bare include sentinels.
+  ✓ Bare-sentinel fix (idem)  fix-bare-include-sentinels: 0 file(s) would change.
+  ✓ CSS shells injected (idem)  inject-css-shells: 0 shell-injected page(s) would change.
+  ✗ CSS cache-bust (idem)   Fix: run `node scripts/inject-css-cache-bust.mjs` to update cache-bust hashes.
+  ✓ AVIF/WebP siblings (idem)  build-image-formats: 2 raster source(s); all have AVIF+WebP siblings.
+  ✓ Picture tags (idem)     inject-picture-tags: 0 <img> tag(s) across 0 page(s) would be wrapped.
+  ✓ Critical-CSS link color (idem)  would touch 0 of 1365 HTML file(s) (critical-CSS block: link-color + .btn shape)
+  ✓ Critical-CSS fonts+skeleton (idem)  inject-critical-fonts: would touch 0 of 1360 HTML file(s).
+  ✓ Lazy script loader (idem)  inject-lazy-script-loader: would touch 0 of 1360 HTML file(s).
+  ✓ Pricing consistency (warn)  check-pricing-consistency: services retired (data/services-pricing.json#_retired
+  ✓ Turnstile singleton     Turnstile singleton: 1328 HTML page(s) scanned; all carry at most 1 Turnstile re
+  ✓ Article fieldnote form (idem)  would update 0 of 56 article(s) (FIELD_NOTES_ENABLED=true).
+  ✓ Article fieldnotes allowlist  Article fieldnotes allowlist: 0 slug(s) resolve.
+  ✓ Article fieldnote attribution  Article fieldnote attribution: 0 entry(ies) clean.
+  ✓ Contributor pages (idem)  would change 0 file(s) (0 written, 0 removed).
+  ✓ Homepage field-notes rail (idem)  would update 0 of 2 homepage(s).
+  ✓ No Calendly refs        No-Calendly-references: clean across 2513 file(s).
+  ✓ Window locale parity    Window locale parity: 2 pair(s) clean.
+  ✓ Site counts (idem)      would update 0 of 616 files containing count sentinels.
+  ✓ Locale parity           (--check is in warn-only mode during initial rollout)
+  ✓ Article TL;DR           Article TL;DR + takeaways: 105 article(s) clean.
+  ✓ Article TL;DR retrofit (idem)  would update 0 of 19 EN article(s); 8 skipped (no entry).
+  ✓ Article HowTo schema (idem)  would update 0 article(s).
+  ✓ Article abstract+mentions (idem)  would update 0 article(s).
+  ✓ Smart-next CTA (idem)   would update 0 article(s).
+  ✓ Companion kit (idem)    companion-kit: would update 0 of 183 page(s); 8 skipped (no anchor / source not 
+  ✓ KnitRail (idem)         would update 0 article(s); 105 skipped.
+  ✓ Ledger CTA (idem)       would update 0 file(s); 24 unchanged.
+  ✓ Topic eyebrow (idem)    would update 0 article(s); 105 skipped.
+  ✓ Glossary term-example (idem)  would update 0 term page(s); 22 skipped.
+  ✓ Glossary FAQ (idem)     glossary-faq: 0 file(s) updated, 22 skipped.
+  ✓ Glossary SEO meta (idem)  glossary-seo: 0 file(s) updated, 24 skipped.
+  ✓ Glossary article backlinks (idem)  would update 0 term page(s); 0 skipped.
+  ✓ Glossary deep anchors (idem)  would update 0 term page(s); 310 skipped (no anchor pairings).
+  ✓ Glossary verified stamp (idem)  would update 0 term page(s); 322 skipped (not volatile or absent).
+  ✓ Glossary tool sidecar (idem)  would update 0 glossary index page(s).
+  ✓ Glossary sheet sidecar (idem)  would update 0 term page(s); 342 skipped; 0 stale sidecar(s) removed.
+  ✓ Topic sheets rail (idem)  would update 0 topic page(s); 18 skipped.
+  ✓ Tool sheet rail (idem)  would update 0 tool page(s); 14 skipped; 0 stale rail(s) removed.
+  ✓ Sheet glossary popovers (idem)  would update 0 sheet page(s); 30 skipped.
+  ✓ Sheet worked examples (idem)  would update 0 sheet page(s); 20 skipped.
+  ✓ Sheet help-cadence (warn)  Sheet help-cadence: 31 fragment(s) scanned; all within voice canon (cap ≤1 per f
+  ✓ Sheet OG cards (idem)   Sheet OG cards: 30 entries; no changes.
+  ✓ Sheet benchmarks (idem)  Sheet benchmarks: no changes.
+  ✓ Window field-notes rail (idem)  would update 0 window page(s); 0 approved notes available.
+  ✓ Glossary hub            Glossary hub: 322 term page(s) scanned; 0 warning(s).
+  ✓ Topic pillar essay (idem)  would update 0 topic page(s); 2 skipped.
+  ✓ Topic page schema (idem)  would update 0 topic page(s).
+  ✓ Topic card links (idem)  Topic card links: in sync — all topic-article-card hrefs canonical. (24 pages sc
+  ✓ Hub collection schema (idem)  would update 0 hub page(s); 0 skipped.
+  ✓ Author chip (idem)      would update 0 article(s).
+  ✗ Sitemap (idem)          would update: sitemap.xml (540 EN + 518 ES = 1058 URLs)
+  ✓ Tool verified stamp (idem)  would update 0 of 14 tool page(s).
+  ✓ Tool verified stamp     Tool verified stamp: 14 tool page(s) clean.
+  ✓ llms.txt (idem)         would update 0 file(s).
+  ✓ Claims ledger (idem)    claims.json: in sync (47 claims, as of 2026-07-28).
+  ✓ Claims rows (idem)      claims rows: in sync (47 claims, as of 2026-07-28).
+  ✓ Basket weights (idem)   basket weights: in sync (16 ingredients, v2026-Q2).
+  ✓ Tool HowTo schema (idem)  would update 0 of 14 tool page(s); 8 skipped (no howto entry).
+  ✗ Glossary article schema (idem)  would update 320 file(s); 0 skipped (no </head>).
+  ✓ RSS feeds (idem)        would update 0 feed(s).
+  ✓ RSS coverage            RSS coverage: 50 EN items, 50 ES items.
+  ✓ Content guardrails      Content guardrails: 105 article(s) pass the 6-point rubric.
+  ✓ Event prop cardinality  Plausible event prop cardinality: 59 call site(s) across 224 file(s); all bounde
+  ✓ Image dimensions        Image dimensions: 722 <img> tag(s) across 1364 HTML file(s); all dimensioned.
+  ✓ Lazy images             Lazy images: 722 <img> tag(s) across 1364 HTML file(s); all below-fold ones lazy
+  ✓ CLS animation           CLS animation: 106 @keyframes block(s) across 1370 file(s); all use compositor-f
+  ✓ SVG dimensions          SVG dimensions: 11504 <svg> tag(s) across 1331 file(s); all carry width+height.
+  ✓ Image formats (warn)    Image formats: 0 hero <img>(s) across 1364 HTML file(s); all wrapped with <pictu
+  ✓ Newsletter copy         Newsletter copy: required framing present in both footers; no forbidden phrases 
+  ✓ Audit fetch-signal      Audit fetch-signal gate: all 0 /api/ fetch(es) across 0 target(s) carry a signal
+  ✓ Lifecycle locale parity  Lifecycle locale parity: 27 exported function(s) match across EN+ES.
+  ✓ Share snapshot kinds    Share snapshot kinds: 2 kind(s) registered (tool-result, storefront-health); all
+  ✓ Security page schema (idem)  would update 0 security page(s).
+  ✓ Tool data-promise (idem)  would update 0 of 14 tool page(s).
+  ✓ Tool no-fetch invariant  Tool no-fetch invariant: 118 tool file(s) scanned; all 4 build-invariant claims 
+  ✓ Sheet no-fetch invariant  Sheet no-fetch invariant: 31 fragment(s) + 2 rendered tree(s) scanned; all clean
+  ✗ Themes review board (idem)  Run: node scripts/build-themes-review-board.mjs
+  ✗ Theme story pages (idem)  Run: node scripts/build-theme-story-pages.mjs
+  ✗ Cuisine landing pages (idem)  Run: node scripts/build-cuisine-landing-pages.mjs
+  ✓ Ingredient-yield manifest  check-ingredient-yields: 118 ingredient(s) — 113 yield_key-sourced (match CIA ta
+  ✓ Ingredient-yield manifest self-test  ingredient-yields self-test: 5/5 passed.
+  ✓ Ingredient alias registry  check-ingredient-aliases: 15 canonical key(s), 29 alias stem(s) (0 verified, 15 
+  ✓ Ingredient alias registry self-test  ingredient-aliases self-test: 6/6 passed.
+  ✓ Ingredient JSON-LD clean  check-ingredient-jsonld: 266 page(s) — JSON-LD is price-clean (no $, no price fi
+  ✓ Ingredient JSON-LD self-test  ingredient-jsonld self-test: 4/4 passed.
+  ✓ Cost-index sources      Cost-index sources: shape valid (118 readiness/alignment warning(s)).
+  ✓ Cost-index source tier  source-tier: OK — 231 ingredient(s): 177 measured · 12 derived · 42 absent. Ever
+  ✓ Cost-index driver catalog  check-cost-index-drivers: clean. 6 driver(s), 4 dispatch(es) scanned.
+  ✓ Cost-index editors note  check-cost-index-editors-note: clean. 1 note(s) checked.
+  ✓ Cost-index confidence framing  cost-index confidence framing: OK — 162 ingredient read(s) + hub composite (EN+E
+  ✓ Cost-index sync         cost-index sync: OK — 100 ingredient(s) vendored, all verified+sourced+bounded; 
+  ✓ Cost-index sync self-test  self-test: 33/33 passed.
+  ✓ Cost-index calibration  cost-index calibration: 100 point(s) checked; every confidence is within its dat
+  ✓ Cost-index calibration self-test  cost-index calibration self-test: 13/13 passed.
+  ✓ Cost-index trend↔curve  reconcile-cost-index-trends: all shown trends already match their curve — no cha
+  ✓ Cost-index freshness (warn)  cost-index freshness: freshest read as of 2026-08-04 (3d old); threshold 14d — f
+  ✓ Cost-index freshness self-test  freshness self-test: 7/7 passed.
+  ✓ Cost-index orphans self-test  check-cost-index-orphans self-test: 20/20 passed.
+  ✓ Cost-index orphans      cost-index orphans: OK — 188 published ingredient page(s) (EN+ES) all still have
+  ✓ Cost-index series freshness self-test  check-cost-index-series-freshness self-test: 30/30 assertions passed.
+  ✓ Cost-index series freshness (warn)  cost-index series freshness: 74 of 100 series fresh within 45d; 16 unexpected, 1
+  ✓ Cost-index health (idem)  cost-index health: matrix in sync — 100 ingredient(s), {"medium":20,"low":62,"di
+  ✓ Cost-index provenance (idem)  cost-index provenance: 0 surface(s) would change — 81 ingredients.
+  ✓ Cost-index health self-test  cost-index health self-test: 5/5 passed.
+  ✓ Cost-index basis-leak   ✓ basis-leak gate: OK — every rendered $ (seed, index.json, feed.json, index.csv
+  ✓ Cost-index basis-leak self-test  basis-leak self-test: 23/23 passed.
+  ✓ Cost-index seasonality (idem)  seasonality: baseline in sync — 100 ingredient(s) with history, 84 ready / 16 bu
+  ✓ Cost-index seasonality self-test  seasonality self-test: 22/22 passed.
+  ✓ Cost-index seasonality education  seasonality education: OK — 0 sourced primer(s) (empty — feature dormant until p
+  ✓ Cost-index seasonality education self-test  seasonality education self-test: 8/8 passed.
+  ✓ Seasonality fusion honesty self-test  check-seasonality-fusion self-test: 11/11 passed.
+  ✓ Seasonality fusion lib self-test  seasonality-fusion self-test: 58/58 passed.
+  ✓ Cost-index seasonal band  cost-index seasonal: OK — 158 rendered band(s) reconcile to seasonality.json.
+  ✓ Cost-index seasonal band self-test  cost-index seasonal self-test: 11/11 passed.
+  ✓ Cost-index shippable bar  Shippable bar: 81 shipping a reading, 19 expanding-coverage (salmon-fillet, shri
+  ✗ Cost-index picker         ✗ grapefruit: dollarRef false != recomputed true
+  ✓ Cost-index picker self-test  cost-index picker self-test: 21/21 passed.
+  ✓ VB worked-example scenarios  VB scenarios: OK — all 3 worked examples still compute their claimed tone.
+  ✓ Cost-index band coverage  ✓ pooled raw coverage sits within the honest window around 80% — the published r
+  ✓ Cost-index band coverage self-test  band-coverage self-test: 3/3 passed.
+  ✓ Cost-index conformal golden vectors  ✓ conformal golden vectors in sync — storefront + Ledger copies byte-identical (
+  ✓ Cost-index lock-or-float self-test  cost-lockfloat self-test: 10/10 passed.
+  ✓ Cost-index lock-or-float sync  ✓ cost-lockfloat in sync — 37 lockable, 19 cushion, 7 float, 37 withheld (of 100
+  ✓ Cost-index lock-or-float copy  ✓ lock-or-float copy clean — no direction, opportunity-timing, or overpayment cl
+  ✓ Cost-index lock-or-float copy self-test  lockfloat-copy self-test: passed.
+  ✓ Cost-index trend skill  ✓ the arrow is calibrated: high verifies 53.3% vs low 50.0% — a statistically re
+  ✓ Cost-index trend skill self-test  trend-skill self-test: 3/3 passed.
+  ✓ Cost-index calibration report self-test  calibration-report self-test: 4/4 passed.
+  ✓ Cost-index calibration report sync  ✓ calibration report in sync with the data (data/ + public copy).
+  ✓ Cost-index calibration page sentinels  ✓ calibration sentinels in sync on the methodology pages.
+  ✓ Cost-index forecast backtest self-test  forecast-backtest self-test: 5/5 passed.
+  ✓ Cost-index forecast backtest sync  ✓ forecast backtest in sync with the data.
+  ✓ Cost-index anomaly log self-test  cost-anomaly-log self-test: 6/6 passed.
+  ✓ Cost-index anomaly log sync  ✓ anomaly log in sync with the data.
+  ✓ Cost-index events self-test  cost-index-events self-test: 12/12 passed.
+  ✓ Cost-index events sync  ✓ cost-index events in sync — 432 event(s) across 80 ingredient(s).
+  ✓ Cost-index events honesty self-test  cost-index-events honesty self-test: 17/17 passed.
+  ✓ Cost-index events honesty  ✓ cost-index events honesty gate — 39 documented event(s); co-occurrence framing
+  ✓ Yields open-data self-test  build-yields-open-data self-test: 12/12 passed.
+  ✓ Yields open-data sync   ✓ yields open data in sync (118 ingredient(s), 2 artifact(s)).
+  ✓ Events open-data self-test  build-events-open-data self-test: 16/16 passed.
+  ✓ Events open-data sync   ✓ events open data in sync (4 artifact(s)).
+  ✓ Food-recall adapter self-test  fetch-food-recalls self-test: 20/20 passed.
+  ✓ Recalls open-data self-test  build-recalls-open-data self-test: 24/24 passed.
+  ✓ Recalls open-data sync  ✓ recalls open-data in sync (2 artifact(s)).
+  ✓ QCEW labor adapter self-test  fetch-qcew-wages self-test: 7/7 passed.
+  ✓ QCEW open-data self-test  build-qcew-open-data self-test: 10/10 passed.
+  ✓ QCEW open-data sync     ✓ QCEW open-data in sync (2 artifact(s)).
+  ✓ MARTS demand adapter self-test  fetch-marts-sales self-test: 6/6 passed.
+  ✓ MARTS open-data self-test  build-marts-open-data self-test: 12/12 passed.
+  ✓ MARTS open-data sync    ✓ MARTS open-data in sync (2 artifact(s)).
+  ✓ NASS aquaculture adapter self-test  fetch-nass-aquaculture self-test: 8/8 passed.
+  ✓ Recalls explorer page self-test  build-open-recalls-page self-test: 12/12 passed.
+  ✓ Recalls explorer page sync  ✓ open/recalls/index.html in sync.
+  ✓ Labor explorer page self-test  build-open-labor-page self-test: 8/8 passed.
+  ✓ Labor explorer page sync  ✓ open/labor/index.html in sync.
+  ✓ Demand explorer page self-test  build-open-demand-page self-test: 8/8 passed.
+  ✓ Demand explorer page sync  ✓ open/demand/index.html in sync.
+  ✓ Open-lane honesty self-test  check-open-lane-honesty self-test: 13/13 passed.
+  ✓ Open-lane honesty       ✓ open-lane honesty gate — 3 explorer surface(s): co-occurrence framing intact, 
+  ✓ Open hub cards self-test  inject-open-cards self-test: 13/13 passed.
+  ✓ Open hub cards sync     ✓ open hub corpus cards in sync (2 file(s)).
+  ✓ Recall-roster lib self-test  recall-roster self-test: 24/24 passed.
+  ✓ Ingredient recalls sync  ✓ ingredient-recalls: all ingredient pages in sync (198 sections, 59 with a reca
+  ✓ Seasonality open-data self-test  build-seasonality-open-data self-test: 9/9 passed.
+  ✓ Seasonality open-data sync  ✓ seasonality open data in sync (2 artifact(s)).
+  ✓ Study dataset self-test  build-study-dataset self-test: 30/30 passed.
+  ✓ Study dataset sync      ✓ study dataset in sync (6 artifact(s)).
+  ✓ Study datapackage self-test  ✓ self-test: clean descriptor passes; caught all 8 seeded violations
+  ✓ Study datapackage sync  ✓ Study datapackage gate — 2 resource(s): sha256 + bytes in sync, CSV headers ma
+  ✓ Lock-or-float open-data self-test  build-lockfloat-open-data self-test: 8/8 passed.
+  ✓ Lock-or-float open-data sync  ✓ lockfloat open data in sync (2 artifact(s)).
+  ✓ Anomaly open-data self-test  build-anomaly-open-data self-test: 12/12 passed.
+  ✓ Anomaly open-data sync  ✓ anomaly open data in sync (2 artifact(s)).
+  ✓ Cost-research honesty self-test  cost-research honesty self-test: 18/18 passed.
+  ✓ Cost-research honesty   ✓ cost-research honesty gate — 1 research page(s), every number grounded; no for
+  ✓ Cost-index context self-test  cost-index-context self-test: 9/9 passed.
+  ✓ Cost-index context sync  ✓ cost-index context seed in sync — 92 ingredient(s).
+  ✓ Cost-index plate-cost drift self-test  plate-cost-drift self-test: 7/7 passed.
+  ✓ Cost-index plate-cost drift sync  ✓ plate-cost drift in sync with the data.
+  ✓ Cost-index level provenance self-test  cost-index-proxies self-test: 6/6 passed.
+  ✓ Cost-index level provenance sync  ✓ cost-index proxies in sync with the registry.
+  ✓ Cost-index data-quality audit self-test  cost-index-audit self-test: 8/8 passed.
+  ✓ Cost-index data-quality audit sync  ✓ cost-index audit in sync with the data.
+  ✓ Cost-index data-quality gate  ✓ cost-index quality gate: OK — 0 live-facing clone bug(s), 0 archive-stale, 1 k
+  ✓ Cost-index outlook self-test  cost-outlook self-test: 6/6 passed.
+  ✓ Cost-index outlook sync  ✓ cost outlook in sync with the data.
+  ✓ Cost-index embed self-test  cost-index-embed self-test: 6/6 passed.
+  ✓ Cost-index embed sync   ✓ cost-index embed in sync (2 file(s)).
+  ✓ Cost-index data feed self-test  cost-index-feed self-test: 6/6 passed.
+  ✓ Cost-index data feed sync  ✓ cost-index feed in sync (82 ingredient(s)).
+  ✓ Cost-index revisions self-test  cost-revisions self-test: 8/8 passed.
+  ✓ Cost-index revisions sync  ✓ revisions ledger in sync (10294 recorded).
+  ✓ Cost-index methodology self-test  cost-index-methodology self-test: 3/3 passed.
+  ✓ Cost-index methodology sync  ✓ methodology version & changelog in sync on both pages.
+  ✓ Cost-index independence self-test  cost-index-independence self-test: 4/4 passed.
+  ✓ Cost-index independence  ✓ Cost Index independence: 14 pipeline file(s), 66 input path(s) scanned — all p
+  ✓ Cost-index reproduce self-test  cost-index-reproduce self-test: 3/3 passed.
+  ✓ Cost-index reproduce sync  ✓ reproduce worked example in sync (ribeye $13.43 as of 2026-08-04).
+  ✓ Cost-index confidence calibration self-test  confidence-calibration self-test: 6/6 passed.
+  ✓ Cost-index confidence calibration sync  ✓ confidence-calibration report in sync (data/ + public copy).
+  ✓ Cost-index confidence shadow self-test  cost-confidence-shadow self-test: 7/7 passed.
+  ✓ Cost-index confidence shadow sync  ✓ confidence shadow report in sync (data/ + public copy).
+  ✓ Cost-index staleness honesty  ✓ no point wears a confidence its freshness can't support — every published labe
+  ✓ Cost-index staleness honesty self-test  staleness-honesty self-test: 4/4 passed.
+  ✓ Cost-index bridge cointegration  Bridge cointegration: no live ratio-bridge publishes a derived level yet — the S
+  ✓ Cost-index bridge cointegration self-test  bridge-cointegration self-test: 4/4 passed.
+  ✓ Cost-index dataset date  cost-index dataset date: OK — JSON-LD dateModified matches seed generatedAt (202
+  ✓ Cost-index speakable (idem)  Cost-index speakable: in sync — every ingredient page carries a speakable WebPag
+  ✓ Cost-index dispatch freshness  ✓ Cost Index dispatch is current — edition of 2026-07-09, data asOf 2026-08-05 (
+  ✓ Cost-index dispatch freshness self-test  dispatch-fresh self-test: 11/11 passed.
+  ✓ Cost-index email preview (idem)  ✓ email preview in sync — asOf 2026-08-04, 0 action item(s), wow available.
+  ✓ Cost-index email content gate  ✓ cost-index email content gate: EN+ES html/text/subject clean — asOf 2026-08-04
+  ✓ Cost-index email content gate self-test  email content gate self-test: 18/18 passed.
+  ✓ Cost-pressure honesty   pressure honesty: OK — 67 record(s) recompute-match; 2 inferred block(s) scanned
+  ✓ Cost-pressure sources (shape+readiness)        • drought — aoi=US returns empty from the StateStatistics endpoint — natio
+  ✓ Cost-pressure freshness (warn)  pressure freshness: freshest inferred read as of 2026-08-03 (4d old); threshold 
+  ✓ Cost-pressure freshness self-test  pressure freshness self-test: 8/8 passed.
+  ✓ Security claims         Security claims: 10 claims × 2 locales, 5 audit tests × 2, 4 tiers × 2 — all ren
+  ✓ Data promise rail       Data promise rail: clean across 14 tool page(s).
+  ✓ Security locale parity  Security locale parity: 2 pair(s) clean — section IDs match across EN+ES.
+  ✓ KPI doc freshness       KPI doc: 4 KPI(s); _lastReviewed=2026-06-17 (51d old).
+  ✓ Experiments parity      Experiments parity: 1 experiment(s) match across data/experiments.json + src/wor
+  ✓ No fixed min-width      No-fixed-min-width: 14 tool page(s) scanned; all min-width declarations are insi
+  ✓ Table scroll wrap       Table-scroll-wrap: 101 HTML file(s) scanned; every <table> is inside a known scr
+  ✓ Article graphics (idem)  Article graphics: manifest is empty (0 entries). Schema + locale-parity OK.
+  ✗ Ingredient state record (idem)  DRIFT: cost-index/ingredient-state-record.csv is stale — run: node scripts/build
+  ✓ Ingredient state record honesty  ✓ Ingredient State Record honesty gate — 169 records, every field bounded + hone
+  ✓ Menu-pricing render self-test  ✓ self-test: clean triple passes; caught all 5 seeded violations
+  ✓ Menu-pricing render contract  ✓ Menu-pricing render-contract gate — engine ISR_ISLAND/ISR_CSS byte-identical i
+  ✓ Study engine-parity self-test  ✓ self-test: clean study passes; caught all 8 seeded violations
+  ✓ Study engine-parity     ✓ Study engine-parity gate — engine studyMlBlocks() renders the committed Method
+  ✓ Supply-picture pages in sync  ✓ supply-picture: all pages in sync (172 with a block).
+  ✓ Event-exposure lib self-test  event-exposure self-test: 37/37 passed.
+  ✓ Event-exposure pages in sync  ✓ event-exposure: all detail pages in sync (78 with a block).
+  ✓ Study cite/license in sync  ✓ study-cite: both study pages carry the CC-BY cite block + license.
+  ✓ Energy backdrop (idem)  eia-energy-backdrop: OK — 3 carriers in sync.
+  ✓ Energy backdrop honesty  ✓ Energy Backdrop honesty gate — 3 carriers, each read against its own range; no
+  ✓ Crop-condition backdrop (idem)  crop-condition-backdrop: OK — 2 crops in sync.
+  ✓ Crop-condition backdrop honesty  ✓ Crop-Condition Backdrop honesty gate — 2 crops, each read against its own same
+  ✓ NOAA domestic landings (idem)  noaa-landings: OK — 20 groups in sync.
+  ✓ NOAA domestic landings honesty  ✓ Domestic Wild-Landings honesty gate — 20 groups, each keyed to its slugs; no f
+  ✓ ERS per-capita availability (idem)  ers-availability: OK — 71 items in sync.
+  ✓ ERS per-capita availability honesty  ✓ ERS availability honesty gate — 71 items, per-capita proxy bounded + commodity
+  ✓ ERS meat price-chain (idem)  meat-price-chain: OK — 3 proteins in sync.
+  ✓ ERS meat price-chain honesty  ✓ Meat price-chain honesty gate — 3 proteins, farm→wholesale→retail bounded; nat
+  ✓ ERS food dollar (idem)  food-dollar: OK — farm share 15.9c in sync.
+  ✓ ERS food dollar honesty  ✓ Food Dollar honesty gate — farm share 15.9c, 12 chain components sum ~100; nat
+  ✓ Open-data catalog (idem)  open-data-catalog: OK — 23 datasets (15 CC0, 8 CC-BY, 23 available) in sync.
+  ✓ Open-data catalog gate  ✓ Open-data catalog gate — 23 datasets, licensing split honored (CC0 gov / CC-BY
+  ✓ Header license self-test  check-headers-license --self-test: OK (21 assertions)
+  ✓ Header license claims   check-headers-license: 4 license rule(s) over 16 file(s) — every claim matches (
+  ✓ Audio coverage (warn)   See docs/audio-pipeline.md for full operator runbook.
+───────────────
+312 of 320 passed.
+CHECK-ALL EXIT: 1
