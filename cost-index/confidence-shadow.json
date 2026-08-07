@@ -8,52 +8,52 @@
     "ownCoverage": 0.15
   },
   "derivedCuts": [
-    0.447,
-    0.49,
+    0.4445,
+    0.479,
     0.563
   ],
   "proposedTiers": [
     {
       "items": 20,
-      "calls": 5919,
-      "hits": 3028,
-      "hitRate": 0.512
-    },
-    {
-      "items": 19,
-      "calls": 8040,
-      "hits": 4149,
-      "hitRate": 0.516
-    },
-    {
-      "items": 18,
-      "calls": 8009,
-      "hits": 4059,
+      "calls": 7087,
+      "hits": 3594,
       "hitRate": 0.507
     },
     {
+      "items": 16,
+      "calls": 5748,
+      "hits": 3095,
+      "hitRate": 0.538
+    },
+    {
+      "items": 21,
+      "calls": 10453,
+      "hits": 5263,
+      "hitRate": 0.503
+    },
+    {
       "items": 22,
-      "calls": 12061,
-      "hits": 5966,
-      "hitRate": 0.495
+      "calls": 10741,
+      "hits": 5250,
+      "hitRate": 0.489
     }
   ],
   "monotone": true,
   "binarySplit": {
-    "medianScore": 0.49,
+    "medianScore": 0.479,
     "lower": {
-      "items": 39,
-      "calls": 13959,
-      "hitRate": 0.514,
-      "baseline": 0.502
+      "items": 36,
+      "calls": 12835,
+      "hitRate": 0.521,
+      "baseline": 0.507
     },
     "upper": {
-      "items": 40,
-      "calls": 20070,
-      "hitRate": 0.5,
-      "baseline": 0.502
+      "items": 43,
+      "calls": 21194,
+      "hitRate": 0.496,
+      "baseline": 0.507
     },
-    "separation": -0.014
+    "separation": -0.025
   },
   "verdict": {
     "scoreSeparatesSkill": false,
@@ -81,10 +81,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.489,
+      "S": 0.479,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.714,
         "freshness": 1,
         "ownCoverage": 0.762
       },
@@ -109,10 +109,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.566,
+      "S": 0.506,
       "parts": {
         "indep": 0,
-        "agreement": 1,
+        "agreement": 0.8,
         "freshness": 1,
         "ownCoverage": 0.775
       },
@@ -123,10 +123,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.49,
+      "S": 0.515,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.833,
         "freshness": 1,
         "ownCoverage": 0.766
       },
@@ -137,10 +137,10 @@
       "currentLabel": "low",
       "proposedLabel": "directional",
       "changed": true,
-      "S": 0.379,
+      "S": 0.395,
       "parts": {
         "indep": 0,
-        "agreement": 0.375,
+        "agreement": 0.429,
         "freshness": 1,
         "ownCoverage": 0.775
       },
@@ -149,12 +149,12 @@
     {
       "key": "basil",
       "currentLabel": "low",
-      "proposedLabel": "directional",
-      "changed": true,
-      "S": 0.375,
+      "proposedLabel": "low",
+      "changed": false,
+      "S": 0.45,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 1,
         "freshness": 1,
         "ownCoverage": 0
       },
@@ -177,12 +177,12 @@
     {
       "key": "beet",
       "currentLabel": "medium",
-      "proposedLabel": "directional",
-      "changed": true,
-      "S": 0.432,
+      "proposedLabel": "medium",
+      "changed": false,
+      "S": 0.479,
       "parts": {
         "indep": 0,
-        "agreement": 0.556,
+        "agreement": 0.714,
         "freshness": 1,
         "ownCoverage": 0.766
       },
@@ -219,12 +219,12 @@
     {
       "key": "bok-choy",
       "currentLabel": "low",
-      "proposedLabel": "low",
-      "changed": false,
-      "S": 0.455,
+      "proposedLabel": "directional",
+      "changed": true,
+      "S": 0.417,
       "parts": {
         "indep": 0,
-        "agreement": 0.625,
+        "agreement": 0.5,
         "freshness": 1,
         "ownCoverage": 0.783
       },
@@ -249,10 +249,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.489,
+      "S": 0.514,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.833,
         "freshness": 1,
         "ownCoverage": 0.759
       },
@@ -277,10 +277,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.478,
+      "S": 0.504,
       "parts": {
         "indep": 0,
-        "agreement": 0.714,
+        "agreement": 0.8,
         "freshness": 1,
         "ownCoverage": 0.757
       },
@@ -291,10 +291,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.491,
+      "S": 0.466,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.667,
         "freshness": 1,
         "ownCoverage": 0.772
       },
@@ -305,10 +305,10 @@
       "currentLabel": "low",
       "proposedLabel": "directional",
       "changed": true,
-      "S": 0.262,
+      "S": 0.3,
       "parts": {
         "indep": 0,
-        "agreement": 0.375,
+        "agreement": 0.5,
         "freshness": 1,
         "ownCoverage": 0
       },
@@ -317,12 +317,12 @@
     {
       "key": "cabbage",
       "currentLabel": "low",
-      "proposedLabel": "low",
-      "changed": false,
-      "S": 0.491,
+      "proposedLabel": "directional",
+      "changed": true,
+      "S": 0.416,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.5,
         "freshness": 1,
         "ownCoverage": 0.776
       },
@@ -333,10 +333,10 @@
       "currentLabel": "low",
       "proposedLabel": "directional",
       "changed": true,
-      "S": 0.437,
+      "S": 0.416,
       "parts": {
         "indep": 0,
-        "agreement": 0.571,
+        "agreement": 0.5,
         "freshness": 1,
         "ownCoverage": 0.773
       },
@@ -347,10 +347,10 @@
       "currentLabel": "low",
       "proposedLabel": "directional",
       "changed": true,
-      "S": 0.413,
+      "S": 0.39,
       "parts": {
         "indep": 0,
-        "agreement": 0.875,
+        "agreement": 0.8,
         "freshness": 1,
         "ownCoverage": 0
       },
@@ -359,12 +359,12 @@
     {
       "key": "cauliflower",
       "currentLabel": "low",
-      "proposedLabel": "directional",
-      "changed": true,
-      "S": 0.438,
+      "proposedLabel": "low",
+      "changed": false,
+      "S": 0.567,
       "parts": {
         "indep": 0,
-        "agreement": 0.571,
+        "agreement": 1,
         "freshness": 1,
         "ownCoverage": 0.777
       },
@@ -373,12 +373,12 @@
     {
       "key": "celery",
       "currentLabel": "low",
-      "proposedLabel": "low",
-      "changed": false,
-      "S": 0.489,
+      "proposedLabel": "directional",
+      "changed": true,
+      "S": 0.414,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.5,
         "freshness": 1,
         "ownCoverage": 0.761
       },
@@ -403,10 +403,10 @@
       "currentLabel": "medium",
       "proposedLabel": "medium",
       "changed": false,
-      "S": 0.498,
+      "S": 0.479,
       "parts": {
         "indep": 0,
-        "agreement": 0.778,
+        "agreement": 0.714,
         "freshness": 1,
         "ownCoverage": 0.767
       },
@@ -445,10 +445,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.494,
+      "S": 0.469,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.667,
         "freshness": 1,
         "ownCoverage": 0.793
       },
@@ -487,10 +487,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.491,
+      "S": 0.446,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.6,
         "freshness": 1,
         "ownCoverage": 0.771
       },
@@ -501,10 +501,10 @@
       "currentLabel": "medium",
       "proposedLabel": "medium",
       "changed": false,
-      "S": 0.533,
+      "S": 0.524,
       "parts": {
         "indep": 0,
-        "agreement": 0.889,
+        "agreement": 0.857,
         "freshness": 1,
         "ownCoverage": 0.776
       },
@@ -515,10 +515,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.519,
+      "S": 0.569,
       "parts": {
         "indep": 0,
-        "agreement": 0.833,
+        "agreement": 1,
         "freshness": 1,
         "ownCoverage": 0.793
       },
@@ -543,10 +543,10 @@
       "currentLabel": "medium",
       "proposedLabel": "medium",
       "changed": false,
-      "S": 0.533,
+      "S": 0.566,
       "parts": {
         "indep": 0,
-        "agreement": 0.889,
+        "agreement": 1,
         "freshness": 1,
         "ownCoverage": 0.776
       },
@@ -554,9 +554,9 @@
     },
     {
       "key": "eggs",
-      "currentLabel": "low",
+      "currentLabel": "medium",
       "proposedLabel": "low",
-      "changed": false,
+      "changed": true,
       "S": 0.475,
       "parts": {
         "indep": 0,
@@ -564,17 +564,17 @@
         "freshness": 1,
         "ownCoverage": 0.831
       },
-      "ceiling": "low"
+      "ceiling": "medium"
     },
     {
       "key": "garlic",
       "currentLabel": "low",
       "proposedLabel": "directional",
       "changed": true,
-      "S": 0.435,
+      "S": 0.443,
       "parts": {
         "indep": 0,
-        "agreement": 0.571,
+        "agreement": 0.6,
         "freshness": 1,
         "ownCoverage": 0.755
       },
@@ -583,12 +583,12 @@
     {
       "key": "ginger",
       "currentLabel": "low",
-      "proposedLabel": "directional",
-      "changed": true,
-      "S": 0.442,
+      "proposedLabel": "low",
+      "changed": false,
+      "S": 0.45,
       "parts": {
         "indep": 0,
-        "agreement": 0.571,
+        "agreement": 0.6,
         "freshness": 1,
         "ownCoverage": 0.802
       },
@@ -599,10 +599,10 @@
       "currentLabel": "medium",
       "proposedLabel": "directional",
       "changed": true,
-      "S": 0.431,
+      "S": 0.414,
       "parts": {
         "indep": 0,
-        "agreement": 0.556,
+        "agreement": 0.5,
         "freshness": 1,
         "ownCoverage": 0.761
       },
@@ -627,10 +627,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.486,
+      "S": 0.511,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.833,
         "freshness": 1,
         "ownCoverage": 0.742
       },
@@ -669,10 +669,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.452,
+      "S": 0.464,
       "parts": {
         "indep": 0,
-        "agreement": 0.625,
+        "agreement": 0.667,
         "freshness": 1,
         "ownCoverage": 0.76
       },
@@ -709,12 +709,12 @@
     {
       "key": "kale",
       "currentLabel": "low",
-      "proposedLabel": "directional",
-      "changed": true,
-      "S": 0.415,
+      "proposedLabel": "low",
+      "changed": false,
+      "S": 0.445,
       "parts": {
         "indep": 0,
-        "agreement": 0.5,
+        "agreement": 0.6,
         "freshness": 1,
         "ownCoverage": 0.769
       },
@@ -725,10 +725,10 @@
       "currentLabel": "low",
       "proposedLabel": "directional",
       "changed": true,
-      "S": 0.34,
+      "S": 0.365,
       "parts": {
         "indep": 0,
-        "agreement": 0.25,
+        "agreement": 0.333,
         "freshness": 1,
         "ownCoverage": 0.768
       },
@@ -739,10 +739,10 @@
       "currentLabel": "medium",
       "proposedLabel": "medium",
       "changed": false,
-      "S": 0.531,
+      "S": 0.527,
       "parts": {
         "indep": 0,
-        "agreement": 0.889,
+        "agreement": 0.875,
         "freshness": 1,
         "ownCoverage": 0.762
       },
@@ -781,10 +781,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.489,
+      "S": 0.514,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.833,
         "freshness": 1,
         "ownCoverage": 0.762
       },
@@ -835,12 +835,12 @@
     {
       "key": "oregano",
       "currentLabel": "low",
-      "proposedLabel": "directional",
-      "changed": true,
-      "S": 0.413,
+      "proposedLabel": "low",
+      "changed": false,
+      "S": 0.45,
       "parts": {
         "indep": 0,
-        "agreement": 0.875,
+        "agreement": 1,
         "freshness": 1,
         "ownCoverage": 0
       },
@@ -851,10 +851,10 @@
       "currentLabel": "low",
       "proposedLabel": "directional",
       "changed": true,
-      "S": 0.339,
+      "S": 0.314,
       "parts": {
         "indep": 0,
-        "agreement": 0.25,
+        "agreement": 0.167,
         "freshness": 1,
         "ownCoverage": 0.757
       },
@@ -879,10 +879,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.49,
+      "S": 0.479,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.714,
         "freshness": 1,
         "ownCoverage": 0.767
       },
@@ -963,10 +963,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.526,
+      "S": 0.514,
       "parts": {
         "indep": 0,
-        "agreement": 0.875,
+        "agreement": 0.833,
         "freshness": 1,
         "ownCoverage": 0.758
       },
@@ -1003,12 +1003,12 @@
     {
       "key": "ribeye",
       "currentLabel": "medium",
-      "proposedLabel": "medium",
-      "changed": false,
-      "S": 0.566,
+      "proposedLabel": "low",
+      "changed": true,
+      "S": 0.466,
       "parts": {
         "indep": 0,
-        "agreement": 1,
+        "agreement": 0.667,
         "freshness": 1,
         "ownCoverage": 0.772
       },
@@ -1017,12 +1017,12 @@
     {
       "key": "romaine-lettuce",
       "currentLabel": "low",
-      "proposedLabel": "low",
-      "changed": false,
-      "S": 0.478,
+      "proposedLabel": "directional",
+      "changed": true,
+      "S": 0.444,
       "parts": {
         "indep": 0,
-        "agreement": 0.714,
+        "agreement": 0.6,
         "freshness": 1,
         "ownCoverage": 0.759
       },
@@ -1031,12 +1031,12 @@
     {
       "key": "rosemary",
       "currentLabel": "low",
-      "proposedLabel": "directional",
-      "changed": true,
-      "S": 0.413,
+      "proposedLabel": "low",
+      "changed": false,
+      "S": 0.45,
       "parts": {
         "indep": 0,
-        "agreement": 0.875,
+        "agreement": 1,
         "freshness": 1,
         "ownCoverage": 0
       },
@@ -1129,12 +1129,12 @@
     {
       "key": "short-rib",
       "currentLabel": "medium",
-      "proposedLabel": "medium",
-      "changed": false,
-      "S": 0.563,
+      "proposedLabel": "low",
+      "changed": true,
+      "S": 0.463,
       "parts": {
         "indep": 0,
-        "agreement": 1,
+        "agreement": 0.667,
         "freshness": 1,
         "ownCoverage": 0.755
       },
@@ -1201,10 +1201,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.48,
+      "S": 0.445,
       "parts": {
         "indep": 0,
-        "agreement": 0.714,
+        "agreement": 0.6,
         "freshness": 1,
         "ownCoverage": 0.769
       },
@@ -1243,10 +1243,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.538,
+      "S": 0.521,
       "parts": {
         "indep": 0,
-        "agreement": 0.857,
+        "agreement": 0.8,
         "freshness": 1,
         "ownCoverage": 0.875
       },
@@ -1257,10 +1257,10 @@
       "currentLabel": "low",
       "proposedLabel": "directional",
       "changed": true,
-      "S": 0.35,
+      "S": 0.375,
       "parts": {
         "indep": 0,
-        "agreement": 0.667,
+        "agreement": 0.75,
         "freshness": 1,
         "ownCoverage": 0
       },
@@ -1271,10 +1271,10 @@
       "currentLabel": "low",
       "proposedLabel": "directional",
       "changed": true,
-      "S": 0.375,
+      "S": 0.4,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.833,
         "freshness": 1,
         "ownCoverage": 0
       },
@@ -1439,10 +1439,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.491,
+      "S": 0.516,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.833,
         "freshness": 1,
         "ownCoverage": 0.771
       },
@@ -1453,10 +1453,10 @@
       "currentLabel": "low",
       "proposedLabel": "directional",
       "changed": true,
-      "S": 0.302,
+      "S": 0.415,
       "parts": {
         "indep": 0,
-        "agreement": 0.125,
+        "agreement": 0.5,
         "freshness": 1,
         "ownCoverage": 0.766
       },
