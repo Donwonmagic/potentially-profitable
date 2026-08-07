@@ -1410,6 +1410,66 @@
       "closed": null,
       "founderHours": 0,
       "window": "M2"
+    },
+    {
+      "id": "Q-084",
+      "status": "ready",
+      "source": "phase-H plan validation 2026-08-07",
+      "title": "Measure cold-start reconcile on a FRESH org — the number every commercial figure is priced on",
+      "priority": "P0",
+      "founderHours": 0.5,
+      "owner": "agent",
+      "why": "VENDOR-TEMPLATE-KEY.md gives 24% today, 62% at the 0.7 knee, and 84-87% as reconcile-rate-among-newly-covered on a MATURE corpus with 3-4 prior confirmations per (org,vendor). A new customer has zero. first-try-reliability-roadmap.md 4d already says the Tacombi corpus is not the demo population — and 00/location plus the 40-location ceiling are priced on it.",
+      "doneWhen": "A committed report records first-pass straight-through for a synthetic org with ZERO prior confirmations, replayed over the 919-doc corpus, with the number stated separately from the mature-org number.",
+      "verify": {
+        "cwd": "product",
+        "cmd": "test -f docs/correctness/cold-start-reconcile.json"
+      }
+    },
+    {
+      "id": "Q-085",
+      "status": "ready",
+      "source": "phase-H plan validation 2026-08-07",
+      "title": "Instrument deskMinutesPerClose — two of three kill criteria cannot currently fire",
+      "priority": "P0",
+      "founderHours": 0.25,
+      "owner": "agent",
+      "why": "queue.json:1613 and :1662 make deskMinutesPerClose the test for CP-60 and CP-90. It is instrumented nowhere in the product repo. ADR-033 exists so decisions are made by falsifier rather than impression.",
+      "doneWhen": "A per-close timer records desk minutes and a query returns it; CP-60 and CP-90 can be evaluated from data rather than impression.",
+      "verify": {
+        "cwd": "product",
+        "cmd": "grep -rq deskMinutesPerClose apps/api/src"
+      }
+    },
+    {
+      "id": "Q-086",
+      "status": "ready",
+      "source": "phase-H plan validation 2026-08-07",
+      "title": "Replace the differentiator the board killed — ADR-030:75 still asserts it",
+      "priority": "P0",
+      "founderHours": 1,
+      "owner": "founder",
+      "why": "ADR-030:75 says a fixed monthly close date is a promise incumbents cannot make. board-service-delivery.md:35 killed the synchronized second Tuesday as disqualifying and nothing replaced it. Q-041 qualification calls and the /close/ page both need one sentence answering why not MarginEdge.",
+      "doneWhen": "An ADR supersedes ADR-030:75 with a differentiator that survives the capacity arithmetic, and that sentence appears in the /close/ copy.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "grep -rqi \"differentiator\" docs/editorial/decisions/ADR-03*.md"
+      }
+    },
+    {
+      "id": "Q-087",
+      "status": "ready",
+      "source": "phase-H plan validation 2026-08-07",
+      "title": "Disposition the 37 product marketing pages — surface-disposition covers only the storefront",
+      "priority": "P1",
+      "founderHours": 0.5,
+      "owner": "agent",
+      "why": "6 indexed /vs/ pages carry lastFactCheckedISO 2026-05-21 and say Muntin Ledger does the first part, we do not yet do the rest. Zero files under apps/web/app/(marketing) contain closed month. surface-disposition.json holds zero records for apps/web.",
+      "doneWhen": "Every apps/web/app/(marketing) route carries a disposition, and no indexed page states a competitor fact older than 90 days.",
+      "verify": {
+        "cwd": "storefront",
+        "cmd": "node -e \"const d=require(\"./data/surface-disposition.json\");process.exit(JSON.stringify(d).includes(\"apps/web\")?0:1)\""
+      }
     }
   ],
   "attestations": {},
