@@ -1,0 +1,22 @@
+{
+  "_doc": "The declared ceiling for scripts/check-src-sentinel.mjs. Two rules, and they pull in opposite directions on purpose. (1) EVERY number here is a RATCHET: the gate fails if the real count goes ABOVE it, and ALSO fails if the count goes BELOW it without this file being lowered \u2014 so a repair must be recorded here and can never silently regress. (2) `knownFiles` scopes the whole budget: a finding in ANY page not on this list is a hard fail at once, no matter how much budget is left. That is what makes it safe to wire a gate against a 160-item backlog \u2014 the debt is frozen to the pages that already carry it, and the next page to introduce a false citation reds CI on the commit that introduces it.",
+  "_established": "2026-08-07",
+  "_why": "blog/cost-index-2026-07/index.html shipped 165 `<!-- src: -->` annotations against LIVE rolling files, plus a reader-visible cite drawer at line 852 telling a skeptic those files are 're-checked in CI'. No such gate existed. The annotations were true on publication day and went false the next time a builder ran. Correcting them is enumerated in docs/handoff/honesty-debt/honesty-debt.json; freezing them here is what stops a 166th from being added while that work is pending.",
+  "_howToLower": "node scripts/check-src-sentinel.mjs --worklist  \u2192  repoint annotations at `edition:<asOf> <path> = <value>`  \u2192  rerun the gate, which will tell you the exact number to write here.",
+  "knownFiles": [
+    "blog/cost-index-2026-07/index.html"
+  ],
+  "budgets": {
+    "MISMATCH": 1,
+    "BADPATH": 1,
+    "BADFILE": 0,
+    "DRIFT": 21,
+    "UNANCHORED": 138
+  },
+  "notes": {
+    "MISMATCH": "line 524 \u2014 the post says the outlook is 'mixed' at a weighted tilt of \u22120.145; data/cost-outlook.json now says 'building' at +0.055. A SIGN FLIP in reader-visible prose. FOUNDER-ONLY: correcting a published market read is an editorial judgment, not a mechanical repoint.",
+    "BADPATH": "line 626 \u2014 `seasonality.json months[\"07\"].medianCents = 1870` omits which ingredient; months live at ingredients[<slug>].months. AGENT-FIXABLE: this is an HTML comment, so repairing it changes nothing a reader sees.",
+    "DRIFT": "21 annotations in a dated post citing live rolling files (cost-outlook, cost-pressure, cost-revisions, cost-lockfloat, seasonality, cost-forecast-backtest). Each needs its value frozen into data/cost-index-editions.json for asOf 2026-07-06 and the annotation repointed at `edition:2026-07-06 ...`. AGENT-FIXABLE once the spine carries the fields.",
+    "UNANCHORED": "138 annotations naming no file at all \u2014 `dispatch.basket.pct`, `risers[0].arc`, `fallers[0].pressure`. They point at scripts/build-cost-index-dispatch.mjs's in-memory object, which exists only during a build. A reader cannot open it. These are the ones the frozen-edition grammar exists to replace."
+  }
+}

@@ -44,14 +44,14 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
+import { DOLLAR_BASES, isDollarBasis, mayRenderAsDollars, magnitudeOutliers, regimeBreak, MAGNITUDE_FACTOR } from './lib/basis.mjs';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const require = createRequire(import.meta.url);
 const rd = (p) => { try { return JSON.parse(readFileSync(path.join(repo, p), 'utf8')); } catch { return null; } };
 const rdText = (p) => { try { return readFileSync(path.join(repo, p), 'utf8'); } catch { return null; } };
 
-export const DOLLAR_BASES = ['delivered', 'wholesale', 'retail'];
-export const isDollarBasis = (b) => DOLLAR_BASES.indexOf(b) >= 0;
+export { DOLLAR_BASES, isDollarBasis };
 
 // The index-basis seafood that carry a $ level at their newest non-null
 // points[].level in the SOURCE (data/cost-index.json — NOAA import unit-values)
@@ -122,6 +122,63 @@ export function buildSourceModel(index) {
   return model;
 }
 
+/**
+ * THE OBSERVATION MODEL — added 2026-08-07, the fix for the ground-beef leak.
+ *
+ * Keyed `slug|date|source`, valued with that observation's OWN basis as recorded
+ * in data/cost-index.json. Two places carry it:
+ *   · points[].history[]            → { date, valueCents, source, basis }
+ *   · points[].level.provenance[]   → { date, valueCents, source, type }  (basis
+ *                                      falls back to the level's own basis)
+ *
+ * The old gate never built this. It asked "does this INGREDIENT have a dollar
+ * level?" — a question ground-beef answers YES (usda-lmr, $5.51 wholesale, at
+ * points[0]) while simultaneously publishing five BLS index points as $/lb from
+ * points[1].history. One true statement about the ingredient concealed five
+ * false statements about observations.
+ */
+export function buildObservationModel(index) {
+  const obs = new Map();
+  const put = (slug, date, source, basis) => {
+    if (!slug || !date) return;
+    obs.set(`${slug}|${date}|${source || ''}`, basis || null);
+  };
+  for (const [slug, ing] of Object.entries((index && index.ingredients) || {})) {
+    for (const p of (ing && ing.points) || []) {
+      for (const h of (p && p.history) || []) if (h) put(slug, h.date, h.source, h.basis);
+      const lv = p && p.level;
+      if (lv && Array.isArray(lv.provenance)) for (const pr of lv.provenance) if (pr) put(slug, pr.date, pr.source, pr.basis || lv.basis);
+    }
+    // The top-level rolling history the series builder actually merges from.
+    for (const h of (ing && ing.history) || []) if (h) put(slug, h.date, h.source, h.basis);
+  }
+  return obs;
+}
+
+/**
+ * Judge ONE rendered dollar observation. Three independent rails, any of which
+ * is sufficient to call a leak — deliberately redundant, because the ground-beef
+ * leak was visible on all three and caught by none:
+ *
+ *   RAIL 1 — source registry. `bls` publishes indices only (the repo's own
+ *            cost-index-sources.json _doc says so). A $ attributed to bls is a
+ *            leak with no further evidence needed.
+ *   RAIL 2 — the observation's own basis, resolved from data/cost-index.json at
+ *            (slug, date, source). Non-$ basis behind a $ is a leak, no matter
+ *            what the file header or the ingredient's newest level says.
+ *   RAIL 3 — magnitude coherence, applied per series in scanSeriesMagnitude.
+ *            Survives total loss of provenance.
+ */
+export function judgeObservation({ slug, date, source, priceUsd, seriesBasis }, obsModel) {
+  const resolved = obsModel.get(`${slug}|${date}|${source || ''}`);
+  const verdict = mayRenderAsDollars(
+    { source, basis: resolved !== undefined ? resolved : null },
+    seriesBasis
+  );
+  if (verdict.ok) return null;
+  return `${slug} ${date} ships $${priceUsd} — ${verdict.why}`;
+}
+
 // Verdict for a rendered $ on `slug` carrying self-declared basis `selfBasis`.
 // Trust the source: leak on an explicit non-$ self-label OR a source whose NEWEST
 // non-null level is non-$; orphan when the source doesn't know the slug. Judge on the
@@ -141,8 +198,9 @@ function renderVerdict(slug, selfBasis, model) {
 //          tracked[] (info: known content-bound SOURCE-level latent),
 //          orphans[] (info: rendered $ for a slug the source doesn't back) }.
 export function scan({ index, seedIng, indexJson, feedJson, indexCsv, weekCsvs, weekJsons, series } = {}) {
-  const errors = [], tracked = [], orphans = [];
+  const errors = [], tracked = [], orphans = [], reconstructionAnomalies = [], staleSeries = [];
   const model = buildSourceModel(index);
+  const obsModel = buildObservationModel(index);
   const emit = (slug, selfBasis, usd, surface) => {
     if (!usd.length) return;
     const v = renderVerdict(slug, selfBasis, model);
@@ -207,6 +265,101 @@ export function scan({ index, seedIng, indexJson, feedJson, indexCsv, weekCsvs, 
       }
     }
   }
+  // ======================================================================
+  // OBSERVATION-LEVEL PASS (2026-08-07) — the rails that catch ground-beef.
+  // Every rendered $ that carries a (date, source) resolves back to its OWN
+  // observation in the source, and is judged on that observation's basis —
+  // never on the file header, never on the ingredient's newest level.
+  // ======================================================================
+
+  // feed.json reference: one $ per ingredient, with date + source.
+  for (const it of feedArray(feedJson)) {
+    const r = it.reference || {};
+    if (numify(r.priceUsd) == null) continue;
+    const bad = judgeObservation(
+      { slug: it.slug || it.key, date: r.date, source: r.source, priceUsd: r.priceUsd, seriesBasis: it.basis },
+      obsModel
+    );
+    if (bad) errors.push(`feed.json[observation]: ${bad}`);
+  }
+
+  // per-ingredient series.json + series.csv: every observation, not just the newest.
+  for (const s of series || []) {
+    if (s.json) {
+      const sb = s.json.basis;
+      for (const o of s.json.observations || []) {
+        if (!o || numify(o.priceUsd) == null) continue;
+        const bad = judgeObservation({ slug: s.slug, date: o.date, source: o.source, priceUsd: o.priceUsd, seriesBasis: sb }, obsModel);
+        if (bad) errors.push(`${s.slug}/series.json[observation]: ${bad}`);
+      }
+      // RAIL 3 — regime break between the reconstructed backfill and the live
+      // capture, plus intra-live dispersion. Deliberately NOT pooled: see
+      // regimeBreak()'s note in lib/basis.mjs.
+      const all = (s.json.observations || []).filter((o) => o && numify(o.priceUsd) != null);
+      const liveVals = all.filter((o) => !o.reconstructed).map((o) => numify(o.priceUsd));
+      const reconVals = all.filter((o) => o.reconstructed).map((o) => numify(o.priceUsd));
+      const rb = regimeBreak(liveVals, reconVals);
+      if (rb.break) {
+        errors.push(
+          `${s.slug}/series.json[regime-break]: live median $${rb.liveMedian} vs reconstructed-backfill median ` +
+          `$${rb.reconMedian} — ${rb.factor}x apart in one price_usd column. A ${MAGNITUDE_FACTOR}x+ step at the ` +
+          `backfill/live seam is a unit or basis change, not a market move`
+        );
+      }
+      const magLive = magnitudeOutliers(liveVals);
+      if (magLive.outliers.length) {
+        errors.push(
+          `${s.slug}/series.json[magnitude]: ${magLive.outliers.length} LIVE observation(s) ` +
+          `(${[...new Set(magLive.outliers)].slice(0, 4).join(', ')}) are >=${MAGNITUDE_FACTOR}x from the live median ` +
+          `$${magLive.median} — an index value rendered as a price, or two units mixed`
+        );
+      }
+      // Wide dispersion INSIDE the reconstructed backfill is a real data-quality
+      // finding (a 2001 watermelon carton at $0.31), but it is not a basis lie.
+      // Reported, never conflated, never silently dropped.
+      // COVERAGE HONESTY (added 2026-08-07, found BY the ground-beef repair).
+      // Suppressing ground-beef's five BLS index points left a file stamped
+      // asOf 2026-06-10 whose newest observation is 2024-01-05 — the leak
+      // replaced by a different lie. Its entire live history is index-basis, so
+      // there is nothing honest to render; the $5.51 usda-lmr level lives in
+      // points[].level and never reaches entry.history. That is a plumbing
+      // decision, not something a gate should invent, so this REPORTS rather
+      // than fails, and the item is enumerated in the corrections manifest.
+      const newestObs = all.map((o) => o.date).filter(Boolean).sort().pop() || null;
+      if (s.json.asOf && newestObs) {
+        const days = Math.round((Date.parse(s.json.asOf) - Date.parse(newestObs)) / 86400000);
+        if (days > 60) staleSeries.push(`${s.slug}: series.json asOf=${s.json.asOf} but newest observation is ${newestObs} (${days} days older) — the file reads current and is not`);
+      }
+      const magRecon = magnitudeOutliers(reconVals);
+      if (magRecon.outliers.length) {
+        reconstructionAnomalies.push(
+          `${s.slug}: ${magRecon.outliers.length} reconstructed backfill point(s) >=${MAGNITUDE_FACTOR}x from the ` +
+          `backfill median $${magRecon.median} (e.g. ${[...new Set(magRecon.outliers)].slice(0, 3).join(', ')})`
+        );
+      }
+    }
+    if (s.csv) {
+      const lines = s.csv.trim().split(/\r?\n/), head = parseCsvLine(lines[0]);
+      const di = head.indexOf('date'), pi = head.indexOf('price_usd'), bi = head.indexOf('basis'), si = head.indexOf('source');
+      if (pi >= 0) {
+        for (const line of lines.slice(1)) {
+          const c = parseCsvLine(line), v = numify(c[pi]);
+          if (v == null) continue;
+          // The CSV carries a per-row basis column. A row that prints price_usd
+          // while ITS OWN basis column says index is self-contradicting on its
+          // face — no cross-reference needed.
+          const rowBasis = bi >= 0 ? (c[bi] || null) : null;
+          if (rowBasis && !isDollarBasis(rowBasis)) {
+            errors.push(`${s.slug}/series.csv[row]: ${c[di] || '?'} prints price_usd=${v} with its own basis column = "${rowBasis}"`);
+            continue;
+          }
+          const bad = judgeObservation({ slug: s.slug, date: c[di], source: si >= 0 ? c[si] : null, priceUsd: v, seriesBasis: rowBasis || (s.json && s.json.basis) }, obsModel);
+          if (bad) errors.push(`${s.slug}/series.csv[observation]: ${bad}`);
+        }
+      }
+    }
+  }
+
   // --- RENDERED: cost-index/week-*.csv (median_cents = a $ cents level) ---
   for (const wc of weekCsvs || []) {
     if (!wc || !wc.text) continue;
@@ -226,7 +379,7 @@ export function scan({ index, seedIng, indexJson, feedJson, indexCsv, weekCsvs, 
       if (v != null) emit(f.ingredient || f.slug || '?', f.basis || null, [`${(v / 100).toFixed(2)} (flags.medianCents ${f.medianCents})`], wj.name);
     }
   }
-  return { errors, tracked, orphans };
+  return { errors, tracked, orphans, reconstructionAnomalies, staleSeries };
 }
 
 function loadSeedIngredients() {
@@ -296,11 +449,137 @@ function selfTest() {
   return fail === 0;
 }
 
+/**
+ * ============================ MUTATION PROOF ============================
+ *
+ * A gate that cannot be SHOWN to fail is not evidence. The previous version of
+ * this gate had 22 green self-test assertions and ran green in CI while
+ * cost-index/feed.json published ground-beef at $393.06/lb from a BLS index
+ * value — 71x the $5.51/lb the same repo published in index.json. Every one of
+ * those assertions was true. None of them was about the thing that was wrong.
+ *
+ * So this mode does not assert green. It takes the LIVE data as it sits on
+ * disk, reintroduces each historical leak class into a deep copy, and asserts
+ * the gate goes RED — naming the specific finding that must appear. If a future
+ * refactor makes any rail toothless, this fails loudly instead of passing
+ * quietly.
+ *
+ *   node scripts/check-cost-index-basis-leak.mjs --mutation-proof
+ *
+ * Wired into check-all as a first-class gate alongside --self-test. Cost is one
+ * scan per mutation over already-loaded data (sub-second); benefit is that the
+ * claim "this gate catches basis leaks" becomes falsifiable by a stranger.
+ */
+const deep = (o) => JSON.parse(JSON.stringify(o));
+
+export const MUTATIONS = [
+  {
+    id: 'M1-bls-index-as-price-in-feed',
+    what: 'The exact 2026-08-07 production leak: feed.json ships a BLS index value as reference.priceUsd.',
+    apply(s) {
+      s.feedJson = { ingredients: [{ slug: 'ribeye', name: 'Ribeye', unit: 'lb', basis: 'wholesale', reference: { date: '2026-06-01', priceUsd: 393.06, source: 'bls' } }] };
+      return s;
+    },
+    mustMatch: /feed\.json\[observation\].*ribeye.*source="bls"/,
+  },
+  {
+    id: 'M2-bls-index-as-price-in-series',
+    what: 'series.json observations attributed to bls under a wholesale header.',
+    apply(s) {
+      s.series = [{ slug: 'ribeye', json: { basis: 'wholesale', observations: [{ date: '2026-06-01', priceUsd: 393.06, source: 'bls', reconstructed: false }] } }];
+      return s;
+    },
+    mustMatch: /ribeye\/series\.json\[observation\].*source="bls"/,
+  },
+  {
+    id: 'M3-csv-row-contradicts-itself',
+    what: 'series.csv prints a price_usd on a row whose own basis column says index.',
+    apply(s) {
+      s.series = [{ slug: 'ribeye', csv: 'date,price_usd,unit,basis,source,reconstructed\n2026-06-01,393.06,lb,index,bls,false\n' }];
+      return s;
+    },
+    mustMatch: /ribeye\/series\.csv\[row\].*basis column = "index"/,
+  },
+  {
+    id: 'M4-regime-break-with-provenance-stripped',
+    what: 'The leak survives total loss of provenance: no source, no basis, only the numbers. Rail 3 must still fire.',
+    apply(s) {
+      s.index = { ingredients: { ribeye: { points: [{ level: { basis: 'wholesale', medianCents: 1314 } }] } } };
+      s.series = [{ slug: 'ribeye', json: { basis: 'wholesale', observations: [
+        { date: '2024-01-05', priceUsd: 3.86, source: null, reconstructed: true },
+        { date: '2024-02-05', priceUsd: 4.19, source: null, reconstructed: true },
+        { date: '2026-05-01', priceUsd: 385.34, source: null, reconstructed: false },
+        { date: '2026-06-01', priceUsd: 393.06, source: null, reconstructed: false },
+      ] } }];
+      return s;
+    },
+    mustMatch: /ribeye\/series\.json\[regime-break\]/,
+  },
+  {
+    id: 'M5-unregistered-source-fails-closed',
+    what: 'A $ attributed to a source key nobody has classified must be refused, not assumed honest.',
+    apply(s) {
+      s.index = { ingredients: { ribeye: { points: [{ level: { basis: 'wholesale', medianCents: 1314 } }] } } };
+      s.feedJson = { ingredients: [{ slug: 'ribeye', basis: 'wholesale', reference: { date: '2026-06-01', priceUsd: 12.6, source: 'some-new-vendor-feed' } }] };
+      return s;
+    },
+    mustMatch: /feed\.json\[observation\].*not in SOURCE_CAN_BACK_DOLLARS/,
+  },
+  {
+    id: 'M6-source-level-basis-flip',
+    what: 'A known index-basis seafood whose source basis flips off index (the pre-existing rail — must still hold).',
+    apply(s) {
+      s.index = { ingredients: { 'whole-salmon': { points: [{ level: { basis: 'customs', medianCents: 403 } }] } } };
+      s.series = []; s.feedJson = null; s.indexJson = null; s.indexCsv = null; s.seedIng = []; s.weekCsvs = []; s.weekJsons = [];
+      return s;
+    },
+    mustMatch: /MUTATED basis/,
+  },
+];
+
+function mutationProof() {
+  const base = liveSurfaces();
+  let pass = 0, fail = 0;
+  console.log('basis-leak MUTATION PROOF — reintroduce each leak class, assert the gate goes red.\n');
+  for (const m of MUTATIONS) {
+    const mutated = m.apply(deep(base));
+    const { errors } = scan(mutated);
+    const hit = errors.some((e) => m.mustMatch.test(e));
+    if (hit) { pass++; console.log(`  ✓ ${m.id} — gate RED as required`); }
+    else {
+      fail++;
+      console.error(`  ✗ ${m.id} — gate stayed GREEN on a reintroduced leak. THE RAIL IS TOOTHLESS.`);
+      console.error(`      ${m.what}`);
+      console.error(`      expected an error matching ${m.mustMatch}; got ${errors.length}: ${errors.slice(0, 3).join(' | ') || '(none)'}`);
+    }
+  }
+  // The other half of the proof: the gate must be GREEN on the unmutated data,
+  // or "it went red" says nothing.
+  const clean = scan(base);
+  if (clean.errors.length === 0) { pass++; console.log(`  ✓ baseline — gate GREEN on the live unmutated data (so RED means the mutation, not ambient noise)`); }
+  else {
+    fail++;
+    console.error(`  ✗ baseline — gate is RED on live data (${clean.errors.length}). Mutation results are uninterpretable until the live leak is repaired:`);
+    clean.errors.slice(0, 6).forEach((e) => console.error('      - ' + e));
+  }
+  console.log(`\nmutation proof: ${pass}/${pass + fail} passed.`);
+  return fail === 0;
+}
+
 if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
-  if (process.argv.includes('--self-test')) {
+  if (process.argv.includes('--mutation-proof')) {
+    process.exit(mutationProof() ? 0 : 1);
+  } else if (process.argv.includes('--self-test')) {
     process.exit(selfTest() ? 0 : 1);
   } else {
-    const { errors, tracked, orphans } = scan(liveSurfaces());
+    const { errors, tracked, orphans, reconstructionAnomalies, staleSeries } = scan(liveSurfaces());
+    if (staleSeries && staleSeries.length) {
+      console.log(`ℹ basis-leak: ${staleSeries.length} series whose asOf outruns their newest observation (reported, not blocking — see docs/handoff/honesty-debt/honesty-debt.json):`);
+      staleSeries.slice(0, 8).forEach((s) => console.log('  · ' + s));
+    }
+    if (reconstructionAnomalies && reconstructionAnomalies.length) {
+      console.log(`ℹ basis-leak: ${reconstructionAnomalies.length} ingredient(s) with wide dispersion inside the RECONSTRUCTED backfill (a data-quality finding, not a basis lie).`);
+    }
     if (tracked.length) {
       console.log(`ℹ basis-leak: ${tracked.length} basis-bound source-level latent item(s) in data/cost-index.json (suppressed from every rendered surface; pending engine-level level-suppression).`);
     }

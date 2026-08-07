@@ -85,6 +85,23 @@ export const UNWIRED = {
     status: 'passes — advisory',
     why: 'Prints .innerHTML call sites for human review ("verify the RHS is page-authored") and then reports clean. The judgement it asks for is not mechanical.',
   },
+  'check-queue.mjs': {
+    since: '2026-08-07',
+    status: 'FAILS BY DESIGN — 10 HIGH queue items are unclaimed',
+    why:
+      'The work-queue gate (data/queue.json → docs/handoff/QUEUE.md). It exits 1 whenever a HIGH ' +
+      'item has nobody\'s name on it, which is its whole purpose — so wiring it into check-all ' +
+      'would make a red DEPLOY the normal state and teach everyone to ignore the deploy, which is ' +
+      'the exact disease it exists to treat (prior audits closed at 26%; the founder has already ' +
+      'merged a PR "with three reds accepted"). It is invoked instead by .claude/hooks/session-start.sh ' +
+      'in BOTH repos — a hook runs whether or not CLAUDE.md loads, and 1 of 108 agent transcripts in ' +
+      'the 2026-08 engagement carried a CLAUDE.md — and by queue-consumer.yml in the product repo. ' +
+      'NOT wired in any mode, deliberately: classify() here is a substring match on the filename, so ' +
+      'wiring the harmless --self-test would mark the whole script "wired" and hide the fact that the ' +
+      'gate itself never runs in CI — the same blind spot this repo already found in ' +
+      'check-idem-coverage. QUEUE.md cannot silently drift because every write path in check-queue ' +
+      're-renders it; the hook additionally runs --check. See ADR-022.',
+  },
 };
 
 export function findCheckScripts(names) {

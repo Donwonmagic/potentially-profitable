@@ -55,6 +55,12 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { mayRenderAsDollars } from './lib/basis.mjs';
+
+// Observations refused entry to a $-rendering series because their own basis or
+// source cannot back a dollar. Printed at the end of the build so a suppression
+// is a visible, auditable event and never a silent disappearance.
+const suppressedByBasis = [];
 
 const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
@@ -1314,6 +1320,20 @@ function mergedSeries(slug, entry) {
   }
   for (const p of live) {
     if (!okPt(p)) continue;
+    // THE BASIS PREDICATE (added 2026-08-07). An observation may enter a series
+    // that renders a `price_usd` / `priceUsd` column ONLY if its own basis and
+    // source can back a dollar. This is the seam the ground-beef leak came
+    // through: five BLS index points (basis:"index", source:"bls") rode
+    // `p.basis || basis` into a file headed basis:"wholesale", and shipped as
+    // $368-$393 per POUND against the same repo's $5.51/lb. The basis was never
+    // missing — data/cost-index.json labels every one of them "index" — it was
+    // carried into the CSV and then DROPPED by seriesJson(), which stamps the
+    // file with points[0].level.basis. Filtering here fixes series.json,
+    // series.csv and feed.json (built from series.json) at one point.
+    // Symmetric with scripts/check-cost-index-basis-leak.mjs, which imports the
+    // same predicate from lib/basis.mjs so the gate and the renderer cannot drift.
+    const verdict = mayRenderAsDollars({ basis: p.basis, source: p.source, reconstructed: false }, basis);
+    if (!verdict.ok) { suppressedByBasis.push({ slug, date: p.date, source: p.source || null, basis: p.basis || null, why: verdict.why }); continue; }
     byDate.set(p.date, { date: p.date, valueCents: p.valueCents, source: p.source || null, basis: p.basis || basis, reconstructed: false });
   }
   return Array.from(byDate.values()).sort((a, b) => String(a.date).localeCompare(String(b.date)));
@@ -3872,6 +3892,18 @@ for (const tgt of targets) {
   } else {
     fs.mkdirSync(path.dirname(fullPath), { recursive: true });
     fs.writeFileSync(fullPath, tgt.content);
+  }
+}
+// Basis suppressions are REPORTED, never silent. An observation vanishing from a
+// published series without a printed reason is how the ground-beef leak stayed
+// invisible for weeks in the opposite direction.
+if (suppressedByBasis.length) {
+  const bySlug = new Map();
+  for (const s of suppressedByBasis) bySlug.set(s.slug, (bySlug.get(s.slug) || 0) + 1);
+  console.log(`ℹ basis: suppressed ${suppressedByBasis.length} observation(s) from $-rendering series across ${bySlug.size} ingredient(s) — they cannot back a dollar figure:`);
+  for (const [slug, n] of [...bySlug].sort((a, b) => b[1] - a[1]).slice(0, 12)) {
+    const ex = suppressedByBasis.find((s) => s.slug === slug);
+    console.log(`  · ${slug}: ${n} point(s) — ${ex.why}`);
   }
 }
 if (checkMode) {

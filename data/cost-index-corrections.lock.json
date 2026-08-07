@@ -1,0 +1,9 @@
+{
+  "_doc": "Hash-per-id seal for data/cost-index-corrections.json. Makes the ledger append-only: editing or deleting a PUBLISHED correction changes/loses a hash and fails check-corrections-ledger.mjs. Add new ids with --seal; never regenerate wholesale.",
+  "entries": {
+    "COR-001": "79d17fced230d526",
+    "COR-002": "698ffd603bab96a3",
+    "COR-003": "5e19a7d8203586ba",
+    "COR-004": "45f1330368a2bc67"
+  }
+}

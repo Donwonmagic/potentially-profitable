@@ -1,0 +1,934 @@
+{
+  "_doc": "Measured, not inferred: which gates go red when their own declared JSON inputs are corrupted. Produced by scripts/audit-gate-teeth.mjs. NO-TEETH is a shortlist for human review, not a verdict — a gate may legitimately guard HTML or a structural property the mutation preserves.",
+  "generatedAt": "2026-08-07",
+  "results": [
+    {
+      "gate": "check-analytics-vocabulary.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-article-graphics.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-article-tldr.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-audio-coverage.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-audio-fabrications.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-audit-fetch-timeouts.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-band-coverage.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/cost-index-history.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/cost-index-history.json"
+    },
+    {
+      "gate": "check-banned-words.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-blog-index-links.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-breadcrumb-separator.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-bridge-cointegration.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/cost-index-history.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/cost-index-history.json"
+    },
+    {
+      "gate": "check-button-vocabulary.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-claim-usage.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-cls-animation.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-content-guardrails.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-contrast.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-corrections-ledger.mjs",
+      "verdict": "HAS-TEETH",
+      "inputs": [
+        {
+          "file": "data/cost-index-corrections.json",
+          "caught": true
+        },
+        {
+          "file": "data/cost-index-corrections.lock.json",
+          "caught": false
+        }
+      ],
+      "note": "goes red when data/cost-index-corrections.json is corrupted"
+    },
+    {
+      "gate": "check-cost-index-basis-leak.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-cost-index-calibration.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-cost-index-confidence.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-cost-index-dispatch-fresh.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-cost-index-drivers.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/cost-index-drivers.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/cost-index-drivers.json"
+    },
+    {
+      "gate": "check-cost-index-editors-note.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/cost-index-editors-notes.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/cost-index-editors-notes.json"
+    },
+    {
+      "gate": "check-cost-index-email.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/cost-confidence-calibration.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/cost-confidence-calibration.json"
+    },
+    {
+      "gate": "check-cost-index-events.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/cost-index-events.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/cost-index-events.json"
+    },
+    {
+      "gate": "check-cost-index-freshness.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-cost-index-independence.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-cost-index-orphans.mjs",
+      "verdict": "ALREADY-RED",
+      "note": "exits 1 on clean data; teeth unmeasurable until it is green"
+    },
+    {
+      "gate": "check-cost-index-picker.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-cost-index-seasonal.mjs",
+      "verdict": "HAS-TEETH",
+      "inputs": [
+        {
+          "file": "data/seasonality.json",
+          "caught": true
+        }
+      ],
+      "note": "goes red when data/seasonality.json is corrupted"
+    },
+    {
+      "gate": "check-cost-index-series-freshness.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/cost-index-retired.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/cost-index-retired.json"
+    },
+    {
+      "gate": "check-cost-index-sources.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/cost-index-sources.json",
+          "caught": false
+        },
+        {
+          "file": "data/cost-index-bounds.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/cost-index-sources.json, data/cost-index-bounds.json"
+    },
+    {
+      "gate": "check-cost-index-sync.mjs",
+      "verdict": "HAS-TEETH",
+      "inputs": [
+        {
+          "file": "data/cost-index-sources.json",
+          "caught": true
+        },
+        {
+          "file": "data/cost-index-bounds.json",
+          "caught": true
+        }
+      ],
+      "note": "goes red when data/cost-index-sources.json, data/cost-index-bounds.json is corrupted"
+    },
+    {
+      "gate": "check-cost-research.mjs",
+      "verdict": "HAS-TEETH",
+      "inputs": [
+        {
+          "file": "data/cost-research-content.json",
+          "caught": false
+        },
+        {
+          "file": "data/cost-research-study.json",
+          "caught": false
+        },
+        {
+          "file": "data/research-references.json",
+          "caught": true
+        }
+      ],
+      "note": "goes red when data/research-references.json is corrupted"
+    },
+    {
+      "gate": "check-count-sentinel-escape.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-counts-coherence.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-crop-condition-backdrop.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-css-drift.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-css-shells.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-cta-canon.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-dark-contrast.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-data-promise-rail.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-eia-energy-backdrop.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-ers-availability.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/ingredient-ers-codes.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/ingredient-ers-codes.json"
+    },
+    {
+      "gate": "check-ers-food-dollar.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-ers-meat-chain.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-event-prop-cardinality.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-experiments-parity.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/experiments.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/experiments.json"
+    },
+    {
+      "gate": "check-fabrications.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-fieldnote-attribution.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-fieldnotes-allowlist.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-footer-payload.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-glossary-hub.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/glossary-term-examples.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/glossary-term-examples.json"
+    },
+    {
+      "gate": "check-headers-license.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-hidden-attribute.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-hreflang-orphans.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-image-dimensions.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-image-formats.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-include-coverage.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-ingredient-aliases.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/ingredient-aliases.json",
+          "caught": false
+        },
+        {
+          "file": "data/cost-index-sources.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/ingredient-aliases.json, data/cost-index-sources.json"
+    },
+    {
+      "gate": "check-ingredient-jsonld.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-ingredient-state-record.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-ingredient-yields.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/ingredient-yields.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/ingredient-yields.json"
+    },
+    {
+      "gate": "check-intent-param-targets.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-kind-registry.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-knit-coverage.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-kpi-doc.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/kpis.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/kpis.json"
+    },
+    {
+      "gate": "check-lazy-images.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-lifecycle-locale-parity.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-locale-parity.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-lockfloat-copy.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-mark-geometry.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-menu-pricing-render.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-meta-description-length.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-name-coherence.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-newsletter-copy.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-no-calendly-references.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-no-fixed-min-width.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-no-innerhtml.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-no-third-party-plausible.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-noaa-landings.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/ingredient-noaa-codes.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/ingredient-noaa-codes.json"
+    },
+    {
+      "gate": "check-og-accents.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-og-coverage.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-og-images.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-og-locale-parity.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-og-template-grid.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-open-data-catalog.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-open-lane-honesty.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-overview-quality.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/library-batches.json",
+          "caught": false
+        },
+        {
+          "file": "data/article-audio.json",
+          "caught": false
+        },
+        {
+          "file": "data/library-tags.json",
+          "caught": false
+        },
+        {
+          "file": "data/i18n-slug-map.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/library-batches.json, data/article-audio.json, data/library-tags.json, data/i18n-slug-map.json"
+    },
+    {
+      "gate": "check-pillar-coverage.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/topics.json",
+          "caught": false
+        },
+        {
+          "file": "data/library-tags.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/topics.json, data/library-tags.json"
+    },
+    {
+      "gate": "check-positioning-drift.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-pressure-freshness.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/pressure-history.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/pressure-history.json"
+    },
+    {
+      "gate": "check-pressure-honesty.mjs",
+      "verdict": "HAS-TEETH",
+      "inputs": [
+        {
+          "file": "data/pressure-rules.json",
+          "caught": true
+        },
+        {
+          "file": "data/cost-pressure.json",
+          "caught": true
+        },
+        {
+          "file": "data/pressure-observations.json",
+          "caught": true
+        },
+        {
+          "file": "data/pressure-observations.demo.json",
+          "caught": false
+        }
+      ],
+      "note": "goes red when data/pressure-rules.json, data/cost-pressure.json, data/pressure-observations.json is corrupted"
+    },
+    {
+      "gate": "check-pressure-sources.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/pressure-rules.json",
+          "caught": false
+        },
+        {
+          "file": "data/pressure-source-specs.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/pressure-rules.json, data/pressure-source-specs.json"
+    },
+    {
+      "gate": "check-pricing-consistency.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-removed-slugs.mjs",
+      "verdict": "ALREADY-RED",
+      "note": "exits 1 on clean data; teeth unmeasurable until it is green"
+    },
+    {
+      "gate": "check-reply-time-canon.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-retired-links.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-rss-coverage.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-seasonality-education.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/seasonality-education.json",
+          "caught": false
+        },
+        {
+          "file": "data/cost-index-labels.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/seasonality-education.json, data/cost-index-labels.json"
+    },
+    {
+      "gate": "check-seasonality-fusion.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-security-claims.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/security-claims.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/security-claims.json"
+    },
+    {
+      "gate": "check-security-locale-parity.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-share-snapshot-kinds.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-sheet-help-cadence.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-sheet-no-fetch.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-sheets-parity.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-shippable-bar.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-snippet-shape.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-source-tier.mjs",
+      "verdict": "HAS-TEETH",
+      "inputs": [
+        {
+          "file": "data/cost-index-sources.json",
+          "caught": true
+        }
+      ],
+      "note": "goes red when data/cost-index-sources.json is corrupted"
+    },
+    {
+      "gate": "check-src-sentinel.mjs",
+      "verdict": "HAS-TEETH",
+      "inputs": [
+        {
+          "file": "data/seasonality.json",
+          "caught": false
+        },
+        {
+          "file": "data/cost-outlook.json",
+          "caught": false
+        },
+        {
+          "file": "data/cost-pressure.json",
+          "caught": false
+        },
+        {
+          "file": "data/cost-revisions.json",
+          "caught": false
+        },
+        {
+          "file": "data/cost-lockfloat.json",
+          "caught": false
+        },
+        {
+          "file": "data/cost-forecast-backtest.json",
+          "caught": true
+        },
+        {
+          "file": "data/cost-index-calibration-report.json",
+          "caught": false
+        },
+        {
+          "file": "data/src-sentinel-budget.json",
+          "caught": true
+        },
+        {
+          "file": "data/src-sentinel-worklist.json",
+          "caught": false
+        }
+      ],
+      "note": "goes red when data/cost-forecast-backtest.json, data/src-sentinel-budget.json is corrupted"
+    },
+    {
+      "gate": "check-staleness-honesty.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-stone-2-usage.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-studio-voice-boundary.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-study-datapackage.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-study-engine-parity.mjs",
+      "verdict": "HAS-TEETH",
+      "inputs": [
+        {
+          "file": "data/cost-research-study.json",
+          "caught": true
+        },
+        {
+          "file": "data/research-references.json",
+          "caught": true
+        }
+      ],
+      "note": "goes red when data/cost-research-study.json, data/research-references.json is corrupted"
+    },
+    {
+      "gate": "check-svg-dimensions.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-table-scroll-wrap.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-tests.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-text-content-rendering.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-tokens-sync.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/muntin.tokens.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/muntin.tokens.json"
+    },
+    {
+      "gate": "check-tool-header.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-tool-no-fetch.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/security-claims-exemptions.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/security-claims-exemptions.json"
+    },
+    {
+      "gate": "check-tool-verified-stamp.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-trend-skill.mjs",
+      "verdict": "NO-TEETH",
+      "inputs": [
+        {
+          "file": "data/cost-index-history.json",
+          "caught": false
+        }
+      ],
+      "note": "stays GREEN with every one of its declared inputs corrupted: data/cost-index-history.json"
+    },
+    {
+      "gate": "check-turnstile-singleton.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-vb-scenarios.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    },
+    {
+      "gate": "check-window-locale-parity.mjs",
+      "verdict": "NO-JSON-INPUT",
+      "note": "reads no mutable data/*.json — this instrument cannot judge it"
+    }
+  ]
+}

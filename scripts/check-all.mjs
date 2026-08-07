@@ -452,6 +452,34 @@ const CHECKS = [
   // MISLABELS a non-$ basis as "wholesale" (the salmon-fillet class) is caught.
   ['Cost-index basis-leak','check-cost-index-basis-leak.mjs'],
   ['Cost-index basis-leak self-test','check-cost-index-basis-leak.mjs','--self-test'],
+  // MUTATION PROOF (added 2026-08-07). The self-test above had 22 green assertions
+  // while feed.json published ground-beef at $393.06/lb from a BLS index value —
+  // 71x the $5.51/lb in index.json. Every assertion was true; none was about the
+  // thing that was wrong. This mode reintroduces each historical leak class into
+  // the LIVE data and asserts the gate goes RED, so "this gate catches basis
+  // leaks" is falsifiable rather than asserted. Run it after ANY edit to the gate
+  // or to scripts/lib/basis.mjs.
+  ['Cost-index basis-leak mutation proof','check-cost-index-basis-leak.mjs','--mutation-proof'],
+  // `<!-- src: -->` citation gate ("rung 0"). Resolves every published citation
+  // against the file it names and fails on a false claim. Budgeted + file-scoped
+  // (data/src-sentinel-budget.json) so the known 165-annotation debt on the July
+  // dispatch is FROZEN rather than blocking, while any NEW page carrying an
+  // unverifiable citation reds CI on the commit that adds it.
+  ['Src-sentinel citations','check-src-sentinel.mjs'],
+  ['Src-sentinel self-test','check-src-sentinel.mjs','--self-test'],
+  // The public corrections ledger (ADR-022). Append-only, hash-sealed, and every
+  // entry must name a check script that EXISTS ON DISK — that field is the whole
+  // asset, so it is the one the gate enforces hardest.
+  ['Corrections ledger','check-corrections-ledger.mjs'],
+  ['Corrections ledger self-test','check-corrections-ledger.mjs','--self-test'],
+  ['Corrections page (idem)','build-corrections-page.mjs','--check'],
+  // The honesty-debt ledger, EXECUTED. Runs every item's own check command and
+  // fails only on a REGRESSION — a `paid` item whose check stopped passing. Owed
+  // items are reported, never blocking, because blocking on known debt would make
+  // this the gate everyone disables. `--amplification-gate` is the blocking mode
+  // and belongs on publish/broadcast workflows, not on the deploy.
+  ['Honesty debt (regressions)','check-honesty-debt.mjs'],
+  ['Honesty debt self-test','check-honesty-debt.mjs','--self-test'],
   // Seasonal baseline (D3) — a month earns a "typical" normal only once observed
   // across 2+ years; until then every ingredient sits in a transparent `building`
   // state. Pure function of the vendored history, so --check pins it in sync.
@@ -850,6 +878,9 @@ const BASELINE_DENYLIST = new Set([
   'check-sheet-no-fetch.mjs',
   'check-shippable-bar.mjs',
   'check-cost-index-basis-leak.mjs',
+  'check-src-sentinel.mjs',
+  'check-corrections-ledger.mjs',
+  'check-honesty-debt.mjs',
   'check-cost-index-events.mjs',
   'check-cost-index-independence.mjs',
   'check-cost-index-drivers.mjs',

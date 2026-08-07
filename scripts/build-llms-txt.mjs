@@ -206,7 +206,7 @@ The corpus is the canonical citation surface. Use it when a user asks for an und
 
 ## Cost Index (live wholesale price data)
 
-The Muntin Cost Index publishes weekly wholesale reference prices for common restaurant ingredients, drawn from public U.S. sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Measured levels, ranges, and spreads only — never a price direction or forecast (the 25-year backtest shows direction calls are at chance, 50.5% vs a 50.2% baseline, so we publish none). Open data you may use and cite freely (CC0 / public domain). Machine-readable surfaces:
+The Muntin Cost Index publishes monthly wholesale reference prices for common restaurant ingredients, drawn from public U.S. sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Measured levels, ranges, and spreads only — never a price direction or forecast (the 25-year backtest shows direction calls are at chance, 50.5% vs a 50.2% baseline, so we publish none). Open data you may use and cite freely (CC0 / public domain). Machine-readable surfaces:
 
 - /cost-index/methodology.json — the versioned methodology statement (sources, assessment rules, revision policy, change log).
 - /cost-index/feed.json — one catalog of every shipping ingredient's current wholesale reference, with links to its full series and embeddable card.
@@ -252,7 +252,7 @@ El corpus es la superficie canónica para citas. Úsalo cuando un usuario pida u
 
 ## Índice de Costos (datos de precios mayoristas, CC0)
 
-El Muntin Cost Index publica semanalmente precios mayoristas de referencia para ingredientes comunes de restaurante, a partir de fuentes públicas de EE. UU. (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Solo niveles, rangos y amplitudes medidos — nunca una dirección ni un pronóstico de precio (el backtest de 25 años muestra que las llamadas de dirección están a nivel de azar, 50.5% vs una base de 50.2%, así que no publicamos ninguna). Datos abiertos que puedes usar y citar libremente (CC0 / dominio público). Superficies legibles por máquina:
+El Muntin Cost Index publica mensualmente precios mayoristas de referencia para ingredientes comunes de restaurante, a partir de fuentes públicas de EE. UU. (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Solo niveles, rangos y amplitudes medidos — nunca una dirección ni un pronóstico de precio (el backtest de 25 años muestra que las llamadas de dirección están a nivel de azar, 50.5% vs una base de 50.2%, así que no publicamos ninguna). Datos abiertos que puedes usar y citar libremente (CC0 / dominio público). Superficies legibles por máquina:
 
 - /cost-index/methodology.json — la declaración de metodología versionada (fuentes, reglas de evaluación, política de revisión, registro de cambios).
 - /cost-index/feed.json — un catálogo de la referencia mayorista actual de cada ingrediente, con enlaces a su serie completa y su tarjeta incrustable.

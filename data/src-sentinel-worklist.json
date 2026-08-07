@@ -1,0 +1,1303 @@
+{
+  "_doc": "Remediation queue emitted by scripts/check-src-sentinel.mjs. Every entry is one annotation an agent session can repoint or repair. Regenerate with --worklist; never hand-edit.",
+  "generatedAt": "2026-08-07",
+  "annotations": 165,
+  "counts": {
+    "MISMATCH": 1,
+    "BADPATH": 1,
+    "BADFILE": 0,
+    "DRIFT": 21,
+    "UNANCHORED": 138,
+    "INFO": 3
+  },
+  "items": [
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 500,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.items[].gated (0 of 81 true), dispatch.count",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 502,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basket.pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 502,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.up/.count",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 502,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.items[].gated",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 503,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.wow.prevAsOf",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 503,
+      "type": "UNANCHORED",
+      "annotation": "data/cost-index-editions.json, asOf 2026-07-06",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 503,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.sinceDate",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 503,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.asOf",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 506,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basket.pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 510,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.up/.flat/.down",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 511,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.items[].gated",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 512,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.sinceDate",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 515,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basket.pct/.nContributing; dispatch.risers[0].pct; script line 1401",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 522,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basket.pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 522,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.up/.down/.flat/.count",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 522,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.items[].gated",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 522,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.risers[0].pct, script line 1401 rendering",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 524,
+      "type": "DRIFT",
+      "annotation": "cost-forecast-backtest.json verdict.coneHonestThroughH = 1",
+      "detail": "dated post cites the LIVE file data/cost-forecast-backtest.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 524,
+      "type": "MISMATCH",
+      "annotation": "cost-outlook.json outlook = \"mixed\", weightedTilt = −0.145 on the −1..+1 scale",
+      "detail": "data/cost-outlook.json outlook: expected \"mixed\", file has \"building\"",
+      "remedy": "Correct the prose to the resolved value, or repoint the annotation, then log the change in data/cost-index-corrections.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 537,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.count",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 537,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.items[].gated",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 537,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.risers[0].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 537,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.risers[1].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 537,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.fallers[0].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 537,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.items[].verdict counts",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 537,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.items[].bias counts",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 537,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.reprice = [], dispatch.watch = []",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 538,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.risers[1].pct = +42.3%, dispatch.risers[2].pct = +39.7%; data story §3",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 538,
+      "type": "UNANCHORED",
+      "annotation": "build-cost-index-dispatch.mjs lines 204–212, line-176 comment",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 538,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.items filtered verdict=\"structural\"",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 538,
+      "type": "UNANCHORED",
+      "annotation": "script line 1401; dispatch.risers[0].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 539,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.up/.down/.flat",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 579,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basket.pct (exact −4.96%, printed in the cite-this block)",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 579,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basket.dir",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 579,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basket.agreement",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 579,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basket.nContributing/.nDeclared",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 579,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basket.coverage = 1",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 579,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basket.asOf",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 580,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.wow.prevAsOf",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 580,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.wow.basket.state = \"anchor-unchanged\", .anchor = 2026-05-01",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 580,
+      "type": "UNANCHORED",
+      "annotation": "script line 313",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 584,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.heaviest.pct (−13.98%)",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 584,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.heaviest.weight",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 584,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.heaviest.points",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 584,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.heaviest.pressure",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 584,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.topPush.pct (+29.26%)",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 584,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.topPush",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 584,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.topPush.points",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 584,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.topPush.pressure = null",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 584,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.contributors[] (−33.33 / +25.64 / −19.83 / −15.12 / −14.98)",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 584,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.drivers[0].pct (+1.88%)",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 584,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.drivers[0].leads",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 587,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.risers[0..2].confidence = \"low\"",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 588,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.risers[0].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 588,
+      "type": "UNANCHORED",
+      "annotation": "risers[0].medianCents/.rangeCents",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 588,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.asOf",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 588,
+      "type": "UNANCHORED",
+      "annotation": "risers[0].arc, usda-ams-chicago",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 588,
+      "type": "UNANCHORED",
+      "annotation": "risers[0].arc",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 588,
+      "type": "UNANCHORED",
+      "annotation": "derived in data story from risers[0].arc",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 589,
+      "type": "UNANCHORED",
+      "annotation": "risers[1].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 589,
+      "type": "UNANCHORED",
+      "annotation": "risers[1].medianCents/.rangeCents",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 589,
+      "type": "UNANCHORED",
+      "annotation": "risers[1].arc, usda-ams-boston",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 589,
+      "type": "UNANCHORED",
+      "annotation": "risers[1].arc",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 589,
+      "type": "UNANCHORED",
+      "annotation": "data story on risers[1].arc",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 589,
+      "type": "UNANCHORED",
+      "annotation": "risers[2].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 589,
+      "type": "UNANCHORED",
+      "annotation": "risers[2].medianCents/.rangeCents",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 589,
+      "type": "UNANCHORED",
+      "annotation": "risers[2].arc",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 589,
+      "type": "UNANCHORED",
+      "annotation": "data story on risers[2].arc",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 590,
+      "type": "UNANCHORED",
+      "annotation": "risers[3].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 590,
+      "type": "UNANCHORED",
+      "annotation": "risers[3].arc, usda-ams-atlanta",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 590,
+      "type": "UNANCHORED",
+      "annotation": "risers[3].arc",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 590,
+      "type": "UNANCHORED",
+      "annotation": "risers[3].verdict",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 590,
+      "type": "UNANCHORED",
+      "annotation": "risers[3].reason",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 591,
+      "type": "UNANCHORED",
+      "annotation": "fallers[0].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 591,
+      "type": "UNANCHORED",
+      "annotation": "fallers[0].arc",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 591,
+      "type": "UNANCHORED",
+      "annotation": "data story on fallers[0].arc",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 591,
+      "type": "UNANCHORED",
+      "annotation": "fallers[0].seasonal = true",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 591,
+      "type": "UNANCHORED",
+      "annotation": "fallers[1].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 591,
+      "type": "UNANCHORED",
+      "annotation": "fallers[1].arc",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 591,
+      "type": "UNANCHORED",
+      "annotation": "fallers[2]/[3].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 591,
+      "type": "UNANCHORED",
+      "annotation": "risers[0..2].verdict",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 626,
+      "type": "UNANCHORED",
+      "annotation": "risers[1].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 626,
+      "type": "BADPATH",
+      "annotation": "seasonality.json months[\"07\"].medianCents = 1870",
+      "detail": "data/seasonality.json has no path \"months[\"07\"].medianCents\"",
+      "remedy": "Correct the prose to the resolved value, or repoint the annotation, then log the change in data/cost-index-corrections.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 626,
+      "type": "UNANCHORED",
+      "annotation": "risers[1].medianCents = 3594",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 626,
+      "type": "DRIFT",
+      "annotation": "cost-lockfloat.json items[].halfWidthPct",
+      "detail": "dated post cites the LIVE file data/cost-lockfloat.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 626,
+      "type": "UNANCHORED",
+      "annotation": "risers[1], gated",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 629,
+      "type": "UNANCHORED",
+      "annotation": "fallers[0].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 629,
+      "type": "UNANCHORED",
+      "annotation": "fallers[0].arc",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 629,
+      "type": "DRIFT",
+      "annotation": "seasonality.json months[\"07\"]→[\"08\"] medians",
+      "detail": "dated post cites the LIVE file data/seasonality.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 629,
+      "type": "UNANCHORED",
+      "annotation": "fallers[0].pressure",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 629,
+      "type": "DRIFT",
+      "annotation": "cost-pressure.json items[\"romaine-lettuce\"].contributors",
+      "detail": "dated post cites the LIVE file data/cost-pressure.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 629,
+      "type": "UNANCHORED",
+      "annotation": "cost-pressure.json, usdm-drought",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 629,
+      "type": "UNANCHORED",
+      "annotation": "cost-pressure.json, ams-shipping-point",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 632,
+      "type": "DRIFT",
+      "annotation": "cost-lockfloat.json counts.withhold/catalog",
+      "detail": "dated post cites the LIVE file data/cost-lockfloat.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 632,
+      "type": "UNANCHORED",
+      "annotation": "lockfloat items[].halfWidthPct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 632,
+      "type": "UNANCHORED",
+      "annotation": "lockfloat items[\"button-mushroom\"].upPct/.downPct/.nTested",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 632,
+      "type": "UNANCHORED",
+      "annotation": "lockfloat items[].halfWidthPct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 632,
+      "type": "UNANCHORED",
+      "annotation": "lockfloat thresholds",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 632,
+      "type": "UNANCHORED",
+      "annotation": "data story §9.4; thresholds.lockMinCoverageLo",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 635,
+      "type": "UNANCHORED",
+      "annotation": "script line 1401; risers[0].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 636,
+      "type": "UNANCHORED",
+      "annotation": "cost-revisions.json, median/p90 |deltaPct| (p90 by the nearest-rank convention; linear interpolation gives 53.2%)",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 636,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.count",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 639,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.count",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 639,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.items[].gated (0 of 81 true)",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 747,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.reprice = [], dispatch.watch = []",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 754,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.pressureAsOf",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 754,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.pressure[]; cost-outlook.json counts (building 5, easing 7, n 12)",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 756,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.pressure[]",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 757,
+      "type": "DRIFT",
+      "annotation": "cost-pressure.json items[\"chicken-breast\"].contributors[0].change_pct",
+      "detail": "dated post cites the LIVE file data/cost-pressure.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 757,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.pressure[]",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 763,
+      "type": "DRIFT",
+      "annotation": "seasonality.json summary.ready/total",
+      "detail": "dated post cites the LIVE file data/seasonality.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 763,
+      "type": "UNANCHORED",
+      "annotation": "params.minYearsPerMonth",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 763,
+      "type": "UNANCHORED",
+      "annotation": "summary.building",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 763,
+      "type": "UNANCHORED",
+      "annotation": "months[\"08\"].years ≥ 2",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 763,
+      "type": "DRIFT",
+      "annotation": "seasonality.json months[\"07\"]→[\"08\"] medians",
+      "detail": "dated post cites the LIVE file data/seasonality.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 763,
+      "type": "DRIFT",
+      "annotation": "seasonality.json months[\"07\"]→[\"08\"] medians",
+      "detail": "dated post cites the LIVE file data/seasonality.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 763,
+      "type": "UNANCHORED",
+      "annotation": "seasonality.json, dead-flat list",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 821,
+      "type": "DRIFT",
+      "annotation": "cost-lockfloat.json counts",
+      "detail": "dated post cites the LIVE file data/cost-lockfloat.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 821,
+      "type": "DRIFT",
+      "annotation": "cost-lockfloat.json _doc",
+      "detail": "dated post cites the LIVE file data/cost-lockfloat.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 821,
+      "type": "UNANCHORED",
+      "annotation": "lockfloat items[].halfWidthPct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 821,
+      "type": "UNANCHORED",
+      "annotation": "lockfloat items[]",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 821,
+      "type": "UNANCHORED",
+      "annotation": "lockfloat items[]",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 821,
+      "type": "UNANCHORED",
+      "annotation": "lockfloat thresholds",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 821,
+      "type": "UNANCHORED",
+      "annotation": "lockfloat items[].reason counts",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 847,
+      "type": "DRIFT",
+      "annotation": "cost-forecast-backtest.json verdict.coneHonestThroughH = 1",
+      "detail": "dated post cites the LIVE file data/cost-forecast-backtest.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 847,
+      "type": "UNANCHORED",
+      "annotation": "horizonCone.horizons[0]",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 847,
+      "type": "UNANCHORED",
+      "annotation": "horizons[1]",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 847,
+      "type": "DRIFT",
+      "annotation": "cost-outlook.json outlook/weightedTilt; scale = weighted mean of ±1 direction signs per scripts/build-cost-outlook.mjs:58-67",
+      "detail": "dated post cites the LIVE file data/cost-outlook.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 847,
+      "type": "DRIFT",
+      "annotation": "cost-outlook.json counts",
+      "detail": "dated post cites the LIVE file data/cost-outlook.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 847,
+      "type": "DRIFT",
+      "annotation": "cost-outlook.json lockCandidates = []",
+      "detail": "dated post cites the LIVE file data/cost-outlook.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 847,
+      "type": "DRIFT",
+      "annotation": "cost-outlook.json asOf",
+      "detail": "dated post cites the LIVE file data/cost-outlook.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 847,
+      "type": "UNANCHORED",
+      "annotation": "seasonalTermStructure",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 847,
+      "type": "UNANCHORED",
+      "annotation": "headToHead.seasonalWinOnDisagree",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 851,
+      "type": "UNANCHORED",
+      "annotation": "calibration band.pooledCoverage/.nominal",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 851,
+      "type": "UNANCHORED",
+      "annotation": "data story §8",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 851,
+      "type": "UNANCHORED",
+      "annotation": "band.items/.scoredSteps",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 851,
+      "type": "UNANCHORED",
+      "annotation": "band.minItemCoverage/.maxItemCoverage",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 851,
+      "type": "UNANCHORED",
+      "annotation": "band.underCovering",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 851,
+      "type": "UNANCHORED",
+      "annotation": "trend.overallHitRate/.baseline",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 851,
+      "type": "UNANCHORED",
+      "annotation": "trend",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 851,
+      "type": "UNANCHORED",
+      "annotation": "trend.tiers",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 851,
+      "type": "DRIFT",
+      "annotation": "cost-revisions.json count, revisions[].type",
+      "detail": "dated post cites the LIVE file data/cost-revisions.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 851,
+      "type": "UNANCHORED",
+      "annotation": "cost-revisions.json",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 851,
+      "type": "DRIFT",
+      "annotation": "cost-revisions.json print dates",
+      "detail": "dated post cites the LIVE file data/cost-revisions.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 851,
+      "type": "UNANCHORED",
+      "annotation": "revisions[].date filtered to 2026-06",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 851,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basketWeightsVersion/.methodologyVersion",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 866,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basket.pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 867,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.risers[2].pct = +39.7%, risers[1].pct = +42.3%",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 868,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.wow.prevAsOf",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 869,
+      "type": "DRIFT",
+      "annotation": "seasonality.json months[\"07\"]→[\"08\"] medians",
+      "detail": "dated post cites the LIVE file data/seasonality.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 879,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basket.pct = −0.049649",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 887,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basket.pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 887,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.basket.asOf",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 887,
+      "type": "UNANCHORED",
+      "annotation": "dispatch.wow.prevAsOf",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 888,
+      "type": "UNANCHORED",
+      "annotation": "risers[1].arc, risers[2].arc",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 888,
+      "type": "UNANCHORED",
+      "annotation": "risers[0].arc",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 889,
+      "type": "UNANCHORED",
+      "annotation": "fallers[0].pct",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 889,
+      "type": "UNANCHORED",
+      "annotation": "fallers[0].pressure",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 890,
+      "type": "DRIFT",
+      "annotation": "seasonality.json months[\"07\"]→[\"08\"] medians",
+      "detail": "dated post cites the LIVE file data/seasonality.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 890,
+      "type": "UNANCHORED",
+      "annotation": "seasonality.json",
+      "detail": "names no file — points at a builder runtime object a reader cannot open",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    },
+    {
+      "file": "blog/cost-index-2026-07/index.html",
+      "line": 891,
+      "type": "DRIFT",
+      "annotation": "cost-revisions.json median |deltaPct|",
+      "detail": "dated post cites the LIVE file data/cost-revisions.json, which the editions spine does not freeze — true today, unverifiable tomorrow",
+      "remedy": "Repoint at the frozen edition: <!-- src: edition:<asOf> <path> = <value> --> against data/cost-index-editions.json"
+    }
+  ]
+}

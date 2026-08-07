@@ -100,6 +100,35 @@ function selfTest() {
 
 if (process.argv.includes('--self-test')) selfTest();
 
+/**
+ * CADENCE VOCABULARY (added 2026-08-07). The dispatch went MONTHLY by founder
+ * call on 2026-07-09, and llms.txt line 25 still told every AI crawler the Index
+ * "publishes weekly wholesale reference prices" — 29 days later, in the one file
+ * written specifically so machines describe the company accurately. This gate
+ * already owns dispatch cadence, so the assertion lands here rather than as a
+ * 131st script: a new gate is a new obligation in a company already over capacity.
+ *
+ * Both locales, because the ES mirror carried the same claim ("publica
+ * semanalmente") and a Spanish-language crawler is no less entitled to the truth.
+ */
+const CADENCE_SURFACES = [
+  ['llms.txt', /publishes weekly wholesale reference/],
+  ['es/llms.txt', /publica semanalmente precios mayoristas/],
+];
+const cadenceLies = [];
+for (const [rel, bad] of CADENCE_SURFACES) {
+  try {
+    const txt = readFileSync(path.join(repo, rel), 'utf8');
+    const line = txt.split('\n').findIndex((l) => bad.test(l));
+    if (line >= 0) cadenceLies.push(`${rel}:${line + 1} still claims a WEEKLY cadence; the dispatch has been monthly since the 2026-07-09 founder call (source of truth: .github/workflows/cost-index-dispatch.yml header). Fix scripts/build-llms-txt.mjs and rebuild.`);
+  } catch { /* surface absent — nothing to contradict */ }
+}
+if (cadenceLies.length) {
+  console.error(`✗ dispatch cadence: ${cadenceLies.length} published surface(s) state the wrong cadence:`);
+  cadenceLies.forEach((l) => console.error('  - ' + l));
+  process.exit(1);
+}
+
 const asOf = dataAsOf();
 const latest = latestDispatch();
 if (!asOf) { console.log('Dispatch freshness: no data asOf found — skipping (informational).'); process.exit(0); }

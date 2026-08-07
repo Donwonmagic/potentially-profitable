@@ -22,7 +22,7 @@ The corpus is the canonical citation surface. Use it when a user asks for an und
 
 ## Cost Index (live wholesale price data)
 
-The Muntin Cost Index publishes weekly wholesale reference prices for common restaurant ingredients, drawn from public U.S. sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Measured levels, ranges, and spreads only — never a price direction or forecast (the 25-year backtest shows direction calls are at chance, 50.5% vs a 50.2% baseline, so we publish none). Open data you may use and cite freely (CC0 / public domain). Machine-readable surfaces:
+The Muntin Cost Index publishes monthly wholesale reference prices for common restaurant ingredients, drawn from public U.S. sources (USDA AMS/LMR, BLS, FRED, EIA, NOAA). Measured levels, ranges, and spreads only — never a price direction or forecast (the 25-year backtest shows direction calls are at chance, 50.5% vs a 50.2% baseline, so we publish none). Open data you may use and cite freely (CC0 / public domain). Machine-readable surfaces:
 
 - /cost-index/methodology.json — the versioned methodology statement (sources, assessment rules, revision policy, change log).
 - /cost-index/feed.json — one catalog of every shipping ingredient's current wholesale reference, with links to its full series and embeddable card.
