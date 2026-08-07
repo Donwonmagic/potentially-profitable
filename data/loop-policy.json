@@ -1,0 +1,109 @@
+{
+  "$schema": "internal://loop-policy",
+  "version": 1,
+  "generated": "2026-08-07",
+  "ofRecord": "docs/editorial/decisions/ADR-034-the-loop-driver.md",
+  "_what": "Every threshold scripts/loop-driver.mjs enforces, with the arithmetic that produced it. A number in code is a number nobody can argue with; a number here carries its derivation and can be shown wrong.",
+  "founderRateLimit": {
+    "_why": "Rule 3 of the loop: it is rate-limited by FOUNDER capacity, not agent throughput. An agent closes an item in minutes. If the loop routes founder work faster than the founder can absorb it, it is manufacturing review debt and calling it progress.",
+    "floorHoursPerMonth": 13,
+    "ceilingHoursPerMonth": 26,
+    "reviewOverheadPerMonth": 2.5,
+    "executableHoursPerWindow": 10.5,
+    "executableDerivation": "13 (data/queue.json#capacity.founderHoursPerMonth.floor) − 2.5 (capacity.reviewOverheadPerMonth.hours, the PR review and two production deploys no item prices) = 10.5 h/window available to queue items. The FLOOR and not the ceiling because capacity.planAgainst is literally \"floor\": 26 is the founder's best month, and a queue sized to a best month is a queue that misses.",
+    "intakeCeilingPerWindow": 10.5,
+    "intakeRule": "The loop may not create or promote a founder-owned item into a window whose open founderHours already meet or exceed 10.5. This is not a new rule — it is data/queue.json#capacity.floorPlan.ifItGrowsAgain (\"any item added to M1 after 2026-08-07 must either carry founderHours 0 or name which row of this drop order it displaces\") made executable.",
+    "measuredAtAuthoring": {
+      "asOf": "2026-08-07",
+      "method": "node scripts/loop-driver.mjs — founderLoad() over data/queue.json, summing declared founderHours on OPEN items. Counts every item's declared hours regardless of owner, matching check-queue budget()'s methodology, so 'both' items and the 1.25h of founder time declared on agent items are not lost.",
+      "openFounderHoursByWindow": {
+        "M1": 14.5,
+        "M2": 10.0,
+        "M3": 8.5,
+        "unwindowed": 0.0
+      },
+      "withOverhead": {
+        "M1": 17.0,
+        "M2": 12.5,
+        "M3": 11.0
+      },
+      "reproduces": "M1 17h reproduces ADR-033's recorded figure exactly. M2 moved 11.25h -> 12.5h and unwindowed 2.25h -> 0h on 2026-08-07 because the driver's first fire found Q-084..Q-087 carrying founderHours with NO window ('a founder-costing item must sit in a window, or it is unbudgeted') and windowed them per each validator's own declared cost. Those hours always existed; they were invisible to the budget.",
+      "totalOpenFounderHours": 33.0,
+      "windowsOfExecutableCapacity": 3.14,
+      "verdict": "M1 INTAKE CLOSED (14.5h open vs 10.5h executable, headroom -4.0h). M2 headroom +0.5h, M3 +2.0h. Total 33h EXCEEDS the 31.5h floor item-budget by 1.5h -> WARN, well under the 70.5h ceiling -> the loop runs. Growth: WARMING (0/5 briefs)."
+    },
+    "unpricedFounderItems": {
+      "rule": "A founder-routed item carrying no declared founderHours is UNCAPPED DEBT — you cannot rate-limit what nobody has priced. The driver refuses to promote one, and reports the standing count.",
+      "measuredAtAuthoring": 18,
+      "source": "data/readiness-register.json — 18 class:decision records, every one routesTo:founder, none priced."
+    },
+    "floorItemBudget": 31.5,
+    "floorItemBudgetDerivation": "(13 floor − 2.5 review overhead) × 3 windows = 31.5 h of the ninety days available to queue items. EXCEEDING THIS WARNS.",
+    "ceilingItemBudget": 70.5,
+    "ceilingItemBudgetDerivation": "(26 ceiling − 2.5 review overhead) × 3 windows = 70.5 h. EXCEEDING THIS HALTS THE WHOLE LOOP. Floor warns / ceiling fails is not a new rule — it is exactly what check-queue --budget already does per window (data/queue.json#capacity.floorPlan: 'over the ceiling fails, over the floor warns'), applied to the ninety-day total. A cliff at the FLOOR would have halted this driver on its first run over a 0.25h overage, and a driver that never fires delivers nothing.",
+    "growthHalt": {
+      "rule": "Over the last 5 issued briefs, if total open founder hours has grown by more than one window's executable capacity (10.5h), HALT with FOUNDER-DEBT-GROWTH.",
+      "why": "THE INHERITED BACKLOG IS NOT THE LOOP'S FAULT; growing it is. This is the only limit that measures the loop's own contribution, so it is the one that actually implements rule 3 — a loop closing agent items in minutes while routing founder items faster than 10.5h/window is manufacturing review debt and calling it progress.",
+      "capHours": 10.5
+    }
+  },
+  "convergence": {
+    "_why": "Rule 2: if the blocking count does not fall run-over-run, the loop is diverging and must halt and escalate rather than spin. A gap-seeking loop that never closes anything is the 5,005-line planning corpus with a cron attached.",
+    "window": 5,
+    "windowDerivation": "5 issued briefs. Measured burst pattern: 266 of 344 storefront commits landed on 8 days, 24 of 60 days idle (docs/handoff/board-execution-feasibility.md). Work arrives in bursts, so a run-over-run test on wall-clock days fires on idleness rather than on divergence. Counting BRIEFS makes the denominator the loop's own output.",
+    "rule": "Over the last 5 EXECUTE briefs, at least one queue item must have closed or one readiness item must have passed for the first time. Zero closures across five briefs = DIVERGENCE = halt.",
+    "whyNotRawBlockingCount": "The blocking count legitimately RISES when intake ingests new gaps, so a raw run-over-run comparison would halt the loop for doing its job. Closures cannot be inflated by intake, and check-queue --done refuses to write one without a passing verify command."
+  },
+  "isolation": {
+    "_why": "Earlier in this engagement six concurrent agents in one working tree corrupted their own measurements — the denominator moved underneath them while they counted it.",
+    "default": "serial",
+    "maxLanes": 3,
+    "maxLanesDerivation": "The claim ledger (data/queue.json) is single-writer and lives in the MAIN tree. Every additional lane multiplies merge conflicts on one JSON file against a founder who reviews 2.5 h/month. 3 is the largest number that still leaves one reviewable change per lane per week inside that budget.",
+    "worktreeRoot": ".loop-worktrees",
+    "rule": "Claims are always taken in the main tree by the driver, serially. Each lane's SESSION gets a detached git worktree pinned to the sha recorded in its brief, so anything it measures is measured against a frozen denominator. If git worktree is unavailable, lanes collapse to 1 and the driver says so rather than pretending."
+  },
+  "lease": {
+    "file": "data/loop-lease.json",
+    "ttlMinutes": 90,
+    "ttlDerivation": "One agent session's working life. Shorter than check-queue's 21-day claim expiry on purpose: the LEASE guards the selection critical section (read-decide-claim), not the work. Work is guarded by the claim.",
+    "atomicity": "Written with the O_EXCL (wx) flag. Two drivers racing, one file: the loser gets EEXIST from the kernel and halts. No advisory locking, no PID files, no polling."
+  },
+  "handoffLimits": {
+    "_why": "An agent session cannot make a phone call, sign an authorization, decide a price, or run a restaurant's month-end. Naming the boundary is what keeps the loop from generating work it can only pretend to do.",
+    "theLoopCannot": [
+      "sign or obtain the employer authorization (Q-002) — a signature is a legal act by a named human",
+      "run a real month through the product (Q-001) — needs a real month of invoices, a real physical count, and standing to judge the number",
+      "decide a price, a term, a differentiator, or an ICP — 18 register decisions route here",
+      "engage counsel, form an entity, or bind E&O — real dollars against a plan with no cash budget",
+      "make a phone call, hold a qualification conversation, or obtain an introduction",
+      "deploy to production — a pushed branch is not live; OpenNext web + Worker deploys are founder acts",
+      "fetch live NASS/Census/EIA data — keys and network live on the operator's Mac, not in the container"
+    ],
+    "whatItDoesInstead": "Routes the item to owner:founder, refuses to count it as closable work, and prices it or refuses to promote it."
+  },
+  "retires": {
+    "_why": "Every mechanism must state what it retires. The company is 2-4x over capacity; a mechanism that only adds is a tax.",
+    "items": [
+      "docs/handoff/bones/validate-*.md (15 files, 631 lines) as a WORK SOURCE. The driver reads data/readiness-register.json and nothing else; the reports survive as cited evidence only. Enforced by --self-test.",
+      "`check-readiness.mjs --next` and `check-honesty-debt.mjs --next` as separate entry points a session has to know about. One command now answers 'what do I do'.",
+      "The practice of a session choosing its own work. Selection is deterministic: same tree, same sha, same answer.",
+      "The unread stack trace .claude/hooks/session-start.sh printed on every session from `check-readiness.mjs --brief` — two correct artifacts with no seam between them, swallowed by `|| true`."
+    ]
+  },
+  "triggers": {
+    "_why": "GitHub disables scheduled workflows in PUBLIC repos after 60 days of inactivity, and the storefront is public. So the storefront gets no new cron.",
+    "primary": {
+      "what": ".claude/hooks/session-start.sh, both repos",
+      "why": "Measured: 1 of 108 agent transcripts in the 2026-08 engagement carried a CLAUDE.md; the hook ran in all of them. It is the only trigger in this company with a measured delivery rate above 1%.",
+      "fires": "--brief (read-only, never claims, never fails a session)"
+    },
+    "founder": {
+      "what": "node scripts/loop-driver.mjs --fire",
+      "why": "One command. Claims one item, prints one brief, exits."
+    },
+    "scheduled": {
+      "what": ".github/workflows/queue-consumer.yml in the PRIVATE product repo, daily 09:00 UTC",
+      "limit": "It cannot check out the storefront without a cross-repo PAT that does not exist (Muntin-Invoice-Decoder/CLAUDE.md: 'no workflow in either repo checks out the other'). Issuing that PAT is a founder call, not something a session adds silently. Until then the cron can only nudge the product-repo side; the storefront side fires on the hook."
+    }
+  }
+}

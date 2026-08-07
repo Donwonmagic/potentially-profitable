@@ -56,6 +56,40 @@ const ORCHESTRATOR = 'scripts/check-all.mjs';
  * would do today, so the decision can be re-examined rather than inherited.
  */
 export const UNWIRED = {
+  'check-convergence.mjs': {
+    since: '2026-08-07',
+    status:
+      'PASSES — exits 0 today. On its first live run it exited 1 on G5-BROKEN-VERIFY (Q-087, whose ' +
+      'verify was a double-quoted `node -e "…"` containing double quotes, so bash unquoted it and ' +
+      'node returned SyntaxError instead of a verdict). That verify was repaired in the same commit ' +
+      'and the halt cleared, which is the loop the gate is for. Q-081 (dead assertion before a ' +
+      'top-level `;`) and Q-084 (bare existence test) remain as non-halting notes.',
+    why:
+      'The convergence guard on the readiness loop. check-readiness.mjs answers "is this domain ' +
+      'ready"; this answers "is the loop CLOSING" by reading data/readiness-history.jsonl as a time ' +
+      'series — net closure per pass (closed − reopened − newly discovered), a stall detector, a ' +
+      'divergence detector for the close-3/discover-4 pattern that looks like activity, a founder ' +
+      'review-debt detector, and a static scan of every verify command in the register and the queue ' +
+      'for proofs that cannot fail or cannot run. Its consumer is the LOOP RUNNER, not the deploy: ' +
+      'exit 1 means "stop the loop and escalate to the founder", which is a meaningless instruction ' +
+      'to wrangler. Wiring it would also make the deploy depend on the shape of a planning artifact, ' +
+      'and the deploy is already red at 320/328 — a second red nobody can clear is how gates become ' +
+      'wallpaper. Run it from the loop, from the session-start hook (--brief), or on demand.',
+  },
+  'check-readiness.mjs': {
+    since: '2026-08-07',
+    status: 'PASSES — exits 0 today (0 regressions), while 43 of 45 blocking items are open',
+    why:
+      'Readiness per domain, re-derived from exit codes (data/readiness-register.json). It converts the ' +
+      '44 blocking gaps the 15-domain validation panel returned into COMMANDS, because "run the panel ' +
+      'again until it says READY" cannot terminate — every validator was prompted that a validator who ' +
+      'finds nothing has not validated anything, so it will always find something. This gate fails on ' +
+      'REGRESSION ONLY (an item that passed before and now fails); open gaps are reported, never red. ' +
+      'It is UNWIRED on purpose and not because it fails: wiring a 43-open report into check-all would ' +
+      'put a permanent second red beside the deploy that is already at 320/328, and a red nobody can ' +
+      'clear is how gates become wallpaper. It runs from the session-start hook and on demand. Wire it ' +
+      'only if the regression half is ever wanted at deploy time, and only then.',
+  },
   'check-css-drift.mjs': {
     since: '2026-07-28',
     status: 'FAILS — 505 drift issues across 7 files',
@@ -112,6 +146,28 @@ export const UNWIRED = {
       'emitting the decision as data. Wiring it now would red the Cloudflare deploy (check-all runs in build.command) and teach everyone to ' +
       'ignore the deploy, which is the disease this repo already diagnosed in check-queue and check-idem-coverage. Queue item Q-061 does the ' +
       'work; wire this and delete this entry when it exits 0. Run it any time with --summary for the remaining count.',
+  },
+  'check-readiness-register.mjs': {
+    since: '2026-08-07',
+    status:
+      'PASSES in its default mode (the register is internally consistent). --triage FAILS BY ' +
+      'DESIGN today: 35 founder-owned items against a declared absorption cap of 12. --run ' +
+      'reports 83 open / 0 proven, which is the honest starting state, not a defect.',
+    why:
+      'The teeth on data/readiness-register.json — the three-way split of the 131 gaps the fifteen ' +
+      'domain validators wrote (44 BLOCKING). It enforces that a verifiable gap carries a COMMAND, a ' +
+      'decision carries a decider and no command, and an opinion carries a discard reason; --run ' +
+      're-derives every verifiable gap\'s status from its own exit code, hard-fails on a regression, ' +
+      'and exits 1 when the open count did not fall run over run, because a loop that spins consumes ' +
+      'the only scarce input there is. NOT wired into check-all deliberately, for the same reason ' +
+      'check-queue is not: this is a planning instrument whose --triage and --run modes are SUPPOSED ' +
+      'to go red while work is open, and check-all runs inside wrangler.jsonc build.command, so ' +
+      'wiring it would make a red DEPLOY the normal state and teach everyone to ignore the deploy — ' +
+      'the exact disease this repo already diagnosed in check-queue, check-surface-disposition and ' +
+      'check-working-set. It is invoked by hand and by whatever runs the readiness loop. Run ' +
+      '`--triage` for the split, `--decisions` for what routes to the founder, `--run` for the ' +
+      'exit-code truth. Wire it and delete this entry only if the register ever becomes a publishing ' +
+      'correctness gate rather than a plan.',
   },
   'check-working-set.mjs': {
     since: '2026-08-07',

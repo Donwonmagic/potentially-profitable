@@ -5,19 +5,19 @@
   "_generator": "scripts/build-contract-facts.mjs",
   "facts": {
     "scripts.mjs": {
-      "value": 394,
+      "value": 401,
       "derivedFrom": "ls scripts/*.mjs"
     },
     "scripts.total": {
-      "value": 399,
+      "value": 406,
       "derivedFrom": "ls scripts/*.{mjs,js,sh,py,ts}"
     },
     "scripts.checks": {
-      "value": 136,
+      "value": 140,
       "derivedFrom": "ls scripts/check-*.mjs"
     },
     "scripts.builders": {
-      "value": 86,
+      "value": 87,
       "derivedFrom": "ls scripts/build-*.mjs"
     },
     "scripts.injectors": {
@@ -25,11 +25,11 @@
       "derivedFrom": "ls scripts/inject-*.mjs"
     },
     "scripts.lib": {
-      "value": 15,
+      "value": 16,
       "derivedFrom": "ls scripts/lib/"
     },
     "gates.checkAllEntries": {
-      "value": 328,
+      "value": 330,
       "derivedFrom": "scripts/check-all.mjs — lines matching /^\\s*\\['/ (entry tuples)"
     },
     "gates.idemEntries": {
@@ -41,7 +41,7 @@
       "derivedFrom": "scripts/check-idem-coverage.mjs MANUAL registry keys"
     },
     "gates.unwired": {
-      "value": 7,
+      "value": 10,
       "derivedFrom": "scripts/check-gate-coverage.mjs UNWIRED registry keys"
     },
     "pages.routable": {
@@ -73,15 +73,15 @@
       "derivedFrom": "data/system-graph.json summary.invocation.orphan — scripts no runner invokes"
     },
     "docs.files": {
-      "value": 257,
+      "value": 277,
       "derivedFrom": "find docs -name \"*.md\""
     },
     "docs.lines": {
-      "value": 43978,
+      "value": 45182,
       "derivedFrom": "wc -l on every docs/**/*.md"
     },
     "adrs.editorial": {
-      "value": 37,
+      "value": 39,
       "derivedFrom": "ls docs/editorial/decisions/ADR-*.md"
     },
     "board.lines": {

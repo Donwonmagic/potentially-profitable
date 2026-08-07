@@ -3,6 +3,15 @@
   "version": 1,
   "generated": "2026-08-07",
   "sourceOfTruth": "This file. docs/handoff/QUEUE.md is RENDERED from it by `node scripts/check-queue.mjs --render` and is verified in sync. Never hand-edit the .md.",
+  "twoLedgers": {
+    "ofRecord": "docs/editorial/decisions/ADR-034-the-loop-driver.md",
+    "why": "A readiness register and a queue are two lists of open things, and two lists of open things become two competing sources of truth within a week unless the boundary is written down and one derives from the other. It is written down here.",
+    "queueOwns": "WORK. An item exists here because somebody intends to do it, it is claimable, it has a founderHours price, a window, and a verify command that check-queue --done re-runs at close. Nothing is worked that is not here.",
+    "registerOwns": "READINESS. data/readiness-register.json is the ledger of GAPS the 15-domain validation panel found — one record per gap, classified verifiable / decision / opinion. It answers 'is this domain ready', never 'what should I do next'. Its item statuses are RE-DERIVED from exit codes by scripts/check-readiness.mjs, not authored, so it cannot drift into an opinion about itself.",
+    "derivation": "ONE-WAY: register → queue. A verifiable, agent-owned register item is PROMOTED into this file by the INTAKE lane of scripts/loop-driver.mjs, which stamps the register record with `queueItem: Q-0NN`. That stamp is the join. A register record carrying a queueItem is no longer a candidate; the queue item is now the only place its work is tracked.",
+    "neverTheOtherWay": "The queue never writes back into the register, and a register record is never closed by hand. A promoted gap closes when its QUEUE item closes; check-readiness then re-derives the register's verdict from the same verify command exiting 0.",
+    "decisionsDoNotEnter": "A register record classed `decision` has no verify command by construction, so it can never be promoted. It routes to the founder. 18 of 101 loop-eligible records are decisions today — that is the rate limit ADR-034 rule 2 names, and it is why the loop cannot manufacture founder debt by working faster."
+  },
   "doctrine": [
     "A queue item is not done because a session says so. It is done when its `verify` command exits 0, re-run at close time by scripts/check-queue.mjs --done, and re-runnable forever after by --verify --all.",
     "A HIGH item that is `ready` (nobody has claimed it) makes scripts/check-queue.mjs exit 1. A scheduled session runs that gate as its FIRST act, so it cannot report a clean run while urgent work sits untouched.",
@@ -139,7 +148,7 @@
       "title": "check-all is NOT idempotent — two runs give different totals and dirty the working tree",
       "phase": "P0",
       "priority": "HIGH",
-      "status": "closed",
+      "status": "ready",
       "owner": "agent",
       "repo": "storefront",
       "effort": "3h",
@@ -1416,37 +1425,61 @@
       "status": "ready",
       "source": "phase-H plan validation 2026-08-07",
       "title": "Measure cold-start reconcile on a FRESH org — the number every commercial figure is priced on",
-      "priority": "P0",
-      "founderHours": 0.5,
+      "priority": "HIGH",
+      "founderHours": 0,
       "owner": "agent",
       "why": "VENDOR-TEMPLATE-KEY.md gives 24% today, 62% at the 0.7 knee, and 84-87% as reconcile-rate-among-newly-covered on a MATURE corpus with 3-4 prior confirmations per (org,vendor). A new customer has zero. first-try-reliability-roadmap.md 4d already says the Tacombi corpus is not the demo population — and 00/location plus the 40-location ceiling are priced on it.",
       "doneWhen": "A committed report records first-pass straight-through for a synthetic org with ZERO prior confirmations, replayed over the 919-doc corpus, with the number stated separately from the mature-org number.",
       "verify": {
         "cwd": "product",
         "cmd": "test -f docs/correctness/cold-start-reconcile.json"
-      }
+      },
+      "phase": "P0",
+      "window": "M1",
+      "repo": "product",
+      "effort": "4-6h",
+      "kind": "fix",
+      "blockedBy": [],
+      "evidence": [
+        "docs/handoff/bones/validate-strategy.md:38 — \"[agent|4-6 agent-hours; 0 founder-hours]\" is the validator's own declared cost",
+        "services/extract/VENDOR-TEMPLATE-KEY.md:203-236 (84.1%, n=490) vs :17-27 (24% pre-maturation)"
+      ],
+      "claim": null,
+      "closed": null
     },
     {
       "id": "Q-085",
       "status": "ready",
       "source": "phase-H plan validation 2026-08-07",
       "title": "Instrument deskMinutesPerClose — two of three kill criteria cannot currently fire",
-      "priority": "P0",
-      "founderHours": 0.25,
+      "priority": "HIGH",
+      "founderHours": 0,
       "owner": "agent",
       "why": "queue.json:1613 and :1662 make deskMinutesPerClose the test for CP-60 and CP-90. It is instrumented nowhere in the product repo. ADR-033 exists so decisions are made by falsifier rather than impression.",
       "doneWhen": "A per-close timer records desk minutes and a query returns it; CP-60 and CP-90 can be evaluated from data rather than impression.",
       "verify": {
         "cwd": "product",
         "cmd": "grep -rq deskMinutesPerClose apps/api/src"
-      }
+      },
+      "phase": "P0",
+      "window": "M1",
+      "repo": "product",
+      "effort": "3-4h",
+      "kind": "fix",
+      "blockedBy": [],
+      "evidence": [
+        "docs/handoff/bones/validate-strategy.md:39 — \"[agent|3-4 agent-hours]\"",
+        "data/queue.json CP-60/CP-90 mustBeTrue both key on deskMinutesPerClose; a grep for deskMinutes|desk_minutes|close_minutes across the product repo returns nothing"
+      ],
+      "claim": null,
+      "closed": null
     },
     {
       "id": "Q-086",
       "status": "ready",
       "source": "phase-H plan validation 2026-08-07",
       "title": "Replace the differentiator the board killed — ADR-030:75 still asserts it",
-      "priority": "P0",
+      "priority": "HIGH",
       "founderHours": 1,
       "owner": "founder",
       "why": "ADR-030:75 says a fixed monthly close date is a promise incumbents cannot make. board-service-delivery.md:35 killed the synchronized second Tuesday as disqualifying and nothing replaced it. Q-041 qualification calls and the /close/ page both need one sentence answering why not MarginEdge.",
@@ -1454,22 +1487,48 @@
       "verify": {
         "cwd": "storefront",
         "cmd": "grep -rqi \"differentiator\" docs/editorial/decisions/ADR-03*.md"
-      }
+      },
+      "phase": "P0",
+      "window": "M2",
+      "repo": "storefront",
+      "effort": "1h",
+      "kind": "decide",
+      "blockedBy": [],
+      "founderOnly": "No command can judge whether a differentiator is any good. Only the founder can decide what the company now claims is true of it and of nobody else.",
+      "evidence": [
+        "docs/handoff/bones/validate-strategy.md:40 — \"[founder|1 founder-hour (drafted by an agent, ratified with Q-019)]\"",
+        "docs/editorial/decisions/ADR-030-one-price-one-cohort-no-billing-code.md:75 still asserts the fixed-date promise the board killed (board-service-delivery.md:35, board-completeness.md:26)"
+      ],
+      "claim": null,
+      "closed": null
     },
     {
       "id": "Q-087",
       "status": "ready",
       "source": "phase-H plan validation 2026-08-07",
       "title": "Disposition the 37 product marketing pages — surface-disposition covers only the storefront",
-      "priority": "P1",
-      "founderHours": 0.5,
-      "owner": "agent",
+      "priority": "MED",
+      "founderHours": 0.25,
+      "owner": "both",
       "why": "6 indexed /vs/ pages carry lastFactCheckedISO 2026-05-21 and say Muntin Ledger does the first part, we do not yet do the rest. Zero files under apps/web/app/(marketing) contain closed month. surface-disposition.json holds zero records for apps/web.",
       "doneWhen": "Every apps/web/app/(marketing) route carries a disposition, and no indexed page states a competitor fact older than 90 days.",
       "verify": {
         "cwd": "storefront",
-        "cmd": "node -e \"const d=require(\"./data/surface-disposition.json\");process.exit(JSON.stringify(d).includes(\"apps/web\")?0:1)\""
-      }
+        "cmd": "node -e 'const d=require(\"./data/surface-disposition.json\");const hit=JSON.stringify(d).includes(\"apps/web\");if(!hit)throw new Error(\"no apps/web route carries a disposition yet\");console.log(\"product marketing routes dispositioned\")'"
+      },
+      "phase": "P1",
+      "window": "M2",
+      "repo": "product",
+      "effort": "3h",
+      "kind": "fix",
+      "blockedBy": [],
+      "founderOnly": "Approving the noindex list is a publishing decision about the company's own public positioning.",
+      "evidence": [
+        "docs/handoff/bones/validate-strategy.md:41 — \"[agent|3 agent-hours + 0.25 founder-hours to approve the noindex list]\"",
+        "apps/web/app/(marketing)/vs/marginedge/page.tsx:56 carries lastFactCheckedISO 2026-05-21; data/surface-disposition.json holds zero apps/web records"
+      ],
+      "claim": null,
+      "closed": null
     }
   ],
   "attestations": {},
@@ -1496,7 +1555,7 @@
     }
   ],
   "capacity": {
-    "ofRecord": "docs/editorial/decisions/ADR-030-the-ninety-days-and-its-falsifiers.md",
+    "ofRecord": "docs/editorial/decisions/ADR-033-the-ninety-days-and-its-falsifiers.md",
     "founderHoursPerMonth": {
       "floor": 13,
       "ceiling": 26,

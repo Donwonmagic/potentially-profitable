@@ -1,0 +1,103 @@
+{
+  "$schema": "internal://validator-neutral-verdicts",
+  "generated": "2026-08-07",
+  "preRegistered": true,
+  "_preRegisteredWhy": "The rubric below was written and committed BEFORE any verdict in this file was assigned. It is stated as a decision procedure over four per-claim booleans rather than as a holistic impression, so a reader can recompute every verdict from the recorded inputs and disagree with a specific boolean rather than with a mood.",
+
+  "rubric": "Can execution begin in this domain within the next 30 days without producing an artifact that is false, unsafe, or unrecoverable? NOT_READY iff at least one open BLOCKING claim satisfies all three of: (a) bitesInM1, (b) needsFounderOrThirdParty, (c) !hasQueueItem. READY_WITH_GAPS iff blocking claims exist but none satisfies all three. READY iff no open blocking claim survives reproduction.",
+
+  "_rubricWhy": "The original Phase-H prompt asked 'is this domain ready?' and never defined ready. An undefined threshold is filled in by whatever bar the reader brings, and this reader had been told that 'a validator who finds nothing has not validated anything.' The verdict therefore measured the instruction. This rubric fixes the bar to the founder's actual decision — can M1 start — per Rule 4 (the target is 'ready enough to start', not 'ready').",
+
+  "_whatThisArmIsNot": "This is ONE agent applying a declared rubric, not five independent re-runs. No general-purpose subagent tool was available in this container, so the neutral arm could not be blinded to the original verdicts. The confound is anchoring, and it runs TOWARD agreement with the original — which makes every disagreement recorded below a conservative estimate of the true prompt effect, and makes the one DOWNGRADE (ops-capacity) the load-bearing evidence that the rubric is not a whitewash. The reproduction, concentration and pointer sections of audit-validator-calibration.mjs carry no such confound; they are commands.",
+
+  "perClaimFields": {
+    "bitesInM1": "If left unfixed, does this produce a false/unsafe/unrecoverable artifact within the first 30 days (by 2026-09-06)? Lead time counts: an obligation that must be STARTED in M1 to land later bites in M1.",
+    "needsFounderOrThirdParty": "Does closing it require founder judgement, a signature, or an outside party (counsel, insurer, customer)? An agent with a proof command does not.",
+    "hasQueueItem": "Is there an item in data/queue.json today that would close it?",
+    "hasProofCommand": "Could a command settle whether it is closed? Rule 1: a claim with NO possible proof command is a DECISION, routes to the founder, and can never be closed by the loop."
+  },
+
+  "domains": [
+    {
+      "domain": "ci-integrity",
+      "originalVerdict": "NOT_READY",
+      "neutralVerdict": "READY_WITH_GAPS",
+      "m1GatingBlockers": 0,
+      "why": "All three blocking claims were agent-executable in minutes with an exit code as the proof. The validator's own Additions price them at '0 founder-hours; ~20 agent-minutes', '~45 agent-minutes', '~30 agent-minutes'. A domain whose every blocker is a twenty-minute agent fix with a proof command is not a domain that blocks starting; it is the first twenty minutes of starting. CONFIRMED IN THE STRONGEST POSSIBLE WAY: ci-integrity#1 CLOSED DURING THIS AUDIT. At 23:0x on 2026-08-07 all six check-queue modes exited 2; by 23:29 a concurrent session had set Q-004's status to 'ready' and every mode passed. The claim was real, and it was a twenty-minute fix, exactly as the neutral rubric scored it.",
+      "blockers": [
+        { "claim": "ci-integrity#1", "reproduces": "STALE — reproduced at 23:0x, CLOSED by 23:29 on the same day", "bitesInM1": true, "needsFounderOrThirdParty": false, "hasQueueItem": false, "hasProofCommand": true },
+        { "claim": "ci-integrity#2", "reproduces": "REPRODUCES", "bitesInM1": true, "needsFounderOrThirdParty": false, "hasQueueItem": false, "hasProofCommand": true },
+        { "claim": "ci-integrity#3", "reproduces": "REPRODUCES", "bitesInM1": true, "needsFounderOrThirdParty": false, "hasQueueItem": false, "hasProofCommand": true }
+      ]
+    },
+    {
+      "domain": "strategy",
+      "originalVerdict": "NOT_READY",
+      "neutralVerdict": "READY_WITH_GAPS",
+      "m1GatingBlockers": 0,
+      "why": "The verdict is STALE rather than wrong. All three blocking claims were real when written; since then a later session promoted four of this validator's six Additions into the queue as Q-084 (cold-start), Q-085 (deskMinutesPerClose), Q-086 (the differentiator) and Q-087 (product marketing disposition). Two are agent-executable; the founder-only one (Q-086) is queued. Nothing here satisfies all three NOT_READY conditions any more.",
+      "blockers": [
+        { "claim": "strategy#1", "reproduces": "SUBSTANCE-HOLDS", "bitesInM1": false, "needsFounderOrThirdParty": false, "hasQueueItem": true, "hasProofCommand": true, "note": "Q-084 measures cold-start on a fresh org" },
+        { "claim": "strategy#2", "reproduces": "SUBSTANCE-HOLDS", "bitesInM1": false, "needsFounderOrThirdParty": false, "hasQueueItem": true, "hasProofCommand": true, "note": "Q-085; and the literal 'grep returns nothing' is now false — one doc hit exists" },
+        { "claim": "strategy#3", "reproduces": "SUBSTANCE-HOLDS", "bitesInM1": false, "needsFounderOrThirdParty": true, "hasQueueItem": true, "hasProofCommand": true, "note": "Q-086; ADR-030:75 still asserts the killed differentiator" }
+      ]
+    },
+    {
+      "domain": "security",
+      "originalVerdict": "NOT_READY",
+      "neutralVerdict": "NOT_READY",
+      "m1GatingBlockers": 1,
+      "why": "Unchanged, and correctly so. The published claim 'no language model ever reads your documents' is live on 93 storefront index.html today (measured), zero ADRs name the exception desk, and agent sessions already read the seven committed invoice fixtures — so the disclosure gap is live, not prospective. Deciding who may read a customer invoice is a founder decision of record with a 30-day sub-processor notice clock attached; no command can make it. The other two blockers (intake channel, DPA clocks) bite at first customer in M3, so they do not gate starting.",
+      "blockers": [
+        { "claim": "security#1", "reproduces": "REPRODUCES", "bitesInM1": true, "needsFounderOrThirdParty": true, "hasQueueItem": false, "hasProofCommand": false, "note": "the GATE is buildable; the DECISION is not — Rule 1 routes it to the founder" },
+        { "claim": "security#2", "reproduces": "REPRODUCES", "bitesInM1": false, "needsFounderOrThirdParty": true, "hasQueueItem": false, "hasProofCommand": true },
+        { "claim": "security#3", "reproduces": "REPRODUCES", "bitesInM1": false, "needsFounderOrThirdParty": true, "hasQueueItem": false, "hasProofCommand": true }
+      ]
+    },
+    {
+      "domain": "finance-runway",
+      "originalVerdict": "NOT_READY",
+      "neutralVerdict": "NOT_READY",
+      "m1GatingBlockers": 2,
+      "why": "Unchanged. R07 reproduces exactly: founderHours is enforced in 29 places in check-queue.mjs and dollars in zero, while $248-892/month leaves the bank starting in M1. What the founder can spend at zero revenue is a number only he holds — no command produces it. Entity confirmation and counsel carry outside-party lead time, and the company's own legal-counsel-kickoff.md says entity confirmation 'gates everything', so it must START in M1 even though the signature lands in M3.",
+      "blockers": [
+        { "claim": "finance-runway#1", "reproduces": "REPRODUCES", "bitesInM1": true, "needsFounderOrThirdParty": true, "hasQueueItem": false, "hasProofCommand": false, "note": "a cashBudget FIELD is buildable; the NUMBER is a founder decision" },
+        { "claim": "finance-runway#2", "reproduces": "STALE", "bitesInM1": true, "needsFounderOrThirdParty": true, "hasQueueItem": false, "hasProofCommand": false, "note": "R08 downgraded the letter — 'liability' now appears once in the queue — but zero of insurance/E&O/counsel/indemn/engagement-letter do, and no item engages counsel" },
+        { "claim": "finance-runway#3", "reproduces": "SUBSTANCE-HOLDS", "bitesInM1": false, "needsFounderOrThirdParty": false, "hasQueueItem": true, "hasProofCommand": true, "note": "Q-085" }
+      ]
+    },
+    {
+      "domain": "product-truth",
+      "originalVerdict": "NOT_READY",
+      "neutralVerdict": "NOT_READY",
+      "m1GatingBlockers": 1,
+      "why": "Unchanged. product-truth#1 is the same defect as security#1 seen through a different lens — the exception desk against the no-LLM claim — and it is the single most-rediscovered hole in the corpus. product-truth#2 (Q-072 not blocked on the four defects that make its promise untrue) reproduces exactly and is a one-line agent edit with a proof command, so it does not gate starting.",
+      "blockers": [
+        { "claim": "product-truth#1", "reproduces": "REPRODUCES", "bitesInM1": true, "needsFounderOrThirdParty": true, "hasQueueItem": false, "hasProofCommand": false },
+        { "claim": "product-truth#2", "reproduces": "REPRODUCES", "bitesInM1": false, "needsFounderOrThirdParty": false, "hasQueueItem": false, "hasProofCommand": true }
+      ]
+    },
+    {
+      "domain": "content-editorial",
+      "originalVerdict": "READY_WITH_GAPS",
+      "neutralVerdict": "READY_WITH_GAPS",
+      "m1GatingBlockers": 0,
+      "why": "CONTROL — a domain that did NOT return NOT_READY, included to test whether the neutral rubric merely agrees with itself. It holds. The one blocking claim reproduces (R09: three files would still be rewritten, more than the two stated) and is closed by running one builder. Agent-executable with an exit code, so READY_WITH_GAPS under the rubric and READY_WITH_GAPS as returned.",
+      "blockers": [
+        { "claim": "content-editorial#1", "reproduces": "REPRODUCES", "bitesInM1": true, "needsFounderOrThirdParty": false, "hasQueueItem": false, "hasProofCommand": true }
+      ]
+    },
+    {
+      "domain": "ops-capacity",
+      "originalVerdict": "READY_WITH_GAPS",
+      "neutralVerdict": "NOT_READY",
+      "m1GatingBlockers": 1,
+      "why": "DOWNGRADE — the load-bearing control. This domain returned READY_WITH_GAPS under the gap-seeking prompt and fails the neutral rubric. Independently recomputed from data/queue.json today: M1 17.00h, M2 11.25h, M3 11.00h = 39.25h against a 3x13h floor = 100.6%, exactly as claimed — plus 2.25h of unwindowed founder work the budget does not count at all, which the validator did not notice and which takes it to 106.4%. M1 alone is 17.0h against a 13h floor. Cutting to fit is capacity.floorPlan drop-order, which is a founder decision no command can make, and no queue item makes it. A rubric that can only move verdicts toward READY is not a rubric; this is the case that shows it moves both ways.",
+      "blockers": [
+        { "claim": "ops-capacity#1", "reproduces": "REPRODUCES-AND-UNDERSTATED", "bitesInM1": true, "needsFounderOrThirdParty": true, "hasQueueItem": false, "hasProofCommand": true, "note": "check-queue --budget computes it but only WARNS over the floor, and is itself dead at exit 2" },
+        { "claim": "ops-capacity#2", "reproduces": "REPRODUCES", "bitesInM1": false, "needsFounderOrThirdParty": true, "hasQueueItem": false, "hasProofCommand": false, "note": "day-91 cliff" },
+        { "claim": "ops-capacity#3", "reproduces": "SUBSTANCE-HOLDS", "bitesInM1": false, "needsFounderOrThirdParty": false, "hasQueueItem": true, "hasProofCommand": true, "note": "Q-085" }
+      ]
+    }
+  ]
+}

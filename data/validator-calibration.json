@@ -1,0 +1,1015 @@
+{
+  "generatedAt": "2026-08-07T23:31:07.290Z",
+  "instrument": "scripts/audit-validator-calibration.mjs",
+  "corpus": {
+    "reports": 15,
+    "gaps": 131,
+    "blocking": 44,
+    "verdicts": {
+      "NOT_READY": 13,
+      "READY_WITH_GAPS": 2,
+      "READY": 0
+    },
+    "byDomain": [
+      {
+        "domain": "ci-integrity",
+        "verdict": "NOT_READY",
+        "gaps": 10,
+        "blocking": 3
+      },
+      {
+        "domain": "content-editorial",
+        "verdict": "READY_WITH_GAPS",
+        "gaps": 8,
+        "blocking": 1
+      },
+      {
+        "domain": "customer-growth",
+        "verdict": "NOT_READY",
+        "gaps": 8,
+        "blocking": 3
+      },
+      {
+        "domain": "data-moat",
+        "verdict": "NOT_READY",
+        "gaps": 8,
+        "blocking": 3
+      },
+      {
+        "domain": "design-ux",
+        "verdict": "NOT_READY",
+        "gaps": 9,
+        "blocking": 2
+      },
+      {
+        "domain": "engineering",
+        "verdict": "NOT_READY",
+        "gaps": 10,
+        "blocking": 3
+      },
+      {
+        "domain": "finance-runway",
+        "verdict": "NOT_READY",
+        "gaps": 8,
+        "blocking": 3
+      },
+      {
+        "domain": "legal-ip",
+        "verdict": "NOT_READY",
+        "gaps": 8,
+        "blocking": 4
+      },
+      {
+        "domain": "marketing-seo",
+        "verdict": "NOT_READY",
+        "gaps": 8,
+        "blocking": 3
+      },
+      {
+        "domain": "monetization",
+        "verdict": "NOT_READY",
+        "gaps": 8,
+        "blocking": 4
+      },
+      {
+        "domain": "ops-capacity",
+        "verdict": "READY_WITH_GAPS",
+        "gaps": 10,
+        "blocking": 3
+      },
+      {
+        "domain": "privacy-compliance",
+        "verdict": "NOT_READY",
+        "gaps": 8,
+        "blocking": 4
+      },
+      {
+        "domain": "product-truth",
+        "verdict": "NOT_READY",
+        "gaps": 11,
+        "blocking": 2
+      },
+      {
+        "domain": "security",
+        "verdict": "NOT_READY",
+        "gaps": 8,
+        "blocking": 3
+      },
+      {
+        "domain": "strategy",
+        "verdict": "NOT_READY",
+        "gaps": 9,
+        "blocking": 3
+      }
+    ]
+  },
+  "reproduction": [
+    {
+      "id": "R01",
+      "claim": "ci-integrity#1",
+      "severity": "BLOCKING",
+      "asStated": "check-queue.mjs exits 2 in EVERY mode (--brief, --budget, --checkpoints, --render, --self-test) because Q-004 carries status \"closed\", which is outside STATUSES.",
+      "verdict": "STALE",
+      "why": "exit codes now 1,0,0,0,0,0",
+      "observed": {
+        "codes": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "badStatuses": [],
+        "allTwo": false
+      }
+    },
+    {
+      "id": "R02",
+      "claim": "ci-integrity#2",
+      "severity": "BLOCKING",
+      "asStated": "All ten checkpoints[].mustBeTrue[].verify.cmd fail with a shell-quoting ReferenceError — bare identifiers like [Q-002, Q-014] — not with \"not closed\".",
+      "verdict": "REPRODUCES",
+      "why": "10 of 10 assertions syntax-broken, exactly as stated",
+      "observed": {
+        "rows": [
+          {
+            "cp": "CP-30",
+            "verdict": "SYNTAX-BROKEN"
+          },
+          {
+            "cp": "CP-30",
+            "verdict": "SYNTAX-BROKEN"
+          },
+          {
+            "cp": "CP-30",
+            "verdict": "SYNTAX-BROKEN"
+          },
+          {
+            "cp": "CP-30",
+            "verdict": "SYNTAX-BROKEN"
+          },
+          {
+            "cp": "CP-60",
+            "verdict": "SYNTAX-BROKEN"
+          },
+          {
+            "cp": "CP-60",
+            "verdict": "SYNTAX-BROKEN"
+          },
+          {
+            "cp": "CP-60",
+            "verdict": "SYNTAX-BROKEN"
+          },
+          {
+            "cp": "CP-90",
+            "verdict": "SYNTAX-BROKEN"
+          },
+          {
+            "cp": "CP-90",
+            "verdict": "SYNTAX-BROKEN"
+          },
+          {
+            "cp": "CP-90",
+            "verdict": "SYNTAX-BROKEN"
+          }
+        ],
+        "total": 10,
+        "broken": 10
+      }
+    },
+    {
+      "id": "R03",
+      "claim": "ci-integrity#3",
+      "severity": "BLOCKING",
+      "asStated": "check-removed-slugs.mjs is WIRED into check-all and exits 1 today because data/link-graph.json carries retired slug anchor text.",
+      "verdict": "REPRODUCES",
+      "why": "wired, exits 1, and still names link-graph.json",
+      "observed": {
+        "code": 1,
+        "wired": true,
+        "mentionsLinkGraph": true
+      }
+    },
+    {
+      "id": "R04",
+      "claim": "strategy#2 / finance-runway#3 / monetization (deskMinutesPerClose)",
+      "severity": "BLOCKING",
+      "asStated": "A recursive grep for deskMinutes|desk_minutes|closeMinutes|close_minutes across the PRODUCT repo returns nothing — the parameter two kill criteria depend on is instrumented nowhere.",
+      "verdict": "SUBSTANCE-HOLDS",
+      "why": "the letter is now false (1 doc-only hit(s): ./docs/ux/decisions/ADR-013-no-billing-code-for-the-first-cohort.md:153:  each falsify $600, and `desk_minutes_per_close` is instrumented from customer) but ZERO are instrumentation; the defect stands, and a queue item (Q-085) now exists",
+      "observed": {
+        "hits": 1,
+        "codeHits": 0,
+        "sample": [
+          "./docs/ux/decisions/ADR-013-no-billing-code-for-the-first-cohort.md:153:  each falsify $600, and `desk_minutes_per_close` is instrumented from customer"
+        ],
+        "queueItem": "Q-085"
+      }
+    },
+    {
+      "id": "R05",
+      "claim": "product-truth#1 / security#1 / privacy-compliance (the no-LLM claim)",
+      "severity": "BLOCKING",
+      "asStated": "The exception desk falsifies the no-language-model claim carried on ~91-93 storefront pages and on copy.ts:3082/3888/4067; sub-processors.md lists no LLM provider; no ADR or queue item touches it.",
+      "verdict": "REPRODUCES",
+      "why": "93 storefront index.html carry the claim (validators said 91 and 93 — they disagree with each other); 0 ADR names the exception desk; queue mentions it 1x",
+      "observed": {
+        "pages": 93,
+        "copyHits": 7,
+        "subProcessorLlmMentions": 1,
+        "adrFiles": 0,
+        "queueDeskMentions": 1
+      }
+    },
+    {
+      "id": "R06",
+      "claim": "strategy#3",
+      "severity": "BLOCKING",
+      "asStated": "ADR-030 line 75 still asserts the differentiator the board killed — \"a fixed monthly close date is a promise their structure cannot make\".",
+      "verdict": "SUBSTANCE-HOLDS",
+      "why": "still asserted, but Q-086 now exists to supersede it",
+      "observed": {
+        "stillAsserted": true,
+        "line75": "monthly close date is a promise their structure cannot make and one employed",
+        "supersededByQueueItem": "Q-086"
+      }
+    },
+    {
+      "id": "R07",
+      "claim": "finance-runway#1",
+      "severity": "BLOCKING",
+      "asStated": "The plan has an hours budget with teeth and no money budget at all — no cashUsd field, no capacity.cashBudget, and check-queue validates no dollar.",
+      "verdict": "REPRODUCES",
+      "why": "hours enforced in 29 places, dollars in 0",
+      "observed": {
+        "cashFieldsInQueue": 0,
+        "dollarLogicInChecker": 0,
+        "hoursLogicInChecker": 29
+      }
+    },
+    {
+      "id": "R08",
+      "claim": "finance-runway#2 / legal-ip",
+      "severity": "BLOCKING",
+      "asStated": "grep -i over data/queue.json returns 0 hits for insurance, E&O, counsel, liability, indemn, engagement letter — while M3 signs and invoices.",
+      "verdict": "STALE",
+      "why": "1 hit(s): {\"insurance\":0,\"e&o\":0,\"counsel\":0,\"liability\":1,\"indemn\":0,\"engagement letter\":0}",
+      "observed": {
+        "counts": {
+          "insurance": 0,
+          "e&o": 0,
+          "counsel": 0,
+          "liability": 1,
+          "indemn": 0,
+          "engagement letter": 0
+        },
+        "total": 1
+      }
+    },
+    {
+      "id": "R09",
+      "claim": "content-editorial#1",
+      "severity": "BLOCKING",
+      "asStated": "node scripts/inject-about-cost-read.mjs --check prints \"would update 2 file(s)\" — /about/ publishes a Cost Index read older than the data behind it.",
+      "verdict": "REPRODUCES",
+      "why": "3 file(s) would still be rewritten:  | would update 2 file(s).",
+      "observed": {
+        "code": 1,
+        "wouldUpdate": 3,
+        "out": " | would update 2 file(s)."
+      }
+    },
+    {
+      "id": "R10",
+      "claim": "product-truth#2",
+      "severity": "BLOCKING",
+      "asStated": "Q-072 (/close/) is NOT blocked on Q-020/Q-021/Q-022/Q-024 while Q-030 (the specimen) IS — the same four defects, applied to one item and not the other.",
+      "verdict": "REPRODUCES",
+      "why": "Q-072 blockedBy [\"Q-001\",\"Q-005\",\"Q-010\"]; Q-030 carries all four",
+      "observed": {
+        "q072": [
+          "Q-001",
+          "Q-005",
+          "Q-010"
+        ],
+        "q030": [
+          "Q-001",
+          "Q-002",
+          "Q-017",
+          "Q-020",
+          "Q-021",
+          "Q-022",
+          "Q-024"
+        ],
+        "missingOn072": [
+          "Q-020",
+          "Q-021",
+          "Q-022",
+          "Q-024"
+        ],
+        "presentOn030": [
+          "Q-020",
+          "Q-021",
+          "Q-022",
+          "Q-024"
+        ]
+      }
+    },
+    {
+      "id": "R11",
+      "claim": "product-truth#3 (MAJOR — sampled as a severity control)",
+      "severity": "MAJOR",
+      "asStated": "Q-011's verify runs in the storefront only, so \"$19 a month\" and \"three months free\" are still shipped in the PRODUCT repo copy (EN and ES).",
+      "verdict": "REPRODUCES",
+      "why": "withdrawn terms still shipped: copy.ts 3, copy.es.ts 4, GA date 1",
+      "observed": {
+        "en": 3,
+        "es": 4,
+        "ga": 1
+      }
+    },
+    {
+      "id": "R12",
+      "claim": "strategy#8 (MINOR — sampled as a severity control)",
+      "severity": "MINOR",
+      "asStated": "data/queue.json cites \"docs/editorial/decisions/ADR-030-the-ninety-days-and-its-falsifiers.md\", which does not exist on disk.",
+      "verdict": "REFUTED",
+      "why": "all 12 ADR references in the queue resolve on disk today",
+      "observed": {
+        "refs": 12,
+        "unresolved": [],
+        "citesTheNamedOne": false
+      }
+    }
+  ],
+  "reproductionSummary": {
+    "REPRODUCES": 7,
+    "SUBSTANCE-HOLDS": 2,
+    "STALE": 2,
+    "REFUTED": 1,
+    "sampled": 12,
+    "defectStandsRate": 0.75
+  },
+  "clusters": {
+    "distinctDefects": 20,
+    "clusters": [
+      {
+        "concept": "dpa-clocks",
+        "size": 5,
+        "domains": [
+          "legal-ip",
+          "privacy-compliance",
+          "security"
+        ],
+        "members": [
+          "legal-ip#4",
+          "privacy-compliance#1",
+          "privacy-compliance#2",
+          "privacy-compliance#4",
+          "security#3"
+        ]
+      },
+      {
+        "concept": "first-dollar-undefined",
+        "size": 4,
+        "domains": [
+          "customer-growth",
+          "finance-runway",
+          "legal-ip",
+          "monetization"
+        ],
+        "members": [
+          "customer-growth#2",
+          "finance-runway#2",
+          "legal-ip#1",
+          "monetization#1"
+        ]
+      },
+      {
+        "concept": "desk-minutes",
+        "size": 4,
+        "domains": [
+          "finance-runway",
+          "ops-capacity",
+          "security",
+          "strategy"
+        ],
+        "members": [
+          "finance-runway#3",
+          "ops-capacity#3",
+          "security#1",
+          "strategy#2"
+        ]
+      },
+      {
+        "concept": "stale-published-number",
+        "size": 3,
+        "domains": [
+          "content-editorial",
+          "marketing-seo",
+          "product-truth"
+        ],
+        "members": [
+          "content-editorial#1",
+          "marketing-seo#2",
+          "product-truth#2"
+        ]
+      },
+      {
+        "concept": "no-prospect-source",
+        "size": 3,
+        "domains": [
+          "customer-growth",
+          "marketing-seo",
+          "monetization"
+        ],
+        "members": [
+          "customer-growth#1",
+          "marketing-seo#1",
+          "monetization#3"
+        ]
+      },
+      {
+        "concept": "cost-index-scope",
+        "size": 3,
+        "domains": [
+          "data-moat"
+        ],
+        "members": [
+          "data-moat#1",
+          "data-moat#2",
+          "data-moat#3"
+        ]
+      },
+      {
+        "concept": "capacity-overrun",
+        "size": 3,
+        "domains": [
+          "legal-ip",
+          "ops-capacity"
+        ],
+        "members": [
+          "legal-ip#2",
+          "ops-capacity#1",
+          "ops-capacity#2"
+        ]
+      },
+      {
+        "concept": "queue-instrument-broken",
+        "size": 2,
+        "domains": [
+          "ci-integrity",
+          "engineering"
+        ],
+        "members": [
+          "ci-integrity#1",
+          "engineering#2"
+        ]
+      },
+      {
+        "concept": "checkpoint-unfalsifiable",
+        "size": 2,
+        "domains": [
+          "ci-integrity",
+          "monetization"
+        ],
+        "members": [
+          "ci-integrity#2",
+          "monetization#4"
+        ]
+      },
+      {
+        "concept": "no-money-budget",
+        "size": 2,
+        "domains": [
+          "customer-growth",
+          "finance-runway"
+        ],
+        "members": [
+          "customer-growth#3",
+          "finance-runway#1"
+        ]
+      },
+      {
+        "concept": "differentiator",
+        "size": 2,
+        "domains": [
+          "design-ux",
+          "strategy"
+        ],
+        "members": [
+          "design-ux#2",
+          "strategy#3"
+        ]
+      },
+      {
+        "concept": "legal-instrument",
+        "size": 2,
+        "domains": [
+          "legal-ip",
+          "monetization"
+        ],
+        "members": [
+          "legal-ip#3",
+          "monetization#2"
+        ]
+      },
+      {
+        "concept": "agent-desk-vs-no-llm",
+        "size": 2,
+        "domains": [
+          "privacy-compliance",
+          "product-truth"
+        ],
+        "members": [
+          "privacy-compliance#3",
+          "product-truth#1"
+        ]
+      },
+      {
+        "concept": "deploy-red",
+        "size": 1,
+        "domains": [
+          "ci-integrity"
+        ],
+        "members": [
+          "ci-integrity#3"
+        ]
+      },
+      {
+        "concept": "unrendered-surface",
+        "size": 1,
+        "domains": [
+          "design-ux"
+        ],
+        "members": [
+          "design-ux#1"
+        ]
+      },
+      {
+        "concept": "no-close-renderer",
+        "size": 1,
+        "domains": [
+          "engineering"
+        ],
+        "members": [
+          "engineering#1"
+        ]
+      },
+      {
+        "concept": "stack-deploy-path",
+        "size": 1,
+        "domains": [
+          "engineering"
+        ],
+        "members": [
+          "engineering#3"
+        ]
+      },
+      {
+        "concept": "intake-channel",
+        "size": 1,
+        "domains": [
+          "security"
+        ],
+        "members": [
+          "security#2"
+        ]
+      },
+      {
+        "concept": "cold-start",
+        "size": 1,
+        "domains": [
+          "strategy"
+        ],
+        "members": [
+          "strategy#1"
+        ]
+      }
+    ],
+    "singletons": [
+      "marketing-seo#3"
+    ]
+  },
+  "pointers": {
+    "total": 434,
+    "withLine": 144,
+    "tally": {
+      "FILE-EXISTS": 165,
+      "RESOLVES": 130,
+      "NAMED-NOT-CITED": 57,
+      "NAMED-NOT-FOUND": 26,
+      "FILE-MISSING": 26,
+      "CITED-AS-ABSENT": 30
+    },
+    "lineResolveRate": 0.903,
+    "misses": [
+      {
+        "file": "feed.json",
+        "line": null,
+        "endLine": null,
+        "hasLine": false,
+        "bare": true,
+        "repo": null,
+        "status": "NAMED-NOT-FOUND",
+        "gap": "content-editorial#1",
+        "severity": "BLOCKING"
+      },
+      {
+        "file": "cadence.json",
+        "line": null,
+        "endLine": null,
+        "hasLine": false,
+        "bare": true,
+        "repo": null,
+        "status": "NAMED-NOT-FOUND",
+        "gap": "content-editorial#5",
+        "severity": "MAJOR"
+      },
+      {
+        "file": "docs/handoff/receipts/conversations.json",
+        "line": null,
+        "endLine": null,
+        "hasLine": false,
+        "bare": false,
+        "repo": null,
+        "status": "FILE-MISSING",
+        "gap": "customer-growth#1",
+        "severity": "BLOCKING"
+      },
+      {
+        "file": "inventory-reconcile.ts",
+        "line": 249,
+        "endLine": null,
+        "hasLine": true,
+        "bare": true,
+        "repo": null,
+        "status": "NAMED-NOT-FOUND",
+        "gap": "customer-growth#5",
+        "severity": "MAJOR"
+      },
+      {
+        "file": "cost-watch-digest.ts",
+        "line": null,
+        "endLine": null,
+        "hasLine": false,
+        "bare": true,
+        "repo": null,
+        "status": "NAMED-NOT-FOUND",
+        "gap": "customer-growth#7",
+        "severity": "MODERATE"
+      },
+      {
+        "file": "series.json",
+        "line": null,
+        "endLine": null,
+        "hasLine": false,
+        "bare": true,
+        "repo": null,
+        "status": "NAMED-NOT-FOUND",
+        "gap": "data-moat#1",
+        "severity": "BLOCKING"
+      },
+      {
+        "file": "founder-walk.json",
+        "line": null,
+        "endLine": null,
+        "hasLine": false,
+        "bare": true,
+        "repo": null,
+        "status": "NAMED-NOT-FOUND",
+        "gap": "design-ux#4",
+        "severity": "MAJOR"
+      },
+      {
+        "file": "scripts/check-specimen-close.mjs",
+        "line": null,
+        "endLine": null,
+        "hasLine": false,
+        "bare": false,
+        "repo": null,
+        "status": "FILE-MISSING",
+        "gap": "engineering#1",
+        "severity": "BLOCKING"
+      },
+      {
+        "file": "main.py",
+        "line": 120,
+        "endLine": null,
+        "hasLine": true,
+        "bare": true,
+        "repo": null,
+        "status": "NAMED-NOT-FOUND",
+        "gap": "engineering#4",
+        "severity": "MAJOR"
+      },
+      {
+        "file": "drift.py",
+        "line": null,
+        "endLine": null,
+        "hasLine": false,
+        "bare": true,
+        "repo": null,
+        "status": "NAMED-NOT-FOUND",
+        "gap": "engineering#4",
+        "severity": "MAJOR"
+      },
+      {
+        "file": "engine_pkg/harvest.py",
+        "line": null,
+        "endLine": null,
+        "hasLine": false,
+        "bare": false,
+        "repo": null,
+        "status": "FILE-MISSING",
+        "gap": "engineering#6",
+        "severity": "MAJOR"
+      },
+      {
+        "file": "tests/fixtures/parity-vectors.json",
+        "line": null,
+        "endLine": null,
+        "hasLine": false,
+        "bare": false,
+        "repo": null,
+        "status": "FILE-MISSING",
+        "gap": "engineering#8",
+        "severity": "MODERATE"
+      },
+      {
+        "file": "Fixtures/parity-vectors.json",
+        "line": null,
+        "endLine": null,
+        "hasLine": false,
+        "bare": false,
+        "repo": null,
+        "status": "FILE-MISSING",
+        "gap": "engineering#8",
+        "severity": "MODERATE"
+      },
+      {
+        "file": "0057_community_template_rejections.sql",
+        "line": null,
+        "endLine": null,
+        "hasLine": false,
+        "bare": true,
+        "repo": null,
+        "status": "NAMED-NOT-FOUND",
+        "gap": "engineering#9",
+        "severity": "MODERATE"
+      }
+    ]
+  },
+  "routing": {
+    "additions": 89,
+    "founderOwned": 36,
+    "agentOwned": 51,
+    "founderHoursParsed": 73,
+    "founderHoursSum": 37,
+    "founderOwnedUnparseable": 3,
+    "noProofCommand": 6,
+    "quarterFloorHours": 39,
+    "pctOfQuarterFloor": 94.9
+  },
+  "neutral": {
+    "$schema": "internal://validator-neutral-verdicts",
+    "generated": "2026-08-07",
+    "preRegistered": true,
+    "_preRegisteredWhy": "The rubric below was written and committed BEFORE any verdict in this file was assigned. It is stated as a decision procedure over four per-claim booleans rather than as a holistic impression, so a reader can recompute every verdict from the recorded inputs and disagree with a specific boolean rather than with a mood.",
+    "rubric": "Can execution begin in this domain within the next 30 days without producing an artifact that is false, unsafe, or unrecoverable? NOT_READY iff at least one open BLOCKING claim satisfies all three of: (a) bitesInM1, (b) needsFounderOrThirdParty, (c) !hasQueueItem. READY_WITH_GAPS iff blocking claims exist but none satisfies all three. READY iff no open blocking claim survives reproduction.",
+    "_rubricWhy": "The original Phase-H prompt asked 'is this domain ready?' and never defined ready. An undefined threshold is filled in by whatever bar the reader brings, and this reader had been told that 'a validator who finds nothing has not validated anything.' The verdict therefore measured the instruction. This rubric fixes the bar to the founder's actual decision — can M1 start — per Rule 4 (the target is 'ready enough to start', not 'ready').",
+    "_whatThisArmIsNot": "This is ONE agent applying a declared rubric, not five independent re-runs. No general-purpose subagent tool was available in this container, so the neutral arm could not be blinded to the original verdicts. The confound is anchoring, and it runs TOWARD agreement with the original — which makes every disagreement recorded below a conservative estimate of the true prompt effect, and makes the one DOWNGRADE (ops-capacity) the load-bearing evidence that the rubric is not a whitewash. The reproduction, concentration and pointer sections of audit-validator-calibration.mjs carry no such confound; they are commands.",
+    "perClaimFields": {
+      "bitesInM1": "If left unfixed, does this produce a false/unsafe/unrecoverable artifact within the first 30 days (by 2026-09-06)? Lead time counts: an obligation that must be STARTED in M1 to land later bites in M1.",
+      "needsFounderOrThirdParty": "Does closing it require founder judgement, a signature, or an outside party (counsel, insurer, customer)? An agent with a proof command does not.",
+      "hasQueueItem": "Is there an item in data/queue.json today that would close it?",
+      "hasProofCommand": "Could a command settle whether it is closed? Rule 1: a claim with NO possible proof command is a DECISION, routes to the founder, and can never be closed by the loop."
+    },
+    "domains": [
+      {
+        "domain": "ci-integrity",
+        "originalVerdict": "NOT_READY",
+        "neutralVerdict": "READY_WITH_GAPS",
+        "m1GatingBlockers": 0,
+        "why": "All three blocking claims were agent-executable in minutes with an exit code as the proof. The validator's own Additions price them at '0 founder-hours; ~20 agent-minutes', '~45 agent-minutes', '~30 agent-minutes'. A domain whose every blocker is a twenty-minute agent fix with a proof command is not a domain that blocks starting; it is the first twenty minutes of starting. CONFIRMED IN THE STRONGEST POSSIBLE WAY: ci-integrity#1 CLOSED DURING THIS AUDIT. At 23:0x on 2026-08-07 all six check-queue modes exited 2; by 23:29 a concurrent session had set Q-004's status to 'ready' and every mode passed. The claim was real, and it was a twenty-minute fix, exactly as the neutral rubric scored it.",
+        "blockers": [
+          {
+            "claim": "ci-integrity#1",
+            "reproduces": "STALE — reproduced at 23:0x, CLOSED by 23:29 on the same day",
+            "bitesInM1": true,
+            "needsFounderOrThirdParty": false,
+            "hasQueueItem": false,
+            "hasProofCommand": true
+          },
+          {
+            "claim": "ci-integrity#2",
+            "reproduces": "REPRODUCES",
+            "bitesInM1": true,
+            "needsFounderOrThirdParty": false,
+            "hasQueueItem": false,
+            "hasProofCommand": true
+          },
+          {
+            "claim": "ci-integrity#3",
+            "reproduces": "REPRODUCES",
+            "bitesInM1": true,
+            "needsFounderOrThirdParty": false,
+            "hasQueueItem": false,
+            "hasProofCommand": true
+          }
+        ]
+      },
+      {
+        "domain": "strategy",
+        "originalVerdict": "NOT_READY",
+        "neutralVerdict": "READY_WITH_GAPS",
+        "m1GatingBlockers": 0,
+        "why": "The verdict is STALE rather than wrong. All three blocking claims were real when written; since then a later session promoted four of this validator's six Additions into the queue as Q-084 (cold-start), Q-085 (deskMinutesPerClose), Q-086 (the differentiator) and Q-087 (product marketing disposition). Two are agent-executable; the founder-only one (Q-086) is queued. Nothing here satisfies all three NOT_READY conditions any more.",
+        "blockers": [
+          {
+            "claim": "strategy#1",
+            "reproduces": "SUBSTANCE-HOLDS",
+            "bitesInM1": false,
+            "needsFounderOrThirdParty": false,
+            "hasQueueItem": true,
+            "hasProofCommand": true,
+            "note": "Q-084 measures cold-start on a fresh org"
+          },
+          {
+            "claim": "strategy#2",
+            "reproduces": "SUBSTANCE-HOLDS",
+            "bitesInM1": false,
+            "needsFounderOrThirdParty": false,
+            "hasQueueItem": true,
+            "hasProofCommand": true,
+            "note": "Q-085; and the literal 'grep returns nothing' is now false — one doc hit exists"
+          },
+          {
+            "claim": "strategy#3",
+            "reproduces": "SUBSTANCE-HOLDS",
+            "bitesInM1": false,
+            "needsFounderOrThirdParty": true,
+            "hasQueueItem": true,
+            "hasProofCommand": true,
+            "note": "Q-086; ADR-030:75 still asserts the killed differentiator"
+          }
+        ]
+      },
+      {
+        "domain": "security",
+        "originalVerdict": "NOT_READY",
+        "neutralVerdict": "NOT_READY",
+        "m1GatingBlockers": 1,
+        "why": "Unchanged, and correctly so. The published claim 'no language model ever reads your documents' is live on 93 storefront index.html today (measured), zero ADRs name the exception desk, and agent sessions already read the seven committed invoice fixtures — so the disclosure gap is live, not prospective. Deciding who may read a customer invoice is a founder decision of record with a 30-day sub-processor notice clock attached; no command can make it. The other two blockers (intake channel, DPA clocks) bite at first customer in M3, so they do not gate starting.",
+        "blockers": [
+          {
+            "claim": "security#1",
+            "reproduces": "REPRODUCES",
+            "bitesInM1": true,
+            "needsFounderOrThirdParty": true,
+            "hasQueueItem": false,
+            "hasProofCommand": false,
+            "note": "the GATE is buildable; the DECISION is not — Rule 1 routes it to the founder"
+          },
+          {
+            "claim": "security#2",
+            "reproduces": "REPRODUCES",
+            "bitesInM1": false,
+            "needsFounderOrThirdParty": true,
+            "hasQueueItem": false,
+            "hasProofCommand": true
+          },
+          {
+            "claim": "security#3",
+            "reproduces": "REPRODUCES",
+            "bitesInM1": false,
+            "needsFounderOrThirdParty": true,
+            "hasQueueItem": false,
+            "hasProofCommand": true
+          }
+        ]
+      },
+      {
+        "domain": "finance-runway",
+        "originalVerdict": "NOT_READY",
+        "neutralVerdict": "NOT_READY",
+        "m1GatingBlockers": 2,
+        "why": "Unchanged. R07 reproduces exactly: founderHours is enforced in 29 places in check-queue.mjs and dollars in zero, while $248-892/month leaves the bank starting in M1. What the founder can spend at zero revenue is a number only he holds — no command produces it. Entity confirmation and counsel carry outside-party lead time, and the company's own legal-counsel-kickoff.md says entity confirmation 'gates everything', so it must START in M1 even though the signature lands in M3.",
+        "blockers": [
+          {
+            "claim": "finance-runway#1",
+            "reproduces": "REPRODUCES",
+            "bitesInM1": true,
+            "needsFounderOrThirdParty": true,
+            "hasQueueItem": false,
+            "hasProofCommand": false,
+            "note": "a cashBudget FIELD is buildable; the NUMBER is a founder decision"
+          },
+          {
+            "claim": "finance-runway#2",
+            "reproduces": "STALE",
+            "bitesInM1": true,
+            "needsFounderOrThirdParty": true,
+            "hasQueueItem": false,
+            "hasProofCommand": false,
+            "note": "R08 downgraded the letter — 'liability' now appears once in the queue — but zero of insurance/E&O/counsel/indemn/engagement-letter do, and no item engages counsel"
+          },
+          {
+            "claim": "finance-runway#3",
+            "reproduces": "SUBSTANCE-HOLDS",
+            "bitesInM1": false,
+            "needsFounderOrThirdParty": false,
+            "hasQueueItem": true,
+            "hasProofCommand": true,
+            "note": "Q-085"
+          }
+        ]
+      },
+      {
+        "domain": "product-truth",
+        "originalVerdict": "NOT_READY",
+        "neutralVerdict": "NOT_READY",
+        "m1GatingBlockers": 1,
+        "why": "Unchanged. product-truth#1 is the same defect as security#1 seen through a different lens — the exception desk against the no-LLM claim — and it is the single most-rediscovered hole in the corpus. product-truth#2 (Q-072 not blocked on the four defects that make its promise untrue) reproduces exactly and is a one-line agent edit with a proof command, so it does not gate starting.",
+        "blockers": [
+          {
+            "claim": "product-truth#1",
+            "reproduces": "REPRODUCES",
+            "bitesInM1": true,
+            "needsFounderOrThirdParty": true,
+            "hasQueueItem": false,
+            "hasProofCommand": false
+          },
+          {
+            "claim": "product-truth#2",
+            "reproduces": "REPRODUCES",
+            "bitesInM1": false,
+            "needsFounderOrThirdParty": false,
+            "hasQueueItem": false,
+            "hasProofCommand": true
+          }
+        ]
+      },
+      {
+        "domain": "content-editorial",
+        "originalVerdict": "READY_WITH_GAPS",
+        "neutralVerdict": "READY_WITH_GAPS",
+        "m1GatingBlockers": 0,
+        "why": "CONTROL — a domain that did NOT return NOT_READY, included to test whether the neutral rubric merely agrees with itself. It holds. The one blocking claim reproduces (R09: three files would still be rewritten, more than the two stated) and is closed by running one builder. Agent-executable with an exit code, so READY_WITH_GAPS under the rubric and READY_WITH_GAPS as returned.",
+        "blockers": [
+          {
+            "claim": "content-editorial#1",
+            "reproduces": "REPRODUCES",
+            "bitesInM1": true,
+            "needsFounderOrThirdParty": false,
+            "hasQueueItem": false,
+            "hasProofCommand": true
+          }
+        ]
+      },
+      {
+        "domain": "ops-capacity",
+        "originalVerdict": "READY_WITH_GAPS",
+        "neutralVerdict": "NOT_READY",
+        "m1GatingBlockers": 1,
+        "why": "DOWNGRADE — the load-bearing control. This domain returned READY_WITH_GAPS under the gap-seeking prompt and fails the neutral rubric. Independently recomputed from data/queue.json today: M1 17.00h, M2 11.25h, M3 11.00h = 39.25h against a 3x13h floor = 100.6%, exactly as claimed — plus 2.25h of unwindowed founder work the budget does not count at all, which the validator did not notice and which takes it to 106.4%. M1 alone is 17.0h against a 13h floor. Cutting to fit is capacity.floorPlan drop-order, which is a founder decision no command can make, and no queue item makes it. A rubric that can only move verdicts toward READY is not a rubric; this is the case that shows it moves both ways.",
+        "blockers": [
+          {
+            "claim": "ops-capacity#1",
+            "reproduces": "REPRODUCES-AND-UNDERSTATED",
+            "bitesInM1": true,
+            "needsFounderOrThirdParty": true,
+            "hasQueueItem": false,
+            "hasProofCommand": true,
+            "note": "check-queue --budget computes it but only WARNS over the floor, and is itself dead at exit 2"
+          },
+          {
+            "claim": "ops-capacity#2",
+            "reproduces": "REPRODUCES",
+            "bitesInM1": false,
+            "needsFounderOrThirdParty": true,
+            "hasQueueItem": false,
+            "hasProofCommand": false,
+            "note": "day-91 cliff"
+          },
+          {
+            "claim": "ops-capacity#3",
+            "reproduces": "SUBSTANCE-HOLDS",
+            "bitesInM1": false,
+            "needsFounderOrThirdParty": false,
+            "hasQueueItem": true,
+            "hasProofCommand": true,
+            "note": "Q-085"
+          }
+        ]
+      }
+    ]
+  },
+  "neutralSummary": {
+    "sampled": 7,
+    "moved": 3,
+    "notReadyUnderNeutral": 4,
+    "notReadyUnderOriginal": 5
+  }
+}

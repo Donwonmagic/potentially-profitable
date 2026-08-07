@@ -41,6 +41,16 @@ const CHECKS = [
   // that .claude/hooks/session-start.sh still renders the contract, and that any
   // committed subagent spawner builds its prompt through contractFor().
   ['Contract injection', 'check-contract-injection.mjs'],
+  // An ADR number is an ADDRESS. The contract gate above proves a decision is
+  // cited; this proves the citation RESOLVES to exactly one file. On 2026-08-07
+  // two concurrent sessions both took "ADR-034" 40 seconds apart, while a
+  // COMMITTED product-repo hook already cited that number — so the citation
+  // naming a decision inescapable named two documents instead. Four pre-existing
+  // pairs are grandfathered with dated reasons; the gate's job is that the list
+  // never grows. Dangling citations are reported, never halting (the product
+  // repo is not on disk in every environment).
+  ['ADR integrity', 'check-adr-integrity.mjs'],
+  ['ADR integrity self-test', 'check-adr-integrity.mjs', '--self-test'],
   // The other half of the same question. Gate coverage asks "is every check
   // script run?"; this asks "is every (idem) builder this file --checks
   // actually re-run by something?". check-all runs at the END of the deploy

@@ -30,9 +30,9 @@ node scripts/check-queue.mjs --verify --all        # re-proves every closed item
 
 **Next:** `Q-002` — Written employer authorization before any real invoice data is PROCESSED — or the walk moves  _(HIGH, founder, 1h + a conversation, both)_
 
-**Gate:** 14 HIGH item(s) unclaimed → `check-queue` exits **1**.
+**Gate:** 17 HIGH item(s) unclaimed → `check-queue` exits **1**.
 
-**Board:** 46 items — 25 ready · 1 claimed · 18 blocked · 2 done.
+**Board:** 50 items — 29 ready · 1 claimed · 18 blocked · 2 done.
 
 ### Needs Don — do this one
 
@@ -42,7 +42,7 @@ node scripts/check-queue.mjs --verify --all        # re-proves every closed item
 
 _2h · window M1 · ready._
 
-20 other founder item(s) exist and are deliberately not listed here. They are in the Founder ledger below. A list of nine things needing a signature is the artifact shape that closed at 26%; one thing with a receipt is not.
+22 other founder item(s) exist and are deliberately not listed here. They are in the Founder ledger below. A list of nine things needing a signature is the artifact shape that closed at 26%; one thing with a receipt is not.
 
 ---
 
@@ -53,7 +53,7 @@ Capacity is **13-26 founder-hours/month** (docs/seo-handoff-both-repos.md:23 (20
 | Window | What it is | Item hours | + overhead | Total | vs capacity |
 |---|---|---|---|---|---|
 | `M1` | Days 1-30 — the mandatory repairs | 14.5h | 2.5h | **17h** | over the 13h floor |
-| `M2` | Days 31-60 — correctness, deployed, then reviewed by a CPA | 8.75h | 2.5h | **11.25h** | fits the floor |
+| `M2` | Days 31-60 — correctness, deployed, then reviewed by a CPA | 10h | 2.5h | **12.5h** | fits the floor |
 | `M3` | Days 61-90 — the price, the conversations, the first invoice | 8.5h | 2.5h | **11h** | fits the floor |
 
 **Standing obligations: 53h/month — SUSPENDED for the duration of M1-M3 by Q-013. Without that suspension the 90-day demand is ~130h against 39-78 available (board-execution-feasibility.md), a 2.5-5x deficit, and this plan is arithmetic fiction.**
@@ -151,7 +151,7 @@ _Did anyone pay for a closed month, and if not, was it the price, the buyer, or 
 
 ---
 
-## Ready (25)
+## Ready (29)
 
 Highest first. A HIGH row here is why the gate is red.
 
@@ -168,12 +168,16 @@ Highest first. A HIGH row here is why the gate is red.
 | `Q-015` | The August dispatch fork — write the edition, or publish a dated cadence pause | HIGH | P0 | founder | 30m (pause) or 4-6h (write) | — |
 | `Q-018` | --done must assert the doneWhen, not merely run the verify — the queue's own honesty defect | HIGH | P0 | agent | 3h | — |
 | `Q-019` | Ratify the six ADRs — the decisions of record that stop this being relitigated | HIGH | P0 | founder | 1h | — |
+| `Q-084` | Measure cold-start reconcile on a FRESH org — the number every commercial figure is priced on | HIGH | P0 | agent | 4-6h | — |
+| `Q-085` | Instrument deskMinutesPerClose — two of three kill criteria cannot currently fire | HIGH | P0 | agent | 3-4h | — |
+| `Q-086` | Replace the differentiator the board killed — ADR-030:75 still asserts it | HIGH | P0 | founder | 1h | — |
 | `Q-082` | Inject the contract at the spawn site — the harness orchestrator must call contractFor() | HIGH | P1 | both | 1-2h | — |
 | `Q-051` | Stand up the cron consumer so the four nightly Issue-openers reach a human | HIGH | RET | agent | 2h | — |
 | `Q-061` | Execute the surface disposition — 209 pages marked freeze-noindex are still indexable, 14 marked delete are still on disk | HIGH | RET | agent | 4h | — |
 | `Q-016` | Un-stub or delete .github/workflows/deploy.yml — four echo statements behind a two-person gate | MED | P1 | agent | 2h | — |
 | `Q-023` | inventory-reconcile.ts:249 — an empty `if (estimated) {}` whose comment claims a behavior the code does not perform | MED | P1 | agent | 1h | — |
 | `Q-060` | Every honesty gate must ship a mutation proof — generalize ADR-023 to the rest | MED | P1 | agent | 6h | — |
+| `Q-087` | Disposition the 37 product marketing pages — surface-disposition covers only the storefront | MED | P1 | both | 3h | — |
 | `Q-032` | /tools/pack-check/ — ship the dead honesty engines as the public falsifier | MED | P2 | agent | 6h | — |
 | `Q-071` | Two pillar essays in Don's voice — invoices-and-vendors, count-and-close | MED | RET | founder | 1.5h | — |
 | `Q-080` | Execute the retirement — archive 21 documents, delete 16 byte-identical duplicates | MED | RET | agent | 1h | — |
@@ -1196,5 +1200,81 @@ Five active storefront rules and eleven product rules carry enforcedBy 'none' an
 ```sh
 # cwd: storefront
 node -e "const a=require('./docs/contracts/rules.json'),b=require('../Muntin-Invoice-Decoder/docs/contracts/rules.json');const n=r=>r.rules.filter(x=>x.status!=='retired'&&x.enforcedBy==='none');const A=n(a),B=n(b);if(A.length>3)throw new Error('storefront still has '+A.length+' undetected rules');if(B.length>7)throw new Error('product still has '+B.length+' undetected rules');for(const r of A.concat(B))if(!r.why)throw new Error(r.id+' has no detector AND no why');console.log('undetected: storefront '+A.length+', product '+B.length)" && node scripts/check-contract-injection.mjs
+```
+
+### `Q-084` — Measure cold-start reconcile on a FRESH org — the number every commercial figure is priced on
+
+**HIGH** · ready · P0 · owner **agent** · product · 4-6h · kind `fix`
+
+VENDOR-TEMPLATE-KEY.md gives 24% today, 62% at the 0.7 knee, and 84-87% as reconcile-rate-among-newly-covered on a MATURE corpus with 3-4 prior confirmations per (org,vendor). A new customer has zero. first-try-reliability-roadmap.md 4d already says the Tacombi corpus is not the demo population — and 00/location plus the 40-location ceiling are priced on it.
+
+**Evidence**
+
+- docs/handoff/bones/validate-strategy.md:38 — "[agent|4-6 agent-hours; 0 founder-hours]" is the validator's own declared cost
+- services/extract/VENDOR-TEMPLATE-KEY.md:203-236 (84.1%, n=490) vs :17-27 (24% pre-maturation)
+
+**Done when:** A committed report records first-pass straight-through for a synthetic org with ZERO prior confirmations, replayed over the 919-doc corpus, with the number stated separately from the mature-org number.
+
+```sh
+# cwd: product
+test -f docs/correctness/cold-start-reconcile.json
+```
+
+### `Q-085` — Instrument deskMinutesPerClose — two of three kill criteria cannot currently fire
+
+**HIGH** · ready · P0 · owner **agent** · product · 3-4h · kind `fix`
+
+queue.json:1613 and :1662 make deskMinutesPerClose the test for CP-60 and CP-90. It is instrumented nowhere in the product repo. ADR-033 exists so decisions are made by falsifier rather than impression.
+
+**Evidence**
+
+- docs/handoff/bones/validate-strategy.md:39 — "[agent|3-4 agent-hours]"
+- data/queue.json CP-60/CP-90 mustBeTrue both key on deskMinutesPerClose; a grep for deskMinutes|desk_minutes|close_minutes across the product repo returns nothing
+
+**Done when:** A per-close timer records desk minutes and a query returns it; CP-60 and CP-90 can be evaluated from data rather than impression.
+
+```sh
+# cwd: product
+grep -rq deskMinutesPerClose apps/api/src
+```
+
+### `Q-086` — Replace the differentiator the board killed — ADR-030:75 still asserts it
+
+**HIGH** · ready · P0 · owner **founder** · storefront · 1h · kind `decide`
+
+ADR-030:75 says a fixed monthly close date is a promise incumbents cannot make. board-service-delivery.md:35 killed the synchronized second Tuesday as disqualifying and nothing replaced it. Q-041 qualification calls and the /close/ page both need one sentence answering why not MarginEdge.
+
+**Evidence**
+
+- docs/handoff/bones/validate-strategy.md:40 — "[founder|1 founder-hour (drafted by an agent, ratified with Q-019)]"
+- docs/editorial/decisions/ADR-030-one-price-one-cohort-no-billing-code.md:75 still asserts the fixed-date promise the board killed (board-service-delivery.md:35, board-completeness.md:26)
+
+**Only Don can do this:** No command can judge whether a differentiator is any good. Only the founder can decide what the company now claims is true of it and of nobody else.
+
+**Done when:** An ADR supersedes ADR-030:75 with a differentiator that survives the capacity arithmetic, and that sentence appears in the /close/ copy.
+
+```sh
+# cwd: storefront
+grep -rqi "differentiator" docs/editorial/decisions/ADR-03*.md
+```
+
+### `Q-087` — Disposition the 37 product marketing pages — surface-disposition covers only the storefront
+
+**MED** · ready · P1 · owner **both** · product · 3h · kind `fix`
+
+6 indexed /vs/ pages carry lastFactCheckedISO 2026-05-21 and say Muntin Ledger does the first part, we do not yet do the rest. Zero files under apps/web/app/(marketing) contain closed month. surface-disposition.json holds zero records for apps/web.
+
+**Evidence**
+
+- docs/handoff/bones/validate-strategy.md:41 — "[agent|3 agent-hours + 0.25 founder-hours to approve the noindex list]"
+- apps/web/app/(marketing)/vs/marginedge/page.tsx:56 carries lastFactCheckedISO 2026-05-21; data/surface-disposition.json holds zero apps/web records
+
+**Only Don can do this:** Approving the noindex list is a publishing decision about the company's own public positioning.
+
+**Done when:** Every apps/web/app/(marketing) route carries a disposition, and no indexed page states a competitor fact older than 90 days.
+
+```sh
+# cwd: storefront
+node -e 'const d=require("./data/surface-disposition.json");const hit=JSON.stringify(d).includes("apps/web");if(!hit)throw new Error("no apps/web route carries a disposition yet");console.log("product marketing routes dispositioned")'
 ```
 
