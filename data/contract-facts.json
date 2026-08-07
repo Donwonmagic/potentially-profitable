@@ -5,11 +5,11 @@
   "_generator": "scripts/build-contract-facts.mjs",
   "facts": {
     "scripts.mjs": {
-      "value": 393,
+      "value": 394,
       "derivedFrom": "ls scripts/*.mjs"
     },
     "scripts.total": {
-      "value": 398,
+      "value": 399,
       "derivedFrom": "ls scripts/*.{mjs,js,sh,py,ts}"
     },
     "scripts.checks": {
@@ -17,7 +17,7 @@
       "derivedFrom": "ls scripts/check-*.mjs"
     },
     "scripts.builders": {
-      "value": 85,
+      "value": 86,
       "derivedFrom": "ls scripts/build-*.mjs"
     },
     "scripts.injectors": {
@@ -73,11 +73,11 @@
       "derivedFrom": "data/system-graph.json summary.invocation.orphan — scripts no runner invokes"
     },
     "docs.files": {
-      "value": 245,
+      "value": 257,
       "derivedFrom": "find docs -name \"*.md\""
     },
     "docs.lines": {
-      "value": 42339,
+      "value": 43978,
       "derivedFrom": "wc -l on every docs/**/*.md"
     },
     "adrs.editorial": {

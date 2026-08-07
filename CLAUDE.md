@@ -18,7 +18,7 @@ New work consolidates around the cost-intelligence funnel (the Cost Index, the l
   - `es/library/<slug>/`, `es/blog/<slug>/` — Spanish translations. EN ↔ ES slug map in `data/i18n-slug-map.json`.
   - `glossary/<term>/`, `tools/<tool>/`, `sheets/<sheet>/` — companion surfaces.
   - `docs/` — editorial canons and reference docs (not web-routable).
-  - `scripts/` — build, inject, and check scripts. <!-- fact:scripts.mjs -->393<!-- /fact --> `.mjs` files: <!-- fact:scripts.checks -->136<!-- /fact --> `check-*`, <!-- fact:scripts.builders -->85<!-- /fact --> `build-*`, <!-- fact:scripts.injectors -->80<!-- /fact --> `inject-*`. <!-- fact:scripts.orphaned -->92<!-- /fact --> of them are invoked by no runner (`data/system-graph.json`). **These numbers are COMPILED** — `<!-- fact:KEY -->` sentinels rewritten by `scripts/build-contract-facts.mjs`, which the session-start hook runs. Never type one by hand; this line said "~70" until 2026-08-07 (ADR-027).
+  - `scripts/` — build, inject, and check scripts. <!-- fact:scripts.mjs -->394<!-- /fact --> `.mjs` files: <!-- fact:scripts.checks -->136<!-- /fact --> `check-*`, <!-- fact:scripts.builders -->86<!-- /fact --> `build-*`, <!-- fact:scripts.injectors -->80<!-- /fact --> `inject-*`. <!-- fact:scripts.orphaned -->92<!-- /fact --> of them are invoked by no runner (`data/system-graph.json`). **These numbers are COMPILED** — `<!-- fact:KEY -->` sentinels rewritten by `scripts/build-contract-facts.mjs`, which the session-start hook runs. Never type one by hand; this line said "~70" until 2026-08-07 (ADR-027).
   - `data/` — JSON manifests (sourced claims, audio coverage, slug map, site counts).
   - `_includes/` — shared HTML partials (nav, footer).
 
