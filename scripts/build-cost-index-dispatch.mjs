@@ -380,7 +380,7 @@ const EDITIONS_FILE = 'data/cost-index-editions.json';
 
 function loadEditions() {
   try { return rd(EDITIONS_FILE); }
-  catch { return { _doc: 'Append-only archive of weekly Cost Index dispatch snapshots. One entry per asOf; never overwrite a prior entry except via a dated revision. The publication\'s citable time series.', _version: '1.0', editions: [] }; }
+  catch { return { _doc: 'Append-only archive of Cost Index dispatch snapshots (weekly through 2026-07-06, first-Tuesday monthly after). One entry per asOf; never overwrite a prior entry except via a dated revision. The publication\'s citable time series.', _version: '1.0', editions: [] }; }
 }
 
 // Build the frozen snapshot object for one edition from a computed insight.

@@ -1,5 +1,5 @@
 {
-  "_doc": "Published weekly cost OUTLOOK — the forward-looking companion to cost-index/feed.json. Basket Forecast (tools/_shared/basket-forecast.js) run over the declared Restaurant Basket (data/cost-basket-weights.json): a directional outlook gated to the backtest-validated reach (coneHonestThroughH), proven cost-pressure edges only, storability-aware actions. Directional only — never a price, never a guarantee, never forecast beyond what the backtest earns. Deterministic; stamped from the data asOf; ships to no page. Built by scripts/build-cost-outlook.mjs; CI re-checks with --check.",
+  "_doc": "Published cost OUTLOOK — the forward-looking companion to cost-index/feed.json. Basket Forecast (tools/_shared/basket-forecast.js) run over the declared Restaurant Basket (data/cost-basket-weights.json): a directional outlook gated to the backtest-validated reach (coneHonestThroughH), proven cost-pressure edges only, storability-aware actions. Directional only — never a price, never a guarantee, never forecast beyond what the backtest earns. Deterministic; stamped from the data asOf; ships to no page. Built by scripts/build-cost-outlook.mjs; CI re-checks with --check.",
   "_version": 1,
   "source": {
     "pressure": "data/cost-pressure.json",

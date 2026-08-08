@@ -285,13 +285,14 @@
       "doneWhen": "No shipped surface describes the index cadence as weekly, and the generator that produces llms.txt emits the corrected string so it cannot regress on the next build.",
       "verify": {
         "cwd": "storefront",
-        "cmd": "node -e \"const fs=require('fs');const bad=[];for(const f of ['llms.txt','llms-full.txt']){if(!fs.existsSync(f))continue;const t=fs.readFileSync(f,'utf8');if(/publishes weekly/i.test(t))bad.push(f)}const g=fs.readFileSync('scripts/build-llms-txt.mjs','utf8');if(/publishes weekly/i.test(g))bad.push('scripts/build-llms-txt.mjs');if(bad.length)throw new Error('still says weekly: '+bad.join(', '));console.log('cadence copy is monthly everywhere')\""
+        "cmd": "node scripts/check-cadence-copy.cjs"
       },
       "blockedBy": [],
       "claim": null,
       "closed": null,
       "founderHours": 0,
-      "window": "M1"
+      "window": "M1",
+      "verifyNote": "2026-08-08: REPLACED. The original tested llms.txt, llms-full.txt and build-llms-txt.mjs for the literal string \"publishes weekly\" and exited 0 while five other shipped surfaces still made the claim — including a rendered audio track that SPOKE it. The doneWhen said \"no shipped surface\"; the verify checked three files. It now walks the site. This is the worked example behind Q-018."
     },
     {
       "id": "Q-009",

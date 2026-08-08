@@ -1,5 +1,5 @@
 {
-  "_doc": "Optional 'from the floor' notes for the weekly Cost Index dispatch, authored by Don Goldstein and keyed by edition asOf. The note interprets what is ON the page; it may NOT introduce a new number, a new ingredient, or a forecast. Every number in the text must trace to that edition's snapshot in data/cost-index-editions.json (or to data/sourced-claims.json). Gated by scripts/check-cost-index-editors-note.mjs, plus the standard fabrication + banned-words gates. Most weeks ship without a note; absence is the default.",
+  "_doc": "Optional 'from the floor' notes for the Cost Index dispatch (monthly since 2026-07-06), authored by Don Goldstein and keyed by edition asOf. The note interprets what is ON the page; it may NOT introduce a new number, a new ingredient, or a forecast. Every number in the text must trace to that edition's snapshot in data/cost-index-editions.json (or to data/sourced-claims.json). Gated by scripts/check-cost-index-editors-note.mjs, plus the standard fabrication + banned-words gates. Most editions ship without a note; absence is the default.",
   "_version": "1.0",
   "notes": {
     "2026-06-18": {

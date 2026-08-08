@@ -31,7 +31,11 @@ const COPY = {
     out: 'cost-index/weekly/index.html',
     lang: 'en-US',
     title: 'Cost Index — edition archive | Muntin Digital',
-    desc: 'Every weekly Restaurant Cost Index edition: the basket reading, confidence, and a link to each dispatch and its open data. Public wholesale levels.',
+    // 2026-08-08: was "Every weekly Restaurant Cost Index edition". The dispatch went
+    // MONTHLY by founder call 2026-07-09; the lede below already said so and the meta
+    // description contradicted it. The ES copy was already correct. The /cost-index/weekly/
+    // URL stays — slugs are final-forever, and a URL is not a cadence claim.
+    desc: 'Every Restaurant Cost Index edition: the basket reading, confidence, and a link to each dispatch and its open data. Public wholesale levels.',
     eyebrow: 'Cost Index · Edition archive',
     h1: 'Every edition',
     lede: 'The Restaurant Cost Index publishes a dated dispatch — monthly on the first Tuesday since August 2026, weekly before that — where the weighted basket stands, what is flashing a re-price or watch signal, and the driver context behind it. This is the full run, newest first. Each edition is a permanent, citable record; the native editions ship an open per-edition dataset alongside the read.',
@@ -123,7 +127,10 @@ function jsonLd(c, editions, urlEn) {
     .map((e) => `${SITE}/blog/cost-index-week-${e.asOf}/#dataset`);
   const graph = [
     { '@type': 'CollectionPage', '@id': `${url}#page`, url, name: c.title.replace(' | Muntin Digital', ''), inLanguage: c.lang, isPartOf: { '@id': `${SITE}/#website` }, breadcrumb: { '@id': `${url}#breadcrumbs` } },
-    { '@type': 'DataCatalog', '@id': `${url}#catalog`, name: 'Muntin Restaurant Cost Index — weekly editions', url, inLanguage: c.lang, isAccessibleForFree: true, publisher: { '@id': `${SITE}/#business` }, dataset: datasets.map((d) => ({ '@id': d })) },
+    { '@type': 'DataCatalog', '@id': `${url}#catalog`, // 2026-08-08: was "weekly editions". The catalog holds BOTH cadences — weekly through
+    // 2026-07-06, monthly first-Tuesday after — so naming it for one of them is false to
+    // machines in both languages. This node is emitted for EN and ES alike.
+    name: 'Muntin Restaurant Cost Index — dispatch editions', url, inLanguage: c.lang, isAccessibleForFree: true, publisher: { '@id': `${SITE}/#business` }, dataset: datasets.map((d) => ({ '@id': d })) },
     { '@type': 'BreadcrumbList', '@id': `${url}#breadcrumbs`, itemListElement: [
       { '@type': 'ListItem', position: 1, name: c.crumbHome, item: `${SITE}/` },
       { '@type': 'ListItem', position: 2, name: c.crumbCi, item: `${SITE}/cost-index/` },
