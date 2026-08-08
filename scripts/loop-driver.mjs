@@ -102,9 +102,20 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const POLICY_PATH = path.join(REPO, 'data', 'loop-policy.json');
 const QUEUE_PATH = path.join(REPO, 'data', 'queue.json');
 const REGISTER_PATH = path.join(REPO, 'data', 'readiness-register.json');
-const READINESS_HISTORY = path.join(REPO, 'data', 'readiness-history.jsonl');
+// Telemetry lives under docs/handoff/telemetry/, NOT under data/. _headers:93 serves
+// /data/*.jsonl under the CC0 wildcard on the premise that every one is a catalogued
+// US-gov dataset — so an internal run ledger written to data/ is published to the open
+// web AND fails check-open-data-catalog + check-headers-license on the next check-all.
+// 2026-08-08: both of these constants still pointed at data/ after the files were moved.
+// RUNS_PATH republished the loop's own ledger every --fire; READINESS_HISTORY silently
+// read nothing, which is why the driver reported "no readiness snapshot yet" and
+// "CONVERGENCE — WARMING (0/5)" while 15 KB of history sat in telemetry. WRITABLE below
+// and the docstring were both already correct; only the constants had drifted, so the
+// --self-test now asserts they agree.
+const TELEMETRY = path.join(REPO, 'docs', 'handoff', 'telemetry');
+const READINESS_HISTORY = path.join(TELEMETRY, 'readiness-history.jsonl');
 const LEASE_PATH = path.join(REPO, 'data', 'loop-lease.json');
-const RUNS_PATH = path.join(REPO, 'data', 'loop-runs.jsonl');
+const RUNS_PATH = path.join(TELEMETRY, 'loop-runs.jsonl');
 
 /** The complete write surface. Asserted by --self-test so it cannot grow silently. */
 export const WRITABLE = ['data/loop-lease.json', 'docs/handoff/telemetry/loop-runs.jsonl', 'data/queue.json (via check-queue --claim only)'];
@@ -496,6 +507,21 @@ function selfTest() {
   ok(policy.retires.items.length >= 3, 'the policy names what this mechanism retires — a mechanism that only adds is a tax');
   ok(WRITABLE.length === 3 && WRITABLE.some((w) => w.includes('check-queue')),
     'the write surface is three paths and the queue is only ever written through check-queue --claim');
+
+  // The declared write surface must be where the code ACTUALLY writes. WRITABLE said
+  // docs/handoff/telemetry/loop-runs.jsonl for a day while RUNS_PATH wrote data/, which
+  // published the loop's internal ledger under the CC0 _headers wildcard and reddened
+  // check-all twice. A declaration nothing checks is decoration.
+  for (const [name, abs] of [['RUNS_PATH', RUNS_PATH], ['READINESS_HISTORY', READINESS_HISTORY], ['LEASE_PATH', LEASE_PATH]]) {
+    const rel = path.relative(REPO, abs).replaceAll('\\', '/');
+    if (name === 'RUNS_PATH' || name === 'LEASE_PATH') {
+      ok(WRITABLE.some((w) => w.startsWith(rel)), `${name} (${rel}) is a path WRITABLE actually declares`);
+    }
+    ok(!/^data\/.*\.jsonl$/.test(rel),
+      `${name} (${rel}) is not a data/*.jsonl — _headers:93 would publish it as CC0 open data`);
+  }
+  ok(fs.existsSync(READINESS_HISTORY),
+    'READINESS_HISTORY resolves to a file that exists — a silent miss reads as "no snapshot yet" and stalls convergence');
 
   // --- the handoff boundary is declared, not discovered --------------------
   ok(policy.handoffLimits.theLoopCannot.length >= 5,

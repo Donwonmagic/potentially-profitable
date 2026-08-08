@@ -30,9 +30,9 @@ node scripts/check-queue.mjs --verify --all        # re-proves every closed item
 
 **Next:** `Q-002` — Written employer authorization before any real invoice data is PROCESSED — or the walk moves  _(HIGH, founder, 1h + a conversation, both)_
 
-**Gate:** 17 HIGH item(s) unclaimed → `check-queue` exits **1**.
+**Gate:** 16 HIGH item(s) unclaimed → `check-queue` exits **1**.
 
-**Board:** 50 items — 29 ready · 1 claimed · 18 blocked · 2 done.
+**Board:** 50 items — 28 ready · 2 claimed · 18 blocked · 2 done.
 
 ### Needs Don — do this one
 
@@ -42,7 +42,7 @@ node scripts/check-queue.mjs --verify --all        # re-proves every closed item
 
 _2h · window M1 · ready._
 
-22 other founder item(s) exist and are deliberately not listed here. They are in the Founder ledger below. A list of nine things needing a signature is the artifact shape that closed at 26%; one thing with a receipt is not.
+23 other founder item(s) exist and are deliberately not listed here. They are in the Founder ledger below. A list of nine things needing a signature is the artifact shape that closed at 26%; one thing with a receipt is not.
 
 ---
 
@@ -52,7 +52,7 @@ Capacity is **13-26 founder-hours/month** (docs/seo-handoff-both-repos.md:23 (20
 
 | Window | What it is | Item hours | + overhead | Total | vs capacity |
 |---|---|---|---|---|---|
-| `M1` | Days 1-30 — the mandatory repairs | 14.5h | 2.5h | **17h** | over the 13h floor |
+| `M1` | Days 1-30 — the mandatory repairs | 14.75h | 2.5h | **17.25h** | over the 13h floor |
 | `M2` | Days 31-60 — correctness, deployed, then reviewed by a CPA | 10h | 2.5h | **12.5h** | fits the floor |
 | `M3` | Days 61-90 — the price, the conversations, the first invoice | 8.5h | 2.5h | **11h** | fits the floor |
 
@@ -151,14 +151,13 @@ _Did anyone pay for a closed month, and if not, was it the price, the buyer, or 
 
 ---
 
-## Ready (29)
+## Ready (28)
 
 Highest first. A HIGH row here is why the gate is red.
 
 | ID | Item | Pri | Phase | Owner | Effort | Blocked by |
 |---|---|---|---|---|---|---|
 | `Q-002` | Written employer authorization before any real invoice data is PROCESSED — or the walk moves | HIGH | P0 | founder | 1h + a conversation | — |
-| `Q-004` | check-all is NOT idempotent — two runs give different totals and dirty the working tree | HIGH | P0 | agent | 3h | — |
 | `Q-005` | Green the deploy — settle whether it is actually red, from the Cloudflare build log | HIGH | P0 | both | 1h agent + Mac time for one builder | — |
 | `Q-006` | The editions spine has not advanced since 2026-07-06 — find out why, then make the refresh append it | HIGH | P0 | both | 20m | — |
 | `Q-008` | llms.txt still tells crawlers the Cost Index publishes weekly | HIGH | P0 | agent | 15m | — |
@@ -168,7 +167,7 @@ Highest first. A HIGH row here is why the gate is red.
 | `Q-015` | The August dispatch fork — write the edition, or publish a dated cadence pause | HIGH | P0 | founder | 30m (pause) or 4-6h (write) | — |
 | `Q-018` | --done must assert the doneWhen, not merely run the verify — the queue's own honesty defect | HIGH | P0 | agent | 3h | — |
 | `Q-019` | Ratify the six ADRs — the decisions of record that stop this being relitigated | HIGH | P0 | founder | 1h | — |
-| `Q-084` | Measure cold-start reconcile on a FRESH org — the number every commercial figure is priced on | HIGH | P0 | agent | 4-6h | — |
+| `Q-084` | Measure cold-start reconcile on a FRESH org — the number every commercial figure is priced on | HIGH | P0 | founder | 4-6h | — |
 | `Q-085` | Instrument deskMinutesPerClose — two of three kill criteria cannot currently fire | HIGH | P0 | agent | 3-4h | — |
 | `Q-086` | Replace the differentiator the board killed — ADR-030:75 still asserts it | HIGH | P0 | founder | 1h | — |
 | `Q-082` | Inject the contract at the spawn site — the harness orchestrator must call contractFor() | HIGH | P1 | both | 1-2h | — |
@@ -187,12 +186,13 @@ Highest first. A HIGH row here is why the gate is red.
 | `Q-053` | Cross-repo PAT so the product inbox and the storefront queue are one list | LOW | RET | founder | 15m | — |
 | `Q-073` | Strip analytics from 221 pages — instrument the qualification path, not the corpus | LOW | RET | agent | 2h | — |
 
-## In progress (1)
+## In progress (2)
 
 Claims expire after 21 days and are released by the machine.
 
 | ID | Item | Pri | Phase | Owner | Effort | Blocked by |
 |---|---|---|---|---|---|---|
+| `Q-004` | check-all is NOT idempotent — two runs give different totals and dirty the working tree | HIGH | P0 | agent | 3h | — |
 | `Q-007` | 72 published falsehoods in the July dispatch — correct in place, wire check-src-sentinel | HIGH | P0 | both | 5h | — |
 
 ## Blocked (18)
@@ -297,7 +297,7 @@ _Closed 2026-08-07T17:51:03.672Z by session:phase-e-queue, proved by `node scrip
 
 ### `Q-004` — check-all is NOT idempotent — two runs give different totals and dirty the working tree
 
-**HIGH** · ready · P0 · owner **agent** · storefront · 3h · kind `fix`
+**HIGH** · claimed · P0 · owner **agent** · storefront · 3h · kind `fix`
 
 Measured 2026-08-07 in this container: three consecutive `node scripts/check-all.mjs` runs, no other command between them, returned 311/320, 306/320 and 309/323 — the DENOMINATOR moved. Working-tree dirty count went 208 -> 215 across the runs. The deploy gate writes files while checking, which is why clearing reds locally never converges and why the founder's only feedback loop has a false-alarm rate he has learned to ignore (the board already records PR #536 'merged with three reds the founder accepted'). This is upstream of every other red: until check-all is a pure function of the tree, no agent session can prove it fixed anything.
 
@@ -312,6 +312,8 @@ Measured 2026-08-07 in this container: three consecutive `node scripts/check-all
 # cwd: storefront
 test -z "$(git status --porcelain)" && node scripts/check-all.mjs > /tmp/qa.txt 2>&1; node scripts/check-all.mjs > /tmp/qb.txt 2>&1; test -z "$(git status --porcelain)" || { echo 'check-all dirtied the tree'; exit 1; }; diff <(tail -1 /tmp/qa.txt) <(tail -1 /tmp/qb.txt)
 ```
+
+_Claimed by session:21cedc96 at 2026-08-08T15:35:50.563Z._ loop-driver lane 1
 
 ### `Q-005` — Green the deploy — settle whether it is actually red, from the Cloudflare build log
 
@@ -1204,14 +1206,16 @@ node -e "const a=require('./docs/contracts/rules.json'),b=require('../Muntin-Inv
 
 ### `Q-084` — Measure cold-start reconcile on a FRESH org — the number every commercial figure is priced on
 
-**HIGH** · ready · P0 · owner **agent** · product · 4-6h · kind `fix`
+**HIGH** · ready · P0 · owner **founder** · product · 4-6h · kind `fix`
 
-VENDOR-TEMPLATE-KEY.md gives 24% today, 62% at the 0.7 knee, and 84-87% as reconcile-rate-among-newly-covered on a MATURE corpus with 3-4 prior confirmations per (org,vendor). A new customer has zero. first-try-reliability-roadmap.md 4d already says the Tacombi corpus is not the demo population — and 00/location plus the 40-location ceiling are priced on it.
+VENDOR-TEMPLATE-KEY.md gives 24% today, 62% at the 0.7 knee, and 84-87% as reconcile-rate-among-newly-covered on a MATURE corpus with 3-4 prior confirmations per (org,vendor). A new customer has zero. first-try-reliability-roadmap.md 4d already says the Tacombi corpus is not the demo population — and 00/location plus the 40-location ceiling are priced on it. CORRECTED 2026-08-07: this is NOT agent-executable. The 919-doc corpus lives at ~/muntin-docling-json on the founder Mac (cli/corpus_report.py:28), not in the repo — the repo holds 7 fixtures — and the extract service deps are not installed in a container. It is ~10 minutes of founder time on his own machine, and it is the number every commercial figure in the plan is priced on.
 
 **Evidence**
 
 - docs/handoff/bones/validate-strategy.md:38 — "[agent|4-6 agent-hours; 0 founder-hours]" is the validator's own declared cost
 - services/extract/VENDOR-TEMPLATE-KEY.md:203-236 (84.1%, n=490) vs :17-27 (24% pre-maturation)
+
+**Only Don can do this:** The 919-doc corpus lives at ~/muntin-docling-json on his Mac (cli/corpus_report.py:28); the repo holds 7 fixtures, and the extract service deps are not installed in any container. Ten minutes on his own machine produces the number every commercial figure in the plan is priced on.
 
 **Done when:** A committed report records first-pass straight-through for a synthetic org with ZERO prior confirmations, replayed over the 919-doc corpus, with the number stated separately from the mature-org number.
 
