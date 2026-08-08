@@ -108,7 +108,7 @@ The dispatch (`blog/cost-index-week-<asOf>/`, byline **Don Goldstein**) is an of
   - Slugs are final-forever. Renaming a post breaks deep links from smart-next blocks, external citations, and AI Overview rotation. To revise content, rewrite in place and bump `dateModified`.
   - Library articles ship under the **Muntin Desk** byline (JSON-LD `author` still references Don Goldstein — he's the human under the hood).
   - Blog articles ship under **Don Goldstein**.
-  - `<!-- LIBRARY:autolink:start -->…<!-- /LIBRARY:autolink:end -->` sentinels mark glossary autolinks injected by `scripts/build-library.mjs`. These must NOT live inside attribute values — `check-article-graphics.mjs` rule 8 catches that corruption.
+  - `<!-- LIBRARY:autolink:start -->…<!-- LIBRARY:autolink:end -->` (NOTE: the close marker has NO leading slash — `build-library.mjs:1938` is authoritative and all 397 pairs on disk match it; this line documented a slash that never existed, which would make any gate written from this prose report 436 false corruptions on a clean tree) sentinels mark glossary autolinks injected by `scripts/build-library.mjs`. These must NOT live inside attribute values — `check-article-graphics.mjs` rule 8 catches that corruption.
   - `package.json` is gitignored by convention. Contributors maintain their own for npm-dependent scripts (Playwright, puppeteer). See `tests/README.md` for the Playwright setup.
 
 ## Don't do

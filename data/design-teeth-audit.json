@@ -1,0 +1,3309 @@
+{
+  "_doc": "Measured, not inferred: which gates go red when a NAMED design defect is deliberately introduced. Produced by scripts/audit-design-teeth.mjs against a sandbox copy of the repo — the working tree is never written. UNCAUGHT and UNEXERCISED are review queues, not verdicts of worthlessness.",
+  "_generator": "scripts/audit-design-teeth.mjs",
+  "generatedAt": "2026-08-08",
+  "ref": "eb652f015",
+  "refCommit": "eb652f0154ad3a873f8972e704d68b58bd5aef66",
+  "repoWorkingTreeUntouched": true,
+  "gateBaseline": {
+    "check-contrast.mjs": {
+      "state": "GREEN",
+      "exit": 0,
+      "job": "locks the section-rhythm token palette to site.css",
+      "argv": []
+    },
+    "check-dark-contrast.mjs": {
+      "state": "GREEN",
+      "exit": 0,
+      "job": "keeps the generated dark ramp AA at token level",
+      "argv": []
+    },
+    "check-stone-2-usage.mjs": {
+      "state": "GREEN",
+      "exit": 0,
+      "job": "counts uses of a tone documented as failing AAA as body text",
+      "argv": []
+    },
+    "check-css-drift.mjs": {
+      "state": "ALREADY-RED",
+      "exit": 1,
+      "job": "hardcoded-hex debt tracker; UNWIRED and documented as FAILING",
+      "argv": []
+    },
+    "check-css-shells.mjs": {
+      "state": "ALREADY-RED",
+      "exit": 1,
+      "job": "guards the per-page CSS shell injection",
+      "argv": [
+        "--check"
+      ]
+    },
+    "check-image-dimensions.mjs": {
+      "state": "GREEN",
+      "exit": 0,
+      "job": "CLS guard — <img> must carry width/height",
+      "argv": [
+        "--check"
+      ]
+    },
+    "check-image-formats.mjs": {
+      "state": "GREEN",
+      "exit": 0,
+      "job": "AVIF/WebP sibling policy (warn tier in check-all)",
+      "argv": [
+        "--check"
+      ]
+    },
+    "check-lazy-images.mjs": {
+      "state": "GREEN",
+      "exit": 0,
+      "job": "LCP guard — below-fold <img> must be lazy + async",
+      "argv": [
+        "--check"
+      ]
+    },
+    "check-og-images.mjs": {
+      "state": "SANDBOX-BLIND",
+      "job": "social card images",
+      "why": "resolves og:image to brand/*.png, which the sandbox excludes"
+    },
+    "check-article-graphics.mjs": {
+      "state": "GREEN",
+      "exit": 0,
+      "job": "the 9-rule article figure gate (viz-* families, audio-alt, figcaption)",
+      "argv": []
+    }
+  },
+  "scoredAbsent": [
+    "check-design-scorecard.mjs",
+    "check-archetype-conformance.mjs",
+    "check-contrast-ratios.mjs"
+  ],
+  "coverage": {},
+  "results": [
+    {
+      "id": "color-hex-in-css",
+      "why": "An off-token hex literal in a shipped stylesheet. This is the defect check-no-offspine-color.mjs was named by the loop charter to catch and never existed to catch.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "assets/site.css",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "color-svg-attr",
+      "why": "A hardcoded fill/stroke in an SVG presentation attribute — the illustration drift a stylesheet-only scanner never sees.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "404.html",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "color-inline-style",
+      "why": "A colour literal in a style=\"\" attribute — off-spine colour that no stylesheet audit reaches.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "404.html",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "type-offscale-fontsize",
+      "why": "A font-size off the declared scale. A type system with 134 distinct sizes is not a scale, and a gate that cannot see the 135th is not guarding one.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "assets/site.css",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "space-offscale",
+      "why": "Padding, margin and gap drawn from nowhere — the spacing form of the same defect.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "assets/site.css",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "font-family-rogue",
+      "why": "A seventh typeface. Typeface count is the coarsest coherence read there is and it should still be sensitive to one new face.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "assets/site.css",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "tabular-strip-all",
+      "why": "Delete every tabular-nums rule in every stylesheet. This company prints money a CPA aligns in a column; if that silently stops, the product looks like it guesses.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "assets/sheets.css",
+          "note": null
+        },
+        {
+          "file": "assets/site-article.css",
+          "note": null
+        },
+        {
+          "file": "assets/site-core.css",
+          "note": null
+        },
+        {
+          "file": "assets/site-tool.css",
+          "note": null
+        },
+        {
+          "file": "assets/site.css",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "tabular-strip-one-sheet",
+      "why": "The SAME defect confined to one stylesheet. This mutation exists to characterise a known blind spot, not to pass: numeric cells are reached by selectors in several sheets at once, so coverage is redundant and losing one sheet leaves uncoveredNumericCells unmoved while the declaration COUNT still falls. Worth knowing which of the two numbers is doing the work.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "assets/site-article.css",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "theme-dark-redef-deleted",
+      "why": "Delete a colour token's dark redefinition everywhere it is defined. Light keeps its value, dark silently inherits it, and the theme stops being a theme.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "assets/site-core.css",
+          "note": "token --mtn-border — all 2 dark definition(s) removed"
+        },
+        {
+          "file": "assets/site.css",
+          "note": "token --mtn-border — all 2 dark definition(s) removed"
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "theme-dark-only-token",
+      "why": "A token whose ONLY definition lives inside a dark block — the classic broken-dark-mode bug, invisible in light mode and therefore invisible to most reviewers.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "assets/site-core.css",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "weight-bloat",
+      "why": "Forty kilobytes of dead CSS. Weight is the one measure where regression is invisible to the eye and obvious to the network.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "assets/site-tool.css",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "sentinel-corrupt",
+      "why": "Break a <!-- count: --> sentinel closer. A broken sentinel silently breaks the gate that reads it — the bar here is ZERO, not \"no worse\".",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "404.html",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "shell-stylesheets-stripped",
+      "why": "One member page loses its stylesheet links — the design never reached this page. Half of the failure that let a specimen ship to /about/ while 1,326 pages disagreed and CI stayed green.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "es/glossary/above-the-fold/index.html",
+          "note": "definition-card member /es/glossary/above-the-fold/"
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "shell-rare-marker",
+      "why": "One member page gains a body class and a stylesheet none of its siblings carry — the design reached ONLY this page. The other half, and the one a diff review never catches because the diff looks like progress.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "es/glossary/above-the-fold/index.html",
+          "note": "definition-card member /es/glossary/above-the-fold/"
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "page-emptied",
+      "why": "A page truncated to a stub. Deleting content removes hex literals and px font-sizes, so without a measure for this, DELETION reads as design improvement.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "es/glossary/above-the-fold/index.html",
+          "note": "definition-card member /es/glossary/above-the-fold/"
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "discipline-hex-style-block",
+      "why": "A page-level <style> block full of raw hex. Token discipline is recorded per archetype and going UP is the regression.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "es/glossary/above-the-fold/index.html",
+          "note": "definition-card member /es/glossary/above-the-fold/"
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "contrast-pair-broken",
+      "why": "A grey-on-grey text pairing at roughly 1.3:1. accessibility.html publishes a WCAG 2.2 AA conformance target; an instrument that cannot see this cannot support that sentence.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "assets/site.css",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "focus-ring-suppressed",
+      "why": "outline:none on an interactive selector with no :focus-visible restoration — a keyboard user loses the ring and nothing on screen says so.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "assets/site.css",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "motion-uncovered",
+      "why": "An animation no prefers-reduced-motion block neutralises. Motion-safe is ADR-004 doctrine in the product repo and unmeasured on the storefront.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "assets/site.css",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "img-dimensions-stripped",
+      "why": "An <img> loses width/height — the CLS defect check-image-dimensions.mjs is wired into check-all to guard. This is the control: a defect an EXISTING gate should catch, proving the harness can tell a caught defect from an uncaught one.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "404.html",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "CAUGHT-BY-EXISTING-GATE",
+      "note": null,
+      "binary": {
+        "caughtBy": [
+          "check-image-dimensions.mjs"
+        ],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    },
+    {
+      "id": "img-lazy-stripped-sitewide",
+      "why": "Strip loading=\"lazy\" from EVERY page that has it. The maximal form of the LCP defect check-lazy-images.mjs is wired into check-all to guard. If the gate still exits 0 after this, it is not narrow — it is vacuous on this corpus, and its green is the appearance of protection rather than protection.",
+      "scoredInstrument": null,
+      "targets": [
+        {
+          "file": "404.html",
+          "note": null
+        },
+        {
+          "file": "_includes/es/footer.html",
+          "note": null
+        },
+        {
+          "file": "_includes/footer.html",
+          "note": null
+        },
+        {
+          "file": "about/index.html",
+          "note": null
+        },
+        {
+          "file": "accessibility.html",
+          "note": null
+        },
+        {
+          "file": "admin/submissions/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/30-days-after-leaving-doordash-restaurant-case-study/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/ai-local-pack-restaurant-phone-calls-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/ai-search-restaurant-website-platform-recommendations-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/cost-index-2026-07/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/cost-index-week-2026-06-05/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/cost-index-week-2026-06-16/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/cost-index-week-2026-06-18/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/cost-index-week-2026-07-06/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/el-nino-food-prices-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/gemini-ai-referral-traffic-restaurants-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/get-found-fathers-day-weekend-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/google-ai-mode-restaurant-local-results-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/how-to-appear-in-ai-search-restaurant-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/instagram-as-restaurant-seo-strategy-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/may-2026-discovery-changed-under-you/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/may-2026-wave-publishing-for-citation/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/menu-pricing-grounded-100-ingredients-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/restaurant-cost-pressure-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "blog/restaurant-menu-inflation-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "cookies.html",
+          "note": null
+        },
+        {
+          "file": "es/about/index.html",
+          "note": null
+        },
+        {
+          "file": "es/accessibility.html",
+          "note": null
+        },
+        {
+          "file": "es/admin/submissions/index.html",
+          "note": null
+        },
+        {
+          "file": "es/blog/30-dias-despues-de-dejar-doordash-caso-restaurante/index.html",
+          "note": null
+        },
+        {
+          "file": "es/blog/como-aparecer-en-busqueda-ai-restaurante-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/blog/dia-del-padre-que-te-encuentren-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/blog/el-nino-y-precios-de-alimentos-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/blog/fijar-precios-con-datos-100-ingredientes-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/blog/google-ai-mode-resultados-locales-restaurante-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/blog/index.html",
+          "note": null
+        },
+        {
+          "file": "es/blog/inflacion-de-menu-de-restaurante-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/blog/instagram-como-seo-para-restaurante-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/blog/la-busqueda-cambio-bajo-tus-pies-mayo-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/blog/lanzamiento-mayo-2026-publicar-para-citacion/index.html",
+          "note": null
+        },
+        {
+          "file": "es/blog/paquete-local-ai-llamadas-restaurante-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/blog/trafico-referido-gemini-restaurantes-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/cookies.html",
+          "note": null
+        },
+        {
+          "file": "es/for/restaurants/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/above-the-fold/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/accessible-pair/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/aggregator/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/ai-overview/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/alt-text/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/analogous-colors/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/apple-bing-maps/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/aspect-ratio/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/assessed-benchmark/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/average-check/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/basics/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/bls/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/body-text-size/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/bounce-rate/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/brand-design/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/brand-identity/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/breadcrumb/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/break-even/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/calibration/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/canonical-url/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/catering-page/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/cdn/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/charm-pricing/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/clearspace/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/click-to-call/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/click-to-directions/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/client-side/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/client-side-tool/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/cls/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/cme/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/color-blindness/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/color-harmony/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/color-palette/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/commission/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/complementary-colors/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/contribution-margin/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/conversion-rate/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/conversions/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/cookie-banner/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/copyable-address/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/core-web-vitals/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/cost-data/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/cost-index/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/cover/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/cta/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/cuisine-pitch/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/data-literacy/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/data-tiering/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/delivery-presence/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/design-token/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/dietary-markers/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/direct-ordering/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/domain-name/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/edible-portion/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/eia/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/elasticity/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/favicon/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/fcp/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/fda/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/fetch-request/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/findability/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/fixed-costs/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/food-cost/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/form-abandonment/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/fred/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/freshness/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/funnel/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/gbp/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/gbp-hours-mismatch/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/gbp-photo-count/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/gift-card-checkout/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/hero/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/hero-shot/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/holiday-hours/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/honest-pricing/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/hosting/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/hours-of-operation/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/hours-visibility/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/hreflang/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/html-menu/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/https/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/incident-response/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/inp/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/labor-cost/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/last-updated-signal/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/lazy-loading/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/lcp/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/lighthouse/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/logo-lockup/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/map-pack/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/margin/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/margin-math/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/measured-derived-absent/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/menu-copy/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/menu-engineering/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/menu-mix/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/meta-description/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/mobile/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/mobile-first-indexing/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/monochromatic-palette/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/monochrome-variant/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/nap-consistency/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/newsletter-capture/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/noaa-fisheries/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/og-share-preview/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/oklab/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/online-ordering/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/open-graph/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/opening-hours-specification/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/owned-channel/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/pagespeed-insights/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/photo-brief/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/pii/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/plate-cost/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/prediction-band/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/pressure-overlay/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/price-confidence/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/prime-cost/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/privacy-policy/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/professional-email/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/ratio-bridge/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/real-photos/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/reservation-link/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/responsive-design/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/restaurant-numbers/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/review-responsiveness/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/revisions/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/rich-results/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/robots-txt/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/schema/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/search-console/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/sensory-adjective/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/service-charge/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/shippable-bar/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/sitemap/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/social-proof/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/special-hours/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/ssl-certificate/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/stale-copyright/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/sticky-footer/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/structured-data/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/subtype-bakery/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/subtype-bar-pub/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/subtype-cafe/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/subtype-casual-dining/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/subtype-catering-only/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/subtype-fast-casual/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/subtype-fine-dining/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/subtype-food-truck/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/subtype-ghost-kitchen/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/subtype-pizzeria/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/subtypes/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/tap-targets/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/terms-of-service/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/third-party-marketplace/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/title-tag/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/transport-security/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/trust/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/ttfb/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/typography-pairing/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/url-fragment/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/url-fragment-vs-query/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/usda-dairy/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/usda-lmr/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/usda-market-news/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/variable-costs/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/viewport-meta/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/wcag-contrast/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/wholesale/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/working-contact-form/index.html",
+          "note": null
+        },
+        {
+          "file": "es/glossary/yield-percent/index.html",
+          "note": null
+        },
+        {
+          "file": "es/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/checklists/audit-any-tool/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/checklists/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/checklists/restaurant-website-checklist/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/research/cart-abandonment-rate/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/research/dmv-restaurant-gbp-audit-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/research/fittss-law/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/research/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/research/lighthouse-performance-scoring/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/research/local-business-websites/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/research/mobile-page-speed-3-second-rule/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/start-here/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/topics/ai-search/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/topics/brand-design/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/topics/conversions/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/topics/cost-data/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/topics/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/topics/information-security/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/topics/local-seo/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/topics/operations-margin/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/topics/speed-mobile/index.html",
+          "note": null
+        },
+        {
+          "file": "es/learn/topics/trust-reviews/index.html",
+          "note": null
+        },
+        {
+          "file": "es/ledger/demo/index.html",
+          "note": null
+        },
+        {
+          "file": "es/ledger/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/cargos-por-servicio-vs-propina-cuentas-para-operador-restaurante-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/checklist-de-seo-tecnico-para-sitios-de-restaurantes/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/como-configurar-google-business-profile-para-tu-restaurante/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/como-conseguir-mas-resenas-google-para-tu-restaurante/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/como-contratar-a-un-disenador-web-para-restaurantes/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/como-hacer-sitio-web-para-mi-restaurante/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/como-leer-google-search-console-de-tu-restaurante/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/como-lograr-que-google-cite-tu-restaurante-en-ai-overview/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/como-responder-resenas-google-restaurante-playbook-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/como-saber-si-una-herramienta-de-restaurante-es-segura/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/como-salir-de-doordash-mi-restaurante/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/como-subir-precios-de-menu-sin-perder-reservas/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/contabilidad-de-restaurante-con-privacidad/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/costo-del-plato-cuando-cambian-los-precios/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/costo-primo-de-restaurante/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/cuando-rehacer-tu-sitio-web-de-restaurante/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/cuanto-cuesta-una-pagina-web-para-restaurante-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/decision-app-restaurante/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/especificaciones-de-fotos-para-restaurantes/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/guia-conversion-reservas/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/ingenieria-de-menu-para-restaurantes/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/los-6-tipos-de-schema-markup-que-google-usa/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/mejor-plataforma-de-sitio-web-para-restaurantes/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/mejores-practicas-del-menu-en-linea-para-restaurantes/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/mi-restaurante-no-aparece-en-google-maps/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/pedidos-en-linea-sin-comision-para-restaurantes/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/precios-de-la-carne-de-res-para-tu-restaurante/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/programas-de-lealtad-para-restaurantes-independientes-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/puede-chatgpt-escribir-tu-sitio-web-de-restaurante/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/que-debe-tener-un-sitio-web-de-restaurante/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/requisitos-legales-del-sitio-web-de-tu-restaurante/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/reserva-en-google-ai-mode-restaurante-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/seo-local-para-restaurantes/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/sistema-de-marca-para-restaurantes-color-tipografia-logo/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/toast-vs-square-vs-clover-para-restaurantes/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/uber-eats-vs-doordash-vs-grubhub-cuentas-para-restaurante-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "es/library/wix-vs-custom-para-restaurantes/index.html",
+          "note": null
+        },
+        {
+          "file": "es/privacy.html",
+          "note": null
+        },
+        {
+          "file": "es/security/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/allergen-matrix/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/brand-asset-inventory/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/cash-handling-log/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/complaint-root-cause-tracker/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/daily-sales-recap/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/daily-sales-recap/why/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/daypart-traffic-map/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/email-list-growth-log/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/gbp-monthly-audit/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/gbp-monthly-audit/why/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/health-inspection-prep/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/holiday-hours-planner/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/incident-report/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/inventory-count-sheet/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/invoice-receiving-checklist/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/line-check-sheet/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/local-keyword-map/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/menu-redesign-brief/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/monthly-pnl-snapshot/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/monthly-pnl-snapshot/why/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/nap-consistency-tracker/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/photo-refresh-tracker/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/photo-shot-list/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/recipe-cost-card/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/recipe-cost-card/why/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/reservation-no-show-log/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/review-response-log/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/signage-spec-sheet/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/social-content-calendar/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/staff-onboarding-checklist/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/start-here/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/third-party-channel-pnl/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/third-party-channel-pnl/why/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/vendor-contact-sheet/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/waste-log/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/website-conversion-checklist/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/weekly-prime-cost-worksheet/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/weekly-prime-cost-worksheet/why/index.html",
+          "note": null
+        },
+        {
+          "file": "es/sheets/why/index.html",
+          "note": null
+        },
+        {
+          "file": "es/studio/index.html",
+          "note": null
+        },
+        {
+          "file": "es/system/index.html",
+          "note": null
+        },
+        {
+          "file": "es/terms.html",
+          "note": null
+        },
+        {
+          "file": "es/tools/audits/index.html",
+          "note": null
+        },
+        {
+          "file": "es/tools/index.html",
+          "note": null
+        },
+        {
+          "file": "es/tools/margin-math/index.html",
+          "note": null
+        },
+        {
+          "file": "es/tools/menu-engineering/index.html",
+          "note": null
+        },
+        {
+          "file": "es/tools/plate-cost/index.html",
+          "note": null
+        },
+        {
+          "file": "es/window/index.html",
+          "note": null
+        },
+        {
+          "file": "es/workbench/index.html",
+          "note": null
+        },
+        {
+          "file": "for/restaurants/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/above-the-fold/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/accessible-pair/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/aggregator/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/ai-overview/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/alt-text/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/analogous-colors/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/apple-bing-maps/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/aspect-ratio/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/assessed-benchmark/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/average-check/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/basics/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/bls/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/body-text-size/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/bounce-rate/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/brand-design/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/brand-identity/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/breadcrumb/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/break-even/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/calibration/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/canonical-url/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/catering-page/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/cdn/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/charm-pricing/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/clearspace/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/click-to-call/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/click-to-directions/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/client-side/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/client-side-tool/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/cls/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/cme/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/color-blindness/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/color-harmony/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/color-palette/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/commission/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/complementary-colors/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/contribution-margin/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/conversion-rate/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/conversions/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/cookie-banner/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/copyable-address/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/core-web-vitals/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/cost-data/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/cost-index/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/cover/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/cta/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/cuisine-pitch/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/data-literacy/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/data-tiering/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/delivery-presence/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/design-token/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/dietary-markers/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/direct-ordering/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/domain-name/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/edible-portion/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/eia/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/elasticity/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/favicon/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/fcp/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/fda/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/fetch-request/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/findability/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/fixed-costs/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/food-cost/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/form-abandonment/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/fred/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/freshness/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/funnel/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/gbp/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/gbp-hours-mismatch/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/gbp-photo-count/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/gift-card-checkout/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/hero/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/hero-shot/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/holiday-hours/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/honest-pricing/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/hosting/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/hours-of-operation/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/hours-visibility/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/hreflang/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/html-menu/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/https/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/incident-response/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/inp/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/labor-cost/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/last-updated-signal/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/lazy-loading/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/lcp/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/lighthouse/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/logo-lockup/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/map-pack/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/margin/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/margin-math/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/measured-derived-absent/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/menu-copy/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/menu-engineering/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/menu-mix/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/meta-description/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/mobile/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/mobile-first-indexing/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/monochromatic-palette/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/monochrome-variant/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/nap-consistency/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/newsletter-capture/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/noaa-fisheries/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/og-share-preview/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/oklab/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/online-ordering/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/open-graph/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/opening-hours-specification/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/owned-channel/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/pagespeed-insights/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/photo-brief/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/pii/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/plate-cost/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/prediction-band/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/pressure-overlay/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/price-confidence/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/prime-cost/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/privacy-policy/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/professional-email/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/ratio-bridge/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/real-photos/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/reservation-link/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/responsive-design/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/restaurant-numbers/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/review-responsiveness/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/revisions/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/rich-results/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/robots-txt/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/schema/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/search-console/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/sensory-adjective/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/service-charge/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/shippable-bar/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/sitemap/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/social-proof/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/special-hours/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/ssl-certificate/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/stale-copyright/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/sticky-footer/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/structured-data/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/subtype-bakery/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/subtype-bar-pub/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/subtype-cafe/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/subtype-casual-dining/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/subtype-catering-only/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/subtype-fast-casual/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/subtype-fine-dining/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/subtype-food-truck/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/subtype-ghost-kitchen/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/subtype-pizzeria/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/subtypes/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/tap-targets/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/terms-of-service/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/third-party-marketplace/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/title-tag/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/transport-security/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/trust/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/ttfb/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/typography-pairing/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/url-fragment/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/url-fragment-vs-query/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/usda-dairy/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/usda-lmr/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/usda-market-news/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/variable-costs/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/viewport-meta/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/wcag-contrast/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/wholesale/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/working-contact-form/index.html",
+          "note": null
+        },
+        {
+          "file": "glossary/yield-percent/index.html",
+          "note": null
+        },
+        {
+          "file": "index.html",
+          "note": null
+        },
+        {
+          "file": "learn/checklists/audit-any-tool/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/checklists/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/checklists/restaurant-website-checklist/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/research/cart-abandonment-rate/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/research/dmv-restaurant-gbp-audit-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/research/fittss-law/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/research/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/research/lighthouse-performance-scoring/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/research/local-business-websites/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/research/mobile-page-speed-3-second-rule/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/research/the-1-percent-margin-audit-50-restaurant-websites-2026/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/start-here/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/topics/ai-search/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/topics/brand-design/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/topics/conversions/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/topics/cost-data/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/topics/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/topics/information-security/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/topics/local-seo/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/topics/operations-margin/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/topics/speed-mobile/index.html",
+          "note": null
+        },
+        {
+          "file": "learn/topics/trust-reviews/index.html",
+          "note": null
+        },
+        {
+          "file": "ledger/demo/index.html",
+          "note": null
+        },
+        {
+          "file": "ledger/index.html",
+          "note": null
+        },
+        {
+          "file": "library/ai-mode-reservation-strategy/index.html",
+          "note": null
+        },
+        {
+          "file": "library/best-restaurant-website-platform/index.html",
+          "note": null
+        },
+        {
+          "file": "library/can-chatgpt-write-your-restaurant-website/index.html",
+          "note": null
+        },
+        {
+          "file": "library/commission-free-online-ordering-restaurants/index.html",
+          "note": null
+        },
+        {
+          "file": "library/custom-restaurant-website-pricing/index.html",
+          "note": null
+        },
+        {
+          "file": "library/does-my-restaurant-need-a-website/index.html",
+          "note": null
+        },
+        {
+          "file": "library/google-review-response-playbook/index.html",
+          "note": null
+        },
+        {
+          "file": "library/how-to-get-cited-in-google-ai-overviews-restaurant/index.html",
+          "note": null
+        },
+        {
+          "file": "library/how-to-get-more-google-reviews-for-your-restaurant/index.html",
+          "note": null
+        },
+        {
+          "file": "library/how-to-hire-a-restaurant-web-designer/index.html",
+          "note": null
+        },
+        {
+          "file": "library/how-to-raise-restaurant-menu-prices-without-losing-reservations/index.html",
+          "note": null
+        },
+        {
+          "file": "library/how-to-read-restaurant-google-search-console/index.html",
+          "note": null
+        },
+        {
+          "file": "library/how-to-set-up-google-business-profile-for-your-restaurant/index.html",
+          "note": null
+        },
+        {
+          "file": "library/how-to-tell-if-a-restaurant-tool-is-safe/index.html",
+          "note": null
+        },
+        {
+          "file": "library/index.html",
+          "note": null
+        },
+        {
+          "file": "library/keep-plate-cost-honest-when-prices-change/index.html",
+          "note": null
+        },
+        {
+          "file": "library/loyalty-program-roi/index.html",
+          "note": null
+        },
+        {
+          "file": "library/my-restaurant-isnt-on-google-maps-10-minute-diagnostic/index.html",
+          "note": null
+        },
+        {
+          "file": "library/privacy-forward-restaurant-bookkeeping/index.html",
+          "note": null
+        },
+        {
+          "file": "library/reservation-conversion-guide/index.html",
+          "note": null
+        },
+        {
+          "file": "library/restaurant-app-decision/index.html",
+          "note": null
+        },
+        {
+          "file": "library/restaurant-brand-system-colors-type-logo/index.html",
+          "note": null
+        },
+        {
+          "file": "library/restaurant-local-seo/index.html",
+          "note": null
+        },
+        {
+          "file": "library/restaurant-menu-engineering/index.html",
+          "note": null
+        },
+        {
+          "file": "library/restaurant-online-menu-best-practices/index.html",
+          "note": null
+        },
+        {
+          "file": "library/restaurant-photo-spec-sheet/index.html",
+          "note": null
+        },
+        {
+          "file": "library/restaurant-prime-cost/index.html",
+          "note": null
+        },
+        {
+          "file": "library/restaurant-schema-markup-guide/index.html",
+          "note": null
+        },
+        {
+          "file": "library/restaurant-website-legal-essentials/index.html",
+          "note": null
+        },
+        {
+          "file": "library/restaurant-website-technical-seo-checklist/index.html",
+          "note": null
+        },
+        {
+          "file": "library/service-charge-vs-tipping-model/index.html",
+          "note": null
+        },
+        {
+          "file": "library/third-party-delivery-comparison/index.html",
+          "note": null
+        },
+        {
+          "file": "library/third-party-delivery-economics/index.html",
+          "note": null
+        },
+        {
+          "file": "library/toast-vs-square-vs-clover-for-restaurants/index.html",
+          "note": null
+        },
+        {
+          "file": "library/what-beef-prices-mean-for-your-restaurant/index.html",
+          "note": null
+        },
+        {
+          "file": "library/what-should-be-on-a-restaurant-website/index.html",
+          "note": null
+        },
+        {
+          "file": "library/when-to-rebuild-your-restaurant-website/index.html",
+          "note": null
+        },
+        {
+          "file": "library/wix-vs-custom-for-restaurants/index.html",
+          "note": null
+        },
+        {
+          "file": "privacy.html",
+          "note": null
+        },
+        {
+          "file": "security/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/allergen-matrix/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/brand-asset-inventory/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/cash-handling-log/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/complaint-root-cause-tracker/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/daily-sales-recap/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/daily-sales-recap/why/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/daypart-traffic-map/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/email-list-growth-log/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/gbp-monthly-audit/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/gbp-monthly-audit/why/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/health-inspection-prep/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/holiday-hours-planner/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/incident-report/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/inventory-count-sheet/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/invoice-receiving-checklist/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/line-check-sheet/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/local-keyword-map/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/menu-redesign-brief/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/monthly-pnl-snapshot/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/monthly-pnl-snapshot/why/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/nap-consistency-tracker/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/photo-refresh-tracker/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/photo-shot-list/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/recipe-cost-card/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/recipe-cost-card/why/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/reservation-no-show-log/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/review-response-log/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/signage-spec-sheet/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/social-content-calendar/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/staff-onboarding-checklist/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/start-here/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/third-party-channel-pnl/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/third-party-channel-pnl/why/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/vendor-contact-sheet/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/waste-log/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/website-conversion-checklist/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/weekly-prime-cost-worksheet/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/weekly-prime-cost-worksheet/why/index.html",
+          "note": null
+        },
+        {
+          "file": "sheets/why/index.html",
+          "note": null
+        },
+        {
+          "file": "studio/index.html",
+          "note": null
+        },
+        {
+          "file": "system/index.html",
+          "note": null
+        },
+        {
+          "file": "terms.html",
+          "note": null
+        },
+        {
+          "file": "tools/audits/index.html",
+          "note": null
+        },
+        {
+          "file": "tools/index.html",
+          "note": null
+        },
+        {
+          "file": "tools/margin-math/index.html",
+          "note": null
+        },
+        {
+          "file": "tools/menu-engineering/index.html",
+          "note": null
+        },
+        {
+          "file": "tools/plate-cost/index.html",
+          "note": null
+        },
+        {
+          "file": "window/index.html",
+          "note": null
+        },
+        {
+          "file": "workbench/index.html",
+          "note": null
+        }
+      ],
+      "applied": true,
+      "metrics": [],
+      "gateExit": null,
+      "verdict": "UNCAUGHT",
+      "note": null,
+      "binary": {
+        "caughtBy": [],
+        "blindTo": [
+          "check-contrast.mjs",
+          "check-dark-contrast.mjs",
+          "check-stone-2-usage.mjs",
+          "check-image-dimensions.mjs",
+          "check-image-formats.mjs",
+          "check-lazy-images.mjs",
+          "check-article-graphics.mjs"
+        ],
+        "notRun": [
+          "check-css-drift.mjs",
+          "check-css-shells.mjs",
+          "check-og-images.mjs"
+        ]
+      }
+    }
+  ],
+  "headline": {
+    "defectsApplied": 21,
+    "uncaughtByEveryExistingGate": 20,
+    "uncaught": [
+      "color-hex-in-css",
+      "color-svg-attr",
+      "color-inline-style",
+      "type-offscale-fontsize",
+      "space-offscale",
+      "font-family-rogue",
+      "tabular-strip-all",
+      "tabular-strip-one-sheet",
+      "theme-dark-redef-deleted",
+      "theme-dark-only-token",
+      "weight-bloat",
+      "sentinel-corrupt",
+      "shell-stylesheets-stripped",
+      "shell-rare-marker",
+      "page-emptied",
+      "discipline-hex-style-block",
+      "contrast-pair-broken",
+      "focus-ring-suppressed",
+      "motion-uncovered",
+      "img-lazy-stripped-sitewide"
+    ]
+  }
+}
