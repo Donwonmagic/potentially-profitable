@@ -955,7 +955,7 @@ function sparkBlock(r, locale) {
     : '';
   const alt = (es ? 'Precio ' : 'Price ') + shape + '. ' + capsule + (rank ? ' ' + rank : '');
   const svg = MuntinSparkline.render(vals, {
-    width: 248, height: 46, stroke: '#2A50C8',
+    width: 248, height: 46, stroke: 'var(--teal)',
     baseline: Math.round(pctile(sorted, 0.5)),
     ariaLabel: alt
   });
@@ -1201,7 +1201,7 @@ function indexedMovement(entry, locale, opts) {
     ? `Indexado a 100 el ${firstDate} · ~${idxNow} el ${lastDate} — ${shape} en la ventana seguida. Movimiento relativo, sin precio.`
     : `Indexed to 100 on ${firstDate} · ~${idxNow} on ${lastDate} — ${shape} over the tracked window. Relative movement, no price.`;
   const svg = MuntinSparkline.render(idx.map((v) => Math.round(v * 10) / 10), {
-    width: big ? 460 : 132, height: big ? 128 : 34, stroke: '#2A50C8',
+    width: big ? 460 : 132, height: big ? 128 : 34, stroke: 'var(--teal)',
     baseline: 100, fill: big ? 'rgba(42,80,200,0.10)' : false, dotLast: true,
     ariaLabel: cap,
   });
@@ -1609,6 +1609,69 @@ function seasonalFaqItem(slug, lc, es) {
 }
 
 // ---- Page head (skeleton chrome; sync-includes expands the nav) -----
+//
+// THE INLINE <style> BELOW IS BOUND TO THE TOKEN SYSTEM (2026-08-07).
+// Read this before adding a colour to it. Everything here is reasoning ABOUT
+// the emitted CSS and deliberately lives in JS: this template reaches 284
+// EN+ES pages, so a comment inside the template literal is a comment shipped
+// 284 times. Keep rationale here, keep the emitted CSS terse.
+//
+// 1. THE SPINE IS NOT REDECLARED. --cream/--cream-2/--ink/--ink-soft/--teal/
+//    --white/--line/--stone/--gold/--font-display/--max/--pad-x all come from
+//    /assets/site-core.css, whose <link> sits immediately after this </style>
+//    and therefore always won the cascade. The inline copy that used to be
+//    here never decided a pixel; it was dead weight wearing the costume of a
+//    fallback. Verified two ways: every one of the 284 pages carries the
+//    site-core <link> unconditionally, and of the 19 var() names this file
+//    emits, exactly two are absent from site-core/site-article — the two
+//    page-local ones below. If you add a var(), check it resolves there.
+//
+// 2. THREE PAGE-LOCAL ROLES, EACH AN OKLAB MIX OF SPINE TOKENS, so they flip
+//    with the theme BY CONSTRUCTION — build-dark-mode.mjs flips --rust/--ink/
+//    --gold/--cream and these follow. No new hex enters the system.
+//      --ci-up      cost RISING, the one direction that costs money.
+//                   rust 82% toward ink: light #a22e2d (was #A23B2D, oklab
+//                   dE 2.4), dark #f38f80 (was #ed9a8e, dE 2.6).
+//      --ci-watch   the spine's own AA-verified --status-warn. Collapses the
+//                   watch pill onto ONE colour, matching hold and re-price
+//                   which were already single-colour; watch was the only
+//                   variant carrying two hand-tuned shades (dE 3.5 on the
+//                   text, and the border deliberately joins it).
+//      --ci-pending no read yet. gold 60% toward the PAGE GROUND, not toward
+//                   ink, so in dark mode it darkens with the card. This is a
+//                   bug fix: the old #cdb368 had no dark override at all and
+//                   sat as a light-gold bar on a dark surface.
+//
+//    Because those three flip themselves, 26 dark-mode override rules across
+//    two cascade paths (the [data-theme] toggle and the prefers-color-scheme
+//    media query) were DELETED rather than re-tuned. One rule now decides
+//    both themes. That is the whole point of the exercise: a literal has to
+//    be restated once per theme per cascade path, a token does not.
+//
+// 3. LITERALS THAT LEGITIMATELY REMAIN, and why:
+//      --season #6b4fa1 / #a992d6 — the seasonality purple. THE ONE HUE WITH
+//        NO HOME IN THE TOKEN SYSTEM: the spine carries four hues (one blue
+//        accent + three status) and none is purple, so this pair cannot be
+//        derived. A finding for whoever extends the ramp, not a failure.
+//      the @media print block, #000 on #fff — deliberately NOT tokens. A
+//        token flips with the reader's theme; a sheet a controller staples
+//        to a vendor file must be theme-independent and toner-honest.
+//      <meta name="theme-color" content="#2A50C8"> — a meta attribute cannot
+//        take var(). It must be a literal or absent.
+//
+// 4. WITHHELD (.ci-t-na) now has a visual treatment. It had none: it rendered
+//    as plain muted text, indistinguishable from a number that merely
+//    happened to be grey. Withholding is the company's signature behaviour,
+//    so it gets the token system's --withheld (one step lighter than muted
+//    body text) plus a dotted underline — never rust, never an icon, never a
+//    spinner. It is not an error and not a loading state. Mirrors .withheld
+//    in assets/site.css; the em-dash is already the emitted content.
+//
+// 5. TABULAR FIGURES. A CPA runs their eye DOWN these columns, so digits must
+//    share one advance width and one baseline. The rules already set
+//    tabular-nums piecemeal; the consolidated rule adds lining-nums, which
+//    was missing everywhere, plus the font-feature-settings fallback for
+//    engines that ignore the shorthand.
 function pageHead(opts) {
   const { lang, locale, title, desc, canonEn, canonEs, jsonld, extraCss } = opts;
   const canon = locale === 'es' ? canonEs : canonEn;
@@ -1648,18 +1711,20 @@ function pageHead(opts) {
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 <style>
-:root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--white:#fff;--line:#E3E5E9;--teal-wash:rgba(42,80,200,.06);--stone:#6B7280;--gold:#B7791F;--season:#6b4fa1;--font-display:'Fraunces',Georgia,serif;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+/* Page-local tokens only; the spine comes from site-core.css. Rationale + the
+   derivation of each --ci-* role is in the JS comment above pageHead(). */
+:root{--season:#6b4fa1;--teal-wash:rgba(42,80,200,.06);--ci-up:color-mix(in oklab,var(--rust) 82%,var(--ink));--ci-watch:var(--status-warn);--ci-pending:color-mix(in oklab,var(--gold) 60%,var(--cream))}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 .skip-link{position:absolute;left:-9999px;top:0}
-.skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
+.skip-link:focus{position:static;display:inline-block;background:var(--ink);color:var(--cream);padding:12px 16px;z-index:100}
 a{color:inherit}
 .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
 .btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line-dark)}
 header.nav{min-height:64px}
-.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E3E5E9}
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid var(--line)}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
 .logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
 .logo-mark{width:28px;height:28px;flex:0 0 28px}
@@ -1695,9 +1760,9 @@ main{padding-top:64px}
 .ci-read__trend{margin:6px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-read__verdict{margin:10px 0 0;font-size:15px;line-height:1.5;color:var(--ink)}
 .ci-read__verb{display:inline-block;font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-right:8px;vertical-align:1px;background:var(--cream);border:1px solid var(--line);color:var(--ink-soft)}
-.ci-read__verb[data-bias="hold"]{color:#2A50C8;border-color:#2A50C8}
-.ci-read__verb[data-bias="watch"]{color:#6b540f;border-color:#9a7d2e}
-.ci-read__verb[data-bias="re-price"]{color:#A23B2D;border-color:#A23B2D}
+.ci-read__verb[data-bias="hold"]{color:var(--teal);border-color:var(--teal)}
+.ci-read__verb[data-bias="watch"]{color:var(--ci-watch);border-color:var(--ci-watch)}
+.ci-read__verb[data-bias="re-price"]{color:var(--ci-up);border-color:var(--ci-up)}
 .ci-read__spark{margin:12px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}@media(min-width:600px){.ci-read__spark{flex-wrap:nowrap;align-items:flex-start}.ci-read__spark .ci-read__capsule{flex:1 1 auto}}
 .ci-read__spark .mtn-spark{flex:0 0 auto;overflow:visible}
 .ci-read__capsule{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink)}
@@ -1753,7 +1818,7 @@ main{padding-top:64px}
 .ci-sibs a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 8px}
 .ci-composite{position:relative;margin:22px 0 6px;padding:18px 20px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--ink-soft);border-radius:12px;font-variant-numeric:tabular-nums;box-shadow:var(--elev-feature)}
-.ci-composite[data-band="up"]{border-left-color:#A23B2D}
+.ci-composite[data-band="up"]{border-left-color:var(--ci-up)}
 .ci-composite[data-band="down"]{border-left-color:var(--teal)}
 .ci-composite__well{margin:2px 0 0;padding:15px 16px;background:var(--surface-inset);border-radius:8px;box-shadow:inset 0 1px 1px rgba(20,22,26,.09),inset 0 0 0 1px var(--line)}
 :root[data-theme="dark"] .ci-composite__well{box-shadow:inset 0 1px 2px rgba(0,0,0,.5),inset 0 0 0 1px var(--line)}
@@ -1761,7 +1826,7 @@ main{padding-top:64px}
 .ci-composite__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px}
 .ci-composite__read{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0}
 .ci-composite__num{font-family:var(--font-display);font-size:clamp(30px,6vw,44px);font-weight:500;line-height:1;color:var(--ink)}
-.ci-composite[data-band="up"] .ci-composite__num{color:#A23B2D}
+.ci-composite[data-band="up"] .ci-composite__num{color:var(--ci-up)}
 .ci-composite[data-band="down"] .ci-composite__num{color:var(--teal)}
 .ci-composite__say{font-size:15px;line-height:1.4;color:var(--ink);font-weight:600;max-width:46ch}
 .ci-composite__meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:10px 0 0}
@@ -1779,7 +1844,7 @@ main{padding-top:64px}
 .ci-signup--compact{margin:18px 0}
 .ci-signup-alt{margin:12px 0 0;font-size:13.5px;color:var(--ink-soft);line-height:1.6}
 .ci-signup-alt a{color:var(--teal);text-decoration:none;font-weight:600;border-bottom:1px dashed currentColor}
-.ci-signup-sep{color:var(--stone,#9aa0aa);margin:0 4px}
+.ci-signup-sep{color:var(--stone);margin:0 4px}
 .ci-source{font-size:12.5px;color:var(--ink-soft);margin:24px 0 40px}
 .ci-source a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .ci-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr));margin:14px 0 0}
@@ -1797,7 +1862,7 @@ main{padding-top:64px}
 .ci-moving-item a:hover{color:var(--teal)}
 .ci-moving-reason{color:var(--ink-soft);font-size:14px}
 .ci-moving-calm{margin:0;font-size:15.5px;color:var(--ink)}
-.ci-moving-bar{margin:0 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft);padding:8px 12px;background:var(--surface-1,#faf9f7);border:1px solid var(--line);border-radius:8px}
+.ci-moving-bar{margin:0 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft);padding:8px 12px;background:var(--surface-1);border:1px solid var(--line);border-radius:8px}
 .ci-vkey{margin:2px 0 12px;font-size:12.5px;color:var(--ink-soft);line-height:1.6}
 .ci-vkey strong{color:var(--ink)}
 .ci-moving-insight{margin:3px 0 2px}
@@ -1826,6 +1891,10 @@ main{padding-top:64px}
 .ci-table-count{font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .ci-table-empty td{color:var(--ink-soft);font-style:italic;padding:14px 10px}
 .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0}
+/* tabular figures: every price/percent/date surface, one declaration. */
+.ci-answer,.ci-read,.ci-season,.ci-composite,.ci-table,.ci-table-count,.ci-retired-hist,
+.ci-composite__num,.ci-t-dir,.ci-read__line,.ci-read__capsule,.ci-c-asof,.evh-card__mag,
+.plab-bar,.plab-meter,.ci-outlook__record{font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum" 1,"lnum" 1}
 .ci-table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
 .ci-table th,.ci-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle}
 .ci-table th{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft)}
@@ -1833,9 +1902,10 @@ main{padding-top:64px}
 .ci-table td a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--line)}
 .ci-table td a:hover{color:var(--teal)}
 .ci-table .ci-t-dir{font-weight:600}
-.ci-table .ci-t-dir[data-dir="up"]{color:#A23B2D}
+.ci-table .ci-t-dir[data-dir="up"]{color:var(--ci-up)}
 .ci-table .ci-t-dir[data-dir="down"]{color:var(--teal)}
-.ci-table .ci-t-na{color:var(--stone,#9aa0aa)}
+/* withheld: a number the index declined to print. Never an error, never rust. */
+.ci-table .ci-t-na{color:var(--withheld);text-decoration:underline dotted var(--n-400);text-underline-offset:3px;cursor:help}
 .ci-table .ci-index--mini{margin:0}
 /* ─── Phone / small-tablet reflow: "All readings" → compact stacked rows ──────
    The 5-col nowrap table's min-content is ~638px, so under ~680px .table-scroll
@@ -1879,7 +1949,7 @@ main{padding-top:64px}
   .ci-readings .ci-c-dir{grid-row:1;grid-column:2;font-size:13px;white-space:nowrap}
   .ci-readings .ci-c-spark{grid-row:1 / span 2;grid-column:3;justify-self:end;align-self:center;line-height:0}
   .ci-readings .ci-c-spark .mtn-spark{width:104px;height:auto}
-  .ci-readings .ci-c-spark .ci-t-na{color:var(--stone,#9aa0aa)}
+  .ci-readings .ci-c-spark .ci-t-na{color:var(--withheld);text-decoration:none}
 
   /* line 2 — quiet provenance */
   .ci-readings .ci-c-sig{grid-row:2;grid-column:1;justify-self:start}
@@ -1898,8 +1968,8 @@ main{padding-top:64px}
   /* 5 ─ MOVERS RAIL (grafted from Approach 4, phone-only, zero data dropped):
      rows already sort reprice→watch→hold, so a left rail on the movers turns the
      top of the list into a quiet market board. Keyed off data-tone on the <tr>. */
-  .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left:3px solid #A23B2D;padding-left:9px}
-  .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left:3px solid #9a7d2e;padding-left:9px}
+  .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left:3px solid var(--ci-up);padding-left:9px}
+  .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left:3px solid var(--ci-watch);padding-left:9px}
 
   /* 6 ─ the no-match row stays a plain full-width line, not a broken 1-col grid */
   .ci-readings .ci-table tbody tr.ci-table-empty{display:block;padding:14px 2px}
@@ -1911,18 +1981,8 @@ main{padding-top:64px}
   .ci-readings .ci-table tbody tr[hidden]{display:none}
 }
 
-/* dark-mode movers rail (site uses BOTH the explicit toggle and the media default) */
-@media (max-width:680px){
-  :root[data-theme="dark"] .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left-color:#ed9a8e}
-  :root[data-theme="dark"] .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left-color:#d8bd6a}
-}
-@media (max-width:680px) and (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) .ci-readings .ci-table tbody tr[data-tone="reprice"]{border-left-color:#ed9a8e}
-  :root:not([data-theme="light"]) .ci-readings .ci-table tbody tr[data-tone="watch"]{border-left-color:#d8bd6a}
-}
-
-:root[data-theme="dark"] .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
-.ci-read--pending{border-left-color:#cdb368;background:var(--cream-2)}
+/* dark movers-rail + .ci-t-dir overrides deleted: --ci-up/--ci-watch self-flip */
+.ci-read--pending{border-left-color:var(--ci-pending);background:var(--cream-2)}
 .ci-read--retired{border-left-color:var(--stone);background:var(--cream-2)}
 .ci-read--retired .ci-read__head{color:var(--stone)}
 .ci-retired-hist{width:100%;border-collapse:collapse;margin:14px 0 6px;font-size:14.5px;font-variant-numeric:tabular-nums}
@@ -1933,8 +1993,8 @@ main{padding-top:64px}
 .ci-retired-dl a{color:var(--teal);font-weight:600;border-bottom:1px dashed currentColor;text-decoration:none}
 .ci-card--retired{opacity:.72;background:var(--cream-2);border-style:dashed}
 .ci-card--retired a{color:var(--ink-soft)}
-.ci-read--pending .ci-read__head{color:#8a6d1f}
-.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
+.ci-read--pending .ci-read__head{color:var(--ci-watch)}
+.ci-outlook{margin:14px 0 8px;padding:16px 20px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
 .ci-outlook__head{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--season);margin:0 0 6px}
 .ci-outlook__line{font-size:15.5px;line-height:1.5;color:var(--ink);margin:0}
 .ci-outlook__record{margin:6px 0 0;font-size:12.5px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
@@ -1948,7 +2008,7 @@ main{padding-top:64px}
 .ci-events{margin:30px 0 8px}
 .ci-events__intro{font-size:15.5px;line-height:1.6;color:var(--ink-soft);margin:0 0 14px;max-width:66ch}
 .ci-events__take{margin:0 0 16px;padding:14px 16px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}
-.ci-events__take[data-vol="wild"]{border-left-color:#A23B2D}
+.ci-events__take[data-vol="wild"]{border-left-color:var(--ci-up)}
 .ci-events__take[data-vol="swingy"]{border-left-color:var(--gold)}
 .ci-events__take[data-vol="steady"]{border-left-color:var(--teal)}
 .ci-events__take-h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}
@@ -1957,12 +2017,12 @@ main{padding-top:64px}
 .ci-events__take-mv{font-size:13.5px;line-height:1.55;color:var(--ink-soft);margin:0;max-width:68ch}
 .ci-events__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}@media(min-width:680px){.ci-events__list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}}
 .ci-events__ev{padding:14px 16px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px;font-variant-numeric:tabular-nums}
-.ci-events__ev[data-dir="up"]{border-left-color:#A23B2D}
+.ci-events__ev[data-dir="up"]{border-left-color:var(--ci-up)}
 .ci-events__ev[data-dir="down"]{border-left-color:var(--teal)}
 .ci-events__hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;justify-content:space-between}
 .ci-events__date{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--ink);min-width:76px}
 .ci-events__mag{font-size:14px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
-.ci-events__mag[data-dir="up"]{color:#A23B2D}
+.ci-events__mag[data-dir="up"]{color:var(--ci-up)}
 .ci-events__mag[data-dir="down"]{color:var(--teal)}
 .ci-events__meta{margin:6px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
 .ci-events__meta a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line)}
@@ -1995,6 +2055,7 @@ main{padding-top:64px}
 @media print{
   .nav,.ci-cta-row,.ci-sibs,.ci-read__live,.ci-read__method,.skip-link,form,footer{display:none!important}
   main{padding-top:0!important}
+  /* true black/white, deliberately not tokens — a printed sheet is theme-free */
   body{background:#fff!important;color:#000!important}
   .ci-read{break-inside:avoid;border-color:#000}
   details>*:not(summary){display:block!important}
@@ -2002,30 +2063,10 @@ main{padding-top:64px}
   .ci-read__verb{border:1px solid #000!important;color:#000!important;background:#fff!important}
   a[href]::after{content:""!important}
 }
-/* dark mode: the inline tokens hardcoded light, so the reading area stayed cream in dark.
-   Redefine the cost-index tokens (light text on dark = high-contrast by construction) and
-   lighten the three verdict accents so they stay legible. Honors OS preference AND the
-   site theme toggle ([data-theme]); a forced-light toggle wins over OS dark. */
-:root[data-theme="dark"]{--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
-:root[data-theme="dark"] .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
-:root[data-theme="dark"] .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
-:root[data-theme="dark"] .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
-:root[data-theme="dark"] .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
-:root[data-theme="dark"] .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
-:root[data-theme="dark"] .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
-:root[data-theme="dark"] .ci-events__mag[data-dir="up"]{color:#ed9a8e}
-:root[data-theme="dark"] .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
+/* dark mode: only the two tokens site-core does not own. See pageHead() note. */
+:root[data-theme="dark"]{--teal-wash:rgba(127,155,255,.12);--season:#a992d6}
 @media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){--cream:#121419;--cream-2:#1e2127;--ink:#e8eaed;--ink-soft:#a3a9b3;--teal:#7f9bff;--white:#1e2127;--line:#2a2e37;--teal-wash:rgba(127,155,255,.12);--stone:#9aa0aa;--gold:#d8bd6a;--season:#a992d6}
-  :root:not([data-theme="light"]) .ci-read__verb[data-bias="hold"]{color:#8ea4ff;border-color:#5b73c8}
-  :root:not([data-theme="light"]) .ci-read__verb[data-bias="watch"]{color:#d8bd6a;border-color:#8a7530}
-  :root:not([data-theme="light"]) .ci-read__verb[data-bias="re-price"]{color:#ed9a8e;border-color:#9a4438}
-  :root:not([data-theme="light"]) .ci-composite[data-band="up"]{border-left-color:#ed9a8e}
-  :root:not([data-theme="light"]) .ci-composite[data-band="up"] .ci-composite__num{color:#ed9a8e}
-  :root:not([data-theme="light"]) .ci-table .ci-t-dir[data-dir="up"]{color:#ed9a8e}
-  :root:not([data-theme="light"]) .ci-events__ev[data-dir="up"]{border-left-color:#ed9a8e}
-  :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
-  :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
+  :root:not([data-theme="light"]){--teal-wash:rgba(127,155,255,.12);--season:#a992d6}
 }
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=${SHELL_HASH.core}" onload="this.onload=null;this.rel='stylesheet'">
@@ -2962,7 +3003,7 @@ function scorecardBand(locale) {
     ? `La banda con objetivo del ${nominal} captur\u00f3 la pr\u00f3xima lectura cerca del ${coverage} de las veces en ${steps} lecturas evaluadas \u2014 su tasa cruda sin ajustar; lo que no tiene precio se reporta ausente, nunca se adivina.`
     : `The ${nominal}-target band caught the next print about ${coverage} of the time across ${steps} scored reads \u2014 its raw, un-tuned rate; anything without a price print reports absent, never guessed.`;
   const linkTxt = es ? 'Ver la boleta completa' : 'See the full track record';
-  return `<section class="ci-scorecard" aria-label="${es ? 'Boleta de calibraci\u00f3n' : 'Calibration scorecard'}" style="margin:22px 0 8px;padding:20px 24px;background:var(--surface-1,#fff);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:12px;box-shadow:var(--elev-1)">
+  return `<section class="ci-scorecard" aria-label="${es ? 'Boleta de calibraci\u00f3n' : 'Calibration scorecard'}" style="margin:22px 0 8px;padding:20px 24px;background:var(--surface-1);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:12px;box-shadow:var(--elev-1)">
       <div style="display:flex;flex-wrap:wrap;gap:18px 36px;align-items:flex-start">
         ${cell(nominal, es ? 'banda nominal' : 'nominal band')}
         ${cell(coverage, es ? 'cobertura realizada' : 'realized coverage')}
@@ -3129,7 +3170,7 @@ const LAB_CSS = `<style>
 .plab-pick__select{font:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--white);color:var(--ink)}
 .plab-verdict{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:16px 20px;background:var(--cream-2);border:1px solid var(--line);border-left:4px solid var(--season);border-radius:12px}
 .plab-arrow{font-size:22px;line-height:1}
-.plab-arrow[data-dir="building"]{color:#A23B2D}.plab-arrow[data-dir="easing"]{color:#2A50C8}.plab-arrow[data-dir="steady"]{color:#8a6d1f}
+.plab-arrow[data-dir="building"]{color:var(--ci-up)}.plab-arrow[data-dir="easing"]{color:var(--teal)}.plab-arrow[data-dir="steady"]{color:var(--ci-watch)}
 .plab-verdict__line{font-size:16px;margin:0;font-weight:600;flex:1 1 60%}
 .plab-verdict__meta{font-size:11px;color:var(--ink-soft);margin:0;text-transform:uppercase;letter-spacing:.04em}
 .plab-sr{position:absolute;left:-9999px}
@@ -3138,7 +3179,7 @@ const LAB_CSS = `<style>
 .plab-bar__name{color:var(--ink-soft)}
 .plab-bar__track{height:14px;background:var(--cream-2);border-radius:8px;overflow:hidden}
 .plab-bar__fill{display:block;height:100%;border-radius:8px}
-.plab-bar__fill[data-push="up"]{background:#A23B2D}.plab-bar__fill[data-push="down"]{background:#2A50C8}.plab-bar__fill[data-push="flat"]{background:#9aa0ab}
+.plab-bar__fill[data-push="up"]{background:var(--ci-up)}.plab-bar__fill[data-push="down"]{background:var(--teal)}.plab-bar__fill[data-push="flat"]{background:var(--stone-2)}
 .plab-bar__fill[data-zero]{opacity:.4}
 .plab-bar__push{font-variant-numeric:tabular-nums;color:var(--ink-soft);text-align:right}
 .plab-sum{display:grid;grid-template-columns:140px 1fr 120px;align-items:center;gap:10px;margin-top:6px;font-size:13px}
@@ -3146,7 +3187,7 @@ const LAB_CSS = `<style>
 .plab-meter{position:relative;height:18px;background:var(--cream-2);border-radius:9px}
 .plab-meter__line{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink-soft);opacity:.5}
 .plab-meter__needle{position:absolute;top:-4px;width:4px;height:26px;border-radius:2px;background:var(--season);transform:translateX(-50%)}
-.plab-meter__needle[data-dir="building"]{background:#A23B2D}.plab-meter__needle[data-dir="easing"]{background:#2A50C8}
+.plab-meter__needle[data-dir="building"]{background:var(--ci-up)}.plab-meter__needle[data-dir="easing"]{background:var(--teal)}
 .plab-sum__num{font-variant-numeric:tabular-nums;color:var(--ink-soft);text-align:right}
 .plab-controls{margin:16px 0;padding:14px 18px;background:var(--white);border:1px solid var(--line);border-radius:12px}
 .plab-controls__head{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin:0 0 10px}
@@ -3257,12 +3298,12 @@ const EVENTS_HUB_CSS = `<style>
 .evh-count{font-size:13px;color:var(--ink-soft);margin-left:auto;font-variant-numeric:tabular-nums}
 .evh-list{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:14px}
 .evh-card{padding:16px 18px;background:var(--white);border:1px solid var(--line);border-left:4px solid var(--stone);border-radius:12px}@media(min-width:880px){.evh-card{display:grid;grid-template-columns:154px minmax(0,1fr);column-gap:30px;align-items:start;padding:20px 26px}.evh-card__head{grid-column:1;flex-direction:column;align-items:flex-start;gap:8px;margin:0}.evh-card__label,.evh-card__what,.evh-card__items,.evh-card__src{grid-column:2}}
-.evh-card[data-move="up"]{border-left-color:#A23B2D}
+.evh-card[data-move="up"]{border-left-color:var(--ci-up)}
 .evh-card[data-move="down"]{border-left-color:var(--teal)}
 .evh-card__head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:0 0 4px}
 .evh-card__when{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--ink-soft);font-variant-numeric:tabular-nums}
 .evh-card__mag{font-size:12.5px;font-weight:700;letter-spacing:.01em;padding:2px 9px;border-radius:999px;background:var(--cream-2);color:var(--ink-soft)}
-.evh-card__mag[data-move="up"]{color:#A23B2D}
+.evh-card__mag[data-move="up"]{color:var(--ci-up)}
 .evh-card__mag[data-move="down"]{color:var(--teal)}
 .evh-card__label{font-family:var(--font-display);font-size:clamp(17px,2.4vw,20px);font-weight:600;line-height:1.25;color:var(--ink);margin:0 0 8px;text-wrap:balance}
 .evh-card__what{font-size:14.5px;line-height:1.6;color:var(--ink);margin:0 0 10px;max-width:74ch}
@@ -3275,9 +3316,7 @@ const EVENTS_HUB_CSS = `<style>
 .evh-card__src ul{margin:6px 0 0;padding-left:18px;color:var(--ink-soft);line-height:1.6}
 .evh-card__src a{color:var(--teal);text-decoration:none;border-bottom:1px dashed currentColor}
 .evh-empty{margin:16px 0;font-size:14.5px;color:var(--ink-soft);font-style:italic}
-:root[data-theme="dark"] .evh-card[data-move="up"]{border-left-color:#ed9a8e}
-:root[data-theme="dark"] .evh-card__mag[data-move="up"]{color:#ed9a8e}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .evh-card[data-move="up"]{border-left-color:#ed9a8e}:root:not([data-theme="light"]) .evh-card__mag[data-move="up"]{color:#ed9a8e}}
+/* the four dark .evh-card overrides are gone — --ci-up flips itself */
 </style>`;
 
 // Client filter — category chips toggle card visibility; count updates. No innerHTML.
@@ -3452,7 +3491,7 @@ const OPEN_CSS = `<style>
 .od-hero__lede{font-size:clamp(17px,2.4vw,20px);line-height:1.55;color:var(--ink-soft);max-width:64ch;margin:0 0 20px}
 .od-cta{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0 6px}
 .od-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid transparent}
-.od-btn--primary{background:var(--teal);color:#fff}
+.od-btn--primary{background:var(--teal);color:var(--white)}
 .od-btn--ghost{background:transparent;color:var(--ink);border-color:var(--line)}
 .od-btn--ghost:hover{border-color:var(--teal);color:var(--teal)}
 .od-rule{height:1px;background:var(--line);border:0;margin:34px 0}
@@ -3511,7 +3550,7 @@ const OPEN_CSS = `<style>
 .sea-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);margin-right:6px}
 .sea-play{counter-reset:play;list-style:none;padding:0;margin:8px 0 0}
 .sea-play li{position:relative;padding:0 0 14px 40px;font-size:15px;line-height:1.6;color:var(--ink-soft)}
-.sea-play li:before{counter-increment:play;content:counter(play);position:absolute;left:0;top:-2px;width:26px;height:26px;border-radius:8px;background:var(--season);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.sea-play li:before{counter-increment:play;content:counter(play);position:absolute;left:0;top:-2px;width:26px;height:26px;border-radius:8px;background:var(--season);color:var(--white);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
 .sea-play strong{color:var(--ink)}
 .od-note{background:var(--cream-2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:8px 0}
 .od-note p{font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0 0 10px}

@@ -71,7 +71,7 @@
           <span class="sheet-output-label">Total labor (fully loaded)</span>
           <span class="sheet-output-value" data-output="labor_total">$0.00</span>
         </div>
-        <div class="sheet-output-row" style="border-top:1px solid var(--line,#E5DFD2);padding-top:10px;margin-top:4px;">
+        <div class="sheet-output-row" style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px;">
           <span class="sheet-output-label" style="font-weight:700;">Prime cost</span>
           <span class="sheet-output-value" data-output="prime_cost_dollars">$0.00</span>
         </div>
@@ -79,10 +79,10 @@
           <span class="sheet-output-label" style="font-weight:700;">Prime cost as % of sales</span>
           <span class="sheet-output-value" data-output="prime_cost_pct" data-band="idle">0.0%</span>
         </div>
-        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#4A4F59);" data-output="recommendation">
+        <p style="margin:6px 0 0;font-size:var(--fs-xs);line-height:var(--lh-ui);color:var(--text-soft);" data-output="recommendation">
           Type your numbers above. The healthy band for full-service independents runs 55–65% — anything above 65% is a margin emergency.
         </p>
-        <div data-output="anomalies" hidden style="margin:8px 0 0;padding:10px 12px;border-left:3px solid var(--rust,#C42E2E);background:var(--cream-2,#EDEEF1);font-size:13px;line-height:1.5;color:var(--ink,#16181D);"></div>
+        <div data-output="anomalies" hidden style="margin:8px 0 0;padding:10px 12px;border-left:3px solid var(--danger);background:var(--surface-sunk);font-size:var(--fs-xs);line-height:var(--lh-ui);color:var(--ink);"></div>
       </div>
     </form>
 
@@ -90,34 +90,34 @@
          against an in-memory snapshot of the form values; the verdict
          and outputs update without touching the typed numbers. Reset
          button restores the unadjusted view. -->
-    <details class="sheet-whatif" style="margin:18px 0 0;padding:14px 16px;border:1px solid var(--line,#E5DFD2);border-radius:6px;background:var(--white,#FFFFFF);">
-      <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--teal,#2A50C8);letter-spacing:0.02em;">Try a scenario — what if labor or food shifts?</summary>
-      <p style="margin:8px 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft,#4A4F59);">Slide one or more, watch the verdict re-run on top of your typed numbers. Nothing saves until you click Reset and refill, or use the Workshop save with the scenario flag.</p>
+    <details class="sheet-whatif" style="margin:18px 0 0;padding:14px 16px;border:1px solid var(--border);border-radius:var(--r-1);background:var(--surface);">
+      <summary style="cursor:pointer;font-size:var(--fs-xs);font-weight:600;color:var(--accent);letter-spacing:0.02em;">Try a scenario — what if labor or food shifts?</summary>
+      <p style="margin:8px 0 12px;font-size:var(--fs-xs);line-height:var(--lh-ui);color:var(--text-soft);">Slide one or more, watch the verdict re-run on top of your typed numbers. Nothing saves until you click Reset and refill, or use the Workshop save with the scenario flag.</p>
       <div class="sheet-whatif-controls" style="display:flex;flex-direction:column;gap:10px;">
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:var(--fs-xs);font-weight:500;">
           <span style="flex:1;">Labor change</span>
           <input type="range" name="whatif_labor" min="-10" max="10" step="0.5" value="0" style="flex:2;" />
           <output name="whatif_labor_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0.0pt</output>
         </label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:var(--fs-xs);font-weight:500;">
           <span style="flex:1;">Food cost change</span>
           <input type="range" name="whatif_food" min="-5" max="5" step="0.25" value="0" style="flex:2;" />
           <output name="whatif_food_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0.0pt</output>
         </label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:var(--fs-xs);font-weight:500;">
           <span style="flex:1;">Sales change</span>
           <input type="range" name="whatif_sales" min="-15" max="15" step="1" value="0" style="flex:2;" />
           <output name="whatif_sales_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0%</output>
         </label>
-        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--line-dark,#C9C2B6);color:var(--ink-soft,#4A4F59);padding:6px 12px;border-radius:6px;font:inherit;font-size:12px;cursor:pointer;">Reset scenario</button>
+        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--border-strong);color:var(--text-soft);padding:6px 12px;border-radius:var(--r-1);font:inherit;font-size:var(--fs-xs);cursor:pointer;">Reset scenario</button>
       </div>
     </details>
 
     <!-- D7 · Long-form companion essay link. Surfaces the slow think
          piece on prime cost — the why beneath the what the sheet does. -->
-    <p style="margin:18px 0 0;padding:14px 18px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--gold,#D4A24C);border-radius:6px;background:var(--cream-2,#EDEEF1);font-size:14px;line-height:1.55;color:var(--ink,#16181D);">
-      <strong style="color:var(--gold-deep,#8C6A2A);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:4px;">Read the long version</strong>
-      The math, the four lies operators tell themselves, the verdict bands, and a four-week protocol for getting stable. <a href="./why/" style="color:var(--teal,#2A50C8);font-weight:600;border-bottom:1px solid currentColor;text-decoration:none;">The trunk number — Why weekly prime cost is the only number that matters &rarr;</a>
+    <p style="margin:18px 0 0;padding:14px 18px;border:1px solid var(--border);border-left:3px solid var(--status-warn-deep);border-radius:var(--r-1);background:var(--surface-sunk);font-size:var(--fs-xs);line-height:var(--lh-card);color:var(--ink);">
+      <strong style="color:var(--status-warn-deep);font-size:var(--fs-2xs);letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:4px;">Read the long version</strong>
+      The math, the four lies operators tell themselves, the verdict bands, and a four-week protocol for getting stable. <a href="./why/" style="color:var(--accent);font-weight:600;border-bottom:1px solid currentColor;text-decoration:none;">The trunk number — Why weekly prime cost is the only number that matters &rarr;</a>
     </p>
 
     <script>

@@ -1,0 +1,8 @@
+{
+  "_doc": "Receipt of a green `node scripts/check-all.mjs` run, written by hand after the run. HD-13's check reads verifiedOn + exitCode; it may NOT invoke check-all itself, because check-honesty-debt.mjs is wired into check-all and would recurse.",
+  "verifiedOn": "2026-08-08",
+  "exitCode": 0,
+  "passed": "330 of 330",
+  "how": "Ran every step of wrangler.jsonc build.command up to check-all (76 steps, exit 0), then `node scripts/check-all.mjs` (exit 0) in the same tree — the exact order the Cloudflare deploy runs them in.",
+  "container": "ephemeral agent container; no network, no FRED/BLS/AMS keys. Steps that need the operator's Mac no-op and hold last-good, which is their designed behavior."
+}

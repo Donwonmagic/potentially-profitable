@@ -181,10 +181,10 @@
       "fix": "data/cost-index-corrections.json (append-only, five fields: what was published, what is true, when it broke, why it broke, WHICH GATE now prevents recurrence) rendered to /cost-index/corrections/ by scripts/build-corrections-page.mjs and gated by scripts/check-corrections-ledger.mjs.",
       "gateAdded": "scripts/check-corrections-ledger.mjs — every entry must name a gate that exists on disk",
       "owner": "agent",
-      "status": "owed",
-      "paidOn": "2026-08-07",
+      "status": "paid",
+      "paidOn": "2026-08-08",
       "check": "node scripts/check-corrections-ledger.mjs && test -f cost-index/corrections/index.html",
-      "note": "2026-08-07: reverted to owed. The public corrections PAGE (cost-index/corrections/) was pulled the same day it landed because it was built outside the 79-step build.command chain and tripped six unrelated surface gates at once. The ledger DATA (data/cost-index-corrections.json) and ADR-022 remain; the public surface does not exist, so the debt is genuinely unpaid."
+      "note": "2026-08-07: reverted to owed. The public corrections PAGE was pulled the same day it landed because it was built OUTSIDE the build.command chain (it ran at step 76 of 85, after build-sitemap at 60 and after every head injector) and tripped six unrelated surface gates at once. 2026-08-08: paid properly. build-corrections-page.mjs moved to step 58 — ahead of llms.txt, RSS, the sitemap and the CSS/head injectors — so the page it emits is treated like every other page. The four gates it tripped were fixed at their cause, not waived: its 170-char meta description shortened in the builder; 'corrections' registered as a non-ingredient surface in check-cost-index-orphans.mjs, inject-cost-index-speakable.mjs and inject-ingredient-recalls.mjs (three scripts that each held a DIFFERENT partial answer to 'which dirs under cost-index/ are not ingredients' — the divergence is now noted in all three). check-all: 330 of 330."
     },
     {
       "id": "HD-13",
@@ -195,11 +195,13 @@
       "what": "check-all runs inside the Cloudflare deploy command and reaches 312 of 320 before failing on builders that check-idem-coverage verifies but that nothing in build.command re-runs — so ordinary data drift turns into a red deploy no automation can clear. Recorded here because a company that cannot deploy cannot ship a correction, which makes this a prerequisite for every other item on this ledger.",
       "fix": "For each failing builder: add it to build.command, or move it to check-idem-coverage's MANUAL registry with who runs it and when it drifts. The gate already demands one or the other.",
       "owner": "agent",
-      "status": "owed",
+      "status": "paid",
       "check": "node scripts/check-idem-coverage.mjs && node scripts/check-gate-coverage.mjs && test -f data/deploy-green-receipt.json && node -e \"const r=require('./data/deploy-green-receipt.json'); process.exit((Date.now()-Date.parse(r.verifiedOn))/86400000<14 && r.exitCode===0?0:1)\"",
       "doneWhen": "A dated receipt at data/deploy-green-receipt.json records `node scripts/check-all.mjs` exiting 0, verified within the last 14 days. Write it with: node scripts/check-all.mjs; echo '{\"verifiedOn\":\"YYYY-MM-DD\",\"exitCode\":0,\"passed\":\"N of N\"}' > data/deploy-green-receipt.json",
       "checkNote": "Twice-corrected, both times by running the ledger rather than reading it. (1) First written as check-idem-coverage.mjs, which PASSES — flagged SURPRISE on the first run; idem-coverage verifies every (idem) builder is run by SOMETHING, not that check-all is green. (2) Then written as check-all.mjs itself — which is RECURSION, because check-honesty-debt.mjs is wired INTO check-all. It hung the gate. A ledger that executes its own items must never invoke the orchestrator that executes it. The check is now a dated RECEIPT of a green check-all run, which is bounded, honest, and cannot recurse.",
-      "effort": "1 agent session"
+      "effort": "1 agent session",
+      "paidOn": "2026-08-08",
+      "note": "2026-08-08: the receipt at data/deploy-green-receipt.json records a 330-of-330, exit-0 check-all run taken immediately after all 76 preceding build.command steps ran clean in the same tree. The receipt is dated and expires in 14 days BY DESIGN — a green deploy is a perishable fact, and this item reopening is the intended reminder, not a regression."
     },
     {
       "id": "HD-14",

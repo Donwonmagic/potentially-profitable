@@ -182,6 +182,47 @@ export const UNWIRED = {
       '.claude/hooks/session-start.sh, which runs whether or not CLAUDE.md loads. Queue items Q-070 and Q-071 do the work; Q-072 wires ' +
       'this and deletes this entry once it exits 0. Run `node scripts/check-working-set.mjs --report` for the full classification.',
   },
+  'check-design-scorecard.mjs': {
+    since: '2026-08-07',
+    status:
+      'PASSES — --check exits 0 against the baseline recorded the same day (data/design-scorecard.json). '
+      + 'It is a REGRESSION gate, so green means "no worse than 2026-08-07", not "the design is clean": the '
+      + 'tree it baselined carries 41,618 off-token colour literals, 2,399 off-scale spacing declarations and '
+      + '30 same-rule text pairs below WCAG AA.',
+    why:
+      'The design measurement instrument — colour literals split by where they live (assets CSS / page <style> '
+      + 'blocks / SVG paint attributes / style="" attributes), scale counts, token-resolution rate, tabular-figure '
+      + 'coverage, theme completeness, CSS weight, sentinel integrity, and WCAG AA contrast folded in rather than '
+      + 'given a third binary. UNWIRED for two reasons, neither of them "it fails". First, a full run reads 1,327 '
+      + 'pages and ~77 MB of HTML in about 7 seconds; check-all runs inside wrangler.jsonc build.command, and a '
+      + 'design REPORT is not worth adding to the critical path of every deploy. Second and more important, its '
+      + 'baseline is a moving floor by design — the Reduce phase is about to move most of these numbers hard, and a '
+      + 'gate whose baseline is rewritten in the same commits it guards is theatre. Run it from the design loop, '
+      + 'from audit-design-teeth.mjs (which drives it as the `scorecard` instrument and gets TEETH on 11 of 11 '
+      + 'applicable mutations), and by hand with --record when a deliberate improvement lands. Wire it only once '
+      + 'the numbers stop moving on purpose.',
+  },
+  'check-archetype-conformance.mjs': {
+    since: '2026-08-07',
+    status:
+      'PASSES — --check exits 0 against data/archetype-conformance.json. Today 1,315 of 1,327 pages (99.10%) '
+      + 'conform to the shell derived from their own archetype\'s members; 12 do not, and 3 of the 15 archetypes '
+      + '(harness, app-surface, institutional-record) have NO shared signature at all, so their 100% is vacuous '
+      + 'and is labelled as such in the report.',
+    why:
+      'The gate whose absence let a specimen ship to /about/ while 1,326 pages disagreed and CI stayed green. It '
+      + 'derives each archetype\'s expected shell from its own members (a feature on >=90% of them) and flags both '
+      + 'directions: a page missing the shell, and a page carrying a marker exactly one member has — which is what '
+      + 'a redesign that reached one page looks like. UNWIRED because it must not be wired BEFORE the Reduce phase: '
+      + 'the 12 non-conformers are real (embed.html surfaces and four /learn/topics/ pages that link neither '
+      + 'site-core.css nor site-article.css), and rebuilding those pages will move the number in both directions '
+      + 'before it settles. Wiring a gate whose baseline is being rewritten by the very work it guards makes the '
+      + 'deploy red for reasons nobody can act on, which is how gates become wallpaper (see check-queue, '
+      + 'check-surface-disposition, check-working-set). Its teeth are proven rather than asserted: '
+      + 'audit-design-teeth.mjs drives it as the `archetype` instrument and all four of its shell mutations '
+      + '(stylesheets stripped, rare marker added, page emptied, hex style block) report TEETH. Wire it when the '
+      + 'archetype rebuild is done and the 12 are either fixed or explained.',
+  },
 };
 
 export function findCheckScripts(names) {

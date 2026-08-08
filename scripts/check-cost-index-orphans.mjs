@@ -68,6 +68,11 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'
  */
 const NON_INGREDIENT = new Set([
   'basket',       // the composite basket explainer
+  'corrections',  // 2026-08-08: the published-errors ledger (build-corrections-page.mjs). NOTE: three
+                  // scripts each carry their own non-ingredient list for this directory — here,
+                  // inject-cost-index-speakable.mjs (SKIP) and inject-ingredient-recalls.mjs
+                  // (ingredientSlugs filter) — and the three do not agree. Adding a non-ingredient
+                  // surface under cost-index/ means editing all three.
   'events',       // the notable-price-events surface (ADR-011)
   'lab',          // methodology lab
   'menu-pricing', // the menu-pricing playbook (ADR-016)

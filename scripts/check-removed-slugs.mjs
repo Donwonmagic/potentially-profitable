@@ -65,6 +65,14 @@ const ALLOW_FILES = new Set([
   'llms-full.txt',                         // historical LLM snapshot
   'es/llms-full.txt',                      // historical LLM snapshot (ES)
   'data/tool-releases.json',               // historical release notes
+  // 2026-08-08: link-graph.json is a DERIVED index of the site's links, built by
+  // build-link-graph.mjs from the HTML. It re-publishes the /studio/compare/ links that
+  // changelog/ and es/changelog/ cite as history — surfaces this guard already allows below.
+  // Allowlisting the derived artifact opens no blind spot: every authored page that could
+  // introduce a real reference is still walked, so a genuine violation is caught at its
+  // source. Excluding changelog/ from the link graph instead would falsify the inbound-link
+  // counts that build-surface-disposition.mjs and build-readiness-register.mjs read.
+  'data/link-graph.json',
   // Services sunset (Phase 9, 2026-06-11) historical/prose surfaces:
   'data/services-pricing.json',            // retired price record (_retired)
   'scripts/check-pricing-consistency.mjs', // documents the retired paths

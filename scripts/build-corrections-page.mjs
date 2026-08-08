@@ -34,7 +34,8 @@ const DONOR = 'cost-index/events/index.html';
 const OUT = 'cost-index/corrections/index.html';
 const URL = 'https://muntin.digital/cost-index/corrections/';
 const TITLE = 'Corrections — every number we published and got wrong | Muntin Digital';
-const DESC = 'An append-only record of figures the Muntin Cost Index published and got wrong: what was published, what is true, why it broke, and the check script that now prevents it.';
+// Kept under 155 chars — check-meta-description-length.mjs is fail-CI.
+const DESC = 'An append-only record of figures the Muntin Cost Index published and got wrong: what ran, what is true, and the check that now prevents it.';
 
 const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 

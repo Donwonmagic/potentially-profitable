@@ -40,11 +40,21 @@
 <style>.breadcrumb{padding-top:100px}</style>
 <style>
 :root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+/* CRITICAL SCALE. site.css is preloaded, not render-blocking, so for the
+   frame before it lands every var() this page uses is unresolved. An
+   unresolved COLOUR inherits and the text stays readable; an unresolved
+   font-size, leading or spacing REFLOWS when the stylesheet arrives. So the
+   dimensional half of the token scale is repeated here and the colour half
+   deliberately is not — that is the whole reason this block is short.
+   Values are the scale's, verbatim (assets/site.css §3-§6); ZERO colour
+   literals are added, which is why the four colour ROLES the page consumes
+   are aliased onto spine names already declared above rather than restated. */
+:root{--fs-2xs:11px;--fs-xs:13px;--fs-sm:16px;--fs-md:19px;--fs-lg:23px;--lh-prose:1.6;--lh-card:1.55;--lh-ui:1.5;--lh-flat:1.05;--sp-2:8px;--sp-5:24px;--r-1:6px;--hairline:1px;--accent:var(--teal);--text-soft:var(--ink-soft);--surface-sunk:var(--cream-2)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 .skip-link{position:absolute;left:-9999px;top:0}
-.skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
+.skip-link:focus{position:static;display:inline-block;background:var(--ink);color:var(--cream);padding:12px 16px;z-index:100}
 header.nav{min-height:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
@@ -54,6 +64,51 @@ header.nav{min-height:64px}
 <link rel="preload" as="style" href="/assets/site-core.css?v=7e4c4c08eabb" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css?v=7e4c4c08eabb"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=6cc3dc4ab201">
+<!-- SHEET INSTRUMENT LAYER. Loaded AFTER sheets.css deliberately: these
+     rules refine what that file already establishes, and equal-specificity
+     ties must resolve here. Two jobs, both token-bound — no literal below.
+     1. NUMERICS. A sheet is a column of figures a bookkeeper runs an eye
+        down. site.css §7 already gives tabular figures to table cells and
+        .num/.stat/.price; it cannot see a sheet's numeric <input> or its
+        [data-output] result, which is where an operator actually reads.
+        Proportional digits make a correct column look wrong.
+     2. PRINT. Operators carry these onto a floor, so paper is a first-class
+        state, not a fallback. assets/sheets.css already hides chrome and
+        sets a print ink+type ramp; what it lacks is a page box, a hairline
+        that survives a real printer, the affordances that are meaningless
+        on paper (a keyboard hint, a live progress line, a what-if slider),
+        and tabular figures in the printed column. -->
+<style>
+.sheet-form input,.sheet-form select,.sheet-row-table :is(td,th,input,select),.sheet-output-value,[data-output]{font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum" 1,"lnum" 1}
+/* A result is a display object, not a sentence: flat leading, no wrap, so
+   the figure reads as one measured thing. Matches site.css .num. */
+.sheet-output-value{line-height:var(--lh-flat);white-space:nowrap}
+@media print{
+  /* A page box. Stated in mm, not a spacing token, for two honest reasons:
+     @page has its own cascade and does not inherit :root custom properties
+     in any shipping engine, and a paper margin is a physical measure — 14mm
+     clears the non-printable edge of a common office laser on both A4 and
+     US Letter. This is a length, not a colour; it introduces no literal the
+     token system governs. */
+  @page{margin:14mm}
+  /* A REAL hairline. sheets.css sets .5pt; the token system's shape rule is
+     that a rule which thins stops reading as a rule, and .5pt is under the
+     dot pitch of most office lasers. --hairline is 1px = 0.75pt. */
+  :root{--p-hair:var(--hairline)}
+  /* Screen-only affordances that print as noise: a keyboard hint on paper,
+     a live progress line, and a what-if slider that cannot be dragged.
+     sheets.css hides .mm-actions and .mm-save; these three it does not
+     know about. */
+  .sheet-keyboard-hint,.sheet-progress,.sheet-whatif{display:none !important}
+  /* Browsers strip background fills by default, so the output panel cannot
+     depend on its tint to read as a panel — give it an ink rule instead. */
+  .sheet-output{border:var(--p-hair) solid var(--p-ink) !important}
+  /* Carry the column alignment onto paper, where the CPA actually checks it. */
+  .sheet-form input,.sheet-form select,.sheet-row-table :is(td,th,input,select),.sheet-output-value,[data-output]{font-variant-numeric:tabular-nums lining-nums !important;font-feature-settings:"tnum" 1,"lnum" 1 !important}
+  /* No stranded single lines across a page break. */
+  p,li{orphans:2;widows:2}
+}
+</style>
 </head>
 <body data-page="sheet" data-sheet-slug="invoice-receiving-checklist" data-sheet-pack="operations-margin" data-pagefind-meta="kind:sheet,pack:operations-margin">
 <a class="skip-link" href="#main">Skip to main content</a>
@@ -315,9 +370,9 @@ header.nav{min-height:64px}
   <article class="mm-card mm-live" id="sheet-form">
     <div class="mm-card-header">
       <span class="mm-card-eyebrow">Fill it in</span>
-      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;margin:0;">Invoice Receiving Checklist</h2>
+      <h2 style="font-family:var(--font-display);font-size:var(--fs-lg);font-weight:500;margin:0;">Invoice Receiving Checklist</h2>
     </div>
-    <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Type your numbers — the math runs in your browser. Print it, save it as a CSV, or save it to your Workshop.</p>
+    <p style="font-size:var(--fs-xs);line-height:var(--lh-card);color:var(--text-soft);margin:0;">Type your numbers — the math runs in your browser. Print it, save it as a CSV, or save it to your Workshop.</p>
 
         <p class="sheet-paper-hint">Print before the truck arrives. Stand at the back door with this. Sign nothing until every row is checked.</p>
 
@@ -438,18 +493,18 @@ header.nav{min-height:64px}
     <div class="mm-card-header">
       <span class="mm-card-eyebrow">When to use it</span>
     </div>
-    <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Pull this sheet out when —</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Standing at the back door while the driver is still there.</li>
+    <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:var(--fs-md);font-weight:500;margin:0;">Pull this sheet out when —</h2>
+    <ul style="margin:0;padding-left:var(--sp-5);font-size:var(--fs-sm);line-height:var(--lh-prose);color:var(--text-soft);"><li>Standing at the back door while the driver is still there.</li>
       <li>Whenever a substitution shows up that you did not approve in writing.</li>
       <li>Right after a price-increase notice from a vendor — verify the new price hits the line.</li></ul>
   </article>
 
   <article class="mm-card sheet-mistakes" aria-labelledby="mistakes-h">
     <div class="mm-card-header">
-      <span class="mm-card-eyebrow" style="color:var(--rust,#C42E2E);">Common mistakes</span>
+      <span class="mm-card-eyebrow" style="color:var(--danger);">Common mistakes</span>
     </div>
-    <h2 id="mistakes-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">What operators get wrong</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Signing the slip before counting the boxes. Once it's signed, the credit conversation is uphill.</li>
+    <h2 id="mistakes-h" style="font-family:var(--font-display);font-size:var(--fs-md);font-weight:500;margin:0;">What operators get wrong</h2>
+    <ul style="margin:0;padding-left:var(--sp-5);font-size:var(--fs-sm);line-height:var(--lh-prose);color:var(--text-soft);"><li>Signing the slip before counting the boxes. Once it's signed, the credit conversation is uphill.</li>
       <li>Not flagging substitutions in writing. "They were out" is not a credit; "item swap, no approval" is.</li>
       <li>Skipping the protein temp on cold winter mornings. The truck cooler can fail in any weather.</li></ul>
   </article>
@@ -457,7 +512,7 @@ header.nav{min-height:64px}
   <section class="sheet-knit" aria-labelledby="pairs-with-h">
     <header style="text-align:center;margin:32px 0 18px;">
       <span class="eyebrow">Pairs with</span>
-      <h2 id="pairs-with-h" style="font-family:var(--font-display);font-size:24px;font-weight:500;margin:6px 0 0;">The tools, terms, and articles this sheet sits next to.</h2>
+      <h2 id="pairs-with-h" style="font-family:var(--font-display);font-size:var(--fs-lg);font-weight:500;margin:var(--sp-2) 0 0;">The tools, terms, and articles this sheet sits next to.</h2>
     </header>
     <div class="sheet-knit-grid">
       <div class="sheet-knit-col">
@@ -482,7 +537,7 @@ header.nav{min-height:64px}
     </div>
   </section>
 
-  <p style="text-align:center;margin:36px 0 8px;font-size:13.5px;color:var(--stone,#6B7280);">
+  <p style="text-align:center;margin:36px 0 8px;font-size:var(--fs-xs);color:var(--text-muted);">
     Free, no signup. Your numbers never leave this page.
   </p>
 

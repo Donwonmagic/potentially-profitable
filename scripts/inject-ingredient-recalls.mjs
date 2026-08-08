@@ -40,7 +40,13 @@ function ingredientSlugs() {
   return fs.readdirSync(dir, { withFileTypes: true })
     .filter((d) => d.isDirectory() && fs.existsSync(path.join(dir, d.name, 'index.html')))
     .map((d) => d.name)
-    .filter((slug) => slug !== 'events' && slug !== 'weekly'); // non-ingredient subtrees
+    // Non-ingredient subtrees. 'corrections' added 2026-08-08 — the published-errors ledger has a
+    // recalls anchor by inheritance from its donor shell, so without this it would grow a
+    // "Food-safety recall history" section for an ingredient that does not exist. See the note in
+    // check-cost-index-orphans.mjs: three scripts hold divergent copies of this list, and this one
+    // is deliberately the shortest — basket/lab/menu-pricing/methodology/sources DO carry the
+    // section today and removing it is a content decision, not a cleanup.
+    .filter((slug) => slug !== 'events' && slug !== 'weekly' && slug !== 'corrections');
 }
 
 let injected = 0, changed = 0, withRecalls = 0, skipped = [];

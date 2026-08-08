@@ -34,7 +34,10 @@ const checkOnly  = process.argv.includes('--check');
 
 const ROOTS = ['cost-index', 'es/cost-index'];
 // Non-ingredient cost-index pages: the hub + editorial/data surfaces.
-const SKIP = new Set(['methodology', 'sources', 'embed', 'basket']);
+// 'corrections' added 2026-08-08: the published-errors ledger is an editorial surface, not an
+// ingredient page — it has no reading to speak. See the note in check-cost-index-orphans.mjs:
+// three scripts hold divergent copies of this list.
+const SKIP = new Set(['methodology', 'sources', 'embed', 'basket', 'corrections']);
 
 const LD_RE = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/;
 

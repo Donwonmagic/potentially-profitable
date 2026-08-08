@@ -40,11 +40,21 @@
 <style>.breadcrumb{padding-top:100px}</style>
 <style>
 :root{--cream:#F6F7F8;--cream-2:#EDEEF1;--ink:#16181D;--ink-soft:#4A4F59;--teal:#2A50C8;--max:1200px;--pad-x:clamp(20px,4vw,64px)}
+/* CRITICAL SCALE. site.css is preloaded, not render-blocking, so for the
+   frame before it lands every var() this page uses is unresolved. An
+   unresolved COLOUR inherits and the text stays readable; an unresolved
+   font-size, leading or spacing REFLOWS when the stylesheet arrives. So the
+   dimensional half of the token scale is repeated here and the colour half
+   deliberately is not — that is the whole reason this block is short.
+   Values are the scale's, verbatim (assets/site.css §3-§6); ZERO colour
+   literals are added, which is why the four colour ROLES the page consumes
+   are aliased onto spine names already declared above rather than restated. */
+:root{--fs-2xs:11px;--fs-xs:13px;--fs-sm:16px;--fs-md:19px;--fs-lg:23px;--lh-prose:1.6;--lh-card:1.55;--lh-ui:1.5;--lh-flat:1.05;--sp-2:8px;--sp-5:24px;--r-1:6px;--hairline:1px;--accent:var(--teal);--text-soft:var(--ink-soft);--surface-sunk:var(--cream-2)}
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 .skip-link{position:absolute;left:-9999px;top:0}
-.skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
+.skip-link:focus{position:static;display:inline-block;background:var(--ink);color:var(--cream);padding:12px 16px;z-index:100}
 header.nav{min-height:64px}
 </style>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-variable-latin-wght-normal.woff2" crossorigin>
@@ -54,6 +64,51 @@ header.nav{min-height:64px}
 <link rel="preload" as="style" href="/assets/site-core.css?v=7e4c4c08eabb" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="/assets/site-core.css?v=7e4c4c08eabb"></noscript>
 <link rel="stylesheet" href="/assets/sheets.css?v=6cc3dc4ab201">
+<!-- SHEET INSTRUMENT LAYER. Loaded AFTER sheets.css deliberately: these
+     rules refine what that file already establishes, and equal-specificity
+     ties must resolve here. Two jobs, both token-bound — no literal below.
+     1. NUMERICS. A sheet is a column of figures a bookkeeper runs an eye
+        down. site.css §7 already gives tabular figures to table cells and
+        .num/.stat/.price; it cannot see a sheet's numeric <input> or its
+        [data-output] result, which is where an operator actually reads.
+        Proportional digits make a correct column look wrong.
+     2. PRINT. Operators carry these onto a floor, so paper is a first-class
+        state, not a fallback. assets/sheets.css already hides chrome and
+        sets a print ink+type ramp; what it lacks is a page box, a hairline
+        that survives a real printer, the affordances that are meaningless
+        on paper (a keyboard hint, a live progress line, a what-if slider),
+        and tabular figures in the printed column. -->
+<style>
+.sheet-form input,.sheet-form select,.sheet-row-table :is(td,th,input,select),.sheet-output-value,[data-output]{font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum" 1,"lnum" 1}
+/* A result is a display object, not a sentence: flat leading, no wrap, so
+   the figure reads as one measured thing. Matches site.css .num. */
+.sheet-output-value{line-height:var(--lh-flat);white-space:nowrap}
+@media print{
+  /* A page box. Stated in mm, not a spacing token, for two honest reasons:
+     @page has its own cascade and does not inherit :root custom properties
+     in any shipping engine, and a paper margin is a physical measure — 14mm
+     clears the non-printable edge of a common office laser on both A4 and
+     US Letter. This is a length, not a colour; it introduces no literal the
+     token system governs. */
+  @page{margin:14mm}
+  /* A REAL hairline. sheets.css sets .5pt; the token system's shape rule is
+     that a rule which thins stops reading as a rule, and .5pt is under the
+     dot pitch of most office lasers. --hairline is 1px = 0.75pt. */
+  :root{--p-hair:var(--hairline)}
+  /* Screen-only affordances that print as noise: a keyboard hint on paper,
+     a live progress line, and a what-if slider that cannot be dragged.
+     sheets.css hides .mm-actions and .mm-save; these three it does not
+     know about. */
+  .sheet-keyboard-hint,.sheet-progress,.sheet-whatif{display:none !important}
+  /* Browsers strip background fills by default, so the output panel cannot
+     depend on its tint to read as a panel — give it an ink rule instead. */
+  .sheet-output{border:var(--p-hair) solid var(--p-ink) !important}
+  /* Carry the column alignment onto paper, where the CPA actually checks it. */
+  .sheet-form input,.sheet-form select,.sheet-row-table :is(td,th,input,select),.sheet-output-value,[data-output]{font-variant-numeric:tabular-nums lining-nums !important;font-feature-settings:"tnum" 1,"lnum" 1 !important}
+  /* No stranded single lines across a page break. */
+  p,li{orphans:2;widows:2}
+}
+</style>
 </head>
 <body data-page="sheet" data-sheet-slug="weekly-prime-cost-worksheet" data-sheet-pack="operations-margin" data-pagefind-meta="kind:sheet,pack:operations-margin">
 <a class="skip-link" href="#main">Skip to main content</a>
@@ -315,9 +370,9 @@ header.nav{min-height:64px}
   <article class="mm-card mm-live" id="sheet-form">
     <div class="mm-card-header">
       <span class="mm-card-eyebrow">Fill it in</span>
-      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:500;margin:0;">Weekly Prime Cost Worksheet</h2>
+      <h2 style="font-family:var(--font-display);font-size:var(--fs-lg);font-weight:500;margin:0;">Weekly Prime Cost Worksheet</h2>
     </div>
-    <p style="font-size:14px;line-height:1.55;color:var(--ink-soft);margin:0;">Type your numbers — the math runs in your browser. Print it, save it as a CSV, or save it to your Workshop.</p>
+    <p style="font-size:var(--fs-xs);line-height:var(--lh-card);color:var(--text-soft);margin:0;">Type your numbers — the math runs in your browser. Print it, save it as a CSV, or save it to your Workshop.</p>
 
         <!-- sheet-worked-example:start -->
     <details class="sheet-worked-example" data-sheet="weekly-prime-cost-worksheet">
@@ -409,7 +464,7 @@ header.nav{min-height:64px}
           <span class="sheet-output-label">Total labor (fully loaded)</span>
           <span class="sheet-output-value" data-output="labor_total">$0.00</span>
         </div>
-        <div class="sheet-output-row" style="border-top:1px solid var(--line,#E5DFD2);padding-top:10px;margin-top:4px;">
+        <div class="sheet-output-row" style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px;">
           <span class="sheet-output-label" style="font-weight:700;">Prime cost</span>
           <span class="sheet-output-value" data-output="prime_cost_dollars">$0.00</span>
         </div>
@@ -417,10 +472,10 @@ header.nav{min-height:64px}
           <span class="sheet-output-label" style="font-weight:700;">Prime cost as % of sales</span>
           <span class="sheet-output-value" data-output="prime_cost_pct" data-band="idle">0.0%</span>
         </div>
-        <p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--ink-soft,#4A4F59);" data-output="recommendation">
+        <p style="margin:6px 0 0;font-size:var(--fs-xs);line-height:var(--lh-ui);color:var(--text-soft);" data-output="recommendation">
           Type your numbers above. The healthy band for full-service independents runs 55–65% — anything above 65% is a margin emergency.
         </p>
-        <div data-output="anomalies" hidden style="margin:8px 0 0;padding:10px 12px;border-left:3px solid var(--rust,#C42E2E);background:var(--cream-2,#EDEEF1);font-size:13px;line-height:1.5;color:var(--ink,#16181D);"></div>
+        <div data-output="anomalies" hidden style="margin:8px 0 0;padding:10px 12px;border-left:3px solid var(--danger);background:var(--surface-sunk);font-size:var(--fs-xs);line-height:var(--lh-ui);color:var(--ink);"></div>
       </div>
     </form>
 
@@ -428,34 +483,34 @@ header.nav{min-height:64px}
          against an in-memory snapshot of the form values; the verdict
          and outputs update without touching the typed numbers. Reset
          button restores the unadjusted view. -->
-    <details class="sheet-whatif" style="margin:18px 0 0;padding:14px 16px;border:1px solid var(--line,#E5DFD2);border-radius:6px;background:var(--white,#FFFFFF);">
-      <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--teal,#2A50C8);letter-spacing:0.02em;">Try a scenario — what if labor or food shifts?</summary>
-      <p style="margin:8px 0 12px;font-size:13px;line-height:1.5;color:var(--ink-soft,#4A4F59);">Slide one or more, watch the verdict re-run on top of your typed numbers. Nothing saves until you click Reset and refill, or use the Workshop save with the scenario flag.</p>
+    <details class="sheet-whatif" style="margin:18px 0 0;padding:14px 16px;border:1px solid var(--border);border-radius:var(--r-1);background:var(--surface);">
+      <summary style="cursor:pointer;font-size:var(--fs-xs);font-weight:600;color:var(--accent);letter-spacing:0.02em;">Try a scenario — what if labor or food shifts?</summary>
+      <p style="margin:8px 0 12px;font-size:var(--fs-xs);line-height:var(--lh-ui);color:var(--text-soft);">Slide one or more, watch the verdict re-run on top of your typed numbers. Nothing saves until you click Reset and refill, or use the Workshop save with the scenario flag.</p>
       <div class="sheet-whatif-controls" style="display:flex;flex-direction:column;gap:10px;">
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:var(--fs-xs);font-weight:500;">
           <span style="flex:1;">Labor change</span>
           <input type="range" name="whatif_labor" min="-10" max="10" step="0.5" value="0" style="flex:2;" />
           <output name="whatif_labor_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0.0pt</output>
         </label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:var(--fs-xs);font-weight:500;">
           <span style="flex:1;">Food cost change</span>
           <input type="range" name="whatif_food" min="-5" max="5" step="0.25" value="0" style="flex:2;" />
           <output name="whatif_food_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0.0pt</output>
         </label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:var(--fs-xs);font-weight:500;">
           <span style="flex:1;">Sales change</span>
           <input type="range" name="whatif_sales" min="-15" max="15" step="1" value="0" style="flex:2;" />
           <output name="whatif_sales_out" style="flex:0 0 60px;text-align:right;font-variant-numeric:tabular-nums;font-weight:600;">0%</output>
         </label>
-        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--line-dark,#C9C2B6);color:var(--ink-soft,#4A4F59);padding:6px 12px;border-radius:6px;font:inherit;font-size:12px;cursor:pointer;">Reset scenario</button>
+        <button type="button" data-whatif-reset style="align-self:flex-start;background:transparent;border:1px solid var(--border-strong);color:var(--text-soft);padding:6px 12px;border-radius:var(--r-1);font:inherit;font-size:var(--fs-xs);cursor:pointer;">Reset scenario</button>
       </div>
     </details>
 
     <!-- D7 · Long-form companion essay link. Surfaces the slow think
          piece on prime cost — the why beneath the what the sheet does. -->
-    <p style="margin:18px 0 0;padding:14px 18px;border:1px solid var(--line,#E5DFD2);border-left:3px solid var(--gold,#D4A24C);border-radius:6px;background:var(--cream-2,#EDEEF1);font-size:14px;line-height:1.55;color:var(--ink,#16181D);">
-      <strong style="color:var(--gold-deep,#8C6A2A);font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:4px;">Read the long version</strong>
-      The math, the four lies operators tell themselves, the verdict bands, and a four-week protocol for getting stable. <a href="./why/" style="color:var(--teal,#2A50C8);font-weight:600;border-bottom:1px solid currentColor;text-decoration:none;">The trunk number — Why weekly prime cost is the only number that matters &rarr;</a>
+    <p style="margin:18px 0 0;padding:14px 18px;border:1px solid var(--border);border-left:3px solid var(--status-warn-deep);border-radius:var(--r-1);background:var(--surface-sunk);font-size:var(--fs-xs);line-height:var(--lh-card);color:var(--ink);">
+      <strong style="color:var(--status-warn-deep);font-size:var(--fs-2xs);letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:4px;">Read the long version</strong>
+      The math, the four lies operators tell themselves, the verdict bands, and a four-week protocol for getting stable. <a href="./why/" style="color:var(--accent);font-weight:600;border-bottom:1px solid currentColor;text-decoration:none;">The trunk number — Why weekly prime cost is the only number that matters &rarr;</a>
     </p>
 
     <script>
@@ -496,18 +551,18 @@ header.nav{min-height:64px}
     <div class="mm-card-header">
       <span class="mm-card-eyebrow">When to use it</span>
     </div>
-    <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Pull this sheet out when —</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Tuesday morning, closing the prior week. Before payroll. Before the produce reorder.</li>
+    <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:var(--fs-md);font-weight:500;margin:0;">Pull this sheet out when —</h2>
+    <ul style="margin:0;padding-left:var(--sp-5);font-size:var(--fs-sm);line-height:var(--lh-prose);color:var(--text-soft);"><li>Tuesday morning, closing the prior week. Before payroll. Before the produce reorder.</li>
       <li>A cost just jumped — you want to see if it landed in the <a class="sheet-glossary-popover-link" href="/glossary/prime-cost/" data-glossary-head="Prime cost" data-glossary-aka="Cost of goods sold + labor" data-glossary-blurb="Total food + beverage cost plus fully-loaded labor, expressed as percent of net sales. Healthy band for full-service independents: 55–65%. Above 65% the model breaks once fixed costs are in." data-sheet-popover="1">prime cost</a> number or got absorbed.</li>
       <li>You are talking to a partner or lender and need a one-number answer about restaurant health.</li></ul>
   </article>
 
   <article class="mm-card sheet-mistakes" aria-labelledby="mistakes-h">
     <div class="mm-card-header">
-      <span class="mm-card-eyebrow" style="color:var(--rust,#C42E2E);">Common mistakes</span>
+      <span class="mm-card-eyebrow" style="color:var(--danger);">Common mistakes</span>
     </div>
-    <h2 id="mistakes-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">What operators get wrong</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Forgetting employer payroll taxes and benefits inside labor — the result reads 4 to 6 points low.</li>
+    <h2 id="mistakes-h" style="font-family:var(--font-display);font-size:var(--fs-md);font-weight:500;margin:0;">What operators get wrong</h2>
+    <ul style="margin:0;padding-left:var(--sp-5);font-size:var(--fs-sm);line-height:var(--lh-prose);color:var(--text-soft);"><li>Forgetting employer payroll taxes and benefits inside labor — the result reads 4 to 6 points low.</li>
       <li>Using sales tax-inclusive revenue. Net of sales tax, every time, or the percent is wrong.</li>
       <li>Counting only food in COGS — beverage prime cost runs different and needs its own line.</li></ul>
   </article>
@@ -515,7 +570,7 @@ header.nav{min-height:64px}
   <section class="sheet-knit" aria-labelledby="pairs-with-h">
     <header style="text-align:center;margin:32px 0 18px;">
       <span class="eyebrow">Pairs with</span>
-      <h2 id="pairs-with-h" style="font-family:var(--font-display);font-size:24px;font-weight:500;margin:6px 0 0;">The tools, terms, and articles this sheet sits next to.</h2>
+      <h2 id="pairs-with-h" style="font-family:var(--font-display);font-size:var(--fs-lg);font-weight:500;margin:var(--sp-2) 0 0;">The tools, terms, and articles this sheet sits next to.</h2>
     </header>
     <div class="sheet-knit-grid">
       <div class="sheet-knit-col">
@@ -544,7 +599,7 @@ header.nav{min-height:64px}
     </div>
   </section>
 
-  <p style="text-align:center;margin:36px 0 8px;font-size:13.5px;color:var(--stone,#6B7280);">
+  <p style="text-align:center;margin:36px 0 8px;font-size:var(--fs-xs);color:var(--text-muted);">
     Free, no signup. Your numbers never leave this page.
   </p>
 
@@ -1074,18 +1129,18 @@ header.nav{min-height:64px}
     <div class="mm-card-header">
       <span class="mm-card-eyebrow">When to use it</span>
     </div>
-    <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">Pull this sheet out when —</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Tuesday morning, closing the prior week. Before payroll. Before the produce reorder.</li>
+    <h2 id="when-to-use-h" style="font-family:var(--font-display);font-size:var(--fs-md);font-weight:500;margin:0;">Pull this sheet out when —</h2>
+    <ul style="margin:0;padding-left:var(--sp-5);font-size:var(--fs-sm);line-height:var(--lh-prose);color:var(--text-soft);"><li>Tuesday morning, closing the prior week. Before payroll. Before the produce reorder.</li>
       <li>A cost just jumped — you want to see if it landed in the prime cost number or got absorbed.</li>
       <li>You are talking to a partner or lender and need a one-number answer about restaurant health.</li></ul>
   </article>
 
   <article class="mm-card sheet-mistakes" aria-labelledby="mistakes-h">
     <div class="mm-card-header">
-      <span class="mm-card-eyebrow" style="color:var(--rust,#C42E2E);">Common mistakes</span>
+      <span class="mm-card-eyebrow" style="color:var(--danger);">Common mistakes</span>
     </div>
-    <h2 id="mistakes-h" style="font-family:var(--font-display);font-size:18px;font-weight:500;margin:0;">What operators get wrong</h2>
-    <ul style="margin:0;padding-left:20px;font-size:14.5px;line-height:1.6;color:var(--ink-soft);"><li>Forgetting employer payroll taxes and benefits inside labor — the result reads 4 to 6 points low.</li>
+    <h2 id="mistakes-h" style="font-family:var(--font-display);font-size:var(--fs-md);font-weight:500;margin:0;">What operators get wrong</h2>
+    <ul style="margin:0;padding-left:var(--sp-5);font-size:var(--fs-sm);line-height:var(--lh-prose);color:var(--text-soft);"><li>Forgetting employer payroll taxes and benefits inside labor — the result reads 4 to 6 points low.</li>
       <li>Using sales tax-inclusive revenue. Net of sales tax, every time, or the percent is wrong.</li>
       <li>Counting only food in COGS — beverage prime cost runs different and needs its own line.</li></ul>
   </article>
@@ -1093,7 +1148,7 @@ header.nav{min-height:64px}
   <section class="sheet-knit" aria-labelledby="pairs-with-h">
     <header style="text-align:center;margin:32px 0 18px;">
       <span class="eyebrow">Pairs with</span>
-      <h2 id="pairs-with-h" style="font-family:var(--font-display);font-size:24px;font-weight:500;margin:6px 0 0;">The tools, terms, and articles this sheet sits next to.</h2>
+      <h2 id="pairs-with-h" style="font-family:var(--font-display);font-size:var(--fs-lg);font-weight:500;margin:var(--sp-2) 0 0;">The tools, terms, and articles this sheet sits next to.</h2>
     </header>
     <div class="sheet-knit-grid">
       <div class="sheet-knit-col">
@@ -1122,7 +1177,7 @@ header.nav{min-height:64px}
     </div>
   </section>
 
-  <p style="text-align:center;margin:36px 0 8px;font-size:13.5px;color:var(--stone,#6B7280);">
+  <p style="text-align:center;margin:36px 0 8px;font-size:var(--fs-xs);color:var(--text-muted);">
     Free, no signup. Your numbers never leave this page.
   </p>
 

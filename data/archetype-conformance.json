@@ -1,0 +1,569 @@
+{
+  "asOf": "2026-08-08T12:56:43.194Z",
+  "summary": {
+    "pages": 1327,
+    "conforming": 1315,
+    "nonConforming": 12,
+    "conformance": 99.1,
+    "routesEmpty": 0,
+    "routesMissing": 0,
+    "archetypes": 15,
+    "vacuousArchetypes": 3,
+    "hexLiterals": 52516,
+    "styleBlocks": 2163,
+    "inlineStyles": 13926,
+    "svgPaints": 4757
+  },
+  "archetypes": [
+    {
+      "id": "app-surface",
+      "name": "Product app surface",
+      "verdict": "survives",
+      "members": 12,
+      "conforming": 12,
+      "empty": 0,
+      "conformance": 100,
+      "signatureFeatures": 0,
+      "rareFeatures": 0,
+      "signature": [],
+      "discipline": {
+        "hexLiterals": 790,
+        "styleBlocks": 20,
+        "inlineStyles": 99,
+        "svgPaints": 0,
+        "hexPerPage": 65.8
+      },
+      "nonConforming": []
+    },
+    {
+      "id": "calculator",
+      "name": "Interactive calculator",
+      "verdict": "becomes",
+      "members": 14,
+      "conforming": 14,
+      "empty": 0,
+      "conformance": 100,
+      "signatureFeatures": 2,
+      "rareFeatures": 0,
+      "signature": [
+        "sheet:site-core.css",
+        "sheet:site-tool.css"
+      ],
+      "discipline": {
+        "hexLiterals": 1093,
+        "styleBlocks": 35,
+        "inlineStyles": 284,
+        "svgPaints": 46,
+        "hexPerPage": 78.1
+      },
+      "nonConforming": []
+    },
+    {
+      "id": "collection-index",
+      "name": "Collection index",
+      "verdict": "survives",
+      "members": 72,
+      "conforming": 66,
+      "empty": 0,
+      "conformance": 91.67,
+      "signatureFeatures": 2,
+      "rareFeatures": 0,
+      "signature": [
+        "sheet:site-article.css",
+        "sheet:site-core.css"
+      ],
+      "discipline": {
+        "hexLiterals": 1696,
+        "styleBlocks": 129,
+        "inlineStyles": 896,
+        "svgPaints": 0,
+        "hexPerPage": 23.6
+      },
+      "nonConforming": [
+        {
+          "route": "/es/library/menu-design-cuisines/",
+          "missing": [
+            "sheet:site-core.css",
+            "sheet:site-article.css"
+          ],
+          "stray": [],
+          "empty": false
+        },
+        {
+          "route": "/es/sheets/",
+          "missing": [
+            "sheet:site-article.css"
+          ],
+          "stray": [],
+          "empty": false
+        },
+        {
+          "route": "/es/tools/",
+          "missing": [
+            "sheet:site-article.css"
+          ],
+          "stray": [],
+          "empty": false
+        },
+        {
+          "route": "/library/menu-design-cuisines/",
+          "missing": [
+            "sheet:site-core.css",
+            "sheet:site-article.css"
+          ],
+          "stray": [],
+          "empty": false
+        },
+        {
+          "route": "/sheets/",
+          "missing": [
+            "sheet:site-article.css"
+          ],
+          "stray": [],
+          "empty": false
+        },
+        {
+          "route": "/tools/",
+          "missing": [
+            "sheet:site-article.css"
+          ],
+          "stray": [],
+          "empty": false
+        }
+      ]
+    },
+    {
+      "id": "definition-card",
+      "name": "Definition card",
+      "verdict": "retires",
+      "members": 342,
+      "conforming": 342,
+      "empty": 0,
+      "conformance": 100,
+      "signatureFeatures": 2,
+      "rareFeatures": 0,
+      "signature": [
+        "sheet:site-article.css",
+        "sheet:site-core.css"
+      ],
+      "discipline": {
+        "hexLiterals": 3680,
+        "styleBlocks": 394,
+        "inlineStyles": 2481,
+        "svgPaints": 2756,
+        "hexPerPage": 10.8
+      },
+      "nonConforming": []
+    },
+    {
+      "id": "essay",
+      "name": "Long-form essay",
+      "verdict": "becomes",
+      "members": 123,
+      "conforming": 119,
+      "empty": 0,
+      "conformance": 96.75,
+      "signatureFeatures": 2,
+      "rareFeatures": 0,
+      "signature": [
+        "sheet:site-article.css",
+        "sheet:site-core.css"
+      ],
+      "discipline": {
+        "hexLiterals": 2685,
+        "styleBlocks": 272,
+        "inlineStyles": 3600,
+        "svgPaints": 70,
+        "hexPerPage": 21.8
+      },
+      "nonConforming": [
+        {
+          "route": "/es/learn/topics/brand-design/menu-redesign-no-software/",
+          "missing": [
+            "sheet:site-core.css",
+            "sheet:site-article.css"
+          ],
+          "stray": [],
+          "empty": false
+        },
+        {
+          "route": "/es/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/",
+          "missing": [
+            "sheet:site-core.css",
+            "sheet:site-article.css"
+          ],
+          "stray": [],
+          "empty": false
+        },
+        {
+          "route": "/learn/topics/brand-design/menu-redesign-no-software/",
+          "missing": [
+            "sheet:site-core.css",
+            "sheet:site-article.css"
+          ],
+          "stray": [],
+          "empty": false
+        },
+        {
+          "route": "/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/",
+          "missing": [
+            "sheet:site-core.css",
+            "sheet:site-article.css"
+          ],
+          "stray": [],
+          "empty": false
+        }
+      ]
+    },
+    {
+      "id": "harness",
+      "name": "Operator harness",
+      "verdict": "retires",
+      "members": 6,
+      "conforming": 6,
+      "empty": 0,
+      "conformance": 100,
+      "signatureFeatures": 0,
+      "rareFeatures": 0,
+      "signature": [],
+      "discipline": {
+        "hexLiterals": 181,
+        "styleBlocks": 7,
+        "inlineStyles": 22,
+        "svgPaints": 0,
+        "hexPerPage": 30.2
+      },
+      "nonConforming": []
+    },
+    {
+      "id": "institutional-record",
+      "name": "Institutional record",
+      "verdict": "survives",
+      "members": 26,
+      "conforming": 26,
+      "empty": 0,
+      "conformance": 100,
+      "signatureFeatures": 0,
+      "rareFeatures": 0,
+      "signature": [],
+      "discipline": {
+        "hexLiterals": 893,
+        "styleBlocks": 41,
+        "inlineStyles": 1179,
+        "svgPaints": 0,
+        "hexPerPage": 34.3
+      },
+      "nonConforming": []
+    },
+    {
+      "id": "instrument-apparatus",
+      "name": "Instrument apparatus",
+      "verdict": "absorbs",
+      "members": 20,
+      "conforming": 18,
+      "empty": 0,
+      "conformance": 90,
+      "signatureFeatures": 2,
+      "rareFeatures": 0,
+      "signature": [
+        "sheet:site-article.css",
+        "sheet:site-core.css"
+      ],
+      "discipline": {
+        "hexLiterals": 1644,
+        "styleBlocks": 38,
+        "inlineStyles": 376,
+        "svgPaints": 486,
+        "hexPerPage": 82.2
+      },
+      "nonConforming": [
+        {
+          "route": "/cost-index/ribeye/embed.html",
+          "missing": [
+            "sheet:site-core.css",
+            "sheet:site-article.css"
+          ],
+          "stray": [],
+          "empty": false
+        },
+        {
+          "route": "/es/cost-index/ribeye/embed.html",
+          "missing": [
+            "sheet:site-core.css",
+            "sheet:site-article.css"
+          ],
+          "stray": [],
+          "empty": false
+        }
+      ]
+    },
+    {
+      "id": "instrument-reading",
+      "name": "Ingredient reading",
+      "verdict": "absorbs",
+      "members": 188,
+      "conforming": 188,
+      "empty": 0,
+      "conformance": 100,
+      "signatureFeatures": 2,
+      "rareFeatures": 0,
+      "signature": [
+        "sheet:site-article.css",
+        "sheet:site-core.css"
+      ],
+      "discipline": {
+        "hexLiterals": 19384,
+        "styleBlocks": 188,
+        "inlineStyles": 486,
+        "svgPaints": 1280,
+        "hexPerPage": 103.1
+      },
+      "nonConforming": []
+    },
+    {
+      "id": "instrument-record",
+      "name": "Market-event record",
+      "verdict": "becomes",
+      "members": 78,
+      "conforming": 78,
+      "empty": 0,
+      "conformance": 100,
+      "signatureFeatures": 2,
+      "rareFeatures": 0,
+      "signature": [
+        "sheet:site-article.css",
+        "sheet:site-core.css"
+      ],
+      "discipline": {
+        "hexLiterals": 8034,
+        "styleBlocks": 156,
+        "inlineStyles": 1034,
+        "svgPaints": 0,
+        "hexPerPage": 103
+      },
+      "nonConforming": []
+    },
+    {
+      "id": "menu-design-showcase",
+      "name": "Menu-design showcase",
+      "verdict": "retires",
+      "members": 94,
+      "conforming": 94,
+      "empty": 0,
+      "conformance": 100,
+      "signatureFeatures": 2,
+      "rareFeatures": 0,
+      "signature": [
+        "sheet:site-article.css",
+        "sheet:site-core.css"
+      ],
+      "discipline": {
+        "hexLiterals": 3812,
+        "styleBlocks": 188,
+        "inlineStyles": 822,
+        "svgPaints": 0,
+        "hexPerPage": 40.6
+      },
+      "nonConforming": []
+    },
+    {
+      "id": "open-dataset",
+      "name": "Open dataset explorer",
+      "verdict": "merges",
+      "members": 20,
+      "conforming": 20,
+      "empty": 0,
+      "conformance": 100,
+      "signatureFeatures": 1,
+      "rareFeatures": 0,
+      "signature": [
+        "sheet:site-core.css"
+      ],
+      "discipline": {
+        "hexLiterals": 1279,
+        "styleBlocks": 24,
+        "inlineStyles": 345,
+        "svgPaints": 119,
+        "hexPerPage": 64
+      },
+      "nonConforming": []
+    },
+    {
+      "id": "pitch",
+      "name": "Positioning page",
+      "verdict": "becomes",
+      "members": 14,
+      "conforming": 14,
+      "empty": 0,
+      "conformance": 100,
+      "signatureFeatures": 2,
+      "rareFeatures": 0,
+      "signature": [
+        "sheet:site-article.css",
+        "sheet:site-core.css"
+      ],
+      "discipline": {
+        "hexLiterals": 504,
+        "styleBlocks": 33,
+        "inlineStyles": 381,
+        "svgPaints": 0,
+        "hexPerPage": 36
+      },
+      "nonConforming": []
+    },
+    {
+      "id": "worksheet",
+      "name": "Operator worksheet",
+      "verdict": "becomes",
+      "members": 82,
+      "conforming": 82,
+      "empty": 0,
+      "conformance": 100,
+      "signatureFeatures": 1,
+      "rareFeatures": 0,
+      "signature": [
+        "sheet:site-core.css"
+      ],
+      "discipline": {
+        "hexLiterals": 1413,
+        "styleBlocks": 166,
+        "inlineStyles": 1921,
+        "svgPaints": 0,
+        "hexPerPage": 17.2
+      },
+      "nonConforming": []
+    },
+    {
+      "id": "yield-table",
+      "name": "Ingredient yield table",
+      "verdict": "merges",
+      "members": 236,
+      "conforming": 236,
+      "empty": 0,
+      "conformance": 100,
+      "signatureFeatures": 2,
+      "rareFeatures": 0,
+      "signature": [
+        "sheet:site-article.css",
+        "sheet:site-core.css"
+      ],
+      "discipline": {
+        "hexLiterals": 5428,
+        "styleBlocks": 472,
+        "inlineStyles": 0,
+        "svgPaints": 0,
+        "hexPerPage": 23
+      },
+      "nonConforming": []
+    }
+  ],
+  "offenders": [
+    {
+      "archetype": "collection-index",
+      "route": "/es/library/menu-design-cuisines/",
+      "missing": [
+        "sheet:site-core.css",
+        "sheet:site-article.css"
+      ],
+      "stray": [],
+      "empty": false
+    },
+    {
+      "archetype": "collection-index",
+      "route": "/es/sheets/",
+      "missing": [
+        "sheet:site-article.css"
+      ],
+      "stray": [],
+      "empty": false
+    },
+    {
+      "archetype": "collection-index",
+      "route": "/es/tools/",
+      "missing": [
+        "sheet:site-article.css"
+      ],
+      "stray": [],
+      "empty": false
+    },
+    {
+      "archetype": "collection-index",
+      "route": "/library/menu-design-cuisines/",
+      "missing": [
+        "sheet:site-core.css",
+        "sheet:site-article.css"
+      ],
+      "stray": [],
+      "empty": false
+    },
+    {
+      "archetype": "collection-index",
+      "route": "/sheets/",
+      "missing": [
+        "sheet:site-article.css"
+      ],
+      "stray": [],
+      "empty": false
+    },
+    {
+      "archetype": "essay",
+      "route": "/es/learn/topics/brand-design/menu-redesign-no-software/",
+      "missing": [
+        "sheet:site-core.css",
+        "sheet:site-article.css"
+      ],
+      "stray": [],
+      "empty": false
+    },
+    {
+      "archetype": "essay",
+      "route": "/es/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/",
+      "missing": [
+        "sheet:site-core.css",
+        "sheet:site-article.css"
+      ],
+      "stray": [],
+      "empty": false
+    },
+    {
+      "archetype": "essay",
+      "route": "/learn/topics/brand-design/menu-redesign-no-software/",
+      "missing": [
+        "sheet:site-core.css",
+        "sheet:site-article.css"
+      ],
+      "stray": [],
+      "empty": false
+    },
+    {
+      "archetype": "essay",
+      "route": "/learn/topics/operations-margin/read-restaurant-invoice-no-ocr/",
+      "missing": [
+        "sheet:site-core.css",
+        "sheet:site-article.css"
+      ],
+      "stray": [],
+      "empty": false
+    },
+    {
+      "archetype": "instrument-apparatus",
+      "route": "/cost-index/ribeye/embed.html",
+      "missing": [
+        "sheet:site-core.css",
+        "sheet:site-article.css"
+      ],
+      "stray": [],
+      "empty": false
+    },
+    {
+      "archetype": "instrument-apparatus",
+      "route": "/es/cost-index/ribeye/embed.html",
+      "missing": [
+        "sheet:site-core.css",
+        "sheet:site-article.css"
+      ],
+      "stray": [],
+      "empty": false
+    }
+  ]
+}

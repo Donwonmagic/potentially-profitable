@@ -91,11 +91,7 @@ html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased}
 .container{max-width:var(--max);margin:0 auto;padding-inline:var(--pad-x)}
 .skip-link{position:absolute;left:-9999px;top:0}
-.skip-link:focus{position:static;display:inline-block;background:#16181D;color:#F6F7F8;padding:12px 16px;z-index:100}
-/* injected by inject-critical-link-color.mjs */
-.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
-.btn-primary{background:var(--ink);color:var(--cream)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
+.skip-link:focus{position:static;display:inline-block;background:var(--ink);color:var(--cream);padding:12px 16px;z-index:100}
 /* injected by inject-critical-link-color.mjs */
 a{color:inherit}
 .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;white-space:nowrap;cursor:pointer}
@@ -103,7 +99,7 @@ a{color:inherit}
 .btn-ghost{background:transparent;color:var(--ink);border:1px solid #D7DAE0}
 header.nav{min-height:64px}
 /* nav-critical */
-.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid #E3E5E9}
+.nav{position:fixed;top:0;left:0;right:0;background:var(--cream);z-index:50;border-bottom:1px solid var(--line)}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;padding:12px 0}
 .logo{display:flex;align-items:center;gap:10px;font-family:Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-0.02em;flex-shrink:0;white-space:nowrap;color:inherit;text-decoration:none}
 .logo-mark{width:28px;height:28px;flex:0 0 28px}
@@ -181,8 +177,8 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .tool-card.live:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(20,22,26,0.08);border-color:var(--teal)}
   .tool-card.soon{cursor:default;background:var(--cream-2);color:var(--stone)}
   .tool-card .status{display:inline-flex;align-items:center;gap:8px;padding:4px 12px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px;align-self:flex-start}
-  .tool-card.live .status{background:#e6f4ec;color:#1f9d55}
-  .tool-card.live .status::before{content:'';width:7px;height:7px;border-radius:50%;background:#1f9d55;box-shadow:0 0 0 3px rgba(31,157,85,0.18);animation:pulse 2s ease-in-out infinite}
+  .tool-card.live .status{background:#e6f4ec;color:var(--status-pass)}
+  .tool-card.live .status::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--status-pass);box-shadow:0 0 0 3px rgba(31,157,85,0.18);animation:pulse 2s ease-in-out infinite}
   @keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(31,157,85,0.18)}50%{box-shadow:0 0 0 5px rgba(31,157,85,0.10)}}
   .tool-card.soon .status{background:var(--line);color:var(--stone)}
   .tool-card h3{font-family:var(--font-display);font-size:clamp(24px,2.6vw,32px);font-weight:500;letter-spacing:-0.01em;color:var(--ink);margin:0 0 10px}
@@ -191,6 +187,20 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
   .tool-card .cta{font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--teal);display:inline-flex;align-items:center;gap:8px}
   .tool-card.soon .cta{color:var(--stone-2)}
   .tool-card .cta svg{width:16px;height:16px}
+</style>
+<!-- TOOL INSTRUMENT LAYER (numerics). A calculator's numeric field and its
+     readout ARE the product, and a figure a buyer's CPA runs an eye down must
+     align in a column — proportional digits make a correct column look wrong.
+     assets/site.css §7 already gives tabular figures to .num/.stat/.price and
+     table cells; it cannot see these tools' bespoke readout classes (me-num,
+     mm-result-value, pc-headline-num, vb-metric-num, …) or any <input>. Bound
+     by shape, not by a list of 30 class names, so a new readout inherits it.
+     Token-bound: --lh-flat is the type system's single-numeral leading. -->
+<style>
+input[type="number"],input[inputmode="decimal"],input[inputmode="numeric"],output,[class*="-num"],[class*="-value"],[class*="-result"],[class*="-total"],[class*="-readout"],[class*="-metric"]{font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum" 1,"lnum" 1}
+/* A headline result is a display object, not a sentence: flat leading, no
+   wrap, so the figure reads as one measured thing. Mirrors site.css .num. */
+[class$="-result-value"],[class$="-totals-value"],[class$="-monthly-value"],[class$="-headline-num"],[class$="-metric-num"],[class$="-gap-num"]{line-height:var(--lh-flat);white-space:nowrap}
 </style>
 </head>
 <body>
@@ -392,7 +402,7 @@ footer{background:var(--ink);color:rgba(250,247,242,0.7);padding:64px 0 36px;bor
         <span class="serif-italic">tu industria.</span>
       </h1>
       <!-- tool-verified:start -->
-            <p class="tool-verified">Última revisión: <time datetime="2026-07-18">18 de julio de 2026</time></p>
+            <p class="tool-verified">Última revisión: <time datetime="2026-08-08">8 de agosto de 2026</time></p>
             <!-- tool-verified:end -->
       <!-- data-promise:start -->
             <aside class="tool-data-promise" aria-label="Promesa de datos">

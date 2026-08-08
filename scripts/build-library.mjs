@@ -489,6 +489,25 @@ function pageHead(locale, { title, description, canonical, ogImage, jsonLd }) {
   const ogLocale = locale === 'es' ? 'es_US' : 'en_US';
   const ogAltLocale = locale === 'es' ? 'en_US' : 'es_US';
   const lang = locale;
+  // ---- Token audit 2026-08-07: the two irreducible literals in this template ----
+  //
+  // 1. <meta name="theme-color" content="#2A50C8">. Consumed by the browser
+  //    chrome, not the CSS cascade, so var() is invalid there. The value is not
+  //    off-token — it is the resolved value of --teal, which check-tokens-sync.mjs
+  //    pins to data/muntin.tokens.json. If --teal moves, this moves by hand;
+  //    there is no cascade to do it for us.
+  //
+  // 2. <style>.breadcrumb{padding-top:100px}</style>. This is CRITICAL CSS: it is
+  //    parsed BEFORE the stylesheet on the following line, and the spacing scale
+  //    (--sp-*) is declared IN that stylesheet. var(--sp-9) here would resolve to
+  //    nothing on first paint — exactly the CLS this rule exists to prevent. It
+  //    mirrors assets/site.css .breadcrumb{padding:100px 0 16px}; 100px is
+  //    deliberately off the 4/8/…/96 scale because it clears the fixed nav, whose
+  //    height is not a spacing step.
+  //
+  // The general rule, which holds for every critical-CSS block on the site: a
+  // pre-stylesheet rule cannot reference a token the stylesheet has not declared
+  // yet. Such literals are the token DEFINITIONS, not drift.
   return `<!doctype html>
 <html lang="${lang}">
 <head>
@@ -786,7 +805,7 @@ function renderTopicPage(locale, topic, content) {
     <ul class="term-siblings-list">
       ${displayTerms.map(item => topicTermCard(locale, item)).join('\n      ')}
     </ul>
-    ${content.terms.length > displayTerms.length ? `<p style="text-align:center;margin-top:24px"><a class="link" href="${esc(moreHref)}">${esc(t(locale, 'topic_section_terms_more'))} (${content.terms.length}) <span aria-hidden="true">→</span></a></p>` : ''}
+    ${content.terms.length > displayTerms.length ? `<p style="text-align:center;margin-top:var(--sp-5,24px)"><a class="link" href="${esc(moreHref)}">${esc(t(locale, 'topic_section_terms_more'))} (${content.terms.length}) <span aria-hidden="true">→</span></a></p>` : ''}
   </div>
 </section>`);
   }
@@ -868,7 +887,7 @@ ${sections.join('\n')}
         return `<li><a href="${pathFor(locale, '/learn/topics/' + tp.slug + '/')}">${esc(lbl.name)}</a></li>`;
       }).join('\n      ')}
     </ul>
-    <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px">
+    <div class="hero-ctas reveal hero-ctas-center" style="margin-top:var(--sp-6,32px)">
       <a class="btn btn-primary" href="${pathFor(locale, '/learn/')}">${esc(t(locale, 'topic_back_btn'))}</a>
       <a class="btn btn-ghost" href="${pathFor(locale, '/blog/')}">${esc(t(locale, 'topic_back_btn_alt'))}</a>
     </div>
@@ -1375,7 +1394,7 @@ ${navHeader(altUrl, 'gloss-section-page')}
     <ul class="term-siblings-list">
       ${cardsHtml}
     </ul>
-    <div class="hero-ctas reveal hero-ctas-center" style="margin-top:32px">
+    <div class="hero-ctas reveal hero-ctas-center" style="margin-top:var(--sp-6,32px)">
       <a class="btn btn-ghost" href="${pathFor(locale, '/glossary/')}">${esc(backLabel)}</a>
       <button type="button" class="btn btn-ghost" onclick="window.print()">${esc(printLabel)}</button>
     </div>

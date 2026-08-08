@@ -284,11 +284,17 @@ function renderSheetsBand(locale) {
   const sub      = locale === 'en' ? 'Recipe cost cards, weekly prime cost, GBP monthly audit, daily P&L. Free, no signup. None of your numbers leave the page.' : 'Tarjetas de costo, costo primo semanal, auditoría mensual de GBP, P&G diario. Gratis, sin registro. Tus números no salen de la página.';
   const cta      = locale === 'en' ? 'Browse the sheets'                    : 'Explora las hojas';
   const url      = locale === 'en' ? '/sheets/'                              : '/es/sheets/';
-  return `<aside class="tool-sheets-band" aria-labelledby="tool-sheets-band-h" style="margin:32px 0 0;padding:22px 24px;border:1px solid var(--line,#E5DFD2);border-left:4px solid var(--teal,#2A50C8);border-radius:var(--r-md,12px);background:var(--white,#FFFFFF);display:flex;flex-wrap:wrap;align-items:center;gap:18px;">
+  // Every value below comes off the token system in assets/site.css: no hex
+  // literal, no off-scale size. The old fallbacks were also STALE — this band
+  // carried `var(--line,#E5DFD2)` and `var(--r-md,12px)` while --line has been
+  // #E3E5E9 and --r-md 6px, so any browser taking the fallback painted a
+  // palette the site retired. Binding to the token removes the second value
+  // that could disagree.
+  return `<aside class="tool-sheets-band" aria-labelledby="tool-sheets-band-h" style="margin:var(--sp-6) 0 0;padding:var(--sp-5) var(--sp-5);border:var(--hairline) solid var(--border);border-left:var(--sp-1) solid var(--accent);border-radius:var(--r-1);background:var(--surface);display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-4);">
       <div style="flex:1;min-width:240px;">
-        <span class="eyebrow" style="display:block;margin-bottom:4px;">${escText(eyebrow)}</span>
-        <h2 id="tool-sheets-band-h" style="font-family:var(--font-display,'Fraunces',Georgia,serif);font-size:22px;font-weight:500;margin:0 0 6px;color:var(--ink,#16181D);">${escText(headline)}</h2>
-        <p style="font-size:14.5px;line-height:1.5;color:var(--ink-soft,#4A4F59);margin:0;max-width:640px;">${escText(sub)}</p>
+        <span class="eyebrow" style="display:block;margin-bottom:var(--sp-1);">${escText(eyebrow)}</span>
+        <h2 id="tool-sheets-band-h" style="font-family:var(--font-display);font-size:var(--fs-lg);font-weight:500;margin:0 0 var(--sp-2);color:var(--text);">${escText(headline)}</h2>
+        <p style="font-size:var(--fs-sm);line-height:var(--lh-ui);color:var(--text-soft);margin:0;max-width:640px;">${escText(sub)}</p>
       </div>
       <a class="btn btn-primary" href="${escAttr(url)}" style="white-space:nowrap;">${escText(cta)} ${ARROW}</a>
     </aside>`;
@@ -316,7 +322,7 @@ function renderBody(locale) {
 
   ${renderRoadmap(locale)}
 
-    <p class="section-aside" style="text-align:center;margin-top:32px;">
+    <p class="section-aside" style="text-align:center;margin-top:var(--sp-6);">
       ${escText(closingNote)}
     </p>
   </div>
