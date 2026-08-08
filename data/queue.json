@@ -148,7 +148,7 @@
       "title": "check-all is NOT idempotent — two runs give different totals and dirty the working tree",
       "phase": "P0",
       "priority": "HIGH",
-      "status": "claimed",
+      "status": "done",
       "owner": "agent",
       "repo": "storefront",
       "effort": "3h",
@@ -164,12 +164,13 @@
         "cmd": "test -z \"$(git status --porcelain)\" && node scripts/check-all.mjs > /tmp/qa.txt 2>&1; node scripts/check-all.mjs > /tmp/qb.txt 2>&1; test -z \"$(git status --porcelain)\" || { echo 'check-all dirtied the tree'; exit 1; }; diff <(tail -1 /tmp/qa.txt) <(tail -1 /tmp/qb.txt)"
       },
       "blockedBy": [],
-      "claim": {
+      "claim": null,
+      "closed": {
+        "at": "2026-08-08T15:52:12.833Z",
         "by": "session:21cedc96",
-        "at": "2026-08-08T15:35:50.563Z",
-        "note": "loop-driver lane 1"
+        "verifiedBy": "test -z \"$(git status --porcelain)\" && node scripts/check-all.mjs > /tmp/qa.txt 2>&1; node scripts/check-all.mjs > /tmp/qb.txt 2>&1; test -z \"$(git status --porcelain)\" || { echo 'check-all dirtied the tree'; exit 1; }; diff <(tail -1 /tmp/qa.txt) <(tail -1 /tmp/qb.txt)",
+        "verifiedIn": "storefront"
       },
-      "closed": null,
       "founderHours": 0,
       "window": "M1",
       "closure": {

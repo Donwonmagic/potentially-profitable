@@ -32,7 +32,7 @@ node scripts/check-queue.mjs --verify --all        # re-proves every closed item
 
 **Gate:** 16 HIGH item(s) unclaimed → `check-queue` exits **1**.
 
-**Board:** 50 items — 28 ready · 2 claimed · 18 blocked · 2 done.
+**Board:** 50 items — 28 ready · 1 claimed · 18 blocked · 3 done.
 
 ### Needs Don — do this one
 
@@ -186,13 +186,12 @@ Highest first. A HIGH row here is why the gate is red.
 | `Q-053` | Cross-repo PAT so the product inbox and the storefront queue are one list | LOW | RET | founder | 15m | — |
 | `Q-073` | Strip analytics from 221 pages — instrument the qualification path, not the corpus | LOW | RET | agent | 2h | — |
 
-## In progress (2)
+## In progress (1)
 
 Claims expire after 21 days and are released by the machine.
 
 | ID | Item | Pri | Phase | Owner | Effort | Blocked by |
 |---|---|---|---|---|---|---|
-| `Q-004` | check-all is NOT idempotent — two runs give different totals and dirty the working tree | HIGH | P0 | agent | 3h | — |
 | `Q-007` | 72 published falsehoods in the July dispatch — correct in place, wire check-src-sentinel | HIGH | P0 | both | 5h | — |
 
 ## Blocked (18)
@@ -220,13 +219,14 @@ Blocked by an item that is still open. Unblocking is done by closing the blocker
 | `Q-081` | Wire check-working-set.mjs into check-all — the forgetting gate has no teeth until it is in the deploy | MED | RET | agent | 15m | Q-080 |
 | `Q-040` | /close/apply/ replaces all four waitlist forms | LOW | P3 | both | 5h | Q-010, Q-030 |
 
-## Done (2)
+## Done (3)
 
 Closed only by a `verify` command that exited 0. Re-proved by `--verify --all`.
 
 | ID | Item | Pri | Phase | Owner | Effort | Blocked by |
 |---|---|---|---|---|---|---|
 | `Q-003` | The basis leak — feed.json publishes a BLS index value as $393.06/lb | HIGH | P0 | agent | 2h | — |
+| `Q-004` | check-all is NOT idempotent — two runs give different totals and dirty the working tree | HIGH | P0 | agent | 3h | — |
 | `Q-050` | Freeze the board — the queue becomes the only place work is tracked | HIGH | RET | agent | 1h | — |
 
 ---
@@ -297,7 +297,7 @@ _Closed 2026-08-07T17:51:03.672Z by session:phase-e-queue, proved by `node scrip
 
 ### `Q-004` — check-all is NOT idempotent — two runs give different totals and dirty the working tree
 
-**HIGH** · claimed · P0 · owner **agent** · storefront · 3h · kind `fix`
+**HIGH** · done · P0 · owner **agent** · storefront · 3h · kind `fix`
 
 Measured 2026-08-07 in this container: three consecutive `node scripts/check-all.mjs` runs, no other command between them, returned 311/320, 306/320 and 309/323 — the DENOMINATOR moved. Working-tree dirty count went 208 -> 215 across the runs. The deploy gate writes files while checking, which is why clearing reds locally never converges and why the founder's only feedback loop has a false-alarm rate he has learned to ignore (the board already records PR #536 'merged with three reds the founder accepted'). This is upstream of every other red: until check-all is a pure function of the tree, no agent session can prove it fixed anything.
 
@@ -313,7 +313,7 @@ Measured 2026-08-07 in this container: three consecutive `node scripts/check-all
 test -z "$(git status --porcelain)" && node scripts/check-all.mjs > /tmp/qa.txt 2>&1; node scripts/check-all.mjs > /tmp/qb.txt 2>&1; test -z "$(git status --porcelain)" || { echo 'check-all dirtied the tree'; exit 1; }; diff <(tail -1 /tmp/qa.txt) <(tail -1 /tmp/qb.txt)
 ```
 
-_Claimed by session:21cedc96 at 2026-08-08T15:35:50.563Z._ loop-driver lane 1
+_Closed 2026-08-08T15:52:12.833Z by session:21cedc96, proved by `test -z "$(git status --porcelain)" && node scripts/check-all.mjs > /tmp/qa.txt 2>&1; node scripts/check-all.mjs > /tmp/qb.txt 2>&1; test -z "$(git status --porcelain)" || { echo 'check-all dirtied the tree'; exit 1; }; diff <(tail -1 /tmp/qa.txt) <(tail -1 /tmp/qb.txt)`._
 
 ### `Q-005` — Green the deploy — settle whether it is actually red, from the Cloudflare build log
 
