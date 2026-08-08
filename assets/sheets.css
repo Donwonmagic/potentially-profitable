@@ -1,59 +1,62 @@
 /*
- * Operator Sheets — page-scoped styles. Reuses every token from
- * site-core.css and every primitive from .mm-* in site.css. Adds only
- * the small layout pieces the sheet anatomy needs (meta strip, knit
- * grid, locale-hazard banner, paper-first stay-paper variant).
+ * Operator Sheets — page-scoped styles.
  *
- * Print rules ride on the existing @media print baked into site.css;
- * this file adds sheet-specific print refinements (page-break inside
- * tables, hide save panel) and nothing else.
+ * BINDS to the derived token system in site-core.css; defines no colour,
+ * type step, radius or line-height of its own on screen. Sheet pages load
+ * ONLY site-core.css + this file (verified: 62 pages, none load site.css),
+ * so every token referenced here must be defined in site-core.css.
+ *
+ * PRINT IS A DESIGNED STATE, NOT AN AFTERTHOUGHT. 82 worksheets get
+ * printed and carried on a clipboard. The print ink ramp (--p-*) below is
+ * the one place this file declares its own values, because paper ink is
+ * not screen colour: it is pure black on white with grey hairlines, and
+ * rendering the screen palette on paper would waste toner and lose the
+ * hairlines. Five ink steps + one hair width, declared once, used ~40x.
  */
 
-/* ─────────────────────────────────────────────────────────────────
+/* ──────────
    PHASE A · DESIGNED-ARTIFACT BASELINE
-   Five layered visual cues that signal "Muntin sheet" without
-   inventing a 4th color or new typographic primitive.
-   ───────────────────────────────────────────────────────────────── */
+   ────────── */
 
 /* A1 · Pack-coded 2px top hairline on the active sheet card.
-   Five existing tokens, no new colors. Drives the only per-pack
-   visual identity on the page. */
-[data-page="sheet"][data-sheet-pack="operations-margin"] .mm-card.mm-live { border-top: 2px solid var(--gold, #B7791F); }
-[data-page="sheet"][data-sheet-pack="local-seo"]         .mm-card.mm-live { border-top: 2px solid var(--teal, #2A50C8); }
-[data-page="sheet"][data-sheet-pack="conversions"]       .mm-card.mm-live { border-top: 2px solid var(--rust, #C42E2E); }
-[data-page="sheet"][data-sheet-pack="brand-design"]      .mm-card.mm-live { border-top: 2px solid var(--ink-soft, #4A4F59); }
-[data-page="sheet"][data-sheet-pack="trust-reviews"]     .mm-card.mm-live { border-top: 2px solid var(--ink, #16181D); }
+   The pack sets ONE inherited accent; the hairline is a single rule.
+   (Was five near-identical rules that each restated the border.) */
+[data-page="sheet"][data-sheet-pack="operations-margin"] { --pack-accent: var(--gold); }
+[data-page="sheet"][data-sheet-pack="local-seo"]         { --pack-accent: var(--teal); }
+[data-page="sheet"][data-sheet-pack="conversions"]       { --pack-accent: var(--rust); }
+[data-page="sheet"][data-sheet-pack="brand-design"]      { --pack-accent: var(--ink-soft); }
+[data-page="sheet"][data-sheet-pack="trust-reviews"]     { --pack-accent: var(--ink); }
+[data-page="sheet"] .mm-card.mm-live { border-top: 2px solid var(--pack-accent, var(--ink)); }
 
-/* A2 · Paper rule-lines under fieldset legends and section H2s
-   inside the active card. 1px hairline in cream-2; reads like
-   the rule lines on a printed form pad. */
+/* A2 · Paper rule-lines under fieldset legends and section H2s inside
+   the active card. Reads like the rule lines on a printed form pad. */
+/* NOT `> :is(h2, .mm-card-header h2)` — the child combinator would bind
+   to the whole :is(), and the header's h2 is a grandchild of the card. */
 [data-page="sheet"] .mm-card.mm-live > h2,
 [data-page="sheet"] .mm-card.mm-live > .mm-card-header h2,
 [data-page="sheet"] .sheet-form fieldset > legend {
   position: relative;
-  padding-bottom: 4px;
+  padding-bottom: var(--space-1);
 }
 [data-page="sheet"] .mm-card.mm-live > h2::after,
 [data-page="sheet"] .mm-card.mm-live > .mm-card-header h2::after,
 [data-page="sheet"] .sheet-form fieldset > legend::after {
   content: "";
   display: block;
-  height: 1px;
-  background: var(--cream-2, #EDEEF1);
+  height: var(--hairline);
+  background: var(--cream-2);
   margin-top: 6px;
-  margin-left: -6px;
-  margin-right: -6px;
+  margin-inline: -6px;
 }
 
-/* A3 · Pack glyph in the hero eyebrow.
-   The glyph is rendered inline in the eyebrow span by build-sheet-pages
-   for live sheets; this rule positions and tints it. */
+/* A3 · Pack glyph in the hero eyebrow. Rendered inline by
+   build-sheet-pages for live sheets; this positions and tints it. */
 [data-page="sheet"] .mm-hero .eyebrow .sheet-pack-glyph {
   display: inline-flex;
   align-items: center;
   width: 14px;
   height: 14px;
-  margin-right: 8px;
+  margin-right: var(--space-2);
   vertical-align: -2px;
   opacity: .78;
 }
@@ -67,48 +70,41 @@
   stroke-linejoin: round;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   ORIGINAL SHEET COMPONENTS (unchanged — preserved for clarity)
-   ───────────────────────────────────────────────────────────────── */
+/* ──────────
+   SHEET COMPONENTS
+   ────────── */
 
-/* Sheet meta strip — cadence and pack chips under the H1.
-   Reuses .status-chip from site-core.css; this only handles spacing. */
+/* Sheet meta strip — cadence and pack chips under the H1. */
 .sheet-meta {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-2);
   margin: 18px auto 0;
   padding: 0;
-  font-size: 12.5px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: .02em;
 }
 
-/* Locale-hazard banner — surfaces the "verify with your local
-   authority" notice on the four flagged sheets. Quiet visually,
-   prints as a gray inline note. */
+/* Locale-hazard banner — the "verify with your local authority" notice
+   on the four flagged sheets. Quiet; prints as a gray inline note. */
 .sheet-hazard {
   margin: 18px auto 0;
   max-width: 640px;
   padding: 10px 14px;
-  border: 1px solid var(--line-dark, #D7DAE0);
-  border-left: 3px solid var(--rust, #C42E2E);
-  border-radius: var(--r-sm, 6px);
-  background: var(--cream-2, #EDEEF1);
-  color: var(--ink-soft, #4A4F59);
-  font-size: 13.5px;
-  line-height: 1.55;
+  border: var(--hairline) solid var(--line-dark);
+  border-left: 3px solid var(--rust);
+  border-radius: var(--r-1);
+  background: var(--cream-2);
+  color: var(--ink-soft);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-card);
   text-align: left;
 }
-.sheet-hazard strong { color: var(--rust, #C42E2E); font-weight: 700; }
+.sheet-hazard strong { color: var(--rust); font-weight: 700; }
 
-/* Pairs-with knit — three columns of related tools, glossary terms,
-   and articles. Mirrors the visual rhythm of the existing
-   .tool-knit four-column block but trimmed to three since sheets
-   don't have a "Topic" column of their own. */
-.sheet-knit {
-  margin: 36px 0 0;
-}
+/* Pairs-with knit — three columns of related tools, terms, articles. */
+.sheet-knit { margin: 36px 0 0; }
 .sheet-knit-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -119,15 +115,15 @@
 }
 .sheet-knit-col {
   padding: 18px;
-  border: 1px solid var(--line, #E3E5E9);
-  border-radius: var(--r-md, 12px);
-  background: var(--white, #FFFFFF);
+  border: var(--hairline) solid var(--line);
+  border-radius: var(--r-1);
+  background: var(--white);
 }
 .sheet-knit-col h3 {
-  font-family: var(--font-display, "Fraunces", Georgia, serif);
-  font-size: 15px;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
   font-weight: 500;
-  color: var(--teal, #2A50C8);
+  color: var(--teal);
   margin: 0 0 10px;
   letter-spacing: .02em;
 }
@@ -139,160 +135,147 @@
   flex-direction: column;
   gap: 6px;
 }
-.sheet-knit-col li { font-size: 14px; line-height: 1.5; }
+.sheet-knit-col li { font-size: var(--fs-xs); line-height: var(--lh-ui); }
 .sheet-knit-col a {
-  color: var(--ink, #16181D);
+  color: var(--ink);
   text-decoration: none;
-  border-bottom: 1px dashed var(--teal, #2A50C8);
+  border-bottom: var(--hairline) dashed var(--teal);
   padding-bottom: 1px;
 }
-.sheet-knit-col a:hover { color: var(--teal, #2A50C8); }
+.sheet-knit-col a:hover { color: var(--teal); }
 .sheet-knit-col-empty {
-  color: var(--stone, #6B7280);
-  font-size: 13.5px;
+  color: var(--stone);
+  font-size: var(--fs-xs);
   font-style: italic;
 }
 
-/* Form refinements specific to operator sheets. The base .mm-form is
-   centered around small clusters of 3-6 inputs (margin-math style);
-   sheets often want a longer flat list, so we tighten gap. */
+/* Form refinements. The base .mm-form centres small clusters of 3-6
+   inputs; sheets want a longer flat list, so the gap tightens. */
 .sheet-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin: 12px 0 0;
+  gap: var(--space-3);
+  margin: var(--space-3) 0 0;
 }
 .sheet-form label {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 13px;
+  font-size: var(--fs-xs);
   font-weight: 600;
-  color: var(--ink-soft, #4A4F59);
+  color: var(--ink-soft);
 }
 .sheet-form label > span:first-child {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: var(--space-2);
 }
-.sheet-form input[type="number"],
-.sheet-form input[type="text"],
-.sheet-form input[type="date"],
-.sheet-form select,
-.sheet-form textarea {
+.sheet-form :is(input[type="number"], input[type="text"], input[type="date"], select, textarea) {
   padding: 9px 11px;
-  border: 1px solid var(--line-dark, #D7DAE0);
-  border-radius: var(--r-sm, 6px);
+  border: var(--hairline) solid var(--line-dark);
+  border-radius: var(--r-1);
   font: inherit;
-  font-size: 15px;
-  background: var(--white, #FFFFFF);
-  color: var(--ink, #16181D);
+  /* 16px is also the iOS no-zoom floor, so the coarse-pointer block
+     below no longer needs to restate a font-size for these fields. */
+  font-size: var(--fs-sm);
+  background: var(--white);
+  color: var(--ink);
   width: 100%;
   box-sizing: border-box;
   font-weight: 400;
 }
-.sheet-form input[type="number"]:focus,
-.sheet-form input[type="text"]:focus,
-.sheet-form input[type="date"]:focus,
-.sheet-form select:focus,
-.sheet-form textarea:focus {
-  border-color: var(--teal, #2A50C8);
-  outline: 2px solid var(--teal, #2A50C8);
+.sheet-form :is(input[type="number"], input[type="text"], input[type="date"], select, textarea):focus {
+  border-color: var(--teal);
+  outline: 2px solid var(--teal);
   outline-offset: -1px;
 }
 .sheet-form .field-help {
-  font-size: 12.5px;
-  color: var(--stone, #6B7280);
+  font-size: var(--fs-xs);
+  color: var(--stone);
   font-weight: 400;
   margin: -2px 0 0;
 }
 .sheet-form fieldset {
-  border: 1px solid var(--line, #E3E5E9);
-  border-radius: var(--r-md, 12px);
-  padding: 16px 18px;
+  border: var(--hairline) solid var(--line);
+  border-radius: var(--r-1);
+  padding: var(--space-4) 18px;
   margin: 0;
 }
 .sheet-form fieldset legend {
-  font-size: 12.5px;
+  font-size: var(--fs-xs);
   font-weight: 700;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: var(--teal, #2A50C8);
+  color: var(--teal);
   padding: 0 6px;
 }
 
-/* Repeating-row tables (recipe ingredients, par sheet rows, audit rows).
-   Reuses .op-table from site.css patterns; this only adjusts for inputs
-   inside cells. */
+/* Repeating-row tables (recipe ingredients, par rows, audit rows). */
 .sheet-row-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: var(--fs-xs);
 }
-.sheet-row-table th,
-.sheet-row-table td {
-  padding: 8px 10px;
-  border-bottom: 1px solid var(--line, #E3E5E9);
+.sheet-row-table :is(th, td) {
+  padding: var(--space-2) 10px;
+  border-bottom: var(--hairline) solid var(--line);
   text-align: left;
   vertical-align: middle;
 }
 .sheet-row-table th {
-  background: var(--cream-2, #EDEEF1);
-  font-size: 12px;
+  background: var(--cream-2);
+  /* One step below body: an uppercase micro-label, not a heading. */
+  font-size: var(--fs-2xs);
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
-  color: var(--stone, #6B7280);
+  color: var(--stone);
 }
 .sheet-row-table .num {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
-.sheet-row-table input,
-.sheet-row-table select {
+.sheet-row-table :is(input, select) {
   width: 100%;
-  padding: 6px 8px;
-  border: 1px solid var(--line, #E3E5E9);
-  border-radius: 4px;
+  padding: 6px var(--space-2);
+  border: var(--hairline) solid var(--line);
+  border-radius: var(--r-1);
   font: inherit;
-  font-size: 14px;
+  font-size: var(--fs-xs);
   background: transparent;
 }
-.sheet-row-table input:focus,
-.sheet-row-table select:focus {
-  border-color: var(--teal, #2A50C8);
+.sheet-row-table :is(input, select):focus {
+  border-color: var(--teal);
   outline: none;
-  background: var(--white, #FFFFFF);
+  background: var(--white);
 }
 .sheet-row-table tfoot td {
   font-weight: 600;
-  background: var(--cream-2, #EDEEF1);
+  background: var(--cream-2);
   border-bottom: 0;
-  border-top: 2px solid var(--ink, #16181D);
+  border-top: 2px solid var(--ink);
 }
 .sheet-add-row {
   margin-top: 10px;
-  font-size: 13px;
+  font-size: var(--fs-xs);
   font-weight: 600;
-  color: var(--teal, #2A50C8);
+  color: var(--teal);
   background: transparent;
-  border: 1px dashed var(--teal, #2A50C8);
-  padding: 8px 14px;
-  border-radius: 999px;
+  border: var(--hairline) dashed var(--teal);
+  padding: var(--space-2) 14px;
+  border-radius: var(--r-pill);
   cursor: pointer;
 }
-.sheet-add-row:hover { background: var(--teal-tint, #EAF0FE); }
+.sheet-add-row:hover { background: var(--teal-tint); }
 
-/* Results / output strip — calculated values from the inputs.
-   Reuses .mm-results from site.css; this just gives sheet pages a
-   slightly more table-like rhythm. */
+/* Results / output strip — calculated values from the inputs. */
 .sheet-output {
   margin-top: 14px;
-  padding: 14px 16px;
-  border: 1px solid var(--line, #E3E5E9);
-  border-radius: var(--r-input, 8px);
-  background: var(--cream-2, #EDEEF1);
+  padding: 14px var(--space-4);
+  border: var(--hairline) solid var(--line);
+  border-radius: var(--r-1);
+  background: var(--cream-2);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -301,241 +284,130 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 12px;
-  font-size: 14px;
+  gap: var(--space-3);
+  font-size: var(--fs-xs);
 }
 .sheet-output-label {
   font-weight: 600;
-  color: var(--ink-soft, #4A4F59);
+  color: var(--ink-soft);
 }
 .sheet-output-value {
-  font-family: var(--font-display, "Fraunces", Georgia, serif);
-  font-size: 22px;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
   font-weight: 500;
-  color: var(--ink, #16181D);
+  color: var(--ink);
   font-variant-numeric: tabular-nums;
 }
-.sheet-output-value[data-band="good"] { color: var(--status-good, #1F6B3A); }
-.sheet-output-value[data-band="warn"] { color: var(--status-warn-deep, #8A3E16); }
-.sheet-output-value[data-band="bad"]  { color: var(--rust, #C42E2E); }
+.sheet-output-value[data-band="good"] { color: var(--status-good); }
+.sheet-output-value[data-band="warn"] { color: var(--status-warn-deep); }
+.sheet-output-value[data-band="bad"]  { color: var(--rust); }
 
-/* When-to-use and Common-mistakes wrappers — light tweaks on the
-   shared .mm-card so the bullets read clean on mobile. */
-.sheet-when-to-use ul li,
-.sheet-mistakes ul li {
-  margin: 6px 0;
-}
-.sheet-when-to-use {
-  border-left: 3px solid var(--teal, #2A50C8);
-}
-.sheet-mistakes {
-  border-left: 3px solid var(--rust, #C42E2E);
-}
+/* When-to-use and Common-mistakes wrappers. */
+:is(.sheet-when-to-use, .sheet-mistakes) ul li { margin: 6px 0; }
+.sheet-when-to-use { border-left: 3px solid var(--teal); }
+.sheet-mistakes    { border-left: 3px solid var(--rust); }
 
-/* Stay-paper sheets — when the sheet's "real" form is the printout.
-   Same chrome on screen, but a slightly muted online experience and
-   "Use this on a clipboard" hint above the actions. */
-[data-page="sheet"][data-sheet-paper="true"] .mm-actions [data-sheet-action="print"] {
-  /* primary action visually leads */
-}
+/* Stay-paper sheets — when the sheet's "real" form is the printout. */
 .sheet-paper-hint {
   margin: 10px 0 -2px;
-  padding: 8px 12px;
-  background: var(--cream-2, #EDEEF1);
-  border-radius: var(--r-sm, 6px);
-  font-size: 13px;
-  color: var(--stone, #6B7280);
+  padding: var(--space-2) var(--space-3);
+  background: var(--cream-2);
+  border-radius: var(--r-1);
+  font-size: var(--fs-xs);
+  color: var(--stone);
   text-align: center;
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   PRINT — sheets are a printable artifact. Hide all chrome, expand
-   form to use the page, render inputs as plain underlined fields. */
-@media print {
-  .nav,
-  footer,
-  .breadcrumb,
-  .lang-hint,
-  .mobile-cta-bar,
-  .skip-link,
-  .mm-actions,
-  .mm-save,
-  .sheet-paper-hint,
-  .sheet-hazard,
-  .sheet-knit,
-  .sheet-when-to-use,
-  .sheet-mistakes {
-    display: none !important;
-  }
-  body { background: #fff !important; color: #000 !important; font-size: 10pt !important; }
-  main, section, .container, .container-wide { padding: 0 !important; max-width: 100% !important; }
-  .mm-hero { text-align: left !important; max-width: 100% !important; }
-  .mm-hero h1 { font-size: 18pt !important; margin: 4pt 0 !important; }
-  .mm-hero .hero-sub { font-size: 10pt !important; max-width: 100% !important; margin: 4pt 0 !important; }
-  .sheet-meta { font-size: 8.5pt !important; gap: 6pt !important; margin: 4pt 0 !important; }
-  .status-chip { background: #f5f5f5 !important; color: #333 !important; padding: 2pt 6pt !important; }
-  .mm-card { box-shadow: none !important; border: 0.5pt solid #555 !important; padding: 8pt !important; margin: 4pt 0 !important; background: #fff !important; }
-  .mm-card-eyebrow { font-size: 7.5pt !important; color: #555 !important; }
-  .mm-card h2 { font-size: 12pt !important; margin: 0 !important; }
-  .sheet-form { gap: 6pt !important; }
-  .sheet-form label { font-size: 8.5pt !important; gap: 2pt !important; color: #000 !important; }
-  .sheet-form input, .sheet-form select, .sheet-form textarea {
-    border: 0 !important;
-    border-bottom: 0.5pt solid #000 !important;
-    border-radius: 0 !important;
-    padding: 1pt 2pt !important;
-    background: transparent !important;
-    font-size: 9pt !important;
-  }
-  .sheet-row-table { font-size: 8.5pt !important; }
-  .sheet-row-table th, .sheet-row-table td { padding: 3pt 4pt !important; border-bottom: 0.5pt solid #999 !important; }
-  .sheet-row-table th { background: #f0f0f0 !important; font-size: 7.5pt !important; }
-  .sheet-row-table input, .sheet-row-table select {
-    border: 0 !important;
-    border-bottom: 0.25pt dotted #999 !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    font-size: 8.5pt !important;
-    padding: 1pt 2pt !important;
-  }
-  .sheet-row-table tfoot td { background: #fff !important; border-top: 1pt solid #000 !important; }
-  .sheet-add-row { display: none !important; }
-  .sheet-output { background: #f8f8f8 !important; border: 0.5pt solid #999 !important; padding: 6pt !important; }
-  .sheet-output-value { font-size: 13pt !important; }
-  fieldset { border: 0.5pt solid #999 !important; padding: 6pt !important; }
-  fieldset legend { font-size: 7.5pt !important; color: #000 !important; }
-  /* Page-break hygiene */
-  .mm-card { page-break-inside: avoid; break-inside: avoid; }
-  .sheet-row-table { page-break-inside: auto; }
-  .sheet-row-table tr { page-break-inside: avoid; break-inside: avoid; }
-  /* Footer caption: timestamp the printout for later reference */
-  body[data-page="sheet"]::after {
-    content: "Printed from muntin.digital — verify cadence and totals against your own POS / accounting system.";
-    display: block;
-    font-size: 7pt;
-    color: #555;
-    margin: 14pt 0 0;
-    padding: 4pt 0 0;
-    border-top: 0.5pt solid #999;
-  }
-  /* A4 · Print masthead refinement — top + bottom hairline rule
-     around the H1, small-caps pack name top-right of the hero. */
-  body[data-page="sheet"] .mm-hero h1 {
-    border-top: 0.5pt solid #555;
-    border-bottom: 0.5pt solid #555;
-    padding: 4pt 0 !important;
-    margin: 0 0 4pt !important;
-  }
-  body[data-page="sheet"] .mm-hero {
-    position: relative;
-  }
-  body[data-page="sheet"] .mm-hero .sheet-meta .status-chip:first-child {
-    /* Pack chip becomes the small-caps label; print it in upper-right
-       of the hero by absolute positioning the meta strip. */
-    background: transparent !important;
-    border: 0 !important;
-    color: #555 !important;
-    font-size: 7pt !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.08em !important;
-    padding: 0 !important;
-  }
-}
-
-/* ─────────────────────────────────────────────────────────────────
+/* ──────────
    PHASE B · COMFORT LAYER
-   Progress strip · keyboard-shortcut hint · viz container · tablet
-   ergonomics. All non-decorative; calmer is better.
-   ───────────────────────────────────────────────────────────────── */
+   ────────── */
 
-/* B11 · Progress strip — thin, ink-soft, reads like a status bar
-   not a celebration. No percentages, no checkmarks. */
+/* Every element in this file that toggles via [hidden] needs the
+   override, because each sets a display value. One rule, not four. */
+:is(.sheet-progress, .sheet-undo-bar, .sheet-reset-confirm,
+    .sheet-form fieldset > legend .sheet-clear-section)[hidden] { display: none; }
+
+/* B11 · Progress strip — reads like a status bar, not a celebration.
+   No percentages, no checkmarks. */
 .sheet-progress {
   margin: -8px 0 18px;
-  font-size: 12.5px;
-  line-height: 1.5;
-  color: var(--ink-soft, #4A4F59);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-ui);
+  color: var(--ink-soft);
   font-weight: 500;
   letter-spacing: 0.01em;
 }
-.sheet-progress[hidden] { display: none; }
 .sheet-progress strong {
-  color: var(--ink, #16181D);
+  color: var(--ink);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
-.sheet-progress .sheet-progress__next {
-  color: var(--teal, #2A50C8);
-}
+.sheet-progress .sheet-progress__next { color: var(--teal); }
 
 /* B13 · Keyboard-shortcut hint — single muted line, bottom of form. */
 .sheet-keyboard-hint {
   margin: 14px 0 0;
-  font-size: 11.5px;
-  color: var(--stone, #6B7280);
+  font-size: var(--fs-2xs);
+  color: var(--stone);
   letter-spacing: 0.02em;
   text-align: right;
 }
 .sheet-keyboard-hint kbd {
-  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 11px;
-  background: var(--cream-2, #EDEEF1);
-  border: 1px solid var(--line, #E3E5E9);
-  border-radius: 3px;
-  padding: 1px 4px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  background: var(--cream-2);
+  border: var(--hairline) solid var(--line);
+  border-radius: var(--r-1);
+  padding: 1px var(--space-1);
 }
 
-/* B5 · Viz container (sparkline, heatmap) — host class for the
-   shared SVG-only viz helper. Always client-rendered, hidden in
-   print. */
+/* B5 · Viz container (sparkline, heatmap) — host for the shared
+   SVG-only viz helper. Always client-rendered, hidden in print. */
 .sheet-viz {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   margin: 6px 0;
-  font-size: 12px;
-  color: var(--ink-soft, #4A4F59);
+  font-size: var(--fs-xs);
+  color: var(--ink-soft);
 }
-.sheet-viz svg {
-  display: block;
-}
+.sheet-viz svg { display: block; }
 .sheet-viz__label {
   font-weight: 600;
   letter-spacing: 0.02em;
 }
-.sheet-viz--inline {
-  margin: 4px 0 0;
-}
-.sheet-viz-empty {
-  font-size: 12px;
-  color: var(--stone, #6B7280);
+.sheet-viz--inline { margin: var(--space-1) 0 0; }
+
+/* Two muted italic asides share one rule; only the margin differs. */
+.sheet-viz-empty,
+.sheet-worked-example .swe-note {
+  font-size: var(--fs-xs);
+  color: var(--stone);
   font-style: italic;
 }
-@media print { .sheet-viz, .sheet-viz-empty { display: none !important; } }
 
 /* B10 · Recovery affordances — undo snackbar (8s, plain text). */
 .sheet-undo-bar {
   position: fixed;
-  bottom: 16px;
+  bottom: var(--space-4);
   left: 50%;
   transform: translateX(-50%);
   z-index: 1500;
-  background: var(--ink, #16181D);
-  color: var(--cream, #F6F7F8);
-  padding: 10px 16px;
-  border-radius: 999px;
-  font-size: 13.5px;
+  background: var(--ink);
+  color: var(--cream);
+  padding: 10px var(--space-4);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-xs);
   display: inline-flex;
   align-items: center;
   gap: 14px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  box-shadow: var(--elev-3);
   animation: sheet-undo-rise 200ms ease-out;
 }
-.sheet-undo-bar[hidden] { display: none; }
 .sheet-undo-bar button {
   background: transparent;
   border: 0;
-  color: var(--cream, #F6F7F8);
+  color: var(--cream);
   font: inherit;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -544,18 +416,17 @@
   cursor: pointer;
 }
 .sheet-undo-bar button:focus-visible {
-  outline: 2px solid var(--cream, #F6F7F8);
+  outline: 2px solid var(--cream);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: var(--r-1);
 }
 @keyframes sheet-undo-rise {
-  from { opacity: 0; transform: translate(-50%, 8px); }
+  from { opacity: 0; transform: translate(-50%, var(--space-2)); }
   to   { opacity: 1; transform: translate(-50%, 0); }
 }
 @media (prefers-reduced-motion: reduce) {
   .sheet-undo-bar { animation: none; }
 }
-@media print { .sheet-undo-bar { display: none !important; } }
 
 /* B10 · Reset confirmation — replaces the destructive Reset button
    in-place with a two-tap confirm row when the form has any data. */
@@ -563,28 +434,26 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 13px;
-  color: var(--ink-soft, #4A4F59);
+  font-size: var(--fs-xs);
+  color: var(--ink-soft);
   font-weight: 500;
 }
-.sheet-reset-confirm[hidden] { display: none; }
 .sheet-reset-confirm button {
-  background: var(--cream-2, #EDEEF1);
-  border: 1px solid var(--line, #E3E5E9);
-  border-radius: 6px;
-  padding: 8px 14px;
+  background: var(--cream-2);
+  border: var(--hairline) solid var(--line);
+  border-radius: var(--r-1);
+  padding: var(--space-2) 14px;
   font: inherit;
-  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  color: var(--ink, #16181D);
+  color: var(--ink);
 }
 .sheet-reset-confirm button[data-confirm="yes"] {
-  color: var(--rust, #C42E2E);
-  border-color: var(--rust, #C42E2E);
+  color: var(--rust);
+  border-color: var(--rust);
 }
 .sheet-reset-confirm button:focus-visible {
-  outline: 2px solid var(--teal, #2A50C8);
+  outline: 2px solid var(--teal);
   outline-offset: 2px;
 }
 
@@ -597,79 +466,226 @@
   width: 100%;
 }
 .sheet-form fieldset > legend .sheet-clear-section {
-  font-size: 11px;
+  font-size: var(--fs-2xs);
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: none;
-  color: var(--stone, #6B7280);
+  color: var(--stone);
   background: transparent;
   border: 0;
   padding: 2px 0;
   cursor: pointer;
   font-family: inherit;
 }
-.sheet-form fieldset > legend .sheet-clear-section[hidden] { display: none; }
-.sheet-form fieldset > legend .sheet-clear-section:hover {
-  color: var(--rust, #C42E2E);
-}
+.sheet-form fieldset > legend .sheet-clear-section:hover { color: var(--rust); }
 .sheet-form fieldset > legend .sheet-clear-section:focus-visible {
-  outline: 2px solid var(--teal, #2A50C8);
+  outline: 2px solid var(--teal);
   outline-offset: 2px;
-  border-radius: 3px;
+  border-radius: var(--r-1);
 }
 
-/* ─────────────────────────────────────────────────────────────────
+/* D3 · Worked example disclosure block. Sits right before
+   <form id="sheet-fields">; opens to a typical Tuesday-morning fill-in. */
+.sheet-worked-example {
+  margin: var(--space-2) 0 18px;
+  padding: 0;
+  border: var(--hairline) solid var(--line);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--r-1);
+  background: var(--cream-2);
+}
+.sheet-worked-example > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px var(--space-3);
+  user-select: none;
+}
+.sheet-worked-example > summary::-webkit-details-marker { display: none; }
+.sheet-worked-example > summary:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: var(--r-1);
+}
+/* Two uppercase micro-labels share everything but colour + tracking. */
+.sheet-worked-example :is(.swe-eyebrow, .swe-section-label) {
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.sheet-worked-example .swe-eyebrow {
+  letter-spacing: 0.12em;
+  /* --gold-deep was never defined in any stylesheet: this was a raw
+     literal wearing a token's clothes, and it did NOT flip in dark
+     mode. Derived from two real tokens instead, so it now flips. */
+  color: color-mix(in oklab, var(--gold) 78%, var(--ink));
+  flex: 0 0 auto;
+}
+.sheet-worked-example .swe-subject {
+  font-size: var(--fs-xs);
+  color: var(--ink);
+  flex: 1 1 auto;
+}
+.sheet-worked-example .swe-cta {
+  font-size: var(--fs-xs);
+  color: var(--teal);
+  font-weight: 600;
+  border-bottom: var(--hairline) solid currentColor;
+  flex: 0 0 auto;
+}
+.sheet-worked-example[open] > summary .swe-cta { display: none; }
+.sheet-worked-example .swe-body {
+  padding: var(--space-1) var(--space-4) 14px;
+  border-top: var(--hairline) dashed var(--line);
+}
+.sheet-worked-example .swe-section-label {
+  margin: var(--space-3) 0 6px;
+  letter-spacing: 0.1em;
+  color: var(--stone);
+}
+.sheet-worked-example .swe-rows {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border: var(--hairline) solid var(--line);
+  border-radius: var(--r-1);
+  overflow: hidden;
+  font-size: var(--fs-xs);
+}
+.sheet-worked-example .swe-rows :is(th, td) {
+  padding: 7px var(--space-3);
+  text-align: left;
+  border-bottom: var(--hairline) dashed var(--cream-2);
+}
+.sheet-worked-example .swe-rows tr:last-child :is(th, td) { border-bottom: 0; }
+.sheet-worked-example .swe-rows th {
+  font-weight: 500;
+  color: var(--ink-soft);
+  width: 60%;
+}
+.sheet-worked-example .swe-rows td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  font-weight: 600;
+}
+/* The punchline is the one line meant to be read; it keeps the step
+   above body so the hierarchy survives snapping to the type scale. */
+.sheet-worked-example .swe-punchline {
+  margin: 14px 0 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-card);
+  color: var(--ink);
+}
+.sheet-worked-example .swe-note { margin: 10px 0 0; }
+
+/* B7 · URL-param prefill banner. Sits above the form when the operator
+   arrives via a "use these values to prefill another sheet" link. The
+   prefilled fields carry data-prefilled="1" and get a soft teal wash. */
+.sheet-prefill-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+  margin: 0 0 14px;
+  padding: 10px 14px;
+  border: var(--hairline) solid var(--line);
+  border-left: 3px solid var(--teal);
+  border-radius: var(--r-1);
+  background: var(--cream-2);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-ui);
+  color: var(--ink);
+}
+.sheet-prefill-banner__msg { flex: 1 1 auto; }
+.sheet-prefill-banner__clear {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 0;
+  border-bottom: var(--hairline) solid currentColor;
+  border-radius: 0;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--teal);
+  cursor: pointer;
+}
+/* --teal-deep was also never defined anywhere. Same fix as --gold-deep. */
+.sheet-prefill-banner__clear:hover { color: color-mix(in oklab, var(--teal) 69%, var(--ink)); }
+.sheet-prefill-banner__clear:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: var(--r-1);
+}
+.sheet-form :is(input, select, textarea)[data-prefilled="1"] {
+  border-color: var(--teal);
+  /* Was a hardcoded rgba() of the teal hex — same accretion as a raw
+     literal, and it did not flip in dark mode either. */
+  background: color-mix(in srgb, var(--teal) 4%, transparent);
+}
+
+/* ──────────
    B12 · TABLET-ON-THE-LINE ERGONOMICS
-   Coarse pointer + ≤900px = an operator on a tablet at 11pm. Stack
+   Coarse pointer + <=900px = an operator on a tablet at 11pm. Stack
    row tables, beef up tap targets, kill tints (glare). Desktop is
    unaffected.
-   ───────────────────────────────────────────────────────────────── */
+   ────────── */
 @media (pointer: coarse) and (max-width: 900px) {
-  /* Larger tap targets on selects + buttons. */
-  .sheet-form select,
-  .sheet-form input[type="number"],
-  .sheet-form input[type="text"],
-  .sheet-form input[type="date"],
-  .sheet-form input[type="time"] {
+  /* Larger tap targets. font-size is restated rather than left to the
+     base rule because input[type="time"] is NOT in that rule's list
+     (10 such fields exist across the sheets) and would otherwise lose
+     the 16px iOS no-zoom floor. Leaving type="time" unstyled on desktop
+     is pre-existing and is left alone here rather than silently fixed. */
+  .sheet-form :is(select, input[type="number"], input[type="text"], input[type="date"], input[type="time"]) {
     min-height: 48px;
-    font-size: 16px; /* prevent iOS zoom on focus */
+    font-size: var(--fs-sm);
   }
-  .sheet-row-table input,
-  .sheet-row-table select {
+  .sheet-row-table :is(input, select) {
     min-height: 44px;
-    font-size: 16px;
+    font-size: var(--fs-sm); /* prevent iOS zoom on focus */
   }
   /* Sticky bottom action bar — Print/CSV/Save reachable without
      scrolling past the computed totals. */
   .mm-actions {
     position: sticky;
     bottom: 0;
-    background: var(--cream, #F6F7F8);
-    padding-top: 12px;
-    padding-bottom: 12px;
+    background: var(--cream);
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-3);
     margin-bottom: 0;
     z-index: 50;
-    border-top: 1px solid var(--line, #E3E5E9);
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.04);
+    border-top: var(--hairline) solid var(--line);
+    /* SURVIVING LITERAL: an upward-cast shadow. The --elev-* tokens are
+       all downward (positive Y) by design; there is no upward step to
+       bind to, and inventing one would be adding to the system rather
+       than using it. Left as the one shadow literal in this file. */
+    box-shadow: 0 -4px 12px rgb(0 0 0 / 4%);
   }
   /* Status chips render in solid fills, not tints (glare). */
-  .status-chip[data-band="good"] {
-    background: var(--status-good, #1F6B3A) !important;
-    color: var(--cream, #F6F7F8) !important;
-  }
-  .status-chip[data-band="warn"] {
-    background: var(--status-warn-deep, #8A3E16) !important;
-    color: var(--cream, #F6F7F8) !important;
-  }
-  .status-chip[data-band="bad"] {
-    background: var(--rust, #C42E2E) !important;
-    color: var(--cream, #F6F7F8) !important;
-  }
+  .status-chip[data-band="good"] { background: var(--status-good) !important; }
+  .status-chip[data-band="warn"] { background: var(--status-warn-deep) !important; }
+  .status-chip[data-band="bad"]  { background: var(--rust) !important; }
+  /* Only the three filled bands get cream text. NOT a bare [data-band]:
+     174 chips on these pages carry data-band="idle", which keeps its
+     default light background and would go invisible in cream. */
+  .status-chip:is([data-band="good"], [data-band="warn"], [data-band="bad"]) { color: var(--cream) !important; }
 }
 
 /* B12 (mobile portrait) · Repeating-row tables collapse to vertical
-   card-rows on narrow viewports. Each <td> stacks with its <th>
-   label rendered as a left-side caption. */
+   card-rows on narrow viewports.
+   B12b · The allergen matrix carries 11 columns — far more than any
+   other sheet — so it forces its fieldset past the viewport with
+   cramped cells all the way up to 900px. It gets the identical stack
+   at a wider breakpoint, scoped to that one sheet: other sheets' rows
+   carry no data-label, so their collapse must stay at <=600px.
+   (Verified 2026-08-07: allergen-matrix EN+ES are the ONLY pages
+   carrying data-label or maxlength="2", so the label caption and the
+   matrix-cell width rules live in the allergen block alone. They used
+   to be duplicated into the generic <=600px block, where they painted
+   an empty ::before box on all 51 other row tables.) */
 @media (max-width: 600px) {
   .sheet-row-table thead {
     /* Hide the header row; labels come from data-label on cells. */
@@ -677,271 +693,211 @@
     left: -9999px;
   }
   .sheet-row-table,
-  .sheet-row-table tbody,
-  .sheet-row-table tr,
-  .sheet-row-table td {
+  .sheet-row-table :is(tbody, tr, td) {
     display: block;
     width: 100%;
   }
   .sheet-row-table tr {
-    border: 1px solid var(--line, #E3E5E9);
-    border-radius: 8px;
-    margin: 8px 0;
-    padding: 4px 8px;
-    background: var(--white, #FFFFFF);
+    border: var(--hairline) solid var(--line);
+    border-radius: var(--r-2);
+    margin: var(--space-2) 0;
+    padding: var(--space-1) var(--space-2);
+    background: var(--white);
   }
   .sheet-row-table td {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: var(--space-2);
     padding: 6px 0;
-    border-bottom: 1px dashed var(--cream-2, #EDEEF1);
+    border-bottom: var(--hairline) dashed var(--cream-2);
   }
   .sheet-row-table td:last-child { border-bottom: 0; }
-  .sheet-row-table td::before {
-    content: attr(data-label);
-    flex: 0 0 auto;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--ink-soft, #4A4F59);
-    letter-spacing: 0.02em;
-  }
-  .sheet-row-table td input,
-  .sheet-row-table td select {
+  .sheet-row-table td :is(input, select) {
     flex: 1 1 auto;
     text-align: right;
     background: transparent;
   }
 }
 
-/* B12b · The allergen matrix carries 11 columns — far more than any other
-   sheet — so between 601px and 900px (where the generic <=600 collapse has
-   not kicked in yet) it forces its fieldset ~17px past the viewport with
-   cramped ~40px cells. Extend the identical card-stack up to 900px, scoped
-   to this one sheet only: other sheets' rows carry no data-label, so their
-   collapse must stay at <=600px. */
-@media (min-width: 601px) and (max-width: 900px) {
+/* The allergen stack. Formerly (min-width:601px) and (max-width:900px);
+   the lower bound is dropped because below 601px the generic block
+   above already applies these exact declarations, so the two ranges
+   were always identical in effect. */
+@media (max-width: 900px) {
   body[data-sheet-slug="allergen-matrix"] .sheet-row-table thead {
     position: absolute;
     left: -9999px;
   }
-  body[data-sheet-slug="allergen-matrix"] .sheet-row-table,
-  body[data-sheet-slug="allergen-matrix"] .sheet-row-table tbody,
-  body[data-sheet-slug="allergen-matrix"] .sheet-row-table tr,
-  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td {
+  body[data-sheet-slug="allergen-matrix"] :is(.sheet-row-table, .sheet-row-table tbody, .sheet-row-table tr, .sheet-row-table td) {
     display: block;
     width: 100%;
   }
   body[data-sheet-slug="allergen-matrix"] .sheet-row-table tr {
-    border: 1px solid var(--line, #E3E5E9);
-    border-radius: 8px;
-    margin: 8px 0;
-    padding: 4px 8px;
-    background: var(--white, #FFFFFF);
+    border: var(--hairline) solid var(--line);
+    border-radius: var(--r-2);
+    margin: var(--space-2) 0;
+    padding: var(--space-1) var(--space-2);
+    background: var(--white);
   }
   body[data-sheet-slug="allergen-matrix"] .sheet-row-table td {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: var(--space-2);
     padding: 6px 0;
-    border-bottom: 1px dashed var(--cream-2, #EDEEF1);
+    border-bottom: var(--hairline) dashed var(--cream-2);
   }
   body[data-sheet-slug="allergen-matrix"] .sheet-row-table td:last-child { border-bottom: 0; }
   body[data-sheet-slug="allergen-matrix"] .sheet-row-table td::before {
     content: attr(data-label);
     flex: 0 0 auto;
-    font-size: 12px;
+    font-size: var(--fs-xs);
     font-weight: 600;
-    color: var(--ink-soft, #4A4F59);
+    color: var(--ink-soft);
     letter-spacing: 0.02em;
   }
-  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td input,
-  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td select {
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td :is(input, select) {
     flex: 1 1 auto;
     text-align: right;
     background: transparent;
   }
+  /* B12c · Cells hold a single C/X mark: cap the box so it reads like
+     a matrix cell, not an empty full-width field. */
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td input[maxlength="2"] {
+    flex: 0 0 auto;
+    width: 3.75em;
+  }
 }
-
-/* D3 · Worked example disclosure block.
-   Sits right before <form id="sheet-fields">; collapsed by default,
-   opens to a typical Tuesday-morning fill-in for that sheet. */
-.sheet-worked-example {
-  margin: 8px 0 18px;
-  padding: 0;
-  border: 1px solid var(--line, #E3E5E9);
-  border-left: 3px solid var(--gold, #B7791F);
-  border-radius: 6px;
-  background: var(--cream-2, #EDEEF1);
-}
-.sheet-worked-example > summary {
-  list-style: none;
-  cursor: pointer;
-  padding: 12px 16px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 6px 12px;
-  user-select: none;
-}
-.sheet-worked-example > summary::-webkit-details-marker { display: none; }
-.sheet-worked-example > summary:focus-visible {
-  outline: 3px solid var(--teal, #2A50C8);
-  outline-offset: 2px;
-  border-radius: 6px;
-}
-.sheet-worked-example .swe-eyebrow {
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gold-deep, #8C6A2A);
-  flex: 0 0 auto;
-}
-.sheet-worked-example .swe-subject {
-  font-size: 14px;
-  color: var(--ink, #16181D);
-  flex: 1 1 auto;
-}
-.sheet-worked-example .swe-cta {
-  font-size: 12.5px;
-  color: var(--teal, #2A50C8);
-  font-weight: 600;
-  border-bottom: 1px solid currentColor;
-  flex: 0 0 auto;
-}
-.sheet-worked-example[open] > summary .swe-cta { display: none; }
-.sheet-worked-example .swe-body {
-  padding: 4px 16px 14px;
-  border-top: 1px dashed var(--line, #E3E5E9);
-}
-.sheet-worked-example .swe-section-label {
-  margin: 12px 0 6px;
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--stone, #6B7280);
-}
-.sheet-worked-example .swe-rows {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--white, #FFFFFF);
-  border: 1px solid var(--line, #E3E5E9);
-  border-radius: 4px;
-  overflow: hidden;
-  font-size: 13.5px;
-}
-.sheet-worked-example .swe-rows th,
-.sheet-worked-example .swe-rows td {
-  padding: 7px 12px;
-  text-align: left;
-  border-bottom: 1px dashed var(--cream-2, #EDEEF1);
-}
-.sheet-worked-example .swe-rows tr:last-child th,
-.sheet-worked-example .swe-rows tr:last-child td { border-bottom: 0; }
-.sheet-worked-example .swe-rows th {
-  font-weight: 500;
-  color: var(--ink-soft, #4A4F59);
-  width: 60%;
-}
-.sheet-worked-example .swe-rows td {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink, #16181D);
-  font-weight: 600;
-}
-.sheet-worked-example .swe-punchline {
-  margin: 14px 0 0;
-  font-size: 14.5px;
-  line-height: 1.55;
-  color: var(--ink, #16181D);
-}
-.sheet-worked-example .swe-note {
-  margin: 10px 0 0;
-  font-size: 12px;
-  color: var(--stone, #6B7280);
-  font-style: italic;
-}
-@media print {
-  .sheet-worked-example { display: none; }
-}
-
-/* B7 · URL-param prefill banner. Sits above the form when the operator
-   arrives via a "use these values to prefill another sheet" link. The
-   prefilled fields themselves carry data-prefilled="1" and get a soft
-   teal hairline so the operator can see at a glance what was stamped. */
-.sheet-prefill-banner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px 16px;
-  margin: 0 0 14px;
-  padding: 10px 14px;
-  border: 1px solid var(--line, #E3E5E9);
-  border-left: 3px solid var(--teal, #2A50C8);
-  border-radius: 6px;
-  background: var(--cream-2, #EDEEF1);
-  font-size: 13.5px;
-  line-height: 1.5;
-  color: var(--ink, #16181D);
-}
-.sheet-prefill-banner__msg { flex: 1 1 auto; }
-.sheet-prefill-banner__clear {
-  flex: 0 0 auto;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid currentColor;
-  border-radius: 0;
-  padding: 0;
-  font: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--teal, #2A50C8);
-  cursor: pointer;
-}
-.sheet-prefill-banner__clear:hover { color: var(--teal-deep, #1F3A93); }
-.sheet-prefill-banner__clear:focus-visible {
-  outline: 3px solid var(--teal, #2A50C8);
-  outline-offset: 2px;
-  border-radius: 3px;
-}
-.sheet-form input[data-prefilled="1"],
-.sheet-form select[data-prefilled="1"],
-.sheet-form textarea[data-prefilled="1"] {
-  border-color: var(--teal, #2A50C8);
-  background: rgba(42, 80, 200, 0.04);
-}
-@media print {
-  .sheet-prefill-banner { display: none; }
-  .sheet-form input[data-prefilled="1"],
-  .sheet-form select[data-prefilled="1"],
-  .sheet-form textarea[data-prefilled="1"] { background: transparent; }
-}
-
-
-/* B12c · Allergen matrix cells hold a single C/X mark — center it, and in the
-   stacked-card views cap the box so it reads like a matrix cell, not an empty
-   full-width field. (Only allergen-matrix rows carry maxlength=2 inputs.) */
 .sheet-row-table td input[maxlength="2"] { text-align: center; }
-@media (max-width: 600px) {
-  .sheet-row-table td input[maxlength="2"] { flex: 0 0 auto; width: 3.75em; }
-}
-@media (min-width: 601px) and (max-width: 900px) {
-  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td input[maxlength="2"] { flex: 0 0 auto; width: 3.75em; }
-}
 
-/* B12d · Allergen grid view (>=901px): give the two text columns room instead
-   of the browser splitting all 11 columns near-equally and cramping Menu item
-   and Notes to single-letter width. Fixed layout lets the 9 one-letter allergen
-   columns share the middle; overflow-wrap keeps "SHELLFISH" from spilling. */
+/* B12d · Allergen grid view (>=901px): give the two text columns room
+   instead of the browser splitting all 11 columns near-equally and
+   cramping Menu item and Notes to single-letter width. */
 @media (min-width: 901px) {
   body[data-sheet-slug="allergen-matrix"] .sheet-row-table { table-layout: fixed; }
   body[data-sheet-slug="allergen-matrix"] .sheet-row-table th { overflow-wrap: anywhere; }
-  body[data-sheet-slug="allergen-matrix"] .sheet-row-table th:first-child,
-  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td:first-child { width: 17%; }
-  body[data-sheet-slug="allergen-matrix"] .sheet-row-table th:last-child,
-  body[data-sheet-slug="allergen-matrix"] .sheet-row-table td:last-child { width: 19%; }
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table :is(th, td):first-child { width: 17%; }
+  body[data-sheet-slug="allergen-matrix"] .sheet-row-table :is(th, td):last-child  { width: 19%; }
+}
+
+/* ──────────
+   PRINT — the sheet IS the artifact. Hide all chrome, expand the form
+   to fill the page, render inputs as plain underlined fields.
+   ────────── */
+@media print {
+  :root {
+    /* THE PRINT INK RAMP — the only values this file declares.
+       Five steps of one ink on one paper, plus one hair width. */
+    --p-paper: #fff;   /* the page */
+    --p-ink:   #000;   /* body text, totals, field rules */
+    --p-mid:   #555;   /* secondary text, card edge */
+    --p-line:  #999;   /* table rules, panel edges */
+    --p-tint:  #f5f5f5;/* header + output fills */
+    --p-hair:  .5pt;
+
+    /* THE PRINT TYPE SCALE — five steps, ~1.2 ratio.
+       Collapsed from eight ad-hoc pt values: 7.5pt snapped to 7pt,
+       9pt to 8.5pt, 13pt to 12pt. */
+    --p-fs-xs: 7pt;
+    --p-fs-sm: 8.5pt;
+    --p-fs-md: 10pt;
+    --p-fs-lg: 12pt;
+    --p-fs-xl: 18pt;
+  }
+
+  /* Everything that is screen chrome or an on-screen affordance. */
+  .nav,
+  footer,
+  .breadcrumb,
+  .lang-hint,
+  .mobile-cta-bar,
+  .skip-link,
+  .mm-actions,
+  .mm-save,
+  .sheet-paper-hint,
+  .sheet-hazard,
+  .sheet-knit,
+  .sheet-when-to-use,
+  .sheet-mistakes,
+  .sheet-viz,
+  .sheet-viz-empty,
+  .sheet-undo-bar,
+  .sheet-worked-example,
+  .sheet-prefill-banner,
+  .sheet-add-row {
+    display: none !important;
+  }
+
+  body { background: var(--p-paper) !important; color: var(--p-ink) !important; font-size: var(--p-fs-md) !important; }
+  main, section, .container, .container-wide { padding: 0 !important; max-width: 100% !important; }
+  .mm-hero { text-align: left !important; max-width: 100% !important; }
+  .mm-hero h1 { font-size: var(--p-fs-xl) !important; margin: 4pt 0 !important; }
+  .mm-hero .hero-sub { font-size: var(--p-fs-md) !important; max-width: 100% !important; margin: 4pt 0 !important; }
+  .sheet-meta { font-size: var(--p-fs-sm) !important; gap: 6pt !important; margin: 4pt 0 !important; }
+  .status-chip { background: var(--p-tint) !important; color: var(--p-ink) !important; padding: 2pt 6pt !important; }
+  .mm-card { box-shadow: none !important; border: var(--p-hair) solid var(--p-mid) !important; padding: 8pt !important; margin: 4pt 0 !important; background: var(--p-paper) !important; }
+  .mm-card-eyebrow { font-size: var(--p-fs-xs) !important; color: var(--p-mid) !important; }
+  .mm-card h2 { font-size: var(--p-fs-lg) !important; margin: 0 !important; }
+  .sheet-form { gap: 6pt !important; }
+  .sheet-form label { font-size: var(--p-fs-sm) !important; gap: 2pt !important; color: var(--p-ink) !important; }
+  .sheet-form :is(input, select, textarea) {
+    border: 0 !important;
+    border-bottom: var(--p-hair) solid var(--p-ink) !important;
+    border-radius: 0 !important;
+    padding: 1pt 2pt !important;
+    background: transparent !important;
+    font-size: var(--p-fs-sm) !important;
+  }
+  .sheet-row-table { font-size: var(--p-fs-sm) !important; }
+  .sheet-row-table :is(th, td) { padding: 3pt 4pt !important; border-bottom: var(--p-hair) solid var(--p-line) !important; }
+  .sheet-row-table th { background: var(--p-tint) !important; font-size: var(--p-fs-xs) !important; }
+  .sheet-row-table :is(input, select) {
+    border: 0 !important;
+    border-bottom: .25pt dotted var(--p-line) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    font-size: var(--p-fs-sm) !important;
+    padding: 1pt 2pt !important;
+  }
+  .sheet-row-table tfoot td { background: var(--p-paper) !important; border-top: 1pt solid var(--p-ink) !important; }
+  .sheet-output { background: var(--p-tint) !important; border: var(--p-hair) solid var(--p-line) !important; padding: 6pt !important; }
+  .sheet-output-value { font-size: var(--p-fs-lg) !important; }
+  fieldset { border: var(--p-hair) solid var(--p-line) !important; padding: 6pt !important; }
+  fieldset legend { font-size: var(--p-fs-xs) !important; color: var(--p-ink) !important; }
+
+  /* Page-break hygiene */
+  .mm-card { page-break-inside: avoid; break-inside: avoid; }
+  .sheet-row-table { page-break-inside: auto; }
+  .sheet-row-table tr { page-break-inside: avoid; break-inside: avoid; }
+
+  /* Footer caption: timestamp the printout for later reference */
+  body[data-page="sheet"]::after {
+    content: "Printed from muntin.digital — verify cadence and totals against your own POS / accounting system.";
+    display: block;
+    font-size: var(--p-fs-xs);
+    color: var(--p-mid);
+    margin: 14pt 0 0;
+    padding: 4pt 0 0;
+    border-top: var(--p-hair) solid var(--p-line);
+  }
+
+  /* A4 · Print masthead — hairline rules around the H1, small-caps
+     pack name carried by the first meta chip. */
+  body[data-page="sheet"] .mm-hero h1 {
+    border-top: var(--p-hair) solid var(--p-mid);
+    border-bottom: var(--p-hair) solid var(--p-mid);
+    padding: 4pt 0 !important;
+    margin: 0 0 4pt !important;
+  }
+  body[data-page="sheet"] .mm-hero { position: relative; }
+  body[data-page="sheet"] .mm-hero .sheet-meta .status-chip:first-child {
+    background: transparent !important;
+    border: 0 !important;
+    color: var(--p-mid) !important;
+    font-size: var(--p-fs-xs) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    padding: 0 !important;
+  }
 }

@@ -28,11 +28,22 @@
  *        assets/site-core.css
  *        assets/site-tool.css
  *        assets/site-article.css
+ *        assets/sheets.css
  *
  *   2. Walk every HTML page. For each `<link…href="/assets/<f>.css?v=X">`
- *      where <f> matches one of the four files above, replace X with
+ *      where <f> matches one of the five files above, replace X with
  *      the corresponding hash. Idempotent: if the URL already has the
  *      right hash, no change.
+ *
+ * sheets.css joined this list on 2026-08-08. It had been carrying a
+ * HAND-TYPED date tag (`?v=20260717b`) on 63 sheet pages plus
+ * `_includes/sheet-shell.html`, which is exactly the "zero hand-bumping"
+ * promise above going unkept for one file: the token pass edited
+ * sheets.css (31,004 -> 30,160 bytes) and the tag did not move, so a
+ * returning visitor would have paired a CACHED old sheets.css with a
+ * freshly-hashed site-core.css. The regex below already accepted "any
+ * URL-safe payload… covers both old date tags", so adding the filename
+ * is the whole fix — the date tags convert to hashes on the next run.
  *
  *   3. Also handle the matching `<noscript><link rel="stylesheet"
  *      href="/assets/<f>.css?v=X"></noscript>` pattern.
@@ -55,7 +66,7 @@ const __filename = fileURLToPath(import.meta.url);
 const repoRoot   = path.resolve(path.dirname(__filename), '..');
 const checkOnly  = process.argv.includes('--check');
 
-const FILES = ['site.css', 'site-core.css', 'site-tool.css', 'site-article.css'];
+const FILES = ['site.css', 'site-core.css', 'site-tool.css', 'site-article.css', 'sheets.css'];
 
 // 12-hex-char prefix. Full SHA-256 is 64 chars; 12 is enough for
 // uniqueness (collision odds 1 in 281 trillion at typical change rate)

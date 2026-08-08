@@ -30,7 +30,7 @@
  *   the ONLY hard failure. A readiness claim that quietly comes undone is worse
  *   than one never made, because the record says the domain is ready. Prior
  *   passes are read from the register's `lastVerdict` AND from every line of
- *   data/readiness-history.jsonl, so the ratchet cannot be lost by editing one
+ *   docs/handoff/telemetry/readiness-history.jsonl, so the ratchet cannot be lost by editing one
  *   field.
  * OPEN (reported, never blocking): a blocking verifiable item that fails. The
  *   Cloudflare deploy is already red at 320/328; a gate that is red by design is
@@ -53,7 +53,7 @@
  *      Readiness cannot be earned by having no tests.
  *   2. Every `decision` must carry decisionFor + whyNoTest + routeTo, asserted
  *      by --self-test. "I could not be bothered" does not typecheck.
- *   3. Every run appends one line to data/readiness-history.jsonl carrying the
+ *   3. Every run appends one line to docs/handoff/telemetry/readiness-history.jsonl carrying the
  *      per-domain counts and the exact set of passing item ids. Append-only.
  *      A bar that moves leaves a trail; convergence is measurable from the file
  *      rather than from anyone's memory of last week.
@@ -81,7 +81,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REGISTER = 'data/readiness-register.json';
-const HISTORY = 'data/readiness-history.jsonl';
+const HISTORY = 'docs/handoff/telemetry/readiness-history.jsonl';
 
 /** Repos this register may reference, and where they sit on this machine. */
 export const REPO_PATHS = {

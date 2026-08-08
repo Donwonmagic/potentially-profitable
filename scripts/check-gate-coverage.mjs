@@ -66,7 +66,7 @@ export const UNWIRED = {
       'top-level `;`) and Q-084 (bare existence test) remain as non-halting notes.',
     why:
       'The convergence guard on the readiness loop. check-readiness.mjs answers "is this domain ' +
-      'ready"; this answers "is the loop CLOSING" by reading data/readiness-history.jsonl as a time ' +
+      'ready"; this answers "is the loop CLOSING" by reading docs/handoff/telemetry/readiness-history.jsonl as a time ' +
       'series — net closure per pass (closed − reopened − newly discovered), a stall detector, a ' +
       'divergence detector for the close-3/discover-4 pattern that looks like activity, a founder ' +
       'review-debt detector, and a static scan of every verify command in the register and the queue ' +

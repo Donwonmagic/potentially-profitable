@@ -12,7 +12,7 @@
  * repeat. Blocking count flat, hours burned, morale intact. Nothing in the
  * register can see that, because the register only knows about NOW.
  *
- * data/readiness-history.jsonl knows about THEN. This script is the only thing
+ * docs/handoff/telemetry/readiness-history.jsonl knows about THEN. This script is the only thing
  * that reads it as a time series and answers the two questions a loop owner
  * actually has:
  *
@@ -159,7 +159,7 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const HISTORY = 'data/readiness-history.jsonl';
+const HISTORY = 'docs/handoff/telemetry/readiness-history.jsonl';
 const REGISTER = 'data/readiness-register.json';
 const QUEUE = 'data/queue.json';
 

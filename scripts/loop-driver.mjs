@@ -60,7 +60,7 @@
  *
  * Exactly three paths, asserted by --self-test:
  *   data/loop-lease.json   — the selection lock, O_EXCL, 90-minute TTL
- *   data/loop-runs.jsonl   — append-only run ledger
+ *   docs/handoff/telemetry/loop-runs.jsonl   — append-only run ledger
  *   data/queue.json        — ONLY by shelling out to check-queue.mjs --claim.
  *                            The driver never edits the queue itself, so claims
  *                            keep going through the one code path that also
@@ -107,7 +107,7 @@ const LEASE_PATH = path.join(REPO, 'data', 'loop-lease.json');
 const RUNS_PATH = path.join(REPO, 'data', 'loop-runs.jsonl');
 
 /** The complete write surface. Asserted by --self-test so it cannot grow silently. */
-export const WRITABLE = ['data/loop-lease.json', 'data/loop-runs.jsonl', 'data/queue.json (via check-queue --claim only)'];
+export const WRITABLE = ['data/loop-lease.json', 'docs/handoff/telemetry/loop-runs.jsonl', 'data/queue.json (via check-queue --claim only)'];
 
 /**
  * Halt reasons, in evaluation order. ORDER IS THE DESIGN:
