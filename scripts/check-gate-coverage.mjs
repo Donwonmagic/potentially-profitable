@@ -185,10 +185,14 @@ export const UNWIRED = {
   'check-design-scorecard.mjs': {
     since: '2026-08-07',
     status:
-      'PASSES — --check exits 0 against the baseline recorded the same day (data/design-scorecard.json). '
-      + 'It is a REGRESSION gate, so green means "no worse than 2026-08-07", not "the design is clean": the '
-      + 'tree it baselined carries 41,618 off-token colour literals, 2,399 off-scale spacing declarations and '
-      + '30 same-rule text pairs below WCAG AA.',
+      'PASSES — --check exits 0. 2026-08-08: the baseline was RE-RECORDED against a real git ref rather '
+      + 'than a working tree. data/design-scorecard.json now holds origin/main (7808827cc) measured with '
+      + '--ref, so the floor is the site as it actually stands live: 41,986 off-token colour literals, '
+      + '43.4% token-resolution rate, 1,541 off-scale font-size declarations. The previous file was a '
+      + 'mid-flight capture of a tree already half-changed and labelled "working tree", which made every '
+      + 'comparison against it meaningless. The working tree measures 29,163 / 69.9% / 4 against that '
+      + 'floor. It is still a REGRESSION gate: green means "no worse than live", not "the design is '
+      + 'clean" — 2,399 off-scale spacing declarations and 30 same-rule text pairs below WCAG AA remain.',
     why:
       'The design measurement instrument — colour literals split by where they live (assets CSS / page <style> '
       + 'blocks / SVG paint attributes / style="" attributes), scale counts, token-resolution rate, tabular-figure '

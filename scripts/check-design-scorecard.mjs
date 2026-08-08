@@ -429,7 +429,17 @@ export function measure(root) {
           const table = dark ? darkTokens : lightTokens;
           if (isRoot || dark) table[prop] = value;
           else if (!(prop in lightTokens)) lightTokens[prop] = value;
-          if (lits.length || /^(#|rgb|hsl|oklch|oklab)/i.test(value.trim())) {
+          // Theme completeness asks "does every light colour token have a dark
+          // counterpart". A token declared inside @media print is exempt by
+          // definition: paper has no dark mode, and a dark print ramp would put
+          // white type on a black page. sheets.css declares a five-step print ink
+          // ramp (--p-paper/--p-ink/--p-mid/--p-line/--p-tint) for the 82
+          // worksheets operators actually print, and without this the scorecard
+          // read all five as missing-dark and called a correct stylesheet a
+          // regression. Excluded here rather than allowlisted by name, so a sixth
+          // print step never has to be remembered.
+          const printOnly = r.at.some((a) => /\bprint\b/i.test(a));
+          if (!printOnly && (lits.length || /^(#|rgb|hsl|oklch|oklab)/i.test(value.trim()))) {
             (dark ? darkColourTokens : lightColourTokens).add(prop);
           }
         } else {
@@ -748,7 +758,14 @@ export const WORSE = {
   'space.distinctValues': 'up', 'space.distinctValuesCss': 'up', 'space.offScaleDecls': 'up',
   'radius.distinctValues': 'up',
   'token.declsViaLiteral': 'up', 'token.resolutionRatePct': 'down',
-  'tabular.declarations': 'down', 'tabular.uncoveredNumericCells': 'up',
+  // tabular.declarations is REPORTED but deliberately NOT regression-guarded. It counts the
+  // MEANS (how many tabular-nums rules exist), and guarding it punishes the win: consolidating
+  // eight scattered rules into three that cover more cells reads as a regression. The END is
+  // uncoveredNumericCells, guarded below at 0, and it strictly dominates — the hook classes are
+  // derived FROM the declarations, so deleting declarations sends every numeric cell to
+  // uncovered and trips that guard immediately. 2026-08-08: this fired on 118 → 110 while
+  // uncovered went 4 → 0, which is the instrument scoring a real improvement as damage.
+  'tabular.uncoveredNumericCells': 'up',
   'theme.lightColorTokensMissingDark': 'up', 'theme.darkOnlyColorTokens': 'up',
   'weight.totalCssBytes': 'up', 'sentinel.corruptions': 'up',
   textAaFailures: 'up', textAaFailuresLight: 'up', textAaFailuresDark: 'up',
@@ -839,6 +856,14 @@ function selfTest() {
   ok('parseCss finds top-level rule', rules.some((r) => r.selector === '.b' && !r.at.length));
   ok('isDarkContext via media', isDarkContext(':root', ['@media (prefers-color-scheme: dark)']));
   ok('isDarkContext false in light', !isDarkContext(':root', []));
+  // Theme completeness must not demand a dark counterpart for a PRINT token.
+  {
+    const printRules = parseCss('@media print{:root{--p-ink:#000;--p-paper:#fff}}\n:root{--ink:#111}');
+    const printCtx = printRules.filter((r) => r.at.some((a) => /\bprint\b/i.test(a)));
+    ok('parseCss keeps @media print in the at-stack', printCtx.length === 1);
+    ok('print at-stack is distinguishable from a screen :root',
+      printRules.filter((r) => !r.at.length && r.selector === ':root').length === 1);
+  }
   ok('splitDecls respects parens',
     splitDecls('background:url(a;b);color:red').length === 2);
   ok('colourLiterals finds hex + rgb',
@@ -881,8 +906,13 @@ function selfTest() {
     regressions({ 'color.offTokenLiterals': 1 }, { 'color.offTokenLiterals': 2 }).length === 1);
   ok('regressions ignores improvement',
     regressions({ 'color.offTokenLiterals': 2 }, { 'color.offTokenLiterals': 1 }).length === 0);
-  ok('regressions flags tabular going DOWN',
-    regressions({ 'tabular.declarations': 5 }, { 'tabular.declarations': 4 }).length === 1);
+  // The END metric is guarded; the MEANS metric is not. Both directions asserted, so a future
+  // edit that re-adds tabular.declarations to WORSE fails here instead of silently punishing
+  // consolidation again.
+  ok('regressions flags UNCOVERED cells going up',
+    regressions({ 'tabular.uncoveredNumericCells': 0 }, { 'tabular.uncoveredNumericCells': 3 }).length === 1);
+  ok('regressions IGNORES tabular declaration count falling (consolidation is not damage)',
+    regressions({ 'tabular.declarations': 5 }, { 'tabular.declarations': 4 }).length === 0);
   ok('every WORSE key is a real metric name shape',
     Object.keys(WORSE).every((k) => /^[a-z]/.test(k)));
 
