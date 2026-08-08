@@ -1426,9 +1426,9 @@
       "source": "phase-H plan validation 2026-08-07",
       "title": "Measure cold-start reconcile on a FRESH org — the number every commercial figure is priced on",
       "priority": "HIGH",
-      "founderHours": 0,
-      "owner": "agent",
-      "why": "VENDOR-TEMPLATE-KEY.md gives 24% today, 62% at the 0.7 knee, and 84-87% as reconcile-rate-among-newly-covered on a MATURE corpus with 3-4 prior confirmations per (org,vendor). A new customer has zero. first-try-reliability-roadmap.md 4d already says the Tacombi corpus is not the demo population — and 00/location plus the 40-location ceiling are priced on it.",
+      "founderHours": 0.25,
+      "owner": "founder",
+      "why": "VENDOR-TEMPLATE-KEY.md gives 24% today, 62% at the 0.7 knee, and 84-87% as reconcile-rate-among-newly-covered on a MATURE corpus with 3-4 prior confirmations per (org,vendor). A new customer has zero. first-try-reliability-roadmap.md 4d already says the Tacombi corpus is not the demo population — and 00/location plus the 40-location ceiling are priced on it. CORRECTED 2026-08-07: this is NOT agent-executable. The 919-doc corpus lives at ~/muntin-docling-json on the founder Mac (cli/corpus_report.py:28), not in the repo — the repo holds 7 fixtures — and the extract service deps are not installed in a container. It is ~10 minutes of founder time on his own machine, and it is the number every commercial figure in the plan is priced on.",
       "doneWhen": "A committed report records first-pass straight-through for a synthetic org with ZERO prior confirmations, replayed over the 919-doc corpus, with the number stated separately from the mature-org number.",
       "verify": {
         "cwd": "product",
