@@ -45,9 +45,19 @@
         "anchor": "2026-07-20",
         "direction": "building",
         "score": 2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "broiler-placements": -0.020960826153474516
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-07-27",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "broiler-placements": -0.01424934838389063
         }
       }
     ],
@@ -94,9 +104,19 @@
         "anchor": "2026-07-20",
         "direction": "building",
         "score": 2,
-        "realized": null,
+        "realized": "up",
         "obs": {
           "broiler-placements": -0.020960826153474516
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-07-27",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "broiler-placements": -0.01424934838389063
         }
       }
     ],
@@ -141,6 +161,16 @@
       {
         "asOf": "2026-08-03",
         "anchor": "2026-07-30",
+        "direction": "building",
+        "score": 2,
+        "realized": "up",
+        "obs": {
+          "cattle-on-feed-placements": -0.18234950321449445
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
         "direction": "building",
         "score": 2,
         "realized": null,
@@ -190,6 +220,16 @@
       {
         "asOf": "2026-08-03",
         "anchor": "2026-07-30",
+        "direction": "building",
+        "score": 2,
+        "realized": "down",
+        "obs": {
+          "cattle-on-feed-placements": -0.18234950321449445
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
         "direction": "building",
         "score": 2,
         "realized": null,
@@ -244,6 +284,17 @@
         "anchor": "2026-07-30",
         "direction": "building",
         "score": 3,
+        "realized": "down",
+        "obs": {
+          "hogs-market-supply": -0.024720116370584487,
+          "cold-storage-pork": -0.06299570106126358
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "building",
+        "score": 3,
         "realized": null,
         "obs": {
           "hogs-market-supply": -0.024720116370584487,
@@ -295,6 +346,17 @@
       {
         "asOf": "2026-08-03",
         "anchor": "2026-07-30",
+        "direction": "building",
+        "score": 3,
+        "realized": "down",
+        "obs": {
+          "hogs-market-supply": -0.024720116370584487,
+          "cold-storage-pork": -0.06299570106126358
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
         "direction": "building",
         "score": 3,
         "realized": null,
@@ -359,13 +421,27 @@
         "anchor": "2026-07-30",
         "direction": "steady",
         "score": 1,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "lettuce-shipments": -0.8502702075293578,
           "lettuce-imports": -0.008019695970224436,
           "lettuce-pace": -0.09390309318921775,
           "freeze-alert": 0,
           "drought-ca-az": -0.2040337711069418,
+          "lettuce-transition": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "steady",
+        "score": 1,
+        "realized": null,
+        "obs": {
+          "lettuce-shipments": -0.8127104809525441,
+          "lettuce-pace": -0.19969306234850337,
+          "freeze-alert": 0,
+          "drought-ca-az": -0.2523971543458087,
           "lettuce-transition": 0
         }
       }
@@ -422,11 +498,24 @@
         "anchor": "2026-07-30",
         "direction": "building",
         "score": 3,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "tomato-shipments": -0.8769020384045083,
           "tomato-imports": -0.07354634040408237,
           "tomato-pace": 0.7257867026631963,
+          "freeze-alert": 0,
+          "tomato-transition": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "building",
+        "score": 3,
+        "realized": null,
+        "obs": {
+          "tomato-shipments": -0.8583711888357537,
+          "tomato-pace": -0.2927896978920832,
           "freeze-alert": 0,
           "tomato-transition": 0
         }
@@ -484,12 +573,25 @@
         "anchor": "2026-07-30",
         "direction": "steady",
         "score": -1,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "onion-shipments": -0.844162782368055,
           "onion-imports": -0.08113945121145165,
           "onion-pace": 0.03894954565809128,
           "drought-ca-az": -0.2040337711069418,
+          "onion-transition": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "steady",
+        "score": 1,
+        "realized": null,
+        "obs": {
+          "onion-shipments": -0.7956061680664678,
+          "onion-pace": -0.07466460802154362,
+          "drought-ca-az": -0.2523971543458087,
           "onion-transition": 0
         }
       }
@@ -543,11 +645,23 @@
         "anchor": "2026-07-30",
         "direction": "building",
         "score": 2,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "potato-shipments": -0.8594527111671446,
           "potato-imports": -0.004051103524696675,
           "potato-pace": -0.15042549269779937,
+          "potato-transition": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "building",
+        "score": 2,
+        "realized": null,
+        "obs": {
+          "potato-shipments": -0.8346771279382803,
+          "potato-pace": -0.16263299676990162,
           "potato-transition": 0
         }
       }
@@ -593,6 +707,16 @@
       {
         "asOf": "2026-08-03",
         "anchor": "2026-07-25",
+        "direction": "steady",
+        "score": 1,
+        "realized": "down",
+        "obs": {
+          "cold-storage-butter": -0.08024840766541326
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-01",
         "direction": "steady",
         "score": 1,
         "realized": null,
@@ -649,9 +773,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -695,9 +830,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -741,9 +887,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -787,9 +944,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -833,9 +1001,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "up",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -879,9 +1058,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -925,9 +1115,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -971,9 +1172,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1017,9 +1229,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1063,9 +1286,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1109,9 +1343,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "up",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1155,9 +1400,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "up",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1201,9 +1457,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "up",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1247,9 +1514,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "up",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1293,9 +1571,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "up",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1339,9 +1628,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1385,9 +1685,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1431,9 +1742,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1477,9 +1799,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "up",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1523,9 +1856,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "up",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1569,9 +1913,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1615,9 +1970,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "up",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1661,9 +2027,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1707,9 +2084,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "up",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1758,6 +2146,17 @@
           "drought-ca-az": -0.2040337711069418,
           "freeze-alert": 0
         }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-07-30",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
+          "freeze-alert": 0
+        }
       }
     ],
     "bok-choy": [
@@ -1799,9 +2198,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1845,9 +2255,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1891,9 +2312,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1937,9 +2369,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "up",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -1983,9 +2426,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -2029,9 +2483,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -2075,9 +2540,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -2118,9 +2594,19 @@
         "anchor": "2026-07-20",
         "direction": "building",
         "score": 2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "broiler-placements": -0.020960826153474516
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-07-27",
+        "direction": "steady",
+        "score": 0,
+        "realized": null,
+        "obs": {
+          "broiler-placements": -0.01424934838389063
         }
       }
     ],
@@ -2158,6 +2644,16 @@
       {
         "asOf": "2026-08-03",
         "anchor": "2026-07-30",
+        "direction": "building",
+        "score": 2,
+        "realized": "up",
+        "obs": {
+          "cattle-on-feed-placements": -0.18234950321449445
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
         "direction": "building",
         "score": 2,
         "realized": null,
@@ -2201,6 +2697,16 @@
         "asOf": "2026-08-03",
         "anchor": "2026-06-10",
         "direction": "building",
+        "score": 2,
+        "realized": null,
+        "obs": {
+          "cattle-on-feed-placements": -0.18234950321449445
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-06-10",
+        "direction": "steady",
         "score": 2,
         "realized": null,
         "obs": {
@@ -2250,11 +2756,23 @@
         "anchor": "2026-07-30",
         "direction": "steady",
         "score": 1,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "lettuce-shipments": -0.8502702075293578,
           "freeze-alert": 0,
           "drought-ca-az": -0.2040337711069418
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "steady",
+        "score": 1,
+        "realized": null,
+        "obs": {
+          "lettuce-shipments": -0.8127104809525441,
+          "freeze-alert": 0,
+          "drought-ca-az": -0.2523971543458087
         }
       }
     ],
@@ -2300,11 +2818,23 @@
         "anchor": "2026-07-30",
         "direction": "steady",
         "score": 1,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "lettuce-shipments": -0.8502702075293578,
           "freeze-alert": 0,
           "drought-ca-az": -0.2040337711069418
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "steady",
+        "score": 1,
+        "realized": null,
+        "obs": {
+          "lettuce-shipments": -0.8127104809525441,
+          "freeze-alert": 0,
+          "drought-ca-az": -0.2523971543458087
         }
       }
     ],
@@ -2350,11 +2880,23 @@
         "anchor": "2026-07-30",
         "direction": "steady",
         "score": 1,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "lettuce-shipments": -0.8502702075293578,
           "freeze-alert": 0,
           "drought-ca-az": -0.2040337711069418
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "steady",
+        "score": 1,
+        "realized": null,
+        "obs": {
+          "lettuce-shipments": -0.8127104809525441,
+          "freeze-alert": 0,
+          "drought-ca-az": -0.2523971543458087
         }
       }
     ],
@@ -2397,9 +2939,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -2443,9 +2996,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -2489,9 +3053,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -2535,9 +3110,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -2581,9 +3167,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -2627,9 +3224,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -2678,6 +3286,17 @@
           "drought-ca-az": -0.2040337711069418,
           "freeze-alert": 0
         }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-07-14",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
+          "freeze-alert": 0
+        }
       }
     ],
     "corn-on-the-cob": [
@@ -2719,10 +3338,21 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "freeze-alert": 0,
           "drought-ca-az": -0.2040337711069418
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": -0.2523971543458087
         }
       }
     ],
@@ -2762,9 +3392,19 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "up",
         "obs": {
           "drought-ca-az": -0.2040337711069418
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087
         }
       }
     ],
@@ -2807,9 +3447,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -2853,9 +3504,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -2902,11 +3564,23 @@
         "anchor": "2026-07-30",
         "direction": "steady",
         "score": 1,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "tomato-shipments": -0.8769020384045083,
           "freeze-alert": 0,
           "drought-ca-az": -0.2040337711069418
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "steady",
+        "score": 1,
+        "realized": null,
+        "obs": {
+          "tomato-shipments": -0.8583711888357537,
+          "freeze-alert": 0,
+          "drought-ca-az": -0.2523971543458087
         }
       }
     ],
@@ -2949,10 +3623,21 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "freeze-alert": 0,
           "drought-ca-az": -0.2040337711069418
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": -0.2523971543458087
         }
       }
     ],
@@ -2995,9 +3680,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "up",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -3041,9 +3737,20 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "flat",
         "obs": {
           "drought-ca-az": -0.2040337711069418,
+          "freeze-alert": 0
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "drought-ca-az": -0.2523971543458087,
           "freeze-alert": 0
         }
       }
@@ -3087,10 +3794,21 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "freeze-alert": 0,
           "drought-ca-az": -0.2040337711069418
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": -0.2523971543458087
         }
       }
     ],
@@ -3133,10 +3851,21 @@
         "anchor": "2026-07-30",
         "direction": "easing",
         "score": -2,
-        "realized": null,
+        "realized": "down",
         "obs": {
           "freeze-alert": 0,
           "drought-ca-az": -0.2040337711069418
+        }
+      },
+      {
+        "asOf": "2026-08-10",
+        "anchor": "2026-08-06",
+        "direction": "easing",
+        "score": -2,
+        "realized": null,
+        "obs": {
+          "freeze-alert": 0,
+          "drought-ca-az": -0.2523971543458087
         }
       }
     ],
