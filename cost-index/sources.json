@@ -5,8 +5,8 @@
   "methodology": "https://muntin.digital/cost-index/methodology/",
   "index": "https://muntin.digital/cost-index/",
   "data": "https://muntin.digital/cost-index/index.json",
-  "lastReviewed": "2026-08-10",
-  "count": 81,
+  "lastReviewed": "2026-08-12",
+  "count": 80,
   "ingredients": [
     {
       "slug": "ribeye",
@@ -328,27 +328,6 @@
         {
           "agency": "FRED, Federal Reserve Bank of St. Louis",
           "seriesId": "APU0000708111",
-          "url": "https://fred.stlouisfed.org/"
-        }
-      ]
-    },
-    {
-      "slug": "ground-beef",
-      "name": "Ground beef",
-      "sources": [
-        {
-          "agency": "USDA Livestock, Poultry & Grain Market News",
-          "reportId": "2453",
-          "url": "https://www.ams.usda.gov/market-news/livestock-poultry-grain"
-        },
-        {
-          "agency": "U.S. Bureau of Labor Statistics (PPI)",
-          "seriesId": "WPU022101",
-          "url": "https://www.bls.gov/ppi/"
-        },
-        {
-          "agency": "FRED, Federal Reserve Bank of St. Louis",
-          "seriesId": "APU0000703112",
           "url": "https://fred.stlouisfed.org/"
         }
       ]
