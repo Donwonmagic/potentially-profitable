@@ -1,13 +1,13 @@
 {
   "_doc": "GENERATED live by fetch-pressure-observations.mjs --live.",
   "_status": "live",
-  "asOf": "2026-08-10",
+  "asOf": "2026-08-17",
   "observations": {
     "chicken-breast": {
-      "broiler-placements": -0.01424934838389063
+      "broiler-placements": 0.0010326617623753265
     },
     "whole-chicken": {
-      "broiler-placements": -0.01424934838389063
+      "broiler-placements": 0.0010326617623753265
     },
     "ribeye": {
       "cattle-on-feed-placements": -0.18234950321449445
@@ -24,28 +24,32 @@
       "cold-storage-pork": -0.06299570106126358
     },
     "romaine-lettuce": {
-      "lettuce-shipments": -0.8127104809525441,
-      "lettuce-pace": -0.19969306234850337,
+      "lettuce-shipments": -0.8040891342405666,
+      "lettuce-imports": -0.03501998831935221,
+      "lettuce-pace": -0.1697582968660164,
       "freeze-alert": 0,
       "drought-ca-az": -0.2523971543458087,
       "lettuce-transition": 0
     },
     "tomato": {
-      "tomato-shipments": -0.8583711888357537,
-      "tomato-pace": -0.2927896978920832,
+      "tomato-shipments": -0.883257347952328,
+      "tomato-imports": 0.08024353615910751,
+      "tomato-pace": 0.8621255510325321,
       "freeze-alert": 0,
       "tomato-transition": 0
     },
     "onion": {
-      "onion-shipments": -0.7956061680664678,
-      "onion-pace": -0.07466460802154362,
+      "onion-shipments": -0.8717943930718545,
+      "onion-imports": -0.12538028999545933,
+      "onion-pace": 0.018338222317381803,
       "drought-ca-az": -0.2523971543458087,
       "onion-transition": 0
     },
     "russet-potato": {
-      "potato-shipments": -0.8346771279382803,
-      "potato-pace": -0.16263299676990162,
-      "potato-transition": 0
+      "potato-shipments": -0.9094178844927554,
+      "potato-imports": -0.001582703756304954,
+      "potato-pace": -0.16423693595472244,
+      "potato-transition": 1
     },
     "butter": {
       "cold-storage-butter": -0.08024840766541326
@@ -179,7 +183,7 @@
       "freeze-alert": 0
     },
     "chicken-thigh": {
-      "broiler-placements": -0.01424934838389063
+      "broiler-placements": 0.0010326617623753265
     },
     "short-rib": {
       "cattle-on-feed-placements": -0.18234950321449445
@@ -192,17 +196,17 @@
       "cold-storage-pork": -0.06299570106126358
     },
     "butter-lettuce": {
-      "lettuce-shipments": -0.8127104809525441,
+      "lettuce-shipments": -0.8040891342405666,
       "freeze-alert": 0,
       "drought-ca-az": -0.2523971543458087
     },
     "green-leaf-lettuce": {
-      "lettuce-shipments": -0.8127104809525441,
+      "lettuce-shipments": -0.8040891342405666,
       "freeze-alert": 0,
       "drought-ca-az": -0.2523971543458087
     },
     "red-leaf-lettuce": {
-      "lettuce-shipments": -0.8127104809525441,
+      "lettuce-shipments": -0.8040891342405666,
       "freeze-alert": 0,
       "drought-ca-az": -0.2523971543458087
     },
@@ -254,7 +258,7 @@
       "freeze-alert": 0
     },
     "cherry-tomato": {
-      "tomato-shipments": -0.8583711888357537,
+      "tomato-shipments": -0.883257347952328,
       "freeze-alert": 0,
       "drought-ca-az": -0.2523971543458087
     },
