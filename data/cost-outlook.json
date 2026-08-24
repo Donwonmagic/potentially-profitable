@@ -7,7 +7,7 @@
     "seasonality": "data/seasonality.json",
     "basket": "data/cost-basket-weights.json"
   },
-  "asOf": "2026-08-17",
+  "asOf": "2026-08-24",
   "month": 8,
   "horizonHonest": 1,
   "basket": [
@@ -28,18 +28,19 @@
     "vegetable-oil",
     "whole-chicken"
   ],
-  "weightedTilt": 0.125,
+  "weightedTilt": 0.175,
   "outlook": "building",
   "counts": {
-    "building": 3,
+    "building": 5,
     "easing": 0,
     "steady": 2,
-    "n": 5
+    "n": 7
   },
   "lockCandidates": [],
   "watchCandidates": [
     "russet-potato",
-    "pork-loin"
+    "pork-loin",
+    "tomato"
   ],
   "featureCandidates": [],
   "movers": [
@@ -53,6 +54,14 @@
     },
     {
       "slug": "pork-loin",
+      "direction": "building",
+      "confidence": "moderate",
+      "storable": false,
+      "action": "watch-negotiate",
+      "seasonalNote": null
+    },
+    {
+      "slug": "tomato",
       "direction": "building",
       "confidence": "moderate",
       "storable": false,
