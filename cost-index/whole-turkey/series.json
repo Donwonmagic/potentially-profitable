@@ -8,11 +8,11 @@
   "reconstructedNote": "Observations marked reconstructed:true are a monthly backfill reconstructed from public sources after the fact — not figures published live on that date. Live points (reconstructed:false) were captured at publication.",
   "coverage": {
     "start": "2022-08-29",
-    "end": "2026-08-10",
-    "points": 205,
+    "end": "2026-08-17",
+    "points": 206,
     "reconstructed": 189
   },
-  "asOf": "2026-08-10",
+  "asOf": "2026-08-17",
   "observations": [
     {
       "date": "2022-08-29",
@@ -1241,6 +1241,12 @@
     {
       "date": "2026-08-10",
       "priceUsd": 1.82,
+      "source": "usda-ams-national",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-08-17",
+      "priceUsd": 1.84,
       "source": "usda-ams-national",
       "reconstructed": false
     }
