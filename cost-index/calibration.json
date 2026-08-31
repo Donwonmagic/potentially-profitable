@@ -5,8 +5,8 @@
     "method": "split/EnbPI conformal, raw walk-forward coverage (un-tuned)",
     "nominal": 0.8,
     "pooledCoverage": 0.767,
-    "items": 75,
-    "scoredSteps": 79086,
+    "items": 76,
+    "scoredSteps": 79567,
     "minItemCoverage": 0.731,
     "maxItemCoverage": 0.875,
     "underCovering": 0
@@ -14,21 +14,21 @@
   "trend": {
     "method": "price-only direction call, reliability by signal strength",
     "baseline": 0.502,
-    "overallHitRate": 0.506,
-    "scoredCalls": 34029,
-    "items": 79,
+    "overallHitRate": 0.505,
+    "scoredCalls": 34160,
+    "items": 80,
     "tiers": {
       "low": {
-        "n": 6552,
+        "n": 6582,
         "hitRate": 0.5
       },
       "medium": {
-        "n": 14014,
+        "n": 14079,
         "hitRate": 0.482
       },
       "high": {
-        "n": 13463,
-        "hitRate": 0.533
+        "n": 13499,
+        "hitRate": 0.532
       }
     }
   }

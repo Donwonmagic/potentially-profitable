@@ -7,7 +7,7 @@
     "weeksTarget": 78,
     "windowYears": 5
   },
-  "count": 84,
+  "count": 85,
   "ingredients": [
     {
       "slug": "apple",
@@ -6484,6 +6484,61 @@
           "p25_cents": 23334,
           "p75_cents": 25558,
           "n": 4
+        }
+      }
+    },
+    {
+      "slug": "pumpkin",
+      "cheapest_month": 10,
+      "priciest_month": 7,
+      "months": {
+        "10": {
+          "median_cents": 7500,
+          "p25_cents": 2400,
+          "p75_cents": 18000,
+          "n": 22
+        },
+        "11": {
+          "median_cents": 18000,
+          "p25_cents": 6563,
+          "p75_cents": 20000,
+          "n": 17
+        },
+        "12": {
+          "median_cents": 19750,
+          "p25_cents": 6250,
+          "p75_cents": 30500,
+          "n": 7
+        },
+        "01": {
+          "median_cents": 28890,
+          "p25_cents": 2017,
+          "p75_cents": 38625,
+          "n": 5
+        },
+        "05": {
+          "median_cents": 39705,
+          "p25_cents": 37500,
+          "p75_cents": 44081,
+          "n": 8
+        },
+        "07": {
+          "median_cents": 43000,
+          "p25_cents": 42900,
+          "p75_cents": 43000,
+          "n": 5
+        },
+        "08": {
+          "median_cents": 39500,
+          "p25_cents": 33875,
+          "p75_cents": 42000,
+          "n": 7
+        },
+        "09": {
+          "median_cents": 19657,
+          "p25_cents": 14430,
+          "p75_cents": 25000,
+          "n": 16
         }
       }
     },
