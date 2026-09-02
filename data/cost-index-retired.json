@@ -1,5 +1,5 @@
 {
   "_doc": "Last-good state of every ingredient dropped from the index because its feed stopped publishing. Written by scripts/build-cost-index.mjs at the moment of the drop (the only moment the record still exists); consumed by scripts/build-cost-index-pages.mjs to render the terminal page, and by scripts/check-cost-index-orphans.mjs to tell a retired page from an orphaned one. An entry is REMOVED when the feed comes back.",
-  "_lastReviewed": "2026-08-31",
+  "_lastReviewed": "2026-09-02",
   "retired": {}
 }
