@@ -8,11 +8,11 @@
   "reconstructedNote": "Observations marked reconstructed:true are a monthly backfill reconstructed from public sources after the fact — not figures published live on that date. Live points (reconstructed:false) were captured at publication.",
   "coverage": {
     "start": "2001-04-18",
-    "end": "2026-09-01",
+    "end": "2026-09-03",
     "points": 1338,
     "reconstructed": 1312
   },
-  "asOf": "2026-09-01",
+  "asOf": "2026-09-03",
   "observations": [
     {
       "date": "2001-04-18",
@@ -7887,18 +7887,6 @@
       "reconstructed": true
     },
     {
-      "date": "2026-07-28",
-      "priceUsd": 6.26,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
-      "date": "2026-07-29",
-      "priceUsd": 6.23,
-      "source": "usda-lmr",
-      "reconstructed": false
-    },
-    {
       "date": "2026-07-30",
       "priceUsd": 6.1,
       "source": "usda-lmr",
@@ -8039,6 +8027,18 @@
     {
       "date": "2026-09-01",
       "priceUsd": 6.85,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-09-02",
+      "priceUsd": 6.65,
+      "source": "usda-lmr",
+      "reconstructed": false
+    },
+    {
+      "date": "2026-09-03",
+      "priceUsd": 6.7,
       "source": "usda-lmr",
       "reconstructed": false
     }
