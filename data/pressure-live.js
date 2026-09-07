@@ -6,80 +6,80 @@
   var LIVE = {
   "_doc": "Live observation vector + anchor dates for the Pressure Lab — % changes only, never a price.",
   "status": "live",
-  "asOf": "2026-08-31",
+  "asOf": "2026-09-07",
   "anchor": {
     "chicken-breast": "2026-08-24",
     "whole-chicken": "2026-08-24",
-    "ribeye": "2026-08-28",
-    "beef-tenderloin": "2026-08-28",
-    "pork-loin": "2026-08-28",
-    "pork-shoulder": "2026-08-28",
-    "romaine-lettuce": "2026-08-28",
-    "tomato": "2026-08-28",
-    "onion": "2026-08-28",
-    "russet-potato": "2026-08-28",
+    "ribeye": "2026-09-03",
+    "beef-tenderloin": "2026-09-03",
+    "pork-loin": "2026-09-03",
+    "pork-shoulder": "2026-09-03",
+    "romaine-lettuce": "2026-09-04",
+    "tomato": "2026-09-04",
+    "onion": "2026-09-04",
+    "russet-potato": "2026-09-04",
     "butter": "2026-08-15",
-    "bell-pepper": "2026-08-28",
-    "broccoli": "2026-08-28",
-    "cauliflower": "2026-08-28",
-    "spinach": "2026-08-28",
-    "asparagus": "2026-08-28",
-    "garlic": "2026-08-28",
-    "carrot": "2026-08-28",
-    "kale": "2026-08-28",
-    "basil": "2026-08-28",
-    "cilantro": "2026-08-28",
-    "cucumber": "2026-08-28",
-    "celery": "2026-08-28",
-    "cabbage": "2026-08-28",
-    "eggplant": "2026-08-28",
-    "zucchini": "2026-08-28",
-    "beet": "2026-08-28",
-    "leek": "2026-08-28",
-    "yellow-squash": "2026-08-28",
-    "jalapeno": "2026-08-28",
-    "green-onion": "2026-08-28",
-    "green-beans": "2026-08-28",
-    "parsley": "2026-08-28",
-    "brussels-sprouts": "2026-08-28",
-    "butternut-squash": "2026-08-28",
-    "iceberg-lettuce": "2026-08-28",
-    "bok-choy": "2026-08-28",
-    "artichoke": "2026-08-28",
-    "okra": "2026-08-28",
-    "snow-peas": "2026-08-28",
-    "avocado": "2026-08-28",
-    "lemon": "2026-08-28",
-    "lime": "2026-08-28",
+    "bell-pepper": "2026-09-04",
+    "broccoli": "2026-09-04",
+    "cauliflower": "2026-09-04",
+    "spinach": "2026-09-03",
+    "asparagus": "2026-09-04",
+    "garlic": "2026-09-04",
+    "carrot": "2026-09-04",
+    "kale": "2026-09-04",
+    "basil": "2026-09-04",
+    "cilantro": "2026-09-04",
+    "cucumber": "2026-09-04",
+    "celery": "2026-09-04",
+    "cabbage": "2026-09-04",
+    "eggplant": "2026-09-04",
+    "zucchini": "2026-09-04",
+    "beet": "2026-09-04",
+    "leek": "2026-09-04",
+    "yellow-squash": "2026-09-03",
+    "jalapeno": "2026-09-04",
+    "green-onion": "2026-09-04",
+    "green-beans": "2026-09-03",
+    "parsley": "2026-09-04",
+    "brussels-sprouts": "2026-09-03",
+    "butternut-squash": "2026-09-03",
+    "iceberg-lettuce": "2026-09-04",
+    "bok-choy": "2026-09-04",
+    "artichoke": "2026-09-03",
+    "okra": "2026-09-04",
+    "snow-peas": "2026-09-04",
+    "avocado": "2026-09-04",
+    "lemon": "2026-09-03",
+    "lime": "2026-09-04",
     "chicken-thigh": "2026-08-24",
-    "short-rib": "2026-08-28",
-    "butter-lettuce": "2026-08-28",
-    "green-leaf-lettuce": "2026-08-28",
-    "red-leaf-lettuce": "2026-08-28",
-    "collard-greens": "2026-08-28",
-    "mint": "2026-08-28",
-    "rosemary": "2026-08-28",
-    "thyme": "2026-08-28",
-    "oregano": "2026-08-28",
-    "tarragon": "2026-08-28",
+    "short-rib": "2026-09-03",
+    "butter-lettuce": "2026-09-04",
+    "green-leaf-lettuce": "2026-09-04",
+    "red-leaf-lettuce": "2026-09-03",
+    "collard-greens": "2026-09-03",
+    "mint": "2026-09-04",
+    "rosemary": "2026-09-04",
+    "thyme": "2026-09-04",
+    "oregano": "2026-09-04",
+    "tarragon": "2026-09-04",
     "dill": "2026-07-14",
-    "corn-on-the-cob": "2026-08-28",
-    "sweet-potato": "2026-08-28",
-    "rutabaga": "2026-08-28",
-    "acorn-squash": "2026-08-28",
-    "cherry-tomato": "2026-08-28",
-    "grapefruit": "2026-08-28",
-    "apple": "2026-08-28",
-    "pear": "2026-08-28",
-    "blueberry": "2026-08-28",
-    "raspberry": "2026-08-28"
+    "corn-on-the-cob": "2026-09-04",
+    "sweet-potato": "2026-09-04",
+    "rutabaga": "2026-09-03",
+    "acorn-squash": "2026-09-03",
+    "cherry-tomato": "2026-09-04",
+    "grapefruit": "2026-09-03",
+    "apple": "2026-09-04",
+    "pear": "2026-09-03",
+    "blueberry": "2026-09-04",
+    "raspberry": "2026-09-04"
   },
   "observations": {
     "chicken-breast": {
-      "broiler-placements": 0.0009511225817065709
+      "broiler-placements": -0.001068996530900681
     },
     "whole-chicken": {
-      "broiler-placements": 0.0009511225817065709
+      "broiler-placements": -0.001068996530900681
     },
     "ribeye": {
       "cattle-on-feed-placements": -0.1645123384253819
@@ -96,252 +96,250 @@
       "cold-storage-pork": -0.043237211927076614
     },
     "romaine-lettuce": {
-      "lettuce-shipments": -0.7460738374681856,
-      "lettuce-imports": 0.012574835117238198,
-      "lettuce-pace": -0.0437689358211546,
+      "lettuce-shipments": -0.8050963087052414,
+      "lettuce-imports": 0.3356008531253354,
       "freeze-alert": 0,
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "lettuce-transition": 0
     },
     "tomato": {
-      "tomato-shipments": -0.7799113438079085,
-      "tomato-imports": 0.22361873335814386,
-      "tomato-pace": 1.0485660987931658,
+      "tomato-shipments": -0.8634296856426924,
+      "tomato-imports": 0,
       "freeze-alert": 0,
       "tomato-transition": 0
     },
     "onion": {
-      "onion-shipments": -0.6612885952454115,
-      "onion-imports": 0.12760764885582104,
-      "onion-pace": 0.13196829347246175,
-      "drought-ca-az": -0.31349440188568073,
-      "onion-transition": 0
+      "onion-shipments": -0.8065241019255713,
+      "onion-imports": 0.03839806191384392,
+      "onion-pace": 0.06688942718398327,
+      "drought-ca-az": -0.2769962763756725,
+      "onion-transition": 1
     },
     "russet-potato": {
-      "potato-shipments": -0.8345641098401575,
-      "potato-imports": 0.0567158020169235,
-      "potato-pace": -0.1675977364872846,
+      "potato-shipments": -0.859476275398588,
+      "potato-imports": 0.020299870077421775,
+      "potato-pace": -0.1743980404250185,
       "potato-transition": 1
     },
     "butter": {
       "cold-storage-butter": -0.061712113492198385
     },
     "bell-pepper": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "broccoli": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "cauliflower": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "spinach": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "asparagus": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "garlic": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "carrot": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "kale": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "basil": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "cilantro": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "cucumber": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "celery": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "cabbage": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "eggplant": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "zucchini": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "beet": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "leek": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "yellow-squash": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "jalapeno": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "green-onion": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "green-beans": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "parsley": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "brussels-sprouts": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "butternut-squash": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "iceberg-lettuce": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "bok-choy": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "artichoke": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "okra": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "snow-peas": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "avocado": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "lemon": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "lime": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "chicken-thigh": {
-      "broiler-placements": 0.0009511225817065709
+      "broiler-placements": -0.001068996530900681
     },
     "short-rib": {
       "cattle-on-feed-placements": -0.1645123384253819
     },
     "butter-lettuce": {
-      "lettuce-shipments": -0.7460738374681856,
+      "lettuce-shipments": -0.8050963087052414,
       "freeze-alert": 0,
-      "drought-ca-az": -0.31349440188568073
+      "drought-ca-az": -0.2769962763756725
     },
     "green-leaf-lettuce": {
-      "lettuce-shipments": -0.7460738374681856,
+      "lettuce-shipments": -0.8050963087052414,
       "freeze-alert": 0,
-      "drought-ca-az": -0.31349440188568073
+      "drought-ca-az": -0.2769962763756725
     },
     "red-leaf-lettuce": {
-      "lettuce-shipments": -0.7460738374681856,
+      "lettuce-shipments": -0.8050963087052414,
       "freeze-alert": 0,
-      "drought-ca-az": -0.31349440188568073
+      "drought-ca-az": -0.2769962763756725
     },
     "collard-greens": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "mint": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "rosemary": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "thyme": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "oregano": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "tarragon": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "dill": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "corn-on-the-cob": {
       "freeze-alert": 0,
-      "drought-ca-az": -0.31349440188568073
+      "drought-ca-az": -0.2769962763756725
     },
     "sweet-potato": {
-      "drought-ca-az": -0.31349440188568073
+      "drought-ca-az": -0.2769962763756725
     },
     "rutabaga": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "acorn-squash": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "cherry-tomato": {
-      "tomato-shipments": -0.7799113438079085,
+      "tomato-shipments": -0.8634296856426924,
       "freeze-alert": 0,
-      "drought-ca-az": -0.31349440188568073
+      "drought-ca-az": -0.2769962763756725
     },
     "grapefruit": {
       "freeze-alert": 0,
-      "drought-ca-az": -0.31349440188568073
+      "drought-ca-az": -0.2769962763756725
     },
     "apple": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "pear": {
-      "drought-ca-az": -0.31349440188568073,
+      "drought-ca-az": -0.2769962763756725,
       "freeze-alert": 0
     },
     "blueberry": {
       "freeze-alert": 0,
-      "drought-ca-az": -0.31349440188568073
+      "drought-ca-az": -0.2769962763756725
     },
     "raspberry": {
       "freeze-alert": 0,
-      "drought-ca-az": -0.31349440188568073
+      "drought-ca-az": -0.2769962763756725
     }
   }
 };

@@ -413,23 +413,6 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
-/* ingredient-recalls-css:start */
-.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
-.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
-.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
-.ci-recalls__ctx p{margin:2px 0}
-.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
-.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
-.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
-.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
-/* ingredient-recalls-css:end */
-/* supply-picture-css:start */
-.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
-.ci-supply__rel strong{font-weight:700}
-.ci-supply__caveat{color:var(--ink-soft)}
-.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
-/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=a8b747b9ea6c" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=5460be180318" onload="this.onload=null;this.rel='stylesheet'">
@@ -795,11 +778,6 @@ main{padding-top:64px}
   <li>Watch the direction over a few weeks before re-pricing a dish — one week is noise.</li>
 </ol>
 <p>Costing a dish that uses short rib? Use the <a href="/tools/plate-cost/?from=short-rib">Plate Cost Calculator</a>.</p>
-<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
-    <h2 id="ci-supply-h">Where it comes from</h2>
-    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#short-rib">ingredient state record</a>.</p>
-    <p class="ci-supply__p">US farm-gate production was $99.77B (1988-2025). Farm-gate price: 417 $ / CWT. <span class="ci-supply__caveat">Farm-gate value (USDA NASS) — what the grower earns, not a wholesale or delivered price.</span></p>
-  </section><!-- /supply-picture:end -->
     <div class="ci-signup ci-signup--compact">
       <div class="foot-newsletter">
         <form action="/api/subscribe" method="post" class="foot-newsletter-form" data-locale="en" data-surface="cost-index-ingredient">
@@ -815,10 +793,6 @@ main{padding-top:64px}
         </form>
       </div>
     </div>
-    <!-- ingredient-recalls:start --><section class="ci-profile ci-recalls ci-recalls--none" aria-labelledby="ci-recalls-h-short-rib">
-    <h2 id="ci-recalls-h-short-rib">Food-safety recall history</h2>
-    <p class="ci-recalls__none">No recall in the openFDA window (since 2020). FDA-regulated foods only — USDA/FSIS meat, poultry and egg recalls are absent here, so an empty record is not an all-clear.</p>
-  </section><!-- /ingredient-recalls:end -->
     <section class="ci-faq" aria-labelledby="ci-faq-h-short-rib">
   <h2 id="ci-faq-h-short-rib">Frequently asked</h2>
   <div class="ci-faq__item"><h3 class="ci-faq__q">What does short rib cost wholesale right now?</h3><p class="ci-faq__a">It moves week to week. The market read above shows the current typical range and the date behind it; read it against your own invoice.</p></div>
