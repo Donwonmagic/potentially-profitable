@@ -8,50 +8,50 @@
     "ownCoverage": 0.15
   },
   "derivedCuts": [
-    0.453,
-    0.489,
-    0.53425
+    0.4515,
+    0.488,
+    0.5437500000000001
   ],
   "proposedTiers": [
     {
-      "items": 19,
-      "calls": 6963,
-      "hits": 3531,
-      "hitRate": 0.507
+      "items": 20,
+      "calls": 7347,
+      "hits": 3647,
+      "hitRate": 0.496
     },
     {
       "items": 20,
-      "calls": 6564,
-      "hits": 3491,
-      "hitRate": 0.532
-    },
-    {
-      "items": 21,
-      "calls": 11915,
-      "hits": 5741,
-      "hitRate": 0.482
+      "calls": 7674,
+      "hits": 4137,
+      "hitRate": 0.539
     },
     {
       "items": 20,
-      "calls": 8718,
-      "hits": 4498,
-      "hitRate": 0.516
+      "calls": 9782,
+      "hits": 4676,
+      "hitRate": 0.478
+    },
+    {
+      "items": 20,
+      "calls": 9357,
+      "hits": 4801,
+      "hitRate": 0.513
     }
   ],
   "monotone": true,
   "binarySplit": {
-    "medianScore": 0.489,
+    "medianScore": 0.488,
     "lower": {
-      "items": 39,
-      "calls": 13527,
-      "hitRate": 0.519,
-      "baseline": 0.512
+      "items": 40,
+      "calls": 15021,
+      "hitRate": 0.518,
+      "baseline": 0.51
     },
     "upper": {
-      "items": 41,
-      "calls": 20633,
-      "hitRate": 0.496,
-      "baseline": 0.51
+      "items": 40,
+      "calls": 19139,
+      "hitRate": 0.495,
+      "baseline": 0.511
     },
     "separation": -0.023
   },
@@ -79,8 +79,8 @@
     {
       "key": "apple",
       "currentLabel": "low",
-      "proposedLabel": "directional",
-      "changed": true,
+      "proposedLabel": "low",
+      "changed": false,
       "S": 0.452,
       "parts": {
         "indep": 0,
@@ -95,10 +95,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.453,
+      "S": 0.49,
       "parts": {
         "indep": 0,
-        "agreement": 0.625,
+        "agreement": 0.75,
         "freshness": 1,
         "ownCoverage": 0.767
       },
@@ -107,12 +107,12 @@
     {
       "key": "asparagus",
       "currentLabel": "low",
-      "proposedLabel": "low",
-      "changed": false,
-      "S": 0.454,
+      "proposedLabel": "directional",
+      "changed": true,
+      "S": 0.438,
       "parts": {
         "indep": 0,
-        "agreement": 0.625,
+        "agreement": 0.571,
         "freshness": 1,
         "ownCoverage": 0.775
       },
@@ -193,10 +193,10 @@
       "currentLabel": "medium",
       "proposedLabel": "medium",
       "changed": false,
-      "S": 0.528,
+      "S": 0.565,
       "parts": {
         "indep": 0,
-        "agreement": 0.875,
+        "agreement": 1,
         "freshness": 1,
         "ownCoverage": 0.769
       },
@@ -207,10 +207,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.49,
+      "S": 0.453,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.625,
         "freshness": 1,
         "ownCoverage": 0.767
       },
@@ -319,10 +319,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.529,
+      "S": 0.491,
       "parts": {
         "indep": 0,
-        "agreement": 0.875,
+        "agreement": 0.75,
         "freshness": 1,
         "ownCoverage": 0.776
       },
@@ -361,10 +361,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.492,
+      "S": 0.524,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.857,
         "freshness": 1,
         "ownCoverage": 0.777
       },
@@ -445,10 +445,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.456,
+      "S": 0.494,
       "parts": {
         "indep": 0,
-        "agreement": 0.625,
+        "agreement": 0.75,
         "freshness": 1,
         "ownCoverage": 0.793
       },
@@ -487,10 +487,10 @@
       "currentLabel": "low",
       "proposedLabel": "directional",
       "changed": true,
-      "S": 0.416,
+      "S": 0.303,
       "parts": {
         "indep": 0,
-        "agreement": 0.5,
+        "agreement": 0.125,
         "freshness": 1,
         "ownCoverage": 0.771
       },
@@ -571,10 +571,10 @@
       "currentLabel": "low",
       "proposedLabel": "directional",
       "changed": true,
-      "S": 0.301,
+      "S": 0.306,
       "parts": {
         "indep": 0,
-        "agreement": 0.125,
+        "agreement": 0.143,
         "freshness": 1,
         "ownCoverage": 0.755
       },
@@ -667,12 +667,12 @@
     {
       "key": "habanero-pepper",
       "currentLabel": "low",
-      "proposedLabel": "directional",
-      "changed": true,
-      "S": 0.414,
+      "proposedLabel": "low",
+      "changed": false,
+      "S": 0.452,
       "parts": {
         "indep": 0,
-        "agreement": 0.5,
+        "agreement": 0.625,
         "freshness": 1,
         "ownCoverage": 0.76
       },
@@ -725,10 +725,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.453,
+      "S": 0.49,
       "parts": {
         "indep": 0,
-        "agreement": 0.625,
+        "agreement": 0.75,
         "freshness": 1,
         "ownCoverage": 0.768
       },
@@ -765,12 +765,12 @@
     {
       "key": "mint",
       "currentLabel": "low",
-      "proposedLabel": "low",
-      "changed": false,
-      "S": 0.455,
+      "proposedLabel": "directional",
+      "changed": true,
+      "S": 0.418,
       "parts": {
         "indep": 0,
-        "agreement": 0.625,
+        "agreement": 0.5,
         "freshness": 1,
         "ownCoverage": 0.785
       },
@@ -933,12 +933,12 @@
     {
       "key": "pork-shoulder",
       "currentLabel": "medium",
-      "proposedLabel": "low",
+      "proposedLabel": "directional",
       "changed": true,
-      "S": 0.467,
+      "S": 0.367,
       "parts": {
         "indep": 0,
-        "agreement": 0.667,
+        "agreement": 0.333,
         "freshness": 1,
         "ownCoverage": 0.782
       },
@@ -991,10 +991,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.525,
+      "S": 0.487,
       "parts": {
         "indep": 0,
-        "agreement": 0.875,
+        "agreement": 0.75,
         "freshness": 1,
         "ownCoverage": 0.747
       },
@@ -1005,10 +1005,10 @@
       "currentLabel": "medium",
       "proposedLabel": "medium",
       "changed": false,
-      "S": 0.533,
+      "S": 0.499,
       "parts": {
         "indep": 0,
-        "agreement": 0.889,
+        "agreement": 0.778,
         "freshness": 1,
         "ownCoverage": 0.773
       },
@@ -1215,10 +1215,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.453,
+      "S": 0.48,
       "parts": {
         "indep": 0,
-        "agreement": 0.625,
+        "agreement": 0.714,
         "freshness": 1,
         "ownCoverage": 0.769
       },
@@ -1453,10 +1453,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.491,
+      "S": 0.48,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.714,
         "freshness": 1,
         "ownCoverage": 0.771
       },
@@ -1467,10 +1467,10 @@
       "currentLabel": "low",
       "proposedLabel": "low",
       "changed": false,
-      "S": 0.49,
+      "S": 0.452,
       "parts": {
         "indep": 0,
-        "agreement": 0.75,
+        "agreement": 0.625,
         "freshness": 1,
         "ownCoverage": 0.766
       },
