@@ -5,8 +5,8 @@
   "methodology": "https://muntin.digital/cost-index/methodology/",
   "index": "https://muntin.digital/cost-index/",
   "data": "https://muntin.digital/cost-index/index.json",
-  "lastReviewed": "2026-09-07",
-  "count": 79,
+  "lastReviewed": "2026-09-09",
+  "count": 80,
   "ingredients": [
     {
       "slug": "ribeye",
@@ -131,6 +131,41 @@
           "agency": "FRED, Federal Reserve Bank of St. Louis",
           "seriesId": "APU0000FD4101",
           "url": "https://fred.stlouisfed.org/"
+        }
+      ]
+    },
+    {
+      "slug": "romaine-lettuce",
+      "name": "Romaine lettuce",
+      "sources": [
+        {
+          "agency": "USDA AMS Market News (terminal markets)",
+          "reportIds": [
+            "2278",
+            "2282",
+            "2286",
+            "2291",
+            "2303",
+            "2307",
+            "2311",
+            "2315"
+          ],
+          "markets": [
+            "Atlanta",
+            "Baltimore",
+            "Boston",
+            "Chicago",
+            "Detroit",
+            "Los Angeles",
+            "Miami",
+            "New York"
+          ],
+          "url": "https://www.ams.usda.gov/market-news"
+        },
+        {
+          "agency": "U.S. Bureau of Labor Statistics (PPI)",
+          "seriesId": "WPU01130215",
+          "url": "https://www.bls.gov/ppi/"
         }
       ]
     },
