@@ -1,7 +1,7 @@
 {
   "_doc": "Lock-or-float predictability record for Cost Pulse. Built deterministically by scripts/build-cost-lockfloat.mjs from data/cost-index.json + the deep history, using the certified conformal band (raw scale=1) and the honest classifier (tools/_shared/cost-lockfloat.js). Lock = predictable enough to commit (a proven, tight next-week band); Float = too volatile to commit; Won't-call = withheld (thin/monthly-thin/flat/too-wide). Buckets are a RISK read, never a direction or opportunity call. Every count/rate is derived here, never hand-typed. asOf mirrors the seed generatedAt (no build clock). Hand-edit nothing; CI re-checks with --check.",
   "_version": 1,
-  "asOf": "2026-09-09",
+  "asOf": "2026-09-11",
   "thresholds": {
     "lockMaxHalfWidth": 0.08,
     "cushionMaxHalfWidth": 0.2,
@@ -81,7 +81,7 @@
     "apple": {
       "name": "Apples",
       "unit": "carton",
-      "level": 3475,
+      "level": 3750,
       "monthly": false,
       "bucket": "cushion",
       "reason": null,
@@ -142,7 +142,7 @@
     "artichoke": {
       "name": "Artichoke",
       "unit": "carton",
-      "level": 6000,
+      "level": 5900,
       "monthly": false,
       "bucket": "cushion",
       "reason": null,
@@ -203,7 +203,7 @@
     "asparagus": {
       "name": "Asparagus",
       "unit": "carton",
-      "level": 5900,
+      "level": 6063,
       "monthly": false,
       "bucket": "cushion",
       "reason": null,
@@ -265,7 +265,7 @@
     "avocado": {
       "name": "Avocado",
       "unit": "carton",
-      "level": 3550,
+      "level": 3563,
       "monthly": false,
       "bucket": "cushion",
       "reason": null,
@@ -326,7 +326,7 @@
     "banana": {
       "name": "Bananas",
       "unit": "carton",
-      "level": 2163,
+      "level": 2188,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -450,7 +450,7 @@
     "beef-tenderloin": {
       "name": "Beef tenderloin",
       "unit": "lb",
-      "level": 1624,
+      "level": 1710,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -511,7 +511,7 @@
     "beet": {
       "name": "Beet",
       "unit": "carton",
-      "level": 2057,
+      "level": 2244,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -573,7 +573,7 @@
     "bell-pepper": {
       "name": "Bell pepper",
       "unit": "carton",
-      "level": 1813,
+      "level": 1875,
       "monthly": false,
       "bucket": "cushion",
       "reason": null,
@@ -634,7 +634,7 @@
     "blueberry": {
       "name": "Blueberries",
       "unit": "carton",
-      "level": 3863,
+      "level": 3450,
       "monthly": false,
       "bucket": "withhold",
       "reason": "volatile",
@@ -695,7 +695,7 @@
     "bok-choy": {
       "name": "Bok choy",
       "unit": "carton",
-      "level": 3075,
+      "level": 3250,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -758,7 +758,7 @@
     "broccoli": {
       "name": "Broccoli",
       "unit": "carton",
-      "level": 2713,
+      "level": 2544,
       "monthly": false,
       "bucket": "float",
       "reason": null,
@@ -819,7 +819,7 @@
     "brussels-sprouts": {
       "name": "Brussels sprouts",
       "unit": "carton",
-      "level": 4263,
+      "level": 4388,
       "monthly": false,
       "bucket": "float",
       "reason": null,
@@ -1003,7 +1003,7 @@
     "butternut-squash": {
       "name": "Butternut squash",
       "unit": "carton",
-      "level": 2682,
+      "level": 2600,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -1064,7 +1064,7 @@
     "button-mushroom": {
       "name": "Button mushroom",
       "unit": "carton",
-      "level": 2188,
+      "level": 2213,
       "monthly": false,
       "bucket": "withhold",
       "reason": "flat",
@@ -1125,7 +1125,7 @@
     "cabbage": {
       "name": "Cabbage",
       "unit": "carton",
-      "level": 1800,
+      "level": 1775,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -1186,7 +1186,7 @@
     "cantaloupe": {
       "name": "Cantaloupe",
       "unit": "carton",
-      "level": 2300,
+      "level": 2350,
       "monthly": false,
       "bucket": "cushion",
       "reason": null,
@@ -1369,7 +1369,7 @@
     "celery": {
       "name": "Celery",
       "unit": "carton",
-      "level": 3075,
+      "level": 3125,
       "monthly": false,
       "bucket": "withhold",
       "reason": "volatile",
@@ -1815,7 +1815,7 @@
     "corn-on-the-cob": {
       "name": "Corn on the cob",
       "unit": "carton",
-      "level": 2044,
+      "level": 2075,
       "monthly": false,
       "bucket": "cushion",
       "reason": null,
@@ -2404,7 +2404,7 @@
     "green-beans": {
       "name": "Green beans",
       "unit": "carton",
-      "level": 2200,
+      "level": 2325,
       "monthly": false,
       "bucket": "cushion",
       "reason": null,
@@ -2465,7 +2465,7 @@
     "green-leaf-lettuce": {
       "name": "Green leaf lettuce",
       "unit": "carton",
-      "level": 2338,
+      "level": 2363,
       "monthly": false,
       "bucket": "float",
       "reason": null,
@@ -2526,7 +2526,7 @@
     "green-onion": {
       "name": "Green onion",
       "unit": "carton",
-      "level": 2975,
+      "level": 2913,
       "monthly": false,
       "bucket": "withhold",
       "reason": "volatile",
@@ -2666,7 +2666,7 @@
     "iceberg-lettuce": {
       "name": "Iceberg lettuce",
       "unit": "carton",
-      "level": 3263,
+      "level": 3475,
       "monthly": false,
       "bucket": "withhold",
       "reason": "volatile",
@@ -2849,7 +2849,7 @@
     "leek": {
       "name": "Leek",
       "unit": "carton",
-      "level": 2838,
+      "level": 2875,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -2910,7 +2910,7 @@
     "lemon": {
       "name": "Lemon",
       "unit": "carton",
-      "level": 3050,
+      "level": 3188,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -2972,7 +2972,7 @@
     "lime": {
       "name": "Lime",
       "unit": "carton",
-      "level": 2950,
+      "level": 3050,
       "monthly": false,
       "bucket": "withhold",
       "reason": "volatile",
@@ -3176,7 +3176,7 @@
     "okra": {
       "name": "Okra",
       "unit": "carton",
-      "level": 2400,
+      "level": 2275,
       "monthly": false,
       "bucket": "cushion",
       "reason": null,
@@ -3237,7 +3237,7 @@
     "onion": {
       "name": "Onions",
       "unit": "sack",
-      "level": 3075,
+      "level": 3025,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -3423,7 +3423,7 @@
     "pear": {
       "name": "Pears",
       "unit": "carton",
-      "level": 4200,
+      "level": 4100,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -3484,7 +3484,7 @@
     "pineapple": {
       "name": "Pineapple",
       "unit": "carton",
-      "level": 1950,
+      "level": 2150,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -3673,7 +3673,7 @@
     "pork-loin": {
       "name": "Pork loin",
       "unit": "lb",
-      "level": 92,
+      "level": 89,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -3735,7 +3735,7 @@
     "pork-shoulder": {
       "name": "Pork shoulder",
       "unit": "lb",
-      "level": 114,
+      "level": 113,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -3858,7 +3858,7 @@
     "raspberry": {
       "name": "Raspberries",
       "unit": "carton",
-      "level": 3725,
+      "level": 3675,
       "monthly": false,
       "bucket": "float",
       "reason": null,
@@ -3980,7 +3980,7 @@
     "red-onion": {
       "name": "Red onion",
       "unit": "sack",
-      "level": 2200,
+      "level": 2175,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -4041,7 +4041,7 @@
     "red-potato": {
       "name": "Red potato",
       "unit": "sack",
-      "level": 3400,
+      "level": 3300,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -4102,7 +4102,7 @@
     "ribeye": {
       "name": "Ribeye",
       "unit": "lb",
-      "level": 1482,
+      "level": 1481,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -4288,7 +4288,7 @@
     "russet-potato": {
       "name": "Russet potatoes",
       "unit": "sack",
-      "level": 3200,
+      "level": 2950,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -4525,7 +4525,7 @@
     "short-rib": {
       "name": "Short rib",
       "unit": "lb",
-      "level": 685,
+      "level": 672,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -4641,7 +4641,7 @@
     "snow-peas": {
       "name": "Snow peas",
       "unit": "carton",
-      "level": 3625,
+      "level": 3650,
       "monthly": false,
       "bucket": "cushion",
       "reason": null,
@@ -4702,7 +4702,7 @@
     "spinach": {
       "name": "Spinach",
       "unit": "carton",
-      "level": 2125,
+      "level": 2100,
       "monthly": false,
       "bucket": "cushion",
       "reason": null,
@@ -4781,7 +4781,7 @@
     "striploin": {
       "name": "striploin",
       "unit": null,
-      "level": 969,
+      "level": 948,
       "monthly": false,
       "bucket": "lock",
       "reason": null,
@@ -5053,7 +5053,7 @@
     "tomato": {
       "name": "Tomatoes (round)",
       "unit": "carton",
-      "level": 2450,
+      "level": 2550,
       "monthly": false,
       "bucket": "withhold",
       "reason": "volatile",
