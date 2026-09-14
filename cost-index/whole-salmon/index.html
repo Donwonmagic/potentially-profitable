@@ -30,7 +30,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/cost-index/whole-salmon/#page","url":"https://muntin.digital/cost-index/whole-salmon/","name":"Whole salmon","inLanguage":"en-US","isPartOf":{"@id":"https://muntin.digital/#website"},"description":"We don't publish a wholesale price for whole salmon yet — the index shows a number only when public data supports an honest, complete read."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Cost index","item":"https://muntin.digital/cost-index/"},{"@type":"ListItem","position":3,"name":"Whole salmon","item":"https://muntin.digital/cost-index/whole-salmon/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/cost-index/whole-salmon/#page","url":"https://muntin.digital/cost-index/whole-salmon/","name":"Whole salmon","inLanguage":"en-US","isPartOf":{"@id":"https://muntin.digital/#website"},"description":"We don't publish a wholesale price for whole salmon yet — the index shows a number only when public data supports an honest, complete read.","speakable":{"@type":"SpeakableSpecification","cssSelector":["h1",".ci-read__head"]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Cost index","item":"https://muntin.digital/cost-index/"},{"@type":"ListItem","position":3,"name":"Whole salmon","item":"https://muntin.digital/cost-index/whole-salmon/"}]},{"@type":"FAQPage","@id":"https://muntin.digital/cost-index/whole-salmon/#faq","inLanguage":"en-US","mainEntity":[{"@type":"Question","@id":"https://muntin.digital/cost-index/whole-salmon/#faq-supply","name":"Where does Whole salmon come from?","acceptedAnswer":{"@type":"Answer","text":"US wild landings were $394M (2024), beside $1.19B of imports the same year (2024). Two different measures — dockside ex-vessel (first-sale) value of the wild catch vs the customs value of imports — not a supply-share ratio. Most imports of this species are farmed abroad."}}]}]}</script>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 <style>
@@ -413,6 +413,23 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=a8b747b9ea6c" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=5460be180318" onload="this.onload=null;this.rel='stylesheet'">
@@ -677,11 +694,22 @@ main{padding-top:64px}
     </aside>
     <h2>What you can do now</h2>
     <p>Check your last whole salmon invoice against your own recent ones, or open <a href="/tools/cost-pulse/?from=whole-salmon">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#whole-salmon">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $1.08B (2025), series 2012-2025, YoY -9.1%. Top origins: 47% Canada · 16% United Kingdom · 14% Faroe Islands (concentrated, HHI 0.28). Peak import months: Mar · May · Jun. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 030214.</span> <span class="ci-supply__meta">Fresh whole Atlantic/Danube salmon (excludes fillets); data 2012+ (pre-2012 sat under a prior code).</span></p>
+    <p class="ci-supply__p">US exports: $60M (2025). <span class="ci-supply__caveat">US domestic-export value (US Census, DF=1) — nominal value, never your delivered price.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>US wild landings were $394M (2024), beside $1.19B of imports the same year (2024).</strong> <span class="ci-supply__caveat">Two different measures — dockside ex-vessel (first-sale) value of the wild catch vs the customs value of imports — not a supply-share ratio. Most imports of this species are farmed abroad.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="/cost-index/">Browse all readings</a>
       <a class="btn btn-ghost" href="/glossary/cost-index/">What is a cost index?</a>
     </div>
   </div></div>
+<!-- ingredient-recalls:start --><section class="ci-profile ci-recalls ci-recalls--none" aria-labelledby="ci-recalls-h-whole-salmon">
+    <h2 id="ci-recalls-h-whole-salmon">Food-safety recall history</h2>
+    <p class="ci-recalls__none">No recall in the openFDA window (since 2020). FDA-regulated foods only — USDA/FSIS meat, poultry and egg recalls are absent here, so an empty record is not an all-clear.</p>
+  </section><!-- /ingredient-recalls:end -->
 </main>
 <footer class="site-footer" id="footer"></footer>
 <!-- Newsletter signup — eager progressive enhancement. This page ships

@@ -30,7 +30,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/brand/favicons/android-chrome-192x192.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="/brand/favicons/apple-touch-icon.png" />
 <link rel="manifest" href="/brand/favicons/site.webmanifest" />
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/cost-index/octopus/#page","url":"https://muntin.digital/cost-index/octopus/","name":"Octopus","inLanguage":"en-US","isPartOf":{"@id":"https://muntin.digital/#website"},"description":"We don't publish a wholesale price for octopus yet — the index shows a number only when public data supports an honest, complete read."},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Cost index","item":"https://muntin.digital/cost-index/"},{"@type":"ListItem","position":3,"name":"Octopus","item":"https://muntin.digital/cost-index/octopus/"}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://muntin.digital/cost-index/octopus/#page","url":"https://muntin.digital/cost-index/octopus/","name":"Octopus","inLanguage":"en-US","isPartOf":{"@id":"https://muntin.digital/#website"},"description":"We don't publish a wholesale price for octopus yet — the index shows a number only when public data supports an honest, complete read.","speakable":{"@type":"SpeakableSpecification","cssSelector":["h1",".ci-read__head"]}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://muntin.digital/"},{"@type":"ListItem","position":2,"name":"Cost index","item":"https://muntin.digital/cost-index/"},{"@type":"ListItem","position":3,"name":"Octopus","item":"https://muntin.digital/cost-index/octopus/"}]},{"@type":"FAQPage","@id":"https://muntin.digital/cost-index/octopus/#faq","inLanguage":"en-US","mainEntity":[{"@type":"Question","@id":"https://muntin.digital/cost-index/octopus/#faq-supply","name":"Where does Octopus come from?","acceptedAnswer":{"@type":"Answer","text":"US wild landings are minimal for this species ($309K, 2024) beside $22M of imports (2024). Two different measures — dockside ex-vessel (first-sale) value of the wild catch vs the customs value of imports — not a supply-share ratio."}}]}]}</script>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/fraunces-v38-latin-500.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/inter-v20-latin-regular.woff2" crossorigin>
 <style>
@@ -413,6 +413,23 @@ main{padding-top:64px}
   :root:not([data-theme="light"]) .ci-events__mag[data-dir="up"]{color:#ed9a8e}
   :root:not([data-theme="light"]) .ci-events__take[data-vol="wild"]{border-left-color:#ed9a8e}
 }
+/* ingredient-recalls-css:start */
+.ci-recalls__lede{color:var(--ink-soft,#4a525a);margin:.2em 0 .3em;max-width:66ch}
+.ci-recalls__stat{font-size:13px;color:var(--muted,#676b66);margin:.1em 0 .8em}
+.ci-recalls__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ci-recalls__ctx{border:1px solid var(--line,#e5ddce);border-left:3px solid var(--gold,#8a6216);border-radius:10px;background:var(--surface,#fffdf9);padding:9px 12px}
+.ci-recalls__ctx p{margin:2px 0}
+.ci-recalls__when{font-size:12px;color:var(--gold,#8a6216);font-weight:600}
+.ci-recalls__meta{font-size:12.5px;color:var(--ink-soft,#4a525a)}
+.ci-recalls__prod{font-size:13.5px;color:var(--ink,#1b1f24)}
+.ci-recalls__caveat,.ci-recalls__none{font-size:12px;color:var(--muted,#676b66);font-style:italic;margin-top:.6em}
+/* ingredient-recalls-css:end */
+/* supply-picture-css:start */
+.ci-supply__p{margin:11px 0 0;font-size:15px;line-height:1.6;color:var(--ink)}
+.ci-supply__rel strong{font-weight:700}
+.ci-supply__caveat{color:var(--ink-soft)}
+.ci-supply__meta{color:var(--ink-soft);font-size:.9em}
+/* supply-picture-css:end */
 </style>
 <link rel="preload" as="style" href="/assets/site-core.css?v=a8b747b9ea6c" onload="this.onload=null;this.rel='stylesheet'">
 <link rel="preload" as="style" href="/assets/site-article.css?v=5460be180318" onload="this.onload=null;this.rel='stylesheet'">
@@ -677,11 +694,25 @@ main{padding-top:64px}
     </aside>
     <h2>What you can do now</h2>
     <p>Check your last octopus invoice against your own recent ones, or open <a href="/tools/cost-pulse/?from=octopus">the live tool</a> for the ingredients we do cover. This page fills in when the data does.</p>
+<!-- supply-picture:start --><section class="ci-profile ci-supply" aria-labelledby="ci-supply-h">
+    <h2 id="ci-supply-h">Where it comes from</h2>
+    <p class="ci-supply__note">This ingredient's public supply picture — trade, domestic production, and (for seafood) wild landings. Descriptive context, never a forecast or your delivered price. Full record in the <a href="/cost-index/menu-pricing/#octopus">ingredient state record</a>.</p>
+    <p class="ci-supply__p">US general-import value was $16M (2025), series 2010-2025, YoY -29.6%. Top origins: 31% Spain · 17% Indonesia · 14% Mexico (diversified, HHI 0.17). Peak import months: Oct · Nov · Dec. <span class="ci-supply__caveat">Nominal customs value (US Census, public domain) — mixes price and quantity, never volume or your delivered price.</span> <span class="ci-supply__meta">HS code 030759.</span></p>
+    <p class="ci-supply__p">US exports: $28K (2025). <span class="ci-supply__caveat">US domestic-export value (US Census, DF=1) — nominal value, never your delivered price.</span></p>
+    <p class="ci-supply__p ci-supply__rel"><strong>US wild landings are minimal for this species ($309K, 2024) beside $22M of imports (2024).</strong> <span class="ci-supply__caveat">Two different measures — dockside ex-vessel (first-sale) value of the wild catch vs the customs value of imports — not a supply-share ratio.</span></p>
+  </section><!-- /supply-picture:end -->
     <div class="ci-cta-row">
       <a class="btn btn-ghost" href="/cost-index/">Browse all readings</a>
       <a class="btn btn-ghost" href="/glossary/cost-index/">What is a cost index?</a>
     </div>
   </div></div>
+<!-- ingredient-recalls:start --><section class="ci-profile ci-recalls" aria-labelledby="ci-recalls-h-octopus">
+    <h2 id="ci-recalls-h-octopus">Food-safety recall history</h2>
+    <p class="ci-recalls__lede">2 documented recall events name this ingredient in the product text, 2 Class I — shown as co-occurrence, never a cause, never joined to a price.</p>
+    <p class="ci-recalls__stat mono">2 events · 2 notices · latest 2024-10-23</p>
+    <ul class="ci-recalls__list"><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2024-10-23 · Class I · Terminated · Lemonland Food Corp · Distributed in WA</span></p><p class="ci-recalls__prod">Item FLD2011, Salted and Seasoned Small Octopus, distributed in plastic clamshell containers, net wt. 0.267lb. The H-Mart label declares: Octopus, Salt, Garlic, Ginger, Red Pepper…</p></li><li class="ci-events__ctx ci-recalls__ctx"><p class="ci-recalls__when"><strong>Documented around this time</strong> — co-occurrence in time, never a cause.</p><p class="ci-recalls__meta"><span class="mono">2023-10-04 · Class I · Terminated · CenSea Inc · OH, FL, GA, IL</span></p><p class="ci-recalls__prod">Central Seafoods 30# case of IQF whole octopus. Three item codes / GTIN numbers depending on size of individual octopus: Item 10400: 2-4 pound whole octopus, GTIN 1 00 70041 20007…</p></li></ul>
+    <p class="ci-recalls__caveat">The tag is a whole-word text match on the product, not a supply or price link; it can include composite products that merely name the ingredient. Events are distinct counts, not notices. FDA-regulated foods only.</p>
+  </section><!-- /ingredient-recalls:end -->
 </main>
 <footer class="site-footer" id="footer"></footer>
 <!-- Newsletter signup — eager progressive enhancement. This page ships
